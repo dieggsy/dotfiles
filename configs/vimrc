@@ -1,4 +1,3 @@
+"uh, i don't really use vim.
 syntax on
-highlight Comment ctermfg=242
-highlight Statement=7
 set background=dark

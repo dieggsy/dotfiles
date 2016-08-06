@@ -1,0 +1,316 @@
+#!/usr/local/bin/bash
+
+# REMEMBER TO INSTALL XCODE
+xcode-select --install
+
+# This installs Homebrew 
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+# Set up taps
+echo Tapping taps...
+brew tap caskroom/cask
+brew tap caskroom/fonts
+brew tap caskroom/versions
+brew tap homebrew/binary
+brew tap homebrew/boneyard
+brew tap homebrew/completions
+brew tap homebrew/core
+brew tap homebrew/dupes
+brew tap homebrew/python
+brew tap homebrew/science
+brew tap homebrew/services
+brew tap homebrew/versions
+brew tap mopidy/mopidy
+brew tap neovim/neovim
+brew tap sgeb/mutt
+brew install caskroom/cask/brew-cask
+
+# Install brew programs (terminal)
+echo Installing brew programs...
+brew install aalib
+brew install aamath
+brew install archey
+brew install atk
+brew install autoconf
+brew install automake
+brew install aview
+brew install bash
+brew install bash-completion2
+brew install boost
+brew install boost-python
+brew install brew-cask-completion
+brew install cairo
+brew install cairomm
+brew install cgal
+brew install cmake
+brew install cmatrix
+brew install cmus
+brew install cookiecutter
+brew install coreutils
+brew install cowsay
+brew install ddate
+brew install dict
+brew install elinks
+brew install emacs
+brew install faad2
+brew install ffmpeg
+brew install figlet
+brew install flac
+brew install fontconfig
+brew install fortune
+brew install freetype
+brew install fzf
+brew install gcal
+brew install gcc
+brew install gdbm
+brew install gdk-pixbuf
+brew install gettext
+brew install ghostscript
+brew install giflib
+brew install git
+brew install glib
+brew install gmp
+brew install gnome-icon-theme
+brew install gnutls
+brew install gobject-introspection
+brew install google-sparsehash
+brew install gsettings-desktop-schemas
+brew install gst-plugins-base010
+brew install gstreamer010
+brew install gtk+3
+brew install harfbuzz
+brew install hicolor-icon-theme
+brew install highlight
+brew install htop-osx
+brew install icu4c
+brew install imagemagick
+brew install imlib2
+brew install irssi
+brew install isl
+brew install jbig2dec
+brew install jpeg
+brew install jq
+brew install jrnl
+brew install json-c
+brew install lame
+brew install libao
+brew install libcaca
+brew install libcroco
+brew install libcue
+brew install libepoxy
+brew install libffi
+brew install libgcrypt
+brew install libgpg-error
+brew install libmaa
+brew install libmpc
+brew install libogg
+brew install libpng
+brew install librsvg
+brew install libsigc++
+brew install libspotify
+brew install libtasn1
+brew install libtiff
+brew install libtool
+brew install libvo-aacenc
+brew install libvorbis
+brew install libxml2
+brew install libyaml
+brew install links
+brew install little-cms2
+brew install lua
+brew install lynx
+brew install mad
+brew install matplotlib
+brew install mercurial
+brew install mp4v2
+brew install mpfr
+brew install nano
+brew install ncurses
+brew install neovim
+brew install nettle
+brew install node
+brew install numpy
+brew install oniguruma
+brew install openssl
+brew install pandoc
+brew install pango
+brew install pcre
+brew install pip-completion
+brew install pixman
+brew install pkg-config
+brew install portaudio
+brew install portmidi
+brew install py2cairo
+brew install py3cairo
+brew install pygobject3
+brew install pyqt
+brew install python
+brew install python3
+brew install qt
+brew install readline
+brew install scipy
+brew install screen
+brew install sdl
+brew install sdl_image
+brew install sdl_mixer
+brew install sdl_ttf
+brew install sip
+brew install smpeg
+brew install source-highlight
+brew install sqlite
+brew install ssh-copy-id
+brew install subversion
+brew install the_silver_searcher
+brew install thefuck
+brew install theora
+brew install todo-txt
+brew install tokyo-cabinet
+brew install unar
+brew install urlview
+brew install watch
+brew install webp
+brew install wget
+brew install wtf
+brew install wxmac
+brew install wxpython
+brew install x264
+brew install xvid
+brew install xz
+brew install youtube-dl
+brew install zeromq
+brew install zsh
+brew install zsh-completions
+brew install zsh-syntax-highlighting
+
+# Install brew cask programs (apps)
+echo Installing brew cask programs...
+brew cask install adobe-reader
+brew cask install atom
+brew cask install betterzipql
+brew cask install discord
+brew cask install evernote
+brew cask install firefox
+brew cask install flux
+brew cask install gephi
+brew cask install gimp
+brew cask install github-desktop
+brew cask install gitify
+brew cask install google-chrome
+brew cask install libreoffice
+brew cask install licecap
+brew cask install musescore
+brew cask install music-manager
+brew cask install pixelstick
+brew cask install qlcolorcode
+brew cask install qlimagesize
+brew cask install qlmarkdown
+brew cask install qlstephen
+brew cask install quicklook-csv
+brew cask install quicklook-json
+brew cask install retinizer
+brew cask install selfcontrol
+brew cask install skype
+brew cask install slack
+brew cask install spotify
+brew cask install suspicious-package
+brew cask install teamspeak-client
+
+# Install pip programs (python)
+echo Installing pip programs...
+pip install Alfred-Workflow
+pip install appnope
+pip install arrow
+pip install autopep8
+pip install backports-abc
+pip install backports.ssl-match-hostname
+pip install beautifulsoup4
+pip install certifi
+pip install cycler
+pip install decorator
+pip install docopt
+pip install elasticsearch
+pip install elpy
+pip install epc
+pip install eveimageserver
+pip install EVELink
+pip install evernote
+pip install flake8
+pip install funcsigs
+pip install future
+pip install futures
+pip install gmail
+pip install gnureadline
+pip install google-api-python-client
+pip install html2text
+pip install httplib2
+pip install importmagic
+pip install ipython
+pip install ipython-genutils
+pip install jedi
+pip install kitchen
+pip install markdown2
+pip install matplotlib
+pip install mccabe
+pip install mercurial
+pip install mock
+pip install nose
+pip install numpy
+pip install oauth2
+pip install oauth2client
+pip install oauthlib
+pip install parsedatetime
+pip install path.py
+pip install pbr
+pip install pep8
+pip install pexpect
+pip install pickleshare
+pip install Pillow
+pip install pip
+pip install praw
+pip install ptyprocess
+pip install pyasn1
+pip install pyasn1-modules
+pip install pycrest
+pip install pyfiglet
+pip install pyflakes
+pip install pyglet
+pip install pygobject
+pip install pyparsing
+pip install PySocks
+pip install python-dateutil
+pip install python-gflags
+pip install python-twitter
+pip install pytz
+pip install PyYAML
+pip install rainbowstream
+pip install readline
+pip install requests
+pip install requests-oauthlib
+pip install rope
+pip install rsa
+pip install rtv
+pip install scipy
+pip install setuptools
+pip install sexpdata
+pip install simplegeneric
+pip install simplejson
+pip install singledispatch
+pip install six
+pip install stevedore
+pip install sympy
+pip install thrift
+pip install tornado
+pip install traitlets
+pip install twitter
+pip install update-checker
+pip install upsidedown
+pip install uritemplate
+pip install urllib3
+pip install virtualenv
+pip install virtualenv-clone
+pip install virtualenvwrapper
+pip install vobject
+pip install wheel
+pip install wxPython
+pip install wxPython-common
+pip install yapf

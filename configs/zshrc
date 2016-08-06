@@ -62,6 +62,8 @@ setopt GLOB_COMPLETE
 setopt auto_cd
 setopt histignoredups
 
+# The following is taken pretty much directly from fino theme,
+# but I wanted to make a few tweaks.
 function prompt_char {
   git branch >/dev/null 2>/dev/null && echo "±" && return
   echo '○'
@@ -131,7 +133,7 @@ alias ls='ls -NX --group-directories-first --color=always'
 alias lst="ls -t"
 alias math='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
 alias pep8="pep8 --first --ignore=E129,W503,E226"
-alias piphere=pip install --target=./
+alias piphere="pip install --target=./"
 alias printers="lpstat -p | awk '{print $2}'"
 alias resetb="source ~/.zshrc"
 alias resetwifi="networksetup -setairportpower en0 off; sleep2;networksetup -setairportpower en0 on" 
@@ -195,15 +197,6 @@ bam(){
 ham(){
     emacsclient -t "$1" --eval '(and (split-window-right) (windmove-right))' -f ipython2 --eval '(windmove-left)'
 }
-
-# These used to download shit from athena servers, may be obsolete/modify for future use
-# downprojfile(){
-# scp dmundo@athena.dialup.mit.edu:/mit/dmundo/xfoilandavl/"$1" ~/Downloads/
-# }
-
-# upprojfile(){
-# scp "$1" dmundo@athena.dialup.mit.edu:/mit/dmundo/xfoilandavl/
-# }
 
 export WWW_HOME='http://google.com'
 
