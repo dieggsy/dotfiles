@@ -1,2 +1,4 @@
 syntax on
-highlight Comment ctermfg=DarkGray
+highlight Comment ctermfg=242
+highlight Statement=7
+set background=dark
