@@ -106,7 +106,7 @@ ham(){
     emacsclient -t "$1" --eval '(and (split-window-right) (windmove-right))' -f ipython2 --eval '(windmove-left)'
 }
 
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/TeX/texbin:/usr/local/bin/python3:/usr/local/sbin:/usr/local/lib/python2.7/site-packages:/Users/diego/bin:/Applications/MATLAB_R2015b.app/bin:/usr/local/bin:/usr/local/bin/python3:/usr/local/bin:/usr/local/sbin:/usr/local/lib/python2.7/site-packages:/Users/diego/bin:/Applications/MATLAB_R2015b.app/bin"
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 
 export PYTHONSTARTUP=$HOME/.pythonrc.py
 
