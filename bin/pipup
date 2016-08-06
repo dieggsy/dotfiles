@@ -17,5 +17,6 @@ else
 	done
 fi
 
-updaterfilemaker
+mkmasterinstall
 echo $'\nDone'
+

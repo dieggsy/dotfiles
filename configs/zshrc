@@ -8,7 +8,7 @@ export ZSH=~/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-#ZSH_THEME="fino"
+# ZSH_THEME="fino"
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -52,7 +52,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git colored-man colorize github vagrant virtualenv pip python brew osx zsh-syntax-highlighting z)
+plugins=(git colored-man colorize github virtualenvwrapper pip python brew osx zsh-syntax-highlighting z)
 
 # User configuration
 export HOSTNAME=`hostname`
@@ -90,21 +90,17 @@ ZSH_THEME_GIT_PROMPT_CLEAN="%{$FG[040]%}✔"
 
 eval $(thefuck --alias)
 
-export EDITOR="emacsclient -t" # Set emacs as default editor
-export ALTERNATE_EDITOR="emacs -nw"
-
-# export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
-# export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+if [[ -n $SSH_CONNECTION ]]; then
+	export EDITOR='vim'
+else
+	export EDITOR="emacsclient -t" # Set emacs as default editor
+	export ALTERNATE_EDITOR="vim"
+fi
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -116,53 +112,36 @@ export ALTERNATE_EDITOR="emacs -nw"
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
-alias agenda="gcalcli agenda"
-alias app="cd /Applications"
-alias astronomy="cd /Users/diego/MIT\ 2015-2016/Spring/8.282"
-alias bashe="emacsclient -t ~/.zshrc"
-alias bin="cd /Users/diego/bin"
+alias apps="cd /Applications"
 alias cask="brew cask"
-alias chrome="open /Applications/Google\ Chrome.app"
 alias clc="clear"
-alias computation="cd /Users/diego/MIT\ 2015-2016/Spring/16.90"
-alias des="cd /Users/diego/Desktop"
-alias dict='dict -d gcide'
-alias doc="cd /Users/diego/Documents/"
-alias dow="cd /Users/diego/Downloads/"
+alias def='dict -d gcide'
+alias desk="cd /Users/diego/Desktop"
+alias docs="cd /Users/diego/Documents/"
+alias down="cd /Users/diego/Downloads/"
 alias drive="cd /Users/diego/Google\ Drive"
 alias drop="cd /Users/diego/Dropbox\ \(MIT\)"
 alias edit="emacsclient -t"
 alias editv="emacsclient -c"
-alias eve="open /Applications/EVE\ Launcher.app"
-alias evernote='open /Applications/Evernote.app'
+alias f='find . -iname'
+alias fd='find . -type d -iname'
+alias ff='find . -type f -iname'
 alias filecount="ls -1 | wc -l"
-alias ipython2='export PYTHONSTARTUP=/Users/diego/.virtualenvs/py2/bin/.pythonrc.py && /Users/diego/.virtualenvs/py2/bin/ipython'
-alias jpl="cd /Users/diego/Dropbox\ \(MIT\)/JPL"
 alias ls='ls -NX --group-directories-first --color=always'
-alias lsrt="ls -rt"
+alias lst="ls -t"
 alias math='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
-alias mit="cd /Users/diego/MIT\ 2015-2016/"
 alias pep8="pep8 --first --ignore=E129,W503,E226"
+alias piphere=pip install --target=./
 alias printers="lpstat -p | awk '{print $2}'"
-alias propulsion="cd /Users/diego/MIT\ 2015-2016/Spring/16.50"
-alias python2='export PYTHONSTARTUP=/Users/diego/.virtualenvs/py2/bin/.pythonrc.py && /Users/diego/.virtualenvs/py2/bin/python2'
-alias resetb="source ~/.zshrc; cp ~/.zshrc ~/Dropbox\ \(MIT\)/ComputerScripts/zshrc.txt"
-alias resetwifi="networksetup -setairportpower en0 off; sleep2;networksetup -setairportpower en0 on"
-alias run="python3"
-alias screen="/usr/local/Cellar/screen/4.3.1/bin/screen"
-alias setsize="printf '\e[8;24;80t'"
-alias sizes="du -sh *"
-alias starwars="telnet towel.blinkenlights.nl"
-alias sudo='sudo '
-alias sz="du -hs"
-alias todo="more /Users/diego/Documents/TODO.txt"
-alias todoe="emacsclient -t /Users/diego/Documents/TODO.txt"
-alias twitter="rainbowstream"
-alias watertimer='sleep 2400 && osascript -e "display notification \"Right Now\" with title \"Go get your water\""'
-alias wgs="cd /Users/diego/MIT\ 2015-2016/Spring/WGS.221"
-export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31'
+alias resetb="source ~/.zshrc"
+alias resetwifi="networksetup -setairportpower en0 off; sleep2;networksetup -setairportpower en0 on" 
+alias run="python3"			  # I got super used to just tying 'run' in iPython
+alias starwars="telnet towel.blinkenlights.nl" # heh 
+alias sudo='sudo '							   # recognize aliases 
+alias sz="du -hs"							   # get folder/file size 
+alias zshrc="$EDITOR ~/dotfiles/zshrc" 
+export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31' # ls colors i've gotten used to
 zstyle ':completion:*' list-colors 'di=0;36:ex=0;35:ln=1;31'
-
 
 py2() {
 	workon py2
@@ -180,11 +159,6 @@ athena(){
 	echo -n "Username: "
 	read username
 	ssh -Y "$username@athena.dialup.mit.edu"
-}
-
-# Define something (opens dictionary app)
-def() {
-open "dict://$*"
 }
 
 # Make a file executable
@@ -230,8 +204,10 @@ ham(){
 # upprojfile(){
 # scp "$1" dmundo@athena.dialup.mit.edu:/mit/dmundo/xfoilandavl/
 # }
+
 export WWW_HOME='http://google.com'
 
+# I'm not really sure why I'm using the explicit path here...
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/TeX/texbin:/usr/local/bin/python3:/Users/diego/Desktop:/Users/diego/Documents/Chords:/Users/diego/MIT 2015-2016/16.100:/usr/local/sbin:/usr/local/lib/python2.7/site-packages:/Users/diego/bin:/Applications/MATLAB_R2015b.app/bin:/usr/local/bin:/usr/local/Cellar/pygame/1.9.2a0/lib/python2.7/site-packages:/usr/local/bin/python3:/usr/local/bin:/usr/local/sbin:/usr/local/lib/python2.7/site-packages:/Users/diego/bin:/Applications/MATLAB_R2015b.app/bin"
 
 source "/usr/local/bin/virtualenvwrapper.sh"

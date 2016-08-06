@@ -5,4 +5,4 @@ brew upgrade
 brew cleanup
 brew prune
 brew doctor
-updaterfilemaker
+mkmasterinstall

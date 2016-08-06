@@ -1,7 +1,0 @@
-#!/usr/local/bin/bash
-out=$(find ./ -iname "$*")
-if ! [ -z "$out" ]; then
-    echo "$out" | sed s#//*#/#g
-elif [ -z "$out" ]; then
-    echo "Seems not"
-fi

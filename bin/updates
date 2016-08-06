@@ -24,7 +24,7 @@ if [ -z $VE ]; then
 	brew cleanup
 	brew prune
 	brew doctor
-	updaterfilemaker
+	mkmasterinstall
 	echo " "
 	echo -e "\e[1;34mDone"
 else

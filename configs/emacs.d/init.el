@@ -338,5 +338,6 @@
 	 ("^~/[Gg]it/" ":Git:")
 	 ("^~/[Gg]it[Hh]ub/" ":Git:")
 	 ("^~/[Gg]it\\([Hh]ub\\|\\)-?[Pp]rojects/" ":Git:")
-	 ("\"^~/Dropbox \\(MIT\\)/\"" "\":DB:\"")))))
+	 ("\"^~/Dropbox \\(MIT\\)/\"" "\":DB:\""))))
+ '(vc-follow-symlinks t))
 (put 'narrow-to-region 'disabled nil)

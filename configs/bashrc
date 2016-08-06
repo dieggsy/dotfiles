@@ -7,15 +7,15 @@ export PS1="\[\e[91m\]\W\[\e[m\] \u\[\e[32m\]\\$\[\e[m\] "
 
 eval $(thefuck --alias) #helps with fuckups
 
-export EDITOR="emacsclient -t" # Set emacs as default editor
-export ALTERNATE_EDITOR="emacs"
+export EDITOR="emacsclient -t"
+export ALTERNATE_EDITOR="vim"   
+
 # Supposedly, sets up case insensitive bash completion. Seems to work
 shopt -s nocaseglob
 bind 'set completion-ignore-case on'
 
 # Colors!
 
-# 1;95;0c(osx ls)
 export CLICOLOR=1
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 
@@ -23,17 +23,6 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31'
 
 ### Aliases
-# alias less='less -m -N -g -i -J --underline-special --SILENT'
-# alias matlab='open /Applications/MATLAB_R2015b.app'
-# alias more='less'
-# export LESS=" -R "
-# export LESSOPEN="| /usr/local/bin/src-hilite-lesspipe.sh %s"
-#alias out='deactivate && export PYTHONSTARTUP=$HOME/.pythonrc.py'
-#alias py2="workon py2 && export PYTHONSTARTUP=/Users/diego/.virtualenvs/py2/bin/.pythonrc.py"
-#alias python='python3'
-#alias ls='ls -G'
-#alias ls='ls -GF'
-alias pep8="pep8 --first --ignore=E129,W503,E226"
 alias agenda="gcalcli agenda"
 alias app="cd /Applications"
 alias astronomy="cd /Users/diego/MIT\ 2015-2016/Spring/8.282"
@@ -60,6 +49,7 @@ alias ls='ls -NX --group-directories-first --color=always'
 alias lsrt="ls -rt"
 alias math='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
 alias mit="cd /Users/diego/MIT\ 2015-2016/"
+alias pep8="pep8 --first --ignore=E129,W503,E226"
 alias printers="lpstat -p | awk '{print $2}'"
 alias propulsion="cd /Users/diego/MIT\ 2015-2016/Spring/16.50"
 alias python2='export PYTHONSTARTUP=/Users/diego/.virtualenvs/py2/bin/.pythonrc.py && /Users/diego/.virtualenvs/py2/bin/python2'

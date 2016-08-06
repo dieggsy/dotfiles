@@ -1,11 +1,8 @@
 #!/usr/local/bin/bash
-thefile=/Users/diego/Dropbox\ \(MIT\)/ComputerScripts/newcompinstall
-mv "$thefile" "$thefile"~
+thefile=~/dotfiles/bin/masterinstall
 echo "#!/usr/local/bin/bash" > "$thefile"
 echo $'\n# REMEMBER TO INSTALL XCODE\nxcode-select --install' >> "$thefile"
 echo $'\n# This installs Homebrew \nruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"' >> "$thefile"
-#echo $'brew tap caskroom/cask\nbrew install caskroom/cask/brew-cask' >> "$thefile"
-#echo $'brew tap homebrew/binary\nbrew tap homebrew/boneyard\nbrew tap homebrew/completions\nbrew tap homebrew/dupes\nbrew tap homebrew/versions\nbrew tap mopidy/mopidy\nbrew tap sgeb/mutt' >> "$thefile"
 
 echo $'\n# Set up taps' >> "$thefile"
 echo "echo Tapping taps..." >> "$thefile"
@@ -35,4 +32,3 @@ for prog in `pip list`; do
 done
 
 chmod a+x "$thefile"
-cp "$thefile" /Users/diego/Dropbox\ \(MIT\)/ComputerScripts/newcompinstall.txt
