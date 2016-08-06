@@ -1,0 +1,7 @@
+#!/Users/diego/.virtualenvs/py2/bin/python
+import plistlib,sys
+
+try:
+    print '\nWorkflow: '+plistlib.readPlist('info.plist')['name']
+except IOError:
+    print 'No \'info.plist\' file.'

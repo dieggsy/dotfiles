@@ -1,0 +1,38 @@
+#!/usr/local/bin/bash
+thefile=/Users/diego/Dropbox\ \(MIT\)/ComputerScripts/newcompinstall
+mv "$thefile" "$thefile"~
+echo "#!/usr/local/bin/bash" > "$thefile"
+echo $'\n# REMEMBER TO INSTALL XCODE\nxcode-select --install' >> "$thefile"
+echo $'\n# This installs Homebrew \nruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"' >> "$thefile"
+#echo $'brew tap caskroom/cask\nbrew install caskroom/cask/brew-cask' >> "$thefile"
+#echo $'brew tap homebrew/binary\nbrew tap homebrew/boneyard\nbrew tap homebrew/completions\nbrew tap homebrew/dupes\nbrew tap homebrew/versions\nbrew tap mopidy/mopidy\nbrew tap sgeb/mutt' >> "$thefile"
+
+echo $'\n# Set up taps' >> "$thefile"
+echo "echo Tapping taps..." >> "$thefile"
+for tap in `brew tap`;do
+    echo "brew tap $tap" >> "$thefile"
+done
+echo "brew install caskroom/cask/brew-cask">>"$thefile"
+
+echo $'\n# Install brew programs (terminal)' >> "$thefile"
+echo "echo Installing brew programs..." >> "$thefile"
+for prog in `brew list -1`; do
+    echo "brew install $prog" >> "$thefile" 
+done
+
+echo $'\n# Install brew cask programs (apps)' >> "$thefile"
+echo "echo Installing brew cask programs..." >> "$thefile"
+for prog in `brew cask list -1`; do
+    echo "brew cask install $prog" >> "$thefile"
+done
+
+echo $'\n# Install pip programs (python)' >> "$thefile"
+echo "echo Installing pip programs..." >> "$thefile"
+for prog in `pip list`; do
+    if ! [[ "$prog" =~ \(*\) ]]; then
+	echo "pip install $prog" >> "$thefile"
+    fi
+done
+
+chmod a+x "$thefile"
+cp "$thefile" /Users/diego/Dropbox\ \(MIT\)/ComputerScripts/newcompinstall.txt

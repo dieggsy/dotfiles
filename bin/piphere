@@ -1,0 +1,7 @@
+#!/usr/local/bin/bash
+if [ $# -eq 0 ];then
+    pip install --target=./ alfred-workflow
+else
+    pip install --target=./ "$*"
+fi
+rm -rf *.dist-info

@@ -1,0 +1,164 @@
+export HOSTNAME=`hostname` # Gets rid of that annyoing question mark on top
+
+# Welcome
+echo "Welcome, Diego"
+export PS1="\[\e[91m\]\W\[\e[m\] \u\[\e[32m\]\\$\[\e[m\] "
+
+eval $(thefuck --alias) #helps with fuckups
+
+# I don't remember what this does
+export HOMEBREW_GITHUB_API_TOKEN="135992f2b0cdbd0d14421b3f30a52ee58b2f4ae5"
+
+export EDITOR="emacsclient -t" # Set emacs as default editor
+export ALTERNATE_EDITOR="emacs"
+# Supposedly, sets up case insensitive bash completion. Seems to work
+shopt -s nocaseglob
+bind 'set completion-ignore-case on'
+
+# Colors!
+
+# 1;95;0c(osx ls)
+export CLICOLOR=1
+export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+
+# (gnu ls)
+export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31'
+
+### Aliases
+# alias less='less -m -N -g -i -J --underline-special --SILENT'
+# alias matlab='open /Applications/MATLAB_R2015b.app'
+# alias more='less'
+# export LESS=" -R "
+# export LESSOPEN="| /usr/local/bin/src-hilite-lesspipe.sh %s"
+#alias out='deactivate && export PYTHONSTARTUP=$HOME/.pythonrc.py'
+#alias py2="workon py2 && export PYTHONSTARTUP=/Users/diego/.virtualenvs/py2/bin/.pythonrc.py"
+#alias python='python3'
+#alias ls='ls -G'
+#alias ls='ls -GF'
+alias pep8="pep8 --first --ignore=E129,W503,E226"
+alias agenda="gcalcli agenda"
+alias app="cd /Applications"
+alias astronomy="cd /Users/diego/MIT\ 2015-2016/Spring/8.282"
+alias bashe="emacsclient -t ~/.bash_profile"
+alias bin="cd /Users/diego/bin"
+alias cask="brew cask"
+alias chrome="open /Applications/Google\ Chrome.app"
+alias clc="clear"
+alias computation="cd /Users/diego/MIT\ 2015-2016/Spring/16.90"
+alias des="cd /Users/diego/Desktop"
+alias dict='dict -d gcide'
+alias doc="cd /Users/diego/Documents/"
+alias dow="cd /Users/diego/Downloads/"
+alias drive="cd /Users/diego/Google\ Drive"
+alias drop="cd /Users/diego/Dropbox\ \(MIT\)"
+alias dvorak="dvorak.scpt"
+alias edit="emacsclient -t"
+alias eve="open /Applications/EVE\ Launcher.app"
+alias evernote='open /Applications/Evernote.app'
+alias filecount="ls -1 | wc -l"
+alias ipython2='export PYTHONSTARTUP=/Users/diego/.virtualenvs/py2/bin/.pythonrc.py && /Users/diego/.virtualenvs/py2/bin/ipython'
+alias jpl="cd /Users/diego/Dropbox\ \(MIT\)/JPL"
+alias ls='ls -NX --group-directories-first --color=always'
+alias lsrt="ls -rt"
+alias math='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
+alias mit="cd /Users/diego/MIT\ 2015-2016/"
+alias printers="lpstat -p | awk '{print $2}'"
+alias propulsion="cd /Users/diego/MIT\ 2015-2016/Spring/16.50"
+alias python2='export PYTHONSTARTUP=/Users/diego/.virtualenvs/py2/bin/.pythonrc.py && /Users/diego/.virtualenvs/py2/bin/python2'
+alias resetb="source ~/.bash_profile; cp ~/.bash_profile ~/Dropbox\ \(MIT\)/ComputerScripts/BASH_PROFILE.txt"
+alias resetwifi="networksetup -setairportpower en0 off; sleep2;networksetup -setairportpower en0 on"
+alias run="python3"
+alias screen="/usr/local/Cellar/screen/4.3.1/bin/screen"
+alias setsize="printf '\e[8;24;80t'"
+alias sizes="du -sh *"
+alias starwars="telnet towel.blinkenlights.nl"
+alias sudo='sudo '
+alias sz="du -hs"
+alias todo="more /Users/diego/Documents/TODO.txt"
+alias todoe="emacsclient -t /Users/diego/Documents/TODO.txt"
+alias twitter="rainbowstream"
+alias watertimer='sleep 2400 && osascript -e "display notification \"Right Now\" with title \"Go get your water\""'
+alias wgs="cd /Users/diego/MIT\ 2015-2016/Spring/WGS.221"
+
+py2() {
+	workon py2
+	export PYTHONSTARTUP=/Users/diego/.virtualenvs/py2/bin/.pythonrc.py
+	alias run="python2"
+}
+
+out() {
+	deactivate
+	export PYTHONSTARTUP=$HOME/.pythonrc.py
+	alias run="python3"
+}
+
+athena(){
+	echo -n "Username: "
+	read username
+	ssh -Y "$username@athena.dialup.mit.edu"
+}
+
+# Define something (opens dictionary app)
+def() {
+open "dict://$*"
+}
+
+# Make a file executable
+mkexec(){
+    chmod a+x "$@"
+}
+
+# Create/edit executable python script
+pythonexec(){
+    touch "$*"
+    echo '#!/usr/local/bin/python3' | cat - "$*" > temp && mv temp "$*"
+    sudo chmod a+x "$*"
+    emacsclient -t "$*"
+}
+
+# Create/edit python script
+pythonscript(){
+    touch "$*"
+    echo '#!/usr/local/bin/python3' | cat - "$*" > temp && mv temp "$*"
+    emacsclient -t "$*"
+}
+
+# View only mode in emacs
+ev() {
+    emacsclient -t --eval "(view-file $1)"
+}
+
+# Edit Python 3 files
+bam(){
+    emacsclient -t "$1" --eval '(and (split-window-right) (windmove-right))' -f ipython --eval '(windmove-left)'
+}
+
+# Edit Python 2 files
+ham(){
+    emacsclient -t "$1" --eval '(and (split-window-right) (windmove-right))' -f ipython2 --eval '(windmove-left)'
+}
+
+# These used to download shit from athena servers, may be obsolete/modify for future use
+# downprojfile(){
+# scp dmundo@athena.dialup.mit.edu:/mit/dmundo/xfoilandavl/"$1" ~/Downloads/
+# }
+
+# upprojfile(){
+# scp "$1" dmundo@athena.dialup.mit.edu:/mit/dmundo/xfoilandavl/
+# }
+
+
+# Setting PATH for Python 2.7
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/X11/bin:/Library/TeX/texbin:/usr/local/bin/python3:/Users/diego/Desktop:/Users/diego/Documents/Chords:/Users/diego/MIT 2015-2016/16.100:/usr/local/sbin:/usr/local/lib/python2.7/site-packages:/Users/diego/bin:/Applications/MATLAB_R2015b.app/bin:/usr/local/bin:/usr/local/Cellar/pygame/1.9.2a0/lib/python2.7/site-packages:/usr/local/bin/python3:/usr/local/bin:/usr/local/sbin:/usr/local/lib/python2.7/site-packages:/Users/diego/bin:/Applications/MATLAB_R2015b.app/bin"
+#export PATH="${PATH}:/usr/local/bin/python3:/usr/local/bin/:/usr/local/sbin:$(brew --prefix)/lib/python2.7/site-packages:/Users/diego/bin:/Applications/MATLAB_R2015b.app/bin/"
+
+export PYTHONSTARTUP=$HOME/.pythonrc.py
+
+# Set home page for lynx browser (and others I think)
+export WWW_HOME='http://google.com'
+
+export GREP_OPTIONS='--color=auto'
+
+source "/usr/local/bin/virtualenvwrapper.sh"
+
+export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"

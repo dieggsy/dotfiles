@@ -1,0 +1,26 @@
+[filter "media"]
+	required = true
+	clean = git media clean %f
+	smudge = git media smudge %f
+[user]
+	name = therockmandolinist
+	email = diegoamundo@gmail.com
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[core]
+	editor = emacs
+	excludesfile = ~/.gitignore
+	pager = more
+[credential]
+	helper = osxkeychain
+[alias]
+	add-commit = !git add -A && git commit
+	pusht = push
+[http]
+	postBuffer = 524288000
+[color]
+	ui = never
+[push]
+	followTags = true
