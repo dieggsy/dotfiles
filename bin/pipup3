@@ -2,8 +2,7 @@
 
 IFS=$'\n'
 echo  $'Getting outdated pip packages...'
-res=$(pip list -o)
-
+res=$(pip3 list -o)
 
 if [ -z "$res" ]; then
     echo $'All packages up to date.'
@@ -12,8 +11,8 @@ else
     echo "$res"
     echo ""
     echo $'Updating packages...\n'
-    for prog in `pip list -o`;do
-		pip install --upgrade ${prog%\(*}
+    for prog in $res;do
+		pip3 install --upgrade ${prog%\(*}
 	done
 fi
 

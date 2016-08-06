@@ -1,9 +1,25 @@
 #!/usr/local/bin/bash
 VE=`echo $VIRTUAL_ENV`
 if [ -z $VE ]; then
-	echo -e "\e[1;34mUpdating: \e[91mpip\e[0;37m"
+	echo -e "\e[1;34mUpdating: \e[91mpip2\e[0;37m"
 	IFS=$'\n'
-	echo  $'Getting outdated pip packages...'
+	echo  $'Getting outdated pip2 packages...'
+	res=$(pip2 list -o)
+
+	if [ -z "$res" ]; then
+		echo $'All packages up to date.'
+	else
+		echo ""
+		echo "$res"
+		echo ""
+		echo $'Updating packages...\n'
+		for prog in $res;do
+			pip2 install --upgrade ${prog%\(*}
+		done
+	fi
+	echo -e "\e[1;34mUpdating: \e[91mpip3\e[0;37m"
+	IFS=$'\n'
+	echo  $'Getting outdated pip3 packages...'
 	res=$(pip list -o)
 
 	if [ -z "$res" ]; then
@@ -13,8 +29,8 @@ if [ -z $VE ]; then
 		echo "$res"
 		echo ""
 		echo $'Updating packages...\n'
-		for prog in `pip list -o`;do
-			pip install --upgrade ${prog%\(*}
+		for prog in $res;do
+			pip3 install --upgrade ${prog%\(*}
 		done
 	fi
 	echo " "

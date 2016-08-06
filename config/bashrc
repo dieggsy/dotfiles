@@ -48,6 +48,7 @@ alias resetb="source ~/.zshrc"
 alias resetwifi="networksetup -setairportpower en0 off; sleep2;networksetup -setairportpower en0 on" 
 alias run="python3"			  # I got super used to just tying 'run' in iPython
 alias starwars="telnet towel.blinkenlights.nl" # heh 
+alias pip=pip3
 alias sudo='sudo '							   # recognize aliases 
 alias sz="du -hs"							   # get folder/file size 
 alias bashrc="$EDITOR ~/dotfiles/zshrc" 

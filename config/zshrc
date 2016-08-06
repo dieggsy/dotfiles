@@ -141,7 +141,7 @@ alias run="python3"			  # I got super used to just tying 'run' in iPython
 alias starwars="telnet towel.blinkenlights.nl" # heh 
 alias sudo='sudo '							   # recognize aliases 
 alias sz="du -hs"							   # get folder/file size 
-alias zshrc="$EDITOR ~/dotfiles/zshrc" 
+alias zshrc="$EDITOR ~/dotfiles/configs/zshrc" 
 export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31' # ls colors i've gotten used to
 zstyle ':completion:*' list-colors 'di=0;36:ex=0;35:ln=1;31'
 
@@ -201,7 +201,7 @@ ham(){
 export WWW_HOME='http://google.com'
 
 # I'm not really sure why I'm using the explicit path here...
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+export PATH="$HOME/bin:/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 source "/usr/local/bin/virtualenvwrapper.sh"
 export PYTHONSTARTUP=$HOME/.pythonrc.py
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"

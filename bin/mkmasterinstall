@@ -1,4 +1,4 @@
-#!/usr/local/bin/bash
+#!/usr/bin/env bash
 thefile=~/dotfiles/bin/masterinstall
 echo "#!/usr/local/bin/bash" > "$thefile"
 echo $'\n# REMEMBER TO INSTALL XCODE\nxcode-select --install' >> "$thefile"
@@ -25,10 +25,15 @@ done
 
 echo $'\n# Install pip programs (python)' >> "$thefile"
 echo "echo Installing pip programs..." >> "$thefile"
-for prog in `pip list`; do
-    if ! [[ "$prog" =~ \(*\) ]]; then
-	echo "pip install $prog" >> "$thefile"
-    fi
-done
+pip2 freeze > ~/dotfiles/config/py2requirements.txt
+pip3 freeze > ~/dotfiles/config/py3requirements.txt
+echo "pip2 install -r $HOME/dotfiles/config/py2requirements.txt" >> "$thefile"
+echo "pip3 install -r $HOME/dotfiles/config/py3requirements.txt" >> "$thefile"
+# for prog in `pip list`; do
+#     if ! [[ "$prog" =~ \(*\) ]]; then
+# 	echo "pip install $prog" >> "$thefile"
+#     fi
+# done
 
 chmod a+x "$thefile"
+echo "echo Done" >> "$thefile"
