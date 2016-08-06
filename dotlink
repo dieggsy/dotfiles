@@ -30,7 +30,7 @@ platform=`uname`
 pushd `dirname $0` > /dev/null
 SCRIPTPATH=`pwd`
 BINPATH="$SCRIPTPATH/bin"
-SCRIPTPATH="$SCRIPTPATH/configs"
+SCRIPTPATH="$SCRIPTPATH/config"
 popd > /dev/null
 
 pushd ~ > /dev/null
