@@ -45,6 +45,7 @@
 (setq cursor-type 'bar)
 (fringe-mode 0)
 (add-to-list 'default-frame-alist '(font . "Menlo-10"))
+(setq scroll-conservatively 10000)
 
 ; Store backups/autosaves in temp dir
 (defvar backup-dir "~/.emacs.d/backups/")
@@ -61,6 +62,11 @@
 
 (use-package magit
   :ensure t)
+
+;; (use-package company
+;;   :ensure t
+;;   :config
+;;   (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package wgrep-ag
   :ensure t
@@ -79,6 +85,12 @@
   (setq ag-highlight-search t)
   (setq ag-reuse-buffers t)
     (setq ag-reuse-window t))
+
+;; (use-package smooth-scrolling
+;;   :ensure t
+;;   :config
+;;   (smooth-scrolling-mode 1)
+;;   (setq smooth-scroll-margin 1))
 
 (use-package helm
   :ensure t
@@ -152,19 +164,44 @@
   (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
   (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
 
-(use-package smart-mode-line
+;; (use-package smart-mode-powerline-theme
+;;   :ensure t)
+
+;; (use-package smart-mode-line
+;;   :ensure t
+;;   :config
+;;   (setq sml/no-confirm-load-theme t)
+;;   (setq sml/theme 'dark)
+;;   (setq rm-whitelist '(""))
+;;   (setq system-uses-terminfo nil)
+;;   (sml/setup)
+;;   (display-time-mode)
+;;   (display-time-update)
+;;   (fancy-battery-mode)
+;;   (setq fancy-battery-show-percentage t))
+
+;; (use-package powerline
+;;   :ensure t
+;;   :init
+;;   (setq powerline-default-separator nil)
+;;   :config
+;;   (powerline-evil-vim-color-theme))
+
+;; (use-package powerline-evil
+;;   :ensure t)
+
+(use-package spaceline
   :ensure t
   :config
-  (setq sml/no-confirm-load-theme t)
-  (setq sml/theme 'dark)
-  (setq rm-whitelist '(""))
-  (setq system-uses-terminfo nil)
-  (sml/setup)
-  (display-time-mode)
-  (display-time-update)
-  (fancy-battery-mode)
-  (setq fancy-battery-show-percentage t))
-
+  (require 'spaceline-config)
+  (spaceline-spacemacs-theme)
+  (spaceline-toggle-minor-modes-off)
+  (spaceline-toggle-battery-on)
+  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
+  (set-face-background 'spaceline-evil-normal "#afd700")
+  (set-face-foreground 'spaceline-evil-normal "#005f00")
+  (set-face-background 'spaceline-evil-insert "#0087af")
+  (set-face-foreground 'spaceline-evil-insert "white"))
 (use-package highlight-numbers
   :ensure t
   :init
@@ -198,10 +235,10 @@
 ;; Global stuff
 (global-hl-line-mode 1)
 (global-linum-mode 1)
+(setq linum-delay t)
 (global-auto-revert-mode t)
 (setq whitespace-style '(face trailing))
 (setq column-number-mode t)
-
 
 (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
 
@@ -236,6 +273,7 @@
 (add-hook 'emacs-lisp-mode-hook 'my-lisp-mode-config)
 (add-hook 'emacs-lisp-mode-hook 'highlight-parentheses-mode)
 (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
+
 ;; Disable fci mode when autocomplete popup menu happens
 (defun sanityinc/fci-enabled-p ()
     (and (boundp 'fci-mode) fci-mode))
@@ -288,7 +326,6 @@
 (add-hook 'term-mode-hook (lambda ()
 							(setq-local global-hl-line-mode
 										nil)))
-
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -325,6 +362,7 @@
    (quote
 	(elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
  '(fill-column 79)
+ '(powerline-evil-tag-style (quote verbose))
  '(sml/name-width 40)
  '(sml/replacer-regexp-list
    (quote
@@ -340,4 +378,3 @@
 	 ("^~/[Gg]it\\([Hh]ub\\|\\)-?[Pp]rojects/" ":Git:")
 	 ("\"^~/Dropbox \\(MIT\\)/\"" "\":DB:\""))))
  '(vc-follow-symlinks t))
-(put 'narrow-to-region 'disabled nil)

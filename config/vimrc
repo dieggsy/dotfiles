@@ -1,4 +1,16 @@
-"uh, i don't really use vim.
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+Plugin 'VundleVim/Vundle.vim'
+Plugin 'joshdick/onedark.vim'
+Plugin 'sheerun/vim-polyglot'
+Plugin 'Lokaltog/vim-powerline'
+Plugin 'scrooloose/nerdtree'
+Plugin 'Shougo/neocomplcache.vim'
+filetype on
+set laststatus=2
+let g:neocomplcache_enable_at_startup=1
 if (empty($TMUX))
   if (has("nvim"))
     let $NVIM_TUI_ENABLE_TRUE_COLOR=1
@@ -8,4 +20,6 @@ if (empty($TMUX))
   endif
 endif
 syntax on
+set cursorline
+set number
 colorscheme onedark
