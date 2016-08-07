@@ -8,6 +8,7 @@ Plugin 'sheerun/vim-polyglot'
 Plugin 'Lokaltog/vim-powerline'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Shougo/neocomplcache.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 filetype on
 set laststatus=2
 let g:neocomplcache_enable_at_startup=1
@@ -23,3 +24,4 @@ syntax on
 set cursorline
 set number
 colorscheme onedark
+let mapleader = ","

@@ -190,6 +190,11 @@
 ;; (use-package powerline-evil
 ;;   :ensure t)
 
+(use-package fancy-battery
+  :ensure t
+  :config
+  (fancy-battery-update))
+
 (use-package spaceline
   :ensure t
   :config
@@ -197,11 +202,14 @@
   (spaceline-spacemacs-theme)
   (spaceline-toggle-minor-modes-off)
   (spaceline-toggle-battery-on)
+  (spaceline-toggle-buffer-size-off)
   (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
   (set-face-background 'spaceline-evil-normal "#afd700")
   (set-face-foreground 'spaceline-evil-normal "#005f00")
   (set-face-background 'spaceline-evil-insert "#0087af")
-  (set-face-foreground 'spaceline-evil-insert "white"))
+  (set-face-foreground 'spaceline-evil-insert "white")
+  (set-face-background 'spaceline-evil-visual "#ff8700")
+  (set-face-foreground 'spaceline-evil-visual "#870000"))
 (use-package highlight-numbers
   :ensure t
   :init
@@ -215,8 +223,6 @@
 (use-package highlight-parentheses
   :ensure t)
 
-(use-package fancy-battery
-  :ensure t)
 
 (setq-default tab-width 4)
 (setq tab-stop-list (number-sequence 4 200 4))
@@ -326,6 +332,7 @@
 (add-hook 'term-mode-hook (lambda ()
 							(setq-local global-hl-line-mode
 										nil)))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -342,6 +349,8 @@
  '(font-lock-keyword-face ((t (:foreground "#C678DD" :weight normal))))
  '(font-lock-string-face ((t (:foreground "#87d787"))))
  '(font-lock-variable-name-face ((t (:foreground "#D19A66"))))
+ '(helm-match ((t (:foreground "brightred"))))
+ '(helm-selection ((t (:background "#303030" :distant-foreground "black"))))
  '(hl-line ((t (:background "#303030"))))
  '(linum ((t (:foreground "#4e4e4e"))))
  '(my-linum-hl ((t (:inherit linum :background "#303030" :foreground "#ff0000"))))
