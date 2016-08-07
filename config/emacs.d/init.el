@@ -354,6 +354,8 @@
  '(hl-line ((t (:background "#303030"))))
  '(linum ((t (:foreground "#4e4e4e"))))
  '(my-linum-hl ((t (:inherit linum :background "#303030" :foreground "#ff0000"))))
+ '(powerline-active1 ((t (:inherit mode-line :background "#303030" :foreground "color-247"))))
+ '(powerline-active2 ((t (:inherit mode-line :background "#303030"))))
  '(region ((t (:background "#3a3a3a"))))
  '(sh-quoted-exec ((t (:foreground "#af5fff"))))
  '(sml/battery ((t nil)) t)
