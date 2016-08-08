@@ -11,6 +11,7 @@ Plugin 'Lokaltog/vim-powerline'
 "Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'wincent/command-t'
 Plugin 'tpope/vim-fugitive'
+Plugin 'tmhedberg/SimpylFold'
 filetype on
 set laststatus=2
 let g:neocomplcache_enable_at_startup=1
@@ -25,7 +26,18 @@ endif
 syntax on
 set cursorline
 set number
+" Enable folding
+set foldmethod=indent
+"set foldlevel=99
 colorscheme onedark
 let mapleader = ","
 nnoremap <leader>x :CommandTCommand<CR>
 nnoremap <leader>d dd
+au BufNewFile,BufRead *.py
+    \ set tabstop=4
+    \ set softtabstop=4
+    \ set shiftwidth=4
+    \ set textwidth=79
+    \ set expandtab
+    \ set autoindent
+    \ set fileformat=unix

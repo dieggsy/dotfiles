@@ -73,6 +73,9 @@
   :ensure t
   :commands (wgrep-ag-setup))
 
+(use-package vimish-fold
+  :ensure t)
+
 (use-package ag
   :ensure t
   :defer t
@@ -122,10 +125,13 @@
 ;;   :config
 ;;   (elpy-enable)
 ;;   (setq elpy-rpc-backend "jedi"))
+
 (use-package markdown-mode
   :ensure t)
+
 (use-package markdown-preview-mode
   :ensure t)
+
 (use-package yafolding
   :ensure t)
 
@@ -138,6 +144,9 @@
   ;; Set Yasnippet's key binding to shift+tab
   (define-key yas-minor-mode-map (kbd "<backtab>") 'yas-expand)
   (yas-global-mode 1))
+
+(use-package csv-mode
+  :ensure t)
 
 (use-package flycheck
   :ensure t
