@@ -34,6 +34,7 @@
 	"w"  'save-buffer
 	"x"  'helm-M-x
 	"y"  'helm-show-kill-ring
+	"<right>" 'other-window
 	)
 
   (defun magit-blame-toggle ()

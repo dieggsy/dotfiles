@@ -9,7 +9,8 @@
 
 (require 'package)
 (setq package-enable-at-startup nil)
-(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
+(add-to-list 'load-path
+			 (expand-file-name "lisp" user-emacs-directory))
 
 ;; Add directories in "lisp" folder
 (let ((files (directory-files-and-attributes "~/.emacs.d/lisp" t)))
@@ -240,7 +241,7 @@
 
 ;; Global stuff
 (global-hl-line-mode 1)
-(global-linum-mode 1)
+;; (global-linum-mode 1)
 (setq linum-delay t)
 (global-auto-revert-mode t)
 (setq whitespace-style '(face trailing))
@@ -262,6 +263,7 @@
 (add-hook 'python-mode-hook
 		  (lambda () (set (make-local-variable 'comment-inline-offset) 2)))
 (add-hook 'python-mode-hook (lambda () (setq tab-width 4)))
+(add-hook 'python-mode-hook (lambda () (linum-mode 1)))
 (setenv "PYTHONPATH" "/usr/local/bin/python3")
 
 (setq org-log-done 'time)
@@ -349,6 +351,7 @@
  '(font-lock-keyword-face ((t (:foreground "#C678DD" :weight normal))))
  '(font-lock-string-face ((t (:foreground "#87d787"))))
  '(font-lock-variable-name-face ((t (:foreground "#D19A66"))))
+ '(helm-ff-file ((t (:foreground "#d0d0d0"))))
  '(helm-match ((t (:foreground "brightred"))))
  '(helm-selection ((t (:background "#303030" :distant-foreground "black"))))
  '(hl-line ((t (:background "#303030"))))

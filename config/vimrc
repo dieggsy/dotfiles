@@ -5,10 +5,12 @@ call vundle#rc()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'joshdick/onedark.vim'
 Plugin 'sheerun/vim-polyglot'
-Plugin 'Lokaltog/vim-powerline'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Shougo/neocomplcache.vim'
-Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'Lokaltog/vim-powerline'
+"Plugin 'ctrlpvim/ctrlp.vim'
+Plugin 'wincent/command-t'
+Plugin 'tpope/vim-fugitive'
 filetype on
 set laststatus=2
 let g:neocomplcache_enable_at_startup=1
