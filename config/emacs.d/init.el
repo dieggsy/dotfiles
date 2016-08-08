@@ -281,6 +281,7 @@
 (add-hook 'emacs-lisp-mode-hook 'my-lisp-mode-config)
 (add-hook 'emacs-lisp-mode-hook 'highlight-parentheses-mode)
 (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
+(add-hook 'emacs-lisp-mode-hook (lambda () (linum-mode 1)))
 
 ;; Disable fci mode when autocomplete popup menu happens
 (defun sanityinc/fci-enabled-p ()
