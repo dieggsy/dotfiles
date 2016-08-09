@@ -42,6 +42,9 @@
 (tool-bar-mode -1)
 (toggle-scroll-bar -1)
 (show-paren-mode 1)
+(electric-pair-mode)
+(add-hook 'minibuffer-setup-hook (lambda ()
+								   (electric-pair-mode)))
 (setq display-time-load-average nil)
 (setq cursor-type 'bar)
 (fringe-mode 0)
@@ -64,10 +67,14 @@
 (use-package magit
   :ensure t)
 
-;; (use-package company
-;;   :ensure t
-;;   :config
-;;   (add-hook 'after-init-hook 'global-company-mode))
+(use-package sphinx-doc
+  :ensure t
+  :config
+  (add-hook 'python-mode-hook (lambda ()
+								(require 'sphinx-doc)
+								(sphinx-doc-mode t)))
+  )
+
 
 (use-package wgrep-ag
   :ensure t
@@ -75,6 +82,11 @@
 
 (use-package vimish-fold
   :ensure t)
+
+(use-package helm-projectile
+  :ensure t
+  :config
+  (projectile-global-mode))
 
 (use-package ag
   :ensure t
@@ -90,29 +102,23 @@
   (setq ag-reuse-buffers t)
     (setq ag-reuse-window t))
 
-;; (use-package smooth-scrolling
-;;   :ensure t
-;;   :config
-;;   (smooth-scrolling-mode 1)
-;;   (setq smooth-scroll-margin 1))
 
 (use-package helm
   :ensure t
   :init
   (require 'helm-config)
   :config
+  (use-package helm-descbinds
+	:ensure t)
   (helm-mode 1)
   (helm-autoresize-mode t)
   (global-set-key (kbd "M-x") 'helm-M-x)
   (setq helm-completion-in-region-fuzzy-match t)
   (setq helm-mode-fuzzy-match t)
   (setq helm-buffer-max-length 40)
+  (setq helm-locate-command "mdfind -name %s %s")
   (global-set-key (kbd "M-y") 'helm-show-kill-ring))
 
-;; (use-package openwith
-;; 	:ensure t
-;;   :config
-;;   (setq openwith-associations '(("\\.pdf\\'" "preview" (file)))
 
 (use-package jedi
   :ensure t
@@ -133,16 +139,25 @@
   :ensure t)
 
 (use-package yafolding
-  :ensure t)
+  :ensure t
+  :config
+  (defun air--yafolding-kbd ()
+	(local-set-key (kbd "C-c <up>") 'yafolding-hide-all)
+	(local-set-key (kbd "C-c <down>") 'yafolding-show-all)
+	(local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
+	(local-set-key (kbd "C-c <right>") 'yafolding-show-element)
+	(local-set-key [C-tab] 'yafolding-toggle-element))
+  (add-hook 'python-mode-hook 'yafolding-mode)
+  (add-hook 'python-mode-hook 'air--yafolding-kbd))
 
 (use-package yasnippet
   :ensure t
   :config
-  ;; Remove Yasnippet's default tab key binding
-  (define-key yas-minor-mode-map (kbd "<tab>") nil)
-  (define-key yas-minor-mode-map (kbd "TAB") nil)
-  ;; Set Yasnippet's key binding to shift+tab
-  (define-key yas-minor-mode-map (kbd "<backtab>") 'yas-expand)
+  ;; ;; Remove Yasnippet's default tab key binding
+  ;; (define-key yas-minor-mode-map (kbd "<tab>") nil)
+  ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
+  ;; ;; Set Yasnippet's key binding to shift+tab
+  ;; (define-key yas-minor-mode-map (kbd "<backtab>") 'yas-expand)
   (yas-global-mode 1))
 
 (use-package csv-mode
@@ -156,11 +171,10 @@
 (use-package multi-term
   :ensure t)
 
-(use-package autopair
-  :ensure t
-  :config
-  (autopair-global-mode))
-
+;; (use-package autopair 
+;;   :ensure t
+;;   :config
+;;   (autopair-global-mode))
 (use-package fill-column-indicator
   :ensure t
   :init
@@ -203,6 +217,8 @@
 (use-package fancy-battery
   :ensure t
   :config
+  (fancy-battery-mode)
+  (setq fancy-battery-show-percentage t)
   (fancy-battery-update))
 
 (use-package spaceline
@@ -210,6 +226,7 @@
   :config
   (require 'spaceline-config)
   (spaceline-spacemacs-theme)
+  (spaceline-helm-mode)
   (spaceline-toggle-minor-modes-off)
   (spaceline-toggle-battery-on)
   (spaceline-toggle-buffer-size-off)
@@ -311,7 +328,7 @@
 	(turn-on-fci-mode)))
 
 
-;;; HIGHLIGHT CURRENT LINE ;;;
+;;; HIGHLIGHT CURRENT LINE NUMBER ;;;
 (defface my-linum-hl
   `((t :inherit linum :background ,(face-background 'hl-line nil t)))
   "Face for the current line number."
@@ -350,26 +367,26 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#262626" :foreground "#d0d0d0" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" :family "default"))))
+ '(default ((t (:inherit nil :stipple nil :background "#303030" :foreground "#d0d0d0" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" :family "default"))))
  '(column-marker-1 ((t (:background "#7f7f7f"))))
  '(comint-highlight-prompt ((t nil)))
  '(eww-form-textarea ((t (:foreground "#000000" :box 1))))
  '(font-lock-builtin-face ((t (:foreground "#56C0C2"))))
  '(font-lock-comment-face ((t (:foreground "#6c6c6c" :slant italic))))
  '(font-lock-constant-face ((t (:foreground "#56C0C2"))))
- '(font-lock-function-name-face ((t (:foreground "#61AFEF"))))
+ '(font-lock-function-name-face ((t (:foreground "#5fafff"))))
  '(font-lock-keyword-face ((t (:foreground "#C678DD" :weight normal))))
  '(font-lock-string-face ((t (:foreground "#87d787"))))
  '(font-lock-variable-name-face ((t (:foreground "#D19A66"))))
  '(helm-ff-file ((t (:foreground "#d0d0d0"))))
  '(helm-match ((t (:foreground "brightred"))))
- '(helm-selection ((t (:background "#303030" :distant-foreground "black"))))
- '(hl-line ((t (:background "#303030"))))
+ '(helm-selection ((t (:background "#3a3a3a" :distant-foreground "black"))))
+ '(hl-line ((t (:background "#3a3a3a"))))
  '(linum ((t (:foreground "#4e4e4e"))))
- '(my-linum-hl ((t (:inherit linum :background "#303030" :foreground "#ff0000"))))
- '(powerline-active1 ((t (:inherit mode-line :background "#303030" :foreground "color-247"))))
- '(powerline-active2 ((t (:inherit mode-line :background "#303030"))))
- '(region ((t (:background "#3a3a3a"))))
+ '(my-linum-hl ((t (:background "#3a3a3a" :foreground "#ff0000"))))
+ '(powerline-active1 ((t (:inherit mode-line :background "#262626" :foreground "color-247"))))
+ '(powerline-active2 ((t (:inherit mode-line :background "#262626"))))
+ '(region ((t (:background "#4e4e4e"))))
  '(sh-quoted-exec ((t (:foreground "#af5fff"))))
  '(sml/battery ((t nil)) t)
  '(sml/col-number ((t (:inherit sml/global))))
@@ -379,6 +396,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ac-disable-faces (quote (font-lock-comment-face font-lock-doc-face)))
  '(display-time-24hr-format t)
  '(display-time-default-load-average nil)
  '(display-time-format "%a %d %b  %H:%M ")

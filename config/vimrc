@@ -7,11 +7,12 @@ Plugin 'joshdick/onedark.vim'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Shougo/neocomplcache.vim'
-Plugin 'Lokaltog/vim-powerline'
-"Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'wincent/command-t'
+"Plugin 'kien/ctrlp.vim'
 Plugin 'tpope/vim-fugitive'
-Plugin 'tmhedberg/SimpylFold'
+Plugin 'davidhalter/jedi-vim'
+Plugin 'itchyny/lightline.vim'
+"Plugin 'tmhedberg/SimpylFold'
 filetype on
 set laststatus=2
 let g:neocomplcache_enable_at_startup=1
@@ -26,18 +27,24 @@ endif
 syntax on
 set cursorline
 set number
+set hlsearch
 " Enable folding
-set foldmethod=indent
+"set foldmethod=indent
 "set foldlevel=99
+set backspace=2 " make backspace work like most other apps
 colorscheme onedark
+highlight Comment cterm=italic
 let mapleader = ","
 nnoremap <leader>x :CommandTCommand<CR>
-nnoremap <leader>d dd
+nnoremap <leader>f :CommandT<CR>
+nnoremap <leader>s :CommandTBuffer<CR>
 au BufNewFile,BufRead *.py
-    \ set tabstop=4
-    \ set softtabstop=4
-    \ set shiftwidth=4
-    \ set textwidth=79
-    \ set expandtab
-    \ set autoindent
-    \ set fileformat=unix
+    \ set tabstop=4 |
+    \ set softtabstop=4 |
+    \ set shiftwidth=4 |
+    \ set textwidth=79 |
+    \ set expandtab |
+    \ set autoindent |
+    \ set fileformat=unix |
+    \ set smartindent
+

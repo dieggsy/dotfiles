@@ -64,6 +64,7 @@ setopt histignoredups
 
 # The following is taken pretty much directly from fino theme,
 # but I wanted to make a few tweaks.
+export VIRTUAL_ENV_DISABLE_PROMPT=1
 function prompt_char {
   git branch >/dev/null 2>/dev/null && echo "±" && return
   echo '○'
@@ -74,7 +75,7 @@ function box_name {
 }
 
 function virtualenv_info {
-	[ $(virtualenv_prompt_info) ] && echo "%{$FG[239]%} env %{$reset_color%}$(virtualenv_prompt_info)"
+	[ -n "$VIRTUAL_ENV" ] && echo "%{$FG[239]%} env %{$reset_color%}[`basename $VIRTUAL_ENV`]"
 }
 local current_dir='${PWD/#$HOME/~}'
 local git_info='$(git_prompt_info)'
@@ -141,7 +142,8 @@ alias run="python3"			  # I got super used to just tying 'run' in iPython
 alias starwars="telnet towel.blinkenlights.nl" # heh 
 alias sudo='sudo '							   # recognize aliases 
 alias sz="du -hs"							   # get folder/file size 
-alias zshrc="$EDITOR ~/dotfiles/configs/zshrc" 
+alias zshrc="$EDITOR ~/dotfiles/config/zshrc" 
+alias vimrc="$ALTERNATE_EDITOR ~/dotfiles/config/vimrc"
 export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31' # ls colors i've gotten used to
 zstyle ':completion:*' list-colors 'di=0;36:ex=0;35:ln=1;31'
 

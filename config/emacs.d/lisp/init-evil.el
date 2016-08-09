@@ -6,35 +6,31 @@
   (evil-leader/set-leader ",")
   (setq evil-leader/in-all-states 1)
   (evil-leader/set-key
-	;; ","  (lambda () (interactive) (ansi-term (getenv "SHELL")))
 	"."  'switch-to-previous-buffer
 	":"  'eval-expression
-	;; "aa" 'align-regexp
-	;; "a=" 'my-align-single-equals
-	"b"  'helm-mini             ;; Switch to another buffer
+	"<right>" 'other-window
 	"B"  'magit-blame-toggle
-	"c"  'comment-dwim
 	"D"  'kill-this-buffer
-	;; "D"  'open-current-line-in-codebase-search
-	"i"  'helm-imenu-anywhere   ;; Jump to function in buffer
-	"f" 'helm-find
- 	"g"  'magit-status
-	"s"  'switch-to-buffer
-	 "h" 'whitespace-mode  ;; Show invisible characters 
-	"l"  'flycheck-mode      
-	"nn" 'air-narrow-dwim       ;; Narrow to region and enter normal mode
-	"nw" 'widen
-	"o"  'delete-other-windows  ;; C-w o
-	"t"  'helm-locate            ;; Ag search from project's root
-	;; "r"  'chrome-reload
-	;; "R"  (lambda () (interactive) (font-lock-fontify-buffer) (redraw-display))
+	"b"  'helm-mini	;; Switch to another buffer
+	"c"  'comment-dwim
 	"d"  'delete-trailing-whitespace
-	;;"t"  'gtags-reindex
-	;; "T"  'gtags-find-tag
+	"f" 'helm-find
+	"i"  'helm-imenu-anywhere ;; Jump to function in buffer
+	"la" (lambda () (interactive) (linum-mode) (fci-mode))
+	"lc" 'fci-mode
+	"lf" 'flycheck-mode      
+	"ll" 'linum-mode
+	"lw" 'whitespace-mode ;; Show invisible characters 
+	"nn" 'air-narrow-dwim	   ;; Narrow to region and enter normal mode
+	"o"  'delete-other-windows ;; C-w o
+	"s"  'helm-projectile-switch-project
+	"t"  'helm-locate		   
 	"w"  'save-buffer
 	"x"  'helm-M-x
 	"y"  'helm-show-kill-ring
-	"<right>" 'other-window
+	;; "T"  'gtags-find-tag
+	;; "t"  'gtags-reindex
+ 	"g"  'magit-status
 	)
 
   (defun magit-blame-toggle ()
