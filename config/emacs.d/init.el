@@ -1,4 +1,4 @@
-;;; init.el -- My Emacs configuration
+;; init.el -- My Emacs configuration
 ;-*-Emacs-Lisp-*-
 
 ;;; Commentary:

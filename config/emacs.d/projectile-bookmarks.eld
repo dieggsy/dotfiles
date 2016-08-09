@@ -1,0 +1,1 @@
+("~/dotfiles/" "~/Dropbox (MIT)/JPL/Working/" "/usr/local/")

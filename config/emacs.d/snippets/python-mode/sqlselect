@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: sqlite Select
+# key: sqlselect
+# --
+${1:cur}.execute("SELECT ${2:vars} FROM ${3:table} WHERE ${3:cond}")
+$0
