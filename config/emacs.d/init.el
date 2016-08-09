@@ -171,7 +171,7 @@
 (use-package multi-term
   :ensure t)
 
-;; (use-package autopair 
+;; (use-package autopair
 ;;   :ensure t
 ;;   :config
 ;;   (autopair-global-mode))
@@ -232,7 +232,7 @@
   (spaceline-toggle-buffer-size-off)
   (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
   (set-face-background 'spaceline-evil-normal "#afd700")
-  (set-face-foreground 'spaceline-evil-normal "#005f00")  
+  (set-face-foreground 'spaceline-evil-normal "#005f00")
   (set-face-background 'spaceline-evil-insert "#0087af")
   (set-face-foreground 'spaceline-evil-insert "white")
   (set-face-background 'spaceline-evil-visual "#ff8700")
