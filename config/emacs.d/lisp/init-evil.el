@@ -6,24 +6,26 @@
   (evil-leader/set-leader ",")
   (setq evil-leader/in-all-states 1)
   (evil-leader/set-key
+	",f"		'helm-projectile-find-file
+	",y"		'yas-insert-snippet
 	"."			'switch-to-previous-buffer
 	":"			'eval-expression
-	"<right>"   'other-window
-	"aa"		'align-regexp
+	"<right>"	'other-window
 	"B"			'magit-blame-toggle
 	"D"			'kill-this-buffer
-	"b"			'helm-mini	;; Switch to another buffer
+	"aa"		'align-regexp
+	"b"			'helm-mini ;; Switch to another buffer
 	"c"			'comment-dwim
 	"d"			'delete-trailing-whitespace
 	"f"			'helm-find
-	",f"		'helm-projectile-find-file
+	"g"			'magit-status
 	"i"			'helm-imenu-anywhere ;; Jump to function in buffer
-	"la" (lambda () (interactive) (linum-mode) (fci-mode))
+	"la"        (lambda () (interactive) (linum-mode) (fci-mode))
 	"lc"		'fci-mode
 	"lf"		'flycheck-mode      
 	"ll"		'linum-mode
-	"lw"		'whitespace-mode ;; Show invisible characters 
-	"nn"		'air-narrow-dwim	   ;; Narrow to region and enter normal mode
+	"lw"		'whitespace-mode	  ;; Show invisible characters 
+	"nn"		'air-narrow-dwim	  ;; Narrow to region and enter normal mode
 	"o"			'delete-other-windows ;; C-w o
 	"s"			'helm-projectile-switch-project
 	"t"			'helm-locate		   
@@ -32,7 +34,6 @@
 	"y"			'helm-show-kill-ring
 	;; "T"		'gtags-find-tag
 	;; "t"		'gtags-reindex
- 	"g"			'magit-status
 	)
 
   (defun magit-blame-toggle ()

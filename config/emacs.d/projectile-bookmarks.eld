@@ -1,1 +1,1 @@
-("~/dotfiles/" "~/Dropbox (MIT)/JPL/Working/" "/usr/local/" "~/.zprezto/")
+("~/Dropbox (MIT)/JPL/Working/" "~/Code/Workflows/alfred-power-calculator/" "~/dotfiles/")

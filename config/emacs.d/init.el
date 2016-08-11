@@ -52,9 +52,9 @@
 (setq scroll-conservatively 10000)
 
 ; Store backups/autosaves in temp dir
-(defvar backup-dir "~/.emacs.d/backups/")
+(defvar backup-dir "~/.emacsbackups/")
 (setq backup-directory-alist (list (cons "." backup-dir)))
-(setq make-backup-files nil)
+;; (setq make-backup-files nil)
 (setq auto-save-file-name-transforms
 	  `((".*" ,temporary-file-directory t)))
 
