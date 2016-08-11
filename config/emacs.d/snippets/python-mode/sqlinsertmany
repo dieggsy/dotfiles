@@ -3,6 +3,6 @@
 # key: sqlinsertmany
 # --
 ${1:cur}.executemany(
-	"INSERT INTO ${2:table} (${3:vars}) VALUES (${3:$(mapconcat 'identity (make-list (length (split-string yas-text ",")) '"?") ",")})",
+	"INSERT INTO ${2:table} ${3:vars} VALUES (${3:$(mapconcat 'identity (make-list (length (split-string yas-text ",")) '"?") ",")})",
 	${4:rows}
 )

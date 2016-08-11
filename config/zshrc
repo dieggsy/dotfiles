@@ -52,7 +52,7 @@ DISABLE_UNTRACKED_FILES_DIRTY="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git colored-man colorize github virtualenvwrapper pip python brew osx zsh-syntax-highlighting z)
+plugins=(git colorize colored-man-pages github virtualenvwrapper pip python brew osx zsh-syntax-highlighting z)
 
 # User configuration
 export HOSTNAME=`hostname`
@@ -131,6 +131,7 @@ alias fd='find . -type d -iname'
 alias ff='find . -type f -iname'
 alias filecount="ls -1 | wc -l"
 alias ls='ls -NX --group-directories-first --color=always'
+# alias git="hub"
 alias lst="ls -t"
 alias math='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
 alias pep8="pep8 --first --ignore=E129,W503,E226"
@@ -203,7 +204,7 @@ ham(){
 export WWW_HOME='http://google.com'
 
 # I'm not really sure why I'm using the explicit path here...
-export PATH="$HOME/bin:/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+export PATH="$HOME/bin:/usr/local/sbin:/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 source "/usr/local/bin/virtualenvwrapper.sh"
 export PYTHONSTARTUP=$HOME/.pythonrc.py
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"

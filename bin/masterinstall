@@ -82,6 +82,7 @@ brew install harfbuzz
 brew install hicolor-icon-theme
 brew install highlight
 brew install htop-osx
+brew install hub
 brew install icu4c
 brew install imagemagick
 brew install imlib2
@@ -162,6 +163,7 @@ brew install source-highlight
 brew install sqlite
 brew install ssh-copy-id
 brew install subversion
+brew install surfraw
 brew install the_silver_searcher
 brew install thefuck
 brew install theora
@@ -199,6 +201,7 @@ brew cask install gimp
 brew cask install github-desktop
 brew cask install gitify
 brew cask install google-chrome-beta
+brew cask install keycastr
 brew cask install libreoffice
 brew cask install licecap
 brew cask install musescore

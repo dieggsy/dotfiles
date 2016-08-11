@@ -62,9 +62,24 @@
 
 (require 'init-evil)
 
+;; (use-package company
+;;   :ensure t
+;;   :config
+;;   (add-hook 'after-init-hook 'global-company-mode)
+;;   (use-package company-jedi
+;; 	:ensure t
+;; 	:config
+;; 	(defun my/python-mode-hook ()
+;; 	  (add-to-list 'company-backends 'company-jedi))
+
+;; 	(add-hook 'python-mode-hook 'my/python-mode-hook)))
+
 (use-package dictionary :ensure t)
 
 (use-package magit
+  :ensure t)
+
+(use-package nyan-mode
   :ensure t)
 
 (use-package sphinx-doc
@@ -159,6 +174,13 @@
   ;; ;; Set Yasnippet's key binding to shift+tab
   ;; (define-key yas-minor-mode-map (kbd "<backtab>") 'yas-expand)
   (yas-global-mode 1))
+
+
+(use-package auto-complete
+  :ensure t
+  :config
+  (global-auto-complete-mode t))
+
 
 (use-package csv-mode
   :ensure t)
@@ -303,7 +325,7 @@
   (local-set-key (kbd "C-c <left>") 'hs-hide-block)
   (local-set-key (kbd "C-c <right>") 'hs-show-block))
 
-(global-auto-complete-mode t)
+
 (add-hook 'emacs-lisp-mode-hook 'my-lisp-mode-config)
 (add-hook 'emacs-lisp-mode-hook 'highlight-parentheses-mode)
 (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
@@ -370,6 +392,10 @@
  '(default ((t (:inherit nil :stipple nil :background "#303030" :foreground "#d0d0d0" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" :family "default"))))
  '(column-marker-1 ((t (:background "#7f7f7f"))))
  '(comint-highlight-prompt ((t nil)))
+ '(company-preview ((t (:inherit default :underline t))))
+ '(company-preview-common ((t (:inherit company-preview))))
+ '(company-tooltip ((t (:background "white" :foreground "black"))))
+ '(company-tooltip-selection ((t (:background "color-75"))))
  '(eww-form-textarea ((t (:foreground "#000000" :box 1))))
  '(font-lock-builtin-face ((t (:foreground "#56C0C2"))))
  '(font-lock-comment-face ((t (:foreground "#6c6c6c" :slant italic))))
@@ -404,7 +430,11 @@
    (quote
 	(elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
  '(fill-column 79)
+ '(helm-boring-buffer-regexp-list
+   (quote
+	("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*Minibuf" "\\*epc")))
  '(powerline-evil-tag-style (quote verbose))
+ '(projectile-globally-ignored-files (quote ("TAGS" ".DS_Store")))
  '(sml/name-width 40)
  '(sml/replacer-regexp-list
    (quote

@@ -2,5 +2,11 @@
 # name: sqlite Select
 # key: sqlselect
 # --
-${1:cur}.execute("SELECT ${2:vars} FROM ${3:table} WHERE ${3:cond}")
+${1:cur}.execute(
+    "SELECT${2: DISTINCT} ${3:vars} FROM ${4:table}${5: WHERE "
+    "${6:cond}} "${7:
+    "GROUP BY ${8:expr} "}${9:
+    "ORDER BY ${10:term} "}${11:
+    "LIMIT ${12:num}"}
+)
 $0
