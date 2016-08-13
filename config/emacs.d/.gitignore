@@ -5,3 +5,5 @@ ac-comphist.dat
 .python-environments
 helm-doc.org
 config.el
+projectile.cache
+projectile-bookmarks.eld
