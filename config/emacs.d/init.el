@@ -103,11 +103,6 @@
 			  (require 'sphinx-doc)
 			  (sphinx-doc-mode t))))
 
-
-(use-package vimish-fold
-  :ensure t)
-
-
 (use-package ag
   ;; Silver searcher
   :ensure t
