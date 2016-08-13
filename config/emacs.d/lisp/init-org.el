@@ -300,7 +300,7 @@ TAG is chosen interactively from the global tags completion table."
               (when (not (eq major-mode 'org-agenda-mode))
                 (visual-line-mode)
                 (visual-fill-column-mode))
-              (flyspell-mode)
+              ;; (flyspell-mode)
               (org-indent-mode))))
 
 (use-package org-bullets
