@@ -837,7 +837,7 @@ like the way he does stuff. This is mostly (entirely?) his code.
 
 * Dem packages
 ** [[https://github.com/emacs-helm/helm][emacs-helm/helm]]
-Kind of an Alfred for emacs. Completion, nice menus for stuff
+Kind of an Alfred for emacs. Completion, nice menus for stuff,
 overall great.
 
 #+BEGIN_SRC emacs-lisp
