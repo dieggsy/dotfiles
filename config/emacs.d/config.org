@@ -1,4 +1,9 @@
 #+TITLE: Emacs Init File! 
+* Intro
+This is my emacs init file. =init.el= loads the elisp code from here.
+It's pretty cool that I can write it in org mode, because easy organization
+and rearrangement are pretty sweet. Check out @aaronbieber and @hrs, a lot of
+the inspiration (and erm, code) for this is taken from them. 
 * Package Managing
 Setup up cool stuff like use-package, and stuff.
 
@@ -30,7 +35,6 @@ Setup up cool stuff like use-package, and stuff.
   (eval-when-compile
       (require 'use-package))
 #+END_SRC
-
 * Personal Info
 
 #+BEGIN_SRC emacs-lisp
@@ -190,99 +194,165 @@ like the way he does stuff. This is mostly (entirely?) his code.
 ** Evil mode
 
 #+BEGIN_SRC emacs-lisp
-  (defun air--pop-to-file (file &optional split)
-    "Visit a FILE, either in the current window or a SPLIT."
-    (if split
-        (find-file-other-window file)
-      (find-file file)))
+  ;;; init-evil.el -- My evil mode configuration.
+  ;;; Commentary:
+  ;;; Code:
+  (defun air--config-evil-leader ()
+    "Configure evil leader mode."
+    (evil-leader/set-leader ",")
+    (setq evil-leader/in-all-states 1)
+    (evil-leader/set-key
+      ",f"        'helm-projectile-find-file
+      ",y"        'yas-insert-snippet
+      "."         'switch-to-previous-buffer
+      ":"         'eval-expression
+      "<right>"   'other-window
+      "B"         'magit-blame-toggle
+      "D"         'kill-this-buffer
+      "aa"        'align-regexp
+      "b"         'helm-mini ;; Switch to another buffer
+      "c"         'comment-dwim
+      "d"         'delete-trailing-whitespace
+      "f"         'helm-find
+      "g"         'magit-status
+      "i"         'helm-imenu-anywhere ;; Jump to function in buffer
+      "la"        (lambda () (interactive) (linum-mode) (fci-mode))
+      "lc"        'fci-mode
+      "lf"        'flycheck-mode      
+      "ll"        'linum-mode
+      "lw"        'whitespace-mode      ;; Show invisible characters 
+      "nn"        'air-narrow-dwim      ;; Narrow to region and enter normal mode
+      "o"         'delete-other-windows ;; C-w o
+      "s"         'helm-projectile-switch-project
+      "t"         'helm-locate           
+      "w"         'save-buffer
+      "x"         'helm-M-x
+      "y"         'helm-show-kill-ring
+      ;; "T"      'gtags-find-tag
+      ;; "t"      'gtags-reindex
+      )
 
-  (defun occur-last-search ()
-     "Run `occur` with the last evil search term."
-     (interactive)
-     ;; Use the appropriate search term based on regexp setting.
-     (let ((term (if evil-regexp-search
-                     (car-safe regexp-search-ring)
-                   (car-safe search-ring))))
-       ;; If a search term exists, execute `occur` on it.
-       (if (> (length term) 0)
-           (occur term)
-         (message "No term to search for."))))
-
-  (defun show-first-occurrence ()
-    "Display the location of the word at point's first occurrence in the buffer."
-    (interactive)
-    (save-excursion
-      (let ((search-word (thing-at-point 'symbol t)))
-        (goto-char 1)
-        (re-search-forward search-word)
-        (message (concat
-                  "L" (number-to-string (line-number-at-pos)) ": "
-                  (replace-regexp-in-string
-                   "[ \t\n]*\\'"
-                   ""
-                   (thing-at-point 'line t)
-                   ))))))
-
-  (defun switch-to-previous-buffer ()
-      "Switch to previously open buffer.
-  Repeated invocations toggle between the two most recently open buffers."
+    (defun magit-blame-toggle ()
+      "Toggle magit-blame-mode on and off interactively."
       (interactive)
-        (switch-to-buffer (other-buffer (current-buffer) 1)))
+      (if (and (boundp 'magit-blame-mode) magit-blame-mode)
+          (magit-blame-quit)
+              (call-interactively 'magit-blame))))
 
-  ;;; Helpers for narrowing.
-  (defun narrow-and-set-normal ()
-    "Narrow to the region and, if in a visual mode, set normal mode."
-    (interactive)
-    (narrow-to-region (region-beginning) (region-end))
-    (if (string= evil-state "visual")
-        (progn (evil-normal-state nil)
-               (evil-goto-first-line))))
+  (defun air--config-evil ()
+    "Configure evil mode."
 
-  (defun narrow-to-region-or-subtree ()
-    "Narrow to a region, if set, otherwise to an Org subtree, if present."
-    (interactive)
-    (if (and mark-active
-             (not (= (region-beginning) (region-end))))
-        (narrow-and-set-normal)
-      (if (derived-mode-p 'org-mode)
-          (org-narrow-to-subtree))))
+    ;; Use Emacs state in these additional modes.
+    (dolist (mode '(ag-mode
+                    flycheck-error-list-mode
+                    git-rebase-mode
+                    octopress-mode
+                    octopress-server-mode
+                    octopress-process-mode
+                    sunshine-mode
+                    term-mode))
+      (add-to-list 'evil-emacs-state-modes mode))
 
-  (defun air-narrow-dwim ()
-      "Narrow to a thing or widen based on context.
-  Attempts to follow the Do What I Mean philosophy."
-      (interactive)
-      (if (buffer-narrowed-p)
-          (widen)
-        (narrow-to-region-or-subtree)))
+    (delete 'term-mode evil-insert-state-modes)
 
+    ;; Use insert state in these additional modes.
+    (dolist (mode '(magit-log-edit-mode))
+      (add-to-list 'evil-insert-state-modes mode))
 
-  (defun toggle-window-split ()
-    (interactive)
-    (if (= (count-windows) 2)
-        (let* ((this-win-buffer (window-buffer))
-               (next-win-buffer (window-buffer (next-window)))
-               (this-win-edges (window-edges (selected-window)))
-               (next-win-edges (window-edges (next-window)))
-               (this-win-2nd (not (and (<= (car this-win-edges)
-                                           (car next-win-edges))
-                                       (<= (cadr this-win-edges)
-                                           (cadr next-win-edges)))))
-               (splitter
-                (if (= (car this-win-edges)
-                       (car (window-edges (next-window))))
-                    'split-window-horizontally
-                  'split-window-vertically)))
-          (delete-other-windows)
-          (let ((first-win (selected-window)))
-            (funcall splitter)
-            (if this-win-2nd (other-window 1))
-            (set-window-buffer (selected-window) this-win-buffer)
-            (set-window-buffer (next-window) next-win-buffer)
-            (select-window first-win)
-            (if this-win-2nd (other-window 1))))))
+    (add-to-list 'evil-buffer-regexps '("\\*Flycheck"))
 
+    (evil-add-hjkl-bindings occur-mode-map 'emacs
+      (kbd "/")       'evil-search-forward
+      (kbd "n")       'evil-search-next
+      (kbd "N")       'evil-search-previous
+      (kbd "C-d")     'evil-scroll-down
+      (kbd "C-u")     'evil-scroll-up
+      (kbd "C-w C-w") 'other-window)
+    ;; Global bindings.
+    (define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
+    (define-key evil-normal-state-map (kbd "<up>")   'evil-previous-visual-line)
+    (define-key evil-normal-state-map (kbd "-")     'helm-find-files)
+    (define-key evil-normal-state-map (kbd "g/")    'occur-last-search)
+    (define-key evil-normal-state-map (kbd "[i")    'show-first-occurrence)
+    (define-key evil-insert-state-map (kbd "C-e")   'end-of-line) ;; I know...
+    (define-key evil-normal-state-map (kbd "S-SPC") 'air-pop-to-org-agenda)
 
-  (provide 'init-global-functions)
+    (use-package tiny-menu :ensure t)
+    (setq tiny-menu-items
+          '(("org-things"   ("Things"
+                             ((?t "Tag"     org-tags-view)
+                              (?i "ID"      air-org-goto-custom-id)
+                              (?k "Keyword" org-search-view))))
+            ("org-links"    ("Links"
+                             ((?c "Capture"   org-store-link)
+                              (?l "Insert"    org-insert-link)
+                              (?i "Custom ID" air-org-insert-custom-id-link))))
+            ("org-files"    ("Files"
+                             ((?t "TODO"  (lambda () (air-pop-to-org-todo nil)))
+                              (?n "Notes" (lambda () (air-pop-to-org-notes nil)))
+                              (?v "Vault" (lambda () (air-pop-to-org-vault nil))))))
+            ("org-captures" ("Captures"
+                             ((?c "TODO"  air-org-task-capture)
+                              (?n "Note"  (lambda () (interactive) (org-capture nil "n"))))))))
+    (evil-define-key 'normal global-map (kbd "\\ \\") 'tiny-menu)
+    (evil-define-key 'normal global-map (kbd "\\ f") (tiny-menu-run-item "org-files"))
+    (evil-define-key 'normal global-map (kbd "\\ t") (tiny-menu-run-item "org-things"))
+    (evil-define-key 'normal global-map (kbd "\\ c") (tiny-menu-run-item "org-captures"))
+    (evil-define-key 'normal global-map (kbd "\\ l") (tiny-menu-run-item "org-links"))
+    
+    (defun evil-visual-line--mark-org-element-when-heading (&rest args)
+          "When marking a visual line in Org, mark the current element.
+  This function is used as a `:before-while' advice on
+  `evil-visual-line'; if the current mode is derived from Org Mode and
+  point is resting on an Org heading, mark the whole element instead of
+  the line. ARGS are passed to `evil-visual-line' when text objects are
+  used, but this function ignores them."
+          (interactive)
+          (if (and (derived-mode-p 'org-mode)
+                   (org-on-heading-p))
+              (not (org-mark-element))
+            t))
+
+      (advice-add 'evil-visual-line :before-while #'evil-visual-line--mark-org-element-when-heading)
+
+    (defun minibuffer-keyboard-quit ()
+          "Abort recursive edit.
+  In Delete Selection mode, if the mark is active, just deactivate it;
+  then it takes a second \\[keyboard-quit] to abort the minibuffer."
+          (interactive)
+          (if (and delete-selection-mode transient-mark-mode mark-active)
+              (setq deactivate-mark  t)
+            (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+            (abort-recursive-edit)))
+
+    ;; Make escape quit everything, whenever possible.
+    (define-key evil-normal-state-map [escape] 'keyboard-quit)
+    (define-key evil-visual-state-map [escape] 'keyboard-quit)
+    (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit))
+
+  (use-package evil
+    :ensure t
+    :init
+    (setq evil-want-C-u-scroll t)
+    :config
+    (add-hook 'evil-mode-hook 'air--config-evil)
+    (evil-mode 1)
+
+    (use-package evil-leader
+      :ensure t
+      :config
+      (global-evil-leader-mode)
+      (air--config-evil-leader))
+
+    (use-package evil-indent-textobject
+      :ensure t))
+
+  (provide 'init-evil)
+
 #+END_SRC
 
 ** Org mode
