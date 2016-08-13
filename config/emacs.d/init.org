@@ -247,7 +247,8 @@ Sets up a python editing environment. I'm not sure yet.
     :config
     (yas-global-mode 1))
 #+END_SRC
-** [[https://github.com/auto-complete/auto-complete][auto-complete/auto-complete]] <<auto-complete>>
+** [[https://github.com/auto-complete/auto-complete][auto-complete/auto-complete]] 
+<<auto-complete>>
 #+BEGIN_SRC elisp
 
   ;; (use-package auto-complete
