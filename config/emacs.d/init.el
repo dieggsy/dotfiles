@@ -1,4 +1,4 @@
-(org-babel-load-file "~/.emacs.d/init.org")
+(org-babel-load-file "~/.emacs.d/config.org")
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
