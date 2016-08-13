@@ -34,7 +34,7 @@
 (eval-when-compile
     (require 'use-package))
 
-;; Essential settings.
+;; Good stuff.
 (setq inhibit-splash-screen t
 	  inhibit-startup-message t
 	  inhibit-startup-echo-area-message t)
@@ -50,62 +50,73 @@
 (fringe-mode 0)
 (add-to-list 'default-frame-alist '(font . "Menlo-10"))
 (setq scroll-conservatively 10000)
+(setq-default tab-width 4)
+(setq tab-stop-list (number-sequence 4 200 4))
+(setq completion-cycle-threshold t)
 
-; Store backups/autosaves in temp dir
+; Store backups in .emacsbackups, autosaves in temp dir
 (defvar backup-dir "~/.emacsbackups/")
 (setq backup-directory-alist (list (cons "." backup-dir)))
-;; (setq make-backup-files nil)
 (setq auto-save-file-name-transforms
 	  `((".*" ,temporary-file-directory t)))
 
+;; Thanks, @aaronbieber
 (require 'init-global-functions)
 
 (require 'init-evil)
 
-;; (use-package company
-;;   :ensure t
-;;   :config
-;;   (add-hook 'after-init-hook 'global-company-mode)
-;;   (use-package company-jedi
-;; 	:ensure t
-;; 	:config
-;; 	(defun my/python-mode-hook ()
-;; 	  (add-to-list 'company-backends 'company-jedi))
+;; Org prerequisites
+(use-package visual-fill-column
+	 :ensure t)
+(require 'init-org)
 
-;; 	(add-hook 'python-mode-hook 'my/python-mode-hook)))
-
-(use-package dictionary :ensure t)
-
-(use-package magit
-  :ensure t)
-
-(use-package nyan-mode
-  :ensure t)
-
-(use-package sphinx-doc
+;; Packages
+(use-package company
+  ;; Supposedly better than autocomplete, but idk...
   :ensure t
   :config
-  (add-hook 'python-mode-hook (lambda ()
-								(require 'sphinx-doc)
-								(sphinx-doc-mode t)))
-  )
+  (add-hook 'after-init-hook 'global-company-mode)
+  (use-package company-jedi
+	;; Not sure this is actually working for me
+	:ensure t
+	:config
+	(defun my/python-mode-hook ()
+	  (add-to-list 'company-backends 'company-jedi))
+	(add-hook 'python-mode-hook 'my/python-mode-hook)))
 
 
-(use-package wgrep-ag
+(use-package dictionary
+  ;; Dictionary search!
+  :ensure t)
+
+(use-package magit
+  ;; Git (but cooler) for emacs
+  :ensure t)
+
+
+(use-package sphinx-doc
+  ;; Sorta neat, though not entirely complete IMO
   :ensure t
-  :commands (wgrep-ag-setup))
+  :config
+  (add-hook 'python-mode-hook
+			(lambda ()
+			  (require 'sphinx-doc)
+			  (sphinx-doc-mode t))))
+
 
 (use-package vimish-fold
   :ensure t)
 
-(use-package helm-projectile
-  :ensure t
-  :config
-  (projectile-global-mode))
 
 (use-package ag
+  ;; Silver searcher
   :ensure t
   :defer t
+  :init
+  (use-package wgrep-ag  
+	;; Guess I need this first
+	:ensure t
+	:commands (wgrep-ag-setup))
   :config
   (add-hook 'ag-mode-hook
 			(lambda ()
@@ -119,29 +130,42 @@
 
 
 (use-package helm
+  ;; Kind of an Alfred for emacs
   :ensure t
   :init
   (require 'helm-config)
   :config
   (use-package helm-descbinds
+	;; To describe keys in a nicer way
 	:ensure t)
+  (use-package helm-projectile
+	;; To use with projectile
+	:ensure t
+	:config
+	(projectile-global-mode))
+  ;; (use-package helm-ag
+  ;; 	:ensure t)
   (helm-mode 1)
   (helm-autoresize-mode t)
-  (global-set-key (kbd "M-x") 'helm-M-x)
+  (global-set-key (kbd "M-x") 'helm-M-x)  
+  (global-set-key (kbd "<f1>") 'helm-find-files)  
+  (global-set-key (kbd "<f2>") 'helm-mini)
   (setq helm-completion-in-region-fuzzy-match t)
   (setq helm-mode-fuzzy-match t)
   (setq helm-buffer-max-length 40)
-  (setq helm-locate-command "mdfind -name %s %s")
+  (setq helm-locate-command "mdfind -name %s %s") ; Use spotlight for search
   (global-set-key (kbd "M-y") 'helm-show-kill-ring))
 
 
-(use-package jedi
-  :ensure t
-  :init
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (setq jedi:complete-on-dot t))
+;; (use-package jedi
+;;   ;; Hasn't been working smoothly recently
+;;   :ensure t
+;;   :init
+;;   (add-hook 'python-mode-hook 'jedi:setup)
+;;   (setq jedi:complete-on-dot t))
 
 ;; (use-package elpy
+;;   ;; Eh, I don't know...
 ;;   :ensure t
 ;;   :config
 ;;   (elpy-enable)
@@ -153,51 +177,56 @@
 (use-package markdown-preview-mode
   :ensure t)
 
-(use-package yafolding
-  :ensure t
-  :config
-  (defun air--yafolding-kbd ()
-	(local-set-key (kbd "C-c <up>") 'yafolding-hide-all)
-	(local-set-key (kbd "C-c <down>") 'yafolding-show-all)
-	(local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
-	(local-set-key (kbd "C-c <right>") 'yafolding-show-element)
-	(local-set-key [C-tab] 'yafolding-toggle-element))
-  (add-hook 'python-mode-hook 'yafolding-mode)
-  (add-hook 'python-mode-hook 'air--yafolding-kbd))
+;; (use-package yafolding
+;;   ;; Man, good code folding is hard to come by in emacs
+;;   ;; This one's ok, but there are a couple know issues that
+;;   ;; don't quite make it worth it, I think.
+;;   :ensure t
+;;   :config
+;;   (defun air--yafolding-kbd ()
+;; 	(local-set-key (kbd "C-c <up>") 'yafolding-hide-all)
+;; 	(local-set-key (kbd "C-c <down>") 'yafolding-show-all)
+;; 	(local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
+;; 	(local-set-key (kbd "C-c <right>") 'yafolding-show-element)
+;; 	(local-set-key [C-tab] 'yafolding-toggle-element))
+;;   (add-hook 'python-mode-hook 'yafolding-mode)
+;;   (add-hook 'python-mode-hook 'air--yafolding-kbd))
 
 (use-package yasnippet
+  ;; SNIPPETS!!!
   :ensure t
   :config
-  ;; ;; Remove Yasnippet's default tab key binding
-  ;; (define-key yas-minor-mode-map (kbd "<tab>") nil)
-  ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
-  ;; ;; Set Yasnippet's key binding to shift+tab
-  ;; (define-key yas-minor-mode-map (kbd "<backtab>") 'yas-expand)
   (yas-global-mode 1))
 
-
-(use-package auto-complete
-  :ensure t
-  :config
-  (global-auto-complete-mode t))
+;; (use-package auto-complete
+;;   ;; Supposedly not as good as company mode
+;;   :ensure t
+;;   :config
+;;   (global-auto-complete-mode t))
 
 
 (use-package csv-mode
+  ;; I'll give this a shot
   :ensure t)
 
 (use-package flycheck
+  ;; Pep8 check, basically
   :ensure t
   :config
   (global-set-key (kbd "<f11>") 'flycheck-mode))
 
 (use-package multi-term
+  ;; Supposed to be nicer than ansi-term
   :ensure t)
 
 ;; (use-package autopair
+;;   ;; Recommended to use electric-pair now?
 ;;   :ensure t
 ;;   :config
 ;;   (autopair-global-mode))
+
 (use-package fill-column-indicator
+  ;; I like a line length limit indicator in Python
   :ensure t
   :init
   (setq-default fci-rule-column 79)
@@ -205,6 +234,7 @@
   (add-hook 'python-mode-hook 'fci-mode))
 
 (use-package rainbow-delimiters
+  ;; Better parentheses coloring
   :ensure t
   :init
   (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
@@ -237,6 +267,7 @@
 ;;   :ensure t)
 
 (use-package fancy-battery
+  ;; Something something battery
   :ensure t
   :config
   (fancy-battery-mode)
@@ -244,6 +275,8 @@
   (fancy-battery-update))
 
 (use-package spaceline
+  ;; Similar to vim's powerline, this one looks clean
+  ;; and 'just works', to an extent
   :ensure t
   :config
   (require 'spaceline-config)
@@ -259,33 +292,32 @@
   (set-face-foreground 'spaceline-evil-insert "white")
   (set-face-background 'spaceline-evil-visual "#ff8700")
   (set-face-foreground 'spaceline-evil-visual "#870000"))
+
 (use-package highlight-numbers
+  ;; Neat-o
   :ensure t
   :init
   (add-hook 'python-mode-hook 'highlight-numbers-mode))
 
 (use-package imenu-anywhere
+  ;; Imenu on steroids
   :ensure t
   :config
   (global-set-key (kbd "<f5>") 'imenu-anywhere))
 
 (use-package highlight-parentheses
+  ;; Make parenthesis I'm currently in stand out
   :ensure t)
 
 
-(setq-default tab-width 4)
-(setq tab-stop-list (number-sequence 4 200 4))
-(setq completion-cycle-threshold t)
 
 ;;; Custom Key Bindings ;;;
-(global-set-key (kbd "<f1>") 'helm-find-files)
-(global-set-key (kbd "<f2>") 'switch-to-buffer)
-(global-set-key (kbd "<f8> <f1>")
-				'(lambda () (interactive) (ansi-term "/usr/local/bin/ipython")))
-(global-set-key (kbd "<f8> <f2>")
-				'(lambda () (interactive) (ansi-term "/Users/diego/.virtualenvs/py2/bin/ipython")))
-(global-set-key (kbd "<f9>") 'linum-mode)
-(global-set-key (kbd "M-RET") 'python-shell-send-buffer)
+;; (global-set-key (kbd "<f8> <f1>")
+;; 				'(lambda () (interactive) (ansi-term "/usr/local/bin/ipython")))
+;; (global-set-key (kbd "<f8> <f2>")
+;; 				'(lambda () (interactive) (ansi-term "/Users/diego/.virtualenvs/py2/bin/ipython")))
+;; (global-set-key (kbd "<f9>") 'linum-mode)
+;; (global-set-key (kbd "M-RET") 'python-shell-send-buffer)
 
 ;; Global stuff
 (global-hl-line-mode 1)
@@ -295,6 +327,7 @@
 (setq whitespace-style '(face trailing))
 (setq column-number-mode t)
 
+;; For matlab, I guess
 (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
 
 ;; Python stuff
@@ -314,9 +347,6 @@
 (add-hook 'python-mode-hook (lambda () (linum-mode 1)))
 (setenv "PYTHONPATH" "/usr/local/bin/python3")
 
-(setq org-log-done 'time)
-(setq org-log-done 'note)
-
 ;; Emacs-lisp stuff
 (defun my-lisp-mode-config ()
   (setq ac-sources '(ac-source-symbols ac-source-words-in-same-mode-buffers))
@@ -324,7 +354,6 @@
   (local-set-key (kbd "C-c <down>") 'hs-show-all)
   (local-set-key (kbd "C-c <left>") 'hs-hide-block)
   (local-set-key (kbd "C-c <right>") 'hs-show-block))
-
 
 (add-hook 'emacs-lisp-mode-hook 'my-lisp-mode-config)
 (add-hook 'emacs-lisp-mode-hook 'highlight-parentheses-mode)
@@ -349,8 +378,7 @@
 	(setq sanityinc/fci-mode-suppressed nil)
 	(turn-on-fci-mode)))
 
-
-;;; HIGHLIGHT CURRENT LINE NUMBER ;;;
+;; Highlight curent line number 
 (defface my-linum-hl
   `((t :inherit linum :background ,(face-background 'hl-line nil t)))
   "Face for the current line number."
@@ -433,6 +461,10 @@
  '(helm-boring-buffer-regexp-list
    (quote
 	("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*Minibuf" "\\*epc")))
+ '(org-babel-load-languages (quote ((python . t) (emacs-lisp . t))))
+ '(org-blank-before-new-entry (quote ((heading) (plain-list-item))))
+ '(org-confirm-babel-evaluate nil)
+ '(org-src-fontify-natively t)
  '(powerline-evil-tag-style (quote verbose))
  '(projectile-globally-ignored-files (quote ("TAGS" ".DS_Store")))
  '(sml/name-width 40)

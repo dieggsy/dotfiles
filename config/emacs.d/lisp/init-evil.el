@@ -79,6 +79,45 @@
   (define-key evil-normal-state-map (kbd "g/")    'occur-last-search)
   (define-key evil-normal-state-map (kbd "[i")    'show-first-occurrence)
   (define-key evil-insert-state-map (kbd "C-e")   'end-of-line) ;; I know...
+  (define-key evil-normal-state-map (kbd "S-SPC") 'air-pop-to-org-agenda)
+
+  (use-package tiny-menu :ensure t)
+  (setq tiny-menu-items
+		'(("org-things"   ("Things"
+						   ((?t "Tag"     org-tags-view)
+							(?i "ID"      air-org-goto-custom-id)
+							(?k "Keyword" org-search-view))))
+		  ("org-links"    ("Links"
+						   ((?c "Capture"   org-store-link)
+							(?l "Insert"    org-insert-link)
+							(?i "Custom ID" air-org-insert-custom-id-link))))
+		  ("org-files"    ("Files"
+						   ((?t "TODO"  (lambda () (air-pop-to-org-todo nil)))
+							(?n "Notes" (lambda () (air-pop-to-org-notes nil)))
+							(?v "Vault" (lambda () (air-pop-to-org-vault nil))))))
+		  ("org-captures" ("Captures"
+						   ((?c "TODO"  air-org-task-capture)
+							(?n "Note"  (lambda () (interactive) (org-capture nil "n"))))))))
+  (evil-define-key 'normal global-map (kbd "\\ \\") 'tiny-menu)
+  (evil-define-key 'normal global-map (kbd "\\ f") (tiny-menu-run-item "org-files"))
+  (evil-define-key 'normal global-map (kbd "\\ t") (tiny-menu-run-item "org-things"))
+  (evil-define-key 'normal global-map (kbd "\\ c") (tiny-menu-run-item "org-captures"))
+  (evil-define-key 'normal global-map (kbd "\\ l") (tiny-menu-run-item "org-links"))
+  
+  (defun evil-visual-line--mark-org-element-when-heading (&rest args)
+	    "When marking a visual line in Org, mark the current element.
+This function is used as a `:before-while' advice on
+`evil-visual-line'; if the current mode is derived from Org Mode and
+point is resting on an Org heading, mark the whole element instead of
+the line. ARGS are passed to `evil-visual-line' when text objects are
+used, but this function ignores them."
+		(interactive)
+		(if (and (derived-mode-p 'org-mode)
+				 (org-on-heading-p))
+			(not (org-mark-element))
+		  t))
+
+    (advice-add 'evil-visual-line :before-while #'evil-visual-line--mark-org-element-when-heading)
 
   (defun minibuffer-keyboard-quit ()
 	    "Abort recursive edit.

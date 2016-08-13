@@ -12,6 +12,8 @@ Plugin 'wincent/command-t'
 Plugin 'tpope/vim-fugitive'
 Plugin 'davidhalter/jedi-vim'
 Plugin 'itchyny/lightline.vim'
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
 "Plugin 'tmhedberg/SimpylFold'
 filetype on
 set laststatus=2
@@ -28,6 +30,7 @@ syntax on
 set cursorline
 set number
 set hlsearch
+let g:vim_markdown_folding_disabled = 1
 " Enable folding
 "set foldmethod=indent
 "set foldlevel=99

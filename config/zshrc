@@ -61,6 +61,7 @@ echo "Welcome, Diego"
 setopt GLOB_COMPLETE
 setopt auto_cd
 setopt histignoredups
+setopt autonamedirs
 
 # The following is taken pretty much directly from fino theme,
 # but I wanted to make a few tweaks.
@@ -123,7 +124,7 @@ alias desk="cd /Users/diego/Desktop"
 alias docs="cd /Users/diego/Documents/"
 alias down="cd /Users/diego/Downloads/"
 alias drive="cd /Users/diego/Google\ Drive"
-alias drop="cd /Users/diego/Dropbox\ \(MIT\)"
+export drop=/Users/diego/Dropbox\ \(MIT\)
 alias edit="emacsclient -t"
 alias editv="emacsclient -c"
 alias f='find . -iname'
@@ -145,6 +146,7 @@ alias sudo='sudo '							   # recognize aliases
 alias sz="du -hs"							   # get folder/file size 
 alias zshrc="$EDITOR ~/dotfiles/config/zshrc" 
 alias vimrc="$ALTERNATE_EDITOR ~/dotfiles/config/vimrc"
+alias rainbowstream='$HOME/.virtualenvs/py3/bin/rainbowstream'
 export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31' # ls colors i've gotten used to
 zstyle ':completion:*' list-colors 'di=0;36:ex=0;35:ln=1;31'
 
