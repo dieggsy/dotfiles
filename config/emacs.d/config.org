@@ -98,9 +98,6 @@ Setup up cool stuff like use-package, and stuff.
   (setq package-enable-at-startup nil)
   (package-initialize)
 
-  (provide 'init-elpa)
-
-
   (package-initialize)
 
   (unless (package-installed-p 'use-package)
@@ -252,9 +249,6 @@ like the way he does stuff. This is mostly (entirely?) his code.
             (set-window-buffer (next-window) next-win-buffer)
             (select-window first-win)
             (if this-win-2nd (other-window 1))))))
-
-
-  (provide 'init-global-functions)
 #+END_SRC
 
 ** Evil mode
@@ -416,9 +410,6 @@ like the way he does stuff. This is mostly (entirely?) his code.
 
     (use-package evil-indent-textobject
       :ensure t))
-
-  (provide 'init-evil)
-
 #+END_SRC
 
 ** Org mode
@@ -736,8 +727,6 @@ like the way he does stuff. This is mostly (entirely?) his code.
     (use-package ox-twbs
       :ensure t) 
     )
-
-  (provide 'init-org)
   ;;; init-org.el ends here
 #+END_SRC
 
