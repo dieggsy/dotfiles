@@ -1,6 +1,6 @@
 #+TITLE: Emacs Init File! 
 * Package Managing
-Setus up cool stuff like use-package, and stuff.
+Setup up cool stuff like use-package, and stuff.
 
 #+BEGIN_SRC elisp
   (require 'package)
@@ -451,6 +451,7 @@ what I'm using anyway.
 
 * Python stuff
 And one matlab thing
+
 #+BEGIN_SRC elisp
   (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
 
