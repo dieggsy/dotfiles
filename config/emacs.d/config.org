@@ -2,7 +2,7 @@
 * Package Managing
 Setup up cool stuff like use-package, and stuff.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (require 'package)
   (setq package-enable-at-startup nil)
   (add-to-list 'load-path
@@ -33,7 +33,7 @@ Setup up cool stuff like use-package, and stuff.
 
 * Personal Info
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (setq user-full-name "Diego A. Mundo"
         user-mail-address "diegoamundo@gmail.com"
         calendar-location-name "Cambridge, MA")
@@ -42,7 +42,7 @@ Setup up cool stuff like use-package, and stuff.
 
 * Global settings and stuff
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (setq inhibit-splash-screen t
         inhibit-startup-message t
         inhibit-startup-echo-area-message t)
@@ -89,7 +89,7 @@ Setup up cool stuff like use-package, and stuff.
 ...thanks, [[https://github.com/aaronbieber/][@aaronbieber]]. Seriously, go check him out. I
 like the way he does stuff.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (require 'init-global-functions)
 
   (require 'init-evil)
@@ -105,7 +105,7 @@ like the way he does stuff.
 Kind of an Alfred for emacs. Completion, nice menus for stuff
 overall great.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package helm
     :ensure t
     :init
@@ -136,7 +136,7 @@ overall great.
 ** [[https://github.com/magit/magit][magit/magit]]
 Like git, for emacs. But cooler.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package magit
     :ensure t)
 #+END_SRC
@@ -144,7 +144,7 @@ Like git, for emacs. But cooler.
 ** [[https://github.com/joaotavora/yasnippet][joaotavora/yasnippet]]
 Freakin yasnippet. It's the best.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package yasnippet
     ;; SNIPPETS!!!
     :ensure t
@@ -155,7 +155,7 @@ Freakin yasnippet. It's the best.
 ** [[https://github.com/flycheck/flycheck][flycheck/flycheck]]
 Syntax check for python. Pretty good.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package flycheck
     ;; Pep8 check, basically
     :ensure t
@@ -167,7 +167,7 @@ Syntax check for python. Pretty good.
 Supposedly better than autocomplete... Also  using
 [[https://github.com/syohex/emacs-company-jedi][syohex/company-jedi]]
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package company
     :ensure t
     :config
@@ -184,7 +184,7 @@ Supposedly better than autocomplete... Also  using
 ** [[https://github.com/Wilfred/ag.el][Wilfred/ag.el]]
 Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]] into emacs.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package ag
     ;; Silver searcher
     :ensure t
@@ -209,7 +209,7 @@ Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]]
 ** [[https://github.com/alpaker/Fill-Column-Indicator][alpaker/Fill-Column-Indicator]]
 I like a line length limit indicator in Python
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
 
   (use-package fill-column-indicator
     :ensure t
@@ -222,7 +222,7 @@ I like a line length limit indicator in Python
 ** [[https://github.com/Fanael/rainbow-delimiters][Fanael/rainbow-delimiters]]
 Better parentheses coloring
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package rainbow-delimiters
     :ensure t
     :init
@@ -233,7 +233,7 @@ Better parentheses coloring
 ** [[https://github.com/tsdh/highlight-parentheses.el][tsdh/highlight-parentheses.el]]
 Makes the parentheses my cursor is between stand out more.
  
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package highlight-parentheses
     ;; Make parenthesis I'm currently in stand out
     :ensure t)
@@ -242,7 +242,7 @@ Makes the parentheses my cursor is between stand out more.
 ** [[https://github.com/Fanael/highlight-numbers][Fanael/highlight-numbers]]
 Neat-o
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package highlight-numbers
     :ensure t
     :init
@@ -252,7 +252,7 @@ Neat-o
 ** [[https://github.com/vspinu/imenu-anywhere][vspinu/imenu-anywhere]]
 imenu on steroids.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package imenu-anywhere
     ;; Imenu on steroids
     :ensure t
@@ -264,7 +264,7 @@ imenu on steroids.
 I was looking for something with the nice look and simplicity of
 [[https://github.com/itchyny/lightline.vim][this]]. Spaceline does ok. 
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package spaceline
     ;; Similar to vim's powerline, this one looks clean
     ;; and 'just works', to an extent
@@ -289,7 +289,7 @@ I was looking for something with the nice look and simplicity of
 ** [[https://github.com/lunaryorn/fancy-battery.el][lunaryorn/fancy-battery.el]]
 For nice battery display info.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package fancy-battery
     ;; Something something battery
     :ensure t
@@ -302,7 +302,7 @@ For nice battery display info.
 ** [[https://github.com/myrkr/dictionary-el/blob/master/dictionary.el][myrkr/dictionary-el]]
 Dictionary search!
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package dictionary
     :ensure t)
 #+END_SRC
@@ -311,7 +311,7 @@ Dictionary search!
 Sphinx doc python integration. Pretty neat, though not entirely
 complete, IMO.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package sphinx-doc
     :ensure t
     :config
@@ -325,7 +325,7 @@ complete, IMO.
 ** [[https://github.com/defunkt/markdown-mode][defunkt/markdown-mode]]
 Syntax highlighting for markdown files.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
     :ensure t)
 #+END_SRC
@@ -333,7 +333,7 @@ Syntax highlighting for markdown files.
 ** [[https://github.com/ancane/markdown-preview-mode][ancane/markdown-preview-mode]]
 Generates markdown previews? Not sure if working.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package markdown-preview-mode
     :ensure t)
 #+END_SRC
@@ -343,7 +343,7 @@ Eh, wanted to try a simpler way of editing
 csv files. (Excel and Numbers both kinda suck at this,
 LibreOffice was slightly better.) Haven't used this much.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
 
   (use-package csv-mode
     ;; I'll give this a shot
@@ -352,7 +352,7 @@ LibreOffice was slightly better.) Haven't used this much.
 ** [[https://www.emacswiki.org/emacs/download/multi-term.el][multi-term]]
 I wanted a slightly better terminal in emacs. Not sure
 if this is the answer as I haven't used it much.
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (use-package multi-term
     ;; Supposed to be nicer than ansi-term
     :ensure t)
@@ -361,7 +361,7 @@ if this is the answer as I haven't used it much.
 *** [[https://github.com/Malabarba/smart-mode-line][Malabarba/smart-mode-line]]
 Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][spaceline]].
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   ;; (use-package smart-mode-powerline-theme
   ;;   :ensure t)
 
@@ -382,7 +382,7 @@ Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][s
 *** [[https://github.com/jorgenschaefer/elpy][jorgenschaefer/elpy]]
 Sets up a python editing environment. I'm not sure yet.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   ;; (use-package elpy
   ;;   ;; Eh, I don't know...
   ;;   :ensure t
@@ -396,7 +396,7 @@ Good code folding is hard to come by in Emacs,
 and isn't /that/ useful. This was pretty good but
 had some known issues.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   ;; (use-package yafolding
   ;;   ;; Man, good code folding is hard to come by in emacs
   ;;   ;; This one's ok, but there are a couple know issues that
@@ -418,7 +418,7 @@ Integrates [[https://github.com/davidhalter/jedi][jedi]] into emacs for python c
 hasn't been working for me recently. Either way,
 this is for [[https://github.com/auto-complete/auto-complete][auto-complete]] but now I use [[https://github.com/syohex/emacs-company-jedi][syohex/emacs-company-jedi]]. 
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   ;; (use-package jedi
   ;;   ;; Hasn't been working smoothly recently
   ;;   :ensure t
@@ -430,7 +430,7 @@ this is for [[https://github.com/auto-complete/auto-complete][auto-complete]] bu
 *** [[https://github.com/auto-complete/auto-complete][auto-complete/auto-complete]] 
 Pretty good autocompletion, but trying out [[github.com/company-mode/company-mode][company-mode]] right now.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   ;; (use-package auto-complete
   ;;   ;; Supposedly not as good as company mode
   ;;   :ensure t
@@ -442,7 +442,7 @@ Pretty good autocompletion, but trying out [[github.com/company-mode/company-mod
 It may be recommended to use =electric-pair-mode= nowadays? That's
 what I'm using anyway.  
 
-#+Begin_src elisp
+#+Begin_src emacs-lisp
   ;; (use-package autopair
   ;;   :ensure t
   ;;   :config
@@ -452,7 +452,7 @@ what I'm using anyway.
 * Python stuff
 And one matlab thing
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
 
   ;; Python stuff
@@ -473,9 +473,9 @@ And one matlab thing
   (setenv "PYTHONPATH" "/usr/local/bin/python3")
 #+END_SRC
 
-* Elisp stuff
+* Emacs-Lisp stuff
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   ;; Emacs-lisp stuff
   (defun my-lisp-mode-config ()
     (setq ac-sources '(ac-source-symbols ac-source-words-in-same-mode-buffers))
@@ -493,7 +493,7 @@ And one matlab thing
 * Fix fci pop-up menu issue
 This is from somewhere on the internet.
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   ;; Disable fci mode when autocomplete popup menu happens
   (defun sanityinc/fci-enabled-p ()
       (and (boundp 'fci-mode) fci-mode))
@@ -517,7 +517,7 @@ This is from somewhere on the internet.
 This, too, is from somewhere on the internet. Possibly
 stackoverflow. 
 
-#+BEGIN_SRC elisp
+#+BEGIN_SRC emacs-lisp
   (defface my-linum-hl
     `((t :inherit linum :background ,(face-background 'hl-line nil t)))
     "Face for the current line number."
