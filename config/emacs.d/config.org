@@ -1,4 +1,5 @@
 #+TITLE: Emacs Init File! 
+#+STARTUP: hideblocks 
 * Intro
 This is my emacs init file. =init.el= loads the elisp code from here.
 It's pretty cool that I can write it in org mode, because easy organization
@@ -16,6 +17,8 @@ the inspiration (and erm, code) for this is taken from them.
 * Package Managing
 Setup up cool stuff like use-package, and stuff.
 
+** Misc init
+
 #+BEGIN_SRC emacs-lisp
   (require 'package)
   (setq package-enable-at-startup nil)
@@ -32,8 +35,109 @@ Setup up cool stuff like use-package, and stuff.
           (add-to-list 'load-path (car file))))))
 
   (add-to-list 'exec-path "/usr/local/bin")
-  (require 'init-utils)
+#+END_SRC
 
+** Init utils
+
+#+BEGIN_SRC emacs-lisp
+  ;;; init-utils.el --- Utilities borrowed from Steve Purcell
+  ;;; Commentary:
+  ;;; Code:
+  (if (fboundp 'with-eval-after-load)
+      (defalias 'after-load 'with-eval-after-load)
+    (defmacro after-load (feature &rest body)
+      "After FEATURE is loaded, evaluate BODY."
+      (declare (indent defun))
+      `(eval-after-load ,feature
+         '(progn ,@body))))
+
+
+  ;;----------------------------------------------------------------------------
+  ;; Handier way to add modes to auto-mode-alist
+  ;;----------------------------------------------------------------------------
+  (defun add-auto-mode (mode &rest patterns)
+    "Add entries to `auto-mode-alist' to use `MODE' for all given file `PATTERNS'."
+    (dolist (pattern patterns)
+      (add-to-list 'auto-mode-alist (cons pattern mode))))
+
+
+  ;;----------------------------------------------------------------------------
+  ;; String utilities missing from core emacs
+  ;;----------------------------------------------------------------------------
+  (defun sanityinc/string-all-matches (regex str &optional group)
+    "Find all matches for `REGEX' within `STR', returning the full match string or group `GROUP'."
+    (let ((result nil)
+          (pos 0)
+          (group (or group 0)))
+      (while (string-match regex str pos)
+        (push (match-string group str) result)
+        (setq pos (match-end group)))
+      result))
+
+  (defun sanityinc/string-rtrim (str)
+    "Remove trailing whitespace from `STR'."
+    (replace-regexp-in-string "[ \t\n]+$" "" str))
+
+
+  ;;----------------------------------------------------------------------------
+  ;; Find the directory containing a given library
+  ;;----------------------------------------------------------------------------
+  (autoload 'find-library-name "find-func")
+  (defun sanityinc/directory-of-library (library-name)
+    "Return the directory in which the `LIBRARY-NAME' load file is found."
+    (file-name-as-directory (file-name-directory (find-library-name library-name))))
+
+
+  ;;----------------------------------------------------------------------------
+  ;; Delete the current file
+  ;;----------------------------------------------------------------------------
+  (defun delete-this-file ()
+    "Delete the current file, and kill the buffer."
+    (interactive)
+    (or (buffer-file-name) (error "No file is currently being edited"))
+    (when (yes-or-no-p (format "Really delete '%s'?"
+                               (file-name-nondirectory buffer-file-name)))
+      (delete-file (buffer-file-name))
+      (kill-this-buffer)))
+
+
+  ;;----------------------------------------------------------------------------
+  ;; Rename the current file
+  ;;----------------------------------------------------------------------------
+  (defun rename-this-file-and-buffer (new-name)
+    "Renames both current buffer and file it's visiting to NEW-NAME."
+    (interactive "sNew name: ")
+    (let ((name (buffer-name))
+          (filename (buffer-file-name)))
+      (unless filename
+        (error "Buffer '%s' is not visiting a file!" name))
+      (if (get-buffer new-name)
+          (message "A buffer named '%s' already exists!" new-name)
+        (progn
+          (when (file-exists-p filename)
+           (rename-file filename new-name 1))
+          (rename-buffer new-name)
+          (set-visited-file-name new-name)))))
+
+  ;;----------------------------------------------------------------------------
+  ;; Browse current HTML file
+  ;;----------------------------------------------------------------------------
+  (defun browse-current-file ()
+    "Open the current file as a URL using `browse-url'."
+    (interactive)
+    (let ((file-name (buffer-file-name)))
+      (if (tramp-tramp-file-p file-name)
+          (error "Cannot open tramp file")
+        (browse-url (concat "file://" file-name)))))
+
+
+  ;;; init-utils.el ends here
+
+#+END_SRC
+
+** Package setup
+
+#+BEGIN_SRC emacs-lisp
   ;;; Find and load the correct package.el
 
   ;; When switching between Emacs 23 and 24, we always use the bundled package.el in Emacs 24
@@ -107,6 +211,7 @@ Setup up cool stuff like use-package, and stuff.
   (eval-when-compile
       (require 'use-package))
 #+END_SRC
+
 * Global settings and stuff
 
 #+BEGIN_SRC emacs-lisp
