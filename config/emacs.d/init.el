@@ -50,6 +50,7 @@
    (quote
 	("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*Minibuf" "\\*epc")))
  '(org-babel-load-languages (quote ((python . t) (emacs-lisp . t))))
+ '(org-babel-python-command "python3")
  '(org-blank-before-new-entry (quote ((heading) (plain-list-item))))
  '(org-confirm-babel-evaluate nil)
  '(org-src-fontify-natively t)

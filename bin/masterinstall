@@ -49,8 +49,10 @@ brew install cmus
 brew install cookiecutter
 brew install coreutils
 brew install cowsay
+brew install ctags
 brew install ddate
 brew install dict
+brew install doxygen
 brew install elinks
 brew install emacs
 brew install faad2
@@ -70,6 +72,7 @@ brew install ghostscript
 brew install giflib
 brew install git
 brew install glib
+brew install global
 brew install gmp
 brew install gnome-icon-theme
 brew install gnutls
@@ -89,6 +92,7 @@ brew install imagemagick
 brew install imlib2
 brew install irssi
 brew install isl
+brew install ispell
 brew install jack
 brew install jbig2dec
 brew install jpeg
