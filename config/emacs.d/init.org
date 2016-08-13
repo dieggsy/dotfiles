@@ -69,7 +69,7 @@ Setus up cool stuff like use-package, and stuff.
         `((".*" ,temporary-file-directory t)))
 #+END_SRC 
 
-* Thanks, @aaronbieber
+* Thanks, [[https://github.com/aaronbieber/][@aaronbieber]]
 
 #+BEGIN_SRC elisp
   (require 'init-global-functions)
@@ -103,16 +103,22 @@ Supposedly better than autocomplete...
 Dictionary search!
 #+BEGIN_SRC elisp
   (use-package dictionary
-    ;; Dictionary search!
     :ensure t)
+#+END_SRC
 
+** [[https://github.com/magit/magit][magit/magit]]
+Like git, for emacs. And cooler.
+#+BEGIN_SRC elisp
   (use-package magit
-    ;; Git (but cooler) for emacs
     :ensure t)
 
+#+END_SRC
 
+** [[https://github.com/naiquevin/sphinx-doc.el][naiquevin/sphinx-doc.el]]
+Sphinx doc python integration. Pretty neat, though not entirely
+complete, IMO.
+#+BEGIN_SRC elisp
   (use-package sphinx-doc
-    ;; Sorta neat, though not entirely complete IMO
     :ensure t
     :config
     (add-hook 'python-mode-hook
@@ -120,11 +126,18 @@ Dictionary search!
                 (require 'sphinx-doc)
                 (sphinx-doc-mode t))))
 
+#+END_SRC
+
+** 
+#+BEGIN_SRC elisp
 
   (use-package vimish-fold
     :ensure t)
 
 
+#+END_SRC
+
+#+BEGIN_SRC elisp
   (use-package ag
     ;; Silver searcher
     :ensure t
@@ -144,8 +157,11 @@ Dictionary search!
     (setq ag-highlight-search t)
     (setq ag-reuse-buffers t)
       (setq ag-reuse-window t))
+#+END_SRC
 
 
+#+BEGIN_SRC elisp
+  (use-package helm
   (use-package helm
     ;; Kind of an Alfred for emacs
     :ensure t
@@ -172,7 +188,9 @@ Dictionary search!
     (setq helm-buffer-max-length 40)
     (setq helm-locate-command "mdfind -name %s %s") ; Use spotlight for search
     (global-set-key (kbd "M-y") 'helm-show-kill-ring))
+#+END_SRC
 
+#+BEGIN_SRC elisp
 
   ;; (use-package jedi
   ;;   ;; Hasn't been working smoothly recently
@@ -180,6 +198,8 @@ Dictionary search!
   ;;   :init
   ;;   (add-hook 'python-mode-hook 'jedi:setup)
   ;;   (setq jedi:complete-on-dot t))
+
+#+END_SRC
 
   ;; (use-package elpy
   ;;   ;; Eh, I don't know...
