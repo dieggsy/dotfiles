@@ -128,15 +128,8 @@ complete, IMO.
 
 #+END_SRC
 
-** 
-#+BEGIN_SRC elisp
-
-  (use-package vimish-fold
-    :ensure t)
-
-
-#+END_SRC
-
+** [[https://github.com/Wilfred/ag.el][Wilfred/ag.el]] 
+Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]] into emacs.
 #+BEGIN_SRC elisp
   (use-package ag
     ;; Silver searcher
@@ -156,14 +149,14 @@ complete, IMO.
     (setq ag-executable "/usr/local/bin/ag")
     (setq ag-highlight-search t)
     (setq ag-reuse-buffers t)
-      (setq ag-reuse-window t))
+    (setq ag-reuse-window t))
 #+END_SRC
 
-
+** [[https://github.com/emacs-helm/helm][emacs-helm/helm]]
+Kind of an Alfred for emacs. Completion, nice menus for stuff
+overall great.
 #+BEGIN_SRC elisp
   (use-package helm
-  (use-package helm
-    ;; Kind of an Alfred for emacs
     :ensure t
     :init
     (require 'helm-config)
@@ -189,7 +182,10 @@ complete, IMO.
     (setq helm-locate-command "mdfind -name %s %s") ; Use spotlight for search
     (global-set-key (kbd "M-y") 'helm-show-kill-ring))
 #+END_SRC
-
+** [[https://github.com/tkf/emacs-jedi][tkf/emacs-jedi]]
+Integrates [[https://github.com/davidhalter/jedi][jedi]] into emacs for python completion,
+hasn't been working for me recently. Either way,
+this is for [[auto-complete]] but now I use company-jedi. 
 #+BEGIN_SRC elisp
 
   ;; (use-package jedi
@@ -200,6 +196,9 @@ complete, IMO.
   ;;   (setq jedi:complete-on-dot t))
 
 #+END_SRC
+** [[https://github.com/jorgenschaefer/elpy][jorgenschaefer/elpy]]
+Sets up a python editing environment. I'm not sure yet.
+#+BEGIN_SRC elisp
 
   ;; (use-package elpy
   ;;   ;; Eh, I don't know...
@@ -207,12 +206,22 @@ complete, IMO.
   ;;   :config
   ;;   (elpy-enable)
   ;;   (setq elpy-rpc-backend "jedi"))
+#+END_SRC
+** 
+#+BEGIN_SRC elisp
 
   (use-package markdown-mode
     :ensure t)
+#+END_SRC
+** 
+#+BEGIN_SRC elisp
+
 
   (use-package markdown-preview-mode
     :ensure t)
+#+END_SRC
+** 
+#+BEGIN_SRC elisp
 
   ;; (use-package yafolding
   ;;   ;; Man, good code folding is hard to come by in emacs
@@ -228,18 +237,25 @@ complete, IMO.
   ;;  (local-set-key [C-tab] 'yafolding-toggle-element))
   ;;   (add-hook 'python-mode-hook 'yafolding-mode)
   ;;   (add-hook 'python-mode-hook 'air--yafolding-kbd))
+#+END_SRC
+** 
+#+BEGIN_SRC elisp
 
   (use-package yasnippet
     ;; SNIPPETS!!!
     :ensure t
     :config
     (yas-global-mode 1))
+#+END_SRC
+** [[https://github.com/auto-complete/auto-complete][auto-complete/auto-complete]] <<auto-complete>>
+#+BEGIN_SRC elisp
 
   ;; (use-package auto-complete
   ;;   ;; Supposedly not as good as company mode
   ;;   :ensure t
   ;;   :config
   ;;   (global-auto-complete-mode t))
+#+END_SRC
 
 
   (use-package csv-mode
