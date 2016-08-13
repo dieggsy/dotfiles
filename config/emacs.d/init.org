@@ -40,7 +40,7 @@ Setus up cool stuff like use-package, and stuff.
 
 #+END_SRC
 
-* Global settings and stuff 
+* Global settings and stuff
 
 #+BEGIN_SRC elisp
   (setq inhibit-splash-screen t
@@ -67,9 +67,27 @@ Setus up cool stuff like use-package, and stuff.
   (setq backup-directory-alist (list (cons "." backup-dir)))
   (setq auto-save-file-name-transforms
         `((".*" ,temporary-file-directory t)))
+
+  ;;; Custom Key Bindings ;;;
+  ;; (global-set-key (kbd "<f8> <f1>")
+  ;;              '(lambda () (interactive) (ansi-term "/usr/local/bin/ipython")))
+  ;; (global-set-key (kbd "<f8> <f2>")
+  ;;              '(lambda () (interactive) (ansi-term "/Users/diego/.virtualenvs/py2/bin/ipython")))
+  ;; (global-set-key (kbd "<f9>") 'linum-mode)
+  ;; (global-set-key (kbd "M-RET") 'python-shell-send-buffer)
+
+  ;; Global stuff
+  (global-hl-line-mode 1)
+  ;; (global-linum-mode 1)
+  (setq linum-delay t)
+  (global-auto-revert-mode t)
+  (setq whitespace-style '(face trailing))
+  (setq column-number-mode t)
 #+END_SRC 
 
-* Thanks, [[https://github.com/aaronbieber/][@aaronbieber]]
+* Other init files
+...thanks, [[https://github.com/aaronbieber/][@aaronbieber]]. Seriously, go check him out. I
+like the way he does stuff.
 
 #+BEGIN_SRC elisp
   (require 'init-global-functions)
@@ -82,79 +100,11 @@ Setus up cool stuff like use-package, and stuff.
   (require 'init-org)
 #+END_SRC
 
-* All dem packages
-** [[https://github.com/company-mode/company-mode][company-mode/company-mode]] 
-Supposedly better than autocomplete...
-#+BEGIN_SRC elisp
-  (use-package company
-    :ensure t
-    :config
-    (add-hook 'after-init-hook 'global-company-mode)
-    (use-package company-jedi
-      ;; Not sure this is actually working for me
-      :ensure t
-      :config
-      (defun my/python-mode-hook ()
-        (add-to-list 'company-backends 'company-jedi))
-      (add-hook 'python-mode-hook 'my/python-mode-hook)))
-#+END_SRC
-
-** [[https://github.com/myrkr/dictionary-el/blob/master/dictionary.el][myrkr/dictionary-el]]
-Dictionary search!
-#+BEGIN_SRC elisp
-  (use-package dictionary
-    :ensure t)
-#+END_SRC
-
-** [[https://github.com/magit/magit][magit/magit]]
-Like git, for emacs. And cooler.
-#+BEGIN_SRC elisp
-  (use-package magit
-    :ensure t)
-
-#+END_SRC
-
-** [[https://github.com/naiquevin/sphinx-doc.el][naiquevin/sphinx-doc.el]]
-Sphinx doc python integration. Pretty neat, though not entirely
-complete, IMO.
-#+BEGIN_SRC elisp
-  (use-package sphinx-doc
-    :ensure t
-    :config
-    (add-hook 'python-mode-hook
-              (lambda ()
-                (require 'sphinx-doc)
-                (sphinx-doc-mode t))))
-
-#+END_SRC
-
-** [[https://github.com/Wilfred/ag.el][Wilfred/ag.el]] 
-Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]] into emacs.
-#+BEGIN_SRC elisp
-  (use-package ag
-    ;; Silver searcher
-    :ensure t
-    :defer t
-    :init
-    (use-package wgrep-ag  
-      ;; Guess I need this first
-      :ensure t
-      :commands (wgrep-ag-setup))
-    :config
-    (add-hook 'ag-mode-hook
-              (lambda ()
-                (wgrep-ag-setup)
-                (define-key ag-mode-map (kbd "n") 'evil-search-next)
-                (define-key ag-mode-map (kbd "N") 'evil-search-previous)))
-    (setq ag-executable "/usr/local/bin/ag")
-    (setq ag-highlight-search t)
-    (setq ag-reuse-buffers t)
-    (setq ag-reuse-window t))
-#+END_SRC
-
+* Dem packages
 ** [[https://github.com/emacs-helm/helm][emacs-helm/helm]]
 Kind of an Alfred for emacs. Completion, nice menus for stuff
 overall great.
+
 #+BEGIN_SRC elisp
   (use-package helm
     :ensure t
@@ -182,152 +132,139 @@ overall great.
     (setq helm-locate-command "mdfind -name %s %s") ; Use spotlight for search
     (global-set-key (kbd "M-y") 'helm-show-kill-ring))
 #+END_SRC
-** [[https://github.com/tkf/emacs-jedi][tkf/emacs-jedi]]
-Integrates [[https://github.com/davidhalter/jedi][jedi]] into emacs for python completion,
-hasn't been working for me recently. Either way,
-this is for [[auto-complete]] but now I use company-jedi. 
+
+** [[https://github.com/magit/magit][magit/magit]]
+Like git, for emacs. But cooler.
+
 #+BEGIN_SRC elisp
-
-  ;; (use-package jedi
-  ;;   ;; Hasn't been working smoothly recently
-  ;;   :ensure t
-  ;;   :init
-  ;;   (add-hook 'python-mode-hook 'jedi:setup)
-  ;;   (setq jedi:complete-on-dot t))
-
-#+END_SRC
-** [[https://github.com/jorgenschaefer/elpy][jorgenschaefer/elpy]]
-Sets up a python editing environment. I'm not sure yet.
-#+BEGIN_SRC elisp
-
-  ;; (use-package elpy
-  ;;   ;; Eh, I don't know...
-  ;;   :ensure t
-  ;;   :config
-  ;;   (elpy-enable)
-  ;;   (setq elpy-rpc-backend "jedi"))
-#+END_SRC
-** 
-#+BEGIN_SRC elisp
-
-  (use-package markdown-mode
+  (use-package magit
     :ensure t)
 #+END_SRC
-** 
+
+** [[https://github.com/joaotavora/yasnippet][joaotavora/yasnippet]]
+Freakin yasnippet. It's the best.
+
 #+BEGIN_SRC elisp
-
-
-  (use-package markdown-preview-mode
-    :ensure t)
-#+END_SRC
-** 
-#+BEGIN_SRC elisp
-
-  ;; (use-package yafolding
-  ;;   ;; Man, good code folding is hard to come by in emacs
-  ;;   ;; This one's ok, but there are a couple know issues that
-  ;;   ;; don't quite make it worth it, I think.
-  ;;   :ensure t
-  ;;   :config
-  ;;   (defun air--yafolding-kbd ()
-  ;;  (local-set-key (kbd "C-c <up>") 'yafolding-hide-all)
-  ;;  (local-set-key (kbd "C-c <down>") 'yafolding-show-all)
-  ;;  (local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
-  ;;  (local-set-key (kbd "C-c <right>") 'yafolding-show-element)
-  ;;  (local-set-key [C-tab] 'yafolding-toggle-element))
-  ;;   (add-hook 'python-mode-hook 'yafolding-mode)
-  ;;   (add-hook 'python-mode-hook 'air--yafolding-kbd))
-#+END_SRC
-** 
-#+BEGIN_SRC elisp
-
   (use-package yasnippet
     ;; SNIPPETS!!!
     :ensure t
     :config
     (yas-global-mode 1))
 #+END_SRC
-** [[https://github.com/auto-complete/auto-complete][auto-complete/auto-complete]] 
-<<auto-complete>>
+
+** [[https://github.com/flycheck/flycheck][flycheck/flycheck]]
+Syntax check for python. Pretty good.
+
 #+BEGIN_SRC elisp
-
-  ;; (use-package auto-complete
-  ;;   ;; Supposedly not as good as company mode
-  ;;   :ensure t
-  ;;   :config
-  ;;   (global-auto-complete-mode t))
-#+END_SRC
-
-
-  (use-package csv-mode
-    ;; I'll give this a shot
-    :ensure t)
-
   (use-package flycheck
     ;; Pep8 check, basically
     :ensure t
     :config
     (global-set-key (kbd "<f11>") 'flycheck-mode))
+#+END_SRC
 
-  (use-package multi-term
-    ;; Supposed to be nicer than ansi-term
-    :ensure t)
+** [[https://github.com/company-mode/company-mode][company-mode/company-mode]]
+Supposedly better than autocomplete... Also  using
+[[https://github.com/syohex/emacs-company-jedi][syohex/company-jedi]]
 
-  ;; (use-package autopair
-  ;;   ;; Recommended to use electric-pair now?
-  ;;   :ensure t
-  ;;   :config
-  ;;   (autopair-global-mode))
+#+BEGIN_SRC elisp
+  (use-package company
+    :ensure t
+    :config
+    (add-hook 'after-init-hook 'global-company-mode)
+    (use-package company-jedi
+      ;; Not sure this is actually working for me
+      :ensure t
+      :config
+      (defun my/python-mode-hook ()
+        (add-to-list 'company-backends 'company-jedi))
+      (add-hook 'python-mode-hook 'my/python-mode-hook)))
+#+END_SRC
+
+** [[https://github.com/Wilfred/ag.el][Wilfred/ag.el]]
+Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]] into emacs.
+
+#+BEGIN_SRC elisp
+  (use-package ag
+    ;; Silver searcher
+    :ensure t
+    :defer t
+    :init
+    (use-package wgrep-ag  
+      ;; Guess I need this first
+      :ensure t
+      :commands (wgrep-ag-setup))
+    :config
+    (add-hook 'ag-mode-hook
+              (lambda ()
+                (wgrep-ag-setup)
+                (define-key ag-mode-map (kbd "n") 'evil-search-next)
+                (define-key ag-mode-map (kbd "N") 'evil-search-previous)))
+    (setq ag-executable "/usr/local/bin/ag")
+    (setq ag-highlight-search t)
+    (setq ag-reuse-buffers t)
+    (setq ag-reuse-window t))
+#+END_SRC
+
+** [[https://github.com/alpaker/Fill-Column-Indicator][alpaker/Fill-Column-Indicator]]
+I like a line length limit indicator in Python
+
+#+BEGIN_SRC elisp
 
   (use-package fill-column-indicator
-    ;; I like a line length limit indicator in Python
     :ensure t
     :init
     (setq-default fci-rule-column 79)
     (global-set-key (kbd "<f10>") 'fci-mode)
     (add-hook 'python-mode-hook 'fci-mode))
+#+END_SRC
 
+** [[https://github.com/Fanael/rainbow-delimiters][Fanael/rainbow-delimiters]]
+Better parentheses coloring
+
+#+BEGIN_SRC elisp
   (use-package rainbow-delimiters
-    ;; Better parentheses coloring
     :ensure t
     :init
     (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
     (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
+#+END_SRC
 
-  ;; (use-package smart-mode-powerline-theme
-  ;;   :ensure t)
+** [[https://github.com/tsdh/highlight-parentheses.el][tsdh/highlight-parentheses.el]]
+Makes the parentheses my cursor is between stand out more.
+ 
+#+BEGIN_SRC elisp
+  (use-package highlight-parentheses
+    ;; Make parenthesis I'm currently in stand out
+    :ensure t)
+#+END_SRC
 
-  ;; (use-package smart-mode-line
-  ;;   :ensure t
-  ;;   :config
-  ;;   (setq sml/no-confirm-load-theme t)
-  ;;   (setq sml/theme 'dark)
-  ;;   (setq rm-whitelist '(""))
-  ;;   (setq system-uses-terminfo nil)
-  ;;   (sml/setup)
-  ;;   (display-time-mode)
-  ;;   (display-time-update)
-  ;;   (fancy-battery-mode)
-  ;;   (setq fancy-battery-show-percentage t))
+** [[https://github.com/Fanael/highlight-numbers][Fanael/highlight-numbers]]
+Neat-o
 
-  ;; (use-package powerline
-  ;;   :ensure t
-  ;;   :init
-  ;;   (setq powerline-default-separator nil)
-  ;;   :config
-  ;;   (powerline-evil-vim-color-theme))
+#+BEGIN_SRC elisp
+  (use-package highlight-numbers
+    :ensure t
+    :init
+    (add-hook 'python-mode-hook 'highlight-numbers-mode))
+#+END_SRC
 
-  ;; (use-package powerline-evil
-  ;;   :ensure t)
+** [[https://github.com/vspinu/imenu-anywhere][vspinu/imenu-anywhere]]
+imenu on steroids.
 
-  (use-package fancy-battery
-    ;; Something something battery
+#+BEGIN_SRC elisp
+  (use-package imenu-anywhere
+    ;; Imenu on steroids
     :ensure t
     :config
-    (fancy-battery-mode)
-    (setq fancy-battery-show-percentage t)
-    (fancy-battery-update))
+    (global-set-key (kbd "<f5>") 'imenu-anywhere))
+#+END_SRC
 
+** [[https://github.com/TheBB/spaceline][TheBB/spaceline]]
+I was looking for something with the nice look and simplicity of
+[[https://github.com/itchyny/lightline.vim][this]]. Spaceline does ok. 
+
+#+BEGIN_SRC elisp
   (use-package spaceline
     ;; Similar to vim's powerline, this one looks clean
     ;; and 'just works', to an extent
@@ -347,193 +284,269 @@ Sets up a python editing environment. I'm not sure yet.
     (set-face-background 'spaceline-evil-visual "#ff8700")
     (set-face-foreground 'spaceline-evil-visual "#870000"))
 
-  (use-package highlight-numbers
-    ;; Neat-o
-    :ensure t
-    :init
-    (add-hook 'python-mode-hook 'highlight-numbers-mode))
+#+END_SRC
 
-  (use-package imenu-anywhere
-    ;; Imenu on steroids
+** [[https://github.com/lunaryorn/fancy-battery.el][lunaryorn/fancy-battery.el]]
+For nice battery display info.
+
+#+BEGIN_SRC elisp
+  (use-package fancy-battery
+    ;; Something something battery
     :ensure t
     :config
-    (global-set-key (kbd "<f5>") 'imenu-anywhere))
+    (fancy-battery-mode)
+    (setq fancy-battery-show-percentage t)
+    (fancy-battery-update))
+#+END_SRC
 
-  (use-package highlight-parentheses
-    ;; Make parenthesis I'm currently in stand out
+** [[https://github.com/myrkr/dictionary-el/blob/master/dictionary.el][myrkr/dictionary-el]]
+Dictionary search!
+
+#+BEGIN_SRC elisp
+  (use-package dictionary
     :ensure t)
 #+END_SRC
 
-* STuff
+** [[https://github.com/naiquevin/sphinx-doc.el][naiquevin/sphinx-doc.el]]
+Sphinx doc python integration. Pretty neat, though not entirely
+complete, IMO.
 
-;;; Custom Key Bindings ;;;
-;; (global-set-key (kbd "<f8> <f1>")
-;; 				'(lambda () (interactive) (ansi-term "/usr/local/bin/ipython")))
-;; (global-set-key (kbd "<f8> <f2>")
-;; 				'(lambda () (interactive) (ansi-term "/Users/diego/.virtualenvs/py2/bin/ipython")))
-;; (global-set-key (kbd "<f9>") 'linum-mode)
-;; (global-set-key (kbd "M-RET") 'python-shell-send-buffer)
+#+BEGIN_SRC elisp
+  (use-package sphinx-doc
+    :ensure t
+    :config
+    (add-hook 'python-mode-hook
+              (lambda ()
+                (require 'sphinx-doc)
+                (sphinx-doc-mode t))))
 
-;; Global stuff
-(global-hl-line-mode 1)
-;; (global-linum-mode 1)
-(setq linum-delay t)
-(global-auto-revert-mode t)
-(setq whitespace-style '(face trailing))
-(setq column-number-mode t)
+#+END_SRC
 
-;; For matlab, I guess
-(add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
+** [[https://github.com/defunkt/markdown-mode][defunkt/markdown-mode]]
+Syntax highlighting for markdown files.
 
-;; Python stuff
-(defun ipython ()
-  (interactive)
-  (ansi-term "/usr/local/bin/ipython"))
-(defun ipython2()
-  (interactive)
-  (ansi-term "/Users/diego/.virtualenvs/py2/bin/ipython"))
-(add-hook 'python-mode-hook 'highlight-parentheses-mode)
-(add-hook 'python-mode-hook 'hs-minor-mode)
-;;(add-hook 'python-mode-hook 'yafolding-mode)
-(add-hook 'python-mode-hook 'yas-minor-mode)
-(add-hook 'python-mode-hook
-		  (lambda () (set (make-local-variable 'comment-inline-offset) 2)))
-(add-hook 'python-mode-hook (lambda () (setq tab-width 4)))
-(add-hook 'python-mode-hook (lambda () (linum-mode 1)))
-(setenv "PYTHONPATH" "/usr/local/bin/python3")
+#+BEGIN_SRC elisp
+  (use-package markdown-mode
+    :ensure t)
+#+END_SRC
 
-;; Emacs-lisp stuff
-(defun my-lisp-mode-config ()
-  (setq ac-sources '(ac-source-symbols ac-source-words-in-same-mode-buffers))
-  (local-set-key (kbd "C-c <up>") 'hs-hide-all)
-  (local-set-key (kbd "C-c <down>") 'hs-show-all)
-  (local-set-key (kbd "C-c <left>") 'hs-hide-block)
-  (local-set-key (kbd "C-c <right>") 'hs-show-block))
+** [[https://github.com/ancane/markdown-preview-mode][ancane/markdown-preview-mode]]
+Generates markdown previews? Not sure if working.
 
-(add-hook 'emacs-lisp-mode-hook 'my-lisp-mode-config)
-(add-hook 'emacs-lisp-mode-hook 'highlight-parentheses-mode)
-(add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
-(add-hook 'emacs-lisp-mode-hook (lambda () (linum-mode 1)))
+#+BEGIN_SRC elisp
+  (use-package markdown-preview-mode
+    :ensure t)
+#+END_SRC
 
-;; Disable fci mode when autocomplete popup menu happens
-(defun sanityinc/fci-enabled-p ()
-    (and (boundp 'fci-mode) fci-mode))
-(defvar sanityinc/fci-mode-suppressed nil)
-(defadvice popup-create (before suppress-fci-mode activate)
-  "Suspend fci-mode while popups are visible"
-  (let ((fci-enabled (sanityinc/fci-enabled-p)))
-	(when fci-enabled
-	  (set (make-local-variable 'sanityinc/fci-mode-suppressed) fci-enabled)
-	  (turn-off-fci-mode))))
+** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
+Eh, wanted to try a simpler way of editing
+csv files. (Excel and Numbers both kinda suck at this,
+LibreOffice was slightly better.) Haven't used this much.
 
-(defadvice popup-delete (after restore-fci-mode activate)
-  "Restore fci-mode when all popups have closed"
-  (when (and sanityinc/fci-mode-suppressed
-			 (null popup-instances))
-	(setq sanityinc/fci-mode-suppressed nil)
-	(turn-on-fci-mode)))
+#+BEGIN_SRC elisp
 
-;; Highlight curent line number 
-(defface my-linum-hl
-  `((t :inherit linum :background ,(face-background 'hl-line nil t)))
-  "Face for the current line number."
-  :group 'linum)
+  (use-package csv-mode
+    ;; I'll give this a shot
+    :ensure t)
+#+END_SRC
+** [[https://www.emacswiki.org/emacs/download/multi-term.el][multi-term]]
+I wanted a slightly better terminal in emacs. Not sure
+if this is the answer as I haven't used it much.
+#+BEGIN_SRC elisp
+  (use-package multi-term
+    ;; Supposed to be nicer than ansi-term
+    :ensure t)
+#+END_SRC
+** Not currently in use
+*** [[https://github.com/Malabarba/smart-mode-line][Malabarba/smart-mode-line]]
+Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][spaceline]].
 
-(defvar my-linum-format-string "%3d")
+#+BEGIN_SRC elisp
+  ;; (use-package smart-mode-powerline-theme
+  ;;   :ensure t)
 
-(add-hook 'linum-before-numbering-hook 'my-linum-get-format-string)
+  ;; (use-package smart-mode-line
+  ;;   :ensure t
+  ;;   :config
+  ;;   (setq sml/no-confirm-load-theme t)
+  ;;   (setq sml/theme 'dark)
+  ;;   (setq rm-whitelist '(""))
+  ;;   (setq system-uses-terminfo nil)
+  ;;   (sml/setup)
+  ;;   (display-time-mode)
+  ;;   (display-time-update)
+  ;;   (fancy-battery-mode)
+  ;;   (setq fancy-battery-show-percentage t))
+#+END_SRC
 
-(defun my-linum-get-format-string ()
-  (let* ((width (1+ (length (number-to-string
-							 (count-lines (point-min) (point-max))))))
-		 (format (concat "%" (number-to-string width) "d ")))
-	(setq my-linum-format-string format)))
+*** [[https://github.com/jorgenschaefer/elpy][jorgenschaefer/elpy]]
+Sets up a python editing environment. I'm not sure yet.
 
-(defvar my-linum-current-line-number 0)
+#+BEGIN_SRC elisp
+  ;; (use-package elpy
+  ;;   ;; Eh, I don't know...
+  ;;   :ensure t
+  ;;   :config
+  ;;   (elpy-enable)
+  ;;   (setq elpy-rpc-backend "jedi"))
+#+END_SRC
 
-(setq linum-format 'my-linum-format)
+*** [[https://github.com/zenozeng/yafolding.el][zenozeng/yafolding.el]]
+Good code folding is hard to come by in Emacs,
+and isn't /that/ useful. This was pretty good but
+had some known issues.
 
-(defun my-linum-format (line-number)
-  (propertize (format my-linum-format-string line-number) 'face
-			  (if (eq line-number my-linum-current-line-number)
-				  'my-linum-hl
-				'linum)))
+#+BEGIN_SRC elisp
+  ;; (use-package yafolding
+  ;;   ;; Man, good code folding is hard to come by in emacs
+  ;;   ;; This one's ok, but there are a couple know issues that
+  ;;   ;; don't quite make it worth it, I think.
+  ;;   :ensure t
+  ;;   :config
+  ;;   (defun air--yafolding-kbd ()
+  ;;  (local-set-key (kbd "C-c <up>") 'yafolding-hide-all)
+  ;;  (local-set-key (kbd "C-c <down>") 'yafolding-show-all)
+  ;;  (local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
+  ;;  (local-set-key (kbd "C-c <right>") 'yafolding-show-element)
+  ;;  (local-set-key [C-tab] 'yafolding-toggle-element))
+  ;;   (add-hook 'python-mode-hook 'yafolding-mode)
+  ;;   (add-hook 'python-mode-hook 'air--yafolding-kbd))
+#+END_SRC
 
-(defadvice linum-update (around my-linum-update)
-  (let ((my-linum-current-line-number (line-number-at-pos)))
-	ad-do-it))
-(ad-activate 'linum-update)
-(add-hook 'term-mode-hook (lambda ()
-							(setq-local global-hl-line-mode
-										nil)))
+*** [[https://github.com/tkf/emacs-jedi][tkf/emacs-jedi]]
+Integrates [[https://github.com/davidhalter/jedi][jedi]] into emacs for python completion,
+hasn't been working for me recently. Either way,
+this is for [[https://github.com/auto-complete/auto-complete][auto-complete]] but now I use [[https://github.com/syohex/emacs-company-jedi][syohex/emacs-company-jedi]]. 
 
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(default ((t (:inherit nil :stipple nil :background "#303030" :foreground "#d0d0d0" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" :family "default"))))
- '(column-marker-1 ((t (:background "#7f7f7f"))))
- '(comint-highlight-prompt ((t nil)))
- '(company-preview ((t (:inherit default :underline t))))
- '(company-preview-common ((t (:inherit company-preview))))
- '(company-tooltip ((t (:background "white" :foreground "black"))))
- '(company-tooltip-selection ((t (:background "color-75"))))
- '(eww-form-textarea ((t (:foreground "#000000" :box 1))))
- '(font-lock-builtin-face ((t (:foreground "#56C0C2"))))
- '(font-lock-comment-face ((t (:foreground "#6c6c6c" :slant italic))))
- '(font-lock-constant-face ((t (:foreground "#56C0C2"))))
- '(font-lock-function-name-face ((t (:foreground "#5fafff"))))
- '(font-lock-keyword-face ((t (:foreground "#C678DD" :weight normal))))
- '(font-lock-string-face ((t (:foreground "#87d787"))))
- '(font-lock-variable-name-face ((t (:foreground "#D19A66"))))
- '(helm-ff-file ((t (:foreground "#d0d0d0"))))
- '(helm-match ((t (:foreground "brightred"))))
- '(helm-selection ((t (:background "#3a3a3a" :distant-foreground "black"))))
- '(hl-line ((t (:background "#3a3a3a"))))
- '(linum ((t (:foreground "#4e4e4e"))))
- '(my-linum-hl ((t (:background "#3a3a3a" :foreground "#ff0000"))))
- '(powerline-active1 ((t (:inherit mode-line :background "#262626" :foreground "color-247"))))
- '(powerline-active2 ((t (:inherit mode-line :background "#262626"))))
- '(region ((t (:background "#4e4e4e"))))
- '(sh-quoted-exec ((t (:foreground "#af5fff"))))
- '(sml/battery ((t nil)) t)
- '(sml/col-number ((t (:inherit sml/global))))
- '(sml/time ((t (:foreground "#af5f00")))))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(ac-disable-faces (quote (font-lock-comment-face font-lock-doc-face)))
- '(display-time-24hr-format t)
- '(display-time-default-load-average nil)
- '(display-time-format "%a %d %b  %H:%M ")
- '(elpy-modules
-   (quote
-	(elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
- '(fill-column 79)
- '(helm-boring-buffer-regexp-list
-   (quote
-	("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*Minibuf" "\\*epc")))
- '(org-babel-load-languages (quote ((python . t) (emacs-lisp . t))))
- '(org-blank-before-new-entry (quote ((heading) (plain-list-item))))
- '(org-confirm-babel-evaluate nil)
- '(org-src-fontify-natively t)
- '(powerline-evil-tag-style (quote verbose))
- '(projectile-globally-ignored-files (quote ("TAGS" ".DS_Store")))
- '(sml/name-width 40)
- '(sml/replacer-regexp-list
-   (quote
-	(("^~/org/" ":Org:")
-	 ("^~/\\.emacs\\.d/elpa/" ":ELPA:")
-	 ("^~/\\.emacs\\.d/" ":ED:")
-	 ("^/sudo:.*:" ":SU:")
-	 ("^~/Documents/" ":Doc:")
-	 ("^~/Dropbox/" ":DB:")
-	 ("^:\\([^:]*\\):Documento?s/" ":\\1/Doc:")
-	 ("^~/[Gg]it/" ":Git:")
-	 ("^~/[Gg]it[Hh]ub/" ":Git:")
-	 ("^~/[Gg]it\\([Hh]ub\\|\\)-?[Pp]rojects/" ":Git:")
-	 ("\"^~/Dropbox \\(MIT\\)/\"" "\":DB:\""))))
-     '(vc-follow-symlinks t))
+#+BEGIN_SRC elisp
+  ;; (use-package jedi
+  ;;   ;; Hasn't been working smoothly recently
+  ;;   :ensure t
+  ;;   :init
+  ;;   (add-hook 'python-mode-hook 'jedi:setup)
+  ;;   (setq jedi:complete-on-dot t))
+#+END_SRC
+
+*** [[https://github.com/auto-complete/auto-complete][auto-complete/auto-complete]] 
+Pretty good autocompletion, but trying out [[github.com/company-mode/company-mode][company-mode]] right now.
+
+#+BEGIN_SRC elisp
+  ;; (use-package auto-complete
+  ;;   ;; Supposedly not as good as company mode
+  ;;   :ensure t
+  ;;   :config
+  ;;   (global-auto-complete-mode t))
+#+END_SRC
+
+*** [[https://github.com/joaotavora/autopair][joaotavora/autopair]]
+It may be recommended to use =electric-pair-mode= nowadays? That's
+what I'm using anyway.  
+
+#+Begin_src elisp
+  ;; (use-package autopair
+  ;;   :ensure t
+  ;;   :config
+  ;;   (autopair-global-mode))
+#+END_SRC
+
+* Python stuff
+And one matlab thing
+#+BEGIN_SRC elisp
+  (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
+
+  ;; Python stuff
+  (defun ipython ()
+    (interactive)
+    (ansi-term "/usr/local/bin/ipython"))
+  (defun ipython2()
+    (interactive)
+    (ansi-term "/Users/diego/.virtualenvs/py2/bin/ipython"))
+  (add-hook 'python-mode-hook 'highlight-parentheses-mode)
+  (add-hook 'python-mode-hook 'hs-minor-mode)
+  ;;(add-hook 'python-mode-hook 'yafolding-mode)
+  (add-hook 'python-mode-hook 'yas-minor-mode)
+  (add-hook 'python-mode-hook
+            (lambda () (set (make-local-variable 'comment-inline-offset) 2)))
+  (add-hook 'python-mode-hook (lambda () (setq tab-width 4)))
+  (add-hook 'python-mode-hook (lambda () (linum-mode 1)))
+  (setenv "PYTHONPATH" "/usr/local/bin/python3")
+#+END_SRC
+
+* Elisp stuff
+
+#+BEGIN_SRC elisp
+  ;; Emacs-lisp stuff
+  (defun my-lisp-mode-config ()
+    (setq ac-sources '(ac-source-symbols ac-source-words-in-same-mode-buffers))
+    (local-set-key (kbd "C-c <up>") 'hs-hide-all)
+    (local-set-key (kbd "C-c <down>") 'hs-show-all)
+    (local-set-key (kbd "C-c <left>") 'hs-hide-block)
+    (local-set-key (kbd "C-c <right>") 'hs-show-block))
+
+  (add-hook 'emacs-lisp-mode-hook 'my-lisp-mode-config)
+  (add-hook 'emacs-lisp-mode-hook 'highlight-parentheses-mode)
+  (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
+  (add-hook 'emacs-lisp-mode-hook (lambda () (linum-mode 1)))
+#+END_SRC
+
+* Fix fci pop-up menu issue
+This is from somewhere on the internet.
+
+#+BEGIN_SRC elisp
+  ;; Disable fci mode when autocomplete popup menu happens
+  (defun sanityinc/fci-enabled-p ()
+      (and (boundp 'fci-mode) fci-mode))
+  (defvar sanityinc/fci-mode-suppressed nil)
+  (defadvice popup-create (before suppress-fci-mode activate)
+    "Suspend fci-mode while popups are visible"
+    (let ((fci-enabled (sanityinc/fci-enabled-p)))
+      (when fci-enabled
+        (set (make-local-variable 'sanityinc/fci-mode-suppressed) fci-enabled)
+        (turn-off-fci-mode))))
+
+  (defadvice popup-delete (after restore-fci-mode activate)
+    "Restore fci-mode when all popups have closed"
+    (when (and sanityinc/fci-mode-suppressed
+               (null popup-instances))
+      (setq sanityinc/fci-mode-suppressed nil)
+      (turn-on-fci-mode)))
+#+END_SRC
+
+* Highlight currrent line number
+This, too, is from somewhere on the internet. Possibly
+stackoverflow. 
+
+#+BEGIN_SRC elisp
+  (defface my-linum-hl
+    `((t :inherit linum :background ,(face-background 'hl-line nil t)))
+    "Face for the current line number."
+    :group 'linum)
+
+  (defvar my-linum-format-string "%3d")
+
+  (add-hook 'linum-before-numbering-hook 'my-linum-get-format-string)
+
+  (defun my-linum-get-format-string ()
+    (let* ((width (1+ (length (number-to-string
+                               (count-lines (point-min) (point-max))))))
+           (format (concat "%" (number-to-string width) "d ")))
+      (setq my-linum-format-string format)))
+
+  (defvar my-linum-current-line-number 0)
+
+  (setq linum-format 'my-linum-format)
+
+  (defun my-linum-format (line-number)
+    (propertize (format my-linum-format-string line-number) 'face
+                (if (eq line-number my-linum-current-line-number)
+                    'my-linum-hl
+                  'linum)))
+
+  (defadvice linum-update (around my-linum-update)
+    (let ((my-linum-current-line-number (line-number-at-pos)))
+      ad-do-it))
+  (ad-activate 'linum-update)
+  (add-hook 'term-mode-hook (lambda ()
+                              (setq-local global-hl-line-mode
+                                          nil)))
+#+END_SRC
