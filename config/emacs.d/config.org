@@ -1,10 +1,10 @@
 #+TITLE: Emacs Init File! 
 #+STARTUP: hideblocks 
 * Intro
-This is my emacs init file. =init.el= loads the elisp code from here.
-It's pretty cool that I can write it in org mode, because easy organization
-and rearrangement are pretty sweet. Check out [[https://github.com/aaronbieber/][@aaronbieber]] and [[https://github.com/hrs][@hrs]], a lot of
-the inspiration (and erm, code) for this is taken from them. 
+This is my emacs init file. =init.el= loads the elisp code from here. It's
+pretty cool that I can write it in org mode, because easy organization and
+rearrangement are pretty sweet. Check out [[https://github.com/aaronbieber/][@aaronbieber]] and [[https://github.com/hrs][@hrs]], a lot of the
+inspiration (and erm, code) for this is taken from them.
 * Personal Info
 
 #+BEGIN_SRC emacs-lisp
@@ -525,12 +525,8 @@ like the way he does stuff. This is mostly (entirely?) his code.
 #+END_SRC
 
 ** Org mode
+*** Helper functions
 #+BEGIN_SRC emacs-lisp
-  ;; Org prerequisites
-  (use-package visual-fill-column
-       :ensure t)
-
-  ;; Helper functions
   (defun air--org-global-custom-ids ()
     "Find custom ID fields in all org agenda files."
     (let ((files (org-agenda-files))
@@ -587,25 +583,23 @@ like the way he does stuff. This is mostly (entirely?) his code.
     (org-set-property "CATEGORY" value))
 
   (defun air-org-insert-heading (&optional subheading)
-    "Insert a heading or a subheading.
-
+      "Insert a heading or a subheading.
   If the optional SUBHEADING is t, insert a subheading.  Inserting
   headings always respects content."
-    (interactive "P")
-    (if subheading
-        (org-insert-subheading t)
-      (org-insert-heading t)))
+      (interactive "P")
+      (if subheading
+          (org-insert-subheading t)
+        (org-insert-heading t)))
 
   (defun air-org-insert-scheduled-heading (&optional subheading)
-    "Insert a new org heading scheduled for today.
-
+      "Insert a new org heading scheduled for today.
   Insert the new heading at the end of the current subtree if
   FORCE-HEADING is non-nil."
-    (interactive "P")
-    (if subheading
-        (org-insert-subheading t)
-      (org-insert-todo-heading t t))
-    (org-schedule nil (format-time-string "%Y-%m-%d")))
+      (interactive "P")
+      (if subheading
+          (org-insert-subheading t)
+        (org-insert-todo-heading t t))
+      (org-schedule nil (format-time-string "%Y-%m-%d")))
 
   (defun air-org-task-capture ()
     "Capture a task with my default template."
@@ -633,82 +627,79 @@ like the way he does stuff. This is mostly (entirely?) his code.
           (and (search-forward "SCHEDULED:" search-limit t)
                (replace-match "DEADLINE:"))))))
 
-  (defun air-pop-to-org-todo ();; (split)
+  (defun air-pop-to-org-todo (split)
     "Visit my main TODO list, in the current window or a SPLIT."
-    ;; (interactive "P")
-    ;; (air--pop-to-file "~/Dropbox (MIT)/org/todo.org" split)
-    (interactive)
-    (find-file-other-window "~/Dropbox (MIT)/org/todo.org"))
+    (interactive "P")
+    (air--pop-to-file "~/Dropbox/org/todo.org" split))
 
   (defun air-pop-to-org-notes (split)
     "Visit my main notes file, in the current window or a SPLIT."
     (interactive "P")
-    (air--pop-to-file "~/Dropbox (MIT)/org/notes.org" split))
+    (air--pop-to-file "~/Dropbox/org/notes.org" split))
 
   (defun air-pop-to-org-vault (split)
     "Visit my encrypted vault file, in the current window or a SPLIT."
     (interactive "P")
-    (air--pop-to-file "~/Dropbox (MIT)/org/vault.gpg" split))
+    (air--pop-to-file "~/Dropbox/org/vault.gpg" split))
 
-  ;; (defun air-pop-to-org-agenda (split)
-  ;;   "Visit the org agenda, in the current window or a SPLIT."
-  ;;   (interactive "P")
-  ;;   (org-agenda-list nil "today" 'day)
-  ;;   (when (not split)
-  ;;     (delete-other-windows)))
+  (defun air-pop-to-org-agenda (split)
+    "Visit the org agenda, in the current window or a SPLIT."
+    (interactive "P")
+    (org-agenda-list nil "today" 'day)
+    (when (not split)
+      (delete-other-windows)))
 
   (defun air--org-insert-list-leader-or-self (char)
-    "If on column 0, insert space-padded CHAR; otherwise insert CHAR.
-
+      "If on column 0, insert space-padded CHAR; otherwise insert CHAR.
   This has the effect of automatically creating a properly indented list
   leader; like hyphen, asterisk, or plus sign; without having to use
   list-specific key maps."
-    (if (= (current-column) 0)
-        (insert (concat " " char " "))
-      (insert char)))
+      (if (= (current-column) 0)
+          (insert (concat " " char " "))
+        (insert char)))
 
   (defun air--org-swap-tags (tags)
-    "Replace any tags on the current headline with TAGS.
-
+      "Replace any tags on the current headline with TAGS.
   The assumption is that TAGS will be a string conforming to Org Mode's
   tag format specifications, or nil to remove all tags."
-    (let ((old-tags (org-get-tags-string))
-          (tags (if tags
-                    (concat " " tags)
-                  "")))
-      (save-excursion
-        (beginning-of-line)
-        (re-search-forward
-         (concat "[ \t]*" (regexp-quote old-tags) "[ \t]*$")
-         (line-end-position) t)
-        (replace-match tags)
-        (org-set-tags t))))
+      (let ((old-tags (org-get-tags-string))
+            (tags (if tags
+                      (concat " " tags)
+                    "")))
+        (save-excursion
+          (beginning-of-line)
+          (re-search-forward
+           (concat "[ \t]*" (regexp-quote old-tags) "[ \t]*$")
+           (line-end-position) t)
+          (replace-match tags)
+          (org-set-tags t))))
 
   (defun air-org-set-tags (tag)
-    "Add TAG if it is not in the list of tags, remove it otherwise.
-
+      "Add TAG if it is not in the list of tags, remove it otherwise.
   TAG is chosen interactively from the global tags completion table."
-    (interactive
-     (list (let ((org-last-tags-completion-table
-                  (if (derived-mode-p 'org-mode)
-                      (org-uniquify
-                       (delq nil (append (org-get-buffer-tags)
-                                         (org-global-tags-completion-table))))
-                    (org-global-tags-completion-table))))
-             (completing-read
-              "Tag: " 'org-tags-completion-function nil nil nil
-              'org-tags-history))))
-    (let* ((cur-list (org-get-tags))
-           (new-tags (mapconcat 'identity
-                                (if (member tag cur-list)
-                                    (delete tag cur-list)
-                                  (append cur-list (list tag)))
-                                ":"))
-           (new (if (> (length new-tags) 1) (concat " :" new-tags ":")
-                  nil)))
-      (air--org-swap-tags new)))
+      (interactive
+       (list (let ((org-last-tags-completion-table
+                    (if (derived-mode-p 'org-mode)
+                        (org-uniquify
+                         (delq nil (append (org-get-buffer-tags)
+                                           (org-global-tags-completion-table))))
+                      (org-global-tags-completion-table))))
+               (completing-read
+                "Tag: " 'org-tags-completion-function nil nil nil
+                'org-tags-history))))
+      (let* ((cur-list (org-get-tags))
+             (new-tags (mapconcat 'identity
+                                  (if (member tag cur-list)
+                                      (delete tag cur-list)
+                                    (append cur-list (list tag)))
+                                  ":"))
+             (new (if (> (length new-tags) 1) (concat " :" new-tags ":")
+                    nil)))
+        (air--org-swap-tags new)))
 
-
+#+END_SRC
+*** Setup
+#+BEGIN_SRC emacs-lisp
   ;;; Code:
   (use-package org
     :ensure t
@@ -719,16 +710,14 @@ like the way he does stuff. This is mostly (entirely?) his code.
            ("C-c t n" . air-pop-to-org-notes)
            ("C-c t t" . air-pop-to-org-todo)
            ("C-c t v" . air-pop-to-org-vault)
-           ("C-c t a" . org-agenda-list)
+           ("C-c t a" . air-pop-to-org-agenda)
            ("C-c t A" . org-agenda)
            ("C-c f k" . org-search-view)
            ("C-c f t" . org-tags-view)
            ("C-c f i" . air-org-goto-custom-id))
     :config
-    (eval-after-load "org"
-        '(require 'ox-md nil t))
     (setq org-agenda-text-search-extra-files '(agenda-archives))
-    (setq org-agenda-files '("~/Dropbox (MIT)/org/"))
+    (setq org-agenda-files '("~/Dropbox/org/"))
     (setq org-todo-keywords
           '((sequence "☛ TODO" "○ IN-PROGRESS" "⚑ WAITING" "|" "✓ DONE" "✗ CANCELED")))
     (setq org-blank-before-new-entry '((heading . t)
@@ -741,8 +730,8 @@ like the way he does stuff. This is mostly (entirely?) his code.
              (file+headline "notes.org" "Work")
              "* %?\n%u\n\n"
              :jump-to-captured t)))
-    (setq org-default-notes-file "~/Dropbox (MIT)/org/todo.org")
-    (setq org-directory "~/Dropbox (MIT)/org")
+    (setq org-default-notes-file "~/Dropbox/org/todo.org")
+    (setq org-directory "~/Dropbox/org")
     (setq org-enforce-todo-dependencies t)
     (setq org-log-done (quote time))
     (setq org-log-redeadline (quote time))
@@ -793,8 +782,8 @@ like the way he does stuff. This is mostly (entirely?) his code.
                 (dolist (char '("+" "-"))
                   (define-key org-mode-map (kbd char)
                     `(lambda ()
-                      (interactive)
-                      (air--org-insert-list-leader-or-self ,char))))
+                       (interactive)
+                       (air--org-insert-list-leader-or-self ,char))))
 
                 ;; Normal maps
                 (define-key org-mode-map (kbd "C-c d")   (lambda ()
@@ -825,10 +814,10 @@ like the way he does stuff. This is mostly (entirely?) his code.
                 (define-key org-mode-map (kbd "C-S-k") 'org-up-element)
 
                 ;; Use fill column, but not in agenda
-                ;;(setq fill-column 79)
-                (when (not (eq major-mode 'org-agenda-mode))
-                  (visual-line-mode)
-                  (visual-fill-column-mode))
+                (setq fill-column 79)
+                ;; (when (not (eq major-mode 'org-agenda-mode))
+                ;;   (visual-line-mode)
+                ;;   (visual-fill-column-mode))
                 ;; (flyspell-mode)
                 (org-indent-mode))))
 
@@ -836,13 +825,11 @@ like the way he does stuff. This is mostly (entirely?) his code.
     :ensure t
     :config
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-    ;; (setq org-bullets-bullet-list '("•"))
-    (use-package ox-twbs
-      :ensure t) 
-    )
-  ;;; init-org.el ends here
-#+END_SRC
+    (setq org-bullets-bullet-list '("•")))
 
+  ;;; init-org.el ends here"]")))))
+#+END_SRC
+ 
 * Dem packages
 ** [[https://github.com/emacs-helm/helm][emacs-helm/helm]]
 Kind of an Alfred for emacs. Completion, nice menus for stuff,
