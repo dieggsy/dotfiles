@@ -15,7 +15,6 @@ Useful scripts or something
 
  - [[./pipup2][pipup2]] - Update pip2 packages in a sort of hackish way, run [[./mkmasterinstall][mkmasterinstall]]
 
-
  - [[./pipup2][pipup3]] - Update pip3 packages in a sort of hackish way, run [[./mkmasterinstall][mkmasterinstall]]
 
  - [[./updates][updates]] - Run brewup, pipup2, pipup3 and [[./mkmasterinstall][mkmasterinstall]].
