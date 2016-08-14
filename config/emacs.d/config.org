@@ -262,7 +262,6 @@ Setup up cool stuff like use-package, and stuff.
 like the way he does stuff. This is mostly (entirely?) his code.
 
 ** Global functions
-
 #+BEGIN_SRC emacs-lisp
   (defun air--pop-to-file (file &optional split)
     "Visit a FILE, either in the current window or a SPLIT."
@@ -355,13 +354,9 @@ like the way he does stuff. This is mostly (entirely?) his code.
             (select-window first-win)
             (if this-win-2nd (other-window 1))))))
 #+END_SRC
-
 ** Evil mode
-
+*** Leader config
 #+BEGIN_SRC emacs-lisp
-  ;;; init-evil.el -- My evil mode configuration.
-  ;;; Commentary:
-  ;;; Code:
   (defun air--config-evil-leader ()
     "Configure evil leader mode."
     (evil-leader/set-leader ",")
@@ -403,7 +398,9 @@ like the way he does stuff. This is mostly (entirely?) his code.
       (if (and (boundp 'magit-blame-mode) magit-blame-mode)
           (magit-blame-quit)
               (call-interactively 'magit-blame))))
-
+#+END_SRC
+*** Evil config
+#+BEGIN_SRC emacs-lisp
   (defun air--config-evil ()
     "Configure evil mode."
 
@@ -433,6 +430,10 @@ like the way he does stuff. This is mostly (entirely?) his code.
       (kbd "C-d")     'evil-scroll-down
       (kbd "C-u")     'evil-scroll-up
       (kbd "C-w C-w") 'other-window)
+ 
+#+END_SRC
+*** Keybindings
+#+BEGIN_SRC emacs-lisp
     ;; Global bindings.
     (define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
     (define-key evil-normal-state-map (kbd "<up>")   'evil-previous-visual-line)
@@ -441,7 +442,9 @@ like the way he does stuff. This is mostly (entirely?) his code.
     (define-key evil-normal-state-map (kbd "[i")    'show-first-occurrence)
     (define-key evil-insert-state-map (kbd "C-e")   'end-of-line) ;; I know...
     (define-key evil-normal-state-map (kbd "S-SPC") 'air-pop-to-org-agenda)
-
+#+END_SRC
+*** Tiny menu
+#+BEGIN_SRC emacs-lisp
     (use-package tiny-menu :ensure t)
     (setq tiny-menu-items
           '(("org-things"   ("Things"
@@ -464,7 +467,9 @@ like the way he does stuff. This is mostly (entirely?) his code.
     (evil-define-key 'normal global-map (kbd "\\ t") (tiny-menu-run-item "org-things"))
     (evil-define-key 'normal global-map (kbd "\\ c") (tiny-menu-run-item "org-captures"))
     (evil-define-key 'normal global-map (kbd "\\ l") (tiny-menu-run-item "org-links"))
-    
+#+END_SRC
+*** Not entirely sure
+#+BEGIN_SRC emacs-lisp
     (defun evil-visual-line--mark-org-element-when-heading (&rest args)
           "When marking a visual line in Org, mark the current element.
   This function is used as a `:before-while' advice on
@@ -498,7 +503,9 @@ like the way he does stuff. This is mostly (entirely?) his code.
     (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
     (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
     (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit))
-
+#+END_SRC
+*** Final Setup
+#+BEGIN_SRC emacs-lisp
   (use-package evil
     :ensure t
     :init
@@ -518,7 +525,6 @@ like the way he does stuff. This is mostly (entirely?) his code.
 #+END_SRC
 
 ** Org mode
-
 #+BEGIN_SRC emacs-lisp
   ;; Org prerequisites
   (use-package visual-fill-column
@@ -627,10 +633,12 @@ like the way he does stuff. This is mostly (entirely?) his code.
           (and (search-forward "SCHEDULED:" search-limit t)
                (replace-match "DEADLINE:"))))))
 
-  (defun air-pop-to-org-todo (split)
+  (defun air-pop-to-org-todo ();; (split)
     "Visit my main TODO list, in the current window or a SPLIT."
-    (interactive "P")
-    (air--pop-to-file "~/Dropbox (MIT)/org/todo.org" split))
+    ;; (interactive "P")
+    ;; (air--pop-to-file "~/Dropbox (MIT)/org/todo.org" split)
+    (interactive)
+    (find-file-other-window "~/Dropbox (MIT)/org/todo.org"))
 
   (defun air-pop-to-org-notes (split)
     "Visit my main notes file, in the current window or a SPLIT."
@@ -642,12 +650,12 @@ like the way he does stuff. This is mostly (entirely?) his code.
     (interactive "P")
     (air--pop-to-file "~/Dropbox (MIT)/org/vault.gpg" split))
 
-  (defun air-pop-to-org-agenda (split)
-    "Visit the org agenda, in the current window or a SPLIT."
-    (interactive "P")
-    (org-agenda-list nil "today" 'day)
-    (when (not split)
-      (delete-other-windows)))
+  ;; (defun air-pop-to-org-agenda (split)
+  ;;   "Visit the org agenda, in the current window or a SPLIT."
+  ;;   (interactive "P")
+  ;;   (org-agenda-list nil "today" 'day)
+  ;;   (when (not split)
+  ;;     (delete-other-windows)))
 
   (defun air--org-insert-list-leader-or-self (char)
     "If on column 0, insert space-padded CHAR; otherwise insert CHAR.
@@ -711,7 +719,7 @@ like the way he does stuff. This is mostly (entirely?) his code.
            ("C-c t n" . air-pop-to-org-notes)
            ("C-c t t" . air-pop-to-org-todo)
            ("C-c t v" . air-pop-to-org-vault)
-           ("C-c t a" . air-pop-to-org-agenda)
+           ("C-c t a" . org-agenda-list)
            ("C-c t A" . org-agenda)
            ("C-c f k" . org-search-view)
            ("C-c f t" . org-tags-view)
@@ -817,7 +825,7 @@ like the way he does stuff. This is mostly (entirely?) his code.
                 (define-key org-mode-map (kbd "C-S-k") 'org-up-element)
 
                 ;; Use fill column, but not in agenda
-                (setq fill-column 100)
+                ;;(setq fill-column 79)
                 (when (not (eq major-mode 'org-agenda-mode))
                   (visual-line-mode)
                   (visual-fill-column-mode))

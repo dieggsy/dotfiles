@@ -1,0 +1,7 @@
+#+TITLE: bin 
+* brewup
+Update everything brew, run cleanup, prune, and doctor,
+run [[mkmasterinstall][mkmasterinstall]]
+
+* mkmasterinstall
+Create a master install script. Reads brew taps, lists, more meaningless words and meaningless whispers that mean

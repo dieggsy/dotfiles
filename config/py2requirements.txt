@@ -44,7 +44,7 @@ pathlib2==2.1.0
 pbr==1.10.0
 pep8==1.7.0
 pexpect==4.2.0
-pickleshare==0.7.3
+pickleshare==0.7.4
 Pillow==3.3.0
 plac==0.9.6
 powerline-status==2.5

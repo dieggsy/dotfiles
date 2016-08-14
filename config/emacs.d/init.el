@@ -51,8 +51,11 @@
 	("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*Minibuf" "\\*epc")))
  '(org-babel-load-languages (quote ((python . t) (emacs-lisp . t))))
  '(org-babel-python-command "python3")
- '(org-blank-before-new-entry (quote ((heading) (plain-list-item))))
+ '(org-blank-before-new-entry (quote ((heading . t) (plain-list-item . t))))
  '(org-confirm-babel-evaluate nil)
+ '(org-modules
+   (quote
+	(org-bbdb org-bibtex org-docview org-gnus org-info org-irc org-mhe org-rmail org-w3m)))
  '(org-src-fontify-natively t)
  '(powerline-evil-tag-style (quote verbose))
  '(projectile-globally-ignored-files (quote ("TAGS" ".DS_Store")))
