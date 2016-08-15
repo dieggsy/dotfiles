@@ -630,17 +630,17 @@ like the way he does stuff. This is mostly (entirely?) his code.
   (defun air-pop-to-org-todo (split)
     "Visit my main TODO list, in the current window or a SPLIT."
     (interactive "P")
-    (air--pop-to-file "~/Dropbox/org/todo.org" split))
+    (air--pop-to-file "~/Dropbox (MIT)/org/todo.org" split))
 
   (defun air-pop-to-org-notes (split)
     "Visit my main notes file, in the current window or a SPLIT."
     (interactive "P")
-    (air--pop-to-file "~/Dropbox/org/notes.org" split))
+    (air--pop-to-file "~/Dropbox (MIT)/org/notes.org" split))
 
   (defun air-pop-to-org-vault (split)
     "Visit my encrypted vault file, in the current window or a SPLIT."
     (interactive "P")
-    (air--pop-to-file "~/Dropbox/org/vault.gpg" split))
+    (air--pop-to-file "~/Dropbox (MIT)/org/vault.gpg" split))
 
   (defun air-pop-to-org-agenda (split)
     "Visit the org agenda, in the current window or a SPLIT."
@@ -717,7 +717,7 @@ like the way he does stuff. This is mostly (entirely?) his code.
            ("C-c f i" . air-org-goto-custom-id))
     :config
     (setq org-agenda-text-search-extra-files '(agenda-archives))
-    (setq org-agenda-files '("~/Dropbox/org/"))
+    (setq org-agenda-files '("~/Dropbox (MIT)/org/"))
     (setq org-todo-keywords
           '((sequence "☛ TODO" "○ IN-PROGRESS" "⚑ WAITING" "|" "✓ DONE" "✗ CANCELED")))
     (setq org-blank-before-new-entry '((heading . t)
@@ -730,8 +730,8 @@ like the way he does stuff. This is mostly (entirely?) his code.
              (file+headline "notes.org" "Work")
              "* %?\n%u\n\n"
              :jump-to-captured t)))
-    (setq org-default-notes-file "~/Dropbox/org/todo.org")
-    (setq org-directory "~/Dropbox/org")
+    (setq org-default-notes-file "~/Dropbox (MIT)/org/todo.org")
+    (setq org-directory "~/Dropbox (MIT)/org")
     (setq org-enforce-todo-dependencies t)
     (setq org-log-done (quote time))
     (setq org-log-redeadline (quote time))
