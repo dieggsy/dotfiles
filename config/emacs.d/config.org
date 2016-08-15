@@ -627,10 +627,12 @@ like the way he does stuff. This is mostly (entirely?) his code.
           (and (search-forward "SCHEDULED:" search-limit t)
                (replace-match "DEADLINE:"))))))
 
-  (defun air-pop-to-org-todo (split)
+  (defun air-pop-to-org-todo ;; (split)
     "Visit my main TODO list, in the current window or a SPLIT."
-    (interactive "P")
-    (air--pop-to-file "~/Dropbox (MIT)/org/todo.org" split))
+    ;; (interactive "P")
+    ;; (air--pop-to-file "~/Dropbox (MIT)/org/todo.org" split)
+    (interactive)
+    (air--pop-to-file "~/Dropbox (MIT)/org/todo.org"))
 
   (defun air-pop-to-org-notes (split)
     "Visit my main notes file, in the current window or a SPLIT."
