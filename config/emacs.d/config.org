@@ -750,7 +750,10 @@ like the way he does stuff. This is mostly (entirely?) his code.
       "ns" 'org-narrow-to-subtree
       "p"  'org-set-property
       "s"  'org-schedule
-      "t"  'air-org-set-tags)
+      "t"  'air-org-set-tags
+      ",c" 'org-table-insert-column
+      ",r" 'org-table-insert-row
+      ",w" 'fill-paragraph)
 
     (add-hook 'org-agenda-mode-hook
               (lambda ()
