@@ -202,8 +202,6 @@ Setup up cool stuff like use-package, and stuff.
   (setq package-enable-at-startup nil)
   (package-initialize)
 
-  (package-initialize)
-
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
     (package-install 'use-package))
