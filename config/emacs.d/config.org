@@ -1,4 +1,5 @@
 #+TITLE: Emacs Init File! 
+a   xaoueaeu
 #+STARTUP: hideblocks 
 * Intro
 This is my emacs init file. =init.el= loads the elisp code from here. It's
@@ -625,12 +626,12 @@ like the way he does stuff. This is mostly (entirely?) his code.
           (and (search-forward "SCHEDULED:" search-limit t)
                (replace-match "DEADLINE:"))))))
 
-  (defun air-pop-to-org-todo ;; (split)
+  (defun air-pop-to-org-todo ();; (split)
     "Visit my main TODO list, in the current window or a SPLIT."
     ;; (interactive "P")
     ;; (air--pop-to-file "~/Dropbox (MIT)/org/todo.org" split)
     (interactive)
-    (air--pop-to-file "~/Dropbox (MIT)/org/todo.org"))
+    (find-file-other-window "~/Dropbox (MIT)/org/todo.org"))
 
   (defun air-pop-to-org-notes (split)
     "Visit my main notes file, in the current window or a SPLIT."
@@ -753,7 +754,9 @@ like the way he does stuff. This is mostly (entirely?) his code.
       "t"  'air-org-set-tags
       ",c" 'org-table-insert-column
       ",r" 'org-table-insert-row
-      ",w" 'fill-paragraph)
+      ",w" 'fill-paragraph
+      "e"  'org-export-dispatch
+      ",t" 'org-babel-tangle)
 
     (add-hook 'org-agenda-mode-hook
               (lambda ()
@@ -830,6 +833,8 @@ like the way he does stuff. This is mostly (entirely?) his code.
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
     (setq org-bullets-bullet-list '("•")))
 
+  (use-package ox-twbs
+    :ensure t)
   ;;; init-org.el ends here"]")))))
 #+END_SRC
  
