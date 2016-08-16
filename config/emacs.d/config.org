@@ -1095,6 +1095,13 @@ if this is the answer as I haven't used it much.
     ;; Supposed to be nicer than ansi-term
     :ensure t)
 #+END_SRC
+** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
+Export org to twitter bootstrap compatible HTML. Code under Major configs/Org
+mode/Setup.
+
+** [[https://github.com/sabof/org-bullets][org-bullets]]
+Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
+
 ** Not currently in use
 *** [[https://github.com/Malabarba/smart-mode-line][Malabarba/smart-mode-line]]
 Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][spaceline]].
