@@ -1095,10 +1095,17 @@ if this is the answer as I haven't used it much.
     ;; Supposed to be nicer than ansi-term
     :ensure t)
 #+END_SRC
+
+** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
+#+BEGIN_SRC emacs-lisp
+  (use-package yaml-mode
+    :ensure t
+    :config
+    (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+#+END_SRC
 ** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
 Export org to twitter bootstrap compatible HTML. Code under Major configs/Org
-mode/Setup.
-
+mode/Setup. 
 ** [[https://github.com/sabof/org-bullets][org-bullets]]
 Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
 
