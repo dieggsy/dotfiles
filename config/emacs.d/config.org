@@ -1,5 +1,4 @@
 #+TITLE: Emacs Init File! 
-a   xaoueaeu
 #+STARTUP: hideblocks 
 * Intro
 This is my emacs init file. =init.el= loads the elisp code from here. It's
