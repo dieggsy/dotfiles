@@ -100,6 +100,7 @@ brew install jq
 brew install jrnl
 brew install json-c
 brew install lame
+brew install leptonica
 brew install libao
 brew install libcaca
 brew install libcroco
@@ -152,6 +153,7 @@ brew install pixman
 brew install pkg-config
 brew install portaudio
 brew install portmidi
+brew install potrace
 brew install py2cairo
 brew install py3cairo
 brew install pygobject3
@@ -175,6 +177,7 @@ brew install sqlite
 brew install ssh-copy-id
 brew install subversion
 brew install surfraw
+brew install tesseract
 brew install the_silver_searcher
 brew install thefuck
 brew install theora
@@ -233,7 +236,6 @@ brew cask install slack
 brew cask install slate
 brew cask install spotify
 brew cask install suspicious-package
-brew cask install teamspeak-client
 
 # Install pip programs (python)
 echo Installing pip programs...

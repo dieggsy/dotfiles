@@ -25,6 +25,7 @@
  '(helm-selection ((t (:background "#3a3a3a" :distant-foreground "#000000"))))
  '(hl-line ((t (:background "#3a3a3a"))))
  '(linum ((t (:foreground "#4e4e4e"))))
+ '(mode-line ((t (:background "grey75" :foreground "black" :box nil))))
  '(my-linum-hl ((t (:background "#3a3a3a" :foreground "#ff0000"))))
  '(powerline-active1 ((t (:inherit mode-line :background "#262626" :foreground "#9e9e9e"))))
  '(powerline-active2 ((t (:inherit mode-line :background "#262626"))))
@@ -57,6 +58,7 @@
    (quote
 	(org-bbdb org-bibtex org-docview org-gnus org-info org-irc org-mhe org-rmail org-w3m)))
  '(org-src-fontify-natively t)
+ '(powerline-default-separator nil)
  '(powerline-evil-tag-style (quote verbose))
  '(projectile-globally-ignored-files (quote ("TAGS" ".DS_Store")))
  '(sml/name-width 40)

@@ -6,7 +6,6 @@ pretty cool that I can write it in org mode, because easy organization and
 rearrangement are pretty sweet. Check out [[https://github.com/aaronbieber/][@aaronbieber]] and [[https://github.com/hrs][@hrs]], a lot of the
 inspiration (and erm, code) for this is taken from them.
 * Personal Info
-
 #+BEGIN_SRC emacs-lisp
   (setq user-full-name "Diego A. Mundo"
         user-mail-address "diegoamundo@gmail.com"
@@ -18,7 +17,6 @@ inspiration (and erm, code) for this is taken from them.
 Setup up cool stuff like use-package, and stuff.
 
 ** Misc init
-
 #+BEGIN_SRC emacs-lisp
   (require 'package)
   (setq package-enable-at-startup nil)
@@ -38,7 +36,6 @@ Setup up cool stuff like use-package, and stuff.
 #+END_SRC
 
 ** Init utils
-
 #+BEGIN_SRC emacs-lisp
   ;;; init-utils.el --- Utilities borrowed from Steve Purcell
   ;;; Commentary:
@@ -136,7 +133,6 @@ Setup up cool stuff like use-package, and stuff.
 #+END_SRC
 
 ** Package setup
-
 #+BEGIN_SRC emacs-lisp
   ;;; Find and load the correct package.el
 
@@ -211,7 +207,6 @@ Setup up cool stuff like use-package, and stuff.
 #+END_SRC
 
 * Global settings and stuff
-
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-splash-screen t
         inhibit-startup-message t
@@ -226,7 +221,7 @@ Setup up cool stuff like use-package, and stuff.
   (setq display-time-load-average nil)
   (setq cursor-type 'bar)
   (fringe-mode 0)
-  (add-to-list 'default-frame-alist '(font . "Menlo-10"))
+  (add-to-list 'default-frame-alist '(font . "Menlo-11"))
   (setq scroll-conservatively 10000)
   (setq-default tab-width 4)
   (setq tab-stop-list (number-sequence 4 200 4))
@@ -736,6 +731,7 @@ like the way he does stuff. This is mostly (entirely?) his code.
     (setq org-log-done (quote time))
     (setq org-log-redeadline (quote time))
     (setq org-log-reschedule (quote time))
+    (setq org-src-window-setup 'current-window)
     (setq org-agenda-skip-scheduled-if-done t)
     (setq org-insert-heading-respect-content t)
     (setq org-ellipsis " …")
@@ -1225,7 +1221,6 @@ And one matlab thing
 #+END_SRC
 
 * Emacs-Lisp stuff
-
 #+BEGIN_SRC emacs-lisp
   ;; Emacs-lisp stuff
   (defun my-lisp-mode-config ()
