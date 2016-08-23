@@ -23,6 +23,7 @@
  '(helm-ff-file ((t (:foreground "#d0d0d0"))))
  '(helm-match ((t (:foreground "#Ff0000"))))
  '(helm-selection ((t (:background "#3a3a3a" :distant-foreground "#000000"))))
+ '(helm-source-header ((t (:inherit font-lock-function-name-face :slant italic))))
  '(hl-line ((t (:background "#3a3a3a"))))
  '(linum ((t (:foreground "#4e4e4e"))))
  '(mode-line ((t (:background "grey75" :foreground "black" :box nil))))
@@ -50,15 +51,39 @@
  '(helm-boring-buffer-regexp-list
    (quote
 	("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*Minibuf" "\\*epc")))
+ '(helm-scroll-amount 1)
  '(org-babel-load-languages (quote ((python . t) (emacs-lisp . t))))
  '(org-babel-python-command "python3")
  '(org-blank-before-new-entry (quote ((heading . t) (plain-list-item . t))))
  '(org-confirm-babel-evaluate nil)
+ '(org-highlight-latex-and-related nil)
+ '(org-latex-classes
+   (quote
+	(("article" "\\documentclass[11pt]{article}"
+	  ("\\section{%s}" . "\\section*{%s}")
+	  ("\\subsection{%s}" . "\\subsection*{%s}")
+	  ("\\subsubsection{%s}" . "\\subsubsection*{%s}")
+	  ("\\paragraph{%s}" . "\\paragraph*{%s}")
+	  ("\\subparagraph{%s}" . "\\subparagraph*{%s}"))
+	 ("report" "\\documentclass[11pt]{report}"
+	  ("\\part{%s}" . "\\part*{%s}")
+	  ("\\chapter{%s}" . "\\chapter*{%s}")
+	  ("\\section{%s}" . "\\section*{%s}")
+	  ("\\subsection{%s}" . "\\subsection*{%s}")
+	  ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+	 ("book" "\\documentclass[11pt]{book}"
+	  ("\\part{%s}" . "\\part*{%s}")
+	  ("\\chapter{%s}" . "\\chapter*{%s}")
+	  ("\\section{%s}" . "\\section*{%s}")
+	  ("\\subsection{%s}" . "\\subsection*{%s}")
+	  ("\\subsubsection{%s}" . "\\subsubsection*{%s}"))
+	 ("IEEE" "\\documentclass[conference]{IEEEtran}"
+	  ("\\section{%s}" . "\\section*{%s}")
+	  ("\\subsection{%s}" . "\\subsection*{%s}")))))
  '(org-modules
    (quote
 	(org-bbdb org-bibtex org-docview org-gnus org-info org-irc org-mhe org-rmail org-w3m)))
  '(org-src-fontify-natively t)
- '(powerline-default-separator nil)
  '(powerline-evil-tag-style (quote verbose))
  '(projectile-globally-ignored-files (quote ("TAGS" ".DS_Store")))
  '(sml/name-width 40)
