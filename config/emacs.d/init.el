@@ -20,12 +20,16 @@
  '(font-lock-keyword-face ((t (:foreground "#C678DD" :weight normal))))
  '(font-lock-string-face ((t (:foreground "#87d787"))))
  '(font-lock-variable-name-face ((t (:foreground "#D19A66"))))
+ '(header-line ((t (:background "#444444" :foreground "#d0d0d0"))))
  '(helm-ff-file ((t (:foreground "#d0d0d0"))))
+ '(helm-header ((t nil)))
  '(helm-match ((t (:foreground "#Ff0000"))))
  '(helm-selection ((t (:background "#3a3a3a" :distant-foreground "#000000"))))
  '(helm-source-header ((t (:inherit font-lock-function-name-face :slant italic))))
+ '(helm-visible-mark ((t (:background "#5fafff" :foreground "black"))))
  '(hl-line ((t (:background "#3a3a3a"))))
  '(linum ((t (:foreground "#4e4e4e"))))
+ '(minibuffer-prompt ((t (:inherit font-lock-variable-name-face))))
  '(mode-line ((t (:background "grey75" :foreground "black" :box nil))))
  '(my-linum-hl ((t (:background "#3a3a3a" :foreground "#ff0000"))))
  '(powerline-active1 ((t (:inherit mode-line :background "#262626" :foreground "#9e9e9e"))))
@@ -41,12 +45,15 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ac-disable-faces (quote (font-lock-comment-face font-lock-doc-face)))
+ '(custom-safe-themes
+   (quote
+	("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(display-time-24hr-format t)
  '(display-time-default-load-average nil)
  '(display-time-format "%a %d %b  %H:%M ")
  '(elpy-modules
    (quote
-	(elpy-module-company elpy-module-eldoc elpy-module-flymake elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
+	(elpy-module-company elpy-module-eldoc elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
  '(fill-column 79)
  '(helm-boring-buffer-regexp-list
    (quote
@@ -101,3 +108,4 @@
 	 ("^~/[Gg]it\\([Hh]ub\\|\\)-?[Pp]rojects/" ":Git:")
 	 ("\"^~/Dropbox \\(MIT\\)/\"" "\":DB:\""))))
  '(vc-follow-symlinks t))
+

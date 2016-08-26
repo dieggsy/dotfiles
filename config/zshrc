@@ -119,7 +119,7 @@ alias desk="cd /Users/diego/Desktop"
 alias docs="cd /Users/diego/Documents/"
 alias down="cd /Users/diego/Downloads/"
 alias drive="cd /Users/diego/Google\ Drive"
-export drop=/Users/diego/Dropbox\ \(MIT\)
+alias drop="cd /Users/diego/Dropbox\ \(MIT\)"
 alias edit="emacsclient -t"
 alias editv="emacsclient -c"
 alias f='find . -iname'
@@ -185,7 +185,7 @@ pythonscript(){
 
 # View only mode in emacs
 ev() {
-    emacsclient -t --eval "(view-file $1)"
+    emacsclient -t --eval "(find-file-read-only \"$1\")"
 }
 
 # Edit Python 3 files

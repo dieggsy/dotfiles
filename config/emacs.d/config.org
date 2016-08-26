@@ -224,12 +224,10 @@ Setup up cool stuff like use-package, and stuff.
   (add-to-list 'default-frame-alist '(font . "Menlo-11"))
   ;; (setq scroll-conservatively 10000
   ;;       scroll-margin 1)
-  (setq scroll-step           1
-        scroll-conservatively 10000)
+  (setq scroll-conservatively 101)
   (setq-default tab-width 4)
   (setq tab-stop-list (number-sequence 4 200 4))
   (setq completion-cycle-threshold t)
-  (setq ns-use-srgb-colorspace nil)
 
   ; Store backups in .emacsbackups, autosaves in temp dir
   (defvar backup-dir "~/.emacsbackups/")
@@ -741,6 +739,7 @@ like the way he does stuff. This is mostly (entirely?) his code.
     (setq org-ellipsis " …")
     (setq org-startup-with-inline-images t)
     (set-face-attribute 'org-upcoming-deadline nil :foreground "gold1")
+    (setq org-archive-location "~/Dropbox (MIT)/org/archive.org::")
     ;; (setq org-highlight-latex-and-related '(latex script entities))
 
     (evil-leader/set-key-for-mode 'org-mode
@@ -839,7 +838,8 @@ like the way he does stuff. This is mostly (entirely?) his code.
 #+END_SRC
  
 * Dem packages
-** [[https://github.com/emacs-helm/helm][emacs-helm/helm]]
+** Active
+*** [[https://github.com/emacs-helm/helm][emacs-helm/helm]]
 Kind of an Alfred for emacs. Completion, nice menus for stuff,
 overall great.
 
@@ -1123,7 +1123,7 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
        )
 #+END_SRC
 
-** [[https://github.com/magit/magit][magit/magit]]
+*** [[https://github.com/magit/magit][magit/magit]]
 Like git, for emacs. But cooler.
 
 #+BEGIN_SRC emacs-lisp
@@ -1131,7 +1131,7 @@ Like git, for emacs. But cooler.
     :ensure t)
 #+END_SRC
 
-** [[https://github.com/joaotavora/yasnippet][joaotavora/yasnippet]]
+*** [[https://github.com/joaotavora/yasnippet][joaotavora/yasnippet]]
 Freakin yasnippet. It's the best.
 
 #+BEGIN_SRC emacs-lisp
@@ -1142,7 +1142,7 @@ Freakin yasnippet. It's the best.
     (yas-global-mode 1))
 #+END_SRC
 
-** [[https://github.com/flycheck/flycheck][flycheck/flycheck]]
+*** [[https://github.com/flycheck/flycheck][flycheck/flycheck]]
 Syntax check for python. Pretty good.
 
 #+BEGIN_SRC emacs-lisp
@@ -1153,7 +1153,7 @@ Syntax check for python. Pretty good.
     (global-set-key (kbd "<f11>") 'flycheck-mode))
 #+END_SRC
 
-** [[https://github.com/company-mode/company-mode][company-mode/company-mode]]
+*** [[https://github.com/company-mode/company-mode][company-mode/company-mode]]
 Supposedly better than autocomplete... Also  using
 [[https://github.com/syohex/emacs-company-jedi][syohex/company-jedi]]
 
@@ -1171,7 +1171,7 @@ Supposedly better than autocomplete... Also  using
       (add-hook 'python-mode-hook 'my/python-mode-hook)))
 #+END_SRC
 
-** [[https://github.com/Wilfred/ag.el][Wilfred/ag.el]]
+*** [[https://github.com/Wilfred/ag.el][Wilfred/ag.el]]
 Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]] into emacs.
 
 #+BEGIN_SRC emacs-lisp
@@ -1196,7 +1196,7 @@ Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]]
     (setq ag-reuse-window t))
 #+END_SRC
 
-** [[https://github.com/alpaker/Fill-Column-Indicator][alpaker/Fill-Column-Indicator]]
+*** [[https://github.com/alpaker/Fill-Column-Indicator][alpaker/Fill-Column-Indicator]]
 I like a line length limit indicator in Python
 
 #+BEGIN_SRC emacs-lisp
@@ -1209,7 +1209,7 @@ I like a line length limit indicator in Python
     (add-hook 'python-mode-hook 'fci-mode))
 #+END_SRC
 
-** [[https://github.com/Fanael/rainbow-delimiters][Fanael/rainbow-delimiters]]
+*** [[https://github.com/Fanael/rainbow-delimiters][Fanael/rainbow-delimiters]]
 Better parentheses coloring
 
 #+BEGIN_SRC emacs-lisp
@@ -1220,7 +1220,7 @@ Better parentheses coloring
     (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
 #+END_SRC
 
-** [[https://github.com/tsdh/highlight-parentheses.el][tsdh/highlight-parentheses.el]]
+*** [[https://github.com/tsdh/highlight-parentheses.el][tsdh/highlight-parentheses.el]]
 Makes the parentheses my cursor is between stand out more.
  
 #+BEGIN_SRC emacs-lisp
@@ -1229,7 +1229,7 @@ Makes the parentheses my cursor is between stand out more.
     :ensure t)
 #+END_SRC
 
-** [[https://github.com/Fanael/highlight-numbers][Fanael/highlight-numbers]]
+*** [[https://github.com/Fanael/highlight-numbers][Fanael/highlight-numbers]]
 Neat-o
 
 #+BEGIN_SRC emacs-lisp
@@ -1239,7 +1239,7 @@ Neat-o
     (add-hook 'python-mode-hook 'highlight-numbers-mode))
 #+END_SRC
 
-** [[https://github.com/vspinu/imenu-anywhere][vspinu/imenu-anywhere]]
+*** [[https://github.com/vspinu/imenu-anywhere][vspinu/imenu-anywhere]]
 imenu on steroids.
 
 #+BEGIN_SRC emacs-lisp
@@ -1250,7 +1250,7 @@ imenu on steroids.
     (global-set-key (kbd "<f5>") 'imenu-anywhere))
 #+END_SRC
 
-** [[https://github.com/TheBB/spaceline][TheBB/spaceline]]
+*** [[https://github.com/TheBB/spaceline][TheBB/spaceline]]
 I was looking for something with the nice look and simplicity of
 [[https://github.com/itchyny/lightline.vim][this]]. Spaceline does ok. 
 
@@ -1278,7 +1278,7 @@ I was looking for something with the nice look and simplicity of
 
 #+END_SRC
 
-** [[https://github.com/lunaryorn/fancy-battery.el][lunaryorn/fancy-battery.el]]
+*** [[https://github.com/lunaryorn/fancy-battery.el][lunaryorn/fancy-battery.el]]
 For nice battery display info.
 
 #+BEGIN_SRC emacs-lisp
@@ -1291,7 +1291,7 @@ For nice battery display info.
     (fancy-battery-update))
 #+END_SRC
 
-** [[https://github.com/myrkr/dictionary-el/blob/master/dictionary.el][myrkr/dictionary-el]]
+*** [[https://github.com/myrkr/dictionary-el/blob/master/dictionary.el][myrkr/dictionary-el]]
 Dictionary search!
 
 #+BEGIN_SRC emacs-lisp
@@ -1299,7 +1299,7 @@ Dictionary search!
     :ensure t)
 #+END_SRC
 
-** [[https://github.com/naiquevin/sphinx-doc.el][naiquevin/sphinx-doc.el]]
+*** [[https://github.com/naiquevin/sphinx-doc.el][naiquevin/sphinx-doc.el]]
 Sphinx doc python integration. Pretty neat, though not entirely
 complete, IMO.
 
@@ -1314,7 +1314,7 @@ complete, IMO.
 
 #+END_SRC
 
-** [[https://github.com/defunkt/markdown-mode][defunkt/markdown-mode]]
+*** [[https://github.com/defunkt/markdown-mode][defunkt/markdown-mode]]
 Syntax highlighting for markdown files.
 
 #+BEGIN_SRC emacs-lisp
@@ -1322,7 +1322,7 @@ Syntax highlighting for markdown files.
     :ensure t)
 #+END_SRC
 
-** [[https://github.com/ancane/markdown-preview-mode][ancane/markdown-preview-mode]]
+*** [[https://github.com/ancane/markdown-preview-mode][ancane/markdown-preview-mode]]
 Generates markdown previews? Not sure if working.
 
 #+BEGIN_SRC emacs-lisp
@@ -1330,7 +1330,7 @@ Generates markdown previews? Not sure if working.
     :ensure t)
 #+END_SRC
 
-** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
+*** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
 Eh, wanted to try a simpler way of editing
 csv files. (Excel and Numbers both kinda suck at this,
 LibreOffice was slightly better.) Haven't used this much.
@@ -1341,7 +1341,7 @@ LibreOffice was slightly better.) Haven't used this much.
     ;; I'll give this a shot
     :ensure t)
 #+END_SRC
-** [[https://www.emacswiki.org/emacs/download/multi-term.el][multi-term]]
+*** [[https://www.emacswiki.org/emacs/download/multi-term.el][multi-term]]
 I wanted a slightly better terminal in emacs. Not sure
 if this is the answer as I haven't used it much.
 #+BEGIN_SRC emacs-lisp
@@ -1350,19 +1350,20 @@ if this is the answer as I haven't used it much.
     :ensure t)
 #+END_SRC
 
-** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
+*** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
 #+BEGIN_SRC emacs-lisp
   (use-package yaml-mode
     :ensure t
     :config
     (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 #+END_SRC
-** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
+*** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
 Export org to twitter bootstrap compatible HTML. Code under Major configs/Org
 mode/Setup. 
-** [[https://github.com/sabof/org-bullets][org-bullets]]
+*** [[https://github.com/sabof/org-bullets][org-bullets]]
 Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
 
+** Themes
 ** Not currently in use
 *** [[https://github.com/Malabarba/smart-mode-line][Malabarba/smart-mode-line]]
 Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][spaceline]].
@@ -1389,12 +1390,12 @@ Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][s
 Sets up a python editing environment. I'm not sure yet.
 
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package elpy
-  ;;   ;; Eh, I don't know...
-  ;;   :ensure t
-  ;;   :config
-  ;;   (elpy-enable)
-  ;;   (setq elpy-rpc-backend "jedi"))
+      (use-package elpy
+        ;; Eh, I don't know...
+        :ensure t
+        :config
+        (elpy-enable)
+        (elpy-use-ipython))
 #+END_SRC
 
 *** [[https://github.com/zenozeng/yafolding.el][zenozeng/yafolding.el]]
@@ -1453,6 +1454,27 @@ what I'm using anyway.
   ;;   :ensure t
   ;;   :config
   ;;   (autopair-global-mode))
+#+END_SRC
+*** [[https://github.com/7696122/evil-terminal-cursor-changer][7696122/evil-terminal-cursor-changer]]
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package evil-terminal-cursor-changer
+  ;;   :ensure t
+  ;;   :config
+  ;;   (unless (display-graphic-p)
+  ;;     (require 'evil-terminal-cursor-changer)
+  ;;     (evil-terminal-cursor-changer-activate) ; or (etcc-on)
+  ;;     )
+  ;;   (setq evil-motion-state-cursor 'box)  ; █
+  ;;   (setq evil-visual-state-cursor 'box)  ; █
+  ;;   (setq evil-normal-state-cursor 'box)  ; █
+  ;;   (setq evil-insert-state-cursor 'bar)  ; ⎸
+  ;;   (setq evil-emacs-state-cursor  'bar)) ; _
+
+#+END_SRC
+*** [[https://github.com/nashamri/spacemacs-theme][nashamri/spacemacs-theme]]
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package spacemacs-theme
+  ;;   :ensure t)
 #+END_SRC
 
 * Python stuff
