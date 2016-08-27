@@ -59,6 +59,7 @@ brew install faad2
 brew install ffmpeg
 brew install figlet
 brew install flac
+brew install fluid-synth
 brew install fontconfig
 brew install fortune
 brew install freetype
@@ -110,8 +111,10 @@ brew install libevent
 brew install libffi
 brew install libgcrypt
 brew install libgpg-error
+brew install libid3tag
 brew install libmaa
 brew install libmpc
+brew install libmpdclient
 brew install libogg
 brew install libpng
 brew install librsvg
@@ -134,6 +137,7 @@ brew install mad
 brew install matplotlib
 brew install mercurial
 brew install mp4v2
+brew install mpc
 brew install mpfr
 brew install nano
 brew install ncurses
@@ -177,6 +181,7 @@ brew install sqlite
 brew install ssh-copy-id
 brew install subversion
 brew install surfraw
+brew install taglib
 brew install tesseract
 brew install the_silver_searcher
 brew install thefuck
@@ -214,7 +219,6 @@ brew cask install firefox
 brew cask install flux
 brew cask install gephi
 brew cask install gimp
-brew cask install github-desktop
 brew cask install gitify
 brew cask install google-chrome-beta
 brew cask install iterm2

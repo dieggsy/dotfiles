@@ -361,6 +361,8 @@ like the way he does stuff. This is mostly (entirely?) his code.
       ",y"        'yas-insert-snippet
       "."         'switch-to-previous-buffer
       ":"         'eval-expression
+      "h"         'split-window-below
+      "v"         'split-window-right
       "<right>"   'other-window
       "B"         'magit-blame-toggle
       "k"         'kill-this-buffer
@@ -1341,6 +1343,17 @@ LibreOffice was slightly better.) Haven't used this much.
     ;; I'll give this a shot
     :ensure t)
 #+END_SRC
+*** [[https://github.com/jorgenschaefer/elpy][jorgenschaefer/elpy]]
+Sets up a python editing environment. I'm not sure yet.
+
+#+BEGIN_SRC emacs-lisp
+      (use-package elpy
+        ;; Eh, I don't know...
+        :ensure t
+        :config
+        (elpy-enable)
+        (elpy-use-ipython))
+#+END_SRC
 *** [[https://www.emacswiki.org/emacs/download/multi-term.el][multi-term]]
 I wanted a slightly better terminal in emacs. Not sure
 if this is the answer as I haven't used it much.
@@ -1349,13 +1362,18 @@ if this is the answer as I haven't used it much.
     ;; Supposed to be nicer than ansi-term
     :ensure t)
 #+END_SRC
-
-*** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
+*** [[https://github.com/yoshiki/yaml-mode][yoshiki/yaml-mode]]
 #+BEGIN_SRC emacs-lisp
   (use-package yaml-mode
     :ensure t
     :config
     (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+#+END_SRC
+
+*** [[https://github.com/vermiculus/sx.el/][vermiculus/sx.el/]]
+#+BEGIN_SRC emacs-lisp
+  (use-package sx
+    :ensure t)
 #+END_SRC
 *** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
 Export org to twitter bootstrap compatible HTML. Code under Major configs/Org
@@ -1384,18 +1402,6 @@ Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][s
   ;;   (display-time-update)
   ;;   (fancy-battery-mode)
   ;;   (setq fancy-battery-show-percentage t))
-#+END_SRC
-
-*** [[https://github.com/jorgenschaefer/elpy][jorgenschaefer/elpy]]
-Sets up a python editing environment. I'm not sure yet.
-
-#+BEGIN_SRC emacs-lisp
-      (use-package elpy
-        ;; Eh, I don't know...
-        :ensure t
-        :config
-        (elpy-enable)
-        (elpy-use-ipython))
 #+END_SRC
 
 *** [[https://github.com/zenozeng/yafolding.el][zenozeng/yafolding.el]]
