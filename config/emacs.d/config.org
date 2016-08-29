@@ -898,21 +898,21 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
   ;;     (helm-fuzzier-mode 1))
 
     (defun helm-ido-like-load-ido-like-bottom-buffer ()
-      ;; popup helm-buffer at the bottom
+      popup helm-buffer at the bottom
       (setq helm-split-window-in-side-p t)
-      ;; (add-to-list 'display-buffer-alist
-      ;;              '("\\`\\*helm.*\\*\\'"
-      ;;                (display-buffer-in-side-window)
-      ;;                (window-height . 0.4)))
-      ;; (add-to-list 'display-buffer-alist
-      ;;              '("\\`\\*helm help\\*\\'"
-      ;;                (display-buffer-pop-up-window)))
+      (add-to-list 'display-buffer-alist
+                   '("\\`\\*helm.*\\*\\'"
+                     (display-buffer-in-side-window)
+                     (window-height . 0.4)))
+      (add-to-list 'display-buffer-alist
+                   '("\\`\\*helm help\\*\\'"
+                     (display-buffer-pop-up-window)))
 
       ;; dont display the header line
       (setq helm-display-header-line nil)
       ;; input in header line
       (setq helm-echo-input-in-header-line t)
-      ;; (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
+      (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
       )
 
     (defvar helm-ido-like-bottom-buffers nil
