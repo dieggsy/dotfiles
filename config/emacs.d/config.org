@@ -224,7 +224,8 @@ Setup up cool stuff like use-package, and stuff.
   (add-to-list 'default-frame-alist '(font . "Menlo-11"))
   ;; (setq scroll-conservatively 10000
   ;;       scroll-margin 1)
-  (setq scroll-conservatively 101)
+  (setq scroll-step 1
+        scroll-conservatively 10000)
   (setq-default tab-width 4)
   (setq tab-stop-list (number-sequence 4 200 4))
   (setq completion-cycle-threshold t)
