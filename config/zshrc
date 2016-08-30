@@ -222,3 +222,4 @@ ZSH_HIGHLIGHT_STYLES[globbing]='fg=208'
 
 export RTV_EDITOR='vim'
 export RTV_URLVIEWER='urlview'
+
