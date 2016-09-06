@@ -1392,14 +1392,6 @@ mode/Setup.
 *** [[https://github.com/sabof/org-bullets][org-bullets]]
 Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
 
-*** [[https://github.com/syl20bnr/vi-tilde-fringe][syl20bnr/vi-tilde-fringe]] 
-Vim-like tildes, I guess?
-#+BEGIN_SRC emacs-lisp
-  (use-package vi-tilde-fringe
-    :ensure t
-    :config
-    (global-vi-tilde-fringe-mode))
-#+END_SRC
 ** Themes
 ** Not currently in use
 *** [[https://github.com/Malabarba/smart-mode-line][Malabarba/smart-mode-line]]
