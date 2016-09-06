@@ -72,8 +72,3 @@ color quoted6    color108 color236
 color quoted7    color116 color236
 color quoted8    color247 color236
 color quoted9    color108 color236
-
-# vim: set syntax=muttrc:
-set pager_index_lines=6
-set tilde
-unset resolve
