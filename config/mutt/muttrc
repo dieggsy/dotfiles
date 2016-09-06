@@ -1,3 +1,4 @@
+# -*- mode: conf -*-
 set imap_user = "diegoamundo@gmail.com"
 
 set smtp_url = "smtp://diegoamundo@smtp.gmail.com:587/"
