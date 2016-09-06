@@ -1,6 +1,4 @@
 # encoding: utf-8
-import sqlite3
-import csv
 
 
 def progBar(i, total, length=50, kind=None):
@@ -15,9 +13,9 @@ def progBar(i, total, length=50, kind=None):
     print(frame, end=endchar)
     
     
-def write_csv(path, rows):
-    "Write a list of iterables to a CSV, I think"
-    with open(path, 'w') as f:
-        writer = csv.writer(f)
-        writer.writerows(rows)
+# def write_csv(path, rows):
+#     "Write a list of iterables to a CSV, I think"
+#     with open(path, 'w') as f:
+#         writer = csv.writer(f)
+#         writer.writerows(rows)
         
