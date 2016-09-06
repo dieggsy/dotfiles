@@ -1,0 +1,110 @@
+Delivered-To: diegoamundo@gmail.com
+Received: by 10.37.216.202 with SMTP id p193csp1237281ybg;
+        Sun, 15 Nov 2015 09:14:37 -0800 (PST)
+X-Received: by 10.140.227.16 with SMTP id x16mr33581443qhb.46.1447607677691;
+        Sun, 15 Nov 2015 09:14:37 -0800 (PST)
+Return-Path: <quindlen@mit.edu>
+Received: from dmz-mailsec-scanner-7.mit.edu (dmz-mailsec-scanner-7.mit.edu. [18.7.68.36])
+        by mx.google.com with ESMTPS id v20si23361790qge.51.2015.11.15.09.14.34
+        (version=TLSv1 cipher=RC4-SHA bits=128/128);
+        Sun, 15 Nov 2015 09:14:37 -0800 (PST)
+Received-SPF: pass (google.com: domain of quindlen@mit.edu designates 18.7.68.36 as permitted sender) client-ip=18.7.68.36;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of quindlen@mit.edu designates 18.7.68.36 as permitted sender) smtp.mailfrom=quindlen@mit.edu
+Received: from mailhub-dmz-2.mit.edu ( [18.7.62.37])
+	(using TLS with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(Client did not present a certificate)
+	by dmz-mailsec-scanner-7.mit.edu (Symantec Messaging Gateway) with SMTP id C7.87.05486.A7DB8465; Sun, 15 Nov 2015 12:14:34 -0500 (EST)
+Received: from dmz-mailsec-scanner-6.mit.edu (dmz-mailsec-scanner-6.mit.edu [18.7.68.35])
+	by mailhub-dmz-2.mit.edu (8.13.8/8.9.2) with ESMTP id tAFHER59001958;
+	Sun, 15 Nov 2015 12:14:28 -0500
+X-AuditID: 12074424-f79216d00000156e-33-5648bd7a47d2
+Authentication-Results: symauth.service.identifier
+Received: from maia.MIT.EDU (MAIA.MIT.EDU [18.9.47.73])
+	(using TLS with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(Client did not present a certificate)
+	by dmz-mailsec-scanner-6.mit.edu (Symantec Messaging Gateway) with SMTP id D6.0C.09168.83CB8465; Sun, 15 Nov 2015 12:09:12 -0500 (EST)
+Received: from maia.MIT.EDU (localhost [127.0.0.1])
+	by maia.MIT.EDU (8.13.8/8.13.8) with ESMTP id tAFH9Cna006618;
+	Sun, 15 Nov 2015 12:09:12 -0500
+Message-ID: <736439853.1447607352362.JavaMail.root@maia.MIT.EDU>
+Date: Sun, 15 Nov 2015 12:09:12 -0500 (EST)
+From: John Francis Quindlen <quindlen@mit.edu>
+To: John Francis Quindlen <quindlen@mit.edu>
+Subject: 16.07 announcement: Problem Set 10
+Mime-Version: 1.0
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_1803_1164312931.1447607352361"
+X-Brightmail-Tracker: H4sIAAAAAAAAA02Se0hTYRjG+3bOzk7LY8ej5afdR9p1ahH1QdH9IoXQHzW6iZ3c0Y22Oc7Z
+	vP1RkjJhXYiismUmkZobw9RsWsvaKjAF7YJdMA1KqTQlZV1J7RyH6X/v+/ye54GP7yUxJiCP
+	JvUmC8ebWIOKUOKMYn2MOvd+oiahpzIe9Q95cfTJ06NAvp9FALn8TgwN9k5DP06UEchW+kmB
+	Wi+9V6C+UheOBkre4Ohl33eA7n6txdHjUQ3647UrUE1VE0BnzzTK0cjNawQa9c1GPts7Ag3a
+	HBj67erB0MCTxajlZr4cPSgK4BthYoOjU7EbHFCu03IGfSbHx68/rNQNn/4sN7tDsi98aJPn
+	gVtKO5hKQnoVrBwpxILzTPisq4qwAyXJ0Ndl8GqxGw8ujwB8WOiUjScGXjSNJQC9Et5r7ZUH
+	TWUyeHLYjQWXCwBedA2NJSh6I2z5OyK6SBKnl8EvHfMlmaDjoLe8mZDmCHo5rHt6ZmwOFy11
+	l89jkp2iw+BwfbgkY/RBaL89CqR6SFcq4avaO8RZQDsmbI5JNknG6EWwqoQJyvOgp78YC85L
+	YKDtFD5ZLwWEE8zRGnPVRlZvELhUtZDKmkwcr14TZ9Rb4jittQaMfe7WhfUg36/yA5oEqhCq
+	qXuHhpGzmUKO0Q+iSJlqBhVVl6hhQo9kaHN0rKBL4a0GTvADSGKqCKq1SGSUls3J5fiMcTSL
+	xFWRVM2v0D0Mnc5auKMcZ+b4cTqbJFWQOuYVg2E8l85lp+kNlgksI6dK5SFiebHkoQQzaxT0
+	6UHeDBZER1JXJEBLQGc1/c+OH2sviBSfEk4xkitEPOX/6V6xWCYW0+e2ScUWdgJF54GMGwds
+	sLq66G67lXgb5VGaN1xb217xuiB0eVZUWN7b1oQkW94f5+vn9u39NYU7CzbEV8XHrmj8GKht
+	n/Jt9blhz5VDoxWX9uanlGyZbtIENncKQ7tO6ZMrjn/rmOJTL+762mdN60hewjZq9unCzV/K
+	s5Ia3HM3W2M3xQykPkjr3r9AhQs6dsVSjBfYf3OS6NeHAwAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA1WTfUxbVRjGOfe7Te9yKcze4RZnjTF+lAGa7TUxhunMMEumMawmmKjX9Uqb
+	tYXcWxZAjcNtzoElY5OPEseY+7IoKRs2QrsN1myOFaSTyYcaLUOlLRNwk8hm6Oa9Nmz4z8l7
+	nt9z3ue8yTkMrt9LZzFiuUuUnILdSGkJvWbNiyY4XWDOcXc+DYFrv2LQOnATwXzXLA3ug69D
+	tP8HDC73xEhIhupx8FwfoSE8Hyfgk9tBHMaafBjsjpyj4MyhAA2xw39SMD+YxKHBO0uCu28S
+	gW9/LwlVwwcoaIsgmG78kYSujxI0XB/YicHVmIeG3rrPCfg+uAeB/4gNjl7zktA0+jcBCzuD
+	GCROdlIw0d5Cw0z/FQyGk0MYdI8HcDh+8hvFMprAoarxBAV/nb2Iw5WR7zCItrQSEJ2eI+FW
+	9R8Y7JobRtAzNKkA3xgBvRdv4RALNZDQXDOOw8wdLwZnbpxXfMuhOzpOg9e7hwRPWANVJyJ0
+	PhR8MHABfxkVaZ+xiHbbdlFa8+ybWmvSHSdL23Xl9RMRcgfq0FYjDcNzT/EzQ324WiMujw8O
+	TpEp/T7+8i8+qhppGT13DONrku14alOP+IYvbmCqi+Xy+f6F28oJhiG4x/nET6tVmeKy+dPH
+	w5RaZ3JP8P5Ltf/VGYrF7zmAq3aWS+eTXRmqjHOv8dVf3UH7kK75HmleQlQZ5x7hfS36lPwA
+	//X0p3iqfpSfi3xMLNVbEdWGVlkclSaHYLPL4laTvFVwOkXJtDbbYXNli5ayU0h9R/SGh7rQ
+	wjljCHEMMurY1bGNZj0pbJcrHCG0gsGMy9kV/gKzftlbJZYKqyBb35DK7KIcQjyDGzPZwSaF
+	sRaholKUShbR/QxhNLCnbi4r1HPFgkvcJoqlorRIMYYOoZUMY+TZ9UHldLokFovlb9vsrqUe
+	jbpo1RidEpOrGlm5VHDItuKUKYwezDKwT6qAU4G1zHm3weIPGUKrsjJYlJaWptcpN1AG/z+f
+	QgZl6Az2t4DSRWdzuu52n1KCMSWY2/+CGuwS7qGsHaj2Z95UZ/ZYnhsu7FxXm56T73n13aJ1
+	Yk1x78PRscYIWpt7dvOlSFOr453g3o3/lNDuLbs66lwRQzz/96KR0fDce9LVicnZvITnS09H
+	/NuXzpsPe7fRAd3BkH/lhiOG57s3ta3/rKe/qlIzsnvTocx9Y4UXonnWPt+HFfGcV6LM0feN
+	hGwVch/DJVn4F3IQOzocBAAA
+
+------=_Part_1803_1164312931.1447607352361
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+
+Note: This mail was sent to all participants in the Stellar class 'Dynamics'
+
+        Problem Set 10
+
+Problem set 10 has been posted this morning.&nbsp; It is short to allow you to work on lab 2 due 11/24.&nbsp; There is also a function &quot;pend_anim&quot; posted that you will need for problem 1.&nbsp; Please note that the pset is still due on Thursday.&nbsp; <br />
+<br />
+Jack
+This announcement was made in Stellar on 2015 November 15 by John Francis Quindlen
+The announcement is also posted on the class website:
+https://stellar.mit.edu/S/course/16/fa15/16.07/
+
+------=_Part_1803_1164312931.1447607352361
+Content-Type: text/html;  charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+
+<p><i>Note: This mail was sent to all students in the stellar class Dynamics</i></p>
+<p><h2>Problem Set 10</h2></p>
+<hr>
+
+<div>
+<p>Problem set 10 has been posted this morning.&#160; It is short
+to allow you to work on lab 2 due 11/24.&#160; There is also a
+function &quot;pend_anim&quot; posted that you will need for
+problem 1.&#160; Please note that the pset is still due on
+Thursday.&#160;<br />
+<br />
+Jack</p>
+</div>
+<hr>
+<p>This announcement was made in Stellar on 2015 November 15 by John Francis Quindlen</p>
+<p>The announcement is also posted on the class website:<br>
+<a href="https://stellar.mit.edu/S/course/16/fa15/16.07/">https://stellar.mit.edu/S/course/16/fa15/16.07/</a></p>
+
+------=_Part_1803_1164312931.1447607352361--
+

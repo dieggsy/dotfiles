@@ -1,0 +1,1544 @@
+Delivered-To: diegoamundo@gmail.com
+Received: by 10.37.18.68 with SMTP id 65csp1449609ybs;
+        Mon, 2 Nov 2015 13:06:15 -0800 (PST)
+X-Received: by 10.66.153.166 with SMTP id vh6mr29511575pab.83.1446498374927;
+        Mon, 02 Nov 2015 13:06:14 -0800 (PST)
+Return-Path: <jetblue.52783@envfrm.rsys5.com>
+Received: from omptrans.email.jetblue.com (omptrans.email.jetblue.com. [199.7.203.187])
+        by mx.google.com with ESMTP id kd3si37599859pbc.173.2015.11.02.13.06.14
+        for <diegoamundo@gmail.com>;
+        Mon, 02 Nov 2015 13:06:14 -0800 (PST)
+Received-SPF: pass (google.com: domain of jetblue.52783@envfrm.rsys5.com designates 199.7.203.187 as permitted sender) client-ip=199.7.203.187;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of jetblue.52783@envfrm.rsys5.com designates 199.7.203.187 as permitted sender) smtp.mailfrom=jetblue.52783@envfrm.rsys5.com;
+       dkim=pass header.i=@email.jetblue.com;
+       dkim=pass header.i=@responsys.net;
+       dmarc=pass (p=NONE dis=NONE) header.from=email.jetblue.com
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=jetblue; d=email.jetblue.com;
+ h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:To:From:Reply-To:Subject:Feedback-ID:Message-ID; i=jetblueairways@email.jetblue.com;
+ bh=Ho8VHQROLJO/RA5eRnZ6h2a4e7A=;
+ b=ABkVpoUgvAHrjnoWYzZtrVztVgU6bwioXE4BzntKJs61XR/tbcbblDvglzpHQ1rz6dzORa7gasOu
+   NVjGJX7u2+J8ycDPUk+FgCWcScm6y0U2BTpLCTkWIfK4jAI0XtTGZ5vTaN8oY493jUxlOKYColzm
+   7olcbEQfeXXaLfoQYOI=
+DKIM-Signature: v=1; a=rsa-sha1; c=relaxed/relaxed; s=oraclersys; d=responsys.net;
+ h=MIME-Version:Content-Type:Content-Transfer-Encoding:Date:To:From:Reply-To:Subject:Feedback-ID:Message-ID;
+ bh=Ho8VHQROLJO/RA5eRnZ6h2a4e7A=;
+ b=ABylyNCApPQ7PqTh56gI9eIrCTF1YgzGPFAY+PvzucjtO5ZYQOxEcJZ7ZVjuy5W45RLKhd+xv5SY
+   xVMNPznsBfqw5BFln3Z/Khqiqm3Kw6c98OEe0Aqcy2NlN8sNmBZBGbV6CsKulT1OzR8ZA3Jg6Xj5
+   f2IPI1c955zS43x9sf0=
+DomainKey-Signature: a=rsa-sha1; c=nofws; q=dns; s=jetblue; d=email.jetblue.com;
+ b=VdkjC+ksRX98b2/KqNL1ClprUf73J4hyQ49AKzKVoA9HvAsNN0kuung6JOsH+WCfeFBvPX+yJep6
+   8aE12upiH+6lHUnd7TJQRC4MoU0y8dGEJEXAuYJbChgr5Fwh8Vh9DmVsCb2k3rDat5bDgg5yicZW
+   GkAwl4C/ICweuycogfU=;
+Received: by omptrans.email.jetblue.com id h6v84c1hd6ob for <diegoamundo@gmail.com>; Mon, 2 Nov 2015 13:06:14 -0800 (envelope-from <jetblue.52783@envfrm.rsys5.com>)
+MIME-Version: 1.0
+Content-Type: text/html;
+	charset="ISO-8859-1"
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 2 Nov 2015 13:06:14 -0800
+To: diegoamundo@gmail.com
+From: "JetBlue Reservations" <jetblueairways@email.jetblue.com>
+Reply-To: "JetBlue Reservations" <reply@email.jetblue.com>
+Subject: Your itinerary for your upcoming trip
+Feedback-ID: 52783:412835:oraclersys
+X-sgxh1: KpLnhHumgKhxnuHptQJhu
+X-rext: 5.interact5.EmwP8UJLlGStFZZsCEBUfrA5SqQYVCCqZonPIgZt4DfLqrKPaaUa2-E
+X-cid: jetblue.2430465
+Message-ID: <0.0.6.4FB.1D115B24F159B2E.0@omptrans.email.jetblue.com>
+
+<html xmlns=3D=22http://www=2Ew3=2Eorg/1999/xhtml=22>
+
+<head>
+<meta name=3D=22viewport=22 content=3D=22width=3Ddevice-width=22>
+<style type=3D=22text/css=22>
+
+html =7B -webkit-text-size-adjust:none; -ms-text-size-adjust:none; =7D
+body =7B background-color: =23ffffff; =7D
+
+=2EReadMsgBody     =7B width: 100%; =7D
+=2EExternalClass   =7B width: 100%; =7D
+=2EExternalClass * =7B line-height: 100%; =7D a =7B outline:0; =7D
+=2Ei454545 a =7B color:=23454545; text-decoration:none; =7D=20
+</style>
+
+</head>
+<body style=3D=22margin:0; padding:0=22 bgcolor=3D=22=23ffffff=22><img bord=
+er=3D=220=22 width=3D=221=22 height=3D=221=22 src=3D=22https://email=2Ejetb=
+lue=2Ecom/pub/as?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1z=
+bza5ze88zbzdhgybnzdlW9MezbjdyHH3HTqGVXHkMX%3Dw&_ei_=3DEolaGGF4SNMvxFF7KucKu=
+WMqot7bDEAOk-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5=
+ts59nUFAlacTIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22>
+
+<=21--=5Bif gte mso 15=5D>
+<style type=3D=22text/css=22 media=3D=22all=22>
+tr =7B font-size:1px; mso-line-height-alt:0; mso-margin-top-alt:1px; =7D
+</style>
+<=21=5Bendif=5D-->
+
+<table width=3D=22100%=22 cellspacing=3D=220=22 cellpadding=3D=220=22 align=
+=3D=22center=22 border=3D=220=22 bgcolor=3D=22=23ffffff=22 style=3D=22table=
+-layout:fixed;=22>
+ <tr>
+  <td width=3D=22100%=22 align=3D=22center=22 valign=3D=22top=22>
+
+           		<table xmlns:ns0=3D=22http://www=2Ejetblue=2Ecom/schemas/commo=
+n/IEMResponsys=22 xmlns:exslt=3D=22http://exslt=2Eorg/common=22 bgcolor=3D=
+=22=23ffffff=22 border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22=
+ cellspacing=3D=220=22 width=3D=22660=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22center=22 width=3D=22660=22>
+<table border=3D=220=22 cellpadding=3D=220=22 cellspacing=3D=220=22>
+<tr>
+<td height=3D=2220=22><img border=3D=220=22 height=3D=2220=22 width=3D=221=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+<table bgcolor=3D=22=23ffffff=22 border=3D=220=22 align=3D=22center=22 cell=
+padding=3D=220=22 cellspacing=3D=220=22 width=3D=22620=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22 width=3D=22150=22><a style=3D=22t=
+ext-decoration:none; color:=23061f5c;=22 href=3D=22https://email=2Ejetblue=
+=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza=
+5ze88zbzdhgybnzdlW9MezbjdyHH3HTqGVXtpKX%3DYASSWY&_ei_=3DEolaGGF4SNMvxFF7Kuc=
+KuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBU=
+i5ts59nUFAlacTIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22><b><im=
+g alt=3D=22jetBlue&reg;=22 border=3D=220=22 height=3D=2264=22 width=3D=2215=
+0=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/con=
+tent/jetblue/header_logo=2Epng=22 style=3D=22display:block; font-family:ari=
+al; font-size:16x;=22></b></a></td><td valign=3D=22top=22 align=3D=22right=
+=22 width=3D=22470=22>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:11px; l=
+ine-height:14px; font-family:Arial, Helvetica, sans-serif; color:=23454545;=
+=22> Your upcoming trip  		to <strong><span style=3D=22color:=23468fcf=22>S=
+AN JUAN, PR</span></strong> 	 on Thu, Dec 17</div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table><table bgcolor=3D=22=23ffffff=22 border=3D=220=22 align=3D=22center=
+=22 cellpadding=3D=220=22 cellspacing=3D=220=22 width=3D=22660=22>
+<tr>
+<td width=3D=2220=22><img border=3D=220=22 height=3D=221=22 width=3D=2220=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td><td width=
+=3D=22620=22>
+<table bgcolor=3D=22=23004990=22 border=3D=220=22 align=3D=22center=22 cell=
+padding=3D=220=22 cellspacing=3D=220=22 width=3D=22620=22>
+<tr>
+<td align=3D=22center=22 height=3D=2233=22 width=3D=22118=22><a style=3D=22=
+text-decoration:none; color:=23ffffff;=22 href=3D=22https://email=2Ejetblue=
+=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza=
+5ze88zbzdhgybnzdlW9MezbjdyHH3HTqGVXtpKX%3DYASSAY&_ei_=3DEolaGGF4SNMvxFF7Kuc=
+KuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBU=
+i5ts59nUFAlacTIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22><img a=
+lt=3D=22Flight status=22 border=3D=220=22 height=3D=2233=22 width=3D=22118=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/nav_flight_status=2Epng=22 style=3D=22display:block; font-famil=
+y:arial; font-size:14px;=22></a></td><td bgcolor=3D=22=230e579d=22 width=3D=
+=221=22><img border=3D=220=22 height=3D=221=22 width=3D=221=22 src=3D=22htt=
+ps://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content/jetblue/x_sp=
+cr2x2=2Epng=22 style=3D=22display:block;=22></td><td align=3D=22center=22 h=
+eight=3D=2233=22 width=3D=22137=22><a style=3D=22text-decoration:none; colo=
+r:=23ffffff;=22 href=3D=22https://email=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc=
+2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9Mezbjdy=
+HH3HTqGVXtpKX%3DYASSCY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl=
+7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5b=
+CW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22><img alt=3D=22Change/cancel=22 b=
+order=3D=220=22 height=3D=2233=22 width=3D=22137=22 src=3D=22https://static=
+=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content/jetblue/nav_change_canc=
+el=2Epng=22 style=3D=22display:block; font-family:arial; font-size:14px;=22=
+></a></td><td bgcolor=3D=22=230e579d=22 width=3D=221=22><img border=3D=220=
+=22 height=3D=221=22 width=3D=221=22 src=3D=22https://static=2Ecdn=2Erespon=
+sys=2Enet/i5/responsysimages/content/jetblue/x_spcr2x2=2Epng=22 style=3D=22=
+display:block;=22></td><td align=3D=22center=22 height=3D=2233=22 width=3D=
+=22134=22><a style=3D=22text-decoration:none; color:=23ffffff;=22 href=3D=
+=22https://email=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3=
+cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9MezbjdyHH3HTqGVXtpKX%3DYASTRY&=
+_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o=
+0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldsza=
+YZlqCViGdpWzg=2E=22><img alt=3D=22Manage flights=22 border=3D=220=22 height=
+=3D=2233=22 width=3D=22134=22 src=3D=22https://static=2Ecdn=2Eresponsys=2En=
+et/i5/responsysimages/content/jetblue/nav_manage_flights=2Epng=22 style=3D=
+=22display:block; font-family:arial; font-size:14px;=22></a></td><td bgcolo=
+r=3D=22=230e579d=22 width=3D=221=22><img border=3D=220=22 height=3D=221=22 =
+width=3D=221=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsy=
+simages/content/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></t=
+d><td align=3D=22center=22 height=3D=2233=22 width=3D=22107=22><a style=3D=
+=22text-decoration:none; color:=23ffffff;=22 href=3D=22https://email=2Ejetb=
+lue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1z=
+bza5ze88zbzdhgybnzdlW9MezbjdyHH3HTqGVXtpKX%3DYASTTY&_ei_=3DEolaGGF4SNMvxFF7=
+KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODP=
+fBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22><im=
+g alt=3D=22Travel info=22 border=3D=220=22 height=3D=2233=22 width=3D=22107=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/nav_travel_info=2Epng=22 style=3D=22display:block; font-family:=
+arial; font-size:14px;=22></a></td><td bgcolor=3D=22=230e579d=22 width=3D=
+=221=22><img border=3D=220=22 height=3D=221=22 width=3D=221=22 src=3D=22htt=
+ps://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content/jetblue/x_sp=
+cr2x2=2Epng=22 style=3D=22display:block;=22></td><td align=3D=22center=22 h=
+eight=3D=2233=22 width=3D=22120=22><a style=3D=22text-decoration:none; colo=
+r:=23ffffff;=22 href=3D=22https://email=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc=
+2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9Mezbjdy=
+HH3HTqGVXtpKX%3DYASTWY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl=
+7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5b=
+CW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22><img alt=3D=22Baggage info=22 bo=
+rder=3D=220=22 height=3D=2233=22 width=3D=22120=22 src=3D=22https://static=
+=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content/jetblue/nav_baggage_inf=
+o=2Epng=22 style=3D=22display:block; font-family:arial; font-size:14px;=22>=
+</a></td>
+</tr>
+<tr>
+<td bgcolor=3D=22=230e579d=22 colspan=3D=229=22 height=3D=221=22 width=3D=
+=22620=22><img border=3D=220=22 height=3D=221=22 width=3D=22620=22 src=3D=
+=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content/jetblu=
+e/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+<tr>
+<td bgcolor=3D=22=23ffffff=22 colspan=3D=229=22 height=3D=221=22 width=3D=
+=22620=22><img border=3D=220=22 height=3D=221=22 width=3D=22620=22 src=3D=
+=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content/jetblu=
+e/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>  	 =09
+<=21-- open HERO CORE -->
+<table width=3D=22620=22 cellspacing=3D=220=22 cellpadding=3D=220=22 align=
+=3D=22center=22 border=3D=220=22 bgcolor=3D=22=23061e5a=22>
+ <tr>
+  <td width=3D=22620=22 height=3D=22244=22 align=3D=22center=22><a href=3D=
+=22https://email=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3=
+cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9MezbjdyHH3HTqGVXtpKX%3DYASTAY&=
+_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o=
+0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldsza=
+YZlqCViGdpWzg=2E=22 style=3D=22text-decoration:none; color:=23ffffff;=22><i=
+mg style=3D=22display:block; font-family:arial; font-size:18px;=22 src=3D=
+=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/conten=
+tlibrary/triggers_itinerary/itinerary_hero/images/hero_core=2Epng=22 width=
+=3D=22620=22 height=3D=22244=22 border=3D=220=22 alt=3D=22YOU&rsquo;RE ALL =
+SET TO JET=2E Get ready to enjoy free snacks and drinks, great inflight ent=
+ertainment and the most legroom in coach=2E - LEARN MORE=22></a></td>
+ </tr>
+</table>
+<=21-- close HERO CORE --> 	 	=20
+<=21-- open CONFIRMATION -->
+<table width=3D=22620=22 cellspacing=3D=220=22 cellpadding=3D=220=22 align=
+=3D=22center=22 border=3D=220=22 bgcolor=3D=22=23ffffff=22>
+ <tr>
+  <td width=3D=22620=22 height=3D=2295=22 align=3D=22center=22 valign=3D=22=
+top=22>
+ =20
+   <table cellspacing=3D=220=22 cellpadding=3D=220=22 border=3D=220=22><tr>=
+<td height=3D=2225=22><img style=3D=22display:block;=22 src=3D=22https://st=
+atic=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/contentlibrary/trig=
+gers_itinerary/Itinerary_Confirmation/images/x_spcr2x2=2Epng=22 width=3D=22=
+1=22 height=3D=2225=22 border=3D=220=22></td></tr></table> =20
+
+   <div style=3D=22font-weight:bold; font-size:16px; line-height:20px; font=
+-family:Arial, Helvetica, sans-serif; color:=23061f5c;=22>
+    Your confirmation code is <a href=3D=22https://email=2Ejetblue=2Ecom/pu=
+b/cc?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzd=
+hgybnzdlW9MezbjdyHH3HTqGVXtpKX%3DYASTCY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7b=
+DEAOk-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUF=
+AlacTIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22 style=3D=22text=
+-decoration:none; color:=234d8fcd; cursor:text;=22><span>MYQBRF</span></a>
+   </div>
+
+   <table cellspacing=3D=220=22 cellpadding=3D=220=22 border=3D=220=22><tr>=
+<td height=3D=225=22><img style=3D=22display:block;=22 src=3D=22https://sta=
+tic=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/contentlibrary/trigg=
+ers_itinerary/Itinerary_Confirmation/images/x_spcr2x2=2Epng=22 width=3D=221=
+=22 height=3D=225=22 border=3D=220=22></td></tr></table> =20
+
+   <div style=3D=22font-weight:normal; font-size:12px; line-height:15px; fo=
+nt-family:Arial, Helvetica, sans-serif; color:=23454545;=22>
+    This is not your boarding pass=2E
+   </div>
+ =20
+   <table cellspacing=3D=220=22 cellpadding=3D=220=22 border=3D=220=22><tr>=
+<td height=3D=2225=22><img style=3D=22display:block;=22 src=3D=22https://st=
+atic=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/contentlibrary/trig=
+gers_itinerary/Itinerary_Confirmation/images/x_spcr2x2=2Epng=22 width=3D=22=
+1=22 height=3D=2225=22 border=3D=220=22></td></tr></table> =20
+ =20
+  </td>
+ </tr>
+</table>
+<=21-- close CONFIRMATION --> <table bgcolor=3D=22=23ffffff=22 border=3D=22=
+0=22 align=3D=22center=22 cellpadding=3D=220=22 cellspacing=3D=220=22 width=
+=3D=22620=22>
+<tr>
+<td bgcolor=3D=22=23004990=22 align=3D=22left=22 height=3D=2235=22 width=3D=
+=22180=22><b><img alt=3D=22YOUR ITINERARY=22 border=3D=220=22 height=3D=223=
+5=22 width=3D=22180=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/r=
+esponsysimages/content/jetblue/title_itinerary=2Epng=22 style=3D=22display:=
+block; font-family:arial; font- size:15px; color:=23ffffff;=22></b></td><td=
+ width=3D=22440=22><img border=3D=220=22 height=3D=221=22 width=3D=22440=22=
+ src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content=
+/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+<table bgcolor=3D=22=2300295f=22 border=3D=220=22 align=3D=22center=22 cell=
+padding=3D=220=22 cellspacing=3D=220=22 width=3D=22620=22>
+<tr>
+<td align=3D=22center=22 width=3D=22620=22>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=22600=22>
+<tr>
+<td style=3D=22vertical-align:middle;=22 valign=3D=22middle=22 align=3D=22c=
+enter=22 width=3D=2248=22>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=2238=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22 height=3D=2226=22>
+<div style=3D=22font-weight:normal; font-size:10px; line-height:14px; font-=
+family:Arial, Helvetica, sans-serif; color:=23ffffff;=22> DATE </div>
+</td>
+</tr>
+</table>
+</td><td bgcolor=3D=22=230e3d75=22 height=3D=2236=22 width=3D=221=22><img b=
+order=3D=220=22 height=3D=2236=22 width=3D=221=22 src=3D=22https://static=
+=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content/jetblue/x_spcr2x2=2Epng=
+=22 style=3D=22display:block;=22></td><td style=3D=22vertical- align:middle=
+;=22 valign=3D=22middle=22 align=3D=22center=22 width=3D=2266=22>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=2246=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22 height=3D=2226=22>
+<div style=3D=22font-weight:normal; font-size:10px; line-height:14px; font-=
+family:Arial, Helvetica, sans-serif; color:=23ffffff;=22> DEPARTS/<br> ARRI=
+VES </div>
+</td>
+</tr>
+</table>
+</td><td bgcolor=3D=22=230e3d75=22 height=3D=2236=22 width=3D=221=22><img b=
+order=3D=220=22 height=3D=2236=22 width=3D=221=22 src=3D=22https://static=
+=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content/jetblue/x_spcr2x2=2Epng=
+=22 style=3D=22display:block;=22></td><td style=3D=22vertical-align:middle;=
+=22 valign=3D=22middle=22 align=3D=22center=22 width=3D=22102=22>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=2292=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22 height=3D=2226=22>
+<div style=3D=22font-weight:normal; font-size:10px; line-height:14px; font-=
+family:Arial, Helvetica, sans-serif; color:=23ffffff;=22> ROUTE </div>
+</td>
+</tr>
+</table>
+</td><td bgcolor=3D=22=230e3d75=22 height=3D=2236=22 width=3D=221=22><img b=
+order=3D=220=22 height=3D=2236=22 width=3D=221=22 src=3D=22https://static=
+=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content/jetblue/x_spcr2x2=2Epng=
+=22 style=3D=22display:block;=22></td><td style=3D=22vertical- align:middle=
+;=22 valign=3D=22middle=22 align=3D=22center=22 width=3D=2288=22>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=2278=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22 height=3D=2226=22>
+<div style=3D=22font-weight:normal; font-size:10px; line-height:14px; font-=
+family:Arial, Helvetica, sans-serif; color:=23ffffff;=22> FLIGHT/<br> OPERA=
+TED BY </div>
+</td>
+</tr>
+</table>
+</td><td bgcolor=3D=22=230e3d75=22 height=3D=2236=22 width=3D=221=22><img b=
+order=3D=220=22 height=3D=2236=22 width=3D=221=22 src=3D=22https://static=
+=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content/jetblue/x_spcr2x2=2Epng=
+=22 style=3D=22display:block;=22></td><td style=3D=22vertical-align:middle;=
+=22 valign=3D=22middle=22 align=3D=22center=22 width=3D=2296=22>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=2286=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22 height=3D=2226=22>
+<div style=3D=22font-weight:normal; font-size:10px; line-height:14px; font-=
+family:Arial, Helvetica, sans-serif; color:=23ffffff;=22> TRAVELERS </div>
+</td>
+</tr>
+</table>
+</td><td bgcolor=3D=22=230e3d75=22 height=3D=2236=22 width=3D=221=22><img b=
+order=3D=220=22 height=3D=2236=22 width=3D=221=22 src=3D=22https://static=
+=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content/jetblue/x_spcr2x2=2Epng=
+=22 style=3D=22display:block;=22></td><td style=3D=22vertical-align:middle;=
+=22 valign=3D=22middle=22 align=3D=22center=22 width=3D=2276=22>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=2266=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22 height=3D=2226=22>
+<div style=3D=22font-weight:normal; font-size:10px; line-height:14px; font-=
+family:Arial, Helvetica, sans-serif; color:=23ffffff;=22> FREQUENT<br> FLIE=
+R&sup1; </div>
+</td>
+</tr>
+</table>
+</td><td bgcolor=3D=22=230e3d75=22 height=3D=2236=22 width=3D=221=22><img b=
+order=3D=220=22 height=3D=2236=22 width=3D=221=22 src=3D=22https://static=
+=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content/jetblue/x_spcr2x2=2Epng=
+=22 style=3D=22display:block;=22></td><td style=3D=22vertical-align:middle;=
+=22 valign=3D=22middle=22 align=3D=22center=22 width=3D=2251=22>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=2241=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22 height=3D=2226=22>
+<div style=3D=22font-weight:normal; font-size:10px; line-height:14px; font-=
+family:Arial, Helvetica, sans-serif; color:=23ffffff;=22> SEATS&sup2; </div>
+</td>
+</tr>
+</table>
+</td><td bgcolor=3D=22=230e3d75=22 height=3D=2236=22 width=3D=221=22><img b=
+order=3D=220=22 height=3D=2236=22 width=3D=221=22 src=3D=22https://static=
+=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content/jetblue/x_spcr2x2=2Epng=
+=22 style=3D=22display:block;=22></td><td style=3D=22vertical-align:middle;=
+=22 valign=3D=22middle=22 align=3D=22center=22 width=3D=2266=22>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=2256=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22 height=3D=2226=22>
+<div style=3D=22font-weight:normal; font-size:10px; line-height:14px; font-=
+family:Arial, Helvetica, sans-serif; color:=23ffffff;=22> TERMINAL </div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<table bgcolor=3D=22=23d3e4f4=22 border=3D=220=22 align=3D=22center=22 cell=
+padding=3D=220=22 cellspacing=3D=220=22 width=3D=22620=22>
+<tr>
+<td height=3D=221=22><img border=3D=220=22 height=3D=221=22 width=3D=22620=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+<table bgcolor=3D=22=23ffffff=22 border=3D=220=22 align=3D=22center=22 cell=
+padding=3D=220=22 cellspacing=3D=220=22 width=3D=22620=22>
+<tr>
+<td align=3D=22center=22 width=3D=22620=22>
+<table border=3D=220=22 cellpadding=3D=220=22 cellspacing=3D=220=22>
+<tr>
+<td height=3D=2215=22><img border=3D=220=22 height=3D=2215=22 width=3D=221=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=22600=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22center=22 width=3D=2248=22>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=2238=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:12px; l=
+ine-height:17px; font-family:Arial, Helvetica, sans-serif; color:=23454545;=
+=22>Thu, Dec 17</div>
+</td>
+</tr>
+</table>
+</td><td height=3D=2236=22 width=3D=221=22><img border=3D=220=22 height=3D=
+=2236=22 width=3D=221=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5=
+/responsysimages/content/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:bloc=
+k;=22></td><td valign=3D=22top=22 align=3D=22center=22 width=3D=2266=22>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=2262=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:12px; l=
+ine-height:17px; font-family:Arial, Helvetica, sans-serif; color:=23454545;=
+=22>01:20 PM<br>06:17 PM</div>
+</td>
+</tr>
+</table>
+</td><td height=3D=2236=22 width=3D=221=22><img border=3D=220=22 height=3D=
+=2236=22 width=3D=221=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5=
+/responsysimages/content/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:bloc=
+k;=22></td><td valign=3D=22top=22 align=3D=22center=22 width=3D=22102=22>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=2292=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:12px; l=
+ine-height:17px; font-family:Arial, Helvetica, sans- serif; color:=23454545=
+;=22>
+<strong>BOSTON, MA (BOS)</strong> to <strong>SAN JUAN, PR (SJU)</strong>
+</div>
+</td>
+</tr>
+</table>
+</td><td height=3D=2236=22 width=3D=221=22><img border=3D=220=22 height=3D=
+=2236=22 width=3D=221=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5=
+/responsysimages/content/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:bloc=
+k;=22></td><td valign=3D=22top=22 align=3D=22center=22 width=3D=2288=22>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=2278=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:12px; l=
+ine-height:17px; font-family:Arial, Helvetica, sans-serif; color:=23454545;=
+=22>861</div>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22>
+<tr>
+<td height=3D=227=22><img border=3D=220=22 height=3D=227=22 width=3D=221=22=
+ src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content=
+/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+<table border=3D=220=22 cellpadding=3D=220=22 cellspacing=3D=220=22>
+<tr>
+<td style=3D=22font-family:Arial, Helvetica, sans-serif; color:004990;=22 v=
+align=3D=22top=22 align=3D=22left=22>   <img alt=3D=22jetBlue&reg;=22 borde=
+r=3D=220=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysima=
+ges/content/jetblue/icon_itinerary_logo_jb=2Epng=22 style=3D=22display:bloc=
+k;=22></td>
+</tr>
+</table>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:8px; li=
+ne-height:10px; font-family:Arial, Helvetica, sans-serif; color:=23454545;=
+=22>  </div>
+</td>
+</tr>
+</table>
+</td><td height=3D=2236=22 width=3D=221=22><img border=3D=220=22 height=3D=
+=2236=22 width=3D=221=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5=
+/responsysimages/content/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:bloc=
+k;=22></td><td valign=3D=22top=22 align=3D=22left=22 width=3D=22292=22>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=22292=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22center=22 width=3D=2296=22>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=2286=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:12px; l=
+ine-height:17px; font-family:Arial, Helvetica, sans-serif; color:=23454545;=
+=22>  </div>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:12px; l=
+ine-height:17px; font-family:Arial, Helvetica, sans-serif; color:=23454545;=
+=22>  </div>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:12px; l=
+ine-height:17px; font-family:Arial, Helvetica, sans-serif; color:=23454545;=
+=22> Sergio Andres Jose Mundo Santiago </div>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:12px; l=
+ine-height:17px; font-family:Arial, Helvetica, sans-serif; color:=23454545;=
+=22> Diego Antonio Mundo Santiago </div>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22>
+<tr>
+<td height=3D=2218=22><img border=3D=220=22 height=3D=2218=22 width=3D=221=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td><td height=3D=2236=22 width=3D=221=22><img border=3D=220=22 height=3D=
+=2236=22 width=3D=221=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5=
+/responsysimages/content/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:bloc=
+k;=22></td><td valign=3D=22top=22 align=3D=22center=22 width=3D=2276=22>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=2266=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:10px; l=
+ine-height:15px; font-family:Arial, Helvetica, sans-serif; color:=23454545;=
+=22></div>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:10px; l=
+ine-height:15px; font-family:Arial, Helvetica, sans-serif; color:=23454545;=
+=22></div>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:10px; l=
+ine-height:15px; font-family:Arial, Helvetica, sans-serif; color:=23454545;=
+=22>B6 2110143806</div>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:10px; l=
+ine-height:15px; font-family:Arial, Helvetica, sans-serif; color:=23454545;=
+=22>B6 2116294460</div>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22>
+<tr>
+<td height=3D=2218=22><img border=3D=220=22 height=3D=2218=22 width=3D=221=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td><td height=3D=2236=22 width=3D=221=22><img border=3D=220=22 height=3D=
+=2236=22 width=3D=221=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5=
+/responsysimages/content/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:bloc=
+k;=22></td><td valign=3D=22top=22 align=3D=22center=22 width=3D=2251=22>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=2241=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:12px; l=
+ine-height:17px; font-family:Arial, Helvetica, sans-serif; color:=23454545;=
+=22>22C</div>
+<table border=3D=220=22 cellpadding=3D=220=22 cellspacing=3D=220=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22></td>
+</tr>
+</table>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:12px; l=
+ine-height:17px; font-family:Arial, Helvetica, sans-serif; color:=23454545;=
+=22>22B</div>
+<table border=3D=220=22 cellpadding=3D=220=22 cellspacing=3D=220=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22></td>
+</tr>
+</table>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22>
+<tr>
+<td height=3D=2218=22><img border=3D=220=22 height=3D=2218=22 width=3D=221=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td><td height=3D=2236=22 width=3D=221=22><img border=3D=220=22 height=3D=
+=2236=22 width=3D=221=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5=
+/responsysimages/content/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:bloc=
+k;=22></td><td valign=3D=22top=22 align=3D=22center=22 width=3D=2266=22>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=2256=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:12px; l=
+ine-height:17px; font-family:Arial, Helvetica, sans-serif; color:=23454545;=
+=22>C</div>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<table border=3D=220=22 cellpadding=3D=220=22 cellspacing=3D=220=22>
+<tr>
+<td height=3D=2220=22><img border=3D=220=22 height=3D=2220=22 width=3D=221=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<table bgcolor=3D=22=23ffffff=22 border=3D=220=22 align=3D=22center=22 cell=
+padding=3D=220=22 cellspacing=3D=220=22 width=3D=22620=22>
+<tr>
+<td height=3D=221=22><img border=3D=220=22 height=3D=221=22 width=3D=221=22=
+ src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content=
+/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+<table bgcolor=3D=22=23f1f5f8=22 border=3D=220=22 align=3D=22center=22 cell=
+padding=3D=220=22 cellspacing=3D=220=22 width=3D=22620=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22center=22 width=3D=22620=22>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=22580=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22 width=3D=22580=22>
+<table border=3D=220=22 cellpadding=3D=220=22 cellspacing=3D=220=22>
+<tr>
+<td height=3D=2214=22><img border=3D=220=22 height=3D=2214=22 width=3D=221=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+<div style=3D=22font-weight:normal; font-size:12px; line-height:20px; font-=
+family:Arial, Helvetica, sans-serif; color:=23454545;=22>
+<b style=3D=22color:=2300295f;=22> 		Trip 1:</b>
+<br> 		 		You've purchased a <b style=3D=22color:=2300295f;=22>Blue Plus fa=
+re</b>=2E This fare option includes <b>one (1) checked bag per person</b>=
+=2E You may pay for additional bags <a style=3D=22text-decoration:none; col=
+or:=23468fcf;=22 href=3D=22https://email=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gz=
+c2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9Mezbjd=
+yHH3HTqGVXtpKX%3DYASUTY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7c=
+l7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5=
+bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22><span>online</span></a> (within=
+ 24 hours of departure), or upon arrival at the airport via an airport kios=
+k or with an airport crewmember=2E Some restrictions apply=2E Please <a sty=
+le=3D=22text-decoration:none; color:=23468fcf;=22 href=3D=22https://email=
+=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G7=
+3Mj6Y1zbza5ze88zbzdhgybnzdlW9MezbjdyHH3HTqGVXtpKX%3DYASUWY&_ei_=3DEolaGGF4S=
+NMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9=
+CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=
+=22><span>click here</span></a> for additional information=2E 		 		</div>
+<table border=3D=220=22 cellpadding=3D=220=22 cellspacing=3D=220=22>
+<tr>
+<td height=3D=2214=22><img border=3D=220=22 height=3D=2214=22 width=3D=221=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<table border=3D=220=22 cellpadding=3D=220=22 cellspacing=3D=220=22>
+<tr>
+<td height=3D=2215=22><img border=3D=220=22 height=3D=2215=22 width=3D=221=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+<table bgcolor=3D=22=23d3e4f4=22 border=3D=220=22 align=3D=22center=22 cell=
+padding=3D=220=22 cellspacing=3D=220=22 width=3D=22620=22>
+<tr>
+<td height=3D=221=22><img border=3D=220=22 height=3D=221=22 width=3D=22620=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+<table border=3D=220=22 cellpadding=3D=220=22 cellspacing=3D=220=22>
+<tr>
+<td height=3D=2215=22><img border=3D=220=22 height=3D=2215=22 width=3D=221=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+<table border=3D=220=22 cellpadding=3D=220=22 cellspacing=3D=220=22>
+<tr>
+<td height=3D=2215=22><img border=3D=220=22 height=3D=2215=22 width=3D=221=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+<table bgcolor=3D=22=23ffffff=22 border=3D=220=22 align=3D=22center=22 cell=
+padding=3D=220=22 cellspacing=3D=220=22 width=3D=22580=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22 width=3D=22350=22>
+<div style=3D=22font-weight:normal; font-size:12px; line-height:15px; font-=
+family:Arial, Helvetica, sans-serif; color:=23454545;=22> For a detailed re=
+ceipt, select a customer </div>
+</td><td valign=3D=22top=22 align=3D=22right=22 width=3D=22230=22>
+<div style=3D=22font-weight:normal; font-size:12px; line-height:15px; font-=
+family:Arial, Helvetica, sans-serif; color:=23454545;=22> Ticket number(s) =
+</div>
+</td>
+</tr>
+</table>
+<table border=3D=220=22 cellpadding=3D=220=22 cellspacing=3D=220=22>
+<tr>
+<td height=3D=228=22><img border=3D=220=22 height=3D=228=22 width=3D=221=22=
+ src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content=
+/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+<table bgcolor=3D=22=23ffffff=22 border=3D=220=22 align=3D=22center=22 cell=
+padding=3D=220=22 cellspacing=3D=220=22 width=3D=22580=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22 width=3D=22350=22>
+<div style=3D=22font-weight:normal; font-size:12px; line-height:15px; font-=
+family:Arial, Helvetica, sans-serif; color:=23454545;=22>
+<a style=3D=22text-decoration:none; color:=234d8fcd;=22 href=3D=22https://e=
+mail=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzd=
+k8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9MezbjdyHH3HTqGVXtpKX%3DYASUAY&_ei_=3DEolaG=
+GF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqz=
+jUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpWz=
+g=2E=22><span> Sergio Andres Jose Mundo Santiago </span></a>
+</div>
+</td><td valign=3D=22top=22 align=3D=22right=22 width=3D=22230=22>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:12px; l=
+ine-height:15px; font-family:Arial, Helvetica, sans-serif; color:=23454545;=
+=22>
+<a style=3D=22text-decoration:none; color:=23454545; cursor:text=22><span>2=
+792140665319</span></a>
+</div>
+</td>
+</tr>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22 width=3D=22350=22>
+<div style=3D=22font-weight:normal; font-size:12px; line-height:15px; font-=
+family:Arial, Helvetica, sans-serif; color:=23454545;=22>
+<a style=3D=22text-decoration:none; color:=234d8fcd;=22 href=3D=22https://e=
+mail=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzd=
+k8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9MezbjdyHH3HTqGVXtpKX%3DYASUAY&_ei_=3DEolaG=
+GF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqz=
+jUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpWz=
+g=2E=22><span> Diego Antonio Mundo Santiago </span></a>
+</div>
+</td><td valign=3D=22top=22 align=3D=22right=22 width=3D=22230=22>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:12px; l=
+ine-height:15px; font-family:Arial, Helvetica, sans-serif; color:=23454545;=
+=22>
+<a style=3D=22text-decoration:none; color:=23454545; cursor:text=22><span>2=
+792140665320</span></a>
+</div>
+</td>
+</tr>
+</table>
+<table border=3D=220=22 cellpadding=3D=220=22 cellspacing=3D=220=22>
+<tr>
+<td height=3D=225=22><img border=3D=220=22 height=3D=225=22 width=3D=221=22=
+ src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content=
+/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+<table border=3D=220=22 cellpadding=3D=220=22 cellspacing=3D=220=22>
+<tr>
+<td height=3D=2215=22><img border=3D=220=22 height=3D=2215=22 width=3D=221=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+<table bgcolor=3D=22=23d3e4f4=22 border=3D=220=22 align=3D=22center=22 cell=
+padding=3D=220=22 cellspacing=3D=220=22 width=3D=22620=22>
+<tr>
+<td height=3D=221=22><img border=3D=220=22 height=3D=221=22 width=3D=22620=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+<table border=3D=220=22 align=3D=22center=22 cellpadding=3D=220=22 cellspac=
+ing=3D=220=22 width=3D=22580=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22left=22 width=3D=22580=22>
+<table border=3D=220=22 cellpadding=3D=220=22 cellspacing=3D=220=22>
+<tr>
+<td height=3D=2210=22><img border=3D=220=22 height=3D=2210=22 width=3D=221=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>   <div style=3D=22font-weight:normal; font-size:12px; line-height:=
+20px; font-family:Arial, Helvetica, sans-serif; color:=238d8d8d;=22> Please=
+ <a style=3D=22text-decoration:none; color:=234d8fcd;=22 href=3D=22https://=
+email=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdz=
+dk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9MezbjdyHH3HTqGVXtpKX%3DYASSCY&_ei_=3DEola=
+GGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uq=
+zjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpW=
+zg=2E=22><span>click here</span></a> for details regarding change and cance=
+l policies=2E<br> &sup1; To provide a frequent flier number, please call <a=
+ style=3D=22text-decoration:none; color:=238d8d8d;=22 href=3D=22tel:1-800-5=
+38-2583=22><span>1-800-JETBLUE (538-2583)</span></a>=2E<br> &sup2; Seat req=
+uests on other airlines are not guaranteed until confirmed by the operating=
+ carrier=2E </div>
+<table border=3D=220=22 cellpadding=3D=220=22 cellspacing=3D=220=22>
+<tr>
+<td height=3D=2210=22><img border=3D=220=22 height=3D=2210=22 width=3D=221=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+</td>
+</tr>
+</table>
+<table border=3D=220=22 cellpadding=3D=220=22 cellspacing=3D=220=22>
+<tr>
+<td height=3D=2225=22><img border=3D=220=22 height=3D=2225=22 width=3D=221=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+<table bgcolor=3D=22=23ffffff=22 border=3D=220=22 align=3D=22center=22 cell=
+padding=3D=220=22 cellspacing=3D=220=22 width=3D=22160=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22center=22 width=3D=22160=22><img border=
+=3D=220=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimag=
+es/content/jetblue/icon_carry_on=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+<table border=3D=220=22 cellpadding=3D=220=22 cellspacing=3D=220=22>
+<tr>
+<td height=3D=2215=22><img border=3D=220=22 height=3D=2215=22 width=3D=221=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+<table bgcolor=3D=22=23ffffff=22 border=3D=220=22 align=3D=22center=22 cell=
+padding=3D=220=22 cellspacing=3D=220=22 width=3D=22560=22>
+<tr>
+<td valign=3D=22top=22 align=3D=22center=22 width=3D=22560=22>
+<div style=3D=22font-weight:bold; font-size:16px; line-height:19px; font-fa=
+mily:Arial, Helvetica, sans-serif; color:=23061f5c;=22> Don't get carried a=
+way=2E </div>
+<div class=3D=22i454545=22 style=3D=22font-weight:normal; font-size:14px; l=
+ine-height:20px; font-family:Arial, Helvetica, sans-serif; color:=23454545;=
+=22> You're allowed to bring one carry-on bag onboard=2E The carry-on must =
+not exceed <b>22=22L x14=22W x9=22H</b>=2E Thank you for keeping these dime=
+nsions in mind=2E </div>
+</td>
+</tr>
+</table>
+<table border=3D=220=22 cellpadding=3D=220=22 cellspacing=3D=220=22>
+<tr>
+<td height=3D=2215=22><img border=3D=220=22 height=3D=2215=22 width=3D=221=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>
+<table bgcolor=3D=22=23d3e4f4=22 border=3D=220=22 align=3D=22center=22 cell=
+padding=3D=220=22 cellspacing=3D=220=22 width=3D=22620=22>
+<tr>
+<td height=3D=221=22><img border=3D=220=22 height=3D=221=22 width=3D=22620=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/cont=
+ent/jetblue/x_spcr2x2=2Epng=22 style=3D=22display:block;=22></td>
+</tr>
+</table>=20
+<=21-- open EMS RESCUE -->
+<table width=3D=22620=22 cellspacing=3D=220=22 cellpadding=3D=220=22 align=
+=3D=22center=22 border=3D=220=22 bgcolor=3D=22=23ffffff=22>
+ <tr>
+  <td align=3D=22left=22 valign=3D=22top=22><a href=3D=22https://email=2Eje=
+tblue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y=
+1zbza5ze88zbzdhgybnzdlW9MezbjdyHH3HTqGVXtpKX%3DYASUCY&_ei_=3DEolaGGF4SNMvxF=
+F7KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSO=
+DPfBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22><=
+img style=3D=22display:block;=22 src=3D=22https://static=2Ecdn=2Eresponsys=
+=2Enet/i5/responsysimages/jetblue/contentlibrary/triggers_itinerary/itinera=
+ry_rescue_ems/images/icon_rescu_even_more_space=2Epng=22 border=3D=220=22><=
+/a></td>
+  <td align=3D=22left=22 valign=3D=22middle=22 style=3D=22vertical-align:mi=
+ddle;=22>
+
+   <div style=3D=22font-weight:bold; font-size:14px; line-height:20px; font=
+-family:Arial, Helvetica, sans-serif; color:=23061f5c;=22>
+    <a href=3D=22https://email=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DYQpg=
+lLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9MezbjdyHH3HTqGVX=
+tpKX%3DYASUCY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edvF2W=
+ozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ1y3=
+5A02zwGX0ldszaYZlqCViGdpWzg=2E=22 style=3D=22text-decoration:none; color:=
+=23061f5c;=22><span>From roomy to roomier=2E</span></a>
+   </div>
+
+   <div style=3D=22font-weight:normal; font-size:14px; line-height:17px; fo=
+nt-family:Arial, Helvetica, sans-serif; color:=23454545;=22>
+    Book an Even More<span style=3D=22font-size:10px;=22><sup>&reg;</sup></=
+span> Space seat for extra legroom, early boarding and early access to over=
+head bins=2E
+   </div>
+
+  </td>
+  <td width=3D=22145=22 align=3D=22center=22 valign=3D=22middle=22 style=3D=
+=22vertical-align:middle;=22>
+
+   <table width=3D=22106=22 cellspacing=3D=220=22 cellpadding=3D=220=22 ali=
+gn=3D=22center=22 border=3D=220=22 bgcolor=3D=22=23468fcf=22>
+    <tr>
+     <td width=3D=22160=22 height=3D=2233=22 align=3D=22left=22 valign=3D=
+=22top=22><a href=3D=22https://email=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%=
+3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9MezbjdyHH3=
+HTqGVXtpKX%3DYASUCY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6=
+edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5bCW4=
+shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22 style=3D=22text-decoration:none; co=
+lor:=23ffffff;=22><b><img style=3D=22display:block; font-family:arial; font=
+-size:16px;=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsys=
+images/jetblue/contentlibrary/triggers_itinerary/itinerary_rescue_ems/image=
+s/x_cta_letsgo=2Epng=22 width=3D=22106=22 height=3D=2233=22 border=3D=220=
+=22 alt=3D=22LET'S GO=22></b></a></td>
+    </tr>
+   </table>
+
+  </td>
+ </tr>
+</table>
+<=21-- close EMS RESCUE --> </td><td width=3D=2220=22><img border=3D=220=22=
+ height=3D=221=22 width=3D=2220=22 src=3D=22https://static=2Ecdn=2Eresponsy=
+s=2Enet/i5/responsysimages/content/jetblue/x_spcr2x2=2Epng=22 style=3D=22di=
+splay:block;=22></td>
+</tr>
+</table>
+
+
+<=21-- Spacer Snippet Added by Jake -->
+<table width=3D=22660=22 cellspacing=3D=220=22 cellpadding=3D=220=22 align=
+=3D=22center=22 border=3D=220=22 bgcolor=3D=22=23ffffff=22>
+ <tr>
+  <td width=3D=2220=22><img style=3D=22display:block;=22 src=3D=22https://s=
+tatic=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content/jetblue/x_spcr2x2=
+=2Epng=22 width=3D=2220=22 height=3D=221=22 border=3D=220=22></td>
+  <td width=3D=22620=22>
+<=21-- Spacer Snippet Added by Jake -->
+
+
+<=21-- =23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=
+=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=
+=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=23=
+=23=23=23=23=23=23=23=23=23=23=23=23=23=23 -->
+
+
+<=21-- open primary footer -->
+<table cellspacing=3D=220=22 cellpadding=3D=220=22 border=3D=220=22><tr><td=
+ height=3D=2218=22><img style=3D=22display:block;=22 src=3D=22https://stati=
+c=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/contentlibrary/trigger=
+s_itinerary/Itinerary20150223_NC_v3/images/x_spcr2x2=2Epng=22 width=3D=221=
+=22 height=3D=2218=22 border=3D=220=22></td></tr></table>
+<table width=3D=22620=22 cellspacing=3D=220=22 cellpadding=3D=220=22 align=
+=3D=22center=22 border=3D=220=22 bgcolor=3D=22=23ffffff=22 class=3D=22w280=
+=22>
+ <tr>
+  <td width=3D=22300=22 align=3D=22left=22 valign=3D=22middle=22 class=3D=
+=22w280=22>
+
+<=21-- open social navigation -->
+   <table width=3D=22300=22 cellspacing=3D=220=22 cellpadding=3D=220=22 ali=
+gn=3D=22center=22 border=3D=220=22 class=3D=22w280=22>
+    <tr>
+     <td width=3D=2231=22><a href=3D=22https://email=2Ejetblue=2Ecom/pub/cc=
+?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgyb=
+nzdlW9MezbjdyHH3HTqGVXtpKX%3DYASWRY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAO=
+k-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlac=
+TIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22 style=3D=22text-dec=
+oration:none; color:=234d90cd;=22><img style=3D=22display:block;=22 src=3D=
+=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/conten=
+tlibrary/triggers_itinerary/Itinerary20150223_NC_v3/images/social_facebook=
+=2Epng=22 width=3D=2231=22 height=3D=2232=22 border=3D=220=22 alt=3D=22Face=
+book=22></a></td>
+     <td width=3D=228=22><img style=3D=22display:block;=22 src=3D=22https:/=
+/static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/contentlibrary/t=
+riggers_itinerary/Itinerary20150223_NC_v3/images/x_spcr2x2=2Epng=22 width=
+=3D=228=22 height=3D=221=22 border=3D=220=22></td>
+     <td width=3D=2231=22><a href=3D=22https://email=2Ejetblue=2Ecom/pub/cc=
+?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgyb=
+nzdlW9MezbjdyHH3HTqGVXtpKX%3DYASWTY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAO=
+k-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlac=
+TIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22 style=3D=22text-dec=
+oration:none; color:=234d90cd;=22><img style=3D=22display:block;=22 src=3D=
+=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/conten=
+tlibrary/triggers_itinerary/Itinerary20150223_NC_v3/images/social_twitter=
+=2Epng=22 width=3D=2231=22 height=3D=2232=22 border=3D=220=22 alt=3D=22Twit=
+ter=22></a></td>
+     <td width=3D=229=22><img style=3D=22display:block;=22 src=3D=22https:/=
+/static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/contentlibrary/t=
+riggers_itinerary/Itinerary20150223_NC_v3/images/x_spcr2x2=2Epng=22 width=
+=3D=229=22 height=3D=221=22 border=3D=220=22></td>
+     <td width=3D=2231=22><a href=3D=22https://email=2Ejetblue=2Ecom/pub/cc=
+?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgyb=
+nzdlW9MezbjdyHH3HTqGVXtpKX%3DYASWWY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAO=
+k-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlac=
+TIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22 style=3D=22text-dec=
+oration:none; color:=234d90cd;=22><img style=3D=22display:block;=22 src=3D=
+=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/conten=
+tlibrary/triggers_itinerary/Itinerary20150223_NC_v3/images/social_youtube=
+=2Epng=22 width=3D=2231=22 height=3D=2232=22 border=3D=220=22 alt=3D=22YouT=
+ube=22></a></td>
+     <td width=3D=2220=22><img style=3D=22display:block;=22 src=3D=22https:=
+//static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/contentlibrary/=
+triggers_itinerary/Itinerary20150223_NC_v3/images/x_spcr2x2=2Epng=22 width=
+=3D=2215=22 height=3D=221=22 border=3D=220=22></td>
+     <td width=3D=221=22 bgcolor=3D=22=23dae8f4=22><img style=3D=22display:=
+block;=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimage=
+s/jetblue/contentlibrary/triggers_itinerary/Itinerary20150223_NC_v3/images/=
+x_spcr2x2=2Epng=22 width=3D=221=22 height=3D=221=22 border=3D=220=22></td>
+     <td width=3D=2220=22><img style=3D=22display:block;=22 src=3D=22https:=
+//static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/contentlibrary/=
+triggers_itinerary/Itinerary20150223_NC_v3/images/x_spcr2x2=2Epng=22 width=
+=3D=2215=22 height=3D=221=22 border=3D=220=22></td>
+     <td width=3D=2237=22><a href=3D=22https://email=2Ejetblue=2Ecom/pub/cc=
+?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgyb=
+nzdlW9MezbjdyHH3HTqGVXtpKX%3DYASWAY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAO=
+k-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlac=
+TIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22 style=3D=22text-dec=
+oration:none; color:=234d90cd;=22><img style=3D=22display:block;=22 src=3D=
+=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/conten=
+tlibrary/triggers_itinerary/Itinerary20150223_NC_v3/images/social_blog=2Epn=
+g=22 width=3D=2237=22 height=3D=2232=22 border=3D=220=22></a></td>
+     <td width=3D=2298=22 align=3D=22left=22 valign=3D=22middle=22 class=3D=
+=22w104 center=22>
+  =20
+      <div style=3D=22font-weight:bold; font-size:12px; line-height:15px; f=
+ont-family:Arial, Helvetica, sans-serif; color:=234d90cd;=22>
+       <a href=3D=22https://email=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DY=
+QpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9MezbjdyHH3HTq=
+GVXtpKX%3DYASWAY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edv=
+F2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ=
+1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22 style=3D=22text-decoration:none; color=
+:=234d90cd;=22><span>BlueTales Blog</span></a>
+      </div>
+  =20
+     </td>
+     <td width=3D=2210=22 class=3D=22hide=22><img style=3D=22display:block;=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetb=
+lue/contentlibrary/triggers_itinerary/Itinerary20150223_NC_v3/images/x_spcr=
+2x2=2Epng=22 width=3D=2210=22 height=3D=221=22 border=3D=220=22></td>
+     <td width=3D=221=22 bgcolor=3D=22=23dae8f4=22 class=3D=22hide=22><img =
+style=3D=22display:block;=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Ene=
+t/i5/responsysimages/jetblue/contentlibrary/triggers_itinerary/Itinerary201=
+50223_NC_v3/images/x_spcr2x2=2Epng=22 width=3D=221=22 height=3D=221=22 bord=
+er=3D=220=22></td>
+     <td width=3D=223=22 class=3D=22hide=22><img style=3D=22display:block;=
+=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetb=
+lue/contentlibrary/triggers_itinerary/Itinerary20150223_NC_v3/images/x_spcr=
+2x2=2Epng=22 width=3D=223=22 height=3D=221=22 border=3D=220=22></td>
+    </tr>
+   </table>
+<=21-- close social navigation -->
+ =20
+  </td>
+  <td width=3D=22320=22 align=3D=22left=22 valign=3D=22middle=22 class=3D=
+=22hide=22>
+
+<=21-- open app --> =20
+   <table width=3D=22320=22 cellspacing=3D=220=22 cellpadding=3D=220=22 ali=
+gn=3D=22center=22 border=3D=220=22>
+    <tr>
+     <td width=3D=2260=22 align=3D=22left=22 valign=3D=22top=22><a href=3D=
+=22https://email=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3=
+cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9MezbjdyHH3HTqGVXtpKX%3DYASWCY&=
+_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o=
+0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldsza=
+YZlqCViGdpWzg=2E=22><img style=3D=22display:block;=22 src=3D=22https://stat=
+ic=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/contentlibrary/trigge=
+rs_itinerary/Itinerary20150223_NC_v3/images/social_app=2Epng=22 width=3D=22=
+60=22 height=3D=2240=22 border=3D=220=22></a></td>
+     <td width=3D=22230=22 align=3D=22left=22 valign=3D=22top=22>
+
+      <div style=3D=22font-weight:bold; font-size:11px; line-height:14px; f=
+ont-family:Arial, Helvetica, sans-serif; color:=234d90cd;=22>
+       <a href=3D=22https://email=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DY=
+QpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9MezbjdyHH3HTq=
+GVXtpKX%3DYASWCY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edv=
+F2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ=
+1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22 style=3D=22text-decoration:none; color=
+:=234d90cd;=22><span>Same smart app=2E More smartphones=2E</span></a>
+      </div>
+     =20
+      <div style=3D=22font-weight:normal; font-size:11px; line-height:14px;=
+ font-family:Arial, Helvetica, sans-serif; color:=23999999;=22>
+       Download the JetBlue mobile app for iPhone and Android now=21
+      </div>
+    =20
+     </td>
+     <td width=3D=2230=22><img style=3D=22display:block;=22 src=3D=22https:=
+//static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/contentlibrary/=
+triggers_itinerary/Itinerary20150223_NC_v3/images/x_spcr2x2=2Epng=22 width=
+=3D=2230=22 height=3D=221=22 border=3D=220=22></td>
+    </tr>
+   </table>
+<=21-- close app --> =20
+
+  </td>
+ </tr>
+</table>
+<table cellspacing=3D=220=22 cellpadding=3D=220=22 border=3D=220=22><tr><td=
+ height=3D=2214=22><img style=3D=22display:block;=22 src=3D=22https://stati=
+c=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/contentlibrary/trigger=
+s_itinerary/Itinerary20150223_NC_v3/images/x_spcr2x2=2Epng=22 width=3D=221=
+=22 height=3D=2214=22 border=3D=220=22></td></tr></table>
+<=21-- close primary footer -->
+
+
+<=21-- open secondary footer -->
+<table width=3D=22620=22 cellspacing=3D=220=22 cellpadding=3D=220=22 align=
+=3D=22center=22 border=3D=220=22 class=3D=22w320=22>
+<tr>
+<td align=3D=22left=22>
+
+<=21-- open secondary navigation -->
+<table width=3D=22620=22 cellspacing=3D=220=22 cellpadding=3D=220=22 border=
+=3D=220=22 bgcolor=3D=22=23dae8f4=22 class=3D=22w320=22><tr><td height=3D=
+=221=22><img style=3D=22display:block;=22 src=3D=22https://static=2Ecdn=2Er=
+esponsys=2Enet/i5/responsysimages/jetblue/contentlibrary/triggers_itinerary=
+/Itinerary20150223_NC_v3/images/x_spcr2x2=2Epng=22 width=3D=221=22 height=
+=3D=221=22 border=3D=220=22></td></tr></table>
+<table width=3D=22620=22 cellspacing=3D=220=22 cellpadding=3D=220=22 border=
+=3D=220=22 class=3D=22w320=22><tr><td height=3D=2218=22><img style=3D=22dis=
+play:block;=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsys=
+images/jetblue/contentlibrary/triggers_itinerary/Itinerary20150223_NC_v3/im=
+ages/x_spcr2x2=2Epng=22 width=3D=221=22 height=3D=2218=22 border=3D=220=22>=
+</td></tr></table>
+<table cellspacing=3D=220=22 cellpadding=3D=220=22 border=3D=220=22 class=
+=3D=22w320=22>
+ <tr>
+  <th align=3D=22center=22 valign=3D=22top=22 class=3D=22w320 block=22>
+
+   <table cellspacing=3D=220=22 cellpadding=3D=220=22 border=3D=220=22>
+    <tr>
+
+     <td align=3D=22left=22 valign=3D=22top=22>
+    =20
+      <div style=3D=22font-weight:normal; font-size:12px; line-height:15px;=
+ font-family:Arial, Helvetica, sans-serif; color:=234d90cd;=22>
+       <a href=3D=22https://email=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DY=
+QpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9MezbjdyHH3HTq=
+GVXtpKX%3DYASYRY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edv=
+F2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ=
+1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22 style=3D=22text-decoration:none; color=
+:=234d90cd;=22><span>Help</span></a>
+      </div>
+  =20
+     </td>
+     <td width=3D=2212=22><img style=3D=22display:block;=22 src=3D=22https:=
+//static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/contentlibrary/=
+triggers_itinerary/Itinerary20150223_NC_v3/images/x_spcr2x2=2Epng=22 width=
+=3D=2212=22 height=3D=221=22 border=3D=220=22></td>
+     <td align=3D=22left=22 valign=3D=22top=22>
+    =20
+      <div style=3D=22font-weight:normal; font-size:12px; line-height:15px;=
+ font-family:Arial, Helvetica, sans-serif; color:=234d90cd;=22>
+       <a href=3D=22https://email=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DY=
+QpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9MezbjdyHH3HTq=
+GVXtpKX%3DYASYTY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edv=
+F2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ=
+1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22 style=3D=22text-decoration:none; color=
+:=234d90cd;=22><span>Corporate&nbsp;Travel</span></a>
+      </div>
+  =20
+     </td>
+     <td width=3D=2212=22><img style=3D=22display:block;=22 src=3D=22https:=
+//static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/contentlibrary/=
+triggers_itinerary/Itinerary20150223_NC_v3/images/x_spcr2x2=2Epng=22 width=
+=3D=2212=22 height=3D=221=22 border=3D=220=22></td>
+    </tr>
+   </table>
+
+  </th>
+  <th align=3D=22center=22 valign=3D=22top=22 class=3D=22w320 block secndry=
+_nav=22>
+
+   <table cellspacing=3D=220=22 cellpadding=3D=220=22 border=3D=220=22>
+    <tr>
+     <td align=3D=22left=22 valign=3D=22top=22>
+    =20
+      <div style=3D=22font-weight:normal; font-size:12px; line-height:15px;=
+ font-family:Arial, Helvetica, sans-serif; color:=234d90cd;=22>
+       <a href=3D=22https://email=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DY=
+QpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9MezbjdyHH3HTq=
+GVXtpKX%3DYASYWY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edv=
+F2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ=
+1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22 style=3D=22text-decoration:none; color=
+:=234d90cd;=22><span>Privacy</span></a>
+      </div>
+  =20
+     </td>
+     <td width=3D=2212=22><img style=3D=22display:block;=22 src=3D=22https:=
+//static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/contentlibrary/=
+triggers_itinerary/Itinerary20150223_NC_v3/images/x_spcr2x2=2Epng=22 width=
+=3D=2212=22 height=3D=221=22 border=3D=220=22></td>
+     <td align=3D=22left=22 valign=3D=22top=22>
+    =20
+      <div style=3D=22font-weight:normal; font-size:12px; line-height:15px;=
+ font-family:Arial, Helvetica, sans-serif; color:=234d90cd;=22>
+       <a href=3D=22https://email=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DY=
+QpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9MezbjdyHH3HTq=
+GVXtpKX%3DYASYAY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edv=
+F2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ=
+1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22 style=3D=22text-decoration:none; color=
+:=234d90cd;=22><span>About&nbsp;JetBlue</span></a>
+      </div>
+  =20
+     </td>
+    </tr>
+   </table>
+
+  </th>
+ </tr>
+</table>
+<table width=3D=22620=22 cellspacing=3D=220=22 cellpadding=3D=220=22 border=
+=3D=220=22 class=3D=22w320=22><tr><td height=3D=2218=22><img style=3D=22dis=
+play:block;=22 src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsys=
+images/jetblue/contentlibrary/triggers_itinerary/Itinerary20150223_NC_v3/im=
+ages/x_spcr2x2=2Epng=22 width=3D=221=22 height=3D=2218=22 border=3D=220=22>=
+</td></tr></table>
+<table width=3D=22620=22 cellspacing=3D=220=22 cellpadding=3D=220=22 border=
+=3D=220=22 bgcolor=3D=22=23dae8f4=22 class=3D=22hide=22><tr><td height=3D=
+=221=22><img style=3D=22display:block;=22 src=3D=22https://static=2Ecdn=2Er=
+esponsys=2Enet/i5/responsysimages/jetblue/contentlibrary/triggers_itinerary=
+/Itinerary20150223_NC_v3/images/x_spcr2x2=2Epng=22 width=3D=221=22 height=
+=3D=221=22 border=3D=220=22></td></tr></table>
+<=21-- close secondary navigation -->
+
+</td>
+</tr>
+</table>
+<=21-- close secondary footer -->
+
+
+<=21-- open tertiary footer -->
+<table width=3D=22620=22 cellspacing=3D=220=22 cellpadding=3D=220=22 align=
+=3D=22center=22 border=3D=220=22 class=3D=22w280=22>
+ <tr>
+  <td width=3D=22620=22 align=3D=22left=22 valign=3D=22top=22 class=3D=22w2=
+80=22>
+   <table cellspacing=3D=220=22 cellpadding=3D=220=22 border=3D=220=22 clas=
+s=3D=22hide=22><tr><td height=3D=2220=22><img style=3D=22display:block;=22 =
+src=3D=22https://static=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/=
+contentlibrary/triggers_itinerary/Itinerary20150223_NC_v3/images/x_spcr2x2=
+=2Epng=22 width=3D=221=22 height=3D=2220=22 border=3D=220=22></td></tr></ta=
+ble>
+ =20
+   <div style=3D=22font-weight:normal; font-size:10px; line-height:13px; fo=
+nt-family:Arial, Helvetica, sans-serif; color:=23999999;=22>
+  =20
+  =20
+  =20
+  =20
+=20
+
+
+
+CUSTOMER CONCERNS<br />
+Any customer inquiries or concerns can be addressed here, emailed to dearje=
+tblue=40jetblue=2Ecom, or sent to JetBlue Airways, 6322 South 3000 East, Su=
+ite G10, Salt Lake City, UT 84121=2E <br /><br />
+
+NOTICE OF INCORPORATED TERMS<br />
+All travel on JetBlue, whether it is domestic or international travel, is s=
+ubject to JetBlue's Contract of Carriage, the terms of which are incorporat=
+ed herein by reference=2E International travel may also be subject to JetBl=
+ue's international passenger rules tariffs on file with the U=2ES=2E and ot=
+her governments, and, where applicable, the Montreal Convention or the Wars=
+aw Convention and its amendments and special contracts=2E Incorporated term=
+s include, but are not restricted to: <br /><br />
+
+NOTICE OF INCREASED GOVERNMENT TAX OR FEE<br />
+JetBlue reserves the right to collect additional payment after a fare has b=
+een paid in full and tickets issued for any additional government taxes or =
+fees assessed or imposed=2E <br /><br />
+
+1=2E Liability limitations for baggage, including special rules for fragile=
+ and perishable goods and the availability of excess valuation=2E <br />
+2=2E Liability limitations for personal injury or death=2E <br />
+3=2E Claims restrictions, including time periods within which passengers mu=
+st file a claim or bring an action against JetBlue=2E <br />
+4=2E Rights of JetBlue to change the terms of contract=2E <br />
+5=2E Rules on reservations, check-in, and refusal to carry=2E <br />
+6=2E JetBlue's rights and limits on its liability for delay or failure to p=
+erform service, including schedule changes, substitution of aircraft or alt=
+ernate air carriers, and rerouting=2E <br />
+7=2E Non-refundability of reservations=2E <br />
+8=2E The Contract of Carriage and tariffs may be inspected at all JetBlue a=
+irport customer service counters, and upon request you have the right to re=
+ceive by mail a copy of the full text of the Contract of Carriage or tariff=
+s=2E Additional information on items one through seven can be obtained on J=
+etBlue's website at <a href=3D=22https://email=2Ejetblue=2Ecom/pub/cc?_ri_=
+=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW=
+9MezbjdyHH3HTqGVXtpKX%3DYASYCY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdz=
+NGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQ=
+iYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22 style=3D=22text-decorati=
+on:none; color:=234d90cd;=22>www=2EJetBlue=2Ecom</a> or at any U=2ES=2E loc=
+ation where JetBlue transportation is sold=2E <br /><br />
+
+
+CARRY-ON BAGGAGE RULES<br />
+JetBlue flights - Each customer may bring one bag that fits in the overhead=
+ bin plus one personal item (purse, briefcase, laptop, etc=2E) that fits un=
+der the seat in front free of charge=2E  Any excess carry-on baggage will b=
+e checked baggage=2E Visit <a href=3D=22https://email=2Ejetblue=2Ecom/pub/c=
+c?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgy=
+bnzdlW9MezbjdyHH3HTqGVXtpKX%3DYASARY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEA=
+Ok-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAla=
+cTIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22 style=3D=22text-de=
+coration:none; color:=234d90cd;=22>http://www=2Ejetblue=2Ecom/bags</a>  and=
+ <a href=3D=22https://email=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DYQpglLj=
+HJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9MezbjdyHH3HTqGVXtpK=
+X%3DYASATY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edvF2WozM=
+wfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ1y35A0=
+2zwGX0ldszaYZlqCViGdpWzg=2E=22 style=3D=22text-decoration:none; color:=234d=
+90cd;=22>http://www=2Etsa=2Egov</a> for more information=2E Connecting on o=
+ur partner airlines (including Cape Air) =96 The carry-on rules of a partne=
+r airline apply when checking in to a JetBlue flight that is connecting to =
+the partner=2E  See <a href=3D=22https://email=2Ejetblue=2Ecom/pub/cc?_ri_=
+=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW=
+9MezbjdyHH3HTqGVXtpKX%3DYASAWY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdz=
+NGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQ=
+iYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22 style=3D=22text-decorati=
+on:none; color:=234d90cd;=22>http://www=2Ejetblue=2Ecom/partners</a> for mo=
+re information=2E  While JetBlue may allow additional carry-ons as a courte=
+sy to customers connecting to our partner airline, JetBlue cannot guarantee=
+ that those bags will be accepted for in-cabin travel on the partner=2E  Cu=
+stomers are encouraged to abide by partner's rules for their entire journey=
+ to avoid additional checked baggage fees if their carry-ons do not meet si=
+ze/weight restrictions=2E <br /><br />
+
+CHECKED BAGGAGE ALLOWANCE/FEES<br />
+For flights booked before June 30, 2015, fares include one checked bag, the=
+ fee for a second checked bag is =2450 and additional checked bags are =241=
+00 each=2E For flights booked on or after June 30 2015: For Blue fares, the=
+ first checked bag fee is =2420 in advance or =2425 at the check-in counter=
+ and the second checked bag is =2435=2E For Blue Plus fares, one checked ba=
+g is included and the second checked bag fee is =2435=2E For Blue Flex fare=
+s, two checked bags are included=2E For Blue and Blue Plus fares for flight=
+s to or from Santa Domingo, Santiago, Port-au-Prince, Port of Spain, Kingst=
+on, Cartagena, Medellin, Bogota, Lima and Mexico City: one checked bag is i=
+ncluded and the second checked bag fee is =2435=2E For TrueBlue Mosaic memb=
+ers: two checked bags are included=2E For Mint fares: two checked bags are =
+included=2E For all fares, the third and any additional bags are =24100 eac=
+h=2E All bags are subject to size/weight restrictions=2E Other fees apply f=
+or oversized or overweight baggage=2E See <a href=3D=22https://email=2Ejetb=
+lue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1z=
+bza5ze88zbzdhgybnzdlW9MezbjdyHH3HTqGVXtpKX%3DYASARY&_ei_=3DEolaGGF4SNMvxFF7=
+KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODP=
+fBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22 sty=
+le=3D=22text-decoration:none; color:=234d90cd;=22>www=2Ejetblue=2Ecom/bags<=
+/a>=2E Excess baggage rules and size/weight restrictions may vary depending=
+ on load availability and country restrictions=2E See <a href=3D=22https://=
+email=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdz=
+dk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9MezbjdyHH3HTqGVXtpKX%3DYASARY&_ei_=3DEola=
+GGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uq=
+zjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpW=
+zg=2E=22 style=3D=22text-decoration:none; color:=234d90cd;=22>www=2Ejetblue=
+=2Ecom/bags</a> for more information=2E Travel on our partner airlines (exc=
+luding Cape Air*) =96 Baggage rules and fees vary by partner airline and de=
+stination=2E JetBlue will follow our partner airlines' fees when customers =
+are traveling on an itinerary including one of our partner airlines=2E Exce=
+ss baggage rules and size/weight restrictions may vary depending on load av=
+ailability=2E See <a href=3D=22https://email=2Ejetblue=2Ecom/pub/cc?_ri_=3D=
+X0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9Me=
+zbjdyHH3HTqGVXtpKX%3DYASARY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGk=
+XZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZ=
+yNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22 style=3D=22text-decoration:=
+none; color:=234d90cd;=22>www=2Ejetblue=2Ecom/bags</a> for more information=
+=2E Travel on our partner airlines (excluding Cape Air*) =96 Baggage rules =
+and fees vary by partner airline and destination=2E JetBlue will follow our=
+ partner airlines' fees when customers are traveling on an itinerary includ=
+ing one of our partner airlines=2E Excess baggage rules and size/weight res=
+trictions may vary depending on load availability=2E See <a href=3D=22https=
+://email=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc2X%3DYQpglLjHJlYQGuOyC3cetE1lzg=
+zdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9MezbjdyHH3HTqGVXtpKX%3DYASAWY&_ei_=3DE=
+olaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW=
+5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5bCW4shZ1y35A02zwGX0ldszaYZlqCViG=
+dpWzg=2E=22 style=3D=22text-decoration:none; color:=234d90cd;=22>http://www=
+=2Ejetblue=2Ecom/partners</a> for more information=2E <br /><br />
+
+*For itineraries with a connection only to/from Cape Air, JetBlue's standar=
+d fees apply=2E  <br /><br />
+
+
+
+
+
+
+CHECK-IN TIMES<br />
+For domestic flights, customers traveling without checked baggage must obta=
+in a boarding pass twenty (20) minutes prior to scheduled departure and cus=
+tomers traveling with checked baggage must obtain a boarding pass (30) thir=
+ty minutes prior to scheduled departure or if departing from JFK airport in=
+ New York, Tampa or Fort Lauderdale forty (40) minutes prior to scheduled d=
+eparture=2E Customers must be present in the boarding gate are fifteen (15)=
+ minutes prior to scheduled departure or the posted aircraft departure time=
+=2E For international flights, customers traveling with or without checked =
+bags must obtain a boarding pass sixty (60) minutes prior to scheduled depa=
+rture=2E Customers must be present in the boarding gate twenty (20) minutes=
+ prior to scheduled departure or the posted aircraft departure time=2E <br =
+/><br />
+
+
+
+DOCUMENTATION REQUIREMENTS<br />
+For domestic travel, customers over the age of 18 will be required to show =
+a U=2ES=2E federal or state-issued photo ID that contains the following inf=
+ormation: name, date of birth, gender, expiration date and a tamper-resista=
+nt feature=2E Customers traveling to/from an international destination are =
+required to present proper documentation at the time of check-in=2E Documen=
+ts required for travel vary according to citizenship, residency, country of=
+ travel, age (for minors), length of stay, purpose of visit, student status=
+, etc=2E Please check for specific requirements for the country, or countri=
+es, you are visiting to make sure you have the correct documents=2E In addi=
+tion, Customers traveling to a country other than their country of citizens=
+hip or residency are required to hold proof of return or onward travel=2E F=
+ailure to present proper documentation could result in denied boarding=2E <=
+br /><br />
+
+ADVICE TO INTERNATIONAL PASSENGERS ON LIMITATION OF LIABILITY<br />
+Where a passenger's journey involves an ultimate destination or a stop in a=
+ country other than the country of departure, either the Warsaw Convention =
+and the Hague Protocol, their amendments, and any special contracts of carr=
+iage embodied in applicable tariffs that waive Warsaw/Hague limits, or the =
+Montreal Convention may apply to the entire journey including the portion w=
+ithin the countries of departure or destination and, in some cases, may lim=
+it the liability of the carrier for death or personal injury, delay, and fo=
+r loss of or damage to baggage=2E The Montreal Convention, where applicable=
+, does not impose, and special contracts voluntarily entered into by many c=
+arriers, including JetBlue, waive, the Warsaw/Hague limitations for compens=
+atory damages arising out of personal injury or wrongful death caused by an=
+ accident, as defined by the applicable treaty=2E The names of carriers par=
+ty to the special contracts are available at all ticket offices of such car=
+riers and may be examined upon request=2E <br /><br />
+
+NOTICE OF BAGGAGE LIABILITY LIMITS<br />
+For international transportation (including domestic portions) governed by =
+the Montreal Convention, JetBlue's liability for baggage is limited to 1,13=
+1 SDRs (see, <a href=3D=22https://email=2Ejetblue=2Ecom/pub/cc?_ri_=3DX0Gzc=
+2X%3DYQpglLjHJlYQGuOyC3cetE1lzgzdzdk8G73Mj6Y1zbza5ze88zbzdhgybnzdlW9Mezbjdy=
+HH3HTqGVXtpKX%3DYASAAY&_ei_=3DEolaGGF4SNMvxFF7KucKuWMqot7bDEAOk-tdzNGkXZ7cl=
+7Q6edvF2WozMwfoudz2i-2o0rWQ2OHW5uqzjUh9CVfSODPfBUi5ts59nUFAlacTIxZQiYZyNk5b=
+CW4shZ1y35A02zwGX0ldszaYZlqCViGdpWzg=2E=22 style=3D=22text-decoration:none;=
+ color:=234d90cd;=22>http://www=2Eimf=2Eorg</a> for current value) per pass=
+enger unless a higher value is declared and an extra charge is paid=2E For =
+international transportation governed by the Warsaw Convention and the Hagu=
+e Protocol and their amendments, JetBlue's liability for baggage is limited=
+ to =249=2E07 per pound for checked baggage and =24400 per passenger for un=
+checked baggage unless a higher value is declared and an extra charge is pa=
+id=2E Special rules may apply to valuable articles=2E For domestic transpor=
+tation, JetBlue's liability for baggage is limited to =243,500 per passenge=
+r=2E General baggage rules: As set forth more fully in its Contract of Carr=
+iage and international passenger rules tariffs, JetBlue will not be respons=
+ible for fragile or perishable goods=2E JetBlue assumes no liability for ov=
+ersized, overweight or overpacked baggage, or for loss of or damage to bagg=
+age parts such as wheels, straps, pockets, pull handles, zippers, hanger ho=
+oks or other items attached to baggage=2E JetBlue will not be responsible f=
+or the following items in checked or unchecked baggage: money, jewelry incl=
+uding watches, cameras, camcorders, any type of electronic equipment, inclu=
+ding computers, valuable papers or documents and other similar items as des=
+cribed in more detail in the Contract of Carriage=2E <br /><br />
+
+NOTICE OF OVERBOOKING OF FLIGHTS<br />
+Although JetBlue does not intentionally overbook its flights, there is a sl=
+ight chance that a seat will not be available on a flight for which a perso=
+n has a confirmed reservation=2E If the flight is overbooked, no one will b=
+e denied a seat until airline personnel first ask for volunteers willing to=
+ give up their reservation in exchange for compensation of the airline's ch=
+oosing=2E If there are not enough volunteers, JetBlue will deny boarding to=
+ other persons in accordance with its particular boarding priority=2E With =
+few exceptions, including failure to comply with JetBlue's check-in deadlin=
+e (which are available upon request from JetBlue), persons denied boarding =
+involuntarily are entitled to compensation=2E The complete rules for the pa=
+yment of compensation and JetBlue's boarding priorities are available at al=
+l airport ticket counters and boarding locations=2E Some airlines do not ap=
+ply these consumer protections to travel from some foreign countries, altho=
+ugh other consumer protections may be available=2E Check with your airline =
+or your travel agent=2E<br /><br />
+
+   =20
+    &copy;2015 JetBlue Airways
+   </div>
+  =20
+   <table cellspacing=3D=220=22 cellpadding=3D=220=22 border=3D=220=22><tr>=
+<td height=3D=2220=22><img style=3D=22display:block;=22 src=3D=22https://st=
+atic=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/jetblue/contentlibrary/trig=
+gers_itinerary/Itinerary20150223_NC_v3/images/x_spcr2x2=2Epng=22 width=3D=
+=221=22 height=3D=2220=22 border=3D=220=22></td></tr></table>
+  </td>
+ </tr>
+</table>
+<=21-- open tertiary footer -->
+
+<=21-- Spacer Snippet Added by Jake -->
+  </td>
+  <td width=3D=2220=22><img style=3D=22display:block;=22 src=3D=22https://s=
+tatic=2Ecdn=2Eresponsys=2Enet/i5/responsysimages/content/jetblue/x_spcr2x2=
+=2Epng=22 width=3D=2220=22 height=3D=221=22 border=3D=220=22 ></td>
+ </tr>
+</table>
+<=21-- Spacer Snippet Added by Jake -->
+
+  </td>
+ </tr>
+</table>
+
+<=21-- prevent MODIFIED RENDERING IOS GMAIL APP  -->
+<div style=3D=22display:none; white-space:nowrap; font:15px courier; color:=
+=23ffffff;=22>
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</div><br>=
+<img border=3D=220=22 width=3D=223=22 height=3D=223=22 src=3D=22http://ib=
+=2Eadnxs=2Ecom/getuid?http://a=2Eadrsp=2Enet/dsp/ci/2/Ea0VNzR-xYdD798JAwiTq=
+ZlNQw_-BxyDZ6m5uSaCisRwDD2hPQ4JdTDZhyuddl1Q9pVBvJygjpush2B2jOM/%24UID=22>
+
+
+
+</body>
+</html>
+
+

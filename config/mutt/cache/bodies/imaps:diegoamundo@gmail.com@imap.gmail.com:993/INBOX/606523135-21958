@@ -1,0 +1,356 @@
+Delivered-To: diegoamundo@gmail.com
+Received: by 10.37.88.130 with SMTP id m124csp1325661ybb;
+        Mon, 5 Oct 2015 16:49:16 -0700 (PDT)
+X-Received: by 10.31.11.209 with SMTP id 200mr16584435vkl.84.1444088956790;
+        Mon, 05 Oct 2015 16:49:16 -0700 (PDT)
+Return-Path: <smundo@gmail.com>
+Received: from mail-vk0-x22c.google.com (mail-vk0-x22c.google.com. [2607:f8b0:400c:c05::22c])
+        by mx.google.com with ESMTPS id r73si13304393vke.200.2015.10.05.16.49.16
+        for <diegoamundo@gmail.com>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 05 Oct 2015 16:49:16 -0700 (PDT)
+Received-SPF: pass (google.com: domain of smundo@gmail.com designates 2607:f8b0:400c:c05::22c as permitted sender) client-ip=2607:f8b0:400c:c05::22c;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of smundo@gmail.com designates 2607:f8b0:400c:c05::22c as permitted sender) smtp.mailfrom=smundo@gmail.com;
+       dkim=pass header.i=@gmail.com;
+       dmarc=pass (p=NONE dis=NONE) header.from=gmail.com
+Received: by mail-vk0-x22c.google.com with SMTP id o3so94418557vka.2
+        for <diegoamundo@gmail.com>; Mon, 05 Oct 2015 16:49:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=content-type:content-transfer-encoding:subject:from:message-id:date
+         :to:mime-version;
+        bh=MYvIUOc/3XMb8lA7xu2P5KbXi5L0mu5K54Y93/I7zCo=;
+        b=RFk5xiqB2bATulJWRcgvykn/8vEd/PsmyxvhtdZupr+dXsEg/ND4O0LSNy70a9IuSt
+         7Cb9Pr/DufAz6XHmkWUP0b3iSE4ndoKCRuopcyr7Ez5V+Ws1P5YjtTwyFrDv1Ig6pnCi
+         nlK/PZ08DrpEce4m5nQ1+NhvZrSnYnipI9fLB4fcGXU8mB5njV6l/W1ojsZv09tSjCaC
+         VtN3vMeuEyJnJNQPyUs8Qt81khVYwY62KdwZskBHKv9BXriU3VEiJO92/0Lw30silzKv
+         ZWo5e1GLdBRKKDT71d6sx5PKKigSt5A2m2w7G79q0PN4I0QPl42atTitKlUglomF3lPh
+         qiIQ==
+X-Received: by 10.31.139.129 with SMTP id n123mr19836985vkd.80.1444088956482;
+        Mon, 05 Oct 2015 16:49:16 -0700 (PDT)
+Return-Path: <smundo@gmail.com>
+Received: from [192.168.0.12] ([24.157.29.178])
+        by smtp.gmail.com with ESMTPSA id a74sm3809715vke.24.2015.10.05.16.49.15
+        for <diegoamundo@gmail.com>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Mon, 05 Oct 2015 16:49:15 -0700 (PDT)
+Content-Type: multipart/alternative; boundary=Apple-Mail-58B31FD0-26C8-48F0-AC1B-301BB98AE6BF
+Content-Transfer-Encoding: 7bit
+Subject: <i>Martian</i> Astronaut Would Get Cancer If Mission Were Real, Author Says - Scientific American
+From: Sergio Mundo <smundo@gmail.com>
+Message-Id: <D077F1DB-3437-42C6-B442-5ADFFBF1FBD6@gmail.com>
+Date: Mon, 5 Oct 2015 19:49:11 -0400
+To: diegoamundo@gmail.com
+Mime-Version: 1.0 (1.0)
+X-Mailer: iPhone Mail (12H321)
+
+
+--Apple-Mail-58B31FD0-26C8-48F0-AC1B-301BB98AE6BF
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+
+http://www.scientificamerican.com/article/martian-astronaut-would-get-cancer=
+-if-mission-were-real-author-says1/?WT.mc_id=3DSA_DD_20151005
+
+Martian Astronaut Would Get Cancer If Mission Were Real, Author Says
+
+Tech
+No extant technology exists to protect a traveler from the potentially deadl=
+y doses of radiation on Mars
+
+=E2=80=A2=E2=80=A2
+
+=20
+In the newly released The Martian, a stranded astronaut must figure out how t=
+o survive on the Red Planet after being accidentally left behind when the re=
+st of his crew escapes a violent dust storm. Explorer Mark Watney spends man=
+y months trying to make water, grow food and send an SOS signal back to Eart=
+h. Most of the tools he uses in the film, which opened Oct. 2, are based on e=
+xisting or in-development technology. The one major exception is the radiati=
+on-blocking material that allows Watney to spend much of his days outside hi=
+s habitat, on the surface of a planet that lacks Earth=E2=80=99s atmosphere a=
+nd is thus bathed in significantly higher levels of damaging radiation.
+
+=E2=80=9CIn the book they have this really thin, light, flexible material th=
+at blocks all radiation,=E2=80=9D says Andy Weir, author of the book The Mar=
+tian on which the film was based. =E2=80=9CThere=E2=80=99s nothing even remo=
+tely like that in the real world. That was the magic I gave him so the story=
+ would progress. Otherwise Mark would have different kinds of cancer.=E2=80=9D=
+
+
+Scientists differ on how dangerous the radiation levels on Mars would actual=
+ly be for future explorers. The first on-the-ground radiation measurements c=
+ame from NASA=E2=80=99s Curiosity rover in 2013, which suggested that astron=
+auts who spent a year traveling to and from Mars and 500 days on the surface=
+ would receive a radiation dose of about one Sievert, equivalent to a roughl=
+y five percent increased lifetime risk of cancer compared to a lifetime of e=
+xposure back on Earth. NASA currently limits astronauts to no more than a th=
+ree percent increased risk of developing cancer compared to the general popu=
+lation=E2=80=94after they reach this amount of cumulative radiation, they=E2=
+=80=99re grounded. The space agency, however, is forging ahead with plans to=
+ send crews to Mars by the 2030s; among the technologies high on its list to=
+ develop for a Martian mission is better radiation shielding.
+
+Scientific American spoke to Weir about the plausibility of a real-life miss=
+ion to Mars, the prospect of space hotels and why he would never want to tra=
+vel to the Red Planet himself. An edited version of the conversation is belo=
+w.
+
+How much of the technology Watney uses in the book and movie actually exists=
+?
+
+Pretty much all of it exists. The radiation shielding was the one magical te=
+chnology I granted them. But otherwise all the technology is either current o=
+r scaled-up versions of what exists today.
+
+Do you think humans will ever reach Mars?
+
+Absolutely. The only question is when. But despite how I portray the mission=
+s in the book, I think the first manned mission will probably be a [multinat=
+ional] effort like the International Space Station.
+
+I suspect we lack the political will to send a manned mission to Mars right n=
+ow. The money is not there, and NASA isn=E2=80=99t as well-funded as they us=
+ed to be, but I don=E2=80=99t have any doubt that we will eventually get the=
+re. I=E2=80=99d like it happen during my lifetime but if it doesn=E2=80=99t,=
+ oh well. I=E2=80=99m just a little drop in the bucket when it comes to huma=
+n history.
+
+In The Martian, China=E2=80=99s space agency plays an important part in atte=
+mpts to save Mark Watney. Do you think the Chinese might be the first to sen=
+d people to Mars?
+
+No. They are certainly capable, but I also question whether they have the po=
+litical will to spend that much money. I do strongly suspect that by the tim=
+e we go to Mars we=E2=80=99ll be cooperating with China.
+
+Commercial space companies don=E2=80=99t feature much in the story. Do you t=
+hink they=E2=80=99ll be a major force in getting to Mars?
+
+Absolutely=E2=80=94commercial spaceflight is crucial. Companies like SpaceX s=
+ay they want to drive the price down, and are vigilantly working to reduce t=
+he cost to get things into Earth orbit. That motivation is what will ultimat=
+ely allow us to expand into our solar system.
+
+Imagine if you could go up into space and spend a week at a space hotel for a=
+bout $50,000. It would be once-in-a-lifetime trip, but a lot of middle-class=
+ Americans would do that. Suddenly, there=E2=80=99d be this huge market for i=
+t and that would cause even more competition in the industry and drive price=
+s further down. We=E2=80=99re just at the cusp of a space boom, I think.
+
+If this future comes to pass, would you want to go to Mars?
+
+Oh hell no. I write about brave people. I=E2=80=99m not one of them. I have a=
+ fear of flying!
+
+
+--Apple-Mail-58B31FD0-26C8-48F0-AC1B-301BB98AE6BF
+Content-Type: text/html;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; charset=3D=
+utf-8"></head><body dir=3D"auto"><div><base href=3D"http://www.scientificame=
+rican.com/article/martian-astronaut-would-get-cancer-if-mission-were-real-au=
+thor-says1/?WT.mc_id=3DSA_DD_20151005"><style id=3D"article-content">
+        @media print {
+            .original-url {
+                display: none;
+            }
+        }
+
+        h1.title {
+            font: -apple-system-headline;
+            font-weight: normal;
+            text-align: start;
+            -webkit-hyphens: manual;
+        }
+
+        blockquote {
+            color: rgba(0, 0, 0, 0.5);
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        blockquote > *:first-child:before {
+            -webkit-margin-start: -6px;
+            content: open-quote;
+        }
+
+        blockquote > *:last-child:after {
+            content: close-quote;
+        }
+
+        /* FIXME: We should be able to remove this when WebKit's link color m=
+atches UIKit's (<rdar://problem/13650224>). */
+        .page a {
+            color: rgb(20, 111, 223);
+        }
+
+        #article .large-element {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .page {
+            font: -apple-system-body;
+            text-align: start;
+        }
+
+        #article .leading-image, #article figure, #article .auxiliary {
+            font: -apple-system-short-subheadline;
+        }
+
+        h1 {
+            font: -apple-system-subheadline;
+        }
+
+        h2 {
+            font: -apple-system-footnote;
+        }
+
+        h3 {
+            font: -apple-system-caption1;
+        }
+
+        h4, h5, h6 {
+            font: -apple-system-caption2;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: bold;
+        }
+
+        hr {
+            background: rgba(0, 0, 0, 0.2);
+            height: 1px;
+            border: 0;
+        }
+    </style><link rel=3D"stylesheet" type=3D"text/css" href=3D"safari-resour=
+ce:/WBSReaderSharedStyleSheet.css" id=3D"article-content-shared"><title>&lt;=
+i&gt;Martian&lt;/i&gt; Astronaut Would Get Cancer If Mission Were Real, Auth=
+or Says - Scientific American</title><div class=3D"original-url"><br><a href=
+=3D"http://www.scientificamerican.com/article/martian-astronaut-would-get-ca=
+ncer-if-mission-were-real-author-says1/?WT.mc_id=3DSA_DD_20151005">http://ww=
+w.scientificamerican.com/article/martian-astronaut-would-get-cancer-if-missi=
+on-were-real-author-says1/?WT.mc_id=3DSA_DD_20151005</a><br><br></div><div i=
+d=3D"article">
+        <div class=3D"page" style=3D"font-size: 18px; line-height: 28px;"><h=
+1 class=3D"title">Martian Astronaut Would Get Cancer If Mission Were Real, A=
+uthor Says</h1>
+<section>
+<span><a href=3D"/technology">Tech</a></span>
+</section>
+<header>
+
+
+<div>
+<p>No extant technology exists to protect a traveler from the potentially de=
+adly doses of radiation on Mars</p>
+</div>
+
+
+</header>
+<section>
+<figure>
+<div data-cycle-fx=3D"flipHorz" data-cycle-swipe=3D"true" data-cycle-slides=3D=
+"&gt; div.articleImageSlider" data-cycle-timeout=3D"0">
+<p><span>=E2=80=A2</span><span>=E2=80=A2</span></p>
+
+
+<div>
+<img src=3D"http://www.scientificamerican.com/sciam/cache/file/63A38856-BBC6=
+-4083-98A583419A0BC9EC_article.jpg?CBF2D" alt=3D"">
+</div></div>
+</figure>
+</section>
+<section>
+<p>In the newly released <a href=3D"http://www.scientificamerican.com/articl=
+e/human-missions-to-mars-will-look-completely-different-from-the-martian/"><=
+em>The Martian</em></a>, a stranded astronaut must figure out how to survive=
+ on the Red Planet after being accidentally left behind when the rest of his=
+ crew escapes a violent dust storm. Explorer Mark Watney spends many months t=
+rying to make water, grow food and send an SOS signal back to Earth. Most of=
+ the tools he uses in the film, which opened Oct. 2, are based on existing o=
+r in-development technology. The one major exception is the radiation-blocki=
+ng material that allows Watney to spend much of his days outside his habitat=
+, on the surface of a planet that lacks Earth=E2=80=99s atmosphere and is th=
+us bathed in significantly higher levels of damaging radiation.</p>
+<p>=E2=80=9CIn the book they have this really thin, light, flexible material=
+ that blocks all radiation,=E2=80=9D says Andy Weir, author of the book <em>=
+The Martian</em> on which the film was based. =E2=80=9CThere=E2=80=99s nothi=
+ng even remotely like that in the real world. That was the magic I gave him s=
+o the story would progress. Otherwise Mark would have different kinds of can=
+cer.=E2=80=9D</p>
+<p>Scientists differ on how dangerous the radiation levels on Mars would act=
+ually be for future explorers. The first on-the-ground radiation measurement=
+s came from NASA=E2=80=99s Curiosity rover in 2013, which suggested that ast=
+ronauts who spent a year traveling to and from Mars and 500 days on the surf=
+ace would receive a radiation dose of <a href=3D"http://www.scientificameric=
+an.com/article/radiation-on-mars-managea/">about one Sievert</a>, equivalent=
+ to a roughly five percent increased lifetime risk of cancer compared to a l=
+ifetime of exposure back on Earth. NASA currently limits astronauts to no mo=
+re than a three percent increased risk of developing cancer compared to the g=
+eneral population=E2=80=94after they reach this amount of cumulative radiati=
+on, they=E2=80=99re grounded. The space agency, however, is forging ahead wi=
+th plans to send crews to Mars by the 2030s; among the technologies high on i=
+ts list to develop for a Martian mission is better radiation shielding.</p>
+<p><em>Scientific American</em> spoke to Weir about the plausibility of a re=
+al-life mission to Mars, the prospect of space hotels and why he would never=
+ want to travel to the Red Planet himself. An edited version of the conversa=
+tion is below.</p>
+<p><strong>How much of the technology Watney uses in the book and movie actu=
+ally exists?</strong></p>
+<p>Pretty much all of it exists. The radiation shielding was the one magical=
+ technology I granted them. But otherwise all the technology is either curre=
+nt or scaled-up versions of what exists today.</p>
+<p><strong>Do you think humans will ever reach Mars?</strong></p>
+<p>Absolutely. The only question is when. But despite how I portray the miss=
+ions in the book, I think the first manned mission will probably be a [multi=
+national] effort like the International Space Station.</p>
+<p>I suspect we lack the political will to send a manned mission to Mars rig=
+ht now. The money is not there, and NASA isn=E2=80=99t as well-funded as the=
+y used to be, but I don=E2=80=99t have any doubt that we will eventually get=
+ there. I=E2=80=99d like it happen during my lifetime but if it doesn=E2=80=99=
+t, oh well. I=E2=80=99m just a little drop in the bucket when it comes to hu=
+man history.</p>
+<p><strong>In <em>The Martian</em>, China=E2=80=99s space agency plays an im=
+portant part in attempts to save Mark Watney. Do you think the Chinese might=
+ be the first to send people to Mars?</strong></p>
+<p>No. They are certainly capable, but I also question whether they have the=
+ political will to spend that much money. I do strongly suspect that by the t=
+ime we go to Mars we=E2=80=99ll be cooperating with China.</p>
+<p><strong>Commercial space companies don=E2=80=99t feature much in the stor=
+y. Do you think they=E2=80=99ll be a major force in getting to Mars?</strong=
+></p>
+<p>Absolutely=E2=80=94commercial spaceflight is crucial. Companies like Spac=
+eX say they want to drive the price down, and are vigilantly working to redu=
+ce the cost to get things into Earth orbit. That motivation is what will ult=
+imately allow us to expand into our solar system.</p>
+<p>Imagine if you could go up into space and spend a week at a space hotel f=
+or about $50,000. It would be once-in-a-lifetime trip, but a lot of middle-c=
+lass Americans would do that. Suddenly, there=E2=80=99d be this huge market f=
+or it and that would cause even more competition in the industry and drive p=
+rices further down. We=E2=80=99re just at the cusp of a space boom, I think.=
+</p>
+<p><strong>If this future comes to pass, would you want to go to Mars?</stro=
+ng></p>
+<p>Oh hell no. I write about brave people. I=E2=80=99m not one of them. I ha=
+ve a fear of flying!</p>
+
+
+</section>
+<footer>
+
+
+
+
+
+
+</footer>
+</div></div></div><div></div></body></html>=
+
+--Apple-Mail-58B31FD0-26C8-48F0-AC1B-301BB98AE6BF--

@@ -1,0 +1,24 @@
+set imap_user = "diegoamundo@gmail.com"
+
+set smtp_url = "smtp://diegoamundo@smtp.gmail.com:587/"
+set smtp_pass = "nduptxwehixolcen"
+set from = "diegoamundo@gmail.com"
+set realname = "Diego A. Mundo"
+
+set folder = "imaps://imap.gmail.com:993"
+set spoolfile = "+INBOX"
+set postponed="+[Gmail]/Drafts"
+
+set header_cache=~/.mutt/cache/headers
+set message_cachedir=~/.mutt/cache/bodies
+set certificate_file=~/.mutt/certificates
+
+set move = no
+
+set editor="vim" 
+set smtp_authenticators = 'gssapi:login'
+set sort = reverse-date-received
+
+source ~/.mutt/mutt-colors-solarized/colors-zenburn-256.mutt
+macro index,pager e  "<save-message>=[Gmail]/All Mail<enter><enter>" "Archive conversation"
+bind index G imap-fetch-mail

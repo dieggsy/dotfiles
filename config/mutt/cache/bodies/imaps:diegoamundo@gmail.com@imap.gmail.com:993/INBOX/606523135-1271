@@ -1,0 +1,28 @@
+Delivered-To: diegoamundo@gmail.com
+Received: by 10.229.100.79 with SMTP id x15cs187559qcn;
+        Sun, 26 Sep 2010 07:07:46 -0700 (PDT)
+Received: by 10.213.13.2 with SMTP id z2mr4855863ebz.96.1285510065763;
+        Sun, 26 Sep 2010 07:07:45 -0700 (PDT)
+Return-Path: <www-data@chordie.com>
+Received: from chordie.com (www.chordie.com [85.17.231.77])
+        by mx.google.com with ESMTP id t58si11205435eeh.97.2010.09.26.07.07.45;
+        Sun, 26 Sep 2010 07:07:45 -0700 (PDT)
+Received-SPF: pass (google.com: best guess record for domain of www-data@chordie.com designates 85.17.231.77 as permitted sender) client-ip=85.17.231.77;
+Authentication-Results: mx.google.com; spf=pass (google.com: best guess record for domain of www-data@chordie.com designates 85.17.231.77 as permitted sender) smtp.mail=www-data@chordie.com
+Received: by chordie.com (Postfix, from userid 33)
+	id B9860348633; Sun, 26 Sep 2010 16:06:45 +0200 (CEST)
+To: diegoamundo@gmail.com
+Subject: Chordie account created
+From: admin@chordie.com
+Message-Id: <20100926140645.B9860348633@chordie.com>
+Date: Sun, 26 Sep 2010 16:06:45 +0200 (CEST)
+
+Dear mandolinrock,
+An account for has been created for you at Chordie.
+
+The account will allow you to create a personal songbook at chordie.com. It will also allow you to post in the Chordie forums. If you have any specific question, either regarding guitar playing or how to use the website, this is the place to ask.
+
+
+Best regards,
+
+Chordie

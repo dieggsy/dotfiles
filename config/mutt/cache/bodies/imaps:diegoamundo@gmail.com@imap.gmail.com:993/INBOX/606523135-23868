@@ -1,0 +1,383 @@
+Delivered-To: diegoamundo@gmail.com
+Received: by 10.37.216.202 with SMTP id p193csp924956ybg;
+        Sat, 14 Nov 2015 15:49:42 -0800 (PST)
+X-Received: by 10.182.91.68 with SMTP id cc4mr8573579obb.57.1447544982644;
+        Sat, 14 Nov 2015 15:49:42 -0800 (PST)
+Return-Path: <Greyhound-eticket@greyhound.com>
+Received: from mail.firstgroupamerica.com (mail1.firstgroupamerica.com. [67.222.214.237])
+        by mx.google.com with ESMTPS id cc16si2726273obb.66.2015.11.14.15.49.42
+        for <diegoamundo@gmail.com>
+        (version=TLSv1 cipher=ECDHE-RSA-AES128-SHA bits=128/128);
+        Sat, 14 Nov 2015 15:49:42 -0800 (PST)
+Received-SPF: neutral (google.com: 67.222.214.237 is neither permitted nor denied by best guess record for domain of Greyhound-eticket@greyhound.com) client-ip=67.222.214.237;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 67.222.214.237 is neither permitted nor denied by best guess record for domain of Greyhound-eticket@greyhound.com) smtp.mailfrom=Greyhound-eticket@greyhound.com
+Received: from GHVDCPUWMIAP01.greyhound.com (10.157.46.4) by
+ FGPDCPEXHT01.fga.local (10.158.8.69) with Microsoft SMTP Server id 8.3.406.0;
+ Sat, 14 Nov 2015 17:49:42 -0600
+From: <Greyhound-eticket@greyhound.com>
+To: diegoamundo@gmail.com
+Message-ID: <455551776.32048.1447544981997.JavaMail.wmadmin@GHVDCPUWMIAP01>
+Subject: Greyhound Ticket Purchase Confirmation and Itinerary (74054902)
+MIME-Version: 1.0
+Content-Type: text/html; charset="UTF8"
+Content-Transfer-Encoding: quoted-printable
+X-Doctype: RFQ
+X-Severity: 10
+X-Mailer: sendmsg
+Date: Sat, 14 Nov 2015 18:49:42 -0500
+Return-Path: Greyhound-eticket@greyhound.com
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <META http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dutf-1=
+6">
+    <title>Greyhound.com : Purchase Confirmation</title>
+    <style type=3D"text/css">
+=09=09=09=09=09@import url(http://www.greyhound.com/ticketcenter/styles/sty=
+les.css);
+=09=09=09=09=09@import url(http://www.greyhound.com/ticketcenter/styles/lef=
+t_nav.css);
+=09=09=09=09=09.nb { padding:0; margin:0; }
+=09=09=09=09=09.nb li {list-style-type:none; padding-bottom: 8px; }
+=09=09=09=09</style>
+  </head>
+  <body bgcolor=3D"#FFFFFF" style=3D"margin: 0;">
+    <center><img src=3D"http://www.greyhound.com/content/images/email/email=
+-logo.jpg" width=3D"197" height=3D"55"></center><br><br><table border=3D"0"=
+ align=3D"center" cellpadding=3D"0" cellspacing=3D"0" bgcolor=3D"#FFFFFF">
+      <tr valign=3D"top">
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0">
+
+=09=09=09=09=09=09=09=09=09=09Thank you for your order with Greyhound.  You=
+r booking confirmation number is 74054902.<br><br></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0">
+=09=09=09=09=09=09=09=09=09=09This is an auto-generated message.  Please DO=
+ NOT reply to this message by email.<br><br></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0"><u><b>PRINT =
+YOUR TICKET</b> using the link below:</u></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0">http://www.g=
+reyhound.com/en/ecommerce/tickets?confirmationnumber=3D74054902&amp;lastNam=
+e=3DMUNDO</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0">
+=09=09=09=09=09=09=09=09=09=09You must print and bring your ticket.  We do =
+not accept tickets displayed on smartphones.<br>
+=09=09=09=09=09=09=09=09=09=09Please print only one ticket per page.  Do no=
+t print on the back of the paper.
+=09=09=09=09=09=09=09=09=09</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td>---------------------------------------------------------=
+--------</td>
+            </tr>
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0">
+=09=09=09=09=09=09=09=09=09=09This ticket purchase confirmation page is NOT=
+ A TICKET.<br><br></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0"><b>PASSENGER=
+S</b></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0">DIEGO MUNDO-=
+Adult <br><br></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0"><b>YOUR TRIP=
+ DETAILS</b></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0">
+=09=09=09=09=09=09=09=09=09=09Below is your arrival and departure informati=
+on, including any connecting bus transfers:<br><br></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0">
+=09=09=09=09=09=09=09=09=09=09-------------Trip to Philadelphia, PA--------=
+-----<br>11/25/15 05:00PM GREYHOUND LINES, INC.-GLI2555 * Depart Boston, MA
+<br>11/26/15 01:20AM GREYHOUND LINES, INC.-GLI2555 * Arrive Philadelphia, P=
+A
+<br>
+=09=09=09=09=09=09=09=09=09=09=09-------------Trip to Boston, MA-----------=
+--<br>11/29/15 01:00PM GREYHOUND LINES, INC.-GLI3237 * Depart Philadelphia,=
+ PA
+<br>11/29/15 08:05PM GREYHOUND LINES, INC.-GLI3237 * Arrive Boston, MA
+<br></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td><br><table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpa=
+dding=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0">
+=09=09=09=09=09=09=09=09=09=09Note: * denotes carrier and bus schedule numb=
+er.<br>GLI: GREYHOUND LINES, INC.
+</td>
+            </tr>
+          </table><br></td>
+      </tr>
+      <tr>
+        <td><br><table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpa=
+dding=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0"><b>OUTGOING =
+BOARDING LOCATION</b></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0">SOUTH STATIO=
+N TRANS CTR
+<br>700 ATLANTIC AVE
+<br>Boston, MA 02110
+<br><br></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0"><b>RETURN BO=
+ARDING LOCATION</b></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0">PHILADELPHIA=
+ GREYHOUND
+<br>1001 FILBERT ST
+<br>Philadelphia, PA 19107
+<br><br></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0"><b>BILLING A=
+DDRESS</b></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0">Diego Mundo
+<br>3 Ames Street
+<br>Cambridge, MA 02139
+<br>
+<br></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0"><b>PAYMENT M=
+ETHOD</b></td>
+            </tr>
+            <tr>
+              <td>Adult $94.00 </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0">Subtotal: $9=
+4.00
+<br>Service Fee: $4.00
+<br>Federal: $0.00
+<br>State: $0.00
+<br>Total: $98.00
+</td>
+            </tr>
+          </table><br></td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0">
+=09=09=09=09=09=09=09=09=09=09Billed to Mastercard XXXXXXXXXXXX1764.<br>
+=09=09=09=09=09=09=09=09=09=09Restrictions: NR<br><br></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0">
+=09=09=09=09=09=09=09=09=09=09---------------------------------------------=
+--------------------<br>
+=09=09=09=09=09=09=09=09=09=09Complete our survey to be eligible to win $50=
+0!
+=09=09=09=09=09=09=09=09=09</td>
+            </tr>
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0"><a href=3D"h=
+ttp://gli.ols.sgizmo.com/s3" target=3D"_blank">www.greyhoundsurvey.com</a><=
+/td>
+            </tr>
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0">
+=09=09=09=09=09=09=09=09=09=09Login ID =3D 74054902 Password =3D Good Dog (=
+case sensitive)
+=09=09=09=09=09=09=09=09=09=09<br>-----------------------------------------=
+------------------------
+=09=09=09=09=09=09=09=09=09</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0">
+=09=09=09=09=09=09=09=09=09=09Thank you for choosing Greyhound.<br>--------=
+---------------------------------------------------------<br><br></td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <table width=3D"100%" border=3D"0" cellspacing=3D"0" cellpadding=
+=3D"0" align=3D"left">
+            <tr>
+              <td valign=3D"top" style=3D"padding: 10px 0 0 0">
+=09=09=09=09=09=09=09=09=09=09Arrive no later than one hour prior to the sc=
+heduled departure time.  Proceed directly to the gate.
+=09=09=09=09=09=09=09=09=09=09Seating is first-come, first-served.  Custome=
+rs without a printed ticket will be required to purchase another ticket pri=
+or to boarding the bus.
+=09=09=09=09=09=09=09=09=09=09Tickets will not be refunded due to printing =
+issues.  Tickets may be printed through the intial scheduled date of depart=
+ure only.
+=09=09=09=09=09=09=09=09=09=09For more information visit greyhound.com or c=
+all 1-800-231-2222.
+=09=09=09=09=09=09=09=09=09</td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

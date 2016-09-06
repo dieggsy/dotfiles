@@ -9,6 +9,7 @@ backports.shutil-get-terminal-size==1.0.0
 beautifulsoup4==4.5.1
 blinker==1.4
 bs4==0.0.1
+certifi==2016.8.31
 click==6.6
 configobj==5.0.6
 cycler==0.10.0
@@ -115,7 +116,7 @@ python-gflags==3.0.6
 python-Levenshtein==0.12.0
 python-twitter==3.1
 pytz==2016.6.1
-PyYAML==3.11
+PyYAML==3.12
 pyzmq==15.4.0
 qtconsole==4.2.1
 rainbow==2.5.0

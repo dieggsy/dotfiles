@@ -1,0 +1,284 @@
+Delivered-To: diegoamundo@gmail.com
+Received: by 10.103.83.206 with SMTP id o75csp1703424vsg;
+        Mon, 29 Aug 2016 09:20:29 -0700 (PDT)
+X-Received: by 10.37.57.196 with SMTP id g187mr5376399yba.24.1472487629057;
+        Mon, 29 Aug 2016 09:20:29 -0700 (PDT)
+Return-Path: <QualtricsSupport@jetblue.com>
+Received: from smtpbulk1.az1.qprod.net (smtp1.az1.qemailserver.com. [162.247.218.51])
+        by mx.google.com with ESMTPS id p188si10190321ybb.183.2016.08.29.09.20.28
+        for <diegoamundo@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 29 Aug 2016 09:20:29 -0700 (PDT)
+Received-SPF: pass (google.com: domain of qualtricssupport@jetblue.com designates 162.247.218.51 as permitted sender) client-ip=162.247.218.51;
+Authentication-Results: mx.google.com;
+       dkim=pass (test mode) header.i=@qemailserver.com;
+       spf=pass (google.com: domain of qualtricssupport@jetblue.com designates 162.247.218.51 as permitted sender) smtp.mailfrom=QualtricsSupport@jetblue.com
+Received: from jwm1-app.co1.qprod.net (unknown [10.201.65.11])
+	by smtpbulk1.az1.qprod.net (Postfix) with ESMTP id 2256F129AE3
+	for <diegoamundo@gmail.com>; Mon, 29 Aug 2016 16:20:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=qemailserver.com;
+	s=qualtrics; t=1472487628;
+	bh=TJoESc1c56NgYlXozYbLok5LgDzAUjCL8SIuQoLsOXQ=;
+	h=Date:From:Reply-To:To:Subject:List-Unsubscribe;
+	b=tq4PddUJfAPkbAT0B4nl6k7N1+QyhyTLz8/xZMjmY7zsZ+RggKrHagSTsGhmgcLxd
+	 7DA/guLLIG5gembR5p7YOWCz8pqE0x6LXPb79Kh6OwAsNA8dVCk2ZmohqFVlR9OZ4a
+	 y6CG2B/GKv/VYDeuf4ermqFt2sPvKplg6vOPnKM8=
+Date: Mon, 29 Aug 2016 10:20:28 -0600 (MDT)
+From: JetBlue Airways <QualtricsSupport@jetblue.com>
+Sender: JetBlue Airways <QualtricsSupport@jetblue.com>
+Reply-To: JetBlue Airways <QualtricsSupport@jetblue.com>
+To: "diegoamundo@gmail.com diegoamundo@gmail.com" <diegoamundo@gmail.com>
+Message-ID: <333439351.4274636.1472487628161.JavaMail.default@jwm1-app.co1.qprod.net>
+Subject: JetBlue Airways Feedback
+MIME-Version: 1.0
+Content-Type: multipart/mixed; 
+	boundary="----=_Part_4274624_882798399.1472487628064"
+X-QUMID: UR_1NeaaFubXYMxuVn-EMD_2nk8OmlMqHvqgZL-MLRP_9tzE6nL65sF6xQV-SV_0upoLnkQKdWcF5r-SS_3xSlJmHLikue1PD
+List-Unsubscribe: <mailto:abuse@qemailserver.com>
+
+------=_Part_4274624_882798399.1472487628064
+Content-Type: multipart/alternative; 
+	boundary="----=_Part_4274625_228174870.1472487628064"
+
+------=_Part_4274625_228174870.1472487628064
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+
+
+Dear JetBlue Customer,
+
+Thank you for traveling with JetBlue Airways! We=E2=80=99d love to hear abo=
+ut your
+recent trip on August 27, 2016=C2=A0from Los Angeles to Boston.=C2=A0 Your =
+feedback will
+help us improve the way we serve you.=C2=A0
+
+This survey will take approximately 4 minutes of your time.
+
+
+<https://jetbluevoc.co1.qualtrics.com/SE?Q_SS=3D3xSlJmHLikue1PD_0upoLnkQKdW=
+cF5r&Q_CHL=3Demail>
+
+Or copy and paste the URL below into your internet browser:
+
+https://jetbluevoc.co1.qualtrics.com/SE?Q_SS=3D3xSlJmHLikue1PD_0upoLnkQKdWc=
+F5r&Q_CHL=3Demail
+
+If you would like to be contacted by JetBlue for follow-up about your
+specific experience, you may do so by going to theContact Us
+<http://www.jetblue.com/contact-us/> page on our website.
+
+Thank you again for your business, and we look forward to seeing you onboar=
+d
+again soon!
+
+Warmest regards,
+
+Robin Hayes
+Chief Executive Officer
+JetBlue Airways
+27-01 Queens Plaza North
+Long Island City, NY 11101
+
+
+IMPORTANT NOTES:
+=C2=B7 =C2=A0 =C2=A0 =C2=A0 =C2=A0The survey expires after 14 days from the=
+ initial email.
+=C2=B7=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0Please be assur=
+ed that we will not use any of the information you
+provide to us in connection with this survey to market any products or serv=
+ices
+to you.
+=C2=B7=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0For more inform=
+ation about JetBlue=E2=80=99s privacy policy, go to:=C2=A0
+http://www.jetblue.com/legal/privacy/ <http://www.jetblue.com/legal/privacy=
+/>
+=C2=B7=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0Qualtrics is co=
+mmitted to protecting the privacy of all data
+collected; for more information about Qualtrics privacy policy:=C2=A0
+http://www.qualtrics.com/privacy-statement
+<http://www.qualtrics.com/privacy-statement/>
+=C2=B7=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0If you prefer n=
+ot to tell us about your flight experiences in the
+future, please click=C2=A0here
+<https://jetbluevoc.co1.qualtrics.com/CP/Register.php?OptOut=3Dtrue&RID=3DM=
+LRP_9tzE6nL65sF6xQV&LID=3DUR_1NeaaFubXYMxuVn&BT=3DamV0Ymx1ZXZvYw&_=3D1>
+.
+
+____________________________________________________
+
+Estimado Cliente de JetBlue,
+
+Gracias por viajar con JetBlue Airways! Nos encantar=C3=ADa saber acerca de=
+ su
+reciente viaje el=C2=A0August 27, 2016 de Los Angeles a Boston. Sus comenta=
+rios nos
+ayudar=C3=A1n a mejorar nuestro servicio.
+
+Esta encuesta dura aproximadamente 4 minutos.
+
+
+<https://jetbluevoc.co1.qualtrics.com/SE?Q_SS=3D3xSlJmHLikue1PD_0upoLnkQKdW=
+cF5r&Q_CHL=3Demail&Q_Language=3DES>
+
+O, copie y pegue el siguiente URL en su navegador de Internet:
+
+https://jetbluevoc.co1.qualtrics.com/SE?Q_SS=3D3xSlJmHLikue1PD_0upoLnkQKdWc=
+F5r&Q_CHL=3Demail
+&Q_Language=3DES
+
+Si usted desea ser contactado por JetBlue el acerca de su experiencia
+espec=C3=ADfica, puede hacerlo dirigi=C3=A9ndose a la p=C3=A1gina de=C2=A0C=
+ont=C3=A1ctanos
+<http://www.jetblue.com/contact-us/>=C2=A0en nuestro sitio web.
+
+Gracias otra vez por su negocio, y esperamos verlo de nuevo pronto!
+
+Saludos cordiales,
+
+Robin Hayes
+Director Ejecutivo
+JetBlue Airways
+27-01 Queens Plaza North
+Long Island City, NY 11101
+
+
+NOTAS IMPORTANTES:
+=C2=B7 La encuesta expira 14 d=C3=ADas despu=C3=A9s de recibir el primer=C2=
+=A0correo electr=C3=B3nico.
+=C2=B7 Tenga por seguro que no vamos a utilizar la informaci=C3=B3n que ust=
+ed nos
+proporciona en relaci=C3=B3n con esta encuesta para comercializar cualquier=
+ producto
+o servicio a usted.
+=C2=B7 Para obtener m=C3=A1s informaci=C3=B3n sobre la pol=C3=ADtica de pri=
+vacidad de JetBlue,
+vaya a: <a data-cke-saved-href=3D"http://www.jetblue.com/legal/privacy/"
+href=3D"http://www.jetblue.com/legal/privacy/" font-size:=3D"" 11px;"=3D""
+target=3D"_blank">http://www.jetblue.com/legal/privacy/
+=C2=B7 Qualtrics se compromete a proteger la privacidad de todos los datos
+recogidos, para m=C3=A1s informaci=C3=B3n sobre la pol=C3=ADtica de privaci=
+dad de=C2=A0Qualtrics:
+http://www.qualtrics.com/privacy-statement
+<http://www.qualtrics.com/privacy-statement/>
+=C2=B7 Si prefiere no decirnos acerca de sus experiencias de vuelo en el fu=
+turo,
+por favor haga clic en=C2=A0here
+<https://jetbluevoc.co1.qualtrics.com/CP/Register.php?OptOut=3Dtrue&RID=3DM=
+LRP_9tzE6nL65sF6xQV&LID=3DUR_1NeaaFubXYMxuVn&BT=3DamV0Ymx1ZXZvYw&_=3D1>
+.
+------=_Part_4274625_228174870.1472487628064
+Content-Type: multipart/related; 
+	boundary="----=_Part_4274626_1676730195.1472487628064"
+
+------=_Part_4274626_1676730195.1472487628064
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<html>
+ <head></head>=20
+ <body>=20
+  <p><img src=3D"https://jetbluevoc.co1.qualtrics.com/CP/Graphic.php?IM=3DI=
+M_26nt33wDUO9ZzbD" style=3D"width: 200px; height: 98px;"><br> <span style=
+=3D"font-size:16px;">Dear JetBlue Customer,<br> <br> Thank you for travelin=
+g with JetBlue Airways! We=E2=80=99d love to hear about your recent trip on=
+ August 27, 2016&nbsp;from Los Angeles to Boston.&nbsp; Your feedback will =
+help us improve the way we serve you.&nbsp;<br> <br> This survey will take =
+approximately 4 minutes of your time.</span><br> <br> <a href=3D"https://je=
+tbluevoc.co1.qualtrics.com/SE?Q_SS=3D3xSlJmHLikue1PD_0upoLnkQKdWcF5r&amp;Q_=
+CHL=3Demail"><img src=3D"https://jetbluevoc.co1.qualtrics.com/CP/Graphic.ph=
+p?IM=3DIM_3pWmrYewD2zig3b" style=3D"width: 143px; height: 36px"></a></p>=20
+  <span style=3D"font-size:16px;">Or copy and paste the URL below into your=
+ internet browser:<br> https://jetbluevoc.co1.qualtrics.com/SE?Q_SS=3D3xSlJ=
+mHLikue1PD_0upoLnkQKdWcF5r&amp;Q_CHL=3Demail<br> <br> If you would like to =
+be contacted by JetBlue for follow-up about your specific experience, you m=
+ay do so by going to the <a href=3D"http://www.jetblue.com/contact-us/" tar=
+get=3D"_blank">Contact Us</a> page on our website.<br> <br> Thank you again=
+ for your business, and we look forward to seeing you onboard again soon!<b=
+r> <br> Warmest regards,<br> <br> Robin Hayes<br> Chief Executive Officer<b=
+r> JetBlue Airways<br> 27-01 Queens Plaza North<br> Long Island City, NY 11=
+101</span>=20
+  <br>=20
+  <br>=20
+  <br>=20
+  <span style=3D"font-size: 11px"><strong>IMPORTANT NOTES:</strong><br> =C2=
+=B7 &nbsp; &nbsp; &nbsp; &nbsp;The survey expires after 14 days from the in=
+itial email.<br> =C2=B7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbs=
+p;Please be assured that we will not use any of the information you provide=
+ to us in connection with this survey to market any products or services to=
+ you.<br> =C2=B7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;For m=
+ore information about JetBlue=E2=80=99s privacy policy, go to:&nbsp;<a href=
+=3D"http://www.jetblue.com/legal/privacy/" target=3D"_blank">http://www.jet=
+blue.com/legal/<wbr>privacy/</a><br> =C2=B7&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&n=
+bsp;&nbsp;&nbsp;&nbsp;Qualtrics is committed to protecting the privacy of a=
+ll data collected; for more information about Qualtrics privacy policy:&nbs=
+p;<a href=3D"http://www.qualtrics.com/privacy-statement/" target=3D"_blank"=
+>http://www.qualtrics.com/<wbr>privacy-statement</a><br> =C2=B7&nbsp;&nbsp;=
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;If you prefer not to tell us abou=
+t your flight experiences in the future, please click&nbsp;<span style=3D"c=
+olor: rgb(255,0,0)"><a href=3D"https://jetbluevoc.co1.qualtrics.com/CP/Regi=
+ster.php?OptOut=3Dtrue&amp;RID=3DMLRP_9tzE6nL65sF6xQV&amp;LID=3DUR_1NeaaFub=
+XYMxuVn&amp;BT=3DamV0Ymx1ZXZvYw&amp;_=3D1">here</a></span>.</span>=20
+  <br>=20
+  <br>=20
+  <strong style=3D"color: rgb(0, 0, 128); font-size: 22.22222328186035px;">=
+____________________________________________________</strong>=20
+  <br>=20
+  <br>=20
+  <span style=3D"font-size:16px;">Estimado Cliente de JetBlue,<br> <br> Gra=
+cias por viajar con JetBlue Airways! Nos encantar=C3=ADa saber acerca de su=
+ reciente viaje el&nbsp;August 27, 2016 de Los Angeles a Boston. Sus coment=
+arios nos ayudar=C3=A1n a mejorar nuestro servicio.<br> <br> Esta encuesta =
+dura aproximadamente 4 minutos.</span>=20
+  <br>=20
+  <br>=20
+  <a href=3D"https://jetbluevoc.co1.qualtrics.com/SE?Q_SS=3D3xSlJmHLikue1PD=
+_0upoLnkQKdWcF5r&amp;Q_CHL=3Demail&amp;Q_Language=3DES"><img src=3D"https:/=
+/jetbluevoc.co1.qualtrics.com/CP/Graphic.php?IM=3DIM_89edlxPXBhf4fLn" style=
+=3D"width: 143px; height: 36px; opacity: 0.9"></a>=20
+  <br>=20
+  <br>=20
+  <span style=3D"font-size:16px;">O, copie y pegue el siguiente URL en su n=
+avegador de Internet:<br> https://jetbluevoc.co1.qualtrics.com/SE?Q_SS=3D3x=
+SlJmHLikue1PD_0upoLnkQKdWcF5r&amp;Q_CHL=3Demail</span>=20
+  <span style=3D"font-size:16px;">&amp;Q_Language=3DES<br> <br> Si usted de=
+sea ser contactado por JetBlue el acerca de su experiencia espec=C3=ADfica,=
+ puede hacerlo dirigi=C3=A9ndose a la p=C3=A1gina de&nbsp;<a href=3D"http:/=
+/www.jetblue.com/contact-us/">Cont=C3=A1ctanos</a>&nbsp;en nuestro sitio we=
+b.<br> <br> Gracias otra vez por su negocio, y esperamos verlo de nuevo pro=
+nto!<br> <br> Saludos cordiales,<br> <br> Robin Hayes<br> Director Ejecutiv=
+o<br> JetBlue Airways<br> 27-01 Queens Plaza North<br> Long Island City, NY=
+ 11101</span>=20
+  <br>=20
+  <br>=20
+  <br>=20
+  <strong><span style=3D"font-size: 11px">NOTAS IMPORTANTES:</span></strong=
+>=20
+  <br>=20
+  <span style=3D"font-size:11px;">=C2=B7 La encuesta expira 14 d=C3=ADas de=
+spu=C3=A9s de recibir el primer&nbsp;correo electr=C3=B3nico.<br> =C2=B7 Te=
+nga por seguro que no vamos a utilizar la informaci=C3=B3n que usted nos pr=
+oporciona en relaci=C3=B3n con esta encuesta para comercializar cualquier p=
+roducto o servicio a usted.<br> =C2=B7 Para obtener m=C3=A1s informaci=C3=
+=B3n sobre la pol=C3=ADtica de privacidad de JetBlue, vaya a: &lt;a data-ck=
+e-saved-href=3D"http://www.jetblue.com/legal/privacy/" href=3D"http://www.j=
+etblue.com/legal/privacy/" font-size:=3D"" 11px;"=3D"" target=3D"_blank"&gt=
+;http://www.jetblue.com/legal/<wbr>privacy/<br> =C2=B7 Qualtrics se comprom=
+ete a proteger la privacidad de todos los datos recogidos, para m=C3=A1s in=
+formaci=C3=B3n sobre la pol=C3=ADtica de privacidad de&nbsp;Qualtrics: <a h=
+ref=3D"http://www.qualtrics.com/privacy-statement/" target=3D"_blank">http:=
+//www.qualtrics.com/<wbr>privacy-statement</a><br> =C2=B7 Si prefiere no de=
+cirnos acerca de sus experiencias de vuelo en el futuro, por favor haga cli=
+c en&nbsp;<a href=3D"https://jetbluevoc.co1.qualtrics.com/CP/Register.php?O=
+ptOut=3Dtrue&amp;RID=3DMLRP_9tzE6nL65sF6xQV&amp;LID=3DUR_1NeaaFubXYMxuVn&am=
+p;BT=3DamV0Ymx1ZXZvYw&amp;_=3D1">here</a>.</span>=20
+  <img width=3D"1" height=3D"1" alt=3D"" src=3D"https://jetbluevoc.co1.qual=
+trics.com/WRQualtricsContacts/Watermark.php?UID=3DUR_1NeaaFubXYMxuVn&amp;EM=
+D=3DEMD_2nk8OmlMqHvqgZL&amp;CGC=3DMLRP_9tzE6nL65sF6xQV"> =20
+ </body>
+</html>
+------=_Part_4274626_1676730195.1472487628064--
+
+------=_Part_4274625_228174870.1472487628064--
+
+------=_Part_4274624_882798399.1472487628064--

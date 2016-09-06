@@ -1,0 +1,456 @@
+Delivered-To: diegoamundo@gmail.com
+Received: by 10.37.88.130 with SMTP id m124csp1268620ybb;
+        Fri, 2 Oct 2015 13:22:00 -0700 (PDT)
+X-Received: by 10.31.8.12 with SMTP id 12mr11673280vki.69.1443817320170;
+        Fri, 02 Oct 2015 13:22:00 -0700 (PDT)
+Return-Path: <smundo@gmail.com>
+Received: from mail-vk0-x234.google.com (mail-vk0-x234.google.com. [2607:f8b0:400c:c05::234])
+        by mx.google.com with ESMTPS id 127si6599624vkj.135.2015.10.02.13.22.00
+        for <diegoamundo@gmail.com>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Fri, 02 Oct 2015 13:22:00 -0700 (PDT)
+Received-SPF: pass (google.com: domain of smundo@gmail.com designates 2607:f8b0:400c:c05::234 as permitted sender) client-ip=2607:f8b0:400c:c05::234;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of smundo@gmail.com designates 2607:f8b0:400c:c05::234 as permitted sender) smtp.mailfrom=smundo@gmail.com;
+       dkim=pass header.i=@gmail.com;
+       dmarc=pass (p=NONE dis=NONE) header.from=gmail.com
+Received: by mail-vk0-x234.google.com with SMTP id p126so64176546vkf.3
+        for <diegoamundo@gmail.com>; Fri, 02 Oct 2015 13:22:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=content-type:content-transfer-encoding:subject:from:message-id:date
+         :to:mime-version;
+        bh=Nqgaa6sZ0Gu6ChMoCrCI0j50yoSai2zzMkvPELQoa0U=;
+        b=XXdCM99Jk/XI6ZkmwPrGAbrDJD/a0R33+k8qCH5+zsG2LT7jRY+GMG9/LMzmYRBkrb
+         LWKa1VvH/qfO16ly7sgfoUOCqerkvd7xdTr00xqbKCAT2Qbg/aWcR3PK8blakhFTgSd6
+         5/bhK5gVMIz9Y37t6A0/S3Jp9aAsfSgf5TKiKnjJ3qIXkudlqpl82JxglNV62fBXq9em
+         QXq+Iq/i/tGpGnyKHw2MPSWAcoGOKqecjErQhltkRvXx0HsAFLp5aSy3JaF+kIHvY3Sc
+         O+ADKfORVc8YGUosJm98r8vxd2cuYDDf88F4wr0ybKiiBzljeHBbRpEklVjH78mC17YP
+         qjBQ==
+X-Received: by 10.31.133.141 with SMTP id h135mr11842083vkd.85.1443817319946;
+        Fri, 02 Oct 2015 13:21:59 -0700 (PDT)
+Return-Path: <smundo@gmail.com>
+Received: from [192.168.0.12] ([24.157.29.178])
+        by smtp.gmail.com with ESMTPSA id 77sm1715227vkc.7.2015.10.02.13.21.58
+        for <diegoamundo@gmail.com>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Fri, 02 Oct 2015 13:21:59 -0700 (PDT)
+Content-Type: multipart/alternative; boundary=Apple-Mail-968B359A-88A4-4E4E-9550-1AA8DE3049E3
+Content-Transfer-Encoding: 7bit
+Subject: Human Missions to Mars Will Look Completely Different from "The Martian" - Scientific American
+From: Sergio Mundo <smundo@gmail.com>
+Message-Id: <0CE692A3-120D-40A3-B422-49A203696CC8@gmail.com>
+Date: Fri, 2 Oct 2015 16:21:54 -0400
+To: diegoamundo@gmail.com
+Mime-Version: 1.0 (1.0)
+X-Mailer: iPhone Mail (12H321)
+
+
+--Apple-Mail-968B359A-88A4-4E4E-9550-1AA8DE3049E3
+Content-Type: text/plain;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+
+http://www.scientificamerican.com/article/human-missions-to-mars-will-look-c=
+ompletely-different-from-the-martian/?WT.mc_id=3DSA_DD_20151002
+
+Human Missions to Mars Will Look Completely Different from "The Martian"
+
+The Sciences
+The blockbuster film=E2=80=99s futuristic vision of interplanetary explorati=
+on could soon be out of date
+
+By Lee Billings | October 2, 2015
+=E2=80=A2=E2=80=A2
+
+=20
+Landing in US theaters today, Ridley Scott=E2=80=99s The Martian is being ac=
+claimed as one of the most realistic portrayals of human space exploration e=
+ver filmed. Based on the 2011 novel by Andy Weir, the film stars Matt Damon a=
+s Mark Watney, a wisecracking botanist-turned-astronaut marooned on Mars aft=
+er being accidentally left behind by his crewmates. Faced with extremely lim=
+ited food and supplies, and with any hope of rescue more than a year and mil=
+lions of kilometers away, early on Watney lays out his stark options for sub=
+sistence in the film=E2=80=99s most memorable line of dialogue: Either =E2=80=
+=9Cscience the shit out of this,=E2=80=9D or die.
+
+Incidentally, it=E2=80=99s not really science that Watney uses to survive=E2=
+=80=94it=E2=80=99s engineering. But whatever you call it, the result is a wo=
+nderfully entertaining and reasonably accurate portrayal of how to live off t=
+he land=E2=80=94even when that land is on a freeze-dried alien planet.
+
+As NASA workers struggle to launch a mission to bring him back home, Watney i=
+mprovises one ingenious scheme after another to stay alive. He turns his hab=
+itat into a chemistry lab and a greenhouse, extracting potable water from ro=
+cket fuel and growing potatoes in nutrient-poor Martian soil fertilized with=
+ his own feces. He repairs spacesuit breaches and blown-out airlocks with du=
+ct tape. He even jury-rigs his own long-haul vehicle powered by solar batter=
+ies and warmed with radioactive plutonium, then treks to the landing site of=
+ NASA=E2=80=99s real-life Pathfinder rover to reactivate its radio and reest=
+ablish communications with Earth.
+
+There are several small inaccuracies in both Weir=E2=80=99s book and Scott=E2=
+=80=99s film. The wind from a dust storm that initially strands the astronau=
+t on Mars would in reality barely ripple a flag, because the Martian atmosph=
+ere is so thin. Instead of extracting water from rocket fuel, a real-life Wa=
+tney might mine and purify water from deposits of ice thought to exist benea=
+th the soil across large swaths of the planet. And because Mars=E2=80=99 atm=
+osphere and magnetic field are too insubstantial to shield against cosmic ra=
+diation, Watney=E2=80=99s skittishness about warming himself with heavily sh=
+ielded plutonium is misguided=E2=80=94in fact, most of his radiation exposur=
+e would come from simply walking around outside in his spacesuit.
+
+But these are minor technical quibbles. The Martian=E2=80=99s greater diverg=
+ences from reality are less about science, and more about technology and pol=
+itics. The key question to ask about The Martian=E2=80=99s accuracy is this:=
+ Would Watney=E2=80=94or anyone else=E2=80=94even be on Mars in the first pl=
+ace for the story to unfold?
+
+Neither the book nor the movie explicitly say when exactly the story takes p=
+lace, but Weir (as well as clever readers who reverse-engineered the book=E2=
+=80=99s timeline) has revealed that Watney and his crewmates land on Mars in=
+ November 2035. They get there via a four-month voyage in a very large, very=
+ expensive interplanetary shuttle that cycles crews back and forth between M=
+ars and Earth. The shuttle also spins to provide artificial gravity to its o=
+ccupants, to protect them from the wasting caused by extended stays in zero g=
+ravity. Furthermore, Watney=E2=80=99s mission is actually the third human la=
+nding on Mars, preceded by two landings earlier in the 2030s.
+
+All this seems to mesh with NASA=E2=80=99s =E2=80=9CJourney to Mars=E2=80=9D=
+ program, which aims to send astronauts to Mars in the 2030s. But a closer l=
+ook at NASA=E2=80=99s program reveals potential problems. Despite its scient=
+ific and technical accuracy, The Martian seems to take place in a fairy-tale=
+ world where NASA possesses much more political power=E2=80=94and has a far l=
+arger share of the federal budget than its current meager 0.4 percent.
+
+NASA has no plans for a large, spinning cycler spacecraft between Earth and M=
+ars, probably because such a spacecraft is considered unaffordable. In fact,=
+ ongoing squabbles in Washington over how to divvy up NASA=E2=80=99s persist=
+ently flat budget means that essentially all the crucial components for the a=
+gency=E2=80=99s planned voyages=E2=80=94the heavy-lift rockets, the power so=
+urces, engines and spacecraft for deep space, the landers, surface habitats a=
+nd ascent vehicles=E2=80=94are behind schedule and still in early stages of d=
+evelopment, if they are being developed at all. And the agency=E2=80=99s Jou=
+rney to Mars could all go away, very quickly, at the whim of some future Pre=
+sident or Congressional majority. Mired in the muck of politics, NASA may no=
+t manage to land even one crew of astronauts on Mars by 2035=E2=80=94let alo=
+ne three.
+
+Then again, by the 2030s, there may be good reasons to avoid landing on Mars=
+. The search for extraterrestrial life is arguably the most powerful motivat=
+ion for sending humans to Mars=E2=80=94but also the very thing that could sc=
+uttle such missions. This week=E2=80=99s announcement from NASA confirming t=
+ransient flows of liquid water on present-day Mars is fueling a debate over w=
+hether humans could visit the Red Planet=E2=80=99s most tantalizing and habi=
+table regions without spoiling them. Earthly microbes have already hitchhike=
+d on several robotic interplanetary voyages due to our less-than-perfect spa=
+cecraft sterilization techniques, carrying with them the risk of contaminati=
+ng or destroying any native ecosystems where they land.
+
+If rare, tenacious microbes on a robot are a problem, then the trillions liv=
+ing within each and every human explorer would be a far greater worry. A new=
+ report released last week from the National Academy of Sciences says such =E2=
+=80=9Cplanetary protection=E2=80=9D concerns could limit human landings to t=
+he parts of Mars considered least likely to hold life. Those regions, it mus=
+t be said, are shrinking as satellite imagery and robotic landers reveal eve=
+r-larger portions of the Martian environment as more hospitable than previou=
+sly believed. If respected, such restrictions could make the politicians con=
+trolling NASA=E2=80=99s budget wonder why we should bother sending humans to=
+ Mars at all.
+
+One provisional solution to the problems of budgets and contamination, offer=
+ed in a second report released this week by the Planetary Society, is to sen=
+d humans not to Mars itself in the 2030s, but rather to its moons, the 20-ki=
+lometer-wide Phobos and its half-sized sibling, Deimos. Both moons are easy t=
+o visit because of their low surface gravities, and they are most likely lit=
+tered with ancient debris that asteroid impacts blasted into orbit from the M=
+artian surface. After those lunar sorties in the 2030s, humans might at last=
+ descend to Mars at the end of that decade and in the 2040s.
+
+Because it defers the expensive, slow development of new technologies for la=
+nding and living on Mars, the plan could be cheaper and easier for NASA to a=
+ccomplish by the 2030s within the constraints of its projected budget. And i=
+t would allow more time to solve the difficult problems of planetary protect=
+ion=E2=80=94either through improved methods for quarantining humans on the s=
+urface, or, more ambitiously, through the use of advanced telerobotics. The r=
+ound-trip lag time for messages between researchers on Earth and rovers on M=
+ars averages around 20 minutes, limiting the efficiency, flexibility, and sp=
+eed of exploration. The two-way communication time between Mars and its moon=
+ Phobos is just 40 milliseconds, making it possible to use entirely new clas=
+ses of robotic explorers that have never before been deployed on other plane=
+ts.
+
+Instead of being stranded on Mars, by 2035 an astronaut like Watney might mo=
+re realistically be found on a moon overhead, virtually exploring the Red Pl=
+anet with remote-controlled robots that scale cliffs, spelunk into caverns, b=
+urrow into the ground and fly through the air. In time, The Martian=E2=80=99=
+s portrayal of microbe-riddled astronauts huffing and puffing around Mars in=
+ bulky spacesuits may seem quaint. For now, go check out the film=E2=80=94it=
+=E2=80=99s the closest most of us will ever get to Mars for a long time. Whi=
+ch might not be a bad thing.
+
+
+--Apple-Mail-968B359A-88A4-4E4E-9550-1AA8DE3049E3
+Content-Type: text/html;
+	charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+
+<html><head><meta http-equiv=3D"content-type" content=3D"text/html; charset=3D=
+utf-8"></head><body dir=3D"auto"><div><base href=3D"http://www.scientificame=
+rican.com/article/human-missions-to-mars-will-look-completely-different-from=
+-the-martian/?WT.mc_id=3DSA_DD_20151002"><style id=3D"article-content">
+        @media print {
+            .original-url {
+                display: none;
+            }
+        }
+
+        h1.title {
+            font: -apple-system-headline;
+            font-weight: normal;
+            text-align: start;
+            -webkit-hyphens: manual;
+        }
+
+        blockquote {
+            color: rgba(0, 0, 0, 0.5);
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        blockquote > *:first-child:before {
+            -webkit-margin-start: -6px;
+            content: open-quote;
+        }
+
+        blockquote > *:last-child:after {
+            content: close-quote;
+        }
+
+        /* FIXME: We should be able to remove this when WebKit's link color m=
+atches UIKit's (<rdar://problem/13650224>). */
+        .page a {
+            color: rgb(20, 111, 223);
+        }
+
+        #article .large-element {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .page {
+            font: -apple-system-body;
+            text-align: start;
+        }
+
+        #article .leading-image, #article figure, #article .auxiliary {
+            font: -apple-system-short-subheadline;
+        }
+
+        h1 {
+            font: -apple-system-subheadline;
+        }
+
+        h2 {
+            font: -apple-system-footnote;
+        }
+
+        h3 {
+            font: -apple-system-caption1;
+        }
+
+        h4, h5, h6 {
+            font: -apple-system-caption2;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: bold;
+        }
+
+        hr {
+            background: rgba(0, 0, 0, 0.2);
+            height: 1px;
+            border: 0;
+        }
+    </style><link rel=3D"stylesheet" type=3D"text/css" href=3D"safari-resour=
+ce:/WBSReaderSharedStyleSheet.css" id=3D"article-content-shared"><title>Huma=
+n Missions to Mars Will Look Completely Different from "The Martian" - Scien=
+tific American</title><div class=3D"original-url"><br><a href=3D"http://www.=
+scientificamerican.com/article/human-missions-to-mars-will-look-completely-d=
+ifferent-from-the-martian/?WT.mc_id=3DSA_DD_20151002">http://www.scientifica=
+merican.com/article/human-missions-to-mars-will-look-completely-different-fr=
+om-the-martian/?WT.mc_id=3DSA_DD_20151002</a><br><br></div><div id=3D"articl=
+e">
+        <div class=3D"page" style=3D"font-size: 18px; line-height: 28px;"><h=
+1 class=3D"title">Human Missions to Mars Will Look Completely Different from=
+ "The Martian"</h1>
+<section>
+<span><a href=3D"/the-sciences">The Sciences</a></span>
+</section>
+<header>
+
+
+<div>
+<p>The blockbuster film=E2=80=99s futuristic vision of interplanetary explor=
+ation could soon be out of date</p>
+</div>
+<div style=3D"font-style: italic;">
+By <a href=3D"http://www.scientificamerican.com/author/lee-billings">Lee Bil=
+lings</a> <span>|</span>
+October 2, 2015
+</div>
+
+</header>
+<section>
+<figure>
+<div data-cycle-fx=3D"flipHorz" data-cycle-swipe=3D"true" data-cycle-slides=3D=
+"&gt; div.articleImageSlider" data-cycle-timeout=3D"0">
+<p><span>=E2=80=A2</span><span>=E2=80=A2</span></p>
+
+
+<div>
+<img src=3D"http://www.scientificamerican.com/sciam/cache/file/2353C1B2-55B4=
+-4C87-B8930B63A9CAE8E2_article.jpg?53CF0" alt=3D"A promotional photo of Matt=
+ Damon as the stranded astronaut Mark Watney in &quot;The Martian.&quot;">
+</div></div>
+</figure>
+</section>
+<section>
+<p>Landing in US theaters today, Ridley Scott=E2=80=99s <em>The Martian</em>=
+ is being acclaimed as one of the most realistic portrayals of human space e=
+xploration ever filmed. Based on the 2011 novel by Andy Weir, the film stars=
+ Matt Damon as Mark Watney, a wisecracking botanist-turned-astronaut maroone=
+d on Mars after being accidentally left behind by his crewmates. Faced with e=
+xtremely limited food and supplies, and with any hope of rescue more than a y=
+ear and millions of kilometers away, early on Watney lays out his stark opti=
+ons for subsistence in the film=E2=80=99s most memorable line of dialogue: E=
+ither =E2=80=9Cscience the shit out of this,=E2=80=9D or die.</p>
+<p>Incidentally, it=E2=80=99s not really science that Watney uses to survive=
+=E2=80=94it=E2=80=99s engineering. But whatever you call it, the result is a=
+ wonderfully entertaining and reasonably accurate portrayal of how to live o=
+ff the land=E2=80=94even when that land is on a freeze-dried alien planet.</=
+p>
+<p>As NASA workers struggle to launch a mission to bring him back home, Watn=
+ey improvises one ingenious scheme after another to stay alive. He turns his=
+ habitat into a chemistry lab and a greenhouse, extracting potable water fro=
+m rocket fuel and growing potatoes in nutrient-poor Martian soil fertilized w=
+ith his own feces. He repairs spacesuit breaches and blown-out airlocks with=
+ duct tape. He even jury-rigs his own long-haul vehicle powered by solar bat=
+teries and warmed with radioactive plutonium, then treks to the landing site=
+ of NASA=E2=80=99s real-life Pathfinder rover to reactivate its radio and re=
+establish communications with Earth.</p>
+<p>There are several small inaccuracies in both Weir=E2=80=99s book and Scot=
+t=E2=80=99s film. The wind from a dust storm that initially strands the astr=
+onaut on Mars would in reality barely ripple a flag, because the Martian atm=
+osphere is so thin. Instead of extracting water from rocket fuel, a real-lif=
+e Watney might mine and purify water from deposits of ice thought to exist b=
+eneath the soil across large swaths of the planet. And because Mars=E2=80=99=
+ atmosphere and magnetic field are too insubstantial to shield against cosmi=
+c radiation, Watney=E2=80=99s skittishness about warming himself with heavil=
+y shielded plutonium is misguided=E2=80=94in fact, most of his radiation exp=
+osure would come from simply walking around outside in his spacesuit.</p>
+<p>But these are minor technical quibbles. <em>The Martian</em>=E2=80=99s gr=
+eater divergences from reality are less about science, and more about techno=
+logy and politics. The key question to ask about <em>The Martian</em>=E2=80=99=
+s accuracy is this: Would Watney=E2=80=94or anyone else=E2=80=94even be on M=
+ars in the first place for the story to unfold?</p>
+<p>Neither the book nor the movie explicitly say when exactly the story take=
+s place, but Weir (as well as clever readers who reverse-engineered the book=
+=E2=80=99s timeline) has <a href=3D"https://www.facebook.com/462962073803090=
+/photos/a.463868883712409.1073741828.462962073803090/682817308484231/?type=3D=
+1">revealed</a> that Watney and his crewmates land on Mars in November 2035.=
+ They get there via a four-month voyage in a very large, very expensive inte=
+rplanetary shuttle that cycles crews back and forth between Mars and Earth. T=
+he shuttle also spins to provide artificial gravity to its occupants, to pro=
+tect them from the wasting caused by extended stays in zero gravity. Further=
+more, Watney=E2=80=99s mission is actually the third human landing on Mars, p=
+receded by two landings earlier in the 2030s.</p>
+<p>All this seems to mesh with NASA=E2=80=99s =E2=80=9C<a href=3D"https://ww=
+w.nasa.gov/content/nasas-journey-to-mars">Journey to Mars</a>=E2=80=9D progr=
+am, which aims to send astronauts to Mars in the 2030s. But a closer look at=
+ NASA=E2=80=99s program reveals potential problems. Despite its scientific a=
+nd technical accuracy, <em>The Martian</em> seems to take place in a fairy-t=
+ale world where NASA possesses much more political power=E2=80=94and has a f=
+ar larger share of the federal budget than its current meager 0.4 percent.</=
+p>
+<p>NASA has <a href=3D"http://www.scientificamerican.com/article/a-waste-of-=
+space-commentary/">no plans</a> for a large, spinning cycler spacecraft betw=
+een Earth and Mars, probably because such a spacecraft is considered unaffor=
+dable. In fact, ongoing squabbles in Washington over how to divvy up NASA=E2=
+=80=99s persistently flat budget means that essentially <em>all</em> the cru=
+cial components for the agency=E2=80=99s planned voyages=E2=80=94the heavy-l=
+ift rockets, the power sources, engines and spacecraft for deep space, the l=
+anders, surface habitats and ascent vehicles=E2=80=94are behind schedule and=
+ still in early stages of development, if they are being developed at all. A=
+nd the agency=E2=80=99s Journey to Mars could all go away, very quickly, at t=
+he whim of some future President or Congressional majority. Mired in the muc=
+k of politics, NASA may not manage to land even one crew of astronauts on Ma=
+rs by 2035=E2=80=94let alone three.</p>
+<p>Then again, by the 2030s, there may be good reasons to avoid landing on M=
+ars. The search for extraterrestrial life is arguably the most powerful moti=
+vation for sending humans to Mars=E2=80=94but also the very thing that could=
+ scuttle such missions. <a href=3D"http://www.scientificamerican.com/article=
+/water-flows-on-mars-today-nasa-announces/">This week=E2=80=99s announcement=
+</a> from NASA confirming transient flows of liquid water on present-day Mar=
+s is fueling a <a href=3D"http://www.scientificamerican.com/article/searchin=
+g-for-life-in-martian-water-will-be-very-very-tricky/">debate</a> over wheth=
+er humans could visit the Red Planet=E2=80=99s most tantalizing and habitabl=
+e regions without spoiling them. Earthly microbes have already hitchhiked on=
+ several robotic interplanetary voyages due to our less-than-perfect spacecr=
+aft sterilization techniques, carrying with them the risk of contaminating o=
+r destroying any native ecosystems where they land.</p>
+<p>If rare, tenacious microbes on a robot are a problem, then the trillions l=
+iving within each and every human explorer would be a far greater worry. A <=
+a href=3D"http://www.nap.edu/catalog/21816/review-of-the-mepag-report-on-mar=
+s-special-regions">new report</a> released last week from the National Acade=
+my of Sciences says such =E2=80=9Cplanetary protection=E2=80=9D concerns cou=
+ld limit human landings to the parts of Mars considered least likely to hold=
+ life. Those regions, it must be said, are shrinking as satellite imagery an=
+d robotic landers reveal ever-larger portions of the Martian environment as m=
+ore hospitable than previously believed. If respected, such restrictions cou=
+ld make the politicians controlling NASA=E2=80=99s budget wonder why we shou=
+ld bother sending humans to Mars at all.</p>
+<p>One provisional solution to the problems of budgets and contamination, of=
+fered in a second <a href=3D"http://hom.planetary.org/">report</a> released t=
+his week by the Planetary Society, is to send humans not to Mars itself in t=
+he 2030s, but rather to its moons, the 20-kilometer-wide Phobos and its half=
+-sized sibling, Deimos. Both moons are easy to visit because of their low su=
+rface gravities, and they are most likely littered with ancient debris that a=
+steroid impacts blasted into orbit from the Martian surface. After those lun=
+ar sorties in the 2030s, humans might at last descend to Mars at the end of t=
+hat decade and in the 2040s.</p>
+<p>Because it defers the expensive, slow development of new technologies for=
+ landing and living on Mars, the plan could be cheaper and easier for NASA t=
+o accomplish by the 2030s within the constraints of its projected budget. An=
+d it would allow more time to solve the difficult problems of planetary prot=
+ection=E2=80=94either through improved methods for quarantining humans on th=
+e surface, or, more ambitiously, through the use of advanced telerobotics. T=
+he round-trip lag time for messages between researchers on Earth and rovers o=
+n Mars averages around 20 minutes, limiting the efficiency, flexibility, and=
+ speed of exploration. The two-way communication time between Mars and its m=
+oon Phobos is just 40 milliseconds, making it possible to use entirely new c=
+lasses of robotic explorers that have never before been deployed on other pl=
+anets.</p>
+<p>Instead of being stranded on Mars, by 2035 an astronaut like Watney might=
+ more realistically be found on a moon overhead, virtually exploring the Red=
+ Planet with remote-controlled robots that scale cliffs, spelunk into cavern=
+s, burrow into the ground and fly through the air. In time, <em>The Martian<=
+/em>=E2=80=99s portrayal of microbe-riddled astronauts huffing and puffing a=
+round Mars in bulky spacesuits may seem quaint. For now, go check out the fi=
+lm=E2=80=94it=E2=80=99s the closest most of us will ever get to Mars for a l=
+ong time. Which might not be a bad thing.</p>
+
+
+</section>
+<footer>
+
+
+
+
+
+
+</footer>
+</div></div></div><div></div></body></html>=
+
+--Apple-Mail-968B359A-88A4-4E4E-9550-1AA8DE3049E3--

@@ -1,0 +1,57 @@
+Delivered-To: diegoamundo@gmail.com
+Received: by 10.37.18.68 with SMTP id 65csp941630ybs;
+        Sun, 8 Nov 2015 19:19:40 -0800 (PST)
+X-Received: by 10.129.17.214 with SMTP id 205mr24597834ywr.284.1447039180188;
+        Sun, 08 Nov 2015 19:19:40 -0800 (PST)
+Return-Path: <smundo@gmail.com>
+Received: from mail-yk0-x233.google.com (mail-yk0-x233.google.com. [2607:f8b0:4002:c07::233])
+        by mx.google.com with ESMTPS id e81si6152971ywa.186.2015.11.08.19.19.40
+        for <diegoamundo@gmail.com>
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Sun, 08 Nov 2015 19:19:40 -0800 (PST)
+Received-SPF: pass (google.com: domain of smundo@gmail.com designates 2607:f8b0:4002:c07::233 as permitted sender) client-ip=2607:f8b0:4002:c07::233;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of smundo@gmail.com designates 2607:f8b0:4002:c07::233 as permitted sender) smtp.mailfrom=smundo@gmail.com;
+       dkim=pass header.i=@gmail.com;
+       dmarc=pass (p=NONE dis=NONE) header.from=gmail.com
+Received: by mail-yk0-x233.google.com with SMTP id a4so243423562ykb.3
+        for <diegoamundo@gmail.com>; Sun, 08 Nov 2015 19:19:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=subject:from:content-type:message-id:date:to
+         :content-transfer-encoding:mime-version;
+        bh=OA6Sytvx2hbrfLVwI+Zf/1xzdln41eCA9R0BNY60fKg=;
+        b=0Qki5EQKgzyvlIkdLNl3T23xteIKuaJ0ewellcqHIgXp9YwL0wBCXRnJvfq9JBmhCs
+         TYdUWW099uASINbjpYz5jlcEmGHIDBoUmEQxXYisqYYldS0aY/tQje++R8BMwSoO8obU
+         5X+bdpRXcrdvLEdaHAPvluBYIUgFkCmDUzNSs+GOtWbEdUjI5QPq4NMa+4aEwFGQiSpI
+         cnWTFnyRhcmG/VWfM/ZbRtRut3nplNsVS4L7N22R7x5OxPx4cWgPpZXunupGkRrkft6k
+         3PPRv9EKLwgQDHAekbTjVe1uQQS4ybGtuq20aCWdpQKdfw+5aispt/t6PTofb3LX1g4S
+         92hA==
+X-Received: by 10.129.46.212 with SMTP id u203mr23666296ywu.147.1447039179952;
+        Sun, 08 Nov 2015 19:19:39 -0800 (PST)
+Return-Path: <smundo@gmail.com>
+Received: from [192.168.0.6] ([24.157.29.178])
+        by smtp.gmail.com with ESMTPSA id i129sm12092250ywf.1.2015.11.08.19.19.39
+        for <diegoamundo@gmail.com>
+        (version=TLSv1 cipher=ECDHE-RSA-RC4-SHA bits=128/128);
+        Sun, 08 Nov 2015 19:19:39 -0800 (PST)
+Subject: NYTimes: Sex, Lies and Houston
+From: Sergio <smundo@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Message-Id: <305A5DDC-3E44-4304-8E2D-3B0606CDD871@gmail.com>
+Date: Sun, 8 Nov 2015 23:19:35 -0400
+To: Diego Mundo <diegoamundo@gmail.com>
+Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0 (1.0)
+X-Mailer: iPad Mail (9B206)
+
+=46rom The New York Times:
+
+OP-ED COLUMNIST: Sex, Lies and Houston
+
+I know the pain of being reduced to a cruel caricature. Don=E2=80=99t you?
+
+http://nyti.ms/1OvQEaK
+
+
+

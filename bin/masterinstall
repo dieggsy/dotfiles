@@ -53,6 +53,7 @@ brew install ctags
 brew install ddate
 brew install dict
 brew install doxygen
+brew install eigen
 brew install elinks
 brew install emacs
 brew install faad2
@@ -69,11 +70,13 @@ brew install gcc
 brew install gdbm
 brew install gdk-pixbuf
 brew install gettext
+brew install gflags
 brew install ghostscript
 brew install giflib
 brew install git
 brew install glib
 brew install global
+brew install glog
 brew install gmp
 brew install gnome-icon-theme
 brew install gnutls
@@ -84,11 +87,13 @@ brew install gst-plugins-base010
 brew install gstreamer010
 brew install gtk+3
 brew install harfbuzz
+brew install hdf5
 brew install hicolor-icon-theme
 brew install highlight
 brew install htop-osx
 brew install hub
 brew install icu4c
+brew install ilmbase
 brew install imagemagick
 brew install imlib2
 brew install irssi
@@ -102,6 +107,7 @@ brew install jrnl
 brew install json-c
 brew install lame
 brew install leptonica
+brew install leveldb
 brew install libao
 brew install libcaca
 brew install libcroco
@@ -131,6 +137,7 @@ brew install libxml2
 brew install libyaml
 brew install links
 brew install little-cms2
+brew install lmdb
 brew install lua
 brew install lynx
 brew install mad
@@ -139,6 +146,7 @@ brew install mercurial
 brew install mp4v2
 brew install mpc
 brew install mpfr
+brew install mutt
 brew install nano
 brew install ncurses
 brew install neovim
@@ -146,6 +154,8 @@ brew install nettle
 brew install node
 brew install numpy
 brew install oniguruma
+brew install opencv
+brew install openexr
 brew install openssl
 brew install oysttyer
 brew install pandoc
@@ -158,6 +168,7 @@ brew install pkg-config
 brew install portaudio
 brew install portmidi
 brew install potrace
+brew install protobuf
 brew install py2cairo
 brew install py3cairo
 brew install pygobject3
@@ -176,11 +187,13 @@ brew install sdl_mixer
 brew install sdl_ttf
 brew install sip
 brew install smpeg
+brew install snappy
 brew install source-highlight
 brew install sqlite
 brew install ssh-copy-id
 brew install subversion
 brew install surfraw
+brew install szip
 brew install taglib
 brew install tesseract
 brew install the_silver_searcher
@@ -213,6 +226,7 @@ echo Installing brew cask programs...
 brew cask install adobe-reader
 brew cask install atom
 brew cask install betterzipql
+brew cask install cuda
 brew cask install discord
 brew cask install evernote
 brew cask install firefox
