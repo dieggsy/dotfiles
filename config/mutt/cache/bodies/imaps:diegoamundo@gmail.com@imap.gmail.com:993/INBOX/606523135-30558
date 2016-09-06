@@ -1,0 +1,277 @@
+Delivered-To: diegoamundo@gmail.com
+Received: by 10.103.71.144 with SMTP id b16csp651283vsg;
+        Tue, 6 Sep 2016 09:58:12 -0700 (PDT)
+X-Received: by 10.36.74.138 with SMTP id k132mr31381785itb.85.1473181092508;
+        Tue, 06 Sep 2016 09:58:12 -0700 (PDT)
+Return-Path: <mitfranceevents-bounces@mit.edu>
+Received: from dmz-mailsec-scanner-5.mit.edu (dmz-mailsec-scanner-5.mit.edu. [18.7.68.34])
+        by mx.google.com with ESMTPS id 193si31122986iti.82.2016.09.06.09.58.05
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 06 Sep 2016 09:58:12 -0700 (PDT)
+Received-SPF: pass (google.com: domain of mitfranceevents-bounces@mit.edu designates 18.7.68.34 as permitted sender) client-ip=18.7.68.34;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of mitfranceevents-bounces@mit.edu designates 18.7.68.34 as permitted sender) smtp.mailfrom=mitfranceevents-bounces@mit.edu
+X-AuditID: 12074422-07fff70000002d91-92-57cef59ca22a
+Received: from mailhub-3.mit.edu ( [18.9.21.44])
+	(using TLS with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(Client did not present a certificate)
+	by  (Symantec Messaging Gateway) with SMTP id EC.17.11665.C95FEC75; Tue,  6 Sep 2016 12:58:05 -0400 (EDT)
+Received: from PCH.mit.edu (pch.mit.edu [18.7.21.50])
+	by mailhub-3.mit.edu (8.13.8/8.9.2) with ESMTP id u86Gvqne007599;
+	Tue, 6 Sep 2016 12:57:53 -0400
+Received: from pch.mit.edu (localhost.localdomain [127.0.0.1])
+	by PCH.mit.edu (8.13.8/8.12.8) with ESMTP id u86Gvq0s000360;
+	Tue, 6 Sep 2016 12:57:52 -0400
+Received: from mailhub-auth-3.mit.edu (mailhub-auth-3.mit.edu [18.9.21.43])
+	by PCH.mit.edu (8.13.8/8.12.8) with ESMTP id u86GvoAA000348;
+	Tue, 6 Sep 2016 12:57:50 -0400
+Received: from outgoing-exchange-3.mit.edu (outgoing-exchange-3.mit.edu
+	[18.9.28.13])
+	by mailhub-auth-3.mit.edu (8.13.8/8.9.2) with ESMTP id u86GvoPP031408; 
+	Tue, 6 Sep 2016 12:57:50 -0400
+Received: from W92EXEDGE5.EXCHANGE.MIT.EDU (w92exedge5.exchange.mit.edu
+	[18.7.73.22])
+	by outgoing-exchange-3.mit.edu (8.13.8/8.12.4) with ESMTP id
+	u86GvlUc024184; Tue, 6 Sep 2016 12:57:49 -0400
+Received: from W92EXCAS23.exchange.mit.edu (18.7.71.38) by
+	W92EXEDGE5.EXCHANGE.MIT.EDU (18.7.73.22) with Microsoft SMTP Server
+	(TLS) id 14.3.235.1; Tue, 6 Sep 2016 12:56:58 -0400
+Received: from OC11EXPO32.exchange.mit.edu ([169.254.1.174]) by
+	w92excas23.exchange.mit.edu ([18.7.71.38]) with mapi id 14.03.0301.000;
+	Tue, 6 Sep 2016 12:57:39 -0400
+From: Sarah Craver <sbcraver@mit.edu>
+To: mit-france-events <mit-france-events@mit.edu>,
+        mitfranceevents
+	<mitfranceevents@mit.edu>,
+        summer2015-belgium-france-switz
+	<summer2015-belgium-france-switz@mit.edu>
+Thread-Topic: Reminder: Sept. 8 Event with Thierry Mandon
+Thread-Index: AdIIX722ypIqdgv6QWSUBzPBNTAFEw==
+Date: Tue, 6 Sep 2016 16:57:39 +0000
+Message-ID: <2268D9AE5A935D4D990B3C86A22143A60F4A01C7@OC11EXPO32.exchange.mit.edu>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-originating-ip: [18.172.1.164]
+MIME-Version: 1.0
+X-Auto-Response-Suppress: DR, OOF, AutoReply
+Subject: [Mitfranceevents] Reminder: Sept. 8 Event with Thierry Mandon
+X-BeenThere: mitfranceevents@mit.edu
+X-Mailman-Version: 2.1.6
+Precedence: list
+List-Id: <mitfranceevents.mit.edu>
+List-Unsubscribe: <http://mailman.mit.edu/mailman/listinfo/mitfranceevents>,
+	<mailto:mitfranceevents-request@mit.edu?subject=unsubscribe>
+List-Archive: <http://mailman.mit.edu/mailman/private/mitfranceevents>
+List-Post: <mailto:mitfranceevents@mit.edu>
+List-Help: <mailto:mitfranceevents-request@mit.edu?subject=help>
+List-Subscribe: <http://mailman.mit.edu/mailman/listinfo/mitfranceevents>,
+	<mailto:mitfranceevents-request@mit.edu?subject=subscribe>
+Content-Type: multipart/mixed; boundary="===============2406980130465445087=="
+Sender: mitfranceevents-bounces@mit.edu
+Errors-To: mitfranceevents-bounces@mit.edu
+X-Brightmail-Tracker: H4sIAAAAAAAAA2WUfUwbZRzH99y1d0flzMEY/GRsQt0wcYAuuviwoJnJXDaNxi0mRKK4c5y0
+	kRZsYQLJYkdkYB0DHBsvg40hoVCYJOgGpeN1jpeBkJU55MUIA0csMhlICFttvOvBmPrf577f
+	7+97zy+5exjSd54JZLT6ZMGg5xPUlErh67UpLLxsaSD6hTFLEP7aHIZn7uQr8A/fLRG44E8z
+	hU/3mmhcPTJG4hPZnTQ+aWlS4ulvDuPb/c00vnlqgcAjgz0KXOgm8X3nE/h2dhuJ7d83K3BG
+	ThCeLq5FeNhVRmHTSQuJM5zLFK6+WUThh84uArf+bFPi2Yl6Etcez6CwzZpJ4kXnBRLnVjoo
+	XFB/l8a/t87TeLZwhcAro9UK3De0G1cP3SPxxaYZEo/bI/DIrfsUnmssVeA/rLNK3HZWnGzK
+	K1PiXus0hfPzGqg9YfttJb/Q+y1nr6N3iBhVVJyQoD0qGJ5/9bBK41gaJpKqIlNXCrJoE7K+
+	aEYMA9xLMF8RZEZejC93nIDJv980I5XIJQi6LS1K2TiPIHM4RDZqEZiu5JCy0Yng4ZdbZaMb
+	Qe7VLEJ+uILgRNtPq+NWBF11uyWmuO1wrbGVlkJ+XAsCm30RSYYfFwnWoRpK5ggoqLtFSudT
+	cNsgt5uQZJY7BOcax2mJEecPyzfqPDrJBcDo9AUPA+cDFeeukjL7g7t5kpI5GDp+/HW1xwd6
+	i6cVsh4G3dmXPJmN3D74IrdmVd8GXTnu1R6ABxOZHp3jODhfafP0eHNqGJ2a8+zizX2F4Mzg
+	BC0b+2CooXeVd8Dg1DWlzHvA3ONCMmchcNqMeeiZksd2KHnsfLL+Ntwb7aH/myG5RHA35ZEy
+	h0G5fYGSeQdUXZwl17i/fYr4v76e//e7nobGuVIxw4i8GSxuphyxVrQlTpceruO1CUbhSLjx
+	CK/XC4bwXRE6bXKEEJfSgKQfi96rbkL57jc6EccgtTebah+I9lXyR41puk70FEOoN7GhB0Xp
+	yY8S49I0vFHzoSElQTCKnw9Dqv1YzV+ix8bxaemCIXHN2swo1AGsuag92peL55OFTwQhSTCs
+	uUEMowb2kDToYxDihdSPtQnJ6zbBeEnl3mL5pUWp3JjE64zaeNm/gUICA1iQhjnJ0KToH816
+	Lgr6gL8TBYirbGQbpJS3eI08mnaKxYRY/K29TypO5tetQBMypb1PVNh7IDzjle6X75aaagqP
+	xThCS4P1HTVFMe9ucZ153ZFb6JpRlVJDp7tio059EH0MTbrGa2PTTcH97+U80N0xP5tyOXth
+	w9ZiumMLFLFwuf63DZ/qhllVex4VMRAyGBT12d7OSFPomMO17Gip+pyo3BV7sO8t1fbXru8s
+	91crjBp+53Okwcj/AwdtKiADBQAA
+
+--===============2406980130465445087==
+Content-Language: en-US
+Content-Type: multipart/alternative;
+	boundary="_000_2268D9AE5A935D4D990B3C86A22143A60F4A01C7OC11EXPO32excha_"
+
+--_000_2268D9AE5A935D4D990B3C86A22143A60F4A01C7OC11EXPO32excha_
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+Hello everyone,
+
+Please see the invitation below. We hope you are able to join us.
+
+Harvard University Contemporary Europe Study Group and MIT France Program
+
+"For a New Democratic Governance in France: A Public Address"
+ Thierry Mandon, Secretary of State for Higher Education and Research, Fran=
+ce
+
+Discussant: Peter A. Hall - Krupp Foundation Professor of European Studies,=
+ Harvard University; Resident Faculty, CES
+
+Thursday September 8
+4:15pm - 6:00pm
+
+The talk is open to the public and will be held in the Lower Level Conferen=
+ce Room at the Center for European Studies, 27 Kirkland Street
+
+For additional information, please contact Arthur Goldhammer, agoldham@fas.=
+harvard.edu<mailto:agoldham@fas.harvard.edu>
+
+Sarah Craver
+Program Assistant, MIT France, Belgium, and Switzerland
+MIT International Science and Technology Initiatives (MISTI)
+1 Amherst St, E40-422
+Cambridge, MA 02142
+617-324-6867
+sbcraver@mit.edu<mailto:sbcraver@mit.edu>
+http://misti.mit.edu/
+
+--_000_2268D9AE5A935D4D990B3C86A22143A60F4A01C7OC11EXPO32excha_
+Content-Type: text/html; charset="us-ascii"
+Content-Transfer-Encoding: quoted-printable
+
+<html xmlns:v=3D"urn:schemas-microsoft-com:vml" xmlns:o=3D"urn:schemas-micr=
+osoft-com:office:office" xmlns:w=3D"urn:schemas-microsoft-com:office:word" =
+xmlns:m=3D"http://schemas.microsoft.com/office/2004/12/omml" xmlns=3D"http:=
+//www.w3.org/TR/REC-html40">
+<head>
+<meta http-equiv=3D"Content-Type" content=3D"text/html; charset=3Dus-ascii"=
+>
+<meta name=3D"Generator" content=3D"Microsoft Word 15 (filtered medium)">
+<style><!--
+/* Font Definitions */
+@font-face
+	{font-family:"Cambria Math";
+	panose-1:2 4 5 3 5 4 6 3 2 4;}
+@font-face
+	{font-family:Calibri;
+	panose-1:2 15 5 2 2 2 4 3 2 4;}
+@font-face
+	{font-family:Tahoma;
+	panose-1:2 11 6 4 3 5 4 4 2 4;}
+@font-face
+	{font-family:Palatino;}
+/* Style Definitions */
+p.MsoNormal, li.MsoNormal, div.MsoNormal
+	{margin:0in;
+	margin-bottom:.0001pt;
+	font-size:11.0pt;
+	font-family:"Calibri",sans-serif;}
+a:link, span.MsoHyperlink
+	{mso-style-priority:99;
+	color:#0563C1;
+	text-decoration:underline;}
+a:visited, span.MsoHyperlinkFollowed
+	{mso-style-priority:99;
+	color:#954F72;
+	text-decoration:underline;}
+span.EmailStyle17
+	{mso-style-type:personal;
+	font-family:"Calibri",sans-serif;
+	color:windowtext;}
+span.EmailStyle18
+	{mso-style-type:personal;
+	font-family:"Calibri",sans-serif;
+	color:windowtext;}
+span.EmailStyle19
+	{mso-style-type:personal-compose;
+	font-family:"Calibri",sans-serif;
+	color:windowtext;}
+.MsoChpDefault
+	{mso-style-type:export-only;
+	font-size:10.0pt;}
+@page WordSection1
+	{size:8.5in 11.0in;
+	margin:1.0in 1.0in 1.0in 1.0in;}
+div.WordSection1
+	{page:WordSection1;}
+--></style><!--[if gte mso 9]><xml>
+<o:shapedefaults v:ext=3D"edit" spidmax=3D"1026" />
+</xml><![endif]--><!--[if gte mso 9]><xml>
+<o:shapelayout v:ext=3D"edit">
+<o:idmap v:ext=3D"edit" data=3D"1" />
+</o:shapelayout></xml><![endif]-->
+</head>
+<body lang=3D"EN-US" link=3D"#0563C1" vlink=3D"#954F72">
+<div class=3D"WordSection1">
+<p class=3D"MsoNormal">Hello everyone,<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal">Please see the invitation below. We hope you are abl=
+e to join us.<o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:18.0pt;font-family:Palatino=
+">Harvard University Contemporary Europe Study Group and MIT France Program=
+</span><o:p></o:p></p>
+<p class=3D"MsoNormal">&nbsp;<o:p></o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:18.0pt;font-family:Palatino=
+">&quot;For a New Democratic Governance in France: A Public Address&#8221;<=
+/span><o:p></o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:13.5pt;font-family:Palatino=
+">&nbsp;Thierry Mandon, Secretary of State for Higher Education and Researc=
+h, France</span><o:p></o:p></p>
+<p class=3D"MsoNormal">&nbsp;<o:p></o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:10.5pt;font-family:Palatino=
+">Discussant: Peter A. Hall &#8211; Krupp Foundation Professor of European =
+Studies, Harvard University; Resident Faculty, CES</span><o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:10.5pt;font-family:Palatino=
+">Thursday September 8</span><o:p></o:p></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:10.5pt;font-family:Palatino=
+">4:15pm - 6:00pm</span><o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<p class=3D"MsoNormal"><i><span style=3D"font-size:10.5pt;font-family:Palat=
+ino">The talk is open to the public and will be held in the Lower Level Con=
+ference Room at the Center for European Studies, 27 Kirkland Street</span><=
+/i><o:p></o:p></p>
+<p class=3D"MsoNormal"><i><span style=3D"font-size:10.5pt;font-family:Palat=
+ino">&nbsp;</span></i><o:p></o:p></p>
+<p class=3D"MsoNormal"><i><span style=3D"font-size:10.5pt;font-family:Palat=
+ino">For additional information, please contact Arthur Goldhammer,&nbsp;<a =
+href=3D"mailto:agoldham@fas.harvard.edu" target=3D"_blank">agoldham@fas.har=
+vard.edu</a></span></i><o:p></o:p></p>
+<p class=3D"MsoNormal"><o:p>&nbsp;</o:p></p>
+<div>
+<p class=3D"MsoNormal"><b><span style=3D"color:#538135">Sarah Craver<o:p></=
+o:p></span></b></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;color:black">Program =
+Assistant, MIT France, Belgium, and Switzerland<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;color:black">MIT Inte=
+rnational Science and Technology Initiatives (MISTI)<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;color:black">1 Amhers=
+t St, E40-422<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"FR" style=3D"font-size:9.0pt;color:bla=
+ck">Cambridge, MA 02142<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span lang=3D"FR" style=3D"font-size:9.0pt;color:bla=
+ck">617-324-6867<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;color:black"><a href=
+=3D"mailto:sbcraver@mit.edu"><span lang=3D"FR" style=3D"color:blue">sbcrave=
+r@mit.edu</span></a></span><span lang=3D"FR" style=3D"font-size:9.0pt;color=
+:black"> &nbsp;<o:p></o:p></span></p>
+<p class=3D"MsoNormal"><span style=3D"font-size:9.0pt;color:black"><a href=
+=3D"http://misti.mit.edu/"><span lang=3D"FR" style=3D"color:blue">http://mi=
+sti.mit.edu/</span></a></span><span lang=3D"FR"><o:p></o:p></span></p>
+</div>
+</div>
+</body>
+</html>
+
+--_000_2268D9AE5A935D4D990B3C86A22143A60F4A01C7OC11EXPO32excha_--
+
+--===============2406980130465445087==
+Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Content-Disposition: inline
+
+_______________________________________________
+Mitfranceevents mailing list
+Mitfranceevents@mit.edu
+http://mailman.mit.edu/mailman/listinfo/mitfranceevents
+
+--===============2406980130465445087==--

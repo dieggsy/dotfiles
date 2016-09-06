@@ -19,6 +19,6 @@ set editor="vim"
 set smtp_authenticators = 'gssapi:login'
 set sort = reverse-date-received
 
-source ~/.mutt/mutt-colors-solarized/colors-zenburn-256.mutt
+source ~/.mutt/colors-diego-256.mutt
 macro index,pager e  "<save-message>=[Gmail]/All Mail<enter><enter>" "Archive conversation"
 bind index G imap-fetch-mail

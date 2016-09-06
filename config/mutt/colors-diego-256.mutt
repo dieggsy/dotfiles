@@ -19,7 +19,7 @@ color tilde      color108 color236
 color status     color75 color236
 
 # index stuff
-color indicator  color108 color236
+color indicator  color009 color237
 color tree       color109 color236
 color index      color188 color236 ~A
 color index      color112 color236 ~N
@@ -74,3 +74,6 @@ color quoted8    color247 color236
 color quoted9    color108 color236
 
 # vim: set syntax=muttrc:
+set pager_index_lines=6
+set tilde
+unset resolve

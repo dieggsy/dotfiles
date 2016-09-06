@@ -1,0 +1,81 @@
+Delivered-To: diegoamundo@gmail.com
+Received: by 10.103.71.144 with SMTP id b16csp610206vsg;
+        Tue, 6 Sep 2016 08:26:11 -0700 (PDT)
+X-Received: by 10.36.196.133 with SMTP id v127mr29421196itf.84.1473175571377;
+        Tue, 06 Sep 2016 08:26:11 -0700 (PDT)
+Return-Path: <jzdon@mit.edu>
+Received: from dmz-mailsec-scanner-4.mit.edu (dmz-mailsec-scanner-4.mit.edu. [18.9.25.15])
+        by mx.google.com with ESMTPS id 127si30781351itz.15.2016.09.06.08.26.11
+        for <diegoamundo@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 06 Sep 2016 08:26:11 -0700 (PDT)
+Received-SPF: pass (google.com: domain of jzdon@mit.edu designates 18.9.25.15 as permitted sender) client-ip=18.9.25.15;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of jzdon@mit.edu designates 18.9.25.15 as permitted sender) smtp.mailfrom=jzdon@mit.edu
+Received: from mailhub-dmz-1.mit.edu ( [18.9.21.41])
+	(using TLS with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(Client did not present a certificate)
+	by  (Symantec Messaging Gateway) with SMTP id C8.7F.21505.210EEC75; Tue,  6 Sep 2016 11:26:11 -0400 (EDT)
+Received: from dmz-mailsec-scanner-1.mit.edu (dmz-mailsec-scanner-1.mit.edu [18.9.25.12])
+	by mailhub-dmz-1.mit.edu (8.13.8/8.9.2) with ESMTP id u86FPbTg004889;
+	Tue, 6 Sep 2016 11:26:10 -0400
+X-AuditID: 1209190f-ca7ff70000005401-81-57cee012ab55
+Received: from stusys-prod-app-4.MIT.EDU (STUSYS-PROD-APP-4.MIT.EDU [18.9.47.177])
+	(using TLS with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client did not present a certificate)
+	by  (Symantec Messaging Gateway) with SMTP id AA.F1.11127.110EEC75; Tue,  6 Sep 2016 11:26:10 -0400 (EDT)
+Received: from stusys-prod-app-4.MIT.EDU (localhost [127.0.0.1])
+	by stusys-prod-app-4.MIT.EDU (8.14.4/8.14.4) with ESMTP id u86FQ935015339;
+	Tue, 6 Sep 2016 11:26:09 -0400
+Date: Tue, 6 Sep 2016 11:26:09 -0400
+Message-ID: <799117043.1473175569543.JavaMail.www@stusys-prod-app-4.MIT.EDU>
+From: jzdon@mit.edu
+To: dmundo@mit.edu
+Subject: February 2017 Graduation:  Application Deadline
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Authentication-Results: symauth.service.identifier
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrHIsWRmVeSWpSXmKPExsUixCmqqSv84Fy4QeMyRouPr7gdGD12zrrL
+	HsAYxWWTkpqTWZZapG+XwJVxdsZtpoIZ7BVPVz1ibGD8wdrFyMkhIWAicXvRIzYQW0iglUli
+	2SkdCPsQo8SPUwYwNW+v3WLuYuQCiq9ikvjRd58dwlnHKDHp3xZmkCoWARWJtjOzmEBsXgEf
+	iX13ZrGD2GwCwhLrJr4F2yAiICRxfu42sHphAQuJwzPOMkLUC0qcnPmEBcRmFtCSuPHvJROE
+	LS+x/e0csHpGASOJ3edesYIslhBYxy7x7PUf9gmMArOQ9M9C0j8LSf8CRuZVjLIpuVW6uYmZ
+	OcWpybrFyYl5ealFuiZ6uZkleqkppZsYwUEpyb+DcU6D9yFGAQ5GJR7eit3nwoVYE8uKK3MP
+	MUpyMCmJ8qoFAoX4kvJTKjMSizPii0pzUouBYcXBrCTCm30NKMebklhZlVqUD5OS5mBREuft
+	mnEgXEggPbEkNTs1tSC1CCYrw8GhJMG7+j5Qo2BRanpqRVpmTglCmomDE2Q4D9DwTpAa3uKC
+	xNzizHSI/ClGXY4FP26vZRJiycvPS5US5y0FKRIAKcoozYObA0smrxjFgd4S5p17D6iKB5iI
+	4Ca9AlrCBLRk3e7TIEtKEhFSUg2MibYnGp74xeUbZqwqlBX6uiv/aeNsC8e/Cm/rFG9mOb3Z
+	z3HW8/+XGUb38+rOzntWu95HYuXHGUbcDapRTOfENp3zK2ybXtOY+pWVy4/PK/FKk46SiP33
+	y1vEj03WFdrlWBbbkhiTkmX49sdj6cQ5ctP2H740wfHf5nlqIg0nUw49UJV5oaykxFKckWio
+	xVxUnAgASBz30gEDAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFnrLIsWRWlGSWpSXmKPExsUixKm/UVfowblwg/bTPBbPF35gs1i+p4/d
+	gcmj6cxR5gDGKC6blNSczLLUIn27BK6MszNuMxXMYK94uuoRYwPjD9YuRk4OCQETibfXbjF3
+	MXJxCAmsYpL40XefHcJZxygx6d8WZpAqFgEVibYzs5hAbF4BH4l9d2axg9hsAsIS6ya+ZQOx
+	RQSEJM7P3QZWLyxgIXF4xllGiHpBiZMzn7CA2MwCWhI3/r1kgrDlJba/nQNWzyhgJLH73CvW
+	CYw8s5C0zELSMgtJywJG5lWMsim5Vbq5iZk5xanJusXJiXl5qUW6hnq5mSV6qSmlmxjB4SPJ
+	s4PxzBuvQ4wCHIxKPLwVu8+FC7EmlhVX5h5ilORgUhLlVQsECvEl5adUZiQWZ8QXleakFh9i
+	lOBgVhLhzb4GlONNSaysSi3Kh0lJc7AoifN2zTgQLiSQnliSmp2aWpBaBJNl4mA/xCjDwaEk
+	wet9H6hbsCg1PbUiLTOnBFkNJ4jgAlnDA7RGGKSQt7ggMbc4Mx2i6BSjLseCH7fXMgmx5OXn
+	pUqJ856+C1QkAFKUUZoHNwyWCi4xykoJ8zIyMDAI8QBdAwwEVPlXjOLAABDmzQZZxZOZVwK3
+	6RXQEUxAR6zbfRrkiJJEhJRUA6PIje1Z6revCnx9rtTfdfGkgdGPF2a26StvM7VbzuE/b+Dm
+	uHJqZ0RixCP9+4dsVr68FXbl1vTZFpv0Z01X5Zq8dMWWXz+irqxec8Rxw4uVxW63Hx1Zl7q3
+	IWqBPqs9txIr/6eC7dPbA+67XNr8ufix3qwmaRMFP4nFXd9+cjb6l/HKxCwPMdJRYinOSDTU
+	Yi4qTgQAHawjLAADAAA=
+
+Hello Diego, 
+
+I hope this message finds you well.  This is simply a reminder that if you wish to graduate in February 2017, the deadline to apply is this Friday, September 9th.  Late fees will apply thereafter for applications submitted past the deadline.  The February degree application is accessible through WebSIS.  All dates and deadlines associated with February graduation are available on our website:  http://web.mit.edu/registrar/graduation/deadlines/february.html .  Please take a moment to review them.
+
+If you intend to graduate in June 2017, and NOT February 2017, you may simply disregard this message.  Please do let me know if you have any questions.
+
+Thank you, and have a wonderful semester!
+
+Regards,
+Jessica Zdon-Smith
+Administrator, Undergraduate Degree Audit MIT Office of the Registrar Room 5-117
+Phone: 617-253-7307
+Fax: 617-253-7459
+web.mit.edu/registrar
+
+Like us on Facebook!

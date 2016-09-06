@@ -1,0 +1,96 @@
+Delivered-To: diegoamundo@gmail.com
+Received: by 10.103.71.144 with SMTP id b16csp658281vsg;
+        Tue, 6 Sep 2016 10:11:50 -0700 (PDT)
+X-Received: by 10.202.104.99 with SMTP id d96mr15343395oic.83.1473181910329;
+        Tue, 06 Sep 2016 10:11:50 -0700 (PDT)
+Return-Path: <Directory@caltech.edu>
+Received: from dmz-mailsec-scanner-6.mit.edu (dmz-mailsec-scanner-6.mit.edu. [18.7.68.35])
+        by mx.google.com with ESMTPS id k4si21962838oif.188.2016.09.06.10.11.50
+        for <diegoamundo@gmail.com>
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 06 Sep 2016 10:11:50 -0700 (PDT)
+Received-SPF: neutral (google.com: 18.7.68.35 is neither permitted nor denied by best guess record for domain of directory@caltech.edu) client-ip=18.7.68.35;
+Authentication-Results: mx.google.com;
+       spf=neutral (google.com: 18.7.68.35 is neither permitted nor denied by best guess record for domain of directory@caltech.edu) smtp.mailfrom=Directory@caltech.edu
+Received: from mailhub-dmz-1.mit.edu ( [18.9.21.41])
+	(using TLS with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(Client did not present a certificate)
+	by  (Symantec Messaging Gateway) with SMTP id B3.59.24831.5D8FEC75; Tue,  6 Sep 2016 13:11:49 -0400 (EDT)
+Received: from dmz-mailsec-scanner-3.mit.edu (dmz-mailsec-scanner-3.mit.edu [18.9.25.14])
+	by mailhub-dmz-1.mit.edu (8.13.8/8.9.2) with ESMTP id u86HBRZ1025263
+	for <dmundo@mit.edu>; Tue, 6 Sep 2016 13:11:49 -0400
+X-AuditID: 12074423-5fbff700000060ff-db-57cef8d5698e
+Received: from outgoing-mail.its.caltech.edu (outgoing-mail.its.caltech.edu [131.215.239.19])
+	(using TLS with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client did not present a certificate)
+	by  (Symantec Messaging Gateway) with SMTP id 54.59.02742.4D8FEC75; Tue,  6 Sep 2016 13:11:48 -0400 (EDT)
+Received: from smtp02.caltech.edu (localhost [127.0.0.1])
+	by smtp02.caltech.edu (Postfix) with ESMTP id 04C986C0D3D
+	for <dmundo@mit.edu>; Tue,  6 Sep 2016 10:11:48 -0700 (PDT)
+X-Spam-Scanned: at Caltech-IMSS on smtp02.caltech.edu by amavisd-new
+Received: from uc4prod.caltech.edu (uc4prod.caltech.edu [131.215.243.76])
+	by smtp-server.its.caltech.edu (Postfix) with ESMTP id 8596B6C1A9F
+	for <dmundo@mit.edu>; Tue,  6 Sep 2016 10:11:46 -0700 (PDT)
+From: Caltech Directory <Directory@caltech.edu>
+To: dmundo@mit.edu
+Message-ID: <2012419122.5062.1473181906540.JavaMail.appworx@uc4prod.caltech.edu>
+Subject: Institute Policies
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
+Date: Tue,  6 Sep 2016 10:11:46 -0700 (PDT)
+Authentication-Results: symauth.service.identifier
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrDIsWRmVeSWpSXmKPExsUixCmqqXv1x7lwg1tn9Sw+vuJ2YPTYOesu
+	ewBjFJdNSmpOZllqkb5dAlfG9PUTmQp2cFS8/XWarYHxD1sXIweHhICJxMpJuV2MXBxCAq1M
+	Ei3tk9khnOuMEhP3HwdyOMGKFj1ohEpsZZKY8GYbE4SzmVHiydapTBBVLhJzXnxhgUicYZSY
+	ffwGWDubgL5E8++bYLaIgJDE+bnbmEFsXoEAiTPnb4HZwgLSEs8aP7NDxAUlTs58wgJiMwto
+	Sdz495IJwpaX2P52Dlg9i4C2xMuNaxlBbEYBI4nd516xgiyWEFjGLjGldRH7BEahWUhmzUIy
+	axaSWQsYmVcxyqbkVunmJmbmFKcm6xYnJ+blpRbpmunlZpbopaaUbmIEBTK7i/IOxpd93ocY
+	BTgYlXh4K3afCxdiTSwrrsw9xCjJwaQkyqsWCBTiS8pPqcxILM6ILyrNSS0+xCjBwawkwvvk
+	O1CONyWxsiq1KB8mJc3BoiTO2zXjQLiQQHpiSWp2ampBahFMVoaDQ0mCdzVIo2BRanpqRVpm
+	TglCmomDE2Q4D9DwtWDDiwsSc4sz0yHypxgVpcR5lUESAiCJjNI8uF5YonnFKA70ijAvNzDt
+	CPEAkxRc9yugwUxAg9ftPg0yuCQRISXVwBhpN1nC2NL/kvGGtifxlqabllzUnWq+MdtmhRz/
+	G7nz3lu2PtNrcGSeUrBJUK7mXuTErDbHfWxP92hJH4hezB5r9cP9kY9M4c54rXLFtvV5aQ+e
+	W069/6tXfItUS8fz/wdaZvzIvxiz5/QLSfdq8+n/fns+DRC6bWnO0Mbj+O/j+6N923uLTiix
+	FGckGmoxFxUnAgDEU3diDwMAAA==
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrKIsWRWlGSWpSXmKPExsXSfP29sO6VH+fCDTouWlo8X/iBzYHRo+nM
+	UeYAxigum5TUnMyy1CJ9uwSujOnrJzIV7OCoePvrNFsD4x+2LkZODgkBE4lFDxrZuxi5OIQE
+	tjJJTHizjQnC2cwo8WTrVCaIKheJOS++sEAkzjBKzD5+gx0kwSagL9H8+yaYLSIgJHF+7jZm
+	EJtXIEDizPlbYLawgLTEs8bP7BBxQYmTM5+wgNjMAloSN/69ZIKw5SW2v50DVs8ioC3xcuNa
+	RhCbUcBIYve5V6wTGPlmIWmfhaR9FpL2BYzMqxhlU3KrdHMTM3OKU5N1i5MT8/JSi3SN9XIz
+	S/RSU0o3MQLDTIhTkm8H46QG70OMAhyMSjy8FbvPhQuxJpYVV+YeYpTkYFIS5VULBArxJeWn
+	VGYkFmfEF5XmpBYfYpTgYFYS4V32HSjHm5JYWZValA+TkuZgURLn7ZpxIFxIID2xJDU7NbUg
+	tQgmy8TBfohRhoNDSYJXA6RbsCg1PbUiLTOnBFkNJ4jgAlnDA7RmLdia4oLE3OLMdIiiU4yK
+	UuK8yiAJAZBERmke3ABYarjEKCslzMvIwMAgxAN0AdDjqPKvGMWBnhbm3Q8yhSczrwRu+iug
+	xUxAi9ftPg2yuCQRISXVwFjvOE3J83Dwqoy9VbW75rX+Oro+9L6NYKRJfdwW7+fmGRsOCYab
+	fLyW3SSdmupw6UUspyhHQnZMY6eLu2Rn1p3O3Wdv8zRG/fqxYfLkvHCJRN5mRyGFC/tm3Ipb
+	fuf6niDvAv1H0Tp6KrPT2jvqi+sy5/V62Rqs+9rwQV3v4FruaUVTNU/sUWIpzkg01GIuKk4E
+	AC/TJK0IAwAA
+
+September 6, 2016
+
+TO:		The Caltech Community
+
+FROM:	Julia McCallin
+		Human Resources
+
+SUBJECT:	Institute Policies
+
+The Institute policies are regularly updated and can be found on the Human Resources web page at: http://www.hr.caltech.edu/services/policies.  They are also available in the Caltech Catalog at: http://catalog.caltech.edu/ (see section labeled "General Information", "Institute Policies").  Please familiarize yourself with these policies, as all members of the Caltech community are expected to comply with their requirements.
+
+The Institute Policies are:
+
+*	Acceptable Use of Electronic Information Resources
+*	Compliance with Export Laws and Regulations
+*	Conflicts of Interest Policy
+*	Disability and Reasonable Accommodation
+*	Environment, Health, and Safety
+*	Nondiscrimination and Equal Employment Opportunity
+*	Sexual Violence 
+*	Substance Abuse
+*	Unlawful Harassment
+*	Whistleblower Policy
+
+If you have any questions about the policies, please feel free to contact me at extension 3230 or Tara Kruckeberg at extension 8661.  
+
+

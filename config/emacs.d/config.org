@@ -235,6 +235,7 @@ Setup up cool stuff like use-package, and stuff.
   (setq backup-directory-alist (list (cons "." backup-dir)))
   (setq auto-save-file-name-transforms
         `((".*" ,temporary-file-directory t)))
+  ;; (eval-when-compile (require 'cl-lib))
 
   ;;; Custom Key Bindings ;;;
   ;; (global-set-key (kbd "<f8> <f1>")
@@ -876,7 +877,7 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
           helm-M-x-fuzzy-match t
           helm-buffers-fuzzy-matching t
           helm-recentf-fuzzy-match t
-          helm-locate-fuzzy-match t
+          helm-locate-fuzzy-match nil     ; Doesn't work with mdfind
           helm-semantic-fuzzy-match t
           helm-imenu-fuzzy-match t
           helm-apropos-fuzzy-match t
@@ -884,7 +885,13 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
     
     (setq helm-buffer-max-length 40)
     (setq helm-display-buffer-default-size 10)
-    (setq helm-locate-command "mdfind -name %s %s") ; Use spotlight for search
+    (setq helm-locate-command
+          (cl-case system-type
+            ('darwin "mdfind -name %s %s")
+            ('gnu/linux "locate -i -r %s")
+            ('berkley-unix "locate -i %s")
+            ('windows-nt "es %s")
+            (t "locate %s"))) ; Use spotlight for search
     (global-set-key (kbd "M-y") 'helm-show-kill-ring)
     ;;----------------
     ;; Helm ido-like

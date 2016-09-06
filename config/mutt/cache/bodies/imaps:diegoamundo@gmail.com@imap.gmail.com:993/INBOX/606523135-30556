@@ -1,0 +1,75 @@
+Delivered-To: diegoamundo@gmail.com
+Received: by 10.103.71.144 with SMTP id b16csp623386vsg;
+        Tue, 6 Sep 2016 08:54:29 -0700 (PDT)
+X-Received: by 10.36.14.20 with SMTP id 20mr30736180ite.88.1473177269260;
+        Tue, 06 Sep 2016 08:54:29 -0700 (PDT)
+Return-Path: <spohorec@mit.edu>
+Received: from dmz-mailsec-scanner-6.mit.edu (dmz-mailsec-scanner-6.mit.edu. [18.7.68.35])
+        by mx.google.com with ESMTPS id f96si6975443ioj.224.2016.09.06.08.54.20
+        (version=TLS1_2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 06 Sep 2016 08:54:29 -0700 (PDT)
+Received-SPF: pass (google.com: domain of spohorec@mit.edu designates 18.7.68.35 as permitted sender) client-ip=18.7.68.35;
+Authentication-Results: mx.google.com;
+       spf=pass (google.com: domain of spohorec@mit.edu designates 18.7.68.35 as permitted sender) smtp.mailfrom=spohorec@mit.edu
+X-AuditID: 12074423-0b3ff70000003540-90-57cee6ab8bea
+Received: from mailhub-auth-2.mit.edu ( [18.7.62.36])
+	(using TLS with cipher DHE-RSA-AES256-SHA (256/256 bits))
+	(Client did not present a certificate)
+	by  (Symantec Messaging Gateway) with SMTP id 61.C4.13632.BA6EEC75; Tue,  6 Sep 2016 11:54:19 -0400 (EDT)
+Received: from outgoing.mit.edu (outgoing-auth-1.mit.edu [18.9.28.11])
+	by mailhub-auth-2.mit.edu (8.13.8/8.9.2) with ESMTP id u86FsIm4010108
+	for <5e-wmu@mit.edu>; Tue, 6 Sep 2016 11:54:19 -0400
+Received: from [18.111.6.56] (dhcp-18-111-6-56.dyn.mit.edu [18.111.6.56])
+	(authenticated bits=0)
+        (User authenticated as spohorec@ATHENA.MIT.EDU)
+	by outgoing.mit.edu (8.13.8/8.12.4) with ESMTP id u86FsHJM004890
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES128-SHA bits=128 verify=NOT)
+	for <5e-wmu@mit.edu>; Tue, 6 Sep 2016 11:54:18 -0400
+Date: Tue, 06 Sep 2016 11:54:14 -0400
+Subject: RE: Noon B502 plz
+Message-ID: <q0c1untsgevp8p1qorp0cqkl.1473177254636@email.android.com>
+Importance: normal
+From: Sarah Pohorecky <spohorec@mit.edu>
+To: 5e-wmu@mit.edu
+MIME-Version: 1.0
+Content-Type: multipart/alternative; boundary="--_com.samsung.android.email_221038669718270"
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrIKsWRmVeSWpSXmKPExsUixG6norv62blwg3+nDS1mbd7JZjFh8nQ2
+	ixlX1Sz2zPvDZLHmy24Wiz9vGhkt9jTtZ7T4+Irb4tjHXYwWby80Mlls6Wlhsrh+aTmbxf7D
+	S1ktlu3+y2Lx4vVOdouzU4Qsvp05wm7xacVBFovpB1eyWFzae5zdQcRj56y77AGMUVw2Kak5
+	mWWpRfp2CVwZTb+2sxUc5KyYeH0dUwNjJ2cXIyeHhICJxO6nB9m6GLk4hATamCRmTVrHAuEc
+	ZZR4MncaE4Rzm0li6eb/jCAtLAKqEreO7WYCsYUFpCSeNE4Bi/MKuEn8+N3B3sXIwcEpICTR
+	tUsCJMwmoCHRdPogM4gtAhS+fHwWG0S5oMTJmU9YQGxmgRiJT7cuMU9g5JmFJDULSQrCVpf4
+	Mw/GVpSY0v2QfRbQNmYBNYllrUrIwgsY2VYxyqbkVunmJmbmFKcm6xYnJ+blpRbpmunlZpbo
+	paaUbmIEx4yL8g7Gl33ehxgFOBiVeHgrdp8LF2JNLCuuzD3EKMnBpCTKqxYIFOJLyk+pzEgs
+	zogvKs1JLT7EKMHBrCTCy/wUKMebklhZlVqUD5OS5mBREuftmnEgXEggPbEkNTs1tSC1CCYr
+	w8GhJMHrD9IoWJSanlqRlplTgpBm4uAEGc4DNFwdbHhxQWJucWY6RP4Uo6KUOO/TJ0AJAZBE
+	RmkeXC84peWzWbxiFAd6RZj3MEg7DzAdwnW/AhrMBDR43e7TIINLEhFSUg2MpT5rz/w39tS6
+	0WseJml3taY0WK/gRKPvrHdHvDKdj+6afHfVac+5RhKv8hw/svHYL06YfbxZ+u78iSqv9x6c
+	ttueraKSZ93HKk1frt8rdn8UX8h5zmDPl9AiiZXeTJ9nKD04MPnwLpOwK3nvyhL901f7qv0X
+	Tnv7MNj09vWT54SVr51N7st+pcRSnJFoqMVcVJwIAIbbv2FEAwAA
+
+----_com.samsung.android.email_221038669718270
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: base64
+
+UmVzb2x2ZWQuCi0tLS0tLS0tIE9yaWdpbmFsIG1lc3NhZ2UgLS0tLS0tLS1Gcm9tOiBTYXJhaCBQ
+b2hvcmVja3kgPHNwb2hvcmVjQG1pdC5lZHU+IERhdGU6IDkvNi8xNiAgMDM6MDIgIChHTVQtMDU6
+MDApIFRvOiA1ZS13bXVAbWl0LmVkdSBTdWJqZWN0OiBOb29uIEI1MDIgcGx6IApIZWxwIG1lIG5v
+dCBtaXNzIG15IHJlZyBkYXkgbWVldGluZ3Mu
+
+----_com.samsung.android.email_221038669718270
+Content-Type: text/html; charset=utf-8
+Content-Transfer-Encoding: base64
+
+PGh0bWw+PGhlYWQ+PG1ldGEgaHR0cC1lcXVpdj0iQ29udGVudC1UeXBlIiBjb250ZW50PSJ0ZXh0
+L2h0bWw7IGNoYXJzZXQ9VVRGLTgiPjwvaGVhZD48Ym9keT5SZXNvbHZlZC48ZGl2Pjxicj48L2Rp
+dj48ZGl2IHN0eWxlPSJmb250LXNpemU6MTAwJTtjb2xvcjojMDAwMDAwIj48IS0tIG9yaWdpbmFs
+TWVzc2FnZSAtLT48ZGl2Pi0tLS0tLS0tIE9yaWdpbmFsIG1lc3NhZ2UgLS0tLS0tLS08L2Rpdj48
+ZGl2PkZyb206IFNhcmFoIFBvaG9yZWNreSAmbHQ7c3BvaG9yZWNAbWl0LmVkdSZndDsgPC9kaXY+
+PGRpdj5EYXRlOiA5LzYvMTYgIDAzOjAyICAoR01ULTA1OjAwKSA8L2Rpdj48ZGl2PlRvOiA1ZS13
+bXVAbWl0LmVkdSA8L2Rpdj48ZGl2PlN1YmplY3Q6IE5vb24gQjUwMiBwbHogPC9kaXY+PGRpdj48
+YnI+PC9kaXY+PC9kaXY+SGVscCBtZSBub3QgbWlzcyBteSByZWcgZGF5IG1lZXRpbmdzLjwvYm9k
+eT48L2h0bWw+
+
+----_com.samsung.android.email_221038669718270--
+
