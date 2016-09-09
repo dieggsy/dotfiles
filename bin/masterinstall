@@ -79,6 +79,7 @@ brew install global
 brew install glog
 brew install gmp
 brew install gnome-icon-theme
+brew install gnupg
 brew install gnutls
 brew install gobject-introspection
 brew install google-sparsehash
@@ -91,7 +92,6 @@ brew install hdf5
 brew install hicolor-icon-theme
 brew install highlight
 brew install htop-osx
-brew install hub
 brew install icu4c
 brew install ilmbase
 brew install imagemagick
@@ -230,6 +230,7 @@ brew cask install cuda
 brew cask install discord
 brew cask install evernote
 brew cask install firefox
+brew cask install firefox-beta
 brew cask install flux
 brew cask install gephi
 brew cask install gimp
@@ -255,6 +256,7 @@ brew cask install slack
 brew cask install slate
 brew cask install spotify
 brew cask install suspicious-package
+brew cask install virtualbox
 
 # Install pip programs (python)
 echo Installing pip programs...

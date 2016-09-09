@@ -20,7 +20,7 @@ if [ -z $VE ]; then
 	echo -e "\e[1;34mUpdating: \e[91mpip3\e[0;37m"
 	IFS=$'\n'
 	echo  $'Getting outdated pip3 packages...'
-	res=$(pip list -o)
+	res=$(pip3 list -o)
 
 	if [ -z "$res" ]; then
 		echo $'All packages up to date.'

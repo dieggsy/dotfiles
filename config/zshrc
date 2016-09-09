@@ -127,7 +127,6 @@ alias fd='find . -type d -iname'
 alias ff='find . -type f -iname'
 alias filecount="ls -1 | wc -l"
 alias ls='ls -NX --group-directories-first --color=always'
-# alias git="hub"
 alias lst="ls -t"
 alias math='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
 alias pep8="pep8 --first --ignore=E129,W503,E226"
