@@ -20,20 +20,21 @@ Setup up cool stuff like use-package, and stuff.
 #+BEGIN_SRC emacs-lisp
   (require 'package)
   (setq package-enable-at-startup nil)
-  ;; (add-to-list 'load-path
-  ;;              (expand-file-name "lisp" user-emacs-directory))
+  (add-to-list 'load-path
+               (expand-file-name "lisp" user-emacs-directory))
 
-  ;; ;; Add directories in "lisp" folder
-  ;; (let ((files (directory-files-and-attributes "~/.emacs.d/lisp" t)))
-  ;;   (dolist (file files)
-  ;;     (let ((filename (car file))
-  ;;           (dir (nth 1 file)))
-  ;;       (when (and dir
-  ;;                  (not (string-suffix-p "." filename)))
-  ;;         (add-to-list 'load-path (car file))))))
+  ;; Add directories in "lisp" folder
+  (let ((files (directory-files-and-attributes "~/.emacs.d/lisp" t)))
+    (dolist (file files)
+      (let ((filename (car file))
+            (dir (nth 1 file)))
+        (when (and dir
+                   (not (string-suffix-p "." filename)))
+          (add-to-list 'load-path (car file))))))
 
-  (let ((default-directory  "~/.emacs.d/lisp/"))
-      (normal-top-level-add-subdirs-to-load-path))
+  (add-to-list 'load-path "~/.emacs.d/lisp/matlab-emacs")
+  (load-library "matlab-load")
+
   (add-to-list 'exec-path "/usr/local/bin")
 #+END_SRC
 
