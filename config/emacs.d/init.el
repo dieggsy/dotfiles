@@ -20,6 +20,7 @@
  '(font-lock-function-name-face ((t (:foreground "#5fafff"))))
  '(font-lock-keyword-face ((t (:foreground "#C678DD" :weight normal))))
  '(font-lock-string-face ((t (:foreground "#87d787"))))
+ '(font-lock-type-face ((t (:inherit font-lock-function-name-face))))
  '(font-lock-variable-name-face ((t (:foreground "#D19A66"))))
  '(header-line ((t (:background "#444444" :foreground "#d0d0d0"))))
  '(helm-ff-file ((t (:foreground "#d0d0d0"))))

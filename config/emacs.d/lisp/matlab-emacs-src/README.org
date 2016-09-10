@@ -1,0 +1,152 @@
+* Matlab-emacs Project:
+
+  MATLAB and Emacs integration
+
+** INSTALL
+
+   Add the following to your .emacs file:
+
+   #+BEGIN_SRC elisp
+  ;; Replace path below to be where your matlab.el file is.
+  (add-to-list 'load-path "~/path/to/matlab-emacs")
+  (load-library "matlab-load")
+
+  ;; Enable CEDET feature support for MATLAB code. (Optional)
+  ;; (matlab-cedet-setup)
+   #+END_SRC
+
+** MELPA
+
+   GNU emacs (sorry Xemacs folks) users (version >=24) can use the
+   package as provided by MELPA.
+   Set 
+
+   #+BEGIN_SRC elisp
+(add-to-list 'package-archives
+             '("melpa" . "http://melpa.org/packages/") t)
+   #+END_SRC
+   And then run 
+   M-x
+   package-list-packages
+
+
+
+** Releases
+
+   The most recent version of matlab.el is always in GIT.
+
+   You can get an old downloader for matlab-emacs from MATLAB File Exchange.
+
+   Category:
+   http://www.mathworks.com/matlabcentral/fileexchange/loadCategory.do?objectId=19&objectType=Category
+   This File
+   http://www.mathworks.com/matlabcentral/fileexchange/loadFile.do?objectId=104&objectType=file
+
+   Older versions of matlab.el can be found as matlab.el.1.10.1
+   for emacsen that do not have the latest additional utilities such
+   as tempo and derived.
+
+   matlab.el and mlint.el has shipped on MATLAB CDs starting with 6.5
+   (R13).  Updates after a release of MATLAB will be made to MATLAB
+   Central and announced on the mailing list.
+
+   matlab.el and mlint.el will no longer ship on MATLAB CDs starting
+   with MATLAB release R2008b.  If you are using a version of MATLAB
+   from before R2008a, you will want to use the version of mlint from
+   that CD.
+
+** GIT
+
+   matlab-emacs is *now* available via GIT from SourceForge. The CVS
+   repository is still at SourceForge but it is *no* longer updated.
+
+   Homepage:
+   http://matlab-emacs.sf.net
+
+   Project Page:
+   http://sourceforge.net/projects/matlab-emacs
+
+   GIT Repository:
+
+   https://sourceforge.net/p/matlab-emacs/src/ci/master/tree/
+
+   You need a git client on your machine. Then just run
+
+   #+BEGIN_SRC shell
+   git clone git://git.code.sf.net/p/matlab-emacs/src matlab-emacs-src
+   #+END_SRC
+
+   If you do not have a GIT client on your machine, you can use the
+   MATLAB script dl_emacs_support.m to download a fresh copy of the
+   matlab.el sources.
+   https://sourceforge.net/p/matlab-emacs/src/ci/master/tree/dl_emacs_support.m
+
+
+** Dependencies
+
+   MATLAB-Emacs can use the CEDET suite for the following items:
+   - Modifying the build system (Makefiles, etc)
+   - mlint (uses EIEIO object system)
+   - parsing/completion (uses semantic parsing system)
+     - some template insertion features
+
+     As of Emacs 23.2, CEDET is included in Emacs, and nothing extra
+     is needed to satisfy that dependency.
+
+     For older versions of Emacs:
+
+     See http://cedet.sf.net for downloading CEDET.
+
+     If you only want to use matlab.el for editing code or running the
+     MATLAB shell, you DO NOT need to install CEDET.
+
+     If you do want to use CEDET, add the following to your .emacs file:
+     #+BEGIN_SRC elisp
+    (matlab-cedet-setup)
+     #+END_SRC
+
+** New Mailing List
+
+   A new matlab-emacs-discuss mailing lisit has been created at
+   SourceForge.  Use this list to get updates on new releases and
+   discuss topics relivant to the matlab-emacs project.
+
+   http://lists.sourceforge.net/mailman/listinfo/matlab-emacs-discuss
+
+** Old Mailing List
+
+   The original mailing list where beta versions of matlab.el were
+   posted, and where comments, questions, bug reports, and answers to
+   questions could be sent.  If you were subscribed to this list,
+   please unsubscribe, and subscribe to the new list above.
+
+   to unsubscribe, send email with the body of: "unsubscribe matlab-emacs"
+
+** Known problems
+
+*** Unable to open .m files in matlab with Emacs
+
+    From: Xu He <xuhe01@gmail.com> wrote:
+
+    Dear all,
+
+    Following the install guide, I setup the matlab-emacs on my ubuntu 12.04
+    system, and I can edit and run the m file with emacs.
+
+    But I can not open nor edit m file with matlab. When I open the file in the matlab window,
+    nothing happens.
+
+    I tried to eliminate the lines about matlab-emacs in ~/.emacs file, but the
+    problem can not be solved.
+
+    I need to edit and run the file in matlab. Thanks for any help.
+
+    Best regards,
+    Xu He
+
+*** Solution 
+
+    From: Hunter McClelland [mailto:hunter.mcclelland@gmail.com]
+    Till we discovered that Matlab-emacs changes the "Editor" matlab uses.
+    Go to Preferences->Editor/debugger and change the Editor back to
+    "MATLAB Editor".

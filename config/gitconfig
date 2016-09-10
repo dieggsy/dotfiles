@@ -10,7 +10,7 @@
 	smudge = git-lfs smudge %f
 	required = true
 [core]
-	editor = emacs
+	editor = emacsclient -t
 	excludesfile = ~/.gitignore
 	pager = more
 [credential]

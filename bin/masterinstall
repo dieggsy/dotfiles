@@ -83,6 +83,7 @@ brew install gnupg
 brew install gnutls
 brew install gobject-introspection
 brew install google-sparsehash
+brew install gperftools
 brew install gsettings-desktop-schemas
 brew install gst-plugins-base010
 brew install gstreamer010
@@ -141,6 +142,7 @@ brew install lmdb
 brew install lua
 brew install lynx
 brew install mad
+brew install markdown
 brew install matplotlib
 brew install mercurial
 brew install mp4v2
