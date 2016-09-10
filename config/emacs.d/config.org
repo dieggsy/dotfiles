@@ -32,6 +32,7 @@ Setup up cool stuff like use-package, and stuff.
                    (not (string-suffix-p "." filename)))
           (add-to-list 'load-path (car file))))))
 
+  (add-to-list 'load-path "~/emacs.d/lisp/matlab-emacs") 
   (add-to-list 'exec-path "/usr/local/bin")
 #+END_SRC
 
