@@ -32,9 +32,6 @@ Setup up cool stuff like use-package, and stuff.
                    (not (string-suffix-p "." filename)))
           (add-to-list 'load-path (car file))))))
 
-  (add-to-list 'load-path "~/.emacs.d/lisp/matlab-emacs")
-  (load-library "matlab-load")
-
   (add-to-list 'exec-path "/usr/local/bin")
 #+END_SRC
 
@@ -1398,6 +1395,10 @@ mode/Setup.
 *** [[https://github.com/sabof/org-bullets][org-bullets]]
 Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
 
+*** [[https://github.com/therockmandolinist/matlab-emacs][matlab-emacs]] 
+#+BEGIN_SRC emacs-lisp
+  (load-library "matlab-load")
+#+END_SRC
 ** Themes
 ** Not currently in use
 *** [[https://github.com/Malabarba/smart-mode-line][Malabarba/smart-mode-line]]
