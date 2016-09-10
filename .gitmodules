@@ -1,3 +1,0 @@
-[submodule "config/emacs.d/lisp/matlab-emacs"]
-	path = config/emacs.d/lisp/matlab-emacs
-	url = https://github.com/therockmandolinist/matlab-emacs
