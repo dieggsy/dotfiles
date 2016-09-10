@@ -1502,12 +1502,7 @@ what I'm using anyway.
 #+END_SRC
 
 * Python stuff
-And one matlab thing
-
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'auto-mode-alist '("\\.m$" . octave-mode))
-
-  ;; Python stuff
   (defun ipython ()
     (interactive)
     (ansi-term "/usr/local/bin/ipython"))
