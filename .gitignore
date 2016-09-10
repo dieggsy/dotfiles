@@ -1,3 +1,6 @@
 config/mutt/cache
 config/mutt/certificates
 config/emacs.d/.sx
+config/emacs.d/request
+config/emacs.d/url
+config/emacs.d/srecode-map.el
