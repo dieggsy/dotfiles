@@ -30,7 +30,7 @@
  '(helm-source-header ((t (:inherit font-lock-function-name-face :slant italic))))
  '(helm-visible-mark ((t (:background "#5fafff" :foreground "black"))))
  '(hl-line ((t (:background "#3a3a3a"))))
- '(ivy-current-match ((t (:inherit default))))
+ '(ivy-current-match ((t nil)))
  '(linum ((t (:foreground "#4e4e4e"))))
  '(minibuffer-prompt ((t (:inherit font-lock-variable-name-face))))
  '(mode-line ((t (:background "grey75" :foreground "black" :box nil))))
@@ -48,6 +48,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ac-disable-faces (quote (font-lock-comment-face font-lock-doc-face)))
+ '(counsel-locate-cmd (quote counsel-locate-cmd-mdfind))
  '(custom-safe-themes
    (quote
 	("bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))

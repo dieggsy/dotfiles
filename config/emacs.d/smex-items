@@ -1,0 +1,39 @@
+
+;; ----- smex-history -----
+(
+ completion-at-point
+ ivy-read-action
+ customize-face
+ describe-function
+ counsel-expression-history
+ counsel-git
+ counsel-unicode-char
+)
+
+;; ----- smex-data -----
+(
+ (helm-colors . 27)
+ (helm-mode . 1)
+ (helm-M-x . 54)
+ (switch-to-buffer . 4)
+ (toggle-debug-on-error . 1)
+ (dictionary-search . 1)
+ (magit-diff . 3)
+ (describe-variable . 1)
+ (apropos . 1)
+ (describe-function . 9)
+ (customize-group . 1)
+ (counsel-locate . 1)
+ (ivy-switch-buffer . 2)
+ (helm-mini . 1)
+ (swiper . 1)
+ (customize-apropos-faces . 1)
+ (customize-face . 2)
+ (ivy-resume . 4)
+ (counsel-info-lookup-symbol . 2)
+ (counsel-unicode-char . 2)
+ (counsel-git . 2)
+ (counsel-expression-history . 1)
+ (ivy-read-action . 1)
+ (completion-at-point . 2)
+)
