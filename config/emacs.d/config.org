@@ -1147,7 +1147,7 @@ Like git, for emacs. But cooler.
     :init
     (use-package ivy
       :config
-      ivy-mode))
+      (ivy-mode)))
 #+END_SRC
 *** [[https://github.com/joaotavora/yasnippet][joaotavora/yasnippet]]
 Freakin yasnippet. It's the best.
