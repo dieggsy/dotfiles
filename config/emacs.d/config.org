@@ -1141,14 +1141,6 @@ Like git, for emacs. But cooler.
     :ensure t)
 #+END_SRC
 
-*** [[https://github.com/abo-abo/swiper][abo-abo/swiper]] 
-#+BEGIN_SRC emacs-lisp
-  (use-package swiper
-    :init
-    (use-package ivy
-      :config
-      (ivy-mode)))
-#+END_SRC
 *** [[https://github.com/joaotavora/yasnippet][joaotavora/yasnippet]]
 Freakin yasnippet. It's the best.
 
