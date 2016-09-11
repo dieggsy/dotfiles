@@ -1145,7 +1145,8 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
     (global-set-key (kbd "C-x C-f") 'counsel-find-file)
     (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
     (setq ivy-re-builders-alist
-          '((t . ivy--regex-fuzzy)))
+          '((counsel-ag . ivy--regex-plus)
+            (t . ivy--regex-fuzzy)))
     (setq ivy-initial-inputs-alist nil)
     )
 #+END_SRC

@@ -1,13 +1,13 @@
 
 ;; ----- smex-history -----
 (
+ counsel-ag
+ ag
  completion-at-point
  ivy-read-action
  customize-face
  describe-function
  counsel-expression-history
- counsel-git
- counsel-unicode-char
 )
 
 ;; ----- smex-data -----
@@ -36,4 +36,6 @@
  (counsel-expression-history . 1)
  (ivy-read-action . 1)
  (completion-at-point . 2)
+ (ag . 1)
+ (counsel-ag . 2)
 )
