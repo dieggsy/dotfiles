@@ -375,7 +375,7 @@ like the way he does stuff. A lot of this is his code.
       "d"         'delete-trailing-whitespace
       ;; "f"         'helm-find
       "g"         'magit-status
-      ;; "i"         'helm-imenu-anywhere ;; Jump to function in buffer
+      "i"         'ivy-imenu-anywhere ;; Jump to function in buffer
       "la"        (lambda () (interactive) (linum-mode) (fci-mode))
       "lc"        'fci-mode
       "lf"        'flycheck-mode      
@@ -383,11 +383,11 @@ like the way he does stuff. A lot of this is his code.
       "lw"        'whitespace-mode      ;; Show invisible characters 
       "nn"        'air-narrow-dwim      ;; Narrow to region and enter normal mode
       "o"         'delete-other-windows ;; C-w o
-      ;; "s"         'helm-projectile-switch-project
-      ;; "t"         'helm-locate           
+      "s"         'projectile-switch-project
+      "t"         'counsel-locate           
       "w"         'save-buffer
-      "x"         'execute-extended-command
-      ;; "y"         'helm-show-kill-ring
+      "x"         'counsel-M-x
+      "y"         'counsel-yank-pop
       ;; "T"      'gtags-find-tag
       ;; "t"      'gtags-reindex
       )
@@ -434,14 +434,14 @@ like the way he does stuff. A lot of this is his code.
 #+END_SRC
 *** Keybindings
 #+BEGIN_SRC emacs-lisp
-    ;; Global bindings.
-    (define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
-    (define-key evil-normal-state-map (kbd "<up>")   'evil-previous-visual-line)
-    (define-key evil-normal-state-map (kbd "-")     'find-file)
-    (define-key evil-normal-state-map (kbd "g/")    'occur-last-search)
-    (define-key evil-normal-state-map (kbd "[i")    'show-first-occurrence)
-    (define-key evil-insert-state-map (kbd "C-e")   'end-of-line) ;; I know...
-    (define-key evil-normal-state-map (kbd "S-SPC") 'air-pop-to-org-agenda)
+  ;; Global bindings.
+  (define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "<up>")   'evil-previous-visual-line)
+  (define-key evil-normal-state-map (kbd "-")     'counsel-find-file)
+  (define-key evil-normal-state-map (kbd "g/")    'occur-last-search)
+  (define-key evil-normal-state-map (kbd "[i")    'show-first-occurrence)
+  (define-key evil-insert-state-map (kbd "C-e")   'end-of-line) ;; I know...
+  (define-key evil-normal-state-map (kbd "S-SPC") 'air-pop-to-org-agenda)
 #+END_SRC
 *** Tiny menu
 #+BEGIN_SRC emacs-lisp
@@ -1141,6 +1141,7 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
     (setq ivy-format-function 'ivy-format-function-arrow)
     (setq projectile-completion-system 'ivy)
     (setq ivy-use-virtual-buffers t)
+    ;; (ivy--resize-minibuffer-to-fit)
     (global-set-key (kbd "M-x") 'counsel-M-x)
     (global-set-key (kbd "C-x C-f") 'counsel-find-file))
 #+END_SRC
