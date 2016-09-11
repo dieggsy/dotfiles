@@ -30,6 +30,7 @@
  '(helm-source-header ((t (:inherit font-lock-function-name-face :slant italic))))
  '(helm-visible-mark ((t (:background "#5fafff" :foreground "black"))))
  '(hl-line ((t (:background "#3a3a3a"))))
+ '(ivy-current-match ((t (:inherit default))))
  '(linum ((t (:foreground "#4e4e4e"))))
  '(minibuffer-prompt ((t (:inherit font-lock-variable-name-face))))
  '(mode-line ((t (:background "grey75" :foreground "black" :box nil))))
