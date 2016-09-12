@@ -64,7 +64,7 @@
    (quote
 	("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*Minibuf" "\\*epc")))
  '(helm-scroll-amount 1)
- '(ivy-ignore-buffers (quote ("\\` " "\\`\\*epc")))
+ '(ivy-ignore-buffers (quote ("\\` " "\\`\\*LV\\*" "\\`\\*epc")))
  '(org-babel-load-languages (quote ((python . t) (emacs-lisp . t))))
  '(org-babel-python-command "python3")
  '(org-confirm-babel-evaluate nil)
