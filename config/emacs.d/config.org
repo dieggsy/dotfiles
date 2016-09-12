@@ -368,7 +368,7 @@ like the way he does stuff. A lot of this is his code.
       "v"         'split-window-right
       "<right>"   'other-window
       "B"         'magit-blame-toggle
-      "k"         'kill-this-buffer
+      "k"         'kill-buffer
       "aa"        'align-regexp
       "b"         'switch-to-buffer ;; Switch to another buffer
       "c"         'comment-dwim
