@@ -6,7 +6,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :background "#303030" :foreground "#d0d0d0" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" :family "default"))))
- '(buffer-menu-buffer ((t (:foreground "black"))))
+ '(buffer-menu-buffer ((t (:inherit ivy-virtual))))
  '(column-marker-1 ((t (:background "#7f7f7f"))))
  '(comint-highlight-prompt ((t nil)))
  '(company-preview ((t (:inherit default :underline t))))
@@ -31,6 +31,7 @@
  '(helm-visible-mark ((t (:background "#5fafff" :foreground "black"))))
  '(hl-line ((t (:background "#3a3a3a"))))
  '(ivy-current-match ((t nil)))
+ '(ivy-modified-buffer ((t (:inherit helm-buffer-not-saved))))
  '(linum ((t (:foreground "#4e4e4e"))))
  '(minibuffer-prompt ((t (:inherit font-lock-variable-name-face))))
  '(mode-line ((t (:background "grey75" :foreground "black" :box nil))))
@@ -63,6 +64,7 @@
    (quote
 	("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*Minibuf" "\\*epc")))
  '(helm-scroll-amount 1)
+ '(ivy-ignore-buffers (quote ("\\` " "\\`\\*epc")))
  '(org-babel-load-languages (quote ((python . t) (emacs-lisp . t))))
  '(org-babel-python-command "python3")
  '(org-blank-before-new-entry (quote ((heading . t) (plain-list-item . t))))
