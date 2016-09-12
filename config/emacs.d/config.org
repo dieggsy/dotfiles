@@ -1150,7 +1150,7 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
             (swiper . ivy--regex-plus)
             (t . ivy--regex-fuzzy)))
     (setq ivy-initial-inputs-alist nil)
-    (setq ivy-flip t)
+    ;; (setq ivy-flip t)
     (defalias 'ag 'counsel-ag)
     )
 #+END_SRC
