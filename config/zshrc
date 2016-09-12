@@ -144,6 +144,10 @@ alias rainbowstream='$HOME/.virtualenvs/py3/bin/rainbowstream'
 export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31' # ls colors i've gotten used to
 zstyle ':completion:*' list-colors 'di=0;36:ex=0;35:ln=1;31'
 
+lecture() {
+	touch `date "+%Y-%m-%d"`"_lecture.org"
+}
+
 py2() {
 	workon py2
 	export PYTHONSTARTUP=/Users/diego/.virtualenvs/py2/bin/.pythonrc.py

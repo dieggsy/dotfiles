@@ -67,7 +67,6 @@
  '(ivy-ignore-buffers (quote ("\\` " "\\`\\*epc")))
  '(org-babel-load-languages (quote ((python . t) (emacs-lisp . t))))
  '(org-babel-python-command "python3")
- '(org-blank-before-new-entry (quote ((heading . t) (plain-list-item . t))))
  '(org-confirm-babel-evaluate nil)
  '(org-highlight-latex-and-related nil)
  '(org-latex-classes
