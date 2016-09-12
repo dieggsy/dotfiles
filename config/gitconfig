@@ -18,6 +18,7 @@
 [alias]
 	add-commit = !git add -A && git commit
 	pusht = push
+	eclipse = !git fetch upstream && git rebase upstream/master
 [http]
 	postBuffer = 524288000
 [color]
