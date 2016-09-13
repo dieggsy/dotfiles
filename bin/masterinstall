@@ -259,6 +259,7 @@ brew cask install slate
 brew cask install spotify
 brew cask install suspicious-package
 brew cask install virtualbox
+brew cask install vivaldi-snapshot
 
 # Install pip programs (python)
 echo Installing pip programs...

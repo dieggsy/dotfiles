@@ -1,4 +1,3 @@
-Alfred-Workflow==1.19
 appnope==0.1.0
 arrow==0.8.0
 autopep8==1.2.4
@@ -28,7 +27,7 @@ importmagic==0.1.7
 ipython-genutils==0.1.0
 jedi==0.9.0
 kitchen==1.2.4
-mailcap-fix==0.1.3
+mailcap-fix==0.2.0
 markdown2==2.3.1
 matplotlib==1.5.3
 mccabe==0.5.2
@@ -62,7 +61,7 @@ pyflakes==1.3.0
 pyglet==1.2.4
 Pygments==2.1.3
 pygobject==3.20.1
-pyparsing==2.1.8
+pyparsing==2.1.9
 PySocks==1.5.7
 pytesseract==0.1.6
 python-dateutil==2.5.3

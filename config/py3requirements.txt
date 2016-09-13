@@ -54,7 +54,7 @@ jupyter==1.0.0
 jupyter-client==4.4.0
 jupyter-console==5.0.0
 jupyter-contrib-core==0.3.0
-jupyter-core==4.1.1
+jupyter-core==4.2.0
 jupyter-nbextensions-configurator==0.2.2
 kitchen==1.2.4
 Kivy==1.9.1
@@ -62,7 +62,7 @@ Kivy-Garden==0.1.4
 latex==0.6.2
 lazy-object-proxy==1.2.2
 loremipsum==1.0.5
-mailcap-fix==0.1.3
+mailcap-fix==0.2.0
 markdown2==2.3.1
 MarkupSafe==0.23
 matplotlib==1.5.3
@@ -108,7 +108,7 @@ pyglet==1.2.4
 Pygments==2.1.3
 pylint==1.6.4
 pync==1.6.1
-pyparsing==2.1.8
+pyparsing==2.1.9
 pyPdf==1.13
 PySocks==1.5.7
 pytesseract==0.1.6
