@@ -43,6 +43,9 @@ if [ -z $VE ]; then
 	mkmasterinstall
 	echo " "
 	echo -e "\e[1;34mDone"
+	cd ~/dotfiles
+	git add-commit -m "Brew and pip updates"
+	cd -
 else
 	echo 'Exit virtualenv first'
 fi
