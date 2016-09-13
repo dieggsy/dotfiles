@@ -1265,12 +1265,12 @@ I like a line length limit indicator in Python
 
 #+BEGIN_SRC emacs-lisp
 
-  (use-package fill-column-indicator
-    :ensure t
-    :init
-    (setq-default fci-rule-column 79)
-    (global-set-key (kbd "<f10>") 'fci-mode)
-    (add-hook 'python-mode-hook 'fci-mode))
+    (use-package fill-column-indicator
+      :ensure t
+      :bind ("<f10>" . fci-mode)
+      :init
+      (setq-default fci-rule-column 79)
+      (add-hook 'python-mode-hook 'fci-mode))
 #+END_SRC
 
 *** [[https://github.com/Fanael/rainbow-delimiters][Fanael/rainbow-delimiters]]
@@ -1310,8 +1310,7 @@ imenu on steroids.
   (use-package imenu-anywhere
     ;; Imenu on steroids
     :ensure t
-    :config
-    (global-set-key (kbd "<f5>") 'imenu-anywhere))
+    :bind ("<f5>" . imenu-anywhere))
 #+END_SRC
 
 *** [[https://github.com/TheBB/spaceline][TheBB/spaceline]]
