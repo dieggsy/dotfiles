@@ -846,6 +846,11 @@ like the way he does stuff. A lot of this is his code.
 #+END_SRC
 
 ** [[https://github.com/emacs-helm/helm][Helm]]
+*Note:* I'm now using [[https://github.com/abo-abo/swiper][abo-abo/swiper]], which includes ivy, counsel, and swiper,
+for very similar functionality but with a much cleaner and responsive
+interface, in my opinion. It's really neat, and you should definitely
+check it out.
+
 Kind of an Alfred for emacs. Completion, nice menus for stuff,
 overall great.
 
@@ -1136,6 +1141,7 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
 * Dem packages
 ** Active
 *** [[https://github.com/abo-abo/swiper][abo-abo/swiper]]
+A neater way to get the same functionality as Helm, with less... clutter?
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
     :config
