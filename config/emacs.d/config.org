@@ -719,7 +719,7 @@ like the way he does stuff. A lot of this is his code.
            ("C-c f t" . org-tags-view)
            ("C-c f i" . air-org-goto-custom-id))
     :config
-    (org-reload)
+    ;; (org-reload)
     (setq org-agenda-text-search-extra-files '(agenda-archives))
     (setq org-agenda-files '("~/Dropbox (MIT)/org/"))
     (setq org-todo-keywords
