@@ -1144,22 +1144,26 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
 A neater way to get the same functionality as Helm, with less... clutter?
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
+    :bind (("M-x" . counsel-M-x)
+           ("C-x C-f" . counsel-find-file))
     :config
     (ivy-mode 1)
-    (setq ivy-format-function 'ivy-format-function-arrow)
-    (setq projectile-completion-system 'ivy)
-    (setq ivy-use-virtual-buffers t)
-    (ivy--resize-minibuffer-to-fit)
-    (global-set-key (kbd "M-x") 'counsel-M-x)
-    (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+    (setq ivy-format-function 'ivy-format-function-arrow) ;DAT NICE ARROW THOUGH aorcidkl
+    (setq projectile-completion-system 'ivy) ;Use ivy with projectile
+    (setq ivy-use-virtual-buffers t) ;Show recent files
+    (ivy--resize-minibuffer-to-fit) ; Not actually sure this is doing things
+    ;; RET enters folder rather than opening dired
     (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
+    ;; Use flx fuzzy matching except with ag and swiper
     (setq ivy-re-builders-alist
           '((counsel-ag . ivy--regex-plus)
             (swiper . ivy--regex-plus)
             (t . ivy--regex-fuzzy)))
+    ;;Don't start searches with '^' by default
     (setq ivy-initial-inputs-alist nil)
-    ;; (setq ivy-flip t)
+    ;; (setq ivy-flip t) ; Flip the direction
     (defalias 'ag 'counsel-ag)
+    (defalias 'locate 'counsel-locate)
     )
 #+END_SRC
 
@@ -1203,8 +1207,7 @@ Syntax check for python. Pretty good.
   (use-package flycheck
     ;; Pep8 check, basically
     :ensure t
-    :config
-    (global-set-key (kbd "<f11>") 'flycheck-mode))
+    :bind ("<f11>" . flycheck-mode))
 #+END_SRC
 
 *** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
@@ -1236,25 +1239,25 @@ Supposedly better than autocomplete... Also  using
 Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]] into emacs.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package ag
-    ;; Silver searcher
-    :ensure t
-    :defer t
-    :init
-    (use-package wgrep-ag  
-      ;; Guess I need this first
-      :ensure t
-      :commands (wgrep-ag-setup))
-    :config
-    (add-hook 'ag-mode-hook
-              (lambda ()
-                (wgrep-ag-setup)
-                (define-key ag-mode-map (kbd "n") 'evil-search-next)
-                (define-key ag-mode-map (kbd "N") 'evil-search-previous)))
-    (setq ag-executable "/usr/local/bin/ag")
-    (setq ag-highlight-search t)
-    (setq ag-reuse-buffers t)
-    (setq ag-reuse-window t))
+  ;; (use-package ag
+  ;;   ;; Silver searcher
+  ;;   :ensure t
+  ;;   :defer t
+  ;;   :init
+  ;;   (use-package wgrep-ag  
+  ;;     ;; Guess I need this first
+  ;;     :ensure t
+  ;;     :commands (wgrep-ag-setup))
+  ;;   :config
+  ;;   (add-hook 'ag-mode-hook
+  ;;             (lambda ()
+  ;;               (wgrep-ag-setup)
+  ;;               (define-key ag-mode-map (kbd "n") 'evil-search-next)
+  ;;               (define-key ag-mode-map (kbd "N") 'evil-search-previous)))
+  ;;   (setq ag-executable "/usr/local/bin/ag")
+  ;;   (setq ag-highlight-search t)
+  ;;   (setq ag-reuse-buffers t)
+  ;;   (setq ag-reuse-window t))
 #+END_SRC
 
 *** [[https://github.com/alpaker/Fill-Column-Indicator][alpaker/Fill-Column-Indicator]]
