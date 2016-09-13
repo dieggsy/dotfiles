@@ -706,7 +706,7 @@ like the way he does stuff. A lot of this is his code.
   ;;; Code:
   (use-package org
     :ensure t
-    :defer t
+    ;; :defer t
     :commands (org-capture)
     :bind (("C-c c" .   air-org-task-capture)
            ("C-c l" .   org-store-link)
@@ -719,6 +719,7 @@ like the way he does stuff. A lot of this is his code.
            ("C-c f t" . org-tags-view)
            ("C-c f i" . air-org-goto-custom-id))
     :config
+    (org-reload)
     (setq org-agenda-text-search-extra-files '(agenda-archives))
     (setq org-agenda-files '("~/Dropbox (MIT)/org/"))
     (setq org-todo-keywords
