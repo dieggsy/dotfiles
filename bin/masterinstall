@@ -55,7 +55,6 @@ brew install dict
 brew install doxygen
 brew install eigen
 brew install elinks
-brew install emacs
 brew install faad2
 brew install ffmpeg
 brew install figlet
@@ -219,6 +218,7 @@ brew install xvid
 brew install xz
 brew install youtube-dl
 brew install zeromq
+brew install zplug
 brew install zsh
 brew install zsh-completions
 brew install zsh-syntax-highlighting
@@ -236,7 +236,6 @@ brew cask install firefox-beta
 brew cask install flux
 brew cask install gephi
 brew cask install gimp
-brew cask install gitify
 brew cask install google-chrome-beta
 brew cask install iterm2
 brew cask install keycastr
@@ -258,7 +257,6 @@ brew cask install slack
 brew cask install slate
 brew cask install spotify
 brew cask install suspicious-package
-brew cask install virtualbox
 brew cask install vivaldi-snapshot
 
 # Install pip programs (python)

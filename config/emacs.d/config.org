@@ -223,8 +223,7 @@ Setup up cool stuff like use-package, and stuff.
   (setq cursor-type 'bar)
   (fringe-mode 0)
   (add-to-list 'default-frame-alist '(font . "Menlo-11"))
-  ;; (setq scroll-conservatively 10000
-  ;;       scroll-margin 1)
+
   (setq scroll-step 1
         scroll-conservatively 10000)
   (setq-default tab-width 4)
@@ -236,15 +235,6 @@ Setup up cool stuff like use-package, and stuff.
   (setq backup-directory-alist (list (cons "." backup-dir)))
   (setq auto-save-file-name-transforms
         `((".*" ,temporary-file-directory t)))
-  ;; (eval-when-compile (require 'cl-lib))
-
-  ;;; Custom Key Bindings ;;;
-  ;; (global-set-key (kbd "<f8> <f1>")
-  ;;              '(lambda () (interactive) (ansi-term "/usr/local/bin/ipython")))
-  ;; (global-set-key (kbd "<f8> <f2>")
-  ;;              '(lambda () (interactive) (ansi-term "/Users/diego/.virtualenvs/py2/bin/ipython")))
-  ;; (global-set-key (kbd "<f9>") 'linum-mode)
-  ;; (global-set-key (kbd "M-RET") 'python-shell-send-buffer)
 
   ;; Global stuff
   (global-hl-line-mode 1)
@@ -351,6 +341,14 @@ like the way he does stuff. A lot of this is his code.
             (set-window-buffer (next-window) next-win-buffer)
             (select-window first-win)
             (if this-win-2nd (other-window 1))))))
+
+  (defun config ()
+    (interactive)
+    (find-file "/Users/diego/dotfiles/config/emacs.d/config.org"))
+
+  (defun zshrc ()
+    (interactive)
+    (find-file "/Users/diego/dotfiles/config/zshrc"))
 #+END_SRC
 ** [[https://bitbucket.org/lyro/evil/wiki/Home][Evil mode]] 
 *** leader config
@@ -514,7 +512,7 @@ like the way he does stuff. A lot of this is his code.
     :config
     (add-hook 'evil-mode-hook 'air--config-evil)
     (evil-mode 1)
-
+    (setq evil-move-cursor-back nil)
     (use-package evil-leader
       :ensure t
       :config
