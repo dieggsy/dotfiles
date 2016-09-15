@@ -134,7 +134,7 @@ alias pep8="pep8 --first --ignore=E129,W503,E226"
 alias piphere="pip install --target=./"
 alias printers="lpstat -p | awk '{print $2}'"
 alias resetb="source ~/.zshrc"
-alias resetwifi="networksetup -setairportpower en0 off; sleep2;networksetup -setairportpower en0 on" 
+alias resetwifi="networksetup -setairportpower en0 off; sleep 2; networksetup -setairportpower en0 on" 
 alias run="python3"			  # I got super used to just tying 'run' in iPython
 alias starwars="telnet towel.blinkenlights.nl" # heh 
 alias sudo='sudo '							   # recognize aliases 

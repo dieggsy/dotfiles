@@ -243,6 +243,8 @@ Setup up cool stuff like use-package, and stuff.
   (global-auto-revert-mode t)
   (setq whitespace-style '(face trailing))
   (setq column-number-mode t)
+
+  (setq shell-file-name "/usr/local/bin/zsh")
 #+END_SRC 
 
 * Major configs
@@ -413,8 +415,10 @@ like the way he does stuff. A lot of this is his code.
                     sunshine-mode
                     term-mode))
       (add-to-list 'evil-emacs-state-modes mode))
-
-    (delete 'term-mode evil-insert-state-modes)
+    
+    (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
+    (setq evil-emacs-state-modes (delq 'Custom-mode evil-emacs-state-modes))
+    (setq evil-insert-state-modes (delq 'term-mode evil-insert-state-modes))
 
     ;; Use insert state in these additional modes.
     (dolist (mode '(magit-log-edit-mode))
@@ -429,7 +433,7 @@ like the way he does stuff. A lot of this is his code.
       (kbd "C-d")     'evil-scroll-down
       (kbd "C-u")     'evil-scroll-up
       (kbd "C-w C-w") 'other-window)
- 
+   
 #+END_SRC
 *** Keybindings
 #+BEGIN_SRC emacs-lisp
