@@ -244,7 +244,7 @@ Setup up cool stuff like use-package, and stuff.
   (setq whitespace-style '(face trailing))
   (setq column-number-mode t)
 
-  (setq shell-file-name "/usr/local/bin/zsh")
+  ;; (setq shell-file-name "/usr/local/bin/zsh") 
 #+END_SRC 
 
 * Major configs
