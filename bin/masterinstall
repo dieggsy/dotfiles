@@ -55,6 +55,7 @@ brew install dict
 brew install doxygen
 brew install eigen
 brew install elinks
+brew install emacs
 brew install faad2
 brew install ffmpeg
 brew install figlet
@@ -241,6 +242,7 @@ brew cask install iterm2
 brew cask install keycastr
 brew cask install libreoffice
 brew cask install licecap
+brew cask install lilypond
 brew cask install musescore
 brew cask install music-manager
 brew cask install pixelstick
