@@ -1444,10 +1444,16 @@ mode/Setup.
 *** [[https://github.com/sabof/org-bullets][org-bullets]]
 Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
 
-*** [[https://github.com/therockmandolinist/matlab-emacs][matlab-emacs]] 
+*** [[https://github.com/therockmandolinist/matlab-emacs][matlab-emacs]]
 #+BEGIN_SRC emacs-lisp
   ;; (load-library "matlab-load")
   (use-package matlab-load
+    :load-path "lisp/")
+#+END_SRC
+
+*** lilypond
+#+BEGIN_SRC emacs-lisp
+  (use-package lilypond-mode
     :load-path "lisp/")
 #+END_SRC
 ** Themes
