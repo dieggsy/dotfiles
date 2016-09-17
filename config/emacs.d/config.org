@@ -775,8 +775,8 @@ like the way he does stuff. A lot of this is his code.
     (setq org-startup-with-inline-images t)
     (set-face-attribute 'org-upcoming-deadline nil :foreground "gold1")
     (setq org-archive-location "~/Dropbox (MIT)/org/archive.org::")
-    (setq org-list-demote-modify-bullet '(("-" "*")
-                                          ("*" "+")))
+    (setq org-list-demote-modify-bullet '(("-" . "*")
+                                          ("*" . "+")))
     ;; (setq org-highlight-latex-and-related '(latex script entities))
 
     (evil-leader/set-key-for-mode 'org-mode
@@ -837,7 +837,7 @@ like the way he does stuff. A lot of this is his code.
                 (define-key org-mode-map (kbd "C->")     'org-metaright)
                 (define-key org-mode-map (kbd "S-r")     'org-revert-all-org-buffers)
                 (define-key org-mode-map (kbd "C-c C-l") (tiny-menu-run-item "org-links"))
-    
+  
                 ;; Giving up after trying to process
                 ;; <M-up> correctly. an iTerm issue?
                 (define-key org-mode-map (kbd "M-S-<up>") 'org-metaup)
@@ -859,7 +859,7 @@ like the way he does stuff. A lot of this is his code.
                                                          (org-up-element)
                                                          (org-forward-heading-same-level 1)))
                 (define-key org-mode-map (kbd "C-S-k") 'org-up-element)
-            
+          
                 ;; Use fill column, but not in agenda
                 (setq fill-column 79)
                 (auto-fill-mode 1)
@@ -870,8 +870,7 @@ like the way he does stuff. A lot of this is his code.
     :ensure t
     :config
     (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-    ;; (setq org-bullets-bullet-list '("•"))
-    )
+    (setq org-bullets-bullet-list '("•")))
 
   (use-package ox-twbs
     :ensure t)
