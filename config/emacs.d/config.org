@@ -1145,10 +1145,17 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
 *** [[https://github.com/abo-abo/swiper][abo-abo/swiper]]
 A neater way to get the same functionality as Helm, with less... clutter?
 #+BEGIN_SRC emacs-lisp
-  (use-package swiper
+  (use-package ivy
+    :ensure t
     :bind (("M-x" . counsel-M-x)
            ("C-x C-f" . counsel-find-file))
     :config
+    (use-package swiper
+      :ensure t
+      :config
+      (define-key evil-normal-state-map (kbd "/") 'swiper))
+    (use-package counsel
+      :ensure t)
     (ivy-mode 1)
     (setq ivy-format-function 'ivy-format-function-arrow) ;DAT NICE ARROW THOUGH aorcidkl
     (setq projectile-completion-system 'ivy) ;Use ivy with projectile
@@ -1160,6 +1167,7 @@ A neater way to get the same functionality as Helm, with less... clutter?
     (setq ivy-re-builders-alist
           '((counsel-ag . ivy--regex-plus)
             (swiper . ivy--regex-plus)
+            (swiper-all . ivy--regex-plus)
             (t . ivy--regex-fuzzy)))
     ;;Don't start searches with '^' by default
     (setq ivy-initial-inputs-alist nil)
@@ -1170,16 +1178,19 @@ A neater way to get the same functionality as Helm, with less... clutter?
 #+END_SRC
 
 *** [[https://github.com/nonsequitur/smex][nonsequitur/smex]]
+Recently used M-x commands
 #+BEGIN_SRC emacs-lisp
   (use-package smex
     :ensure t)
 #+END_SRC
 *** [[https://github.com/lewang/flx][lewang/flx]]
+Fuzzy matching
 #+BEGIN_SRC emacs-lisp
   (use-package flx
     :ensure t)
 #+END_SRC
 *** [[https://github.com/abo-abo/avy][abo-abo/avy]]
+Jump to things in Emacs tree-style
 #+BEGIN_SRC emacs-lisp
   (use-package avy
     :ensure t)
@@ -1208,11 +1219,20 @@ Syntax check for python. Pretty good.
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
     ;; Pep8 check, basically
-    :ensure t
-    :bind ("<f11>" . flycheck-mode))
+    :ensure t)
 #+END_SRC
 
+*** [[https://www.emacswiki.org/emacs/KeyChord][keychord]]
+Neat way to bind commands to key-stroke combinations
+#+BEGIN_SRC emacs-lisp
+    (use-package key-chord
+      :ensure t
+      :config
+      (key-chord-mode 1)
+      (key-chord-define evil-insert-state-map "jk" 'evil-normal-state))
+#+END_SRC
 *** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
+Edit jupyter notebooks in emacs
 #+BEGIN_SRC emacs-lisp
   (use-package ein
     :ensure t
@@ -1267,12 +1287,11 @@ I like a line length limit indicator in Python
 
 #+BEGIN_SRC emacs-lisp
 
-    (use-package fill-column-indicator
-      :ensure t
-      :bind ("<f10>" . fci-mode)
-      :init
-      (setq-default fci-rule-column 79)
-      (add-hook 'python-mode-hook 'fci-mode))
+  (use-package fill-column-indicator
+    :ensure t
+    :init
+    (setq-default fci-rule-column 79)
+    (add-hook 'python-mode-hook 'fci-mode))
 #+END_SRC
 
 *** [[https://github.com/Fanael/rainbow-delimiters][Fanael/rainbow-delimiters]]
@@ -1311,8 +1330,7 @@ imenu on steroids.
 #+BEGIN_SRC emacs-lisp
   (use-package imenu-anywhere
     ;; Imenu on steroids
-    :ensure t
-    :bind ("<f5>" . imenu-anywhere))
+    :ensure t)
 #+END_SRC
 
 *** [[https://github.com/TheBB/spaceline][TheBB/spaceline]]
