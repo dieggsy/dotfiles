@@ -1171,7 +1171,8 @@ A neater way to get the same functionality as Helm, with less... clutter?
     (use-package swiper
       :ensure t
       :config
-      (define-key evil-normal-state-map (kbd "/") 'swiper))
+      (define-key evil-normal-state-map (kbd "/") 'swiper)
+      (define-key evil-motion-state-map (kbd "/") 'swiper))
     (use-package counsel
       :ensure t)
     (ivy-mode 1)
@@ -1184,6 +1185,7 @@ A neater way to get the same functionality as Helm, with less... clutter?
     ;; Use flx fuzzy matching except with ag and swiper
     (setq ivy-re-builders-alist
           '((counsel-ag . ivy--regex-plus)
+            (counsel-descbinds . ivy--regex-plus)
             (swiper . ivy--regex-plus)
             (swiper-all . ivy--regex-plus)
             (t . ivy--regex-fuzzy)))
@@ -1596,11 +1598,12 @@ what I'm using anyway.
 
 * Prog-mode stuff
 #+BEGIN_SRC emacs-lisp
-  (defun setup-prog-mode ()
-    (highlight-parentheses-mode)
-    (hs-minor-mode)
-    (linum-mode 1))
-  (add-hook 'prog-mode-hook 'setup-prog-mode)
+    (defun setup-prog-mode ()
+      (highlight-parentheses-mode)
+      (linum-mode 1)
+      (auto-fill-mode 1)
+      (setq comment-auto-fill-only-comments t))
+    (add-hook 'prog-mode-hook 'setup-prog-mode)
 #+END_SRC
 * Python stuff
 #+BEGIN_SRC emacs-lisp
@@ -1617,6 +1620,7 @@ what I'm using anyway.
 #+BEGIN_SRC emacs-lisp
   ;; Emacs-lisp stuff
   (defun setup-lisp-mode ()
+    (hs-minor-mode)
     (local-set-key (kbd "C-c <up>") 'hs-hide-all)
     (local-set-key (kbd "C-c <down>") 'hs-show-all)
     (local-set-key (kbd "C-c <left>") 'hs-hide-block)
