@@ -1635,24 +1635,28 @@ what I'm using anyway.
 #+END_SRC
 * Python stuff
 #+BEGIN_SRC emacs-lisp
-  (defun setup-python-mode ()
-      (yas-minor-mode)
-      (setq tab-width 4)
-      (set (make-local-variable 'comment-inline-offset) 2)
-      (setenv "PYTHONPATH" "/usr/local/bin/python3")
-      (defvar diego/python-prettify-alist
-        '(("<=" . "≤")
-          (">=" . "≥")
-          ("!=" . "≠")
-          ("sum" . "∑")
-          ("math.sqrt" . "√")
-          ("math.pi" . "π")
-          ("lambda" . "λ")))
-      (setq-local prettify-symbols-alist
-                  diego/python-prettify-alist)
-      )
+     (defun setup-python-mode ()
+         (yas-minor-mode)
+         (setq tab-width 4)
+         (set (make-local-variable 'comment-inline-offset) 2)
+         (setenv "PYTHONPATH" "/usr/local/bin/python3")
+         (defvar diego/python-prettify-alist
+           '(("<=" . "≤")
+             (">=" . "≥")
+             ("!=" . "≠")
+             ("==" . "≈")
+             ("sum" . "∑")
+             ("math.sqrt" . "√")
+             ("math.pi" . "π")
+             ("lambda" . "λ")
+             ("and" . 8743)
+             ("or" . 8744)
+             ("self" . "↻")))
+         (setq-local prettify-symbols-alist
+                     diego/python-prettify-alist)
+         )
 
-  (add-hook 'python-mode-hook 'setup-python-mode)
+     (add-hook 'python-mode-hook 'setup-python-mode)
 #+END_SRC
 
 * Emacs-Lisp stuff
