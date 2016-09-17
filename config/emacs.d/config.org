@@ -245,7 +245,20 @@ Setup up cool stuff like use-package, and stuff.
   (setq whitespace-style '(face trailing))
   (setq column-number-mode t)
 
-  ;; (setq shell-file-name "/usr/local/bin/zsh") 
+  ;; Me, trying and miserably failing to setup
+  ;; Proper meta/meta-shift input codes for org-mode
+  ;; (defun setup-input-decode-map (frame)
+  ;;   (select-frame frame)
+  ;;   (define-key input-decode-map "A" (kbd "<M-up>"))
+  ;;   (define-key input-decode-map "B" [M-down])
+  ;;   (define-key input-decode-map "C" [M-right])
+  ;;   (define-key input-decode-map "D" [M-left])
+  ;;   (define-key input-decode-map "0A" [M-S-up])
+  ;;   (define-key input-decode-map "0B" [M-S-down])
+  ;;   (define-key input-decode-map "0C" [M-S-right])
+  ;;   (define-key input-decode-map "0D" [M-S-left])
+  ;;   )
+  ;; (add-hook 'after-make-frame-functions 'setup-input-decode-map)
 #+END_SRC 
 
 * Major configs
@@ -720,7 +733,11 @@ like the way he does stuff. A lot of this is his code.
            ("C-c t A" . org-agenda)
            ("C-c f k" . org-search-view)
            ("C-c f t" . org-tags-view)
-           ("C-c f i" . air-org-goto-custom-id))
+           ("C-c f i" . air-org-goto-custom-id)
+           ;; Giving up after trying to process
+           ;; <M-up> correctly. an iTerm issue?
+           ("<M-S-up>" . org-metaup)
+           ("<M-S-down>" . org-metadown))
     :config
     ;; (org-reload)
     (setq org-agenda-text-search-extra-files '(agenda-archives))
@@ -1577,39 +1594,35 @@ what I'm using anyway.
   ;;   :ensure t)
 #+END_SRC
 
+* Prog-mode stuff
+#+BEGIN_SRC emacs-lisp
+  (defun setup-prog-mode ()
+    (highlight-parentheses-mode)
+    (hs-minor-mode)
+    (linum-mode 1))
+  (add-hook 'prog-mode-hook 'setup-prog-mode)
+#+END_SRC
 * Python stuff
 #+BEGIN_SRC emacs-lisp
-  (defun ipython ()
-    (interactive)
-    (ansi-term "/usr/local/bin/ipython"))
-  (defun ipython2()
-    (interactive)
-    (ansi-term "/Users/diego/.virtualenvs/py2/bin/ipython"))
-  (add-hook 'python-mode-hook 'highlight-parentheses-mode)
-  (add-hook 'python-mode-hook 'hs-minor-mode)
-  ;;(add-hook 'python-mode-hook 'yafolding-mode)
-  (add-hook 'python-mode-hook 'yas-minor-mode)
-  (add-hook 'python-mode-hook
-            (lambda () (set (make-local-variable 'comment-inline-offset) 2)))
-  (add-hook 'python-mode-hook (lambda () (setq tab-width 4)))
-  (add-hook 'python-mode-hook (lambda () (linum-mode 1)))
-  (setenv "PYTHONPATH" "/usr/local/bin/python3")
+  (defun setup-python-mode ()
+      (yas-minor-mode)
+      (setq tab-width 4)
+      (set (make-local-variable 'comment-inline-offset) 2)
+      (setenv "PYTHONPATH" "/usr/local/bin/python3"))
+
+  (add-hook 'python-mode-hook 'setup-python-mode)
 #+END_SRC
 
 * Emacs-Lisp stuff
 #+BEGIN_SRC emacs-lisp
   ;; Emacs-lisp stuff
-  (defun my-lisp-mode-config ()
-    (setq ac-sources '(ac-source-symbols ac-source-words-in-same-mode-buffers))
+  (defun setup-lisp-mode ()
     (local-set-key (kbd "C-c <up>") 'hs-hide-all)
     (local-set-key (kbd "C-c <down>") 'hs-show-all)
     (local-set-key (kbd "C-c <left>") 'hs-hide-block)
     (local-set-key (kbd "C-c <right>") 'hs-show-block))
 
-  (add-hook 'emacs-lisp-mode-hook 'my-lisp-mode-config)
-  (add-hook 'emacs-lisp-mode-hook 'highlight-parentheses-mode)
-  (add-hook 'emacs-lisp-mode-hook 'hs-minor-mode)
-  (add-hook 'emacs-lisp-mode-hook (lambda () (linum-mode 1)))
+  (add-hook 'emacs-lisp-mode-hook 'setup-lisp-mode)
 #+END_SRC
 
 * Fix fci pop-up menu issue
