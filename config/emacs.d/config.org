@@ -240,9 +240,9 @@ Setup up cool stuff like use-package, and stuff.
   ;; Global stuff
   (global-hl-line-mode 1)
   ;; (add-hook 'help-mode-hook (lambda () (global-hl-line-mode -1)))
-  (add-hook 'help-mode-hook (lambda ()
-                            (setq-local global-hl-line-mode
-                                        nil)))
+  ;; (add-hook 'help-mode-hook (lambda ()
+  ;;                           (setq-local global-hl-line-mode
+  ;;                                       nil)))
   (add-hook 'minesweeper-mode-hook (lambda ()
                               (setq-local global-hl-line-mode
                                           nil)))
