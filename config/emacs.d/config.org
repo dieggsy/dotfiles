@@ -5,6 +5,7 @@ This is my emacs init file. =init.el= loads the elisp code from here. It's
 pretty cool that I can write it in org mode, because easy organization and
 rearrangement are pretty sweet. Check out [[https://github.com/aaronbieber/][@aaronbieber]] and [[https://github.com/hrs][@hrs]], a lot of the
 inspiration (and erm, code) for this is taken from them.
+
 * Personal Info
 #+BEGIN_SRC emacs-lisp
   (setq user-full-name "Diego A. Mundo"
