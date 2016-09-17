@@ -1646,10 +1646,10 @@ what I'm using anyway.
           ("!=" . "≠")
           ("sum" . "∑")
           ("math.sqrt" . "√")
-          ("math.pi" . "π")))
-      (setq 'python--prettify-symbols-alist
-            (append diego/python-prettify-alist
-                    python--prettify-symbols-alist))
+          ("math.pi" . "π")
+          ("lambda" . "λ")))
+      (setq-local prettify-symbols-alist
+                  diego/python-prettify-alist)
       )
 
   (add-hook 'python-mode-hook 'setup-python-mode)
