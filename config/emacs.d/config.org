@@ -1,5 +1,5 @@
-#+TITLE: Emacs Init File! 
-#+STARTUP: hideblocks 
+#+TITLE: Emacs Init File!
+#+STARTUP: hideblocks
 * Intro
 This is my emacs init file. =init.el= loads the elisp code from here. It's
 pretty cool that I can write it in org mode, because easy organization and
@@ -245,7 +245,7 @@ Setup up cool stuff like use-package, and stuff.
                                         nil)))
   (add-hook 'minesweeper-mode-hook (lambda ()
                               (setq-local global-hl-line-mode
-                                          nil)))                                        
+                                          nil)))
   (add-hook 'term-mode-hook (lambda ()
                               (setq-local global-hl-line-mode
                                           nil)))
@@ -270,7 +270,7 @@ Setup up cool stuff like use-package, and stuff.
   ;;   )
   ;; (add-hook 'after-make-frame-functions 'setup-input-decode-map)
 
-#+END_SRC 
+#+END_SRC
 
 * Major configs
 ...thanks, [[https://github.com/aaronbieber/][@aaronbieber]]. Seriously, go check him out. I
@@ -377,7 +377,7 @@ like the way he does stuff. A lot of this is his code.
     (interactive)
     (find-file "/Users/diego/dotfiles/config/zshrc"))
 #+END_SRC
-** [[https://bitbucket.org/lyro/evil/wiki/Home][Evil mode]] 
+** [[https://bitbucket.org/lyro/evil/wiki/Home][Evil mode]]
 *** leader config
 #+BEGIN_SRC emacs-lisp
   (defun air--config-evil-leader ()
@@ -402,13 +402,13 @@ like the way he does stuff. A lot of this is his code.
       "k"         'kill-this-buffer
       "la"        (lambda () (interactive) (linum-mode) (fci-mode))
       "lc"        'fci-mode
-      "lf"        'flycheck-mode      
+      "lf"        'flycheck-mode
       "ll"        'linum-mode
-      "lw"        'whitespace-mode      ;; Show invisible characters 
+      "lw"        'whitespace-mode      ;; Show invisible characters
       "nn"        'air-narrow-dwim      ;; Narrow to region and enter normal mode
       "o"         'delete-other-windows ;; C-w o
       "s"         'projectile-switch-project
-      "t"         'counsel-locate           
+      "t"         'counsel-locate
       "v"         'split-window-right
       "w"         'save-buffer
       "x"         'counsel-M-x
@@ -440,7 +440,7 @@ like the way he does stuff. A lot of this is his code.
                     sunshine-mode
                     term-mode))
       (add-to-list 'evil-emacs-state-modes mode))
-    
+
     (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
     (setq evil-emacs-state-modes (delq 'Custom-mode evil-emacs-state-modes))
     (setq evil-insert-state-modes (delq 'term-mode evil-insert-state-modes))
@@ -458,7 +458,7 @@ like the way he does stuff. A lot of this is his code.
       (kbd "C-d")     'evil-scroll-down
       (kbd "C-u")     'evil-scroll-up
       (kbd "C-w C-w") 'other-window)
-   
+
 #+END_SRC
 *** Keybindings
 #+BEGIN_SRC emacs-lisp
@@ -837,7 +837,7 @@ like the way he does stuff. A lot of this is his code.
                 (define-key org-mode-map (kbd "C->")     'org-metaright)
                 (define-key org-mode-map (kbd "S-r")     'org-revert-all-org-buffers)
                 (define-key org-mode-map (kbd "C-c C-l") (tiny-menu-run-item "org-links"))
-  
+
                 ;; Giving up after trying to process
                 ;; <M-up> correctly. an iTerm issue?
                 (define-key org-mode-map (kbd "M-S-<up>") 'org-metaup)
@@ -859,7 +859,7 @@ like the way he does stuff. A lot of this is his code.
                                                          (org-up-element)
                                                          (org-forward-heading-same-level 1)))
                 (define-key org-mode-map (kbd "C-S-k") 'org-up-element)
-          
+
                 ;; Use fill column, but not in agenda
                 (setq fill-column 79)
                 (auto-fill-mode 1)
@@ -887,7 +887,7 @@ Kind of an Alfred for emacs. Completion, nice menus for stuff,
 overall great.
 
 For making stuff look nicer, see ~M-x customize-group RET helm-faces~, and
-check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido-like-guide]]. 
+check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido-like-guide]].
 #+BEGIN_SRC emacs-lisp
   (use-package helm
     :ensure t
@@ -906,8 +906,8 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
     ;;    :ensure t)
     ;; (helm-mode 1)
     ;; (helm-autoresize-mode t)
-  ;;   (global-set-key (kbd "M-x") 'helm-M-x)  
-  ;;   (global-set-key (kbd "<f1>") 'helm-find-files)  
+  ;;   (global-set-key (kbd "M-x") 'helm-M-x)
+  ;;   (global-set-key (kbd "<f1>") 'helm-find-files)
   ;;   (global-set-key (kbd "<f2>") 'helm-mini)
     ;; Fuzzy matching
     (setq helm-completion-in-region-fuzzy-match t
@@ -920,7 +920,7 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
           helm-imenu-fuzzy-match t
           helm-apropos-fuzzy-match t
           helm-lisp-fuzzy-completion t)
-    
+
     (setq helm-buffer-max-length 40)
     (setq helm-display-buffer-default-size 9)
     (setq helm-locate-command
@@ -1270,7 +1270,7 @@ Edit jupyter notebooks in emacs
     :ensure t
     :config
     )
-#+END_SRC 
+#+END_SRC
 *** [[https://github.com/company-mode/company-mode][company-mode/company-mode]]
 Supposedly better than autocomplete... Also  using
 [[https://github.com/syohex/emacs-company-jedi][syohex/company-jedi]]
@@ -1298,7 +1298,7 @@ Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]]
   ;;   :ensure t
   ;;   :defer t
   ;;   :init
-  ;;   (use-package wgrep-ag  
+  ;;   (use-package wgrep-ag
   ;;     ;; Guess I need this first
   ;;     :ensure t
   ;;     :commands (wgrep-ag-setup))
@@ -1339,7 +1339,7 @@ Better parentheses coloring
 
 *** [[https://github.com/tsdh/highlight-parentheses.el][tsdh/highlight-parentheses.el]]
 Makes the parentheses my cursor is between stand out more.
- 
+
 #+BEGIN_SRC emacs-lisp
   (use-package highlight-parentheses
     ;; Make parenthesis I'm currently in stand out
@@ -1367,7 +1367,7 @@ imenu on steroids.
 
 *** [[https://github.com/TheBB/spaceline][TheBB/spaceline]]
 I was looking for something with the nice look and simplicity of
-[[https://github.com/itchyny/lightline.vim][this]]. Spaceline does ok. 
+[[https://github.com/itchyny/lightline.vim][this]]. Spaceline does ok.
 
 #+BEGIN_SRC emacs-lisp
   (use-package spaceline
@@ -1490,7 +1490,7 @@ if this is the answer as I haven't used it much.
 #+END_SRC
 *** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
 Export org to twitter bootstrap compatible HTML. Code under Major configs/Org
-mode/Setup. 
+mode/Setup.
 *** [[https://github.com/sabof/org-bullets][org-bullets]]
 Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
 
@@ -1570,7 +1570,7 @@ had some known issues.
 *** [[https://github.com/tkf/emacs-jedi][tkf/emacs-jedi]]
 Integrates [[https://github.com/davidhalter/jedi][jedi]] into emacs for python completion,
 hasn't been working for me recently. Either way,
-this is for [[https://github.com/auto-complete/auto-complete][auto-complete]] but now I use [[https://github.com/syohex/emacs-company-jedi][syohex/emacs-company-jedi]]. 
+this is for [[https://github.com/auto-complete/auto-complete][auto-complete]] but now I use [[https://github.com/syohex/emacs-company-jedi][syohex/emacs-company-jedi]].
 
 #+BEGIN_SRC emacs-lisp
   ;; (use-package jedi
@@ -1581,7 +1581,7 @@ this is for [[https://github.com/auto-complete/auto-complete][auto-complete]] bu
   ;;   (setq jedi:complete-on-dot t))
 #+END_SRC
 
-*** [[https://github.com/auto-complete/auto-complete][auto-complete/auto-complete]] 
+*** [[https://github.com/auto-complete/auto-complete][auto-complete/auto-complete]]
 Pretty good autocompletion, but trying out [[github.com/company-mode/company-mode][company-mode]] right now.
 
 #+BEGIN_SRC emacs-lisp
@@ -1594,7 +1594,7 @@ Pretty good autocompletion, but trying out [[github.com/company-mode/company-mod
 
 *** [[https://github.com/joaotavora/autopair][joaotavora/autopair]]
 It may be recommended to use =electric-pair-mode= nowadays? That's
-what I'm using anyway.  
+what I'm using anyway.
 
 #+Begin_src emacs-lisp
   ;; (use-package autopair
@@ -1682,7 +1682,7 @@ This is from somewhere on the internet.
 
 * Highlight currrent line number
 This, too, is from somewhere on the internet. Possibly
-stackoverflow. 
+stackoverflow.
 
 #+BEGIN_SRC emacs-lisp
   (defface my-linum-hl
