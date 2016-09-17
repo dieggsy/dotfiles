@@ -7,56 +7,17 @@
 
 (org-babel-load-file "~/.emacs.d/config.org")
 
-;; (custom-set-faces
-;;  ;; custom-set-faces was added by Custom.
-;;  ;; If you edit it by hand, you could mess it up, so be careful.
-;;  ;; Your init file should contain only one such instance.
-;;  ;; If there is more than one, they won't work right.
-;;  '(default ((t (:inherit nil :stipple nil :background "#303030" :foreground "#d0d0d0" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" :family "default"))))
-;;  '(buffer-menu-buffer ((t (:inherit ivy-virtual))))
-;;  '(column-marker-1 ((t (:background "#7f7f7f"))))
-;;  '(comint-highlight-prompt ((t nil)))
-;;  '(company-preview ((t (:inherit default :underline t))))
-;;  '(company-preview-common ((t (:inherit company-preview))))
-;;  '(company-tooltip ((t (:background "white" :foreground "black"))))
-;;  '(company-tooltip-selection ((t (:background "#5fafff"))))
-;;  '(eww-form-textarea ((t (:foreground "#000000" :box 1))))
-;;  '(font-lock-builtin-face ((t (:foreground "#56C0C2"))))
-;;  '(font-lock-comment-face ((t (:foreground "#6c6c6c" :slant italic))))
-;;  '(font-lock-constant-face ((t (:foreground "#56C0C2"))))
-;;  '(font-lock-function-name-face ((t (:foreground "#5fafff"))))
-;;  '(font-lock-keyword-face ((t (:foreground "#C678DD" :weight normal))))
-;;  '(font-lock-string-face ((t (:foreground "#87d787"))))
-;;  '(font-lock-type-face ((t (:inherit font-lock-function-name-face))))
-;;  '(font-lock-variable-name-face ((t (:foreground "#D19A66"))))
-;;  '(header-line ((t (:background "#444444" :foreground "#d0d0d0"))))
-;;  '(helm-ff-file ((t (:foreground "#d0d0d0"))))
-;;  '(helm-header ((t nil)))
-;;  '(helm-match ((t (:foreground "#Ff0000"))))
-;;  '(helm-selection ((t (:background "#3a3a3a" :distant-foreground "#000000"))))
-;;  '(helm-source-header ((t (:inherit font-lock-function-name-face :slant italic))))
-;;  '(helm-visible-mark ((t (:background "#5fafff" :foreground "black"))))
-;;  '(hl-line ((t (:background "#3a3a3a"))))
-;;  '(ivy-current-match ((t nil)))
-;;  '(ivy-modified-buffer ((t (:inherit helm-buffer-not-saved))))
-;;  '(linum ((t (:foreground "#4e4e4e"))))
-;;  '(minibuffer-prompt ((t (:inherit font-lock-variable-name-face))))
-;;  '(mode-line ((t (:background "grey75" :foreground "black" :box nil))))
-;;  '(my-linum-hl ((t (:background "#3a3a3a" :foreground "#ff0000"))))
-;;  '(powerline-active1 ((t (:inherit mode-line :background "#262626" :foreground "#9e9e9e"))))
-;;  '(powerline-active2 ((t (:inherit mode-line :background "#262626"))))
-;;  '(region ((t (:background "#4e4e4e"))))
-;;  '(sh-quoted-exec ((t (:foreground "#af5fff"))))
-;;  '(sml/battery ((t nil)) t)
-;;  '(sml/col-number ((t (:inherit sml/global))))
-;;  '(sml/time ((t (:foreground "#af5f00"))))
-;;  '(swiper-line-face ((t (:inherit hl-line)))))
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(ac-disable-faces (quote (font-lock-comment-face font-lock-doc-face)))
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["#272822" "#F92672" "#A6E22E" "#E6DB74" "#66D9EF" "#FD5FF0" "#A1EFE4" "#F8F8F2"])
+ '(compilation-message-face (quote default))
  '(counsel-locate-cmd (quote counsel-locate-cmd-mdfind))
  '(custom-safe-themes
    (quote
@@ -68,14 +29,30 @@
  '(elpy-modules
    (quote
 	(elpy-module-company elpy-module-eldoc elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
+ '(fci-rule-color "#20240E")
  '(fill-column 79)
  '(helm-boring-buffer-regexp-list
    (quote
 	("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*Minibuf" "\\*epc")))
  '(helm-scroll-amount 1)
+ '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
+ '(highlight-tail-colors
+   (quote
+	(("#20240E" . 0)
+	 ("#679A01" . 20)
+	 ("#4BBEAE" . 30)
+	 ("#1DB4D0" . 50)
+	 ("#9A8F21" . 60)
+	 ("#A75B00" . 70)
+	 ("#F309DF" . 85)
+	 ("#20240E" . 100))))
  '(ibuffer-use-other-window t)
  '(ivy-extra-directories (quote ("../")))
  '(ivy-ignore-buffers (quote ("\\` " "\\`\\*LV\\*" "\\`\\*epc")))
+ '(magit-diff-use-overlays nil)
+ '(nrepl-message-colors
+   (quote
+	("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(org-babel-load-languages (quote ((python . t) (emacs-lisp . t))))
  '(org-babel-python-command "python3")
  '(org-confirm-babel-evaluate nil)
@@ -109,7 +86,10 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-	(multiple-cursors org key-chord yaml-mode yafolding wgrep-ag visual-fill-column vimish-fold vi-tilde-fringe use-package twittering-mode tiny-menu sx sphinx-doc spacemacs-theme spaceline smooth-scroll smex smart-mode-line rainbow-delimiters powerline-evil pacmacs ox-twbs outline-magic origami org-bullets openwith ob-ipython nyan-mode multi-term markdown-preview-mode magit jedi ivy-hydra imenu-anywhere highlight-parentheses highlight-numbers hideshow-org hide-region helm-projectile helm-fuzzier helm-flx helm-dictionary helm-descbinds flycheck fill-column-indicator fancy-battery evil-terminal-cursor-changer evil-leader evil-indent-textobject elpy ein dictionary csv-mode counsel company-jedi avy autopair atom-one-dark-theme apel ag)))
+	(darktooth-theme monokai-theme zenburn-theme multiple-cursors org key-chord yaml-mode yafolding wgrep-ag visual-fill-column vimish-fold vi-tilde-fringe use-package twittering-mode tiny-menu sx sphinx-doc spacemacs-theme spaceline smooth-scroll smex smart-mode-line rainbow-delimiters powerline-evil pacmacs ox-twbs outline-magic origami org-bullets openwith ob-ipython nyan-mode multi-term markdown-preview-mode magit jedi ivy-hydra imenu-anywhere highlight-parentheses highlight-numbers hideshow-org hide-region helm-projectile helm-fuzzier helm-flx helm-dictionary helm-descbinds flycheck fill-column-indicator fancy-battery evil-terminal-cursor-changer evil-leader evil-indent-textobject elpy ein dictionary csv-mode counsel company-jedi avy autopair atom-one-dark-theme apel ag)))
+ '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
+ '(pos-tip-background-color "#A6E22E")
+ '(pos-tip-foreground-color "#272822")
  '(powerline-evil-tag-style (quote verbose))
  '(projectile-globally-ignored-files (quote ("TAGS" ".DS_Store")))
  '(sml/name-width 40)
@@ -126,5 +106,35 @@
 	 ("^~/[Gg]it[Hh]ub/" ":Git:")
 	 ("^~/[Gg]it\\([Hh]ub\\|\\)-?[Pp]rojects/" ":Git:")
 	 ("\"^~/Dropbox \\(MIT\\)/\"" "\":DB:\""))))
- '(vc-follow-symlinks t))
+ '(vc-annotate-background nil)
+ '(vc-annotate-color-map
+   (quote
+	((20 . "#F92672")
+	 (40 . "#CF4F1F")
+	 (60 . "#C26C0F")
+	 (80 . "#E6DB74")
+	 (100 . "#AB8C00")
+	 (120 . "#A18F00")
+	 (140 . "#989200")
+	 (160 . "#8E9500")
+	 (180 . "#A6E22E")
+	 (200 . "#729A1E")
+	 (220 . "#609C3C")
+	 (240 . "#4E9D5B")
+	 (260 . "#3C9F79")
+	 (280 . "#A1EFE4")
+	 (300 . "#299BA6")
+	 (320 . "#2896B5")
+	 (340 . "#2790C3")
+	 (360 . "#66D9EF"))))
+ '(vc-annotate-very-old-color nil)
+ '(vc-follow-symlinks t)
+ '(weechat-color-list
+   (unspecified "#272822" "#20240E" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0")))
 
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

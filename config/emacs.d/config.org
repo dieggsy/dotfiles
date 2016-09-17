@@ -1488,17 +1488,18 @@ Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
     :load-path "lisp/")
 #+END_SRC
 
-*** diego-theme
-#+BEGIN_SRC emacs-lisp
-  (use-package diego-theme
-    :load-path "lisp/")
-#+END_SRC
 *** lilypond
 #+BEGIN_SRC emacs-lisp
   (use-package lilypond-mode
     :load-path "lisp/")
 #+END_SRC
 ** Themes
+*** diego-theme
+#+BEGIN_SRC emacs-lisp
+  (use-package diego-theme
+    :load-path "lisp/")
+#+END_SRC
+
 ** Not currently in use
 *** [[https://github.com/Malabarba/smart-mode-line][Malabarba/smart-mode-line]]
 Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][spaceline]].
