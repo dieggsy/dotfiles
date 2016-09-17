@@ -35,7 +35,6 @@
 	(elpy-module-company elpy-module-eldoc elpy-module-pyvenv elpy-module-yasnippet elpy-module-sane-defaults)))
  '(fci-rule-color "#383838")
  '(fill-column 79)
- '(global-hl-line-mode nil)
  '(helm-boring-buffer-regexp-list
    (quote
 	("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*Minibuf" "\\*epc")))
