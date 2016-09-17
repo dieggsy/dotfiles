@@ -223,7 +223,7 @@ Setup up cool stuff like use-package, and stuff.
   (setq display-time-load-average nil)
   (setq cursor-type 'bar)
   (fringe-mode 0)
-  (add-to-list 'default-frame-alist '(font . "Menlo-11"))
+  (add-to-list 'default-frame-alist '(font . "Consolas-11"))
 
   (setq scroll-step 1
         scroll-conservatively 10000)
@@ -243,13 +243,12 @@ Setup up cool stuff like use-package, and stuff.
   ;; (add-hook 'help-mode-hook (lambda ()
   ;;                           (setq-local global-hl-line-mode
   ;;                                       nil)))
-  (add-hook 'minesweeper-mode-hook (lambda ()
-                              (setq-local global-hl-line-mode
-                                          nil)))
-  (add-hook 'term-mode-hook (lambda ()
-                              (setq-local global-hl-line-mode
-                                          nil)))
-  ;; (global-linum-mode 1)
+  ;; (add-hook 'minesweeper-mode-hook (lambda ()
+  ;;                             (setq-local global-hl-line-mode
+  ;;                                         nil)))
+  ;; (add-hook 'term-mode-hook (lambda ()
+  ;;                             (setq-local global-hl-line-mode
+  ;;                                         nil)))
   (setq linum-delay t)
   (global-auto-revert-mode t)
   (setq whitespace-style '(face trailing))
