@@ -9,15 +9,21 @@
   (custom-theme-set-faces
    'diego
    ;; Defaults
-   `(default ((t (:inherit nil :stipple nil :background "#303030" :foreground "#d0d0d0" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 1 :width normal :foundry "default" :family "default"))))
-   `(font-lock-builtin-face ((t (:foreground "#56C0C2"))))
+   ;; `(default ((t (:background "#303030" :foreground "#d0d0d0"))))
+   `(default ((t (:background "#3a3a3a" :foreground "#d0d0d0"))))
+   ;; `(font-lock-builtin-face ((t (:foreground "#5FAFAF"))))
+   ;; `(font-lock-builtin-face ((t (:foreground "#AFD7D7"))))
+   `(font-lock-builtin-face ((t (:foreground "#87AFAF"))))
    `(font-lock-comment-face ((t (:foreground "#6c6c6c" :slant italic))))
-   `(font-lock-constant-face ((t (:foreground "#56C0C2"))))
+   `(font-lock-constant-face ((t (:foreground "#5FAFAF"))))
+   ;; `(font-lock-constant-face ((t (:foreground "#AFD7D7"))))
+   ;; `(font-lock-constant-face ((t (:foreground "#87AFAF"))))
    `(font-lock-function-name-face ((t (:foreground "#5fafff"))))
    `(font-lock-keyword-face ((t (:foreground "#C678DD" :weight normal))))
    `(font-lock-string-face ((t (:foreground "#87d787"))))
    `(font-lock-type-face ((t (:inherit font-lock-function-name-face))))
-   `(font-lock-variable-name-face ((t (:foreground "#D19A66"))))
+   ;; `(font-lock-variable-name-face ((t (:foreground "#D19A66"))))
+   `(font-lock-variable-name-face ((t (:foreground "#D7AF87"))))
    `(region ((t (:background "#4e4e4e"))))
    `(minibuffer-prompt ((t (:inherit font-lock-variable-name-face))))
 
@@ -51,13 +57,14 @@
    ;; Other
    `(column-marker-1 ((t (:background "#7f7f7f"))))
    `(comint-highlight-prompt ((t nil)))
-   `(hl-line ((t (:background "#3a3a3a"))))
+   `(hl-line ((t (:background "#444444"))))
    `(linum ((t (:foreground "#4e4e4e"))))
    `(mode-line ((t (:background "grey75" :foreground "black" :box nil))))
-   `(my-linum-hl ((t (:background "#3a3a3a" :foreground "#ff0000"))))
+   `(my-linum-hl ((t (:background "#444444" :foreground "#ff0000"))))
    `(powerline-active1 ((t (:inherit mode-line :background "#262626" :foreground "#9e9e9e"))))
    `(powerline-active2 ((t (:inherit mode-line :background "#262626"))))
    `(sh-quoted-exec ((t (:foreground "#af5fff"))))
+   `(minesweeper-neighbor ((t (:inherit hl-line))))
    ))
 
 ;;;###autoload
