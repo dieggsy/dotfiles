@@ -873,6 +873,13 @@ like the way he does stuff. A lot of this is his code.
 
   (use-package ox-twbs
     :ensure t)
+  (use-package ox-pandoc
+    :ensure t
+    :config
+    ;; default options for all output formats
+    (setq org-pandoc-options '((standalone . t)))
+    ;; cancel above settings only for 'docx' format
+    (setq org-pandoc-options-for-docx '((standalone . nil))))
   ;;; init-org.el ends here"]")))))
 #+END_SRC
 
@@ -1487,12 +1494,14 @@ if this is the answer as I haven't used it much.
   (use-package sx
     :ensure t)
 #+END_SRC
-*** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
+*** [[https://github.com/marsmining/ox-twbs][marsmining/ox-twbs]]
 Export org to twitter bootstrap compatible HTML. Code under Major configs/Org
 mode/Setup.
+*** [[https://github.com/kawabata/ox-pandoc][kawabata/ox-pandoc]]
+Translates Org-mode file to various other formats via Pandoc. Pretty neat. Code
+under [[Org mode][Major Configs/Org mode/Setup]]
 *** [[https://github.com/sabof/org-bullets][org-bullets]]
 Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
-
 *** [[https://github.com/therockmandolinist/matlab-emacs][matlab-emacs]]
 #+BEGIN_SRC emacs-lisp
   ;; (load-library "matlab-load")
