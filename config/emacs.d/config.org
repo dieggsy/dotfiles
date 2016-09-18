@@ -215,7 +215,7 @@ Setup up cool stuff like use-package, and stuff.
         inhibit-startup-echo-area-message t)
   (menu-bar-mode 0)
   (tool-bar-mode -1)
-  (toggle-scroll-bar -1)
+  (scroll-bar-mode -1)
   (show-paren-mode 1)
   (electric-pair-mode)
   (add-hook 'minibuffer-setup-hook (lambda ()

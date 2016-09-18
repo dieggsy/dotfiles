@@ -147,6 +147,7 @@ brew install matplotlib
 brew install mercurial
 brew install mp4v2
 brew install mpc
+brew install mpd
 brew install mpfr
 brew install mutt
 brew install nano
@@ -235,6 +236,7 @@ brew cask install evernote
 brew cask install firefox
 brew cask install firefox-beta
 brew cask install flux
+brew cask install fontforge
 brew cask install gephi
 brew cask install gimp
 brew cask install google-chrome-beta
