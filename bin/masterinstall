@@ -235,7 +235,6 @@ brew cask install evernote
 brew cask install firefox
 brew cask install firefox-beta
 brew cask install flux
-brew cask install fontforge
 brew cask install gephi
 brew cask install gimp
 brew cask install google-chrome-beta
