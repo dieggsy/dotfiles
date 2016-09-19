@@ -58,6 +58,7 @@ brew install elinks
 brew install emacs
 brew install faad2
 brew install ffmpeg
+brew install fftw
 brew install figlet
 brew install flac
 brew install fluid-synth
@@ -151,6 +152,7 @@ brew install mpd
 brew install mpfr
 brew install mutt
 brew install nano
+brew install ncmpcpp
 brew install ncurses
 brew install neovim
 brew install nettle
@@ -230,6 +232,7 @@ echo Installing brew cask programs...
 brew cask install adobe-reader
 brew cask install atom
 brew cask install betterzipql
+brew cask install cantata
 brew cask install cuda
 brew cask install discord
 brew cask install evernote
@@ -241,6 +244,7 @@ brew cask install gephi
 brew cask install gimp
 brew cask install google-chrome-beta
 brew cask install iterm2
+brew cask install iterm2-beta
 brew cask install keycastr
 brew cask install libreoffice
 brew cask install licecap
