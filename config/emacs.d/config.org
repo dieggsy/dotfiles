@@ -7,6 +7,7 @@ rearrangement are pretty sweet. Check out [[https://github.com/aaronbieber/][@aa
 inspiration (and erm, code) for this is taken from them.
 
 * Personal Info
+Minimal info about meself, I guess.
 #+BEGIN_SRC emacs-lisp
   (setq user-full-name "Diego A. Mundo"
         user-mail-address "diegoamundo@gmail.com"
@@ -18,20 +19,13 @@ inspiration (and erm, code) for this is taken from them.
 Setup up cool stuff like use-package, and stuff.
 
 ** Misc init
+Setup load directories, mostly.
 #+BEGIN_SRC emacs-lisp
   (require 'package)
   (setq package-enable-at-startup nil)
   (add-to-list 'load-path
                (expand-file-name "lisp" user-emacs-directory))
 
-  ;; ;; Add directories in "lisp" folder
-  ;; (let ((files (directory-files-and-attributes "~/.emacs.d/lisp" t)))
-  ;;   (dolist (file files)
-  ;;     (let ((filename (car file))
-  ;;           (dir (nth 1 file)))
-  ;;       (when (and dir
-  ;;                  (not (string-suffix-p "." filename)))
-  ;;         (add-to-list 'load-path (car file))))))
   (let ((default-directory  "~/.emacs.d/lisp/"))
     (normal-top-level-add-subdirs-to-load-path))
   (add-to-list 'exec-path "/usr/local/bin")
@@ -135,6 +129,7 @@ Setup up cool stuff like use-package, and stuff.
 #+END_SRC
 
 ** Package setup
+Set package archives/repos and setup use-package and all that.
 #+BEGIN_SRC emacs-lisp
   ;;; Find and load the correct package.el
 
@@ -209,6 +204,13 @@ Setup up cool stuff like use-package, and stuff.
 #+END_SRC
 
 * Global settings and stuff
+Some nice global settings to have. Does away with most uneccessary visuals to
+make emacs behave more like terminal (ish), sets up smooth scrolling, other
+such goodies.
+
+*A note on the font:* Check out [[http://mbauman.net/geek/2009/03/15/minor-truetype-font-editing-on-a-mac/][this post]] for advice on fixing the Consolas
+font for os x. Last updated 2011, last successfully tested 09/2016 (by
+myself).
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-splash-screen t
         inhibit-startup-message t
@@ -382,7 +384,7 @@ like the way he does stuff. A lot of this is his code.
     (setq-local line-spacing (if (= line-spacing 0.4) 0.0 0.4)))
 #+END_SRC
 ** [[https://bitbucket.org/lyro/evil/wiki/Home][Evil mode]]
-*** leader config
+*** Leader config
 #+BEGIN_SRC emacs-lisp
   (defun air--config-evil-leader ()
     "Configure evil leader mode."
@@ -1697,15 +1699,16 @@ what I'm using anyway.
 #+END_SRC
 
 * Prog-mode stuff
+Properties that apply to all programming modes.
 #+BEGIN_SRC emacs-lisp
-  (defun setup-prog-mode ()
+  (defun diego/setup-prog-mode ()
     (highlight-parentheses-mode)
     (linum-mode 1)
     (auto-fill-mode 1)
     (setq-local comment-auto-fill-only-comments t)
     (setq-local line-spacing 0.0)
     )
-  (add-hook 'prog-mode-hook 'setup-prog-mode)
+  (add-hook 'prog-mode-hook 'diego/setup-prog-mode)
 #+END_SRC
 * Python stuff
 #+BEGIN_SRC emacs-lisp
@@ -1737,6 +1740,7 @@ what I'm using anyway.
 #+END_SRC
 
 * Emacs-Lisp stuff
+Mostly set up hs-minor-mode for emacs-lisp.
 #+BEGIN_SRC emacs-lisp
   ;; Emacs-lisp stuff
   (defun setup-lisp-mode ()
@@ -1750,7 +1754,8 @@ what I'm using anyway.
 #+END_SRC
 
 * Fix fci pop-up menu issue
-This is from somewhere on the internet.
+This is from somewhere on the internet, and may no longer be relevant since I
+started using company-mode.
 
 #+BEGIN_SRC emacs-lisp
   ;; Disable fci mode when autocomplete popup menu happens
