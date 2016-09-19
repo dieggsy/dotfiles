@@ -237,10 +237,10 @@ consistent with other fonts. Last updated 2011, last successfully tested
 
 #+END_SRC
 ** File handling
-Handling/storing of files, backups, autosaves.
+   Handling/storing of files, backups, autosaves.
 #+BEGIN_SRC emacs-lisp
-  (setq backup-directory-alist (list (cons "." backup-dir)))
   (defvar backup-dir "~/.emacsbackups/")
+  (setq backup-directory-alist (list (cons "." backup-dir)))
   (setq auto-save-file-name-transforms
         `((".*" ,temporary-file-directory t)))
   (global-auto-revert-mode t)
