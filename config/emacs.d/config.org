@@ -1692,7 +1692,8 @@ what I'm using anyway.
     (linum-mode 1)
     (auto-fill-mode 1)
     (setq-local comment-auto-fill-only-comments t)
-    (setq-local line-spacing 0.4))
+    ;; (setq-local line-spacing 0.4)
+    )
   (add-hook 'prog-mode-hook 'setup-prog-mode)
 #+END_SRC
 * Python stuff
