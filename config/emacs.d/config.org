@@ -208,41 +208,71 @@ Some nice global settings to have. Does away with most uneccessary visuals to
 make emacs behave more like terminal (ish), sets up smooth scrolling, other
 such goodies.
 
-*A note on the font:* Check out [[http://mbauman.net/geek/2009/03/15/minor-truetype-font-editing-on-a-mac/][this post]] for advice on fixing the Consolas
-font for os x. Last updated 2011, last successfully tested 09/2016 (by
-myself).
+
+** Visual things
+Get rid of menu bars, scroll bars, startup screens, etc.
+
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-splash-screen t
         inhibit-startup-message t
         inhibit-startup-echo-area-message t)
+  (fringe-mode 0)
   (menu-bar-mode 0)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
-  (show-paren-mode 1)
-  (electric-pair-mode)
   ;; (add-hook 'minibuffer-setup-hook (lambda ()
   ;;                                    (electric-pair-mode)))
   (setq display-time-load-average nil)
-  (fringe-mode 0)
-  (setq cursor-type '(bar . 1))
+  (setq whitespace-style '(face trailing))
+#+END_SRC
+
+** Fonts
+*A note on the font:* Check out [[http://mbauman.net/geek/2009/03/15/minor-truetype-font-editing-on-a-mac/][this post]] for advice on fixing the Consolas font
+on os x. This helps with the modeline text vertical alignments and makes it
+consistent with other fonts. Last updated 2011, last successfully tested
+09/2016 (by myself).
+#+BEGIN_SRC emacs-lisp
   (add-to-list 'default-frame-alist '(font . "Consolas-11"))
   (set-face-attribute 'default t :font "Consolas-11")
 
+#+END_SRC
+** File handling
+Handling/storing of files, backups, autosaves.
+#+BEGIN_SRC emacs-lisp
+  (setq backup-directory-alist (list (cons "." backup-dir)))
+  (defvar backup-dir "~/.emacsbackups/")
+  (setq auto-save-file-name-transforms
+        `((".*" ,temporary-file-directory t)))
+  (global-auto-revert-mode t)
+  (save-place-mode 1)
+
+#+END_SRC
+** Parentheses
+#+BEGIN_SRC emacs-lisp
+  (electric-pair-mode)
+  (show-paren-mode 1)
+
+#+END_SRC
+** Smooth scroll
+#+BEGIN_SRC emacs-lisp
   (setq scroll-step 1
         scroll-conservatively 10000)
+
+#+END_SRC
+** Tabs/completion?
+#+BEGIN_SRC emacs-lisp
   (setq-default tab-width 4)
   (setq tab-stop-list (number-sequence 4 200 4))
   (setq completion-cycle-threshold t)
-  (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
-  ; Store backups in .emacsbackups, autosaves in temp dir
-  (defvar backup-dir "~/.emacsbackups/")
-  (setq backup-directory-alist (list (cons "." backup-dir)))
-  (setq auto-save-file-name-transforms
-        `((".*" ,temporary-file-directory t)))
 
-  ;; Global stuff
+#+END_SRC
+** <⌘-enter> for fullscreen
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
+#+END_SRC
+** Line position/highlighting
+#+BEGIN_SRC emacs-lisp
   (global-hl-line-mode 1)
-  (turn-on-pbcopy)
   ;; (add-hook 'help-mode-hook (lambda ()
   ;;                           (setq-local global-hl-line-mode
   ;;                                       nil)))
@@ -253,24 +283,7 @@ myself).
                               (setq-local global-hl-line-mode
                                           nil)))
   (setq linum-delay t)
-  (global-auto-revert-mode t)
-  (setq whitespace-style '(face trailing))
   (setq column-number-mode t)
-
-  ;; Me, trying and miserably failing to setup
-  ;; Proper meta/meta-shift input codes for org-mode
-  ;; (defun setup-input-decode-map (frame)
-  ;;   (select-frame frame)
-  ;;   (define-key input-decode-map "A" (kbd "<M-up>"))
-  ;;   (define-key input-decode-map "B" [M-down])
-  ;;   (define-key input-decode-map "C" [M-right])
-  ;;   (define-key input-decode-map "D" [M-left])
-  ;;   (define-key input-decode-map "0A" [M-S-up])
-  ;;   (define-key input-decode-map "0B" [M-S-down])
-  ;;   (define-key input-decode-map "0C" [M-S-right])
-  ;;   (define-key input-decode-map "0D" [M-S-left])
-  ;;   )
-  ;; (add-hook 'after-make-frame-functions 'setup-input-decode-map)
 
 #+END_SRC
 
@@ -1243,17 +1256,17 @@ Fuzzy matching
   (use-package flx
     :ensure t)
 #+END_SRC
-*** [[https://github.com/abo-abo/avy][abo-abo/avy]]
-Jump to things in Emacs tree-style
-#+BEGIN_SRC emacs-lisp
-  (use-package avy
-    :ensure t)
-#+END_SRC
 *** [[https://github.com/magit/magit][magit/magit]]
 Like git, for emacs. But cooler.
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
+    :ensure t)
+#+END_SRC
+*** [[https://github.com/abo-abo/avy][abo-abo/avy]]
+Jump to things in Emacs tree-style
+#+BEGIN_SRC emacs-lisp
+  (use-package avy
     :ensure t)
 #+END_SRC
 *** [[https://github.com/joaotavora/yasnippet][joaotavora/yasnippet]]
@@ -1267,6 +1280,14 @@ Freakin yasnippet. It's the best.
     (yas-global-mode 1))
 #+END_SRC
 
+*** [[https://github.com/emacsfodder/pbcopy.el][emacsfodder/pbcopy.el]]
+Allow yanking and pasting with osx clipboard in terminal Emacs. Might want to
+look into [[https://melpa.org/#/osx-clipboard][osx-clipboard]] instead.
+#+BEGIN_SRC emacs-lisp
+  (use-package pbcopy
+    :config
+    (turn-on-pbcopy))
+#+END_SRC
 *** [[https://github.com/flycheck/flycheck][flycheck/flycheck]]
 Syntax check for python. Pretty good.
 
