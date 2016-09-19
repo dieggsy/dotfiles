@@ -127,7 +127,7 @@ requests-oauthlib==0.6.2
 rope==0.10.3
 rsa==3.4.2
 rtv==1.12.0
-scipy==0.18.0
+scipy==0.18.1
 seaborn==0.7.1
 sexpdata==0.0.3
 shutilwhich==1.1.0
