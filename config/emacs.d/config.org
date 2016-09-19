@@ -231,7 +231,7 @@ Setup up cool stuff like use-package, and stuff.
   (setq-default tab-width 4)
   (setq tab-stop-list (number-sequence 4 200 4))
   (setq completion-cycle-threshold t)
-
+  (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
   ; Store backups in .emacsbackups, autosaves in temp dir
   (defvar backup-dir "~/.emacsbackups/")
   (setq backup-directory-alist (list (cons "." backup-dir)))
