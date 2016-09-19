@@ -244,12 +244,12 @@ Setup up cool stuff like use-package, and stuff.
   ;; (add-hook 'help-mode-hook (lambda ()
   ;;                           (setq-local global-hl-line-mode
   ;;                                       nil)))
-  ;; (add-hook 'minesweeper-mode-hook (lambda ()
-  ;;                             (setq-local global-hl-line-mode
-  ;;                                         nil)))
-  ;; (add-hook 'term-mode-hook (lambda ()
-  ;;                             (setq-local global-hl-line-mode
-  ;;                                         nil)))
+  (add-hook 'minesweeper-mode-hook (lambda ()
+                              (setq-local global-hl-line-mode
+                                          nil)))
+  (add-hook 'term-mode-hook (lambda ()
+                              (setq-local global-hl-line-mode
+                                          nil)))
   (setq linum-delay t)
   (global-auto-revert-mode t)
   (setq whitespace-style '(face trailing))
@@ -875,7 +875,9 @@ like the way he does stuff. A lot of this is his code.
                 (setq fill-column 79)
                 (auto-fill-mode 1)
                 ;; (flyspell-mode)
-                (org-indent-mode))))
+                (org-indent-mode)
+                (setq-local global-hl-line-mode nil)
+                )))
 
   (use-package org-bullets
     :ensure t
