@@ -1558,7 +1558,7 @@ Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
 #+END_SRC
 *** [[https://github.com/iqbalansari/emacs-emojify][iqbalansari/emacs-emojify]]
 Display emojis in emacs. Sweet!
-#+BEGIN_SRC emacs-lisp 
+#+BEGIN_SRC emacs-lisp
   (use-package emojify
     :ensure t)
 #+END_SRC
