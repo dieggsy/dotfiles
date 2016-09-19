@@ -27,6 +27,11 @@
    `(region ((t (:background "#4e4e4e"))))
    `(minibuffer-prompt ((t (:inherit font-lock-variable-name-face))))
 
+   ;; Fonts
+   `(fixed-pitch ((t (:family "Consolas"))))
+   `(variable-pitch ((t (:family "Helvetica Neue Light"))))
+   
+   
    ;; Company
    `(company-preview ((t (:inherit default :underline t))))
    `(company-preview-common ((t (:inherit company-preview))))
@@ -65,6 +70,16 @@
    `(powerline-active2 ((t (:inherit mode-line :background "#262626"))))
    `(sh-quoted-exec ((t (:foreground "#af5fff"))))
    `(minesweeper-neighbor ((t (:inherit hl-line))))
+   `(custom-button ((t (:background "lightgrey" :foreground "black"))))
+   `(custom-button-mouse ((t (:background "grey90" :foreground "black"))))
+   `(custom-button-pressed ((t (:background "lightgrey" :foreground "black"))))
+   `(font-lock-variable-name-face ((t (:foreground "#DFAF8F"))))
+   `(minesweeper-neighbor ((t (:inherit hl-line))))
+   `(region ((t (:background "#4e4e4e"))))
+   `(twittering-uri-face ((t (:inherit font-lock-builtin-face :underline t))))
+   `(my-linum-hl ((t (:background "#444444" :foreground "#fb3460"))))
+   `(markdown-inline-code-face ((t (:inherit (fixed-pitch font-lock-constant-face) :background "#444444"))))
+   `(markdown-pre-face ((t (:inherit (fixed-pitch font-lock-constant-face) :background "#444444"))))
    ))
 
 ;;;###autoload

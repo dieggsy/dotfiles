@@ -221,9 +221,10 @@ Setup up cool stuff like use-package, and stuff.
   (add-hook 'minibuffer-setup-hook (lambda ()
                                      (electric-pair-mode)))
   (setq display-time-load-average nil)
-  (setq cursor-type 'bar)
+  (setq cursor-type '(bar . 1))
   (fringe-mode 0)
   (add-to-list 'default-frame-alist '(font . "Consolas-11"))
+  (set-face-attribute 'default t :font "Consolas-11")
 
   (setq scroll-step 1
         scroll-conservatively 10000)
@@ -239,7 +240,7 @@ Setup up cool stuff like use-package, and stuff.
 
   ;; Global stuff
   (global-hl-line-mode 1)
-  ;; (add-hook 'help-mode-hook (lambda () (global-hl-line-mode -1)))
+  (turn-on-pbcopy)
   ;; (add-hook 'help-mode-hook (lambda ()
   ;;                           (setq-local global-hl-line-mode
   ;;                                       nil)))
@@ -375,6 +376,10 @@ like the way he does stuff. A lot of this is his code.
   (defun zshrc ()
     (interactive)
     (find-file "/Users/diego/dotfiles/config/zshrc"))
+
+  (defun toggle-github-spacing ()
+    (interactive)
+    (setq-local line-spacing (if (= line-spacing 0.4) 0.0 0.4)))
 #+END_SRC
 ** [[https://bitbucket.org/lyro/evil/wiki/Home][Evil mode]]
 *** leader config
@@ -444,6 +449,13 @@ like the way he does stuff. A lot of this is his code.
     (setq evil-emacs-state-modes (delq 'Custom-mode evil-emacs-state-modes))
     (setq evil-insert-state-modes (delq 'term-mode evil-insert-state-modes))
 
+    (setq evil-insert-state-cursor '(bar . 1))
+    (setq evil-emacs-state-cursor '(bar . 1))
+    (setq evil-normal-state-tag " NORMAL ")
+    (setq evil-insert-state-tag " INSERT ")
+    (setq evil-motion-state-tag " MOTION ")
+    (setq evil-visual-state-tag " VISUAL ")
+    (setq evil-emacs-state-tag  " EMACS ")
     ;; Use insert state in these additional modes.
     (dolist (mode '(magit-log-edit-mode))
       (add-to-list 'evil-insert-state-modes mode))
@@ -540,7 +552,7 @@ like the way he does stuff. A lot of this is his code.
     :config
     (add-hook 'evil-mode-hook 'air--config-evil)
     (evil-mode 1)
-    (setq evil-move-cursor-back nil)
+    ;; (setq evil-move-cursor-back nil)
     (use-package evil-leader
       :ensure t
       :config
@@ -1440,7 +1452,26 @@ Syntax highlighting for markdown files.
 
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
-    :ensure t)
+    :ensure t
+    :config
+    ;; (defun my-adjoin-to-list-or-symbol (element list-or-symbol)
+    ;; (let ((list (if (not (listp list-or-symbol))
+    ;;                 (list list-or-symbol)
+    ;;               list-or-symbol)))
+    ;;   (require 'cl-lib)
+    ;;   (cl-adjoin element list)))
+    ;; (eval-after-load "markdown-mode"
+    ;;   '(mapc
+    ;;     (lambda (face)
+    ;;       (set-face-attribute
+    ;;        face nil
+    ;;        :inherit
+    ;;        (my-adjoin-to-list-or-symbol
+    ;;         'fixed-pitch
+    ;;         (face-attribute face :inherit))))
+    ;;     (list 'markdown-pre-face 'markdown-inline-code-face)))
+    (add-hook 'markdown-mode-hook 'variable-pitch-mode)
+    )
 #+END_SRC
 
 *** [[https://github.com/ancane/markdown-preview-mode][ancane/markdown-preview-mode]]
@@ -1513,6 +1544,28 @@ Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
 #+BEGIN_SRC emacs-lisp
   (use-package lilypond-mode
     :load-path "lisp/")
+#+END_SRC
+*** [[https://github.com/iqbalansari/emacs-emojify][iqbalansari/emacs-emojify]]
+Display emojis in emacs. Sweet!
+#+BEGIN_SRC emacs-lisp 
+  (use-package emojify
+    :ensure t)
+#+END_SRC
+*** [[https://github.com/hayamiz/twittering-mode][hayamiz/twittering-mode]]
+#+BEGIN_SRC emacs-lisp
+  (use-package twittering-mode
+    :ensure t
+    :config
+    (setq twittering-icon-mode t)
+    (setq twittering-convert-fix-size 24)
+    (add-hook 'twittering-mode-hook #'emojify-mode))
+#+END_SRC
+*** [[https://github.com/Malabarba/emacs-google-this][Malabarba/emacs-google-this]]
+#+BEGIN_SRC emacs-lisp
+  (use-package google-this
+    :ensure t
+    :config
+    (google-this-mode 1))
 #+END_SRC
 ** Themes
 *** diego-theme
@@ -1638,14 +1691,15 @@ what I'm using anyway.
     (highlight-parentheses-mode)
     (linum-mode 1)
     (auto-fill-mode 1)
-    (setq comment-auto-fill-only-comments t))
+    (setq-local comment-auto-fill-only-comments t)
+    (setq-local line-spacing 0.4))
   (add-hook 'prog-mode-hook 'setup-prog-mode)
 #+END_SRC
 * Python stuff
 #+BEGIN_SRC emacs-lisp
   (defun setup-python-mode ()
       (yas-minor-mode)
-      (setq tab-width 4)
+      (setq-local tab-width 4)
       (set (make-local-variable 'comment-inline-offset) 2)
       (setenv "PYTHONPATH" "/usr/local/bin/python3")
       (defvar diego/python-prettify-alist
