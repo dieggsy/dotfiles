@@ -369,15 +369,15 @@ like the way he does stuff. A lot of this is his code.
             (select-window first-win)
             (if this-win-2nd (other-window 1))))))
 
-  (defun config ()
+  (defun diego/config ()
     (interactive)
     (find-file "/Users/diego/dotfiles/config/emacs.d/config.org"))
 
-  (defun zshrc ()
+  (defun diego/zshrc ()
     (interactive)
     (find-file "/Users/diego/dotfiles/config/zshrc"))
 
-  (defun toggle-github-spacing ()
+  (defun diego/toggle-github-spacing ()
     (interactive)
     (setq-local line-spacing (if (= line-spacing 0.4) 0.0 0.4)))
 #+END_SRC
