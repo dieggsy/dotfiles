@@ -1207,7 +1207,164 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
 #+END_SRC
 * Dem packages
 ** Active
-*** [[https://github.com/abo-abo/swiper][abo-abo/swiper]]
+*** [[https://github.com/abo-abo/avy][avy]]
+Jump to things in Emacs tree-style
+#+BEGIN_SRC emacs-lisp
+  (use-package avy
+    :ensure t)
+#+END_SRC
+*** [[https://github.com/company-mode/company-mode][company-mode]]
+Supposedly better than autocomplete... Also  using
+[[https://github.com/syohex/emacs-company-jedi][syohex/company-jedi]]
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :ensure t
+    :config
+    (add-hook 'after-init-hook 'global-company-mode)
+    (use-package company-jedi
+      ;; Not sure this is actually working for me
+      :ensure t
+      :config
+      (defun my/python-mode-hook ()
+        (add-to-list 'company-backends 'company-jedi))
+      (add-hook 'python-mode-hook 'my/python-mode-hook)))
+#+END_SRC
+
+*** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
+Eh, wanted to try a simpler way of editing
+csv files. (Excel and Numbers both kinda suck at this,
+LibreOffice was slightly better.) Haven't used this much.
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package csv-mode
+    ;; I'll give this a shot
+    :ensure t)
+#+END_SRC
+*** [[https://github.com/xuchunyang/devdocs.el][devdocs]]
+#+BEGIN_SRC emacs-lisp
+  (use-package devdocs
+      :ensure t)
+#+END_SRC
+*** [[https://github.com/myrkr/dictionary-el/blob/master/dictionary.el][dictionary]]
+Dictionary search!
+
+#+BEGIN_SRC emacs-lisp
+  (use-package dictionary
+    :ensure t)
+#+END_SRC
+
+*** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
+Edit jupyter notebooks in emacs
+#+BEGIN_SRC emacs-lisp
+  (use-package ein
+    :ensure t
+    :config
+    )
+#+END_SRC
+*** [[https://github.com/jorgenschaefer/elpy][elpy]]
+Sets up a python editing environment. I'm not sure yet.
+
+#+BEGIN_SRC emacs-lisp
+      (use-package elpy
+        ;; Eh, I don't know...
+        :ensure t
+        :config
+        (elpy-enable)
+        (elpy-use-ipython))
+#+END_SRC
+*** [[https://github.com/iqbalansari/emacs-emojify][emacs-emojify]]
+Display emojis in emacs. Sweet!
+#+BEGIN_SRC emacs-lisp
+  (use-package emojify
+    :ensure t)
+#+END_SRC
+*** [[https://github.com/Malabarba/emacs-google-this][emacs-google-this]]
+#+BEGIN_SRC emacs-lisp
+  (use-package google-this
+    :ensure t
+    :config
+    (google-this-mode 1))
+#+END_SRC
+*** [[https://github.com/lunaryorn/fancy-battery.el][fancy-battery]]
+For nice battery display info.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package fancy-battery
+    ;; Something something battery
+    :ensure t
+    :config
+    (fancy-battery-mode)
+    (setq fancy-battery-show-percentage t)
+    (fancy-battery-update))
+#+END_SRC
+
+*** [[https://github.com/alpaker/Fill-Column-Indicator][Fill-Column-Indicator]]
+I like a line length limit indicator in Python
+
+#+BEGIN_SRC emacs-lisp
+
+  (use-package fill-column-indicator
+    :ensure t
+    :init
+    (setq-default fci-rule-column 79)
+    (add-hook 'python-mode-hook 'fci-mode))
+#+END_SRC
+
+*** [[https://github.com/lewang/flx][flx]]
+Fuzzy matching
+#+BEGIN_SRC emacs-lisp
+  (use-package flx
+    :ensure t)
+#+END_SRC
+*** [[https://github.com/flycheck/flycheck][flycheck]]
+Syntax check for python. Pretty good.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    ;; Pep8 check, basically
+    :ensure t)
+#+END_SRC
+
+*** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
+Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted/flyspell-correct][d12frosted/flyspell-correct]]
+#+BEGIN_SRC emacs-lisp
+  (use-package flyspell
+    :ensure t
+    :config
+    (use-package flyspell-correct-ivy
+      :ensure t))
+#+END_SRC
+*** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]
+Neat-o
+
+#+BEGIN_SRC emacs-lisp
+  (use-package highlight-numbers
+    :ensure t
+    :init
+    (add-hook 'python-mode-hook 'highlight-numbers-mode))
+#+END_SRC
+
+*** [[https://github.com/tsdh/highlight-parentheses.el][highlight-parentheses]]
+Makes the parentheses my cursor is between stand out more.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package highlight-parentheses
+    ;; Make parenthesis I'm currently in stand out
+    :ensure t)
+#+END_SRC
+
+*** [[https://github.com/vspinu/imenu-anywhere][imenu-anywhere]]
+imenu on steroids.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package imenu-anywhere
+    ;; Imenu on steroids
+    :ensure t)
+#+END_SRC
+
+*** [[https://github.com/abo-abo/swiper][ivy]]
 A neater way to get the same functionality as Helm, with less... clutter?
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
@@ -1244,68 +1401,6 @@ A neater way to get the same functionality as Helm, with less... clutter?
     )
 #+END_SRC
 
-*** [[https://github.com/nonsequitur/smex][nonsequitur/smex]]
-Recently used M-x commands
-#+BEGIN_SRC emacs-lisp
-  (use-package smex
-    :ensure t)
-#+END_SRC
-*** [[https://github.com/lewang/flx][lewang/flx]]
-Fuzzy matching
-#+BEGIN_SRC emacs-lisp
-  (use-package flx
-    :ensure t)
-#+END_SRC
-*** [[https://github.com/magit/magit][magit/magit]]
-Like git, for emacs. But cooler.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package magit
-    :ensure t)
-#+END_SRC
-*** [[https://github.com/abo-abo/avy][abo-abo/avy]]
-Jump to things in Emacs tree-style
-#+BEGIN_SRC emacs-lisp
-  (use-package avy
-    :ensure t)
-#+END_SRC
-*** [[https://github.com/joaotavora/yasnippet][joaotavora/yasnippet]]
-Freakin yasnippet. It's the best.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package yasnippet
-    ;; SNIPPETS!!!
-    :ensure t
-    :config
-    (yas-global-mode 1))
-#+END_SRC
-
-*** [[https://github.com/emacsfodder/pbcopy.el][emacsfodder/pbcopy.el]]
-Allow yanking and pasting with osx clipboard in terminal Emacs. Might want to
-look into [[https://melpa.org/#/osx-clipboard][osx-clipboard]] instead.
-#+BEGIN_SRC emacs-lisp
-  (use-package pbcopy
-    :config
-    (turn-on-pbcopy))
-#+END_SRC
-*** [[https://github.com/flycheck/flycheck][flycheck/flycheck]]
-Syntax check for python. Pretty good.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package flycheck
-    ;; Pep8 check, basically
-    :ensure t)
-#+END_SRC
-
-*** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
-Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted/flyspell-correct][d12frosted/flyspell-correct]]
-#+BEGIN_SRC emacs-lisp
-  (use-package flyspell
-    :ensure t
-    :config
-    (use-package flyspell-correct-ivy
-      :ensure t))
-#+END_SRC
 *** [[https://www.emacswiki.org/emacs/KeyChord][keychord]]
 Neat way to bind commands to key-stroke combinations
 #+BEGIN_SRC emacs-lisp
@@ -1315,75 +1410,85 @@ Neat way to bind commands to key-stroke combinations
       (key-chord-mode 1)
       (key-chord-define evil-insert-state-map "jk" 'evil-normal-state))
 #+END_SRC
-*** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
-Edit jupyter notebooks in emacs
+*** lilypond
 #+BEGIN_SRC emacs-lisp
-  (use-package ein
+  (use-package lilypond-mode
+    :load-path "lisp/")
+#+END_SRC
+*** [[https://github.com/magit/magit][magit]]
+Like git, for emacs. But cooler.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+    :ensure t)
+#+END_SRC
+*** [[https://github.com/defunkt/markdown-mode][markdown-mode]]
+Syntax highlighting for markdown files.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package markdown-mode
     :ensure t
     :config
+    ;; (defun my-adjoin-to-list-or-symbol (element list-or-symbol)
+    ;; (let ((list (if (not (listp list-or-symbol))
+    ;;                 (list list-or-symbol)
+    ;;               list-or-symbol)))
+    ;;   (require 'cl-lib)
+    ;;   (cl-adjoin element list)))
+    ;; (eval-after-load "markdown-mode"
+    ;;   '(mapc
+    ;;     (lambda (face)
+    ;;       (set-face-attribute
+    ;;        face nil
+    ;;        :inherit
+    ;;        (my-adjoin-to-list-or-symbol
+    ;;         'fixed-pitch
+    ;;         (face-attribute face :inherit))))
+    ;;     (list 'markdown-pre-face 'markdown-inline-code-face)))
+    (add-hook 'markdown-mode-hook 'variable-pitch-mode)
     )
 #+END_SRC
-*** [[https://github.com/xuchunyang/devdocs.el][xuchunyang/devdocs.el]]
-#+BEGIN_SRC emacs-lisp
-  (use-package devdocs
-      :ensure t)
-#+END_SRC
-*** [[https://github.com/company-mode/company-mode][company-mode/company-mode]]
-Supposedly better than autocomplete... Also  using
-[[https://github.com/syohex/emacs-company-jedi][syohex/company-jedi]]
+
+*** [[https://github.com/ancane/markdown-preview-mode][markdown-preview-mode]]
+Generates markdown previews? Not sure if working.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package company
-    :ensure t
+  (use-package markdown-preview-mode
+    :ensure t)
+#+END_SRC
+
+*** [[https://github.com/therockmandolinist/matlab-emacs][matlab-emacs]]
+#+BEGIN_SRC emacs-lisp
+  ;; (load-library "matlab-load")
+  (use-package matlab-load
+    :load-path "lisp/")
+#+END_SRC
+
+*** [[https://www.emacswiki.org/emacs/download/multi-term.el][multi-term]]
+I wanted a slightly better terminal in emacs. Not sure
+if this is the answer as I haven't used it much.
+#+BEGIN_SRC emacs-lisp
+  (use-package multi-term
+    ;; Supposed to be nicer than ansi-term
+    :ensure t)
+#+END_SRC
+*** [[https://github.com/sabof/org-bullets][org-bullets]]
+Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
+*** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
+Translates Org-mode file to various other formats via Pandoc. Pretty neat. Code
+under [[Org mode][Major Configs/Org mode/Setup]]
+*** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
+Export org to twitter bootstrap compatible HTML. Code under Major configs/Org
+mode/Setup.
+*** [[https://github.com/emacsfodder/pbcopy.el][pbcopy]]
+Allow yanking and pasting with osx clipboard in terminal Emacs. Might want to
+look into [[https://melpa.org/#/osx-clipboard][osx-clipboard]] instead.
+#+BEGIN_SRC emacs-lisp
+  (use-package pbcopy
     :config
-    (add-hook 'after-init-hook 'global-company-mode)
-    (use-package company-jedi
-      ;; Not sure this is actually working for me
-      :ensure t
-      :config
-      (defun my/python-mode-hook ()
-        (add-to-list 'company-backends 'company-jedi))
-      (add-hook 'python-mode-hook 'my/python-mode-hook)))
+    (turn-on-pbcopy))
 #+END_SRC
-
-*** [[https://github.com/Wilfred/ag.el][Wilfred/ag.el]]
-Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]] into emacs.
-
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package ag
-  ;;   ;; Silver searcher
-  ;;   :ensure t
-  ;;   :defer t
-  ;;   :init
-  ;;   (use-package wgrep-ag
-  ;;     ;; Guess I need this first
-  ;;     :ensure t
-  ;;     :commands (wgrep-ag-setup))
-  ;;   :config
-  ;;   (add-hook 'ag-mode-hook
-  ;;             (lambda ()
-  ;;               (wgrep-ag-setup)
-  ;;               (define-key ag-mode-map (kbd "n") 'evil-search-next)
-  ;;               (define-key ag-mode-map (kbd "N") 'evil-search-previous)))
-  ;;   (setq ag-executable "/usr/local/bin/ag")
-  ;;   (setq ag-highlight-search t)
-  ;;   (setq ag-reuse-buffers t)
-  ;;   (setq ag-reuse-window t))
-#+END_SRC
-
-*** [[https://github.com/alpaker/Fill-Column-Indicator][alpaker/Fill-Column-Indicator]]
-I like a line length limit indicator in Python
-
-#+BEGIN_SRC emacs-lisp
-
-  (use-package fill-column-indicator
-    :ensure t
-    :init
-    (setq-default fci-rule-column 79)
-    (add-hook 'python-mode-hook 'fci-mode))
-#+END_SRC
-
-*** [[https://github.com/Fanael/rainbow-delimiters][Fanael/rainbow-delimiters]]
+*** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
 Better parentheses coloring
 
 #+BEGIN_SRC emacs-lisp
@@ -1394,35 +1499,13 @@ Better parentheses coloring
     (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
 #+END_SRC
 
-*** [[https://github.com/tsdh/highlight-parentheses.el][tsdh/highlight-parentheses.el]]
-Makes the parentheses my cursor is between stand out more.
-
+*** [[https://github.com/nonsequitur/smex][smex]]
+Recently used M-x commands
 #+BEGIN_SRC emacs-lisp
-  (use-package highlight-parentheses
-    ;; Make parenthesis I'm currently in stand out
+  (use-package smex
     :ensure t)
 #+END_SRC
-
-*** [[https://github.com/Fanael/highlight-numbers][Fanael/highlight-numbers]]
-Neat-o
-
-#+BEGIN_SRC emacs-lisp
-  (use-package highlight-numbers
-    :ensure t
-    :init
-    (add-hook 'python-mode-hook 'highlight-numbers-mode))
-#+END_SRC
-
-*** [[https://github.com/vspinu/imenu-anywhere][vspinu/imenu-anywhere]]
-imenu on steroids.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package imenu-anywhere
-    ;; Imenu on steroids
-    :ensure t)
-#+END_SRC
-
-*** [[https://github.com/TheBB/spaceline][TheBB/spaceline]]
+*** [[https://github.com/TheBB/spaceline][spaceline]]
 I was looking for something with the nice look and simplicity of
 [[https://github.com/itchyny/lightline.vim][this]]. Spaceline does ok.
 
@@ -1450,28 +1533,7 @@ I was looking for something with the nice look and simplicity of
 
 #+END_SRC
 
-*** [[https://github.com/lunaryorn/fancy-battery.el][lunaryorn/fancy-battery.el]]
-For nice battery display info.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package fancy-battery
-    ;; Something something battery
-    :ensure t
-    :config
-    (fancy-battery-mode)
-    (setq fancy-battery-show-percentage t)
-    (fancy-battery-update))
-#+END_SRC
-
-*** [[https://github.com/myrkr/dictionary-el/blob/master/dictionary.el][myrkr/dictionary-el]]
-Dictionary search!
-
-#+BEGIN_SRC emacs-lisp
-  (use-package dictionary
-    :ensure t)
-#+END_SRC
-
-*** [[https://github.com/naiquevin/sphinx-doc.el][naiquevin/sphinx-doc.el]]
+*** [[https://github.com/naiquevin/sphinx-doc.el][sphinx-doc]]
 Sphinx doc python integration. Pretty neat, though not entirely
 complete, IMO.
 
@@ -1486,111 +1548,13 @@ complete, IMO.
 
 #+END_SRC
 
-*** [[https://github.com/defunkt/markdown-mode][defunkt/markdown-mode]]
-Syntax highlighting for markdown files.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package markdown-mode
-    :ensure t
-    :config
-    ;; (defun my-adjoin-to-list-or-symbol (element list-or-symbol)
-    ;; (let ((list (if (not (listp list-or-symbol))
-    ;;                 (list list-or-symbol)
-    ;;               list-or-symbol)))
-    ;;   (require 'cl-lib)
-    ;;   (cl-adjoin element list)))
-    ;; (eval-after-load "markdown-mode"
-    ;;   '(mapc
-    ;;     (lambda (face)
-    ;;       (set-face-attribute
-    ;;        face nil
-    ;;        :inherit
-    ;;        (my-adjoin-to-list-or-symbol
-    ;;         'fixed-pitch
-    ;;         (face-attribute face :inherit))))
-    ;;     (list 'markdown-pre-face 'markdown-inline-code-face)))
-    (add-hook 'markdown-mode-hook 'variable-pitch-mode)
-    )
-#+END_SRC
-
-*** [[https://github.com/ancane/markdown-preview-mode][ancane/markdown-preview-mode]]
-Generates markdown previews? Not sure if working.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package markdown-preview-mode
-    :ensure t)
-#+END_SRC
-
-*** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
-Eh, wanted to try a simpler way of editing
-csv files. (Excel and Numbers both kinda suck at this,
-LibreOffice was slightly better.) Haven't used this much.
-
-#+BEGIN_SRC emacs-lisp
-
-  (use-package csv-mode
-    ;; I'll give this a shot
-    :ensure t)
-#+END_SRC
-*** [[https://github.com/jorgenschaefer/elpy][jorgenschaefer/elpy]]
-Sets up a python editing environment. I'm not sure yet.
-
-#+BEGIN_SRC emacs-lisp
-      (use-package elpy
-        ;; Eh, I don't know...
-        :ensure t
-        :config
-        (elpy-enable)
-        (elpy-use-ipython))
-#+END_SRC
-*** [[https://www.emacswiki.org/emacs/download/multi-term.el][multi-term]]
-I wanted a slightly better terminal in emacs. Not sure
-if this is the answer as I haven't used it much.
-#+BEGIN_SRC emacs-lisp
-  (use-package multi-term
-    ;; Supposed to be nicer than ansi-term
-    :ensure t)
-#+END_SRC
-*** [[https://github.com/yoshiki/yaml-mode][yoshiki/yaml-mode]]
-#+BEGIN_SRC emacs-lisp
-  (use-package yaml-mode
-    :ensure t
-    :config
-    (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
-#+END_SRC
-
-*** [[https://github.com/vermiculus/sx.el/][vermiculus/sx.el/]]
+*** [[https://github.com/vermiculus/sx.el/][sx]]
+Stack exchange on emacs.
 #+BEGIN_SRC emacs-lisp
   (use-package sx
     :ensure t)
 #+END_SRC
-*** [[https://github.com/marsmining/ox-twbs][marsmining/ox-twbs]]
-Export org to twitter bootstrap compatible HTML. Code under Major configs/Org
-mode/Setup.
-*** [[https://github.com/kawabata/ox-pandoc][kawabata/ox-pandoc]]
-Translates Org-mode file to various other formats via Pandoc. Pretty neat. Code
-under [[Org mode][Major Configs/Org mode/Setup]]
-*** [[https://github.com/sabof/org-bullets][org-bullets]]
-Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
-*** [[https://github.com/therockmandolinist/matlab-emacs][matlab-emacs]]
-#+BEGIN_SRC emacs-lisp
-  ;; (load-library "matlab-load")
-  (use-package matlab-load
-    :load-path "lisp/")
-#+END_SRC
-
-*** lilypond
-#+BEGIN_SRC emacs-lisp
-  (use-package lilypond-mode
-    :load-path "lisp/")
-#+END_SRC
-*** [[https://github.com/iqbalansari/emacs-emojify][iqbalansari/emacs-emojify]]
-Display emojis in emacs. Sweet!
-#+BEGIN_SRC emacs-lisp
-  (use-package emojify
-    :ensure t)
-#+END_SRC
-*** [[https://github.com/hayamiz/twittering-mode][hayamiz/twittering-mode]]
+*** [[https://github.com/hayamiz/twittering-mode][twittering-mode]]
 #+BEGIN_SRC emacs-lisp
   (use-package twittering-mode
     :ensure t
@@ -1599,13 +1563,25 @@ Display emojis in emacs. Sweet!
     (setq twittering-convert-fix-size 24)
     (add-hook 'twittering-mode-hook #'emojify-mode))
 #+END_SRC
-*** [[https://github.com/Malabarba/emacs-google-this][Malabarba/emacs-google-this]]
+*** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
 #+BEGIN_SRC emacs-lisp
-  (use-package google-this
+  (use-package yaml-mode
     :ensure t
     :config
-    (google-this-mode 1))
+    (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 #+END_SRC
+
+*** [[https://github.com/joaotavora/yasnippet][yasnippet]]
+Freakin yasnippet. It's the best.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    ;; SNIPPETS!!!
+    :ensure t
+    :config
+    (yas-global-mode 1))
+#+END_SRC
+
 ** Themes
 *** diego-theme
 #+BEGIN_SRC emacs-lisp
@@ -1624,7 +1600,83 @@ Display emojis in emacs. Sweet!
       '(ivy-current-match ((t nil))))))
 #+END_SRC
 ** Not currently in use
-*** [[https://github.com/Malabarba/smart-mode-line][Malabarba/smart-mode-line]]
+*** [[https://github.com/Wilfred/ag.el][ag]]
+Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]] into emacs.
+
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package ag
+  ;;   ;; Silver searcher
+  ;;   :ensure t
+  ;;   :defer t
+  ;;   :init
+  ;;   (use-package wgrep-ag
+  ;;     ;; Guess I need this first
+  ;;     :ensure t
+  ;;     :commands (wgrep-ag-setup))
+  ;;   :config
+  ;;   (add-hook 'ag-mode-hook
+  ;;             (lambda ()
+  ;;               (wgrep-ag-setup)
+  ;;               (define-key ag-mode-map (kbd "n") 'evil-search-next)
+  ;;               (define-key ag-mode-map (kbd "N") 'evil-search-previous)))
+  ;;   (setq ag-executable "/usr/local/bin/ag")
+  ;;   (setq ag-highlight-search t)
+  ;;   (setq ag-reuse-buffers t)
+  ;;   (setq ag-reuse-window t))
+#+END_SRC
+*** [[https://github.com/auto-complete/auto-complete][auto-complete]]
+Pretty good autocompletion, but trying out [[github.com/company-mode/company-mode][company-mode]] right now.
+
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package auto-complete
+  ;;   ;; Supposedly not as good as company mode
+  ;;   :ensure t
+  ;;   :config
+  ;;   (global-auto-complete-mode t))
+#+END_SRC
+
+*** [[https://github.com/joaotavora/autopair][autopair]]
+It may be recommended to use =electric-pair-mode= nowadays? That's
+what I'm using anyway.
+
+#+Begin_src emacs-lisp
+  ;; (use-package autopair
+  ;;   :ensure t
+  ;;   :config
+  ;;   (autopair-global-mode))
+#+END_SRC
+*** [[https://github.com/tkf/emacs-jedi][emacs-jedi]]
+Integrates [[https://github.com/davidhalter/jedi][jedi]] into emacs for python completion,
+hasn't been working for me recently. Either way,
+this is for [[https://github.com/auto-complete/auto-complete][auto-complete]] but now I use [[https://github.com/syohex/emacs-company-jedi][syohex/emacs-company-jedi]].
+
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package jedi
+  ;;   ;; Hasn't been working smoothly recently
+  ;;   :ensure t
+  ;;   :init
+  ;;   (add-hook 'python-mode-hook 'jedi:setup)
+  ;;   (setq jedi:complete-on-dot t))
+#+END_SRC
+
+*** [[https://github.com/7696122/evil-terminal-cursor-changer][evil-terminal-cursor-changer]]
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package evil-terminal-cursor-changer
+  ;;   :ensure t
+  ;;   :config
+  ;;   (unless (display-graphic-p)
+  ;;     (require 'evil-terminal-cursor-changer)
+  ;;     (evil-terminal-cursor-changer-activate) ; or (etcc-on)
+  ;;     )
+  ;;   (setq evil-motion-state-cursor 'box)  ; █
+  ;;   (setq evil-visual-state-cursor 'box)  ; █
+  ;;   (setq evil-normal-state-cursor 'box)  ; █
+  ;;   (setq evil-insert-state-cursor 'bar)  ; ⎸
+  ;;   (setq evil-emacs-state-cursor  'bar)) ; _
+
+#+END_SRC
+
+*** [[https://github.com/Malabarba/smart-mode-line][smart-mode-line]]
 Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][spaceline]].
 
 #+BEGIN_SRC emacs-lisp
@@ -1645,7 +1697,13 @@ Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][s
   ;;   (setq fancy-battery-show-percentage t))
 #+END_SRC
 
-*** [[https://github.com/zenozeng/yafolding.el][zenozeng/yafolding.el]]
+*** [[https://github.com/nashamri/spacemacs-theme][spacemacs-theme]]
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package spacemacs-theme
+  ;;   :ensure t)
+#+END_SRC
+
+*** [[https://github.com/zenozeng/yafolding.el][yafolding]]
 Good code folding is hard to come by in Emacs,
 and isn't /that/ useful. This was pretty good but
 had some known issues.
@@ -1665,63 +1723,6 @@ had some known issues.
   ;;  (local-set-key [C-tab] 'yafolding-toggle-element))
   ;;   (add-hook 'python-mode-hook 'yafolding-mode)
   ;;   (add-hook 'python-mode-hook 'air--yafolding-kbd))
-#+END_SRC
-
-*** [[https://github.com/tkf/emacs-jedi][tkf/emacs-jedi]]
-Integrates [[https://github.com/davidhalter/jedi][jedi]] into emacs for python completion,
-hasn't been working for me recently. Either way,
-this is for [[https://github.com/auto-complete/auto-complete][auto-complete]] but now I use [[https://github.com/syohex/emacs-company-jedi][syohex/emacs-company-jedi]].
-
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package jedi
-  ;;   ;; Hasn't been working smoothly recently
-  ;;   :ensure t
-  ;;   :init
-  ;;   (add-hook 'python-mode-hook 'jedi:setup)
-  ;;   (setq jedi:complete-on-dot t))
-#+END_SRC
-
-*** [[https://github.com/auto-complete/auto-complete][auto-complete/auto-complete]]
-Pretty good autocompletion, but trying out [[github.com/company-mode/company-mode][company-mode]] right now.
-
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package auto-complete
-  ;;   ;; Supposedly not as good as company mode
-  ;;   :ensure t
-  ;;   :config
-  ;;   (global-auto-complete-mode t))
-#+END_SRC
-
-*** [[https://github.com/joaotavora/autopair][joaotavora/autopair]]
-It may be recommended to use =electric-pair-mode= nowadays? That's
-what I'm using anyway.
-
-#+Begin_src emacs-lisp
-  ;; (use-package autopair
-  ;;   :ensure t
-  ;;   :config
-  ;;   (autopair-global-mode))
-#+END_SRC
-*** [[https://github.com/7696122/evil-terminal-cursor-changer][7696122/evil-terminal-cursor-changer]]
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package evil-terminal-cursor-changer
-  ;;   :ensure t
-  ;;   :config
-  ;;   (unless (display-graphic-p)
-  ;;     (require 'evil-terminal-cursor-changer)
-  ;;     (evil-terminal-cursor-changer-activate) ; or (etcc-on)
-  ;;     )
-  ;;   (setq evil-motion-state-cursor 'box)  ; █
-  ;;   (setq evil-visual-state-cursor 'box)  ; █
-  ;;   (setq evil-normal-state-cursor 'box)  ; █
-  ;;   (setq evil-insert-state-cursor 'bar)  ; ⎸
-  ;;   (setq evil-emacs-state-cursor  'bar)) ; _
-
-#+END_SRC
-*** [[https://github.com/nashamri/spacemacs-theme][nashamri/spacemacs-theme]]
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package spacemacs-theme
-  ;;   :ensure t)
 #+END_SRC
 
 * Prog-mode stuff
