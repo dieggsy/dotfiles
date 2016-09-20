@@ -1323,6 +1323,11 @@ Edit jupyter notebooks in emacs
     :config
     )
 #+END_SRC
+*** [[https://github.com/xuchunyang/devdocs.el][xuchunyang/devdocs.el]]
+#+BEGIN_SRC emacs-lisp
+  (use-package devdocs
+      :ensure t)
+#+END_SRC
 *** [[https://github.com/company-mode/company-mode][company-mode/company-mode]]
 Supposedly better than autocomplete... Also  using
 [[https://github.com/syohex/emacs-company-jedi][syohex/company-jedi]]
