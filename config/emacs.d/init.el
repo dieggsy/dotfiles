@@ -64,7 +64,7 @@
 	("#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36")))
  '(ibuffer-use-other-window t)
  '(ivy-extra-directories (quote ("../")))
- '(ivy-ignore-buffers (quote ("\\` " "\\`\\*LV\\*" "\\`\\*epc")))
+ '(ivy-ignore-buffers (quote ("\\` " "\\`\\*LV\\*" "\\`\\*magit" "\\`\\*epc")))
  '(magit-diff-use-overlays nil)
  '(markdown-header-scaling t)
  '(nrepl-message-colors
