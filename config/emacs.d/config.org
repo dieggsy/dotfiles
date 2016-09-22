@@ -1501,11 +1501,23 @@ Better parentheses coloring
     (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
 #+END_SRC
 
+*** [[https://github.com/iqbalansari/restart-emacs][restart-emacs]] 
+#+BEGIN_SRC emacs-lisp
+  (use-package restart-emacs
+    :ensure t)
+#+END_SRC
 *** [[https://github.com/nonsequitur/smex][smex]]
 Recently used M-x commands
 #+BEGIN_SRC emacs-lisp
   (use-package smex
     :ensure t)
+#+END_SRC
+*** [[https://github.com/snosov1/toc-org][toc-org]]
+#+BEGIN_SRC emacs-lisp
+    (use-package toc-org
+      :ensure t
+      :config
+      (add-hook 'org-mode-hook 'toc-org-enable))
 #+END_SRC
 *** [[https://github.com/TheBB/spaceline][spaceline]]
 I was looking for something with the nice look and simplicity of
