@@ -407,9 +407,11 @@ like the way he does stuff. A lot of this is his code.
       ",f"        'projectile-find-file
       ",y"        'yas-insert-snippet
       "."         'switch-to-previous-buffer
+      "/"         'evil-search-forward
       ":"         'eval-expression
       "<right>"   'other-window
       "B"         'magit-blame-toggle
+      "Ce"        (lambda () (interactive) (calc-embedded) (evil-insert-state))
       "K"         'kill-buffer
       "aa"        'align-regexp
       "b"         'ivy-switch-buffer ;; Switch to another buffer
