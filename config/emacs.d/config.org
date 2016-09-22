@@ -1339,6 +1339,12 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
     (use-package flyspell-correct-ivy
       :ensure t))
 #+END_SRC
+*** [[https://github.com/dtaht/Gnugol][Gnugol]]
+An org-mode google??? Not currently working, apparently.
+#+BEGIN_SRC emacs-lisp
+  (use-package gnugol
+    :load-path "lisp/")
+#+END_SRC
 *** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]
 Neat-o
 
@@ -1467,12 +1473,6 @@ Generates markdown previews? Not sure if working.
     :load-path "lisp/")
 #+END_SRC
 
-*** [[https://github.com/dtaht/Gnugol][dtaht/Gnugol]]
-An org-mode google??? Not currently working, apparently.
-#+BEGIN_SRC emacs-lisp
-  (use-package gnugol
-    :load-path "lisp/")
-#+END_SRC
 *** [[https://www.emacswiki.org/emacs/download/multi-term.el][multi-term]]
 I wanted a slightly better terminal in emacs. Not sure
 if this is the answer as I haven't used it much.
@@ -1518,13 +1518,6 @@ Recently used M-x commands
 #+BEGIN_SRC emacs-lisp
   (use-package smex
     :ensure t)
-#+END_SRC
-*** [[https://github.com/snosov1/toc-org][toc-org]]
-#+BEGIN_SRC emacs-lisp
-    (use-package toc-org
-      :ensure t
-      :config
-      (add-hook 'org-mode-hook 'toc-org-enable))
 #+END_SRC
 *** [[https://github.com/TheBB/spaceline][spaceline]]
 I was looking for something with the nice look and simplicity of
@@ -1574,6 +1567,13 @@ Stack exchange on emacs.
 #+BEGIN_SRC emacs-lisp
   (use-package sx
     :ensure t)
+#+END_SRC
+*** [[https://github.com/snosov1/toc-org][toc-org]]
+#+BEGIN_SRC emacs-lisp
+    (use-package toc-org
+      :ensure t
+      :config
+      (add-hook 'org-mode-hook 'toc-org-enable))
 #+END_SRC
 *** [[https://github.com/hayamiz/twittering-mode][twittering-mode]]
 #+BEGIN_SRC emacs-lisp
