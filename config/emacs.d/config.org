@@ -456,6 +456,10 @@ like the way he does stuff. A lot of this is his code.
                     flycheck-error-list-mode
                     git-rebase-mode
                     octopress-mode
+                    eshell-mode
+                    calc-mode
+                    calc-trail-mode
+                    Info-mode
                     octopress-server-mode
                     octopress-process-mode
                     sunshine-mode
