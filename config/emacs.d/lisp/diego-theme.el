@@ -79,6 +79,8 @@
    `(markdown-inline-code-face ((t (:inherit (fixed-pitch font-lock-constant-face) :background "#444444"))))
    `(markdown-pre-face ((t (:inherit (fixed-pitch font-lock-constant-face) :background "#444444"))))
    `(whitespace-trailing ((t (:background "#fb3460" :foreground "yellow" :weight bold))))
+   `(org-verbatim ((t (:inherit font-lock-constant-face))))
+   `(org-code ((t (:inherit org-verbatim))))
    ))
 
 ;;;###autoload
