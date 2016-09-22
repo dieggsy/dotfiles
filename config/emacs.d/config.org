@@ -237,7 +237,7 @@ consistent with other fonts. Last updated 2011, last successfully tested
 
 #+END_SRC
 ** File handling
-   Handling/storing of files, backups, autosaves.
+Handling/storing of files, backups, autosaves.
 #+BEGIN_SRC emacs-lisp
   (defvar backup-dir "~/.emacsbackups/")
   (setq backup-directory-alist (list (cons "." backup-dir)))
@@ -425,8 +425,8 @@ like the way he does stuff. A lot of this is his code.
       "w"         'save-buffer
       "x"         'counsel-M-x
       "y"         'counsel-yank-pop
-      ;; "f"         'helm-find
       ;; "T"      'gtags-find-tag
+      ;; "f"         'helm-find
       ;; "t"      'gtags-reindex
       )
 
