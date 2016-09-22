@@ -15,12 +15,13 @@ Minimal info about meself, I guess.
 
 #+END_SRC
 
-* Package Managing Setup
+* Init Setup
 Setup up cool stuff like use-package, and stuff.
 
 ** Misc init
 Setup load directories, mostly.
 #+BEGIN_SRC emacs-lisp
+  (server-start)
   (require 'package)
   (setq package-enable-at-startup nil)
   (add-to-list 'load-path
@@ -211,7 +212,6 @@ such goodies.
 
 ** Visual things
 Get rid of menu bars, scroll bars, startup screens, etc.
-
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-splash-screen t
         inhibit-startup-message t
@@ -245,6 +245,7 @@ consistent with other fonts. Last updated 2011, last successfully tested
         `((".*" ,temporary-file-directory t)))
   (global-auto-revert-mode t)
   (save-place-mode 1)
+  (desktop-save-mode 1)
 
 #+END_SRC
 ** Parentheses
