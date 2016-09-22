@@ -1795,6 +1795,10 @@ Mostly set up hs-minor-mode for emacs-lisp.
   (add-hook 'emacs-lisp-mode-hook 'setup-lisp-mode)
 #+END_SRC
 
+* Term mode stuff 
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'term-mode-hook (lambda() (setq yas-dont-activate t)))
+#+END_SRC
 * Fix fci pop-up menu issue
 This is from somewhere on the internet, and may no longer be relevant since I
 started using company-mode.
