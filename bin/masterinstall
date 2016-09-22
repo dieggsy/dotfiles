@@ -161,6 +161,7 @@ brew install numpy
 brew install oniguruma
 brew install opencv
 brew install openexr
+brew install openjpeg
 brew install openssl
 brew install oysttyer
 brew install pandoc
@@ -170,6 +171,7 @@ brew install perl
 brew install pip-completion
 brew install pixman
 brew install pkg-config
+brew install poppler
 brew install portaudio
 brew install portmidi
 brew install potrace
