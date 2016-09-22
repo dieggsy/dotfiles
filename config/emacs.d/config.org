@@ -465,6 +465,7 @@ like the way he does stuff. A lot of this is his code.
     (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
     (setq evil-emacs-state-modes (delq 'Custom-mode evil-emacs-state-modes))
     (setq evil-insert-state-modes (delq 'term-mode evil-insert-state-modes))
+    (setq evil-motion-state-modes (delq 'Info-mode evil-motion-state-modes)) 
 
     (setq evil-insert-state-cursor '(bar . 1))
     (setq evil-emacs-state-cursor '(bar . 1))
