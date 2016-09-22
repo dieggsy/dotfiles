@@ -272,16 +272,6 @@ consistent with other fonts. Last updated 2011, last successfully tested
 #+END_SRC
 ** Line position/highlighting
 #+BEGIN_SRC emacs-lisp
-  (global-hl-line-mode 1)
-  ;; (add-hook 'help-mode-hook (lambda ()
-  ;;                           (setq-local global-hl-line-mode
-  ;;                                       nil)))
-  (add-hook 'minesweeper-mode-hook (lambda ()
-                              (setq-local global-hl-line-mode
-                                          nil)))
-  (add-hook 'term-mode-hook (lambda ()
-                              (setq-local global-hl-line-mode
-                                          nil)))
   (setq linum-delay t)
   (setq column-number-mode t)
 
@@ -897,7 +887,6 @@ like the way he does stuff. A lot of this is his code.
                 (auto-fill-mode 1)
                 ;; (flyspell-mode)
                 (org-indent-mode)
-                (setq-local global-hl-line-mode nil)
                 )))
 
   (use-package org-bullets
@@ -1752,6 +1741,7 @@ Properties that apply to all programming modes.
     (auto-fill-mode 1)
     (setq-local comment-auto-fill-only-comments t)
     (setq-local line-spacing 0.0)
+    (hl-line-mode 1)
     )
   (add-hook 'prog-mode-hook 'diego/setup-prog-mode)
 #+END_SRC
