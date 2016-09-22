@@ -220,12 +220,17 @@ Get rid of menu bars, scroll bars, startup screens, etc.
   (menu-bar-mode 0)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
+  (setq custom-raised-buttons nil)
   ;; (add-hook 'minibuffer-setup-hook (lambda ()
   ;;                                    (electric-pair-mode)))
   (setq display-time-load-average nil)
   (setq whitespace-style '(face trailing))
 #+END_SRC
-
+** Minibuffer
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'minibuffer-setup-hook (lambda () (setq-local cursor-type '(bar . 1))))
+  (add-hook 'minibuffer-setup-hook (lambda () (show-paren-mode -1)))
+#+END_SRC
 ** Fonts
 *A note on the font:* Check out [[http://mbauman.net/geek/2009/03/15/minor-truetype-font-editing-on-a-mac/][this post]] for advice on fixing the Consolas font
 on os x. This helps with the modeline text vertical alignments and makes it
