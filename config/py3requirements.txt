@@ -123,7 +123,7 @@ qtconsole==4.2.1
 rainbow==2.5.0
 readline==6.2.4.1
 requests==2.11.1
-requests-oauthlib==0.6.2
+requests-oauthlib==0.7.0
 rope==0.10.3
 rsa==3.4.2
 rtv==1.12.0
