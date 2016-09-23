@@ -1422,7 +1422,10 @@ A neater way to get the same functionality as Helm, with less... clutter?
               "\\`\\*magit"
               "\\`\\*epc"
               "\\`\\*Calc"
-              "\\`\\*Colors"))
+              "\\`\\*Colors"
+              "\\`\\*helm"
+              "\\`\\*Help"
+              "\\`\\*Packages"))
       (ivy--resize-minibuffer-to-fit) ; Not actually sure this is doing things
       ;; RET enters folder rather than opening dired
       (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
