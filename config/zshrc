@@ -226,6 +226,10 @@ ocrpdf(){
 psetzip (){
 	zip -r "$1".zip $1 -x '*.git*' -x '*.ipynb_checkpoints*' -x '*.pyc*' -x '*.DS_Store*'
 }
+
+calc(){
+	emacs --batch --eval "(message (calc-eval \"$1\"))"
+}
 export WWW_HOME='http://google.com'
 
 # I'm not really sure why I'm using the explicit path here...
