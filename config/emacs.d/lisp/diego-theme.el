@@ -52,7 +52,11 @@
    `(ivy-current-match ((t nil)))
    `(ivy-modified-buffer ((t (:inherit helm-buffer-not-saved))))
    `(swiper-line-face ((t (:inherit hl-line))))
-   
+
+   ;;Email 
+   `(message-header-subject ((t (:foreground "OliveDrab1" :height 1.2))))
+   `(message-mml ((t (:inherit font-lock-comment-face :slant normal))))
+   `(notmuch-search-unread-face ((t (:inherit font-lock-function-name-face))))
 
    ;; Smart-mode-line
    `(sml/battery ((t nil)) t)
