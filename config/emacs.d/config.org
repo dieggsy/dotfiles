@@ -395,11 +395,6 @@ like the way he does stuff. A lot of this is his code.
   (defun diego/toggle-github-spacing ()
     (interactive)
     (setq-local line-spacing (if (= line-spacing 0.4) 0.0 0.4)))
-
-  (defun diego/calc-embedded ()
-    (interactive)
-    (calc-embedded)
-    (evil-insert-state))
 #+END_SRC
 ** [[https://bitbucket.org/lyro/evil/wiki/Home][Evil mode]]
 *** Leader config
@@ -1817,6 +1812,8 @@ Properties that apply to all programming modes.
     (auto-fill-mode 1)
     (setq-local comment-auto-fill-only-comments t)
     (setq-local line-spacing 0.0)
+    (setq-local calc-embedded-open-mode (concat comment-start " "))
+    (setq-local calc-embedded-close-mode (concat comment-end "\n"))
     (hl-line-mode 1)
     )
   (add-hook 'prog-mode-hook 'diego/setup-prog-mode)
@@ -1845,6 +1842,8 @@ Properties that apply to all programming modes.
           ("not in" . "∉")))
       (setq-local prettify-symbols-alist
                   diego/python-prettify-alist)
+      ;; (setq-local calc-embedded-open-mode
+      ;;             "# ")
       )
 
   (add-hook 'python-mode-hook 'setup-python-mode)
@@ -1859,9 +1858,12 @@ Mostly set up hs-minor-mode for emacs-lisp.
     (local-set-key (kbd "C-c <up>") 'hs-hide-all)
     (local-set-key (kbd "C-c <down>") 'hs-show-all)
     (local-set-key (kbd "C-c <left>") 'hs-hide-block)
-    (local-set-key (kbd "C-c <right>") 'hs-show-block))
+    (local-set-key (kbd "C-c <right>") 'hs-show-block)
+    ;; (setq-local calc-embedded-open-mode ";; ")
+    )
 
   (add-hook 'emacs-lisp-mode-hook 'setup-lisp-mode)
+  (add-hook 'lisp-interaction-mode-hook 'setup-lisp-mode)
 #+END_SRC
 
 * Term mode stuff 
