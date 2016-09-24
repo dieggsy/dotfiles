@@ -926,8 +926,8 @@ like the way he does stuff. A lot of this is his code.
 ** [[https://github.com/emacs-helm/helm][Helm]]
 *Note:* I'm now using [[https://github.com/abo-abo/swiper][abo-abo/swiper]], which includes ivy, counsel, and swiper,
 for very similar functionality but with a much cleaner and responsive
-interface, in my opinion. It's really neat, and you should definitely
-check it out.
+interface, in my opinion. It's really neat, and you should definitely check it
+out.
 
 Kind of an Alfred for emacs. Completion, nice menus for stuff,
 overall great.
@@ -1218,6 +1218,7 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
     (helm-ido-like)
     )
 #+END_SRC
+
 * Dem packages
 ** Active
 *** [[https://github.com/abo-abo/avy][avy]]
@@ -1226,10 +1227,9 @@ Jump to things in Emacs tree-style
   (use-package avy
     :ensure t)
 #+END_SRC
-*** [[https://github.com/company-mode/company-mode][company-mode]]
-Supposedly better than autocomplete... Also  using
-[[https://github.com/syohex/emacs-company-jedi][syohex/company-jedi]]
 
+*** [[https://github.com/company-mode/company-mode][company-mode]]
+Supposedly better than autocomplete... Also using [[https://github.com/syohex/emacs-company-jedi][company-jedi]]
 #+BEGIN_SRC emacs-lisp
   (use-package company
     :ensure t
@@ -1245,24 +1245,23 @@ Supposedly better than autocomplete... Also  using
 #+END_SRC
 
 *** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
-Eh, wanted to try a simpler way of editing
-csv files. (Excel and Numbers both kinda suck at this,
-LibreOffice was slightly better.) Haven't used this much.
-
+Eh, wanted to try a simpler way of editing csv files. (Excel and Numbers both
+kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
 #+BEGIN_SRC emacs-lisp
 
   (use-package csv-mode
     ;; I'll give this a shot
     :ensure t)
 #+END_SRC
+
 *** [[https://github.com/xuchunyang/devdocs.el][devdocs]]
 #+BEGIN_SRC emacs-lisp
   (use-package devdocs
       :ensure t)
 #+END_SRC
+
 *** [[https://github.com/myrkr/dictionary-el/blob/master/dictionary.el][dictionary]]
 Dictionary search!
-
 #+BEGIN_SRC emacs-lisp
   (use-package dictionary
     :ensure t)
@@ -1276,9 +1275,9 @@ Edit jupyter notebooks in emacs
     :config
     )
 #+END_SRC
+
 *** [[https://github.com/jorgenschaefer/elpy][elpy]]
 Sets up a python editing environment. I'm not sure yet.
-
 #+BEGIN_SRC emacs-lisp
   (use-package elpy
     ;; Eh, I don't know...
@@ -1294,12 +1293,14 @@ Sets up a python editing environment. I'm not sure yet.
             elpy-module-sane-defaults))
     )
 #+END_SRC
+
 *** [[https://github.com/iqbalansari/emacs-emojify][emacs-emojify]]
 Display emojis in emacs. Sweet!
 #+BEGIN_SRC emacs-lisp
   (use-package emojify
     :ensure t)
 #+END_SRC
+
 *** [[https://github.com/Malabarba/emacs-google-this][emacs-google-this]]
 Google stuff from emacs.
 #+BEGIN_SRC emacs-lisp
@@ -1319,9 +1320,9 @@ Google stuff from emacs.
       (exec-path-from-shell-initialize))
     )
 #+END_SRC
+
 *** [[https://github.com/lunaryorn/fancy-battery.el][fancy-battery]]
 For nice battery display info.
-
 #+BEGIN_SRC emacs-lisp
   (use-package fancy-battery
     ;; Something something battery
@@ -1334,7 +1335,6 @@ For nice battery display info.
 
 *** [[https://github.com/alpaker/Fill-Column-Indicator][Fill-Column-Indicator]]
 I like a line length limit indicator in Python
-
 #+BEGIN_SRC emacs-lisp
 
   (use-package fill-column-indicator
@@ -1350,9 +1350,9 @@ Fuzzy matching
   (use-package flx
     :ensure t)
 #+END_SRC
+
 *** [[https://github.com/flycheck/flycheck][flycheck]]
 Syntax check for python. Pretty good.
-
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
     ;; Pep8 check, basically
@@ -1368,15 +1368,16 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
     (use-package flyspell-correct-ivy
       :ensure t))
 #+END_SRC
+
 *** [[https://github.com/dtaht/Gnugol][Gnugol]]
 An org-mode google??? Not currently working, apparently.
 #+BEGIN_SRC emacs-lisp
   (use-package gnugol
     :load-path "lisp/")
 #+END_SRC
+
 *** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]
 Neat-o
-
 #+BEGIN_SRC emacs-lisp
   (use-package highlight-numbers
     :ensure t
@@ -1386,7 +1387,6 @@ Neat-o
 
 *** [[https://github.com/tsdh/highlight-parentheses.el][highlight-parentheses]]
 Makes the parentheses my cursor is between stand out more.
-
 #+BEGIN_SRC emacs-lisp
   (use-package highlight-parentheses
     ;; Make parenthesis I'm currently in stand out
@@ -1395,7 +1395,6 @@ Makes the parentheses my cursor is between stand out more.
 
 *** [[https://github.com/vspinu/imenu-anywhere][imenu-anywhere]]
 imenu on steroids.
-
 #+BEGIN_SRC emacs-lisp
   (use-package imenu-anywhere
     ;; Imenu on steroids
@@ -1465,23 +1464,24 @@ Neat way to bind commands to key-stroke combinations
       (key-chord-mode 1)
       (key-chord-define evil-insert-state-map "jk" 'evil-normal-state))
 #+END_SRC
+
 *** lilypond
 #+BEGIN_SRC emacs-lisp
   (use-package lilypond-mode
     :load-path "lisp/")
 #+END_SRC
+
 *** [[https://github.com/magit/magit][magit]]
 Like git, for emacs. But cooler.
-
 #+BEGIN_SRC emacs-lisp
   (use-package magit
     :ensure t
     :config
     (setq magit-diff-use-overlays nil))
 #+END_SRC
+
 *** [[https://github.com/defunkt/markdown-mode][markdown-mode]]
 Syntax highlighting for markdown files.
-
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
     :ensure t
@@ -1529,20 +1529,25 @@ if this is the answer as I haven't used it much.
     ;; Supposed to be nicer than ansi-term
     :ensure t)
 #+END_SRC
+
 *** [[https://www.emacswiki.org/emacs/NotMuch][NotMuch]]
 Email!
 #+BEGIN_SRC emacs-lisp
   (use-package notmuch
     :ensure t)
 #+END_SRC
+
 *** [[https://github.com/sabof/org-bullets][org-bullets]]
 Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
+
 *** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
 Translates Org-mode file to various other formats via Pandoc. Pretty neat. Code
 under [[Org mode][Major Configs/Org mode/Setup]]
+
 *** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
 Export org to twitter bootstrap compatible HTML. Code under Major configs/Org
 mode/Setup.
+
 *** [[https://github.com/emacsfodder/pbcopy.el][pbcopy]]
 Allow yanking and pasting with osx clipboard in terminal Emacs. Might want to
 look into [[https://melpa.org/#/osx-clipboard][osx-clipboard]] instead.
@@ -1554,7 +1559,6 @@ look into [[https://melpa.org/#/osx-clipboard][osx-clipboard]] instead.
 
 *** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
 Better parentheses coloring
-
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-delimiters
     :ensure t
@@ -1564,20 +1568,22 @@ Better parentheses coloring
 #+END_SRC
 
 *** [[https://github.com/iqbalansari/restart-emacs][restart-emacs]] 
+SUPER nifty.
 #+BEGIN_SRC emacs-lisp
   (use-package restart-emacs
     :ensure t)
 #+END_SRC
+
 *** [[https://github.com/nonsequitur/smex][smex]]
 Recently used M-x commands
 #+BEGIN_SRC emacs-lisp
   (use-package smex
     :ensure t)
 #+END_SRC
+
 *** [[https://github.com/TheBB/spaceline][spaceline]]
 I was looking for something with the nice look and simplicity of
 [[https://github.com/itchyny/lightline.vim][this]]. Spaceline does ok.
-
 #+BEGIN_SRC emacs-lisp
   (use-package spaceline
     ;; Similar to vim's powerline, this one looks clean
@@ -1605,7 +1611,6 @@ I was looking for something with the nice look and simplicity of
 *** [[https://github.com/naiquevin/sphinx-doc.el][sphinx-doc]]
 Sphinx doc python integration. Pretty neat, though not entirely
 complete, IMO.
-
 #+BEGIN_SRC emacs-lisp
   (use-package sphinx-doc
     :ensure t
@@ -1623,6 +1628,7 @@ Stack exchange on emacs.
   (use-package sx
     :ensure t)
 #+END_SRC
+
 *** [[https://github.com/snosov1/toc-org][toc-org]]
 #+BEGIN_SRC emacs-lisp
   ;; (use-package toc-org
@@ -1630,6 +1636,7 @@ Stack exchange on emacs.
   ;;   :config
   ;;   (add-hook 'org-mode-hook 'toc-org-enable))
 #+END_SRC
+
 *** [[https://github.com/hayamiz/twittering-mode][twittering-mode]]
 #+BEGIN_SRC emacs-lisp
   (use-package twittering-mode
@@ -1645,6 +1652,7 @@ Stack exchange on emacs.
   (use-package xkcd
     :ensure t)
 #+END_SRC
+
 *** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
 #+BEGIN_SRC emacs-lisp
   (use-package yaml-mode
@@ -1655,7 +1663,6 @@ Stack exchange on emacs.
 
 *** [[https://github.com/joaotavora/yasnippet][yasnippet]]
 Freakin yasnippet. It's the best.
-
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
     ;; SNIPPETS!!!
@@ -1663,6 +1670,7 @@ Freakin yasnippet. It's the best.
     :config
     (yas-global-mode 1))
 #+END_SRC
+
 ** Themes
 *** diego-theme
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -1680,6 +1688,7 @@ Freakin yasnippet. It's the best.
       'zenburn
       '(ivy-current-match ((t nil))))))
 #+END_SRC
+
 *** doom-themes
 #+BEGIN_SRC emacs-lisp
   (use-package doom-themes
@@ -1708,10 +1717,10 @@ Freakin yasnippet. It's the best.
      )
     )
 #+END_SRC
+
 ** Not currently in use
 *** [[https://github.com/Wilfred/ag.el][ag]]
 Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]] into emacs.
-
 #+BEGIN_SRC emacs-lisp
   ;; (use-package ag
   ;;   ;; Silver searcher
@@ -1733,9 +1742,9 @@ Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]]
   ;;   (setq ag-reuse-buffers t)
   ;;   (setq ag-reuse-window t))
 #+END_SRC
+
 *** [[https://github.com/auto-complete/auto-complete][auto-complete]]
 Pretty good autocompletion, but trying out [[github.com/company-mode/company-mode][company-mode]] right now.
-
 #+BEGIN_SRC emacs-lisp
   ;; (use-package auto-complete
   ;;   ;; Supposedly not as good as company mode
@@ -1747,18 +1756,17 @@ Pretty good autocompletion, but trying out [[github.com/company-mode/company-mod
 *** [[https://github.com/joaotavora/autopair][autopair]]
 It may be recommended to use =electric-pair-mode= nowadays? That's
 what I'm using anyway.
-
 #+Begin_src emacs-lisp
   ;; (use-package autopair
   ;;   :ensure t
   ;;   :config
   ;;   (autopair-global-mode))
 #+END_SRC
-*** [[https://github.com/tkf/emacs-jedi][emacs-jedi]]
-Integrates [[https://github.com/davidhalter/jedi][jedi]] into emacs for python completion,
-hasn't been working for me recently. Either way,
-this is for [[https://github.com/auto-complete/auto-complete][auto-complete]] but now I use [[https://github.com/syohex/emacs-company-jedi][syohex/emacs-company-jedi]].
 
+*** [[https://github.com/tkf/emacs-jedi][emacs-jedi]]
+Integrates [[https://github.com/davidhalter/jedi][jedi]] into emacs for python completion, hasn't been working for me
+recently. Either way, this is for [[https://github.com/auto-complete/auto-complete][auto-complete]] but now I use
+[[https://github.com/syohex/emacs-company-jedi][emacs-company-jedi]].
 #+BEGIN_SRC emacs-lisp
   ;; (use-package jedi
   ;;   ;; Hasn't been working smoothly recently
@@ -1813,10 +1821,8 @@ Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][s
 #+END_SRC
 
 *** [[https://github.com/zenozeng/yafolding.el][yafolding]]
-Good code folding is hard to come by in Emacs,
-and isn't /that/ useful. This was pretty good but
-had some known issues.
-
+Good code folding is hard to come by in Emacs, and isn't /that/ useful. This was
+pretty good but had some known issues.
 #+BEGIN_SRC emacs-lisp
   ;; (use-package yafolding
   ;;   ;; Man, good code folding is hard to come by in emacs
@@ -1928,7 +1934,7 @@ started using company-mode.
 * Highlight current line number
 This, too, is from somewhere on the internet. Possibly
 stackoverflow.
-
+ 
 #+BEGIN_SRC emacs-lisp :tangle no
   (defface my-linum-hl
     `((t :inherit linum :background ,(face-background 'hl-line nil t)))
