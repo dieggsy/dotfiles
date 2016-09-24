@@ -1667,15 +1667,32 @@ Freakin yasnippet. It's the best.
       '(ivy-current-match ((t nil))))))
 #+END_SRC
 *** doom-themes
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp
   (use-package doom-themes
     :ensure t
     :config
-    
+
     (load-theme 'doom-molokai t)
     (custom-theme-set-faces
      'doom-molokai
-     '(ivy-current-match ((t nil)))))
+     '(ivy-current-match ((t nil)))
+     '(ivy-virtual ((t (:inherit ivy-subdir))))
+     '(org-level-2 ((t (:foreground "#FD971F"))))
+     '(org-level-1 ((t (:foreground "#F92672"))))
+     '(org-level-3 ((t (:foreground "#9C91E4"))))
+     '(org-level-4 ((t (:foreground "#8FA1B3"))))
+     '(org-level-5 ((t (:foreground "#E2C770"))))
+     '(org-level-6 ((t (:foreground "#727280"))))
+     '(iy-modified-buffer ((t (:inherit org-level-1))))
+     '(region ((t (:background "#39393D"))))
+     '(swiper-line-face ((t (:background "#222425"))))
+     '(swiper-match-face-1 ((t (:inherit ivy-minibuffer-match-face-1))))
+     '(swiper-match-face-2 ((t (:inherit ivy-minibuffer-match-face-2))))
+     '(swiper-match-face-3 ((t (:inherit ivy-minibuffer-match-face-3))))
+     '(swiper-match-face-4 ((t (:inherit ivy-minibuffer-match-face-4))))
+     '(message-header-name ((t (:inherit font-lock-comment-face :slant normal))))
+     )
+    )
 #+END_SRC
 ** Not currently in use
 *** [[https://github.com/Wilfred/ag.el][ag]]
