@@ -233,10 +233,8 @@ calc(){
 export WWW_HOME='http://google.com'
 
 # I'm not really sure why I'm using the explicit path here...
-export PATH="$HOME/bin:/usr/local/sbin:/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 source "/usr/local/bin/virtualenvwrapper.sh"
 export PYTHONSTARTUP=$HOME/.pythonrc.py
-export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ZSH_HIGHLIGHT_STYLES[globbing]='fg=208'
