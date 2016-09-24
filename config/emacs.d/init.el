@@ -17,6 +17,7 @@
    ["#272822" "#F92672" "#A6E22E" "#E6DB74" "#66D9EF" "#FD5FF0" "#A1EFE4" "#F8F8F2"])
  '(calc-multiplication-has-precedence nil)
  '(compilation-message-face (quote default))
+ '(counsel-find-file-ignore-regexp "\\`\\.")
  '(cua-global-mark-cursor-color "#2aa198")
  '(cua-normal-cursor-color "#839496")
  '(cua-overwrite-cursor-color "#b58900")
@@ -109,6 +110,9 @@
  '(pos-tip-foreground-color "#272822")
  '(powerline-evil-tag-style (quote verbose))
  '(projectile-globally-ignored-files (quote ("TAGS" ".DS_Store")))
+ '(recentf-exclude
+   (quote
+	("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" "/elpa/" "/xkcd/")))
  '(safe-local-variable-values
    (quote
 	((eval when
