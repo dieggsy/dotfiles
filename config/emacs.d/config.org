@@ -1308,6 +1308,17 @@ Google stuff from emacs.
     :config
     (google-this-mode 1))
 #+END_SRC
+
+*** [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] 
+#+BEGIN_SRC emacs-lisp
+  (use-package exec-path-from-shell
+    :ensure t
+    :config
+    (setq exec-path-from-shell-check-startup-files nil)
+    (when (memq window-system '(mac ns))
+      (exec-path-from-shell-initialize))
+    )
+#+END_SRC
 *** [[https://github.com/lunaryorn/fancy-battery.el][fancy-battery]]
 For nice battery display info.
 
