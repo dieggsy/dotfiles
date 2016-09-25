@@ -23,3 +23,4 @@
 /config/emacs.d/xkcd
 /config/mutt/cache
 /config/mutt/certificates
+/config/emacs.d/temp-counsel-functions.el
