@@ -430,6 +430,7 @@ like the way he does stuff. A lot of this is his code.
       "lw"        'whitespace-mode      ;; Show invisible characters
       "nn"        'air-narrow-dwim      ;; Narrow to region and enter normal mode
       "o"         'delete-other-windows ;; C-w o
+      "r"         'ranger
       "s"         'projectile-switch-project
       "t"         'counsel-locate
       "v"         'split-window-right
@@ -1567,6 +1568,17 @@ Better parentheses coloring
     (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
 #+END_SRC
 
+*** [[https://github.com/ralesi/ranger.el][ranger]] 
+#+BEGIN_SRC emacs-lisp
+  (use-package ranger
+    :ensure t
+    :config
+    (setq ranger-show-literal nil)
+    (setq ranger-show-dotfiles nil)
+    (ranger-override-dired-mode t)
+    (setq ranger-cleanup-eagerly t)
+    (setq ranger-parent-depth 0))
+#+END_SRC
 *** [[https://github.com/iqbalansari/restart-emacs][restart-emacs]] 
 SUPER nifty.
 #+BEGIN_SRC emacs-lisp
