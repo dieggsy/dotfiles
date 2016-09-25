@@ -282,11 +282,6 @@ Handling/storing of files, backups, autosaves.
   (setq column-number-mode t)
 
 #+END_SRC
-
-* Major configs
-...thanks, [[https://github.com/aaronbieber/][@aaronbieber]]. Seriously, go check him out. I
-like the way he does stuff. A lot of this is his code.
-
 ** Global functions
 #+BEGIN_SRC emacs-lisp
   (defun air--pop-to-file (file &optional split)
@@ -1463,12 +1458,6 @@ Neat way to bind commands to key-stroke combinations
       :config
       (key-chord-mode 1)
       (key-chord-define evil-insert-state-map "jk" 'evil-normal-state))
-#+END_SRC
-
-*** lilypond
-#+BEGIN_SRC emacs-lisp
-  (use-package lilypond-mode
-    :load-path "lisp/")
 #+END_SRC
 
 *** [[https://github.com/magit/magit][magit]]
