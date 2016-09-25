@@ -242,3 +242,5 @@ ZSH_HIGHLIGHT_STYLES[globbing]='fg=208'
 export RTV_EDITOR='vim'
 export RTV_URLVIEWER='urlview'
 
+export PATH="$HOME/bin:/usr/local/sbin:/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
