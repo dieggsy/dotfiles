@@ -224,6 +224,8 @@ Get rid of menu bars, scroll bars, startup screens, etc.
   ;;                                    (electric-pair-mode)))
   (setq display-time-load-average nil)
   (setq whitespace-style '(face trailing))
+  ;; (require 'zone)
+  ;; (zone-when-idle 10)
 #+END_SRC
 ** Minibuffer
 #+BEGIN_SRC emacs-lisp
@@ -390,7 +392,19 @@ Handling/storing of files, backups, autosaves.
   (defun diego/toggle-github-spacing ()
     (interactive)
     (setq-local line-spacing (if (= line-spacing 0.4) 0.0 0.4)))
+
+  (defun zone-choose (pgm)
+    "Choose a PGM to run for `zone'."
+    (interactive
+     (list
+      (completing-read
+       "Program: "
+       (mapcar 'symbol-name zone-programs))))
+    (let ((zone-programs (list (intern pgm))))
+      (zone)))
 #+END_SRC
+
+* Major configs
 ** [[https://bitbucket.org/lyro/evil/wiki/Home][Evil mode]]
 *** Leader config
 #+BEGIN_SRC emacs-lisp
@@ -1239,14 +1253,27 @@ Supposedly better than autocomplete... Also using [[https://github.com/syohex/em
       (add-hook 'python-mode-hook 'my/python-mode-hook)))
 #+END_SRC
 
+*** zone-matrix 
+Eh, why not.
+#+BEGIN_SRC emacs-lisp
+  (use-package zone-matrix
+    :ensure t
+    :config
+    (eval-after-load "zone"
+      '(unless (memq 'zone-matrix (append zone-programs nil))
+         (setq zone-programs
+               (vconcat zone-programs [zone-matrix]))))
+    )
+#+END_SRC
 *** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
 Eh, wanted to try a simpler way of editing csv files. (Excel and Numbers both
 kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
 #+BEGIN_SRC emacs-lisp
-
   (use-package csv-mode
     ;; I'll give this a shot
-    :ensure t)
+    :ensure t
+    :config
+    (add-hook 'csv-mode-hook 'csv-align-fields))
 #+END_SRC
 
 *** [[https://github.com/xuchunyang/devdocs.el][devdocs]]
