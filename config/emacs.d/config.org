@@ -209,7 +209,6 @@ Some nice global settings to have. Does away with most uneccessary visuals to
 make emacs behave more like terminal (ish), sets up smooth scrolling, other
 such goodies.
 
-
 ** Visual things
 Get rid of menu bars, scroll bars, startup screens, etc.
 #+BEGIN_SRC emacs-lisp
@@ -1869,7 +1868,7 @@ Properties that apply to all programming modes.
 #+END_SRC
 * Python stuff
 #+BEGIN_SRC emacs-lisp
-  (defun setup-python-mode ()
+  (defun diego/setup-python-mode ()
       (yas-minor-mode)
       (setq-local tab-width 4)
       (set (make-local-variable 'comment-inline-offset) 2)
@@ -1895,14 +1894,14 @@ Properties that apply to all programming modes.
       ;;             "# ")
       )
 
-  (add-hook 'python-mode-hook 'setup-python-mode)
+  (add-hook 'python-mode-hook 'diego/setup-python-mode)
 #+END_SRC
 
 * Emacs-Lisp stuff
 Mostly set up hs-minor-mode for emacs-lisp.
 #+BEGIN_SRC emacs-lisp
   ;; Emacs-lisp stuff
-  (defun setup-lisp-mode ()
+  (defun diego/setup-lisp-mode ()
     (hs-minor-mode)
     (local-set-key (kbd "C-c <up>") 'hs-hide-all)
     (local-set-key (kbd "C-c <down>") 'hs-show-all)
@@ -1911,13 +1910,16 @@ Mostly set up hs-minor-mode for emacs-lisp.
     ;; (setq-local calc-embedded-open-mode ";; ")
     )
 
-  (add-hook 'emacs-lisp-mode-hook 'setup-lisp-mode)
-  (add-hook 'lisp-interaction-mode-hook 'setup-lisp-mode)
+  (add-hook 'emacs-lisp-mode-hook 'diego/setup-lisp-mode)
+  (add-hook 'lisp-interaction-mode-hook 'diego/setup-lisp-mode)
 #+END_SRC
 
 * Term mode stuff 
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'term-mode-hook (lambda() (setq yas-dont-activate t)))
+  (defun diego/setup-term-mode ()
+    (setq-local yas-dont-activate t)
+    (local-set-key (kbd "<C-tab>") 'multi-term-next))
+  (add-hook 'term-mode-hook 'diego/setup-term-mode)
 #+END_SRC
 * Fix fci pop-up menu issue
 This is from somewhere on the internet, and may no longer be relevant since I
