@@ -117,6 +117,7 @@ brew install jrnl
 brew install json-c
 brew install lame
 brew install leptonica
+brew install less
 brew install leveldb
 brew install libao
 brew install libassuan
@@ -162,6 +163,7 @@ brew install mp4v2
 brew install mpc
 brew install mpd
 brew install mpfr
+brew install mplayer
 brew install mutt
 brew install nano
 brew install ncmpcpp

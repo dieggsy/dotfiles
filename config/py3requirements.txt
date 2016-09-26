@@ -165,4 +165,4 @@ xlrd==1.0.0
 xls2db==0.0.8
 XlsxWriter==0.9.3
 xmltodict==0.10.2
-yapf==0.11.1
+yapf==0.12.0
