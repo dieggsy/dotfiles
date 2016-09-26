@@ -1773,6 +1773,9 @@ Eh, why not.
      '(message-header-subject ((t (:foreground "OliveDrab1" :height 1.2))))
      '(message-mml ((t (:inherit font-lock-comment-face :slant normal))))
      '(notmuch-search-unread-face ((t (:inherit font-lock-function-name-face))))
+     '(bold ((t (:weight bold))))
+     '(italic ((t (:slant italic))))
+     '(org-link ((t (:underline t :foreground "#66D9EF"))))
      )
     )
 #+END_SRC
