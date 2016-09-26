@@ -1254,18 +1254,6 @@ Supposedly better than autocomplete... Also using [[https://github.com/syohex/em
       (add-hook 'python-mode-hook 'my/python-mode-hook)))
 #+END_SRC
 
-*** zone-matrix 
-Eh, why not.
-#+BEGIN_SRC emacs-lisp
-  (use-package zone-matrix
-    :ensure t
-    :config
-    (eval-after-load "zone"
-      '(unless (memq 'zone-matrix (append zone-programs nil))
-         (setq zone-programs
-               (vconcat zone-programs [zone-matrix]))))
-    )
-#+END_SRC
 *** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
 Eh, wanted to try a simpler way of editing csv files. (Excel and Numbers both
 kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
@@ -1333,7 +1321,7 @@ Google stuff from emacs.
     (google-this-mode 1))
 #+END_SRC
 
-*** [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]] 
+*** [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]]
 #+BEGIN_SRC emacs-lisp
   (use-package exec-path-from-shell
     :ensure t
@@ -1442,9 +1430,9 @@ A neater way to get the same functionality as Helm, with less... clutter?
       :config
       (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind))
     (ivy-mode 1)
-    (setq ivy-format-function 'ivy-format-function-arrow) ;DAT NICE ARROW THOUGH aorcidkl
-    (setq projectile-completion-system 'ivy) ;Use ivy with projectile
-    (setq ivy-use-virtual-buffers t) ;Show recent files
+    (setq ivy-format-function 'ivy-format-function-arrow) ; DAT NICE ARROW THOUGH aorcidkl
+    (setq projectile-completion-system 'ivy) ; Use ivy with projectile
+    (setq ivy-use-virtual-buffers t) ; Show recent files
     (setq ivy-count-format "")
     (setq ivy-extra-directories '("../"))
     (setq ivy-ignore-buffers 
@@ -1699,6 +1687,18 @@ Freakin yasnippet. It's the best.
     (yas-global-mode 1))
 #+END_SRC
 
+*** zone-matrix
+Eh, why not.
+#+BEGIN_SRC emacs-lisp
+  (use-package zone-matrix
+    :ensure t
+    :config
+    (eval-after-load "zone"
+      '(unless (memq 'zone-matrix (append zone-programs nil))
+         (setq zone-programs
+               (vconcat zone-programs [zone-matrix]))))
+    )
+#+END_SRC
 ** Themes
 *** diego-theme
 #+BEGIN_SRC emacs-lisp :tangle no
