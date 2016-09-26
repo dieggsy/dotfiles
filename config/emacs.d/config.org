@@ -1742,6 +1742,9 @@ Eh, why not.
      '(swiper-match-face-3 ((t (:inherit ivy-minibuffer-match-face-3))))
      '(swiper-match-face-4 ((t (:inherit ivy-minibuffer-match-face-4))))
      '(message-header-name ((t (:inherit font-lock-comment-face :slant normal))))
+     '(message-header-subject ((t (:foreground "OliveDrab1" :height 1.2))))
+     '(message-mml ((t (:inherit font-lock-comment-face :slant normal))))
+     '(notmuch-search-unread-face ((t (:inherit font-lock-function-name-face))))
      )
     )
 #+END_SRC
