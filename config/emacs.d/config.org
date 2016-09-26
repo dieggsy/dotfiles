@@ -352,7 +352,7 @@ Handling/storing of files, backups, autosaves.
         (narrow-to-region-or-subtree)))
 
 
-  (defun toggle-window-split ()
+  (defun diego/toggle-window-split ()
     (interactive)
     (if (= (count-windows) 2)
         (let* ((this-win-buffer (window-buffer))
@@ -406,7 +406,7 @@ Handling/storing of files, backups, autosaves.
     (let ((zone-programs (list (intern pgm))))
       (zone)))
 
-  (defun insert-current-date ()
+  (defun diego/date ()
     (interactive)
     (insert (shell-command-to-string "echo -n $(date +%Y-%m-%d)")))
 #+END_SRC
