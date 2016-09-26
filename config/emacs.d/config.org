@@ -1868,7 +1868,7 @@ pretty good but had some known issues.
   ;;   (add-hook 'python-mode-hook 'air--yafolding-kbd))
 #+END_SRC
 
-* Prog-mode stuff
+* Prog-mode
 Properties that apply to all programming modes.
 #+BEGIN_SRC emacs-lisp
   (defun diego/setup-prog-mode ()
@@ -1883,7 +1883,7 @@ Properties that apply to all programming modes.
     )
   (add-hook 'prog-mode-hook 'diego/setup-prog-mode)
 #+END_SRC
-* Python stuff
+* Python
 #+BEGIN_SRC emacs-lisp
   (defun diego/setup-python-mode ()
       (yas-minor-mode)
@@ -1914,7 +1914,7 @@ Properties that apply to all programming modes.
   (add-hook 'python-mode-hook 'diego/setup-python-mode)
 #+END_SRC
 
-* Emacs-Lisp stuff
+* Emacs-Lisp
 Mostly set up hs-minor-mode for emacs-lisp.
 #+BEGIN_SRC emacs-lisp
   ;; Emacs-lisp stuff
@@ -1931,7 +1931,7 @@ Mostly set up hs-minor-mode for emacs-lisp.
   (add-hook 'lisp-interaction-mode-hook 'diego/setup-lisp-mode)
 #+END_SRC
 
-* Term mode stuff 
+* Term mode
 #+BEGIN_SRC emacs-lisp
   (defun diego/setup-term-mode ()
     (setq-local yas-dont-activate t)
