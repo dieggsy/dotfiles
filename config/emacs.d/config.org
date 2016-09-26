@@ -405,6 +405,10 @@ Handling/storing of files, backups, autosaves.
        (mapcar 'symbol-name zone-programs))))
     (let ((zone-programs (list (intern pgm))))
       (zone)))
+
+  (defun insert-current-date ()
+    (interactive)
+    (insert (shell-command-to-string "echo -n $(date +%Y-%m-%d)")))
 #+END_SRC
 
 * Major configs
