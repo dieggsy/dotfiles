@@ -391,7 +391,10 @@ Handling/storing of files, backups, autosaves.
 
   (defun diego/toggle-github-spacing ()
     (interactive)
-    (setq-local line-spacing (if (= line-spacing 0.4) 0.0 0.4)))
+    (setq-local line-spacing 
+                (if (eq line-spacing nil)
+                    0.4
+                  nil)))
 
   (defun zone-choose (pgm)
     "Choose a PGM to run for `zone'."
@@ -1894,7 +1897,7 @@ Properties that apply to all programming modes.
     (linum-mode 1)
     (auto-fill-mode 1)
     (setq-local comment-auto-fill-only-comments t)
-    (setq-local line-spacing 0.0)
+    ;; (setq-local line-spacing 0.0)
     (setq-local calc-embedded-open-mode (concat comment-start " "))
     (setq-local calc-embedded-close-mode (concat comment-end "\n"))
     (hl-line-mode 1)
