@@ -1452,14 +1452,14 @@ A neater way to get the same functionality as Helm, with less... clutter?
     ;; RET enters folder rather than opening dired
     (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
     ;; Use flx fuzzy matching except with ag and swiper
-    ;; (setq ivy-re-builders-alist
-    ;;       '((counsel-ag . ivy--regex-plus)
-    ;;         (counsel-descbinds . ivy--regex-plus)
-    ;;         (swiper . ivy--regex-plus)
-    ;;         (swiper-all . ivy--regex-plus)
-    ;;         (t . ivy--regex-fuzzy)))
+    (setq ivy-re-builders-alist
+          '((counsel-ag . ivy--regex-plus)
+            (counsel-descbinds . ivy--regex-plus)
+            (swiper . ivy--regex-plus)
+            (swiper-all . ivy--regex-plus)
+            (t . ivy--regex-fuzzy)))
     ;;Don't start searches with '^' by default
-    ;; (setq ivy-initial-inputs-alist nil)
+    (setq ivy-initial-inputs-alist nil)
     ;; (setq ivy-flip t) ; Flip the direction
     (defalias 'ag 'counsel-ag)
     (defalias 'locate 'counsel-locate)
@@ -1572,7 +1572,7 @@ Better parentheses coloring
     (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
 #+END_SRC
 
-*** [[https://github.com/ralesi/ranger.el][ranger]] 
+*** [[https://github.com/ralesi/ranger.el][ranger]]
 #+BEGIN_SRC emacs-lisp
   (use-package ranger
     :ensure t
@@ -1583,7 +1583,7 @@ Better parentheses coloring
     (setq ranger-cleanup-eagerly t)
     (setq ranger-parent-depth 0))
 #+END_SRC
-*** [[https://github.com/iqbalansari/restart-emacs][restart-emacs]] 
+*** [[https://github.com/iqbalansari/restart-emacs][restart-emacs]]
 SUPER nifty.
 #+BEGIN_SRC emacs-lisp
   (use-package restart-emacs
