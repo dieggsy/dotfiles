@@ -515,6 +515,7 @@ Handling/storing of files, backups, autosaves.
   (define-key evil-normal-state-map (kbd "[i")    'show-first-occurrence)
   (define-key evil-insert-state-map (kbd "C-e")   'end-of-line) ;; I know...
   (define-key evil-normal-state-map (kbd "S-SPC") 'air-pop-to-org-agenda)
+  (define-key evil-normal-state-map (kbd "<SPC>") 'counsel-M-x)
 #+END_SRC
 *** Tiny menu
 #+BEGIN_SRC emacs-lisp
