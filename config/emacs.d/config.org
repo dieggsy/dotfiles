@@ -1173,21 +1173,7 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
     :init
     (require 'helm-config)
     :config
-    (use-package helm-descbinds
-      ;; To describe keys in a nicer way
-      :ensure t)
-    (use-package helm-projectile
-      ;; To use with projectile
-      :ensure t
-      :config
-      (projectile-global-mode))
-    ;; (use-package helm-ag
-    ;;    :ensure t)
-    ;; (helm-mode 1)
-    ;; (helm-autoresize-mode t)
-  ;;   (global-set-key (kbd "M-x") 'helm-M-x)
-  ;;   (global-set-key (kbd "<f1>") 'helm-find-files)
-  ;;   (global-set-key (kbd "<f2>") 'helm-mini)
+
     ;; Fuzzy matching
     (setq helm-completion-in-region-fuzzy-match t
           helm-mode-fuzzy-match t
@@ -1201,9 +1187,14 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
           helm-lisp-fuzzy-completion t)
 
     (setq helm-boring-buffer-regexp-list
-          '("\\` " "\\*helm" "\\*helm-mode" "\\*Echo Area" "\\*Minibuf" "\\*epc"))
+          '("\\` "
+            "\\*helm"
+            "\\*helm-mode"
+            "\\*Echo Area"
+            "\\*Minibuf"
+            "\\*epc"))
     (setq helm-buffer-max-length 40)
-    (setq helm-display-buffer-default-size 9)
+    (setq helm-display-buffer-default-height 9)
     (setq helm-locate-command
           (cl-case system-type
             ('darwin "mdfind -name %s %s")
@@ -1211,6 +1202,7 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
             ('berkley-unix "locate -i %s")
             ('windows-nt "es %s")
             (t "locate %s"))) ; Use spotlight for search
+    (put 'helm-minibuffer-history 'disabled t)
     ;; (global-set-key (kbd "M-y") 'helm-show-kill-ring)
     ;;----------------
     ;; Helm ido-like
@@ -1585,7 +1577,8 @@ look into [[https://melpa.org/#/osx-clipboard][osx-clipboard]] instead.
     (setq projectile-ignored-projects
           '("/usr/local"
             "~/dotfiles/config/emacs.d/lisp/Gnugol"
-            "~/dotfiles/config/emacs.d/lisp/matlab-emacs"))
+            "~/dotfiles/config/emacs.d/lisp/matlab-emacs")
+    (projectile-global-mode))
     )
 #+END_SRC
 
