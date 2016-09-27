@@ -5,7 +5,7 @@ backports-abc==0.4
 backports.shutil-get-terminal-size==1.0.0
 backports.ssl-match-hostname==3.5.0.1
 beautifulsoup4==4.5.1
-certifi==2016.8.31
+certifi==2016.9.26
 configparser==3.5.0
 cycler==0.10.0
 Cython==0.24.1
@@ -51,7 +51,7 @@ plac==0.9.6
 powerline-status==2.5
 praw==3.5.0
 prompt-toolkit==1.0.7
-protobuf==3.0.0
+protobuf==3.1.0
 ptyprocess==0.5.1
 pyasn1==0.1.9
 pyasn1-modules==0.0.8
@@ -89,7 +89,7 @@ twitter==1.17.1
 update-checker==0.12
 upsidedown==0.3
 uritemplate==3.0.0
-urllib3==1.17
+urllib3==1.18
 virtualenv==15.0.3
 virtualenv-clone==0.2.6
 virtualenvwrapper==4.7.2

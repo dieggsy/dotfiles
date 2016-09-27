@@ -55,10 +55,12 @@ brew install ctags
 brew install ddate
 brew install dict
 brew install dirmngr
+brew install djvulibre
 brew install doxygen
 brew install eigen
 brew install elinks
 brew install emacs
+brew install evince
 brew install faad2
 brew install ffmpeg
 brew install fftw
@@ -138,8 +140,10 @@ brew install libogg
 brew install libpng
 brew install librsvg
 brew install libsamplerate
+brew install libsecret
 brew install libsigc++
 brew install libsndfile
+brew install libspectre
 brew install libspotify
 brew install libtasn1
 brew install libtiff
@@ -211,6 +215,7 @@ brew install sdl
 brew install sdl_image
 brew install sdl_mixer
 brew install sdl_ttf
+brew install shared-mime-info
 brew install sip
 brew install smpeg
 brew install snappy
@@ -258,6 +263,7 @@ brew cask install atom
 brew cask install betterzipql
 brew cask install cantata
 brew cask install cuda
+brew cask install dash
 brew cask install discord
 brew cask install evernote
 brew cask install firefox
@@ -282,6 +288,7 @@ brew cask install qlmarkdown
 brew cask install qlstephen
 brew cask install quicklook-csv
 brew cask install quicklook-json
+brew cask install qutebrowser
 brew cask install retinizer
 brew cask install selfcontrol
 brew cask install skype
