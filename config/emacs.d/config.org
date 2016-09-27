@@ -955,7 +955,8 @@ A neater way to get the same functionality as Helm, with less... clutter?
     (use-package counsel
       :ensure t
       :config
-      (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind))
+      (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind)
+      (counsel-mode 1))
     (use-package counsel-projectile
       :ensure t)
     (use-package counsel-osx-app
