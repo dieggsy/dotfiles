@@ -1593,9 +1593,8 @@ look into [[https://melpa.org/#/osx-clipboard][osx-clipboard]] instead.
     (setq projectile-ignored-projects
           '("/usr/local"
             "~/dotfiles/config/emacs.d/lisp/Gnugol"
-            "~/dotfiles/config/emacs.d/lisp/matlab-emacs")
+            "~/dotfiles/config/emacs.d/lisp/matlab-emacs"))
     (projectile-global-mode))
-    )
 #+END_SRC
 
 *** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
