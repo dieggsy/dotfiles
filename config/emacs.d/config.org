@@ -1162,6 +1162,11 @@ An org-mode google??? Not currently working, apparently.
     :load-path "lisp/")
 #+END_SRC
 
+*** [[https://github.com/atykhonov/google-translate][google-translate]] 
+#+BEGIN_SRC emacs-lisp
+  (use-package google-translate
+    :ensure t)
+#+END_SRC
 *** [[https://github.com/emacs-helm/helm][Helm]]
 *Note:* I'm now using [[https://github.com/abo-abo/swiper][abo-abo/swiper]], which includes ivy, counsel, and swiper,
 for very similar functionality but with a much cleaner and responsive
@@ -1555,6 +1560,11 @@ Email!
     :ensure t)
 #+END_SRC
 
+*** [[https://github.com/gregsexton/ob-ipython][ob-ipython]] 
+#+BEGIN_SRC emacs-lisp
+  (use-package ob-ipython
+    :ensure t)
+#+END_SRC
 *** [[https://github.com/sabof/org-bullets][org-bullets]]
 Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
 
