@@ -388,6 +388,11 @@ Handling/storing of files, backups, autosaves.
   (defun diego/zshrc ()
     (interactive)
     (find-file "/Users/diego/dotfiles/config/zshrc"))
+  
+  (defun diego/ipython-shell ()
+    (interactive)
+    (let ((multi-term-program "/usr/local/bin/ipython"))
+      (multi-term)))
 
   (defun diego/toggle-github-spacing ()
     (interactive)
