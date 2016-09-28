@@ -1580,6 +1580,11 @@ Generates markdown previews? Not sure if working.
   (use-package melpa-upstream-visit
     :ensure t)
 #+END_SRC
+*** [[https://github.com/emacsfodder/move-text][move-text]]
+#+BEGIN_SRC emacs-lisp
+  (use-package move-text
+    :ensure t)
+#+END_SRC
 *** [[https://www.emacswiki.org/emacs/download/multi-term.el][multi-term]]
 I wanted a slightly better terminal in emacs. Not sure
 if this is the answer as I haven't used it much.
