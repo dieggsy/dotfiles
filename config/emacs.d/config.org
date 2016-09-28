@@ -1712,6 +1712,15 @@ Stack exchange on emacs.
     (add-hook 'twittering-mode-hook #'emojify-mode))
 #+END_SRC
 
+*** [[https://github.com/porterjamesj/virtualenvwrapper.el][virtualenvwrapper]] 
+#+BEGIN_SRC emacs-lisp
+  (use-package virtualenvwrapper
+    :ensure t
+    :config
+    (venv-initialize-interactive-shells)
+    (venv-initialize-eshell)
+    (setq venv-location "~/.virtualenvs"))
+#+END_SRC
 *** [[https://github.com/vibhavp/emacs-xkcd][xkcd]]
 #+BEGIN_SRC emacs-lisp
   (use-package xkcd
