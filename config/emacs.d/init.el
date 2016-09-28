@@ -71,7 +71,12 @@
  '(nrepl-message-colors
    (quote
 	("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
- '(org-babel-load-languages (quote ((python . t) (emacs-lisp . t) (calc . t) (ipython . t))))
+ '(org-babel-load-languages
+   (quote
+	((python . t)
+	 (emacs-lisp . t)
+	 (calc . t)
+	 (ipython . t))))
  '(org-babel-python-command "python3")
  '(org-confirm-babel-evaluate nil)
  '(org-hide-emphasis-markers t)
