@@ -1096,6 +1096,20 @@ Google stuff from emacs.
     (google-this-mode 1))
 #+END_SRC
 
+*** [[https://github.com/hiddenlotus/eshell-prompt-extras][eshell-prompt-extras]] 
+#+BEGIN_SRC emacs-lisp
+  (use-package eshell-prompt-extras
+    :ensure t
+    :config
+    (autoload 'epe-theme-dakrone "eshell-prompt-extras")
+    (setq eshell-highlight-prompt nil
+          eshell-prompt-function 'epe-theme-dakrone))
+#+END_SRC
+*** [[https://github.com/xuchunyang/eshell-z][eshell-z]] 
+#+BEGIN_SRC emacs-lisp
+  (use-package eshell-z
+    :ensure t)
+#+END_SRC
 *** [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]]
 #+BEGIN_SRC emacs-lisp
   (use-package exec-path-from-shell
