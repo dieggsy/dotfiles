@@ -234,7 +234,7 @@ Get rid of menu bars, scroll bars, startup screens, etc.
   ;; (add-hook 'minibuffer-setup-hook (lambda () (show-paren-mode -1)))
 #+END_SRC
 ** Fonts
-*A note on the font:* Check out [[http://mbauman.net/geek/2009/03/15/minor-truetype-font-editing-on-a-mac/][this post]] for advice on fixing the Consolas font
+*Note:* Check out [[http://mbauman.net/geek/2009/03/15/minor-truetype-font-editing-on-a-mac/][this post]] for advice on fixing the Consolas font
 on os x. This helps with the modeline text vertical alignments and makes it
 consistent with other fonts. Last updated 2011, last successfully tested
 09/2016 (by myself).
@@ -388,7 +388,7 @@ Handling/storing of files, backups, autosaves.
   (defun diego/zshrc ()
     (interactive)
     (find-file "/Users/diego/dotfiles/config/zshrc"))
-  
+
   (defun diego/ipython-shell ()
     (interactive)
     (let ((multi-term-program "/usr/local/bin/ipython"))
@@ -414,6 +414,18 @@ Handling/storing of files, backups, autosaves.
   (defun diego/date ()
     (interactive)
     (insert (shell-command-to-string "echo -n $(date +%Y-%m-%d)")))
+
+
+
+  (defun minibuffer-keyboard-quit ()
+    "Abort recursive edit.
+    In Delete Selection mode, if the mark is active, just deactivate it;
+    then it takes a second \\[keyboard-quit] to abort the minibuffer."
+    (interactive)
+    (if (and delete-selection-mode transient-mark-mode mark-active)
+        (setq deactivate-mark  t)
+      (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+      (abort-recursive-edit)))
 #+END_SRC
 
 * Major configs
@@ -521,7 +533,7 @@ Handling/storing of files, backups, autosaves.
 #+END_SRC
 *** Appearance 
 #+BEGIN_SRC emacs-lisp
-  (defun diego/evil-appearance
+  (defun diego/evil-appearance ()
     (setq evil-insert-state-cursor '(bar . 1))
     (setq evil-emacs-state-cursor '(bar . 1))
     (setq evil-normal-state-tag " NORMAL ")
@@ -555,21 +567,10 @@ Handling/storing of files, backups, autosaves.
       (kbd "C-u")     'evil-scroll-up
       (kbd "C-w C-w") 'other-window)
  
-   (defun minibuffer-keyboard-quit ()
-     "Abort recursive edit.
-  In Delete Selection mode, if the mark is active, just deactivate it;
-  then it takes a second \\[keyboard-quit] to abort the minibuffer."
-     (interactive)
-     (if (and delete-selection-mode transient-mark-mode mark-active)
-         (setq deactivate-mark  t)
-       (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
-       (abort-recursive-edit)))
-
     ;; Make escape quit everything, whenever possible.
    (define-key evil-normal-state-map [escape] 'keyboard-quit)
    (define-key evil-visual-state-map [escape] 'keyboard-quit)
    (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-   (define-key ivy-minibuffer-map [escape] 'minibuffer-keyboard-quit)
    (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
    (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
    (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
@@ -577,9 +578,9 @@ Handling/storing of files, backups, autosaves.
 #+END_SRC
 *** Tiny menu
 #+BEGIN_SRC emacs-lisp
-  (defun diego/evil-tiny-menu
-      (use-package tiny-menu :ensure t)
-      (setq tiny-menu-items
+  (defun diego/evil-tiny-menu ()
+    (use-package tiny-menu :ensure t)
+    (setq tiny-menu-items
           '(("org-things"   ("Things"
                               ((?t "Tag"     org-tags-view)
                               (?i "ID"      air-org-goto-custom-id)
@@ -981,6 +982,8 @@ A neater way to get the same functionality as Helm, with less... clutter?
     (use-package counsel-osx-app
       :ensure t)
     (ivy-mode 1)
+    (define-key ivy-minibuffer-map [escape] 'minibuffer-keyboard-quit)
+
     (setq ivy-format-function 'ivy-format-function-arrow) ; DAT NICE ARROW THOUGH aorcidkl
     (setq projectile-completion-system 'ivy) ; Use ivy with projectile
     (setq ivy-use-virtual-buffers t) ; Show recent files
@@ -1837,127 +1840,127 @@ Eh, why not.
      )
     )
 #+END_SRC
+*** [[https://github.com/nashamri/spacemacs-theme][spacemacs-theme]]
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package spacemacs-theme
+    :ensure t)
+#+END_SRC
 
 ** Not currently in use
+These aren't loaded by the init file.
 *** [[https://github.com/Wilfred/ag.el][ag]]
 Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]] into emacs.
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package ag
-  ;;   ;; Silver searcher
-  ;;   :ensure t
-  ;;   :defer t
-  ;;   :init
-  ;;   (use-package wgrep-ag
-  ;;     ;; Guess I need this first
-  ;;     :ensure t
-  ;;     :commands (wgrep-ag-setup))
-  ;;   :config
-  ;;   (add-hook 'ag-mode-hook
-  ;;             (lambda ()
-  ;;               (wgrep-ag-setup)
-  ;;               (define-key ag-mode-map (kbd "n") 'evil-search-next)
-  ;;               (define-key ag-mode-map (kbd "N") 'evil-search-previous)))
-  ;;   (setq ag-executable "/usr/local/bin/ag")
-  ;;   (setq ag-highlight-search t)
-  ;;   (setq ag-reuse-buffers t)
-  ;;   (setq ag-reuse-window t))
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package ag
+    ;; Silver searcher
+    :ensure t
+    :defer t
+    :init
+    (use-package wgrep-ag
+      ;; Guess I need this first
+      :ensure t
+      :commands (wgrep-ag-setup))
+    :config
+    (add-hook 'ag-mode-hook
+              (lambda ()
+                (wgrep-ag-setup)
+                (define-key ag-mode-map (kbd "n") 'evil-search-next)
+                (define-key ag-mode-map (kbd "N") 'evil-search-previous)))
+    (setq ag-executable "/usr/local/bin/ag")
+    (setq ag-highlight-search t)
+    (setq ag-reuse-buffers t)
+    (setq ag-reuse-window t))
 #+END_SRC
 
 *** [[https://github.com/auto-complete/auto-complete][auto-complete]]
 Pretty good autocompletion, but trying out [[github.com/company-mode/company-mode][company-mode]] right now.
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package auto-complete
-  ;;   ;; Supposedly not as good as company mode
-  ;;   :ensure t
-  ;;   :config
-  ;;   (global-auto-complete-mode t))
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package auto-complete
+    ;; Supposedly not as good as company mode
+    :ensure t
+    :config
+    (global-auto-complete-mode t))
 #+END_SRC
 
 *** [[https://github.com/joaotavora/autopair][autopair]]
 It may be recommended to use =electric-pair-mode= nowadays? That's
 what I'm using anyway.
-#+Begin_src emacs-lisp
-  ;; (use-package autopair
-  ;;   :ensure t
-  ;;   :config
-  ;;   (autopair-global-mode))
+#+Begin_src emacs-lisp :tangle no
+  (use-package autopair
+    :ensure t
+    :config
+    (autopair-global-mode))
 #+END_SRC
 
 *** [[https://github.com/tkf/emacs-jedi][emacs-jedi]]
 Integrates [[https://github.com/davidhalter/jedi][jedi]] into emacs for python completion, hasn't been working for me
 recently. Either way, this is for [[https://github.com/auto-complete/auto-complete][auto-complete]] but now I use
 [[https://github.com/syohex/emacs-company-jedi][emacs-company-jedi]].
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package jedi
-  ;;   ;; Hasn't been working smoothly recently
-  ;;   :ensure t
-  ;;   :init
-  ;;   (add-hook 'python-mode-hook 'jedi:setup)
-  ;;   (setq jedi:complete-on-dot t))
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package jedi
+    ;; Hasn't been working smoothly recently
+    :ensure t
+    :init
+    (add-hook 'python-mode-hook 'jedi:setup)
+    (setq jedi:complete-on-dot t))
 #+END_SRC
 
 *** [[https://github.com/7696122/evil-terminal-cursor-changer][evil-terminal-cursor-changer]]
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package evil-terminal-cursor-changer
-  ;;   :ensure t
-  ;;   :config
-  ;;   (unless (display-graphic-p)
-  ;;     (require 'evil-terminal-cursor-changer)
-  ;;     (evil-terminal-cursor-changer-activate) ; or (etcc-on)
-  ;;     )
-  ;;   (setq evil-motion-state-cursor 'box)  ; █
-  ;;   (setq evil-visual-state-cursor 'box)  ; █
-  ;;   (setq evil-normal-state-cursor 'box)  ; █
-  ;;   (setq evil-insert-state-cursor 'bar)  ; ⎸
-  ;;   (setq evil-emacs-state-cursor  'bar)) ; _
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package evil-terminal-cursor-changer
+    :ensure t
+    :config
+    (unless (display-graphic-p)
+      (require 'evil-terminal-cursor-changer)
+      (evil-terminal-cursor-changer-activate) ; or (etcc-on)
+      )
+    (setq evil-motion-state-cursor 'box)  ; █
+    (setq evil-visual-state-cursor 'box)  ; █
+    (setq evil-normal-state-cursor 'box)  ; █
+    (setq evil-insert-state-cursor 'bar)  ; ⎸
+    (setq evil-emacs-state-cursor  'bar)) ; _
 
 #+END_SRC
 
 *** [[https://github.com/Malabarba/smart-mode-line][smart-mode-line]]
 Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][spaceline]].
 
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package smart-mode-powerline-theme
-  ;;   :ensure t)
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package smart-mode-powerline-theme
+    :ensure t)
 
-  ;; (use-package smart-mode-line
-  ;;   :ensure t
-  ;;   :config
-  ;;   (setq sml/no-confirm-load-theme t)
-  ;;   (setq sml/theme 'dark)
-  ;;   (setq rm-whitelist '(""))
-  ;;   (setq system-uses-terminfo nil)
-  ;;   (sml/setup)
-  ;;   (display-time-mode)
-  ;;   (display-time-update)
-  ;;   (fancy-battery-mode)
-  ;;   (setq fancy-battery-show-percentage t))
-#+END_SRC
-
-*** [[https://github.com/nashamri/spacemacs-theme][spacemacs-theme]]
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package spacemacs-theme
-  ;;   :ensure t)
+  (use-package smart-mode-line
+    :ensure t
+    :config
+    (setq sml/no-confirm-load-theme t)
+    (setq sml/theme 'dark)
+    (setq rm-whitelist '(""))
+    (setq system-uses-terminfo nil)
+    (sml/setup)
+    (display-time-mode)
+    (display-time-update)
+    (fancy-battery-mode)
+    (setq fancy-battery-show-percentage t))
 #+END_SRC
 
 *** [[https://github.com/zenozeng/yafolding.el][yafolding]]
 Good code folding is hard to come by in Emacs, and isn't /that/ useful. This was
 pretty good but had some known issues.
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package yafolding
-  ;;   ;; Man, good code folding is hard to come by in emacs
-  ;;   ;; This one's ok, but there are a couple know issues that
-  ;;   ;; don't quite make it worth it, I think.
-  ;;   :ensure t
-  ;;   :config
-  ;;   (defun diego/yafolding-kbd ()
-  ;;  (local-set-key (kbd "C-c <up>") 'yafolding-hide-all)
-  ;;  (local-set-key (kbd "C-c <down>") 'yafolding-show-all)
-  ;;  (local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
-  ;;  (local-set-key (kbd "C-c <right>") 'yafolding-show-element)
-  ;;  (local-set-key [C-tab] 'yafolding-toggle-element))
-  ;;   (add-hook 'python-mode-hook 'yafolding-mode)
-  ;;   (add-hook 'python-mode-hook 'diego/yafolding-kbd))
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package yafolding
+    ;; Man, good code folding is hard to come by in emacs
+    ;; This one's ok, but there are a couple know issues that
+    ;; don't quite make it worth it, I think.
+    :ensure t
+    :config
+    (defun diego/yafolding-kbd ()
+   (local-set-key (kbd "C-c <up>") 'yafolding-hide-all)
+   (local-set-key (kbd "C-c <down>") 'yafolding-show-all)
+   (local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
+   (local-set-key (kbd "C-c <right>") 'yafolding-show-element)
+   (local-set-key [C-tab] 'yafolding-toggle-element))
+    (add-hook 'python-mode-hook 'yafolding-mode)
+    (add-hook 'python-mode-hook 'diego/yafolding-kbd))
 #+END_SRC
 
 * Prog-mode
