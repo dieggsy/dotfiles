@@ -286,7 +286,7 @@ Handling/storing of files, backups, autosaves.
 #+END_SRC
 ** Global functions
 #+BEGIN_SRC emacs-lisp
-  (defun air--pop-to-file (file &optional split)
+  (defun diego/pop-to-file (file &optional split)
     "Visit a FILE, either in the current window or a SPLIT."
     (if split
         (find-file-other-window file)
@@ -420,7 +420,7 @@ Handling/storing of files, backups, autosaves.
 ** [[https://bitbucket.org/lyro/evil/wiki/Home][Evil mode]]
 *** Leader config
 #+BEGIN_SRC emacs-lisp
-  (defun air--config-evil-leader ()
+  (defun diego/config-evil-leader ()
     "Configure evil leader mode."
     (evil-leader/set-leader ",")
     (setq evil-leader/in-all-states 1)
@@ -467,11 +467,11 @@ Handling/storing of files, backups, autosaves.
       (interactive)
       (if (and (boundp 'magit-blame-mode) magit-blame-mode)
           (magit-blame-quit)
-              (call-interactively 'magit-blame))))
+        (call-interactively 'magit-blame))))
 #+END_SRC
-*** Evil config
+*** Modes
 #+BEGIN_SRC emacs-lisp
-  (defun air--config-evil ()
+  (defun diego/evil-modes ()
     "Configure evil mode."
 
     ;; Use Emacs state in these additional modes.
@@ -495,67 +495,13 @@ Handling/storing of files, backups, autosaves.
     (setq evil-insert-state-modes (delq 'term-mode evil-insert-state-modes))
     (setq evil-motion-state-modes (delq 'Info-mode evil-motion-state-modes)) 
 
-    (setq evil-insert-state-cursor '(bar . 1))
-    (setq evil-emacs-state-cursor '(bar . 1))
-    (setq evil-normal-state-tag " NORMAL ")
-    (setq evil-insert-state-tag " INSERT ")
-    (setq evil-motion-state-tag " MOTION ")
-    (setq evil-visual-state-tag " VISUAL ")
-    (setq evil-emacs-state-tag  " EMACS ")
     ;; Use insert state in these additional modes.
     (dolist (mode '(magit-log-edit-mode))
       (add-to-list 'evil-insert-state-modes mode))
 
     (add-to-list 'evil-buffer-regexps '("\\*Flycheck"))
 
-    (evil-add-hjkl-bindings occur-mode-map 'emacs
-      (kbd "/")       'evil-search-forward
-      (kbd "n")       'evil-search-next
-      (kbd "N")       'evil-search-previous
-      (kbd "C-d")     'evil-scroll-down
-      (kbd "C-u")     'evil-scroll-up
-      (kbd "C-w C-w") 'other-window)
 
-#+END_SRC
-*** Keybindings
-#+BEGIN_SRC emacs-lisp
-  ;; Global bindings.
-  (define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
-  (define-key evil-normal-state-map (kbd "<up>")   'evil-previous-visual-line)
-  (define-key evil-normal-state-map (kbd "-")     'counsel-find-file)
-  (define-key evil-normal-state-map (kbd "g/")    'occur-last-search)
-  (define-key evil-normal-state-map (kbd "[i")    'show-first-occurrence)
-  (define-key evil-insert-state-map (kbd "C-e")   'end-of-line) ;; I know...
-  (define-key evil-normal-state-map (kbd "S-SPC") 'air-pop-to-org-agenda)
-  (define-key evil-normal-state-map (kbd "<SPC>") 'counsel-M-x)
-#+END_SRC
-*** Tiny menu
-#+BEGIN_SRC emacs-lisp
-    (use-package tiny-menu :ensure t)
-    (setq tiny-menu-items
-          '(("org-things"   ("Things"
-                             ((?t "Tag"     org-tags-view)
-                              (?i "ID"      air-org-goto-custom-id)
-                              (?k "Keyword" org-search-view))))
-            ("org-links"    ("Links"
-                             ((?c "Capture"   org-store-link)
-                              (?l "Insert"    org-insert-link)
-                              (?i "Custom ID" air-org-insert-custom-id-link))))
-            ("org-files"    ("Files"
-                             ((?t "TODO"  (lambda () (air-pop-to-org-todo nil)))
-                              (?n "Notes" (lambda () (air-pop-to-org-notes nil)))
-                              (?v "Vault" (lambda () (air-pop-to-org-vault nil))))))
-            ("org-captures" ("Captures"
-                             ((?c "TODO"  air-org-task-capture)
-                              (?n "Note"  (lambda () (interactive) (org-capture nil "n"))))))))
-    (evil-define-key 'normal global-map (kbd "\\ \\") 'tiny-menu)
-    (evil-define-key 'normal global-map (kbd "\\ f") (tiny-menu-run-item "org-files"))
-    (evil-define-key 'normal global-map (kbd "\\ t") (tiny-menu-run-item "org-things"))
-    (evil-define-key 'normal global-map (kbd "\\ c") (tiny-menu-run-item "org-captures"))
-    (evil-define-key 'normal global-map (kbd "\\ l") (tiny-menu-run-item "org-links"))
-#+END_SRC
-*** Not entirely sure
-#+BEGIN_SRC emacs-lisp
     (defun evil-visual-line--mark-org-element-when-heading (&rest args)
           "When marking a visual line in Org, mark the current element.
   This function is used as a `:before-while' advice on
@@ -569,26 +515,91 @@ Handling/storing of files, backups, autosaves.
               (not (org-mark-element))
             t))
 
-      (advice-add 'evil-visual-line :before-while #'evil-visual-line--mark-org-element-when-heading)
+    (advice-add 'evil-visual-line :before-while #'evil-visual-line--mark-org-element-when-heading)
 
-    (defun minibuffer-keyboard-quit ()
-          "Abort recursive edit.
+    )
+#+END_SRC
+*** Appearance 
+#+BEGIN_SRC emacs-lisp
+  (defun diego/evil-appearance
+    (setq evil-insert-state-cursor '(bar . 1))
+    (setq evil-emacs-state-cursor '(bar . 1))
+    (setq evil-normal-state-tag " NORMAL ")
+    (setq evil-insert-state-tag " INSERT ")
+    (setq evil-motion-state-tag " MOTION ")
+    (setq evil-visual-state-tag " VISUAL ")
+    (setq evil-emacs-state-tag  " EMACS "))
+#+END_SRC
+*** Bindings
+#+BEGIN_SRC emacs-lisp
+  ;; Global bindings.
+  (defun diego/evil-bindings ()
+
+
+    (define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
+    (define-key evil-normal-state-map (kbd "<up>")   'evil-previous-visual-line)
+    (define-key evil-normal-state-map (kbd "-")     'counsel-find-file)
+    (define-key evil-normal-state-map (kbd "g/")    'occur-last-search)
+    (define-key evil-normal-state-map (kbd "[i")    'show-first-occurrence)
+    (define-key evil-insert-state-map (kbd "C-e")   'end-of-line) ;; I know...
+    (define-key evil-normal-state-map (kbd "S-SPC") 'air-pop-to-org-agenda)
+    (define-key evil-normal-state-map (kbd "<SPC>") 'counsel-M-x)
+    (define-key evil-visual-state-map (kbd "<SPC>") 'counsel-M-x)
+
+
+   (evil-add-hjkl-bindings occur-mode-map 'emacs
+      (kbd "/")       'evil-search-forward
+      (kbd "n")       'evil-search-next
+      (kbd "N")       'evil-search-previous
+      (kbd "C-d")     'evil-scroll-down
+      (kbd "C-u")     'evil-scroll-up
+      (kbd "C-w C-w") 'other-window)
+ 
+   (defun minibuffer-keyboard-quit ()
+     "Abort recursive edit.
   In Delete Selection mode, if the mark is active, just deactivate it;
   then it takes a second \\[keyboard-quit] to abort the minibuffer."
-          (interactive)
-          (if (and delete-selection-mode transient-mark-mode mark-active)
-              (setq deactivate-mark  t)
-            (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
-            (abort-recursive-edit)))
+     (interactive)
+     (if (and delete-selection-mode transient-mark-mode mark-active)
+         (setq deactivate-mark  t)
+       (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+       (abort-recursive-edit)))
 
     ;; Make escape quit everything, whenever possible.
-    (define-key evil-normal-state-map [escape] 'keyboard-quit)
-    (define-key evil-visual-state-map [escape] 'keyboard-quit)
-    (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit))
+   (define-key evil-normal-state-map [escape] 'keyboard-quit)
+   (define-key evil-visual-state-map [escape] 'keyboard-quit)
+   (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+   (define-key ivy-minibuffer-map [escape] 'minibuffer-keyboard-quit)
+   (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+   (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+   (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+   (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit))
+#+END_SRC
+*** Tiny menu
+#+BEGIN_SRC emacs-lisp
+  (defun diego/evil-tiny-menu
+      (use-package tiny-menu :ensure t)
+      (setq tiny-menu-items
+          '(("org-things"   ("Things"
+                              ((?t "Tag"     org-tags-view)
+                              (?i "ID"      air-org-goto-custom-id)
+                              (?k "Keyword" org-search-view))))
+              ("org-links"    ("Links"
+                              ((?c "Capture"   org-store-link)
+                              (?l "Insert"    org-insert-link)
+                              (?i "Custom ID" air-org-insert-custom-id-link))))
+              ("org-files"    ("Files"
+                              ((?t "TODO"  (lambda () (air-pop-to-org-todo nil)))
+                              (?n "Notes" (lambda () (air-pop-to-org-notes nil)))
+                              (?v "Vault" (lambda () (air-pop-to-org-vault nil))))))
+              ("org-captures" ("Captures"
+                              ((?c "TODO"  air-org-task-capture)
+                              (?n "Note"  (lambda () (interactive) (org-capture nil "n"))))))))
+      (evil-define-key 'normal global-map (kbd "\\ \\") 'tiny-menu)
+      (evil-define-key 'normal global-map (kbd "\\ f") (tiny-menu-run-item "org-files"))
+      (evil-define-key 'normal global-map (kbd "\\ t") (tiny-menu-run-item "org-things"))
+      (evil-define-key 'normal global-map (kbd "\\ c") (tiny-menu-run-item "org-captures"))
+      (evil-define-key 'normal global-map (kbd "\\ l") (tiny-menu-run-item "org-links")))
 #+END_SRC
 *** Final Setup
 #+BEGIN_SRC emacs-lisp
@@ -602,18 +613,21 @@ Handling/storing of files, backups, autosaves.
       :ensure t
       :config
       (global-evil-leader-mode)
-      (air--config-evil-leader))
+      (diego/config-evil-leader))
 
     (use-package evil-indent-textobject
       :ensure t)
-    (add-hook 'evil-mode-hook 'air--config-evil)
+    (add-hook 'evil-mode-hook 'diego/evil-modes)
+    (add-hook 'evil-mode-hook 'diego/evil-appearance)
+    (add-hook 'evil-mode-hook 'diego/evil-bindings)
+    (add-hook 'evil-mode-hook 'diego/evil-tiny-menu)
     (evil-mode 1))
 #+END_SRC
 
 ** Org mode
 *** Helper functions
 #+BEGIN_SRC emacs-lisp
-  (defun air--org-global-custom-ids ()
+  (defun diego/org-global-custom-ids ()
     "Find custom ID fields in all org agenda files."
     (let ((files (org-agenda-files))
           file
@@ -634,7 +648,7 @@ Handling/storing of files, backups, autosaves.
   (defun air-org-goto-custom-id ()
     "Go to the location of CUSTOM-ID, or prompt interactively."
     (interactive)
-    (let* ((all-custom-ids (air--org-global-custom-ids))
+    (let* ((all-custom-ids (diego/org-global-custom-ids))
            (custom-id (completing-read
                        "Custom ID: "
                        all-custom-ids)))
@@ -652,7 +666,7 @@ Handling/storing of files, backups, autosaves.
   (defun air-org-insert-custom-id-link ()
     "Insert an Org link to a custom ID selected interactively."
     (interactive)
-    (let* ((all-custom-ids (air--org-global-custom-ids))
+    (let* ((all-custom-ids (diego/org-global-custom-ids))
            (custom-id (completing-read
                        "Custom ID: "
                        all-custom-ids)))
@@ -716,19 +730,19 @@ Handling/storing of files, backups, autosaves.
   (defun air-pop-to-org-todo ();; (split)
     "Visit my main TODO list, in the current window or a SPLIT."
     ;; (interactive "P")
-    ;; (air--pop-to-file "~/Dropbox (MIT)/org/todo.org" split)
+    ;; (diego/pop-to-file "~/Dropbox (MIT)/org/todo.org" split)
     (interactive)
     (find-file-other-window "~/Dropbox (MIT)/org/todo.org"))
 
   (defun air-pop-to-org-notes (split)
     "Visit my main notes file, in the current window or a SPLIT."
     (interactive "P")
-    (air--pop-to-file "~/Dropbox (MIT)/org/notes.org" split))
+    (diego/pop-to-file "~/Dropbox (MIT)/org/notes.org" split))
 
   (defun air-pop-to-org-vault (split)
     "Visit my encrypted vault file, in the current window or a SPLIT."
     (interactive "P")
-    (air--pop-to-file "~/Dropbox (MIT)/org/vault.gpg" split))
+    (diego/pop-to-file "~/Dropbox (MIT)/org/vault.gpg" split))
 
   (defun air-pop-to-org-agenda (split)
     "Visit the org agenda, in the current window or a SPLIT."
@@ -737,7 +751,7 @@ Handling/storing of files, backups, autosaves.
     (when (not split)
       (delete-other-windows)))
 
-  (defun air--org-insert-list-leader-or-self (char)
+  (defun diego/org-insert-list-leader-or-self (char)
       "If on column 0, insert space-padded CHAR; otherwise insert CHAR.
   This has the effect of automatically creating a properly indented list
   leader; like hyphen, asterisk, or plus sign; without having to use
@@ -746,7 +760,7 @@ Handling/storing of files, backups, autosaves.
           (insert (concat " " char " "))
         (insert char)))
 
-  (defun air--org-swap-tags (tags)
+  (defun diego/org-swap-tags (tags)
       "Replace any tags on the current headline with TAGS.
   The assumption is that TAGS will be a string conforming to Org Mode's
   tag format specifications, or nil to remove all tags."
@@ -783,7 +797,7 @@ Handling/storing of files, backups, autosaves.
                                   ":"))
              (new (if (> (length new-tags) 1) (concat " :" new-tags ":")
                     nil)))
-        (air--org-swap-tags new)))
+        (diego/org-swap-tags new)))
 
 #+END_SRC
 *** Setup
@@ -885,7 +899,7 @@ Handling/storing of files, backups, autosaves.
                   (define-key org-mode-map (kbd char)
                     `(lambda ()
                        (interactive)
-                       (air--org-insert-list-leader-or-self ,char))))
+                       (diego/org-insert-list-leader-or-self ,char))))
 
                 ;; Normal maps
                 (define-key org-mode-map (kbd "C-c d")   (lambda ()
@@ -1931,14 +1945,14 @@ pretty good but had some known issues.
   ;;   ;; don't quite make it worth it, I think.
   ;;   :ensure t
   ;;   :config
-  ;;   (defun air--yafolding-kbd ()
+  ;;   (defun diego/yafolding-kbd ()
   ;;  (local-set-key (kbd "C-c <up>") 'yafolding-hide-all)
   ;;  (local-set-key (kbd "C-c <down>") 'yafolding-show-all)
   ;;  (local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
   ;;  (local-set-key (kbd "C-c <right>") 'yafolding-show-element)
   ;;  (local-set-key [C-tab] 'yafolding-toggle-element))
   ;;   (add-hook 'python-mode-hook 'yafolding-mode)
-  ;;   (add-hook 'python-mode-hook 'air--yafolding-kbd))
+  ;;   (add-hook 'python-mode-hook 'diego/yafolding-kbd))
 #+END_SRC
 
 * Prog-mode
