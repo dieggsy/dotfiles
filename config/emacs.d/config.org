@@ -1013,6 +1013,14 @@ Jump to things in Emacs tree-style
     :ensure t)
 #+END_SRC
 
+*** [[https://github.com/abo-abo/ace-window][ace-window]] 
+#+BEGIN_SRC emacs-lisp
+  (use-package ace-window
+    :ensure t
+    :bind ("M-p" . ace-window)
+    :config
+    (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
+#+END_SRC
 *** [[https://github.com/company-mode/company-mode][company-mode]]
 Supposedly better than autocomplete... Also using [[https://github.com/syohex/emacs-company-jedi][company-jedi]]
 #+BEGIN_SRC emacs-lisp
