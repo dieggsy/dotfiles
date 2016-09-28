@@ -437,31 +437,34 @@ Handling/storing of files, backups, autosaves.
     (evil-leader/set-leader ",")
     (setq evil-leader/in-all-states 1)
     (evil-leader/set-key
-      ",f"        'counsel-projectile-find-file
       ",g"        'counsel-git
       ",y"        'yas-insert-snippet
+      "-"         'counsel-projectile-find-file
       "."         'switch-to-previous-buffer
       "/"         'evil-search-forward
+      "7"         'async-shell-command
       ":"         'eval-expression
       "<right>"   'other-window
       "B"         'magit-blame-toggle
       "C"         (lambda () (interactive) (calc-dispatch) (evil-insert-state))
       "K"         'kill-buffer
       "aa"        'align-regexp
-      "b"         'ivy-switch-buffer ;; Switch to another buffer
+      "b"         'ivy-switch-buffer      ;; Switch to another buffer
       "c"         'comment-dwim
-      "d"         'delete-trailing-whitespace
+      "fl"        'evil-avy-goto-line   
+      "fw"        'evil-avy-goto-word-1
       "g"         'magit-status
       "h"         'split-window-below
-      "i"         'ivy-imenu-anywhere ;; Jump to function in buffer
+      "i"         'ivy-imenu-anywhere     ;; Jump to function in buffer
       "k"         'kill-this-buffer
-      "la"        (lambda () (interactive) (linum-mode) (fci-mode))
+      "la"        'diego/linum-fci-toggle 
       "lc"        'fci-mode
+      "ld"        'delete-trailing-whitespace
       "lf"        'flycheck-mode
       "ll"        'linum-mode
-      "lw"        'whitespace-mode      ;; Show invisible characters
-      "nn"        'air-narrow-dwim      ;; Narrow to region and enter normal mode
-      "o"         'delete-other-windows ;; C-w o
+      "lw"        'whitespace-mode        ;; Show invisible characters
+      "nn"        'air-narrow-dwim        ;; Narrow to region and enter normal mode
+      "o"         'delete-other-windows   ;; C-w o
       "r"         'ranger
       "s"         'counsel-projectile-switch-project
       "t"         'counsel-locate
@@ -469,9 +472,6 @@ Handling/storing of files, backups, autosaves.
       "w"         'save-buffer
       "x"         'counsel-M-x
       "y"         'counsel-yank-pop
-      ;; "T"      'gtags-find-tag
-      ;; "f"         'helm-find
-      ;; "t"      'gtags-reindex
       )
 
     (defun magit-blame-toggle ()
@@ -479,7 +479,17 @@ Handling/storing of files, backups, autosaves.
       (interactive)
       (if (and (boundp 'magit-blame-mode) magit-blame-mode)
           (magit-blame-quit)
-        (call-interactively 'magit-blame))))
+        (call-interactively 'magit-blame)))
+      
+    (defun diego/linum-fci-toggle ()
+      (interactive)
+      (cond ((and (eq linum-mode t) (eq fci-mode t))
+             (linum-mode -1)
+             (fci-mode -1))
+            ((and (eq linum-mode nil) (eq fci-mode nil))
+             (linum-mode 1)
+             (fci-mode 1))))  
+    )
 #+END_SRC
 *** Modes
 #+BEGIN_SRC emacs-lisp
@@ -1023,13 +1033,6 @@ A neater way to get the same functionality as Helm, with less... clutter?
 
 * Dem packages
 ** Active
-*** [[https://github.com/abo-abo/avy][avy]]
-Jump to things in Emacs tree-style
-#+BEGIN_SRC emacs-lisp
-  (use-package avy
-    :ensure t)
-#+END_SRC
-
 *** [[https://github.com/abo-abo/ace-window][ace-window]] 
 #+BEGIN_SRC emacs-lisp
   (use-package ace-window
@@ -1038,6 +1041,13 @@ Jump to things in Emacs tree-style
     :config
     (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
 #+END_SRC
+*** [[https://github.com/abo-abo/avy][avy]]
+Jump to things in Emacs tree-style
+#+BEGIN_SRC emacs-lisp
+  (use-package avy
+    :ensure t)
+#+END_SRC
+
 *** [[https://github.com/company-mode/company-mode][company-mode]]
 Supposedly better than autocomplete... Also using [[https://github.com/syohex/emacs-company-jedi][company-jedi]]
 #+BEGIN_SRC emacs-lisp
