@@ -11,11 +11,23 @@
 
 (define-abbrev-table 'apropos-mode-abbrev-table '())
 
+(define-abbrev-table 'awk-mode-abbrev-table
+  '(
+   ))
+
 (define-abbrev-table 'bibtex-mode-abbrev-table '())
 
 (define-abbrev-table 'bookmark-bmenu-mode-abbrev-table '())
 
 (define-abbrev-table 'bookmark-edit-annotation-mode-abbrev-table '())
+
+(define-abbrev-table 'c++-mode-abbrev-table
+  '(
+   ))
+
+(define-abbrev-table 'c-mode-abbrev-table
+  '(
+   ))
 
 (define-abbrev-table 'calc-trail-mode-abbrev-table '())
 
@@ -37,7 +49,23 @@
 
 (define-abbrev-table 'dig-mode-abbrev-table '())
 
+(define-abbrev-table 'doctex-mode-abbrev-table '())
+
+(define-abbrev-table 'edebug-eval-mode-abbrev-table '())
+
 (define-abbrev-table 'edit-abbrevs-mode-abbrev-table '())
+
+(define-abbrev-table 'ein:ipdb-mode-abbrev-table '())
+
+(define-abbrev-table 'ein:notebook-plain-mode-abbrev-table '())
+
+(define-abbrev-table 'ein:notebook-python-mode-abbrev-table '())
+
+(define-abbrev-table 'ein:notebooklist-mode-abbrev-table '())
+
+(define-abbrev-table 'ein:pager-mode-abbrev-table '())
+
+(define-abbrev-table 'ein:traceback-mode-abbrev-table '())
 
 (define-abbrev-table 'elisp-byte-code-mode-abbrev-table '())
 
@@ -80,6 +108,8 @@
 
 (define-abbrev-table 'ibuffer-mode-abbrev-table '())
 
+(define-abbrev-table 'idl-mode-abbrev-table '())
+
 (define-abbrev-table 'image-dired-display-image-mode-abbrev-table '())
 
 (define-abbrev-table 'image-dired-thumbnail-mode-abbrev-table '())
@@ -89,6 +119,12 @@
 (define-abbrev-table 'ivy-occur-grep-mode-abbrev-table '())
 
 (define-abbrev-table 'ivy-occur-mode-abbrev-table '())
+
+(define-abbrev-table 'java-mode-abbrev-table
+  '(
+   ))
+
+(define-abbrev-table 'latex-mode-abbrev-table '())
 
 (define-abbrev-table 'lisp-mode-abbrev-table '())
 
@@ -140,17 +176,30 @@
 
 (define-abbrev-table 'notmuch-tree-mode-abbrev-table '())
 
+(define-abbrev-table 'objc-mode-abbrev-table
+  '(
+   ))
+
 (define-abbrev-table 'occur-edit-mode-abbrev-table '())
 
 (define-abbrev-table 'occur-mode-abbrev-table '())
 
 (define-abbrev-table 'org-export-stack-mode-abbrev-table '())
 
-(define-abbrev-table 'org-mode-abbrev-table '())
+(define-abbrev-table 'org-mode-abbrev-table
+  '(
+    ("env" "environment" nil 4)
+   ))
 
 (define-abbrev-table 'outline-mode-abbrev-table '())
 
 (define-abbrev-table 'package-menu-mode-abbrev-table '())
+
+(define-abbrev-table 'pike-mode-abbrev-table
+  '(
+   ))
+
+(define-abbrev-table 'plain-tex-mode-abbrev-table '())
 
 (define-abbrev-table 'process-menu-mode-abbrev-table '())
 
@@ -170,6 +219,8 @@
 
 (define-abbrev-table 'shell-mode-abbrev-table '())
 
+(define-abbrev-table 'slitex-mode-abbrev-table '())
+
 (define-abbrev-table 'smime-mode-abbrev-table '())
 
 (define-abbrev-table 'snippet-mode-abbrev-table '())
@@ -183,6 +234,12 @@
 (define-abbrev-table 'tar-mode-abbrev-table '())
 
 (define-abbrev-table 'term-mode-abbrev-table '())
+
+(define-abbrev-table 'tetris-mode-abbrev-table '())
+
+(define-abbrev-table 'tex-mode-abbrev-table '())
+
+(define-abbrev-table 'tex-shell-abbrev-table '())
 
 (define-abbrev-table 'text-mode-abbrev-table '())
 
