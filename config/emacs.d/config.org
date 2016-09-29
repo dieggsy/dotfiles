@@ -1204,6 +1204,11 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
       :ensure t))
 #+END_SRC
 
+*** [[https://github.com/cadadr/forecast.el][forecast]] 
+#+BEGIN_SRC emacs-lisp
+  (use-package forecast
+    :ensure t)
+#+END_SRC
 *** [[https://github.com/dtaht/Gnugol][Gnugol]]
 An org-mode google??? Not currently working, apparently.
 #+BEGIN_SRC emacs-lisp
@@ -1679,6 +1684,13 @@ SUPER nifty.
     :ensure t)
 #+END_SRC
 
+*** [[https://github.com/aaronbieber/sunshine.el][sunshine]] 
+#+BEGIN_SRC emacs-lisp
+  (use-package sunshine
+    :ensure t
+    :config
+    (setq sunshine-location "02139,USA"))
+#+END_SRC
 *** [[https://github.com/nonsequitur/smex][smex]]
 Recently used M-x commands
 #+BEGIN_SRC emacs-lisp
