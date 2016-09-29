@@ -224,7 +224,7 @@ ocrpdf(){
 }
 
 psetzip (){
-	zip -r "$1".zip $1 -x '*.git*' -x '*.ipynb_checkpoints*' -x '*.pyc*' -x '*.DS_Store*'
+	zip -r "$1".zip $1 -x '*.git*' -x '*.ipynb_checkpoints*' -x '*.pyc*' -x '*.DS_Store*' -x '*~*' 
 }
 
 calc(){
