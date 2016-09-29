@@ -436,15 +436,17 @@ Handling/storing of files, backups, autosaves.
     "Configure evil leader mode."
     (evil-leader/set-leader ",")
     (setq evil-leader/in-all-states 1)
+
     (evil-leader/set-key
       ",g"        'counsel-git
       ",y"        'yas-insert-snippet
       "-"         'counsel-projectile-find-file
       "."         'switch-to-previous-buffer
+      "'"         'ace-window
       "/"         'evil-search-forward
+      "0"         'universal-argument
       "7"         'async-shell-command
       ":"         'eval-expression
-      "<right>"   'other-window
       "B"         'magit-blame-toggle
       "C"         (lambda () (interactive) (calc-dispatch) (evil-insert-state))
       "K"         'kill-buffer
@@ -452,12 +454,13 @@ Handling/storing of files, backups, autosaves.
       "b"         'ivy-switch-buffer      ;; Switch to another buffer
       "c"         'comment-dwim
       "fl"        'evil-avy-goto-line   
+      "fc"        'evil-avy-goto-char-2
       "fw"        'evil-avy-goto-word-1
       "g"         'magit-status
       "h"         'split-window-below
       "i"         'ivy-imenu-anywhere     ;; Jump to function in buffer
       "k"         'kill-this-buffer
-      "la"        'diego/linum-fci-toggle 
+      "la"        'diego/toggle-linum-fci 
       "lc"        'fci-mode
       "ld"        'delete-trailing-whitespace
       "lf"        'flycheck-mode
@@ -481,7 +484,7 @@ Handling/storing of files, backups, autosaves.
           (magit-blame-quit)
         (call-interactively 'magit-blame)))
       
-    (defun diego/linum-fci-toggle ()
+    (defun diego/toggle-linum-fci ()
       (interactive)
       (cond ((and (eq linum-mode t) (eq fci-mode t))
              (linum-mode -1)
@@ -550,7 +553,9 @@ Handling/storing of files, backups, autosaves.
     (setq evil-insert-state-tag " INSERT ")
     (setq evil-motion-state-tag " MOTION ")
     (setq evil-visual-state-tag " VISUAL ")
-    (setq evil-emacs-state-tag  " EMACS "))
+    (setq evil-emacs-state-tag  " EMACS ")
+    (setq evil-replace-state-tag " REPLACE ")
+   )
 #+END_SRC
 *** Bindings
 #+BEGIN_SRC emacs-lisp
@@ -1033,7 +1038,7 @@ A neater way to get the same functionality as Helm, with less... clutter?
 
 * Dem packages
 ** Active
-*** [[https://github.com/abo-abo/ace-window][ace-window]] 
+*** [[https://github.com/abo-abo/ace-window][ace-window]]
 #+BEGIN_SRC emacs-lisp
   (use-package ace-window
     :ensure t
@@ -1136,7 +1141,7 @@ Google stuff from emacs.
     (google-this-mode 1))
 #+END_SRC
 
-*** [[https://github.com/hiddenlotus/eshell-prompt-extras][eshell-prompt-extras]] 
+*** [[https://github.com/hiddenlotus/eshell-prompt-extras][eshell-prompt-extras]]
 #+BEGIN_SRC emacs-lisp
   (use-package eshell-prompt-extras
     :ensure t
@@ -1145,7 +1150,7 @@ Google stuff from emacs.
     (setq eshell-highlight-prompt nil
           eshell-prompt-function 'epe-theme-dakrone))
 #+END_SRC
-*** [[https://github.com/xuchunyang/eshell-z][eshell-z]] 
+*** [[https://github.com/xuchunyang/eshell-z][eshell-z]]
 #+BEGIN_SRC emacs-lisp
   (use-package eshell-z
     :ensure t)
@@ -1221,7 +1226,7 @@ An org-mode google??? Not currently working, apparently.
     :load-path "lisp/")
 #+END_SRC
 
-*** [[https://github.com/atykhonov/google-translate][google-translate]] 
+*** [[https://github.com/atykhonov/google-translate][google-translate]]
 #+BEGIN_SRC emacs-lisp
   (use-package google-translate
     :ensure t)
@@ -1598,7 +1603,7 @@ Generates markdown previews? Not sure if working.
     :load-path "lisp/")
 #+END_SRC
 
-*** [[https://github.com/laynor/melpa-upstream-visit][melpa-upstream-visit]] 
+*** [[https://github.com/laynor/melpa-upstream-visit][melpa-upstream-visit]]
 #+BEGIN_SRC emacs-lisp
   (use-package melpa-upstream-visit
     :ensure t)
@@ -1624,7 +1629,7 @@ Email!
     :ensure t)
 #+END_SRC
 
-*** [[https://github.com/gregsexton/ob-ipython][ob-ipython]] 
+*** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
 #+BEGIN_SRC emacs-lisp
   (use-package ob-ipython
     :ensure t)
@@ -1649,7 +1654,7 @@ look into [[https://melpa.org/#/osx-clipboard][osx-clipboard]] instead.
     (turn-on-pbcopy))
 #+END_SRC
 
-*** [[https://github.com/bbatsov/projectile][projectile]] 
+*** [[https://github.com/bbatsov/projectile][projectile]]
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :ensure t
@@ -1769,7 +1774,7 @@ Stack exchange on emacs.
     (add-hook 'twittering-mode-hook #'emojify-mode))
 #+END_SRC
 
-*** [[https://github.com/porterjamesj/virtualenvwrapper.el][virtualenvwrapper]] 
+*** [[https://github.com/porterjamesj/virtualenvwrapper.el][virtualenvwrapper]]
 #+BEGIN_SRC emacs-lisp
   (use-package virtualenvwrapper
     :ensure t
