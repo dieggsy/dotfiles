@@ -1041,6 +1041,11 @@ A neater way to get the same functionality as Helm, with less... clutter?
     :config
     (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
 #+END_SRC
+*** [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
+#+BEGIN_SRC emacs-lisp 
+  (use-package all-the-icons
+    :ensure t)
+#+END_SRC
 *** [[https://github.com/abo-abo/avy][avy]]
 Jump to things in Emacs tree-style
 #+BEGIN_SRC emacs-lisp
