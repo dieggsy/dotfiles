@@ -4,6 +4,3 @@
 [submodule "config/emacs.d/lisp/Gnugol"]
 	path = config/emacs.d/lisp/Gnugol
 	url = https://github.com/dtaht/Gnugol
-[submodule "config/emacs.d/lisp/quake-mode"]
-	path = config/emacs.d/lisp/quake-mode
-	url = https://github.com/jordonbiondo/quake-mode
