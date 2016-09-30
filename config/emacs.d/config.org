@@ -1057,42 +1057,6 @@ A really, really neat search/completion system for emacs.
 #+END_SRC
 * Dem packages
 ** Active
-*** [[https://github.com/abo-abo/ace-window][ace-window]]
-#+BEGIN_SRC emacs-lisp
-  (use-package ace-window
-    :ensure t
-    :bind ("M-p" . ace-window)
-    :config
-    (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
-#+END_SRC
-*** [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
-#+BEGIN_SRC emacs-lisp 
-  (use-package all-the-icons
-    :ensure t)
-#+END_SRC
-*** [[https://github.com/abo-abo/avy][avy]]
-Jump to things in Emacs tree-style
-#+BEGIN_SRC emacs-lisp
-  (use-package avy
-    :ensure t)
-#+END_SRC
-
-*** [[https://github.com/company-mode/company-mode][company-mode]]
-Supposedly better than autocomplete... Also using [[https://github.com/syohex/emacs-company-jedi][company-jedi]]
-#+BEGIN_SRC emacs-lisp
-  (use-package company
-    :ensure t
-    :config
-    (add-hook 'after-init-hook 'global-company-mode)
-    (use-package company-jedi
-      ;; Not sure this is actually working for me
-      :ensure t
-      :config
-      (defun my/python-mode-hook ()
-        (add-to-list 'company-backends 'company-jedi))
-      (add-hook 'python-mode-hook 'my/python-mode-hook)))
-#+END_SRC
-
 *** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
 Eh, wanted to try a simpler way of editing csv files. (Excel and Numbers both
 kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
@@ -1102,110 +1066,6 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
     :ensure t
     :config
     (add-hook 'csv-mode-hook 'csv-align-fields))
-#+END_SRC
-
-*** [[https://github.com/xuchunyang/devdocs.el][devdocs]]
-#+BEGIN_SRC emacs-lisp
-  (use-package devdocs
-      :ensure t)
-#+END_SRC
-
-*** [[https://github.com/myrkr/dictionary-el/blob/master/dictionary.el][dictionary]]
-Dictionary search!
-#+BEGIN_SRC emacs-lisp
-  (use-package dictionary
-    :ensure t)
-#+END_SRC
-
-*** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
-Edit jupyter notebooks in emacs
-#+BEGIN_SRC emacs-lisp
-  (use-package ein
-    :ensure t
-    :config
-    )
-#+END_SRC
-
-*** [[https://github.com/jorgenschaefer/elpy][elpy]]
-Sets up a python editing environment. I'm not sure yet.
-#+BEGIN_SRC emacs-lisp
-  (use-package elpy
-    ;; Eh, I don't know...
-    :ensure t
-    :config
-    (elpy-enable)
-    (elpy-use-ipython)
-    (setq elpy-modules
-          '(elpy-module-company
-            elpy-module-eldoc
-            elpy-module-pyvenv
-            elpy-module-yasnippet
-            elpy-module-sane-defaults))
-    )
-#+END_SRC
-
-*** [[https://github.com/iqbalansari/emacs-emojify][emacs-emojify]]
-Display emojis in emacs. Sweet!
-#+BEGIN_SRC emacs-lisp
-  (use-package emojify
-    :ensure t)
-#+END_SRC
-
-*** [[https://github.com/Malabarba/emacs-google-this][emacs-google-this]]
-Google stuff from emacs.
-#+BEGIN_SRC emacs-lisp
-  (use-package google-this
-    :ensure t
-    :config
-    (google-this-mode 1))
-#+END_SRC
-
-*** [[https://github.com/hiddenlotus/eshell-prompt-extras][eshell-prompt-extras]]
-#+BEGIN_SRC emacs-lisp
-  (use-package eshell-prompt-extras
-    :ensure t
-    :config
-    (autoload 'epe-theme-dakrone "eshell-prompt-extras")
-    (setq eshell-highlight-prompt nil
-          eshell-prompt-function 'epe-theme-dakrone))
-#+END_SRC
-*** [[https://github.com/xuchunyang/eshell-z][eshell-z]]
-#+BEGIN_SRC emacs-lisp
-  (use-package eshell-z
-    :ensure t)
-#+END_SRC
-*** [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]]
-#+BEGIN_SRC emacs-lisp
-  (use-package exec-path-from-shell
-    :ensure t
-    :config
-    (setq exec-path-from-shell-check-startup-files nil)
-    (when (memq window-system '(mac ns))
-      (exec-path-from-shell-initialize))
-    )
-#+END_SRC
-
-*** [[https://github.com/lunaryorn/fancy-battery.el][fancy-battery]]
-For nice battery display info.
-#+BEGIN_SRC emacs-lisp
-  (use-package fancy-battery
-    ;; Something something battery
-    :ensure t
-    :config
-    (fancy-battery-mode)
-    (setq fancy-battery-show-percentage t)
-    (fancy-battery-update))
-#+END_SRC
-
-*** [[https://github.com/alpaker/Fill-Column-Indicator][Fill-Column-Indicator]]
-I like a line length limit indicator in Python
-#+BEGIN_SRC emacs-lisp
-
-  (use-package fill-column-indicator
-    :ensure t
-    :init
-    (setq-default fci-rule-column 79)
-    (add-hook 'python-mode-hook 'fci-mode))
 #+END_SRC
 
 *** [[https://github.com/lewang/flx][flx]]
@@ -1238,327 +1098,6 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
   (use-package forecast
     :ensure t)
 #+END_SRC
-*** [[https://github.com/dtaht/Gnugol][Gnugol]]
-An org-mode google??? Not currently working, apparently.
-#+BEGIN_SRC emacs-lisp
-  (use-package gnugol
-    :load-path "lisp/")
-#+END_SRC
-
-*** [[https://github.com/atykhonov/google-translate][google-translate]]
-#+BEGIN_SRC emacs-lisp
-  (use-package google-translate
-    :ensure t)
-#+END_SRC
-*** [[https://github.com/emacs-helm/helm][Helm]]
-*Note:* I'm now using [[https://github.com/abo-abo/swiper][abo-abo/swiper]], which includes ivy, counsel, and swiper,
-for very similar functionality but with a much cleaner and responsive
-interface, in my opinion. It's really neat, and you should definitely check it
-out.
-
-For making stuff look nicer, see ~M-x customize-group RET helm-faces~, and
-check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido-like-guide]].
-#+BEGIN_SRC emacs-lisp
-  (use-package helm
-    :ensure t
-    :init
-    (require 'helm-config)
-    :config
-
-    ;; Fuzzy matching
-    (setq helm-completion-in-region-fuzzy-match t
-          helm-mode-fuzzy-match t
-          helm-M-x-fuzzy-match t
-          helm-buffers-fuzzy-matching t
-          helm-recentf-fuzzy-match t
-          helm-locate-fuzzy-match nil     ; Doesn't work with mdfind
-          helm-semantic-fuzzy-match t
-          helm-imenu-fuzzy-match t
-          helm-apropos-fuzzy-match t
-          helm-lisp-fuzzy-completion t)
-
-    (setq helm-boring-buffer-regexp-list
-          '("\\` "
-            "\\*helm"
-            "\\*helm-mode"
-            "\\*Echo Area"
-            "\\*Minibuf"
-            "\\*epc"))
-    (setq helm-buffer-max-length 40)
-    (setq helm-display-buffer-default-height 9)
-    (setq helm-locate-command
-          (cl-case system-type
-            ('darwin "mdfind -name %s %s")
-            ('gnu/linux "locate -i -r %s")
-            ('berkley-unix "locate -i %s")
-            ('windows-nt "es %s")
-            (t "locate %s"))) ; Use spotlight for search
-    (put 'helm-minibuffer-history 'disabled t)
-    ;; (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-    ;;----------------
-    ;; Helm ido-like
-    ;;--------------
-
-
-    (defun helm-ido-like-activate-helm-modes ()
-      (require 'helm-config)
-      (helm-mode 1)
-      (helm-flx-mode 1)
-      (helm-fuzzier-mode 1))
-
-    (defun helm-ido-like-load-ido-like-bottom-buffer ()
-      ;; popup helm-buffer at the bottom
-      (setq helm-split-window-in-side-p t)
-      ;; (add-to-list 'display-buffer-alist
-      ;;              '("\\`\\*helm.*\\*\\'"
-      ;;                (display-buffer-in-side-window)
-      ;;                (window-height . 0.4)))
-      ;; (add-to-list 'display-buffer-alist
-      ;;              '("\\`\\*helm help\\*\\'"
-      ;;                (display-buffer-pop-up-window)))
-
-      ;; dont display the header line
-      (setq helm-display-header-line nil)
-      ;; input in header line
-      (setq helm-echo-input-in-header-line t)
-      ;; (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
-      )
-
-    (defvar helm-ido-like-bottom-buffers nil
-        "List of bottom buffers before helm session started.
-  Its element is a pair of `buffer-name' and `mode-line-format'.")
-
-
-    (defun helm-ido-like-bottom-buffers-init ()
-      (setq-local mode-line-format (default-value 'mode-line-format))
-      (setq helm-ido-like-bottom-buffers
-            (cl-loop for w in (window-list)
-                     when (window-at-side-p w 'bottom)
-                     collect (with-current-buffer (window-buffer w)
-                               (cons (buffer-name) mode-line-format)))))
-
-
-    (defun helm-ido-like-bottom-buffers-hide-mode-line ()
-      (mapc (lambda (elt)
-              (with-current-buffer (car elt)
-                (setq-local mode-line-format nil)))
-            helm-ido-like-bottom-buffers))
-
-
-    (defun helm-ido-like-bottom-buffers-show-mode-line ()
-      (when helm-ido-like-bottom-buffers
-        (mapc (lambda (elt)
-                (with-current-buffer (car elt)
-                  (setq-local mode-line-format (cdr elt))))
-              helm-ido-like-bottom-buffers)
-        (setq helm-ido-like-bottom-buffers nil)))
-
-
-    (defun helm-ido-like-helm-keyboard-quit-advice (orig-func &rest args)
-      (helm-ido-like-bottom-buffers-show-mode-line)
-      (apply orig-func args))
-
-    (defun helm-ido-like-hide-modelines ()
-      ;; hide The Modelines while Helm is active
-      (add-hook 'helm-before-initialize-hook #'helm-ido-like-bottom-buffers-init)
-      (add-hook 'helm-after-initialize-hook #'helm-ido-like-bottom-buffers-hide-mode-line)
-      (add-hook 'helm-exit-minibuffer-hook #'helm-ido-like-bottom-buffers-show-mode-line)
-      (add-hook 'helm-cleanup-hook #'helm-ido-like-bottom-buffers-show-mode-line)
-      (advice-add 'helm-keyboard-quit :around #'helm-ido-like-helm-keyboard-quit-advice))
-
-    (defun helm-ido-like-hide-helm-modeline-1 ()
-      "Hide mode line in `helm-buffer'."
-      (with-helm-buffer
-        (setq-local mode-line-format nil)))
-
-
-    (defun helm-ido-like-hide-helm-modeline ()
-      (fset 'helm-display-mode-line #'ignore)
-      (add-hook 'helm-after-initialize-hook 'helm-ido-like-hide-helm-modeline-1))
-
-    (defvar helm-ido-like-source-header-default-background nil)
-    (defvar helm-ido-like-source-header-default-foreground nil)
-    (defvar helm-ido-like-source-header-default-box nil)
-
-    (defun helm-ido-like-toggle-header-line ()
-      ;; Only Show Source Headers If More Than One
-      (if (> (length helm-sources) 1)
-          (set-face-attribute 'helm-source-header
-                              nil
-                              :foreground helm-ido-like-source-header-default-foreground
-                              :background helm-ido-like-source-header-default-background
-                              :box helm-ido-like-source-header-default-box
-                              :height 1.0)
-        (set-face-attribute 'helm-source-header
-                            nil
-                            :foreground (face-attribute 'helm-selection :background)
-                            :background (face-attribute 'helm-selection :background)
-                            :box nil
-                            :height 0.1)))
-
-    (defun helm-ido-like-header-lines-maybe ()
-      (setq helm-ido-like-source-header-default-background (face-attribute 'helm-source-header :background))
-      (setq helm-ido-like-source-header-default-foreground (face-attribute 'helm-source-header :foreground))
-      (setq helm-ido-like-source-header-default-box (face-attribute 'helm-source-header :box))
-      (add-hook 'helm-before-initialize-hook 'helm-ido-like-toggle-header-line))
-
-    (defvar helm-ido-like-bg-color (face-attribute 'default :background))
-
-    (defun helm-ido-like-setup-bg-color-1 ()
-      (with-helm-buffer
-        (make-local-variable 'face-remapping-alist)
-        (add-to-list 'face-remapping-alist `(default (:background ,helm-ido-like-bg-color)))))
-
-    (defun helm-ido-like-setup-bg-color ()
-      (add-hook 'helm-after-initialize-hook 'helm-ido-like-setup-bg-color-1))
-
-    (defun helm-ido-like-find-files-up-one-level-maybe ()
-      (interactive)
-      (if (looking-back "/" 1)
-          (call-interactively 'helm-find-files-up-one-level)
-        (delete-char -1)))
-
-
-    (defun helm-ido-like-find-files-navigate-forward (orig-fun &rest args)
-      "Adjust how helm-execute-persistent actions behaves, depending on context."
-      (let ((sel (helm-get-selection)))
-        (if (file-directory-p sel)
-            ;; the current dir needs to work to
-            ;; be able to select directories if needed
-            (cond ((and (stringp sel)
-                        (string-match "\\.\\'" (helm-get-selection)))
-                   (helm-maybe-exit-minibuffer))
-                  (t
-                   (apply orig-fun args)))
-          (helm-maybe-exit-minibuffer))))
-
-
-    (defun helm-ido-like-load-file-nav ()
-      (advice-add 'helm-execute-persistent-action :around #'helm-ido-like-find-files-navigate-forward)
-      ;; <return> is not bound in helm-map by default
-      (define-key helm-map (kbd "<return>") 'helm-maybe-exit-minibuffer)
-      (with-eval-after-load 'helm-files
-        (define-key helm-read-file-map (kbd "<backspace>") 'helm-ido-like-find-files-up-one-level-maybe)
-        (define-key helm-read-file-map (kbd "DEL") 'helm-ido-like-find-files-up-one-level-maybe)
-        (define-key helm-find-files-map (kbd "<backspace>") 'helm-ido-like-find-files-up-one-level-maybe)
-        (define-key helm-find-files-map (kbd "DEL") 'helm-ido-like-find-files-up-one-level-maybe)
-
-        (define-key helm-find-files-map (kbd "<return>") 'helm-execute-persistent-action)
-        (define-key helm-read-file-map (kbd "<return>") 'helm-execute-persistent-action)
-        (define-key helm-find-files-map (kbd "RET") 'helm-execute-persistent-action)
-        (define-key helm-read-file-map (kbd "RET") 'helm-execute-persistent-action)))
-
-    (defvar helm-ido-like-no-dots-whitelist
-      '("*Helm file completions*")
-      "List of helm buffers in which to show dot directories.")
-
-    (defun helm-ido-like-no-dots-display-file-p (file)
-      ;; in a whitelisted buffer display all but the relative path to parent dir
-      (or (and (member helm-buffer helm-ido-like-no-dots-whitelist)
-               (not (string-match "\\(?:/\\|\\`\\)\\.\\{2\\}\\'" file)))
-          ;; in all other buffers display all files but the two relative ones
-          (not (string-match "\\(?:/\\|\\`\\)\\.\\{1,2\\}\\'" file))))
-
-
-    (defun helm-ido-like-no-dots-auto-add (&rest args)
-      "Auto add buffers which want to read directory names to the whitelist."
-      (if (eq (car (last args)) 'file-directory-p)
-          (add-to-list 'helm-ido-like-no-dots-whitelist
-                       (format "*helm-mode-%s*"
-                               (helm-symbol-name
-                                (or (helm-this-command) this-command))))))
-
-
-    (defun helm-ido-like-no-dots ()
-      (require 'cl-lib)
-      (advice-add 'helm-ff-filter-candidate-one-by-one
-                  :before-while 'helm-ido-like-no-dots-display-file-p)
-      (advice-add  'helm--generic-read-file-name :before 'helm-ido-like-no-dots-auto-add))
-
-    (defvar helm-ido-like-user-gc-setting nil)
-
-    (defun helm-ido-like-higher-gc ()
-      (setq helm-ido-like-user-gc-setting gc-cons-threshold)
-      (setq gc-cons-threshold most-positive-fixnum))
-
-
-    (defun helm-ido-like-lower-gc ()
-      (setq gc-cons-threshold helm-ido-like-user-gc-setting))
-
-    (defun helm-ido-like-helm-make-source (f &rest args)
-      (let ((source-type (cadr args)))
-        (unless (or (memq source-type '(helm-source-async helm-source-ffiles))
-                    (eq (plist-get args :filtered-candidate-transformer)
-                        'helm-ff-sort-candidates)
-                    (eq (plist-get args :persistent-action)
-                        'helm-find-files-persistent-action))
-          (nconc args '(:fuzzy-match t))))
-      (apply f args))
-
-    (defun helm-ido-like-load-fuzzy-enhancements ()
-      (add-hook 'minibuffer-setup-hook #'helm-ido-like-higher-gc)
-      (add-hook 'minibuffer-exit-hook #'helm-ido-like-lower-gc)
-      (advice-add 'helm-make-source :around 'helm-ido-like-helm-make-source))
-
-    (defun helm-ido-like-fuzzier-deactivate (&rest _)
-      (helm-fuzzier-mode -1))
-
-
-    (defun helm-ido-like-fuzzier-activate (&rest _)
-      (unless helm-fuzzier-mode
-        (helm-fuzzier-mode 1)))
-
-
-    (defun helm-ido-like-fix-fuzzy-files ()
-      (add-hook 'helm-find-files-before-init-hook #'helm-ido-like-fuzzier-deactivate)
-      (advice-add 'helm--generic-read-file-name :before #'helm-ido-like-fuzzier-deactivate)
-      (add-hook 'helm-exit-minibuffer-hook #'helm-ido-like-fuzzier-activate)
-      (add-hook 'helm-cleanup-hook #'helm-ido-like-fuzzier-activate)
-      (advice-add 'helm-keyboard-quit :before #'helm-ido-like-fuzzier-activate))
-
-  ;;   ;;;###autoload
-    (defun helm-ido-like ()
-      "Configure and activate `helm', `helm-fuzzier' and `helm-flx'."
-      (interactive)
-      ;; (helm-ido-like-activate-helm-modes)
-      (helm-ido-like-load-ido-like-bottom-buffer)
-      ;; (helm-ido-like-hide-modelines)
-      ;; (helm-ido-like-hide-helm-modeline)
-      ;; (helm-ido-like-header-lines-maybe)
-      ;; (helm-ido-like-setup-bg-color)
-      (helm-ido-like-load-file-nav)
-      (helm-ido-like-no-dots)
-      ;; (helm-ido-like-load-fuzzy-enhancements)
-      ;; (helm-ido-like-fix-fuzzy-files)
-      )
-    (helm-ido-like)
-    )
-#+END_SRC
-*** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]
-Neat-o
-#+BEGIN_SRC emacs-lisp
-  (use-package highlight-numbers
-    :ensure t
-    :init
-    (add-hook 'python-mode-hook 'highlight-numbers-mode))
-#+END_SRC
-
-*** [[https://github.com/tsdh/highlight-parentheses.el][highlight-parentheses]]
-Makes the parentheses my cursor is between stand out more.
-#+BEGIN_SRC emacs-lisp
-  (use-package highlight-parentheses
-    ;; Make parenthesis I'm currently in stand out
-    :ensure t)
-#+END_SRC
-
-*** [[https://github.com/vspinu/imenu-anywhere][imenu-anywhere]]
-imenu on steroids.
-#+BEGIN_SRC emacs-lisp
-  (use-package imenu-anywhere
-    ;; Imenu on steroids
-    :ensure t)
-#+END_SRC
-
 *** [[https://www.emacswiki.org/emacs/KeyChord][keychord]]
 Neat way to bind commands to key-stroke combinations
 #+BEGIN_SRC emacs-lisp
@@ -1619,47 +1158,17 @@ Generates markdown previews? Not sure if working.
     :load-path "lisp/")
 #+END_SRC
 
-*** [[https://github.com/laynor/melpa-upstream-visit][melpa-upstream-visit]]
-#+BEGIN_SRC emacs-lisp
-  (use-package melpa-upstream-visit
-    :ensure t)
-#+END_SRC
 *** [[https://github.com/emacsfodder/move-text][move-text]]
 #+BEGIN_SRC emacs-lisp
   (use-package move-text
     :ensure t)
 #+END_SRC
-*** [[https://www.emacswiki.org/emacs/download/multi-term.el][multi-term]]
-I wanted a slightly better terminal in emacs. Not sure
-if this is the answer as I haven't used it much.
-#+BEGIN_SRC emacs-lisp
-  (use-package multi-term
-    ;; Supposed to be nicer than ansi-term
-    :ensure t)
-#+END_SRC
-
 *** [[https://www.emacswiki.org/emacs/NotMuch][NotMuch]]
 Email!
 #+BEGIN_SRC emacs-lisp
   (use-package notmuch
     :ensure t)
 #+END_SRC
-
-*** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
-#+BEGIN_SRC emacs-lisp
-  (use-package ob-ipython
-    :ensure t)
-#+END_SRC
-*** [[https://github.com/sabof/org-bullets][org-bullets]]
-Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
-
-*** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
-Translates Org-mode file to various other formats via Pandoc. Pretty neat. Code
-under [[Org mode][Major Configs/Org mode/Setup]]
-
-*** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
-Export org to twitter bootstrap compatible HTML. Code under Major configs/Org
-mode/Setup.
 
 *** [[https://github.com/emacsfodder/pbcopy.el][pbcopy]]
 Allow yanking and pasting with osx clipboard in terminal Emacs. Might want to
@@ -1670,39 +1179,6 @@ look into [[https://melpa.org/#/osx-clipboard][osx-clipboard]] instead.
     (turn-on-pbcopy))
 #+END_SRC
 
-*** [[https://github.com/bbatsov/projectile][projectile]]
-#+BEGIN_SRC emacs-lisp
-  (use-package projectile
-    :ensure t
-    :config
-    (setq projectile-ignored-projects
-          '("/usr/local"
-            "~/dotfiles/config/emacs.d/lisp/Gnugol"
-            "~/dotfiles/config/emacs.d/lisp/matlab-emacs"))
-    (projectile-global-mode))
-#+END_SRC
-
-*** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
-Better parentheses coloring
-#+BEGIN_SRC emacs-lisp
-  (use-package rainbow-delimiters
-    :ensure t
-    :init
-    (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
-    (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
-#+END_SRC
-
-*** [[https://github.com/ralesi/ranger.el][ranger]]
-#+BEGIN_SRC emacs-lisp
-  (use-package ranger
-    :ensure t
-    :config
-    (setq ranger-show-literal nil)
-    (setq ranger-show-dotfiles nil)
-    (ranger-override-dired-mode t)
-    (setq ranger-cleanup-eagerly t)
-    (setq ranger-parent-depth 0))
-#+END_SRC
 *** [[https://github.com/iqbalansari/restart-emacs][restart-emacs]]
 SUPER nifty.
 #+BEGIN_SRC emacs-lisp
@@ -1724,31 +1200,153 @@ Recently used M-x commands
     :ensure t)
 #+END_SRC
 
-*** [[https://github.com/TheBB/spaceline][spaceline]]
-I was looking for something with the nice look and simplicity of
-[[https://github.com/itchyny/lightline.vim][this]]. Spaceline does ok.
+*** [[https://github.com/vermiculus/sx.el/][sx]]
+Stack exchange on emacs.
 #+BEGIN_SRC emacs-lisp
-  (use-package spaceline
-    ;; Similar to vim's powerline, this one looks clean
-    ;; and 'just works', to an extent
+  (use-package sx
+    :ensure t)
+#+END_SRC
+
+*** [[https://github.com/hayamiz/twittering-mode][twittering-mode]]
+#+BEGIN_SRC emacs-lisp
+  (use-package twittering-mode
     :ensure t
     :config
-    (require 'spaceline-config)
-    (spaceline-spacemacs-theme)
-    (spaceline-helm-mode)
-    (spaceline-toggle-minor-modes-off)
-    (spaceline-toggle-battery-on)
-    (spaceline-toggle-buffer-size-off)
-    (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-    (set-face-background 'spaceline-evil-normal "#afd700")
-    (set-face-foreground 'spaceline-evil-normal "#005f00")
-    (set-face-background 'spaceline-evil-insert "#0087af")
-    (set-face-foreground 'spaceline-evil-insert "white")
-    (set-face-background 'spaceline-evil-visual "#ff8700")
-    (set-face-foreground 'spaceline-evil-visual "#870000")
-    (setq powerline-default-separator nil)
-    (spaceline-compile))
+    (setq twittering-icon-mode t)
+    (setq twittering-convert-fix-size 24)
+    (add-hook 'twittering-mode-hook #'emojify-mode))
+#+END_SRC
 
+*** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
+#+BEGIN_SRC emacs-lisp
+  (use-package yaml-mode
+    :ensure t
+    :config
+    (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+#+END_SRC
+
+** Org mode
+*** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
+#+BEGIN_SRC emacs-lisp
+  (use-package ob-ipython
+    :ensure t)
+#+END_SRC
+*** [[https://github.com/sabof/org-bullets][org-bullets]]
+Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
+
+*** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
+Translates Org-mode file to various other formats via Pandoc. Pretty neat. Code
+under [[Org mode][Major Configs/Org mode/Setup]]
+
+*** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
+Export org to twitter bootstrap compatible HTML. Code under Major configs/Org
+mode/Setup.
+*** [[https://github.com/snosov1/toc-org][toc-org]]
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package toc-org
+  ;;   :ensure t
+  ;;   :config
+  ;;   (add-hook 'org-mode-hook 'toc-org-enable))
+#+END_SRC
+
+** Programming
+*** [[https://github.com/company-mode/company-mode][company-mode]]
+Supposedly better than autocomplete... Also using [[https://github.com/syohex/emacs-company-jedi][company-jedi]]
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :ensure t
+    :config
+    (add-hook 'after-init-hook 'global-company-mode)
+    (use-package company-jedi
+      ;; Not sure this is actually working for me
+      :ensure t
+      :config
+      (defun my/python-mode-hook ()
+        (add-to-list 'company-backends 'company-jedi))
+      (add-hook 'python-mode-hook 'my/python-mode-hook)))
+#+END_SRC
+
+*** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]
+Neat-o
+#+BEGIN_SRC emacs-lisp
+  (use-package highlight-numbers
+    :ensure t
+    :init
+    (add-hook 'python-mode-hook 'highlight-numbers-mode))
+#+END_SRC
+
+*** [[https://github.com/tsdh/highlight-parentheses.el][highlight-parentheses]]
+Makes the parentheses my cursor is between stand out more.
+#+BEGIN_SRC emacs-lisp
+  (use-package highlight-parentheses
+    ;; Make parenthesis I'm currently in stand out
+    :ensure t)
+#+END_SRC
+
+*** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
+Better parentheses coloring
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-delimiters
+    :ensure t
+    :init
+    (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
+    (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
+#+END_SRC
+
+*** [[https://github.com/joaotavora/yasnippet][yasnippet]]
+Freakin yasnippet. It's the best.
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    ;; SNIPPETS!!!
+    :ensure t
+    :config
+    (yas-global-mode 1))
+#+END_SRC
+
+*** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
+Edit jupyter notebooks in emacs
+#+BEGIN_SRC emacs-lisp
+  (use-package ein
+    :ensure t
+    :config
+    )
+#+END_SRC
+
+*** [[https://github.com/jorgenschaefer/elpy][elpy]]
+Sets up a python editing environment. I'm not sure yet.
+#+BEGIN_SRC emacs-lisp
+  (use-package elpy
+    ;; Eh, I don't know...
+    :ensure t
+    :config
+    (elpy-enable)
+    (elpy-use-ipython)
+    (setq elpy-modules
+          '(elpy-module-company
+            elpy-module-eldoc
+            elpy-module-pyvenv
+            elpy-module-yasnippet
+            elpy-module-sane-defaults))
+    )
+#+END_SRC
+
+*** [[https://github.com/vspinu/imenu-anywhere][imenu-anywhere]]
+imenu on steroids.
+#+BEGIN_SRC emacs-lisp
+  (use-package imenu-anywhere
+    ;; Imenu on steroids
+    :ensure t)
+#+END_SRC
+
+*** [[https://github.com/alpaker/Fill-Column-Indicator][Fill-Column-Indicator]]
+I like a line length limit indicator in Python
+#+BEGIN_SRC emacs-lisp
+
+  (use-package fill-column-indicator
+    :ensure t
+    :init
+    (setq-default fci-rule-column 79)
+    (add-hook 'python-mode-hook 'fci-mode))
 #+END_SRC
 
 *** [[https://github.com/naiquevin/sphinx-doc.el][sphinx-doc]]
@@ -1765,64 +1363,49 @@ complete, IMO.
 
 #+END_SRC
 
-*** [[https://github.com/vermiculus/sx.el/][sx]]
-Stack exchange on emacs.
+** Reference/search
+*** [[https://github.com/xuchunyang/devdocs.el][devdocs]]
 #+BEGIN_SRC emacs-lisp
-  (use-package sx
+  (use-package devdocs
+      :ensure t)
+#+END_SRC
+
+*** [[https://github.com/myrkr/dictionary-el/blob/master/dictionary.el][dictionary]]
+Dictionary search!
+#+BEGIN_SRC emacs-lisp
+  (use-package dictionary
     :ensure t)
 #+END_SRC
 
-*** [[https://github.com/snosov1/toc-org][toc-org]]
+*** [[https://github.com/dtaht/Gnugol][Gnugol]]
+An org-mode google??? Not currently working, apparently.
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package toc-org
-  ;;   :ensure t
-  ;;   :config
-  ;;   (add-hook 'org-mode-hook 'toc-org-enable))
+  (use-package gnugol
+    :load-path "lisp/")
 #+END_SRC
 
-*** [[https://github.com/hayamiz/twittering-mode][twittering-mode]]
+*** [[https://github.com/Malabarba/emacs-google-this][emacs-google-this]]
+Google stuff from emacs.
 #+BEGIN_SRC emacs-lisp
-  (use-package twittering-mode
+  (use-package google-this
     :ensure t
     :config
-    (setq twittering-icon-mode t)
-    (setq twittering-convert-fix-size 24)
-    (add-hook 'twittering-mode-hook #'emojify-mode))
+    (google-this-mode 1))
 #+END_SRC
 
-*** [[https://github.com/porterjamesj/virtualenvwrapper.el][virtualenvwrapper]]
+*** [[https://github.com/atykhonov/google-translate][google-translate]]
 #+BEGIN_SRC emacs-lisp
-  (use-package virtualenvwrapper
-    :ensure t
-    :config
-    (venv-initialize-interactive-shells)
-    (venv-initialize-eshell)
-    (setq venv-location "~/.virtualenvs"))
-#+END_SRC
-*** [[https://github.com/vibhavp/emacs-xkcd][xkcd]]
-#+BEGIN_SRC emacs-lisp
-  (use-package xkcd
+  (use-package google-translate
     :ensure t)
 #+END_SRC
 
-*** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
+*** [[https://github.com/laynor/melpa-upstream-visit][melpa-upstream-visit]]
 #+BEGIN_SRC emacs-lisp
-  (use-package yaml-mode
-    :ensure t
-    :config
-    (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+  (use-package melpa-upstream-visit
+    :ensure t)
 #+END_SRC
 
-*** [[https://github.com/joaotavora/yasnippet][yasnippet]]
-Freakin yasnippet. It's the best.
-#+BEGIN_SRC emacs-lisp
-  (use-package yasnippet
-    ;; SNIPPETS!!!
-    :ensure t
-    :config
-    (yas-global-mode 1))
-#+END_SRC
-
+** Amusements
 *** zone-matrix
 Eh, why not.
 #+BEGIN_SRC emacs-lisp
@@ -1836,179 +1419,425 @@ Eh, why not.
     )
 #+END_SRC
 
-** Themes
-*** diego-theme
-#+BEGIN_SRC emacs-lisp :tangle no
-  (use-package diego-theme
-    :load-path "lisp/")
-#+END_SRC
-
-*** zenburn-theme
-#+BEGIN_SRC emacs-lisp :tangle no
-  (use-package zenburn-theme
-    :ensure t
-    :config
-    (zenburn-with-color-variables
-     (custom-theme-set-faces
-      'zenburn
-      '(ivy-current-match ((t nil))))))
-#+END_SRC
-
-*** doom-themes
+*** [[https://github.com/vibhavp/emacs-xkcd][xkcd]]
 #+BEGIN_SRC emacs-lisp
-  (use-package doom-themes
+  (use-package xkcd
+    :ensure t)
+#+END_SRC
+
+*** [[https://github.com/johanvts/emacs-fireplace/][fireplace]]
+#+BEGIN_SRC emacs-lisp
+  (use-package fireplace
+    :ensure t)
+#+END_SRC
+
+*** [[https://melpa.org/#/highlight-tail][highlight-tail]]
+#+BEGIN_SRC emacs-lisp
+  (use-package highlight-tail
+    :ensure t)
+#+END_SRC
+
+*** [[https://github.com/rbanffy/selectric-mode][selectric-mode]]
+#+BEGIN_SRC emacs-lisp
+  (use-package selectric-mode
+    :ensure t)
+#+END_SRC
+*** [[https://github.com/josuah/drawille][drawille]]
+#+BEGIN_SRC emacs-lisp
+  (use-package drawille
+    :ensure t)
+#+END_SRC
+*** [[https://github.com/agrif/pianobar.el][pianobar]] 
+#+BEGIN_SRC emacs-lisp
+  (use-package pianobar
     :ensure t
     :config
+    (setq pianobar-run-in-background t)   ;
+    (setq pianobar-station "Majestic Dance Radio"))
+#+END_SRC
+** Navigation 
+*** [[https://github.com/abo-abo/ace-window][ace-window]]
+#+BEGIN_SRC emacs-lisp
+  (use-package ace-window
+    :ensure t
+    :bind ("M-p" . ace-window)
+    :config
+    (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
+#+END_SRC
 
-    (load-theme 'doom-molokai t)
-    (custom-theme-set-faces
-     'doom-molokai
-     '(ivy-current-match ((t nil)))
-     '(ivy-virtual ((t (:inherit ivy-subdir))))
-     '(org-level-2 ((t (:foreground "#FD971F"))))
-     '(org-level-1 ((t (:foreground "#F92672"))))
-     '(org-level-3 ((t (:foreground "#9C91E4"))))
-     '(org-level-4 ((t (:foreground "#8FA1B3"))))
-     '(org-level-5 ((t (:foreground "#E2C770"))))
-     '(org-level-6 ((t (:foreground "#727280"))))
-     '(iy-modified-buffer ((t (:inherit org-level-1))))
-     '(region ((t (:background "#39393D"))))
-     '(swiper-line-face ((t (:background "#222425"))))
-     '(swiper-match-face-1 ((t (:inherit ivy-minibuffer-match-face-1))))
-     '(swiper-match-face-2 ((t (:inherit ivy-minibuffer-match-face-2))))
-     '(swiper-match-face-3 ((t (:inherit ivy-minibuffer-match-face-3))))
-     '(swiper-match-face-4 ((t (:inherit ivy-minibuffer-match-face-4))))
-     '(message-header-name ((t (:inherit font-lock-comment-face :slant normal))))
-     '(message-header-subject ((t (:foreground "OliveDrab1" :height 1.2))))
-     '(message-mml ((t (:inherit font-lock-comment-face :slant normal))))
-     '(notmuch-search-unread-face ((t (:inherit font-lock-function-name-face))))
-     '(bold ((t (:weight bold))))
-     '(italic ((t (:slant italic))))
-     '(org-link ((t (:underline t :foreground "#66D9EF"))))
-     )
+*** [[https://github.com/abo-abo/avy][avy]]
+Jump to things in Emacs tree-style
+#+BEGIN_SRC emacs-lisp
+  (use-package avy
+    :ensure t)
+#+END_SRC
+
+*** [[https://github.com/emacs-helm/helm][Helm]]
+*Note:* I'm now using [[https://github.com/abo-abo/swiper][abo-abo/swiper]], which includes ivy, counsel, and swiper,
+for very similar functionality but with a much cleaner and responsive
+interface, in my opinion. It's really neat, and you should definitely check it
+out.
+
+For making stuff look nicer, see ~M-x customize-group RET helm-faces~, and
+check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido-like-guide]].
+#+BEGIN_SRC emacs-lisp
+  (use-package helm
+      :ensure t
+      :init
+      (require 'helm-config)
+      :config
+
+      ;; Fuzzy matching
+      (setq helm-completion-in-region-fuzzy-match t
+            helm-mode-fuzzy-match t
+            helm-M-x-fuzzy-match t
+            helm-buffers-fuzzy-matching t
+            helm-recentf-fuzzy-match t
+            helm-locate-fuzzy-match nil     ; Doesn't work with mdfind
+            helm-semantic-fuzzy-match t
+            helm-imenu-fuzzy-match t
+            helm-apropos-fuzzy-match t
+            helm-lisp-fuzzy-completion t)
+
+      (setq helm-boring-buffer-regexp-list
+            '("\\` "
+              "\\*helm"
+              "\\*helm-mode"
+              "\\*Echo Area"
+              "\\*Minibuf"
+              "\\*epc"))
+      (setq helm-buffer-max-length 40)
+      (setq helm-display-buffer-default-height 9)
+      (setq helm-locate-command
+            (cl-case system-type
+              ('darwin "mdfind -name %s %s")
+              ('gnu/linux "locate -i -r %s")
+              ('berkley-unix "locate -i %s")
+              ('windows-nt "es %s")
+              (t "locate %s"))) ; Use spotlight for search
+      (put 'helm-minibuffer-history 'disabled t)
+      ;; (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+      ;;----------------
+      ;; Helm ido-like
+      ;;--------------
+
+
+      (defun helm-ido-like-activate-helm-modes ()
+        (require 'helm-config)
+        (helm-mode 1)
+        (helm-flx-mode 1)
+        (helm-fuzzier-mode 1))
+
+      (defun helm-ido-like-load-ido-like-bottom-buffer ()
+        ;; popup helm-buffer at the bottom
+        (setq helm-split-window-in-side-p t)
+        ;; (add-to-list 'display-buffer-alist
+        ;;              '("\\`\\*helm.*\\*\\'"
+        ;;                (display-buffer-in-side-window)
+        ;;                (window-height . 0.4)))
+        ;; (add-to-list 'display-buffer-alist
+        ;;              '("\\`\\*helm help\\*\\'"
+        ;;                (display-buffer-pop-up-window)))
+
+        ;; dont display the header line
+        (setq helm-display-header-line nil)
+        ;; input in header line
+        (setq helm-echo-input-in-header-line t)
+        ;; (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
+        )
+
+      (defvar helm-ido-like-bottom-buffers nil
+          "List of bottom buffers before helm session started.
+    Its element is a pair of `buffer-name' and `mode-line-format'.")
+
+
+      (defun helm-ido-like-bottom-buffers-init ()
+        (setq-local mode-line-format (default-value 'mode-line-format))
+        (setq helm-ido-like-bottom-buffers
+              (cl-loop for w in (window-list)
+                       when (window-at-side-p w 'bottom)
+                       collect (with-current-buffer (window-buffer w)
+                                 (cons (buffer-name) mode-line-format)))))
+
+
+      (defun helm-ido-like-bottom-buffers-hide-mode-line ()
+        (mapc (lambda (elt)
+                (with-current-buffer (car elt)
+                  (setq-local mode-line-format nil)))
+              helm-ido-like-bottom-buffers))
+
+
+      (defun helm-ido-like-bottom-buffers-show-mode-line ()
+        (when helm-ido-like-bottom-buffers
+          (mapc (lambda (elt)
+                  (with-current-buffer (car elt)
+                    (setq-local mode-line-format (cdr elt))))
+                helm-ido-like-bottom-buffers)
+          (setq helm-ido-like-bottom-buffers nil)))
+
+
+      (defun helm-ido-like-helm-keyboard-quit-advice (orig-func &rest args)
+        (helm-ido-like-bottom-buffers-show-mode-line)
+        (apply orig-func args))
+
+      (defun helm-ido-like-hide-modelines ()
+        ;; hide The Modelines while Helm is active
+        (add-hook 'helm-before-initialize-hook #'helm-ido-like-bottom-buffers-init)
+        (add-hook 'helm-after-initialize-hook #'helm-ido-like-bottom-buffers-hide-mode-line)
+        (add-hook 'helm-exit-minibuffer-hook #'helm-ido-like-bottom-buffers-show-mode-line)
+        (add-hook 'helm-cleanup-hook #'helm-ido-like-bottom-buffers-show-mode-line)
+        (advice-add 'helm-keyboard-quit :around #'helm-ido-like-helm-keyboard-quit-advice))
+
+      (defun helm-ido-like-hide-helm-modeline-1 ()
+        "Hide mode line in `helm-buffer'."
+        (with-helm-buffer
+          (setq-local mode-line-format nil)))
+
+
+      (defun helm-ido-like-hide-helm-modeline ()
+        (fset 'helm-display-mode-line #'ignore)
+        (add-hook 'helm-after-initialize-hook 'helm-ido-like-hide-helm-modeline-1))
+
+      (defvar helm-ido-like-source-header-default-background nil)
+      (defvar helm-ido-like-source-header-default-foreground nil)
+      (defvar helm-ido-like-source-header-default-box nil)
+
+      (defun helm-ido-like-toggle-header-line ()
+        ;; Only Show Source Headers If More Than One
+        (if (> (length helm-sources) 1)
+            (set-face-attribute 'helm-source-header
+                                nil
+                                :foreground helm-ido-like-source-header-default-foreground
+                                :background helm-ido-like-source-header-default-background
+                                :box helm-ido-like-source-header-default-box
+                                :height 1.0)
+          (set-face-attribute 'helm-source-header
+                              nil
+                              :foreground (face-attribute 'helm-selection :background)
+                              :background (face-attribute 'helm-selection :background)
+                              :box nil
+                              :height 0.1)))
+
+      (defun helm-ido-like-header-lines-maybe ()
+        (setq helm-ido-like-source-header-default-background (face-attribute 'helm-source-header :background))
+        (setq helm-ido-like-source-header-default-foreground (face-attribute 'helm-source-header :foreground))
+        (setq helm-ido-like-source-header-default-box (face-attribute 'helm-source-header :box))
+        (add-hook 'helm-before-initialize-hook 'helm-ido-like-toggle-header-line))
+
+      (defvar helm-ido-like-bg-color (face-attribute 'default :background))
+
+      (defun helm-ido-like-setup-bg-color-1 ()
+        (with-helm-buffer
+          (make-local-variable 'face-remapping-alist)
+          (add-to-list 'face-remapping-alist `(default (:background ,helm-ido-like-bg-color)))))
+
+      (defun helm-ido-like-setup-bg-color ()
+        (add-hook 'helm-after-initialize-hook 'helm-ido-like-setup-bg-color-1))
+
+      (defun helm-ido-like-find-files-up-one-level-maybe ()
+        (interactive)
+        (if (looking-back "/" 1)
+            (call-interactively 'helm-find-files-up-one-level)
+          (delete-char -1)))
+
+
+      (defun helm-ido-like-find-files-navigate-forward (orig-fun &rest args)
+        "Adjust how helm-execute-persistent actions behaves, depending on context."
+        (let ((sel (helm-get-selection)))
+          (if (file-directory-p sel)
+              ;; the current dir needs to work to
+              ;; be able to select directories if needed
+              (cond ((and (stringp sel)
+                          (string-match "\\.\\'" (helm-get-selection)))
+                     (helm-maybe-exit-minibuffer))
+                    (t
+                     (apply orig-fun args)))
+            (helm-maybe-exit-minibuffer))))
+
+
+      (defun helm-ido-like-load-file-nav ()
+        (advice-add 'helm-execute-persistent-action :around #'helm-ido-like-find-files-navigate-forward)
+        ;; <return> is not bound in helm-map by default
+        (define-key helm-map (kbd "<return>") 'helm-maybe-exit-minibuffer)
+        (with-eval-after-load 'helm-files
+          (define-key helm-read-file-map (kbd "<backspace>") 'helm-ido-like-find-files-up-one-level-maybe)
+          (define-key helm-read-file-map (kbd "DEL") 'helm-ido-like-find-files-up-one-level-maybe)
+          (define-key helm-find-files-map (kbd "<backspace>") 'helm-ido-like-find-files-up-one-level-maybe)
+          (define-key helm-find-files-map (kbd "DEL") 'helm-ido-like-find-files-up-one-level-maybe)
+
+          (define-key helm-find-files-map (kbd "<return>") 'helm-execute-persistent-action)
+          (define-key helm-read-file-map (kbd "<return>") 'helm-execute-persistent-action)
+          (define-key helm-find-files-map (kbd "RET") 'helm-execute-persistent-action)
+          (define-key helm-read-file-map (kbd "RET") 'helm-execute-persistent-action)))
+
+      (defvar helm-ido-like-no-dots-whitelist
+        '("*Helm file completions*")
+        "List of helm buffers in which to show dot directories.")
+
+      (defun helm-ido-like-no-dots-display-file-p (file)
+        ;; in a whitelisted buffer display all but the relative path to parent dir
+        (or (and (member helm-buffer helm-ido-like-no-dots-whitelist)
+                 (not (string-match "\\(?:/\\|\\`\\)\\.\\{2\\}\\'" file)))
+            ;; in all other buffers display all files but the two relative ones
+            (not (string-match "\\(?:/\\|\\`\\)\\.\\{1,2\\}\\'" file))))
+
+
+      (defun helm-ido-like-no-dots-auto-add (&rest args)
+        "Auto add buffers which want to read directory names to the whitelist."
+        (if (eq (car (last args)) 'file-directory-p)
+            (add-to-list 'helm-ido-like-no-dots-whitelist
+                         (format "*helm-mode-%s*"
+                                 (helm-symbol-name
+                                  (or (helm-this-command) this-command))))))
+
+
+      (defun helm-ido-like-no-dots ()
+        (require 'cl-lib)
+        (advice-add 'helm-ff-filter-candidate-one-by-one
+                    :before-while 'helm-ido-like-no-dots-display-file-p)
+        (advice-add  'helm--generic-read-file-name :before 'helm-ido-like-no-dots-auto-add))
+
+      (defvar helm-ido-like-user-gc-setting nil)
+
+      (defun helm-ido-like-higher-gc ()
+        (setq helm-ido-like-user-gc-setting gc-cons-threshold)
+        (setq gc-cons-threshold most-positive-fixnum))
+
+
+      (defun helm-ido-like-lower-gc ()
+        (setq gc-cons-threshold helm-ido-like-user-gc-setting))
+
+      (defun helm-ido-like-helm-make-source (f &rest args)
+        (let ((source-type (cadr args)))
+          (unless (or (memq source-type '(helm-source-async helm-source-ffiles))
+                      (eq (plist-get args :filtered-candidate-transformer)
+                          'helm-ff-sort-candidates)
+                      (eq (plist-get args :persistent-action)
+                          'helm-find-files-persistent-action))
+            (nconc args '(:fuzzy-match t))))
+        (apply f args))
+
+      (defun helm-ido-like-load-fuzzy-enhancements ()
+        (add-hook 'minibuffer-setup-hook #'helm-ido-like-higher-gc)
+        (add-hook 'minibuffer-exit-hook #'helm-ido-like-lower-gc)
+        (advice-add 'helm-make-source :around 'helm-ido-like-helm-make-source))
+
+      (defun helm-ido-like-fuzzier-deactivate (&rest _)
+        (helm-fuzzier-mode -1))
+
+
+      (defun helm-ido-like-fuzzier-activate (&rest _)
+        (unless helm-fuzzier-mode
+          (helm-fuzzier-mode 1)))
+
+
+      (defun helm-ido-like-fix-fuzzy-files ()
+        (add-hook 'helm-find-files-before-init-hook #'helm-ido-like-fuzzier-deactivate)
+        (advice-add 'helm--generic-read-file-name :before #'helm-ido-like-fuzzier-deactivate)
+        (add-hook 'helm-exit-minibuffer-hook #'helm-ido-like-fuzzier-activate)
+        (add-hook 'helm-cleanup-hook #'helm-ido-like-fuzzier-activate)
+        (advice-add 'helm-keyboard-quit :before #'helm-ido-like-fuzzier-activate))
+
+    ;;   ;;;###autoload
+      (defun helm-ido-like ()
+        "Configure and activate `helm', `helm-fuzzier' and `helm-flx'."
+        (interactive)
+        ;; (helm-ido-like-activate-helm-modes)
+        (helm-ido-like-load-ido-like-bottom-buffer)
+        ;; (helm-ido-like-hide-modelines)
+        ;; (helm-ido-like-hide-helm-modeline)
+        ;; (helm-ido-like-header-lines-maybe)
+        ;; (helm-ido-like-setup-bg-color)
+        (helm-ido-like-load-file-nav)
+        (helm-ido-like-no-dots)
+        ;; (helm-ido-like-load-fuzzy-enhancements)
+        ;; (helm-ido-like-fix-fuzzy-files)
+        )
+      (helm-ido-like)
+      )
+#+END_SRC
+
+*** [[https://github.com/ralesi/ranger.el][ranger]]
+#+BEGIN_SRC emacs-lisp
+  (use-package ranger
+    :ensure t
+    :config
+    (setq ranger-show-literal nil)
+    (setq ranger-show-dotfiles nil)
+    (ranger-override-dired-mode t)
+    (setq ranger-cleanup-eagerly t)
+    (setq ranger-parent-depth 0)
+
+    (fmakunbound 'range-travel)
+    (defun ranger-travel ()
+      "Open a file or go to a directory in current buffer."
+      (interactive)
+      (cond
+       ((featurep 'ivy)
+        (counsel-find-file default-directory))
+       (t
+        (call-interactively 'ido-find-file))))
     )
 #+END_SRC
-*** [[https://github.com/nashamri/spacemacs-theme][spacemacs-theme]]
-#+BEGIN_SRC emacs-lisp :tangle no
-  (use-package spacemacs-theme
+
+*** [[https://github.com/bbatsov/projectile][projectile]]
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :ensure t
+    :config
+    (setq projectile-ignored-projects
+          '("/usr/local"
+            "~/dotfiles/config/emacs.d/lisp/Gnugol"
+            "~/dotfiles/config/emacs.d/lisp/matlab-emacs"))
+    (projectile-global-mode))
+#+END_SRC
+
+** Shell utilities
+*** [[https://github.com/hiddenlotus/eshell-prompt-extras][eshell-prompt-extras]]
+#+BEGIN_SRC emacs-lisp
+  (use-package eshell-prompt-extras
+    :ensure t
+    :after 'virtualenvwrapper
+    :config
+    (autoload 'epe-theme-dakrone "eshell-prompt-extras")
+    (setq eshell-highlight-prompt nil
+          eshell-prompt-function 'epe-theme-dakrone))
+#+END_SRC
+
+*** [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]]
+#+BEGIN_SRC emacs-lisp
+  (use-package exec-path-from-shell
+    :ensure t
+    :config
+    (setq exec-path-from-shell-check-startup-files nil)
+    (when (memq window-system '(mac ns))
+      (exec-path-from-shell-initialize))
+    )
+#+END_SRC
+
+*** [[https://github.com/xuchunyang/eshell-z][eshell-z]]
+#+BEGIN_SRC emacs-lisp
+  (use-package eshell-z
     :ensure t)
 #+END_SRC
 
-** Not currently in use
-These aren't loaded by the init file.
-*** [[https://github.com/Wilfred/ag.el][ag]]
-Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]] into emacs.
-#+BEGIN_SRC emacs-lisp :tangle no
-  (use-package ag
-    ;; Silver searcher
-    :ensure t
-    :defer t
-    :init
-    (use-package wgrep-ag
-      ;; Guess I need this first
-      :ensure t
-      :commands (wgrep-ag-setup))
-    :config
-    (add-hook 'ag-mode-hook
-              (lambda ()
-                (wgrep-ag-setup)
-                (define-key ag-mode-map (kbd "n") 'evil-search-next)
-                (define-key ag-mode-map (kbd "N") 'evil-search-previous)))
-    (setq ag-executable "/usr/local/bin/ag")
-    (setq ag-highlight-search t)
-    (setq ag-reuse-buffers t)
-    (setq ag-reuse-window t))
-#+END_SRC
-
-*** [[https://github.com/auto-complete/auto-complete][auto-complete]]
-Pretty good autocompletion, but trying out [[github.com/company-mode/company-mode][company-mode]] right now.
-#+BEGIN_SRC emacs-lisp :tangle no
-  (use-package auto-complete
-    ;; Supposedly not as good as company mode
-    :ensure t
-    :config
-    (global-auto-complete-mode t))
-#+END_SRC
-
-*** [[https://github.com/joaotavora/autopair][autopair]]
-It may be recommended to use =electric-pair-mode= nowadays? That's
-what I'm using anyway.
-#+Begin_src emacs-lisp :tangle no
-  (use-package autopair
-    :ensure t
-    :config
-    (autopair-global-mode))
-#+END_SRC
-
-*** [[https://github.com/tkf/emacs-jedi][emacs-jedi]]
-Integrates [[https://github.com/davidhalter/jedi][jedi]] into emacs for python completion, hasn't been working for me
-recently. Either way, this is for [[https://github.com/auto-complete/auto-complete][auto-complete]] but now I use
-[[https://github.com/syohex/emacs-company-jedi][emacs-company-jedi]].
-#+BEGIN_SRC emacs-lisp :tangle no
-  (use-package jedi
-    ;; Hasn't been working smoothly recently
-    :ensure t
-    :init
-    (add-hook 'python-mode-hook 'jedi:setup)
-    (setq jedi:complete-on-dot t))
-#+END_SRC
-
-*** [[https://github.com/7696122/evil-terminal-cursor-changer][evil-terminal-cursor-changer]]
-#+BEGIN_SRC emacs-lisp :tangle no
-  (use-package evil-terminal-cursor-changer
-    :ensure t
-    :config
-    (unless (display-graphic-p)
-      (require 'evil-terminal-cursor-changer)
-      (evil-terminal-cursor-changer-activate) ; or (etcc-on)
-      )
-    (setq evil-motion-state-cursor 'box)  ; █
-    (setq evil-visual-state-cursor 'box)  ; █
-    (setq evil-normal-state-cursor 'box)  ; █
-    (setq evil-insert-state-cursor 'bar)  ; ⎸
-    (setq evil-emacs-state-cursor  'bar)) ; _
-
-#+END_SRC
-
-*** [[https://github.com/Malabarba/smart-mode-line][smart-mode-line]]
-Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][spaceline]].
-
-#+BEGIN_SRC emacs-lisp :tangle no
-  (use-package smart-mode-powerline-theme
+*** [[https://www.emacswiki.org/emacs/download/multi-term.el][multi-term]]
+I wanted a slightly better terminal in emacs. Not sure
+if this is the answer as I haven't used it much.
+#+BEGIN_SRC emacs-lisp
+  (use-package multi-term
+    ;; Supposed to be nicer than ansi-term
     :ensure t)
-
-  (use-package smart-mode-line
-    :ensure t
-    :config
-    (setq sml/no-confirm-load-theme t)
-    (setq sml/theme 'dark)
-    (setq rm-whitelist '(""))
-    (setq system-uses-terminfo nil)
-    (sml/setup)
-    (display-time-mode)
-    (display-time-update)
-    (fancy-battery-mode)
-    (setq fancy-battery-show-percentage t))
 #+END_SRC
 
-*** [[https://github.com/zenozeng/yafolding.el][yafolding]]
-Good code folding is hard to come by in Emacs, and isn't /that/ useful. This was
-pretty good but had some known issues.
-#+BEGIN_SRC emacs-lisp :tangle no
-  (use-package yafolding
-    ;; Man, good code folding is hard to come by in emacs
-    ;; This one's ok, but there are a couple know issues that
-    ;; don't quite make it worth it, I think.
+*** [[https://github.com/porterjamesj/virtualenvwrapper.el][virtualenvwrapper]]
+#+BEGIN_SRC emacs-lisp
+  (use-package virtualenvwrapper
     :ensure t
     :config
-    (defun diego/yafolding-kbd ()
-   (local-set-key (kbd "C-c <up>") 'yafolding-hide-all)
-   (local-set-key (kbd "C-c <down>") 'yafolding-show-all)
-   (local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
-   (local-set-key (kbd "C-c <right>") 'yafolding-show-element)
-   (local-set-key [C-tab] 'yafolding-toggle-element))
-    (add-hook 'python-mode-hook 'yafolding-mode)
-    (add-hook 'python-mode-hook 'diego/yafolding-kbd))
+    (venv-initialize-interactive-shells)
+    (venv-initialize-eshell)
+    (setq venv-location "~/.virtualenvs"))
 #+END_SRC
 
 * Prog-mode
@@ -2108,7 +1937,7 @@ started using company-mode.
 * Highlight current line number
 This, too, is from somewhere on the internet. Possibly
 stackoverflow.
- 
+  
 #+BEGIN_SRC emacs-lisp :tangle no
   (defface my-linum-hl
     `((t :inherit linum :background ,(face-background 'hl-line nil t)))
