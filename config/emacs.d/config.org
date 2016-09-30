@@ -285,6 +285,7 @@ Handling/storing of files, backups, autosaves.
 
 #+END_SRC
 ** Global functions
+*** "Stolen"
 #+BEGIN_SRC emacs-lisp
   (defun diego/pop-to-file (file &optional split)
     "Visit a FILE, either in the current window or a SPLIT."
@@ -377,6 +378,10 @@ Handling/storing of files, backups, autosaves.
             (select-window first-win)
             (if this-win-2nd (other-window 1))))))
 
+      
+#+END_SRC
+*** "Original"
+#+BEGIN_SRC emacs-lisp
   (defun diego/config ()
     (interactive)
     (find-file "/Users/diego/dotfiles/config/emacs.d/config.org"))
@@ -415,8 +420,6 @@ Handling/storing of files, backups, autosaves.
     (interactive)
     (insert (shell-command-to-string "echo -n $(date +%Y-%m-%d)")))
 
-
-
   (defun minibuffer-keyboard-quit ()
     "Abort recursive edit.
     In Delete Selection mode, if the mark is active, just deactivate it;
@@ -426,6 +429,22 @@ Handling/storing of files, backups, autosaves.
         (setq deactivate-mark  t)
       (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
       (abort-recursive-edit)))
+
+  (defun diego/image-to-text ()
+    (interactive)
+    (let ((x (read-file-name "image: ")))
+      (insert (drawille-from-image x))))
+  
+  (defun diego/lecture-notes ()
+    (interactive)
+    (ivy-read "directory: " '("~/MIT 2016-2017/16.410/notes/"
+                              "~/MIT 2016-2017/16.621/notes/"
+                              "~/MIT 2016-2017/Ethics/notes/")
+              :action (lambda (x)
+                        (find-file
+                         (concat x (format-time-string "%Y-%m-%d_lecture.org" ))))
+              :caller 'diego/lecture-notes))
+
 #+END_SRC
 
 * Major configs
