@@ -106,6 +106,7 @@ brew install icu4c
 brew install ilmbase
 brew install imagemagick
 brew install imlib2
+brew install intltool
 brew install irssi
 brew install isl
 brew install ispell
@@ -188,6 +189,7 @@ brew install pandoc
 brew install pango
 brew install pcre
 brew install perl
+brew install pianobar
 brew install pinentry
 brew install pip-completion
 brew install pixman

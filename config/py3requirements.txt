@@ -80,7 +80,7 @@ oauth2==1.9.0.post1
 oauth2client==3.0.0
 oauthlib==2.0.0
 ordereddict==1.1
-pandas==0.18.1
+pandas==0.19.0
 parsedatetime==2.1
 passlib==1.6.5
 path.py==8.2.1
@@ -135,7 +135,7 @@ simplegeneric==0.8.1
 simplejson==3.8.2
 six==1.10.0
 snowballstemmer==1.2.1
-Sphinx==1.4.6
+Sphinx==1.4.8
 sphinx-py3doc-enhanced-theme==2.3.2
 sphinx-rtd-theme==0.1.9
 stevedore==1.17.1
@@ -143,7 +143,7 @@ sympy==1.0
 tempdir==0.7.1
 terminado==0.6
 texttable==0.8.4
-tornado==4.4.1
+tornado==4.4.2
 traitlets==4.3.1
 twitter==1.17.1
 typing==3.5.2.2
@@ -165,4 +165,4 @@ xlrd==1.0.0
 xls2db==0.0.8
 XlsxWriter==0.9.3
 xmltodict==0.10.2
-yapf==0.12.0
+yapf==0.12.1
