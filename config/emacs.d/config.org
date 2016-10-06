@@ -259,8 +259,8 @@ Handling/storing of files, backups, autosaves.
 ** Parentheses
 #+BEGIN_SRC emacs-lisp
   (electric-pair-mode)
-  (show-paren-mode 1)
-
+  (show-paren-mode)
+  (setq show-paren-mode ())
 #+END_SRC
 ** Smooth scroll
 #+BEGIN_SRC emacs-lisp
@@ -1845,7 +1845,10 @@ if this is the answer as I haven't used it much.
 Properties that apply to all programming modes.
 #+BEGIN_SRC emacs-lisp
   (defun diego/setup-prog-mode ()
-    (highlight-parentheses-mode)
+    ;; (highlight-parentheses-mode 1)
+    (make-local-variable 'show-paren-mode)
+    (setq show-paren-mode t)
+    ;; (nlinum-relative-mode 1)
     (linum-mode 1)
     (auto-fill-mode 1)
     (setq-local comment-auto-fill-only-comments t)
