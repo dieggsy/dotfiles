@@ -536,9 +536,16 @@ Handling/storing of files, backups, autosaves.
         "agg" 'gomoku
         "ag2" '2048-game
         "agd" 'dunnet
-        "ai" 'erc)
-
-)
+        "ai" 'erc
+        "ar" 'ranger
+        "ad" 'deer
+        "ac" 'calc-dispatch
+        "ap" 'paradox-list-packages
+        "au" 'undo-tree-visualize
+        "aw" 'sunshine-forecast
+        "aW" 'sunshine-quick-forecast
+        "as" 'speed-type-text
+        "at" 'twit))
 #+end_src
 **** Buffers & Files
 #+begin_src emacs-lisp
@@ -574,7 +581,6 @@ Handling/storing of files, backups, autosaves.
       "ts" 'flycheck-mode
       "tg" 'diego/github-spacing
       "tc" 'diego/toggle-linum-fci
-      "tC" 'calc-dispatch
       "tS" 'flyspell-mode)
 
   (defun diego/toggle-linum-fci ()
@@ -628,6 +634,7 @@ Handling/storing of files, backups, autosaves.
       "hdp" 'describe-package
       "hdv" 'counsel-describe-variable
       "hdt" 'describe-theme
+      "hds" 'describe-symbol
 
       "hk" 'which-key-show-top-level
       "hm" 'man
@@ -653,13 +660,13 @@ Handling/storing of files, backups, autosaves.
       "&"         'async-shell-command
       ":"         'eval-expression
       "g"         'magit-status
-      "r"         'ranger
       "y"         'counsel-yank-pop)
 
     (diego/leader-applications)
     (diego/leader-buffers-files)
     (diego/leader-editing)
     (diego/leader-help)
+    (diego/leader-jumping)
     (diego/leader-projects)
     (diego/leader-quit)
     (diego/leader-search)
@@ -1128,6 +1135,7 @@ A really, really neat search/completion system for emacs.
       "mt"    'air-org-set-tags
       "mic"   'org-table-insert-column
       "mir"   'org-table-insert-row
+      "mil"   'org-insert-link
       "mw"    'fill-paragraph
       "me"    'org-export-dispatch
       "mb"    'org-babel-tangle)
@@ -1438,36 +1446,37 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
 
 *** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 #+begin_src emacs-lisp
-    (use-package which-key
-      :ensure t
-      :config
-      (which-key-mode)
-      (which-key-declare-prefixes
-        "SPC b" "buffer"
-        "SPC f" "file"
-        "SPC w" "window"
-        "SPC s" "search"
-        "SPC n" "narrow"
-        "SPC c" "comment"
-        "SPC h" "help"
-        "SPC hd" "describe"
-        "SPC m" (symbol-name (symbol-value 'major-mode))
-        "SPC j" "jump"
-        "SPC i" "insert"
-        "SPC x" "text"
-        "SPC q" "quit"
-        "SPC t" "toggle"
-        "SPC p" "project"
-        "SPC a" "applications"
-        "SPC ag" "games")
-      (setq which-key-sort-order 'which-key-prefix-then-key-order))
+  (use-package which-key
+    :ensure t
+    :config
+    (which-key-mode)
+    (which-key-declare-prefixes
+      "SPC"     "root"
+      "SPC b"   "buffer"
+      "SPC f"   "file"
+      "SPC w"   "window"
+      "SPC s"   "search"
+      "SPC n"   "narrow"
+      "SPC c"   "comment"
+      "SPC h"   "help"
+      "SPC hd"  "describe"
+      "SPC j"   "jump"
+      "SPC i"   "insert"
+      "SPC x"   "text"
+      "SPC q"   "quit"
+      "SPC t"   "toggle"
+      "SPC p"   "project"
+      "SPC a"   "applications"
+      "SPC ag"  "games"
+      "SPC m"   "major-mode-cmd")
+    (setq which-key-sort-order 'which-key-key-order-alpha))
 #+end_src
 *** [[https://github.com/Fuco1/smartparens][smartparens]] 
 #+begin_src emacs-lisp
     (use-package smartparens
       :ensure t
       :config
-      (smartparens-mode))
+      (smartparens-global-mode))
 #+end_src
 *** [[https://github.com/lewang/flx][flx]]
 Fuzzy matching
