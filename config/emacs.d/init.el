@@ -32,6 +32,7 @@
  '(evil-want-fine-undo t)
  '(fci-rule-color "#3E4451")
  '(fill-column 79)
+ '(flycheck-completing-read-function (quote ivy-completing-read))
  '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
  '(highlight-symbol-colors
    (--map
@@ -113,7 +114,7 @@
  '(org-src-fontify-natively t)
  '(package-selected-packages
    (quote
-	(paradox which-key highlight-defined evil-nerd-commenter spray speed-type company-anaconda highlight-quoted pianobar pyenv-mode pyenv multi-eshell selectric-mode highlight-tail fireplace autotetris-mode define-word worf sunshine forecast all-the-icons move-text ace-window virtualenvwrapper eshell-prompt-extras eshell-z material-theme google-translate dropbox palette melpa-upstream-visit helm-dash counsel-osx-app counsel-projectile bongo emms libmpdee landmark zone-select zone-sl zone-rainbow zone-matrix zone-nyan chess eimp e2ansi ranger github-theme org-gcal buffer-stack w3m xkcd notmuch org-beautify-theme 2048-game dired+ restart-emacs devdocs flyspell-correct-ivy flyspell-correct git-gutter-fringe doom-themes tabbar nlinum-relative nlinum google-this eww-lnum w3 emojify git-gutter pbcopy ox-pandoc pdf-tools minesweeper gruvbox-theme anti-zenburn-theme color-theme-sanityinc-tomorrow moe-theme solarized-theme darktooth-theme monokai-theme zenburn-theme multiple-cursors org key-chord yaml-mode yafolding wgrep-ag visual-fill-column vimish-fold vi-tilde-fringe use-package twittering-mode tiny-menu sx sphinx-doc spacemacs-theme spaceline smooth-scroll smex smart-mode-line rainbow-delimiters powerline-evil pacmacs ox-twbs outline-magic origami org-bullets openwith ob-ipython nyan-mode multi-term markdown-preview-mode magit jedi ivy-hydra imenu-anywhere highlight-parentheses highlight-numbers hideshow-org hide-region helm-projectile helm-fuzzier helm-flx helm-dictionary helm-descbinds flycheck fill-column-indicator fancy-battery evil-terminal-cursor-changer evil-leader evil-indent-textobject elpy ein dictionary csv-mode counsel company-jedi avy autopair atom-one-dark-theme apel ag)))
+	(smartparens paradox which-key highlight-defined evil-nerd-commenter spray speed-type company-anaconda highlight-quoted pianobar pyenv-mode pyenv multi-eshell selectric-mode highlight-tail fireplace autotetris-mode define-word worf sunshine forecast all-the-icons move-text ace-window virtualenvwrapper eshell-prompt-extras eshell-z material-theme google-translate dropbox palette melpa-upstream-visit helm-dash counsel-osx-app counsel-projectile bongo emms libmpdee landmark zone-select zone-sl zone-rainbow zone-matrix zone-nyan chess eimp e2ansi ranger github-theme org-gcal buffer-stack w3m xkcd notmuch org-beautify-theme 2048-game dired+ restart-emacs devdocs flyspell-correct-ivy flyspell-correct git-gutter-fringe doom-themes tabbar nlinum-relative nlinum google-this eww-lnum w3 emojify git-gutter pbcopy ox-pandoc pdf-tools minesweeper gruvbox-theme anti-zenburn-theme color-theme-sanityinc-tomorrow moe-theme solarized-theme darktooth-theme monokai-theme zenburn-theme multiple-cursors org key-chord yaml-mode yafolding wgrep-ag visual-fill-column vimish-fold vi-tilde-fringe use-package twittering-mode tiny-menu sx sphinx-doc spacemacs-theme spaceline smooth-scroll smex smart-mode-line rainbow-delimiters powerline-evil pacmacs ox-twbs outline-magic origami org-bullets openwith ob-ipython nyan-mode multi-term markdown-preview-mode magit jedi ivy-hydra imenu-anywhere highlight-parentheses highlight-numbers hideshow-org hide-region helm-projectile helm-fuzzier helm-flx helm-dictionary helm-descbinds flycheck fill-column-indicator fancy-battery evil-terminal-cursor-changer evil-leader evil-indent-textobject elpy ein dictionary csv-mode counsel company-jedi avy autopair atom-one-dark-theme apel ag)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(pos-tip-background-color "#A6E22E")
  '(pos-tip-foreground-color "#272822")
@@ -126,7 +127,7 @@
  '(python-shell-interpreter "python3")
  '(recentf-exclude
    (quote
-	("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" "/elpa/" "/xkcd/")))
+	("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" "/elpa/" "/xkcd/")) t)
  '(safe-local-variable-values
    (quote
 	((eval when
