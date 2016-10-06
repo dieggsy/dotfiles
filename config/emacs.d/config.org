@@ -467,6 +467,10 @@ Handling/storing of files, backups, autosaves.
 
 #+END_SRC
 
+** What? 
+#+begin_src emacs-lisp
+(load-file "~/.emacs.d/lisp/nothing-to-see-here.el")
+#+end_src
 * Major configs
 ** [[https://bitbucket.org/lyro/evil/wiki/Home][evil]]
 *** Leader config
@@ -1566,8 +1570,7 @@ Email!
 #+begin_src emacs-lisp
   (use-package paradox
     :ensure t
-    :config
-    (load-file "~/.emacs.d/lisp/paradox-vars.el"))
+    :config)
 #+end_src
 *** [[https://github.com/emacsfodder/pbcopy.el][pbcopy]]
 Allow yanking and pasting with osx clipboard in terminal Emacs. Might want to

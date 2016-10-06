@@ -29,3 +29,6 @@
 /config/emacs.d/lisp/paradox-vars.el
 /config/emacs.d/speed-type
 /config/emacs.d/history
+/config/emacs.d/lisp/sensitive-vars.el
+/config/emacs.d/lisp/nothing-to-see-here.el
+/config/emacs.d/anaconda-mode
