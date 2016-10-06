@@ -1556,6 +1556,13 @@ Email!
     :ensure t)
 #+END_SRC
 
+*** [[https://github.com/Malabarba/paradox][paradox]]
+#+begin_src emacs-lisp
+  (use-package paradox
+    :ensure t
+    :config
+    (load-file "~/.emacs.d/lisp/paradox-vars.el"))
+#+end_src
 *** [[https://github.com/emacsfodder/pbcopy.el][pbcopy]]
 Allow yanking and pasting with osx clipboard in terminal Emacs. Might want to
 look into [[https://melpa.org/#/osx-clipboard][osx-clipboard]] instead.
