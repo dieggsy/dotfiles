@@ -528,7 +528,7 @@ Handling/storing of files, backups, autosaves.
 #+end_src
 **** Editing
 #+begin_src emacs-lisp
-  (defun diego/leader-editing
+  (defun diego/leader-editing ()
       (evil-leader/set-key
         ";" 'evilnc-comment-operator
         "cl" 'evilnc-comment-or-uncomment-lines
@@ -537,7 +537,7 @@ Handling/storing of files, backups, autosaves.
         "ct" 'evilnc-comment-or-uncomment-to-the-line
         "cy" 'evilnc-copy-and-comment-lines
       
-        "nn" 'narrow-dwim
+        "nn" 'air-narrow-dwim
         "nf" 'narrow-to-defun
         "np" 'narrow-to-page
         "nr" 'narrow-to-region
@@ -1524,7 +1524,9 @@ Recently used M-x commands
         "SPC w" "window"
         "SPC s" "search"
         "SPC n" "narrow"
-        "SPC c" "comment")
+        "SPC c" "comment"
+        "SPC h" "help"
+        "SPC hd" "describe")
       (setq which-key-sort-order 'which-key-prefix-then-key-order))
 #+end_src
 *** [[https://github.com/aspiers/smooth-scrolling][smooth-scrolling]]
