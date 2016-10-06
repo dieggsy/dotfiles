@@ -26,3 +26,6 @@
 /config/emacs.d/temp-counsel-functions.el
 /config/emacs.d/lisp/pianobar-vars.el
 /config/emacs.d/.python-environments
+/config/emacs.d/lisp/paradox-vars.el
+/config/emacs.d/speed-type
+/config/emacs.d/history
