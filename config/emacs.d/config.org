@@ -16,7 +16,7 @@ Minimal info about meself, I guess.
 #+END_SRC
 
 * Init Setup
-Setup up cool stuff like use-package, and stuff.
+  Setup up cool stuff like use-package, and stuff.
 
 ** Misc init
 Setup load directories, mostly.
@@ -232,6 +232,7 @@ Get rid of menu bars, scroll bars, startup screens, etc.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'minibuffer-setup-hook (lambda () (setq-local cursor-type '(bar . 1))))
   (setq enable-recursive-minibuffers t)
+  (savehist-mode 1)
   ;; (add-hook 'minibuffer-setup-hook (lambda () (show-paren-mode -1)))
 #+END_SRC
 ** Fonts
@@ -288,124 +289,38 @@ Handling/storing of files, backups, autosaves.
 ** Global functions
 *** "Stolen"
 #+BEGIN_SRC emacs-lisp
-  (defun diego/pop-to-file (file &optional split)
-    "Visit a FILE, either in the current window or a SPLIT."
-    (if split
-        (find-file-other-window file)
-      (find-file file)))
+    (defun diego/pop-to-file (file &optional split)
+      "Visit a FILE, either in the current window or a SPLIT."
+      (if split
+          (find-file-other-window file)
+        (find-file file)))
 
-  (defun occur-last-search ()
-     "Run `occur` with the last evil search term."
-     (interactive)
-     ;; Use the appropriate search term based on regexp setting.
-     (let ((term (if evil-regexp-search
-                     (car-safe regexp-search-ring)
-                   (car-safe search-ring))))
-       ;; If a search term exists, execute `occur` on it.
-       (if (> (length term) 0)
-           (occur term)
-         (message "No term to search for."))))
+    (defun occur-last-search ()
+       "Run `occur` with the last evil search term."
+       (interactive)
+       ;; Use the appropriate search term based on regexp setting.
+       (let ((term (if evil-regexp-search
+                       (car-safe regexp-search-ring)
+                     (car-safe search-ring))))
+         ;; If a search term exists, execute `occur` on it.
+         (if (> (length term) 0)
+             (occur term)
+           (message "No term to search for."))))
 
-  (defun show-first-occurrence ()
-    "Display the location of the word at point's first occurrence in the buffer."
-    (interactive)
-    (save-excursion
-      (let ((search-word (thing-at-point 'symbol t)))
-        (goto-char 1)
-        (re-search-forward search-word)
-        (message (concat
-                  "L" (number-to-string (line-number-at-pos)) ": "
-                  (replace-regexp-in-string
-                   "[ \t\n]*\\'"
-                   ""
-                   (thing-at-point 'line t)
-                   ))))))
-
-  (defun switch-to-previous-buffer ()
-      "Switch to previously open buffer.
-  Repeated invocations toggle between the two most recently open buffers."
+    (defun show-first-occurrence ()
+      "Display the location of the word at point's first occurrence in the buffer."
       (interactive)
-        (switch-to-buffer (other-buffer (current-buffer) 1)))
-
-  ;;; Helpers for narrowing.
-  (defun narrow-and-set-normal ()
-    "Narrow to the region and, if in a visual mode, set normal mode."
-    (interactive)
-    (narrow-to-region (region-beginning) (region-end))
-    (if (string= evil-state "visual")
-        (progn (evil-normal-state nil)
-               (evil-goto-first-line))))
-
-  (defun narrow-to-region-or-subtree ()
-    "Narrow to a region, if set, otherwise to an Org subtree, if present."
-    (interactive)
-    (if (and mark-active
-             (not (= (region-beginning) (region-end))))
-        (narrow-and-set-normal)
-      (if (derived-mode-p 'org-mode)
-          (org-narrow-to-subtree))))
-
-  (defun air-narrow-dwim ()
-      "Narrow to a thing or widen based on context.
-  Attempts to follow the Do What I Mean philosophy."
-      (interactive)
-      (if (buffer-narrowed-p)
-          (widen)
-        (narrow-to-region-or-subtree)))
-
-
-  (defun diego/toggle-window-split ()
-    (interactive)
-    (if (= (count-windows) 2)
-        (let* ((this-win-buffer (window-buffer))
-               (next-win-buffer (window-buffer (next-window)))
-               (this-win-edges (window-edges (selected-window)))
-               (next-win-edges (window-edges (next-window)))
-               (this-win-2nd (not (and (<= (car this-win-edges)
-                                           (car next-win-edges))
-                                       (<= (cadr this-win-edges)
-                                           (cadr next-win-edges)))))
-               (splitter
-                (if (= (car this-win-edges)
-                       (car (window-edges (next-window))))
-                    'split-window-horizontally
-                  'split-window-vertically)))
-          (delete-other-windows)
-          (let ((first-win (selected-window)))
-            (funcall splitter)
-            (if this-win-2nd (other-window 1))
-            (set-window-buffer (selected-window) this-win-buffer)
-            (set-window-buffer (next-window) next-win-buffer)
-            (select-window first-win)
-            (if this-win-2nd (other-window 1))))))
-
-      
-#+END_SRC
-*** "Original"
-#+BEGIN_SRC emacs-lisp
-  (defun diego/config ()
-    (interactive)
-    (find-file "/Users/diego/dotfiles/config/emacs.d/config.org"))
-
-  (defun diego/init ()
-    (interactive)
-    (find-file "/Users/diego/dotfiles/config/emacs.d/init.el")) 
-
-  (defun diego/zshrc ()
-    (interactive)
-    (find-file "/Users/diego/dotfiles/config/zshrc"))
-
-  (defun diego/ipython-shell ()
-    (interactive)
-    (let ((multi-term-program "/usr/local/bin/ipython"))
-      (multi-term)))
-
-  (defun diego/toggle-github-spacing ()
-    (interactive)
-    (setq-local line-spacing 
-                (if (eq line-spacing nil)
-                    0.4
-                  nil)))
+      (save-excursion
+        (let ((search-word (thing-at-point 'symbol t)))
+          (goto-char 1)
+          (re-search-forward search-word)
+          (message (concat
+                    "L" (number-to-string (line-number-at-pos)) ": "
+                    (replace-regexp-in-string
+                     "[ \t\n]*\\'"
+                     ""
+                     (thing-at-point 'line t)
+                     ))))))
 
   (defun zone-choose (pgm)
     "Choose a PGM to run for `zone'."
@@ -415,89 +330,276 @@ Handling/storing of files, backups, autosaves.
        "Program: "
        (mapcar 'symbol-name zone-programs))))
     (let ((zone-programs (list (intern pgm))))
+      (redisplay)
       (zone)))
 
+  (defun switch-to-previous-buffer ()
+        "Switch to previously open buffer.
+    Repeated invocations toggle between the two most recently open buffers."
+        (interactive)
+          (switch-to-buffer (other-buffer (current-buffer) 1)))
+
+    ;;; Helpers for narrowing.
+    (defun narrow-and-set-normal ()
+      "Narrow to the region and, if in a visual mode, set normal mode."
+      (interactive)
+      (narrow-to-region (region-beginning) (region-end))
+      (if (string= evil-state "visual")
+          (progn (evil-normal-state nil)
+                 (evil-goto-first-line))))
+
+    (defun narrow-to-region-or-subtree ()
+      "Narrow to a region, if set, otherwise to an Org subtree, if present."
+      (interactive)
+      (if (and mark-active
+               (not (= (region-beginning) (region-end))))
+          (narrow-and-set-normal)
+        (if (derived-mode-p 'org-mode)
+            (org-narrow-to-subtree))))
+
+    (defun air-narrow-dwim ()
+        "Narrow to a thing or widen based on context.
+    Attempts to follow the Do What I Mean philosophy."
+        (interactive)
+        (if (buffer-narrowed-p)
+            (widen)
+          (narrow-to-region-or-subtree)))
+
+
+    (defun diego/toggle-window-split ()
+      (interactive)
+      (if (= (count-windows) 2)
+          (let* ((this-win-buffer (window-buffer))
+                 (next-win-buffer (window-buffer (next-window)))
+                 (this-win-edges (window-edges (selected-window)))
+                 (next-win-edges (window-edges (next-window)))
+                 (this-win-2nd (not (and (<= (car this-win-edges)
+                                             (car next-win-edges))
+                                         (<= (cadr this-win-edges)
+                                             (cadr next-win-edges)))))
+                 (splitter
+                  (if (= (car this-win-edges)
+                         (car (window-edges (next-window))))
+                      'split-window-horizontally
+                    'split-window-vertically)))
+            (delete-other-windows)
+            (let ((first-win (selected-window)))
+              (funcall splitter)
+              (if this-win-2nd (other-window 1))
+              (set-window-buffer (selected-window) this-win-buffer)
+              (set-window-buffer (next-window) next-win-buffer)
+              (select-window first-win)
+              (if this-win-2nd (other-window 1))))))
+
+    (defun minibuffer-keyboard-quit ()
+      "Abort recursive edit.
+      In Delete Selection mode, if the mark is active, just deactivate it;
+      then it takes a second \\[keyboard-quit] to abort the minibuffer."
+      (interactive)
+      (if (and delete-selection-mode transient-mark-mode mark-active)
+          (setq deactivate-mark  t)
+        (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+        (abort-recursive-edit)))
+  
+#+END_SRC
+
+*** "Original"
+#+BEGIN_SRC emacs-lisp
+  (defun diego/config ()
+    "Open ~/dotfiles/config/emacs.d/config.org"
+    (interactive)
+    (find-file "/Users/diego/dotfiles/config/emacs.d/config.org"))
+
+  (defun diego/init ()
+    "Open ~/dotfiles/config/emacs.d/init.el"
+    (interactive)
+    (find-file "/Users/diego/dotfiles/config/emacs.d/init.el")) 
+
+  (defun diego/zshrc ()
+    "Open ~/dotfiles/config/zshrc"
+    (interactive)
+    (find-file "/Users/diego/dotfiles/config/zshrc"))
+
+  (defun diego/ipython-shell ()
+    "Open an ipython shell using multi-term, respecting virtualenv."
+    (interactive)
+    (if (eq pyvenv-virtual-env nil)
+        (let ((multi-term-program "/usr/local/bin/ipython"))
+          (multi-term))
+      (let ((multi-term-program (concat pyvenv-virtual-env "/bin/ipython")))
+        (multi-term))))
+
+  (defun diego/toggle-github-spacing ()
+    "Make line spacing similar to github source code."
+    (interactive)
+    (setq-local line-spacing 
+                (if (eq line-spacing nil)
+                    0.4
+                  nil)))
+
   (defun diego/date ()
+    "Insert current date at point."
     (interactive)
     (insert (shell-command-to-string "echo -n $(date +%Y-%m-%d)")))
 
-  (defun minibuffer-keyboard-quit ()
-    "Abort recursive edit.
-    In Delete Selection mode, if the mark is active, just deactivate it;
-    then it takes a second \\[keyboard-quit] to abort the minibuffer."
-    (interactive)
-    (if (and delete-selection-mode transient-mark-mode mark-active)
-        (setq deactivate-mark  t)
-      (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
-      (abort-recursive-edit)))
-
   (defun diego/image-to-text ()
+    "Use `drawille-from-image' to insert image as text into current buffer."
     (interactive)
     (let ((x (read-file-name "image: ")))
       (insert (drawille-from-image x))))
-  
+
   (defun diego/lecture-notes ()
+    "Prompt for a class and create a lecture notes file 
+  matching format %Y-%m-%d_lecture.org in class/notes subdirectory."
     (interactive)
-    (ivy-read "directory: " '("~/MIT 2016-2017/16.410/notes/"
-                              "~/MIT 2016-2017/16.621/notes/"
-                              "~/MIT 2016-2017/Ethics/notes/")
+    (ivy-read "class: " '("16.410"
+                          "16.621"
+                          "Ethics")
               :action (lambda (x)
                         (find-file
-                         (concat x (format-time-string "%Y-%m-%d_lecture.org" ))))
+                         (concat "~/MIT 2016-2017/" x "/notes/" (format-time-string "%Y-%m-%d_lecture.org" ))))
               :caller 'diego/lecture-notes))
+
+  (defun diego/sync-venv (&rest args)
+    (if (boundp 'pyvenv-virtual-env-name)
+        (setq venv-current-name pyvenv-virtual-env-name)
+      (setq venv-current-name nil)))
 
 #+END_SRC
 
 * Major configs
 ** [[https://bitbucket.org/lyro/evil/wiki/Home][evil]]
 *** Leader config
+**** Search
+#+begin_src emacs-lisp
+  (defun diego/leader-search ()
+  (evil-leader/set-key
+
+    "sa"  'counsel-ag
+    "/" 'evil-search-forward))
+#+end_src
+
+**** Projects
+#+begin_src emacs-lisp
+  (defun diego/leader-projects ()
+    (evil-leader/set-key
+
+      "pp" 'counsel-projectile-switch-project
+      "pf" 'counsel-projectile-find-file
+      "pd" 'counsel-projectile-find-dir
+      "pb" 'counsel-projectile-switch-to-buffer
+      "pk" 'projectile-kill-buffers
+      "po" 'projectile-multi-occur
+      "pr" 'projectile-recentf
+      "pg" 'projectile-vc))
+#+end_src
+**** Window
+#+begin_src emacs-lisp
+  (defun diego/leader-window ()
+    (evil-leader/set-key
+      "wo" 'ace-window
+      "wv" 'split-window-right
+      "wh" 'split-window-below
+      "wt" 'diego/toggle-window-split
+      "wd" 'delete-other-windows))
+#+end_src
+**** Buffers & Files
+#+begin_src emacs-lisp
+  (defun diego/leader-buffers ()
+    (evil-leader/set-key
+      "TAB" 'switch-to-previous-buffer
+      "bs" 'ivy-switch-buffer
+      "bk" 'kill-this-buffer
+      "bK" 'kill-buffer
+      "bm" 'kill-matching-buffers
+      "br" 'view-mode))
+
+  (defun diego/leader-files ()
+    (evil-leader/set-key
+      "ff" 'counsel-find-file
+      "fs" 'save-buffer
+      "fl" 'counsel-locate
+      "fr" 'rename-this-file-and-buffer
+      "fD" 'delete-thisfile
+      "fec" 'diego/config
+      "fez" 'diego/zshrc
+      "fei" 'diego/init
+      "fel" 'locate-library))
+#+end_src
+**** Editing
+#+begin_src emacs-lisp
+  (defun diego/leader-editing
+      (evil-leader/set-key
+        ";" 'evilnc-comment-operator
+        "cl" 'evilnc-comment-or-uncomment-lines
+        "cL" 'evilnc-invert-comment-line-by-line
+        "cp" 'evilnc-comment-or-uncomment-paragraphs
+        "ct" 'evilnc-comment-or-uncomment-to-the-line
+        "cy" 'evilnc-copy-and-comment-lines
+      
+        "nn" 'narrow-dwim
+        "nf" 'narrow-to-defun
+        "np" 'narrow-to-page
+        "nr" 'narrow-to-region
+     )) 
+#+end_src
+**** Help
+#+begin_src emacs-lisp
+  (defun diego/leader-help ()
+    (evil-leader/set-key
+      "hdb" 'counsel-descbinds
+      "hdc" 'describe-char
+      "hdd" 'devdocs-search
+      "hdf" 'counsel-describe-function
+      "hdF" 'counsel-describe-face
+      "hdk" 'describe-key
+      "hdm" 'describe-mode
+      "hdp" 'describe-package
+      "hdv" 'counsel-describe-variable
+      "hdt" 'describe-theme
+
+      "hk" 'which-key-show-top-level
+      "hm" 'man
+      "hn" 'emacs-news
+      ))
+#+end_src
+**** Global
 #+BEGIN_SRC emacs-lisp
   (defun diego/config-evil-leader ()
     "Configure evil leader mode."
-    (evil-leader/set-leader ",")
+    (evil-leader/set-leader "SPC")
     (setq evil-leader/in-all-states 1)
-
     (evil-leader/set-key
       ",g"        'counsel-git
       ",y"        'yas-insert-snippet
-      "-"         'counsel-projectile-find-file
-      "."         'switch-to-previous-buffer
-      "'"         'ace-window
-      "/"         'evil-search-forward
-      "0"         'universal-argument
+      "SPC"       'counsel-M-x
+      "u"         'universal-argument
       "7"         'async-shell-command
       ":"         'eval-expression
-      "B"         'magit-blame-toggle
       "C"         (lambda () (interactive) (calc-dispatch) (evil-insert-state))
-      "K"         'kill-buffer
       "aa"        'align-regexp
-      "b"         'ivy-switch-buffer      ;; Switch to another buffer
-      "c"         'comment-dwim
       "fl"        'evil-avy-goto-line   
       "fc"        'evil-avy-goto-char-2
       "fw"        'evil-avy-goto-word-1
       "g"         'magit-status
-      "h"         'split-window-below
       "i"         'ivy-imenu-anywhere     ;; Jump to function in buffer
-      "k"         'kill-this-buffer
       "la"        'diego/toggle-linum-fci 
       "lc"        'fci-mode
       "ld"        'delete-trailing-whitespace
       "lf"        'flycheck-mode
       "ll"        'linum-mode
       "lw"        'whitespace-mode        ;; Show invisible characters
-      "nn"        'air-narrow-dwim        ;; Narrow to region and enter normal mode
-      "o"         'delete-other-windows   ;; C-w o
       "r"         'ranger
-      "s"         'counsel-projectile-switch-project
-      "t"         'counsel-locate
-      "v"         'split-window-right
-      "w"         'save-buffer
-      "x"         'counsel-M-x
       "y"         'counsel-yank-pop)
 
-
-    (define-key universal-argument-map (kbd ",0") 'universal-argument-more)
+    (diego/leader-search)
+    (diego/leader-window)
+    (diego/leader-projects)
+    (diego/leader-buffers)
+    (diego/leader-files)
+    (diego/leader-editing)
+    (diego/leader-help)
+    (define-key universal-argument-map (kbd "SPC u") 'universal-argument-more)
     (defun magit-blame-toggle ()
       "Toggle magit-blame-mode on and off interactively."
       (interactive)
@@ -590,8 +692,8 @@ Handling/storing of files, backups, autosaves.
     (define-key evil-normal-state-map (kbd "[i")    'show-first-occurrence)
     (define-key evil-insert-state-map (kbd "C-e")   'end-of-line) ;; I know...
     (define-key evil-normal-state-map (kbd "S-SPC") 'air-pop-to-org-agenda)
-    (define-key evil-normal-state-map (kbd "<SPC>") 'counsel-M-x)
-    (define-key evil-visual-state-map (kbd "<SPC>") 'counsel-M-x)
+    ;; (define-key evil-normal-state-map (kbd "<SPC>") 'counsel-M-x)
+    ;; (define-key evil-visual-state-map (kbd "<SPC>") 'counsel-M-x)
 
 
    (evil-add-hjkl-bindings occur-mode-map 'emacs
@@ -717,9 +819,10 @@ A really, really neat search/completion system for emacs.
     ;;Don't start searches with '^' by default
     (setq ivy-initial-inputs-alist nil)
     ;; (setq ivy-flip t) ; Flip the direction
+    (setq ivy-switch-buffer-faces-alist
+          '((dired-mode . ivy-subdir)))
     (defalias 'ag 'counsel-ag)
-    (defalias 'locate 'counsel-locate)
-    )
+    (defalias 'locate 'counsel-locate))
 #+END_SRC
 
 ** [[http://orgmode.org/][org-mode]]
@@ -951,20 +1054,24 @@ A really, really neat search/completion system for emacs.
                                           ("*" . "+")))
     ;; (setq org-highlight-latex-and-related '(latex script entities))
 
+    (setq org-latex-listings t)
+    (add-to-list 'org-latex-packages-alist '("" "listings"))
+    (add-to-list 'org-latex-packages-alist '("" "color"))
+
     (evil-leader/set-key-for-mode 'org-mode
-      "$"  'org-archive-subtree
-      "a"  'org-agenda
-      ",c"  'air-org-set-category-property
-      ",d"  'org-deadline
-      "ns" 'org-narrow-to-subtree
-      "p"  'org-set-property
-      ",s"  'org-schedule
-      ",t"  'air-org-set-tags
-      ",ic" 'org-table-insert-column
-      ",ir" 'org-table-insert-row
-      ",w" 'fill-paragraph
-      ",e"  'org-export-dispatch
-      ",t" 'org-babel-tangle)
+      "$"     'org-archive-subtree
+      "a"     'org-agenda
+      ",c"    'air-org-set-category-property
+      ",d"    'org-deadline
+      "ns"    'org-narrow-to-subtree
+      "p"     'org-set-property
+      ",s"    'org-schedule
+      ",t"    'air-org-set-tags
+      ",ic"   'org-table-insert-column
+      ",ir"   'org-table-insert-row
+      ",w"    'fill-paragraph
+      ",e"    'org-export-dispatch
+      ",t"    'org-babel-tangle)
 
     (add-hook 'org-agenda-mode-hook
               (lambda ()
@@ -1057,7 +1164,201 @@ A really, really neat search/completion system for emacs.
   ;;; init-org.el ends here"]")))))
 #+END_SRC
 * Dem packages
-** Active
+** Amusements
+*** [[https://github.com/josuah/drawille][drawille]]
+#+BEGIN_SRC emacs-lisp
+  (use-package drawille
+    :ensure t)
+#+END_SRC
+*** [[https://github.com/johanvts/emacs-fireplace/][fireplace]]
+#+BEGIN_SRC emacs-lisp
+  (use-package fireplace
+    :ensure t)
+#+END_SRC
+
+*** [[https://melpa.org/#/highlight-tail][highlight-tail]]
+#+BEGIN_SRC emacs-lisp
+  (use-package highlight-tail
+    :ensure t)
+#+END_SRC
+
+*** [[https://github.com/TeMPOraL/nyan-mode][nyan-mode]]
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package nyan-mode
+    :ensure t
+    :config
+    (nyan-mode))
+#+END_SRC
+*** [[https://github.com/agrif/pianobar.el][pianobar]] 
+#+BEGIN_SRC emacs-lisp
+  (use-package pianobar
+    :ensure t
+    :config
+    (setq pianobar-run-in-background t)   ;
+    (setq pianobar-station "Majestic Dance Radio"))
+#+END_SRC
+*** [[https://github.com/rbanffy/selectric-mode][selectric-mode]]
+#+BEGIN_SRC emacs-lisp
+  (use-package selectric-mode
+    :ensure t)
+#+END_SRC
+*** [[https://github.com/hagleitn/speed-type][speed-type]]
+#+BEGIN_SRC emacs-lisp
+  (use-package speed-type
+    :ensure t
+    :config
+    (setq speed-type--gb-url-format
+          "http://www.gutenberg.org/cache/epub/%d/pg%d.txt"))
+#+END_SRC
+*** [[https://gitlab.com/iankelling/spray][spray]]
+#+BEGIN_SRC emacs-lisp
+  (use-package spray
+    :ensure t)
+#+END_SRC
+*** [[https://github.com/vibhavp/emacs-xkcd][xkcd]]
+#+BEGIN_SRC emacs-lisp
+  (use-package xkcd
+    :ensure t)
+#+END_SRC
+
+*** zone-matrix
+Eh, why not.
+#+BEGIN_SRC emacs-lisp
+  (use-package zone-matrix
+    :ensure t
+    :config
+    (eval-after-load "zone"
+      '(unless (memq 'zone-matrix (append zone-programs nil))
+         (setq zone-programs
+               (vconcat zone-programs [zone-matrix])))))
+#+END_SRC
+
+*** zone-nyan 
+#+BEGIN_SRC emacs-lisp
+  (use-package zone-nyan
+    :ensure t
+    :after 'zone
+    :config
+    (eval-after-load "zone"
+      '(unless (memq 'zone-nyan (append zone-programs nil))
+         (setq zone-programs
+               (vconcat zone-programs [zone-nyan])))))
+#+END_SRC
+
+** Appearance
+*** [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
+#+BEGIN_SRC emacs-lisp 
+  (use-package all-the-icons
+    :ensure t)
+#+END_SRC
+*** diego-theme
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package diego-theme
+    :load-path "lisp/")
+#+END_SRC
+
+*** doom-themes
+#+BEGIN_SRC emacs-lisp
+  (use-package doom-themes
+    :ensure t
+    :config
+
+    (load-theme 'doom-molokai t)
+    (custom-theme-set-faces
+     'doom-molokai
+     '(ivy-current-match ((t nil)))
+     '(ivy-virtual ((t (:inherit ivy-subdir))))
+     '(org-level-2 ((t (:foreground "#FD971F"))))
+     '(org-level-1 ((t (:foreground "#F92672"))))
+     '(org-level-3 ((t (:foreground "#9C91E4"))))
+     '(org-level-4 ((t (:foreground "#B6E63E"))))
+     '(org-level-5 ((t (:foreground "#E2C770"))))
+     '(org-level-6 ((t (:foreground "#727280"))))
+     '(org-level-8 ((t (:foreground "#8FA1B3"))))
+     '(iy-modified-buffer ((t (:inherit org-level-1))))
+     '(region ((t (:background "#39393D"))))
+     '(swiper-line-face ((t (:background "#222425"))))
+     '(swiper-match-face-1 ((t (:inherit ivy-minibuffer-match-face-1))))
+     '(swiper-match-face-2 ((t (:inherit ivy-minibuffer-match-face-2))))
+     '(swiper-match-face-3 ((t (:inherit ivy-minibuffer-match-face-3))))
+     '(swiper-match-face-4 ((t (:inherit ivy-minibuffer-match-face-4))))
+     '(message-header-name ((t (:inherit font-lock-comment-face :slant normal))))
+     '(message-header-subject ((t (:foreground "OliveDrab1" :height 1.2))))
+     '(message-mml ((t (:inherit font-lock-comment-face :slant normal))))
+     '(notmuch-search-unread-face ((t (:inherit font-lock-function-name-face))))
+     '(bold ((t (:weight bold))))
+     '(italic ((t (:slant italic))))
+     '(org-link ((t (:underline t :foreground "#66D9EF"))))))
+#+END_SRC
+*** [[https://github.com/iqbalansari/emacs-emojify][emacs-emojify]]
+Display emojis in emacs. Sweet!
+#+BEGIN_SRC emacs-lisp
+  (use-package emojify
+    :ensure t)
+#+END_SRC
+*** [[https://github.com/lunaryorn/fancy-battery.el][fancy-battery]]
+For nice battery display info.
+#+BEGIN_SRC emacs-lisp
+  (use-package fancy-battery
+    ;; Something something battery
+    :ensure t
+    :config
+    (fancy-battery-mode)
+    (setq fancy-battery-show-percentage t)
+    (fancy-battery-update))
+#+END_SRC
+*** [[https://github.com/TheBB/spaceline][spaceline]]
+I was looking for something with the nice look and simplicity of
+[[https://github.com/itchyny/lightline.vim][this]]. Spaceline does ok.
+#+BEGIN_SRC emacs-lisp
+  (use-package spaceline
+    ;; Similar to vim's powerline, this one looks clean
+    ;; and 'just works', to an extent
+    :ensure t
+    :config
+    (require 'spaceline-config)
+    (spaceline-spacemacs-theme)
+    (spaceline-helm-mode)
+    (spaceline-toggle-minor-modes-off)
+    (spaceline-toggle-battery-on)
+    ;; (spaceline-toggle-nyan-cat-on)
+    (spaceline-toggle-hud-off)
+    (spaceline-toggle-buffer-size-off)
+    (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
+    (set-face-background 'spaceline-evil-normal "#afd700")
+    (set-face-foreground 'spaceline-evil-normal "#005f00")
+    (set-face-background 'spaceline-evil-insert "#0087af")
+    (set-face-foreground 'spaceline-evil-insert "white")
+    (set-face-background 'spaceline-evil-visual "#ff8700")
+    (set-face-foreground 'spaceline-evil-visual "#870000")
+    (setq powerline-default-separator nil)
+    (spaceline-compile))
+
+#+END_SRC
+*** [[https://github.com/nashamri/spacemacs-theme][spacemacs-theme]]
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package spacemacs-theme
+    :ensure t)
+#+END_SRC
+
+*** zenburn-theme
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package zenburn-theme
+    :ensure t
+    :config
+    (zenburn-with-color-variables
+     (custom-theme-set-faces
+      'zenburn
+      '(ivy-current-match ((t nil))))))
+#+END_SRC
+
+*** darktooth-theme 
+#+begin_src emacs-lisp :tangle no
+  (use-package darktooth-theme
+    :ensure t)
+#+end_src
+
+** Misc utilities
 *** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
 Eh, wanted to try a simpler way of editing csv files. (Excel and Numbers both
 kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
@@ -1073,14 +1374,6 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
 Fuzzy matching
 #+BEGIN_SRC emacs-lisp
   (use-package flx
-    :ensure t)
-#+END_SRC
-
-*** [[https://github.com/flycheck/flycheck][flycheck]]
-Syntax check for python. Pretty good.
-#+BEGIN_SRC emacs-lisp
-  (use-package flycheck
-    ;; Pep8 check, basically
     :ensure t)
 #+END_SRC
 
@@ -1102,11 +1395,11 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 *** [[https://www.emacswiki.org/emacs/KeyChord][keychord]]
 Neat way to bind commands to key-stroke combinations
 #+BEGIN_SRC emacs-lisp
-    (use-package key-chord
-      :ensure t
-      :config
-      (key-chord-mode 1)
-      (key-chord-define evil-insert-state-map "jk" 'evil-normal-state))
+  (use-package key-chord
+    :ensure t
+    :config
+    (key-chord-mode 1)
+    (key-chord-define evil-insert-state-map "jk" 'evil-normal-state))
 #+END_SRC
 
 *** [[https://github.com/magit/magit][magit]]
@@ -1152,13 +1445,6 @@ Generates markdown previews? Not sure if working.
     :ensure t)
 #+END_SRC
 
-*** [[https://github.com/therockmandolinist/matlab-emacs][matlab-emacs]]
-#+BEGIN_SRC emacs-lisp
-  ;; (load-library "matlab-load")
-  (use-package matlab-load
-    :load-path "lisp/")
-#+END_SRC
-
 *** [[https://github.com/emacsfodder/move-text][move-text]]
 #+BEGIN_SRC emacs-lisp
   (use-package move-text
@@ -1187,13 +1473,6 @@ SUPER nifty.
     :ensure t)
 #+END_SRC
 
-*** [[https://github.com/aaronbieber/sunshine.el][sunshine]] 
-#+BEGIN_SRC emacs-lisp
-  (use-package sunshine
-    :ensure t
-    :config
-    (setq sunshine-location "02139,USA"))
-#+END_SRC
 *** [[https://github.com/nonsequitur/smex][smex]]
 Recently used M-x commands
 #+BEGIN_SRC emacs-lisp
@@ -1201,13 +1480,13 @@ Recently used M-x commands
     :ensure t)
 #+END_SRC
 
-*** [[https://github.com/vermiculus/sx.el/][sx]]
-Stack exchange on emacs.
+*** [[https://github.com/aaronbieber/sunshine.el][sunshine]] 
 #+BEGIN_SRC emacs-lisp
-  (use-package sx
-    :ensure t)
+  (use-package sunshine
+    :ensure t
+    :config
+    (setq sunshine-location "02139,USA"))
 #+END_SRC
-
 *** [[https://github.com/hayamiz/twittering-mode][twittering-mode]]
 #+BEGIN_SRC emacs-lisp
   (use-package twittering-mode
@@ -1226,236 +1505,43 @@ Stack exchange on emacs.
     (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 #+END_SRC
 
-** Org mode
-*** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
+*** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
 #+BEGIN_SRC emacs-lisp
-  (use-package ob-ipython
-    :ensure t)
-#+END_SRC
-*** [[https://github.com/sabof/org-bullets][org-bullets]]
-Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
-
-*** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
-Translates Org-mode file to various other formats via Pandoc. Pretty neat. Code
-under [[Org mode][Major Configs/Org mode/Setup]]
-
-*** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
-Export org to twitter bootstrap compatible HTML. Code under Major configs/Org
-mode/Setup.
-*** [[https://github.com/snosov1/toc-org][toc-org]]
-#+BEGIN_SRC emacs-lisp
-  ;; (use-package toc-org
-  ;;   :ensure t
-  ;;   :config
-  ;;   (add-hook 'org-mode-hook 'toc-org-enable))
-#+END_SRC
-
-** Programming
-*** [[https://github.com/company-mode/company-mode][company-mode]]
-Supposedly better than autocomplete... Also using [[https://github.com/syohex/emacs-company-jedi][company-jedi]]
-#+BEGIN_SRC emacs-lisp
-  (use-package company
+  (use-package undo-tree
     :ensure t
     :config
-    (add-hook 'after-init-hook 'global-company-mode)
-    (use-package company-jedi
-      ;; Not sure this is actually working for me
+    (setq undo-tree-visualizer-timestamps t))
+#+END_SRC
+*** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
+#+begin_src emacs-lisp
+    (use-package which-key
       :ensure t
       :config
-      (defun my/python-mode-hook ()
-        (add-to-list 'company-backends 'company-jedi))
-      (add-hook 'python-mode-hook 'my/python-mode-hook)))
-#+END_SRC
-
-*** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]
-Neat-o
-#+BEGIN_SRC emacs-lisp
-  (use-package highlight-numbers
-    :ensure t
-    :init
-    (add-hook 'python-mode-hook 'highlight-numbers-mode))
-#+END_SRC
-
-*** [[https://github.com/tsdh/highlight-parentheses.el][highlight-parentheses]]
-Makes the parentheses my cursor is between stand out more.
-#+BEGIN_SRC emacs-lisp
-  (use-package highlight-parentheses
-    ;; Make parenthesis I'm currently in stand out
-    :ensure t)
-#+END_SRC
-
-*** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
-Better parentheses coloring
-#+BEGIN_SRC emacs-lisp
-  (use-package rainbow-delimiters
-    :ensure t
-    :init
-    (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
-    (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
-#+END_SRC
-
-*** [[https://github.com/joaotavora/yasnippet][yasnippet]]
-Freakin yasnippet. It's the best.
-#+BEGIN_SRC emacs-lisp
-  (use-package yasnippet
-    ;; SNIPPETS!!!
+      (which-key-mode)
+      (which-key-declare-prefixes
+        "SPC b" "buffer"
+        "SPC f" "file"
+        "SPC w" "window"
+        "SPC s" "search"
+        "SPC n" "narrow"
+        "SPC c" "comment")
+      (setq which-key-sort-order 'which-key-prefix-then-key-order))
+#+end_src
+*** [[https://github.com/aspiers/smooth-scrolling][smooth-scrolling]]
+#+begin_src emacs-lisp :tangle no
+  (use-package smooth-scrolling
     :ensure t
     :config
-    (yas-global-mode 1))
-#+END_SRC
-
-*** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
-Edit jupyter notebooks in emacs
-#+BEGIN_SRC emacs-lisp
-  (use-package ein
+    (smooth-scrolling-mode 1)
+    (setq smooth-scroll-margin 1))
+#+end_src
+*** [[https://github.com/Malabarba/paradox][paradox]]
+#+begin_src emacs-lisp
+  (use-package paradox
     :ensure t
     :config
-    )
-#+END_SRC
-
-*** [[https://github.com/jorgenschaefer/elpy][elpy]]
-Sets up a python editing environment. I'm not sure yet.
-#+BEGIN_SRC emacs-lisp
-  (use-package elpy
-    ;; Eh, I don't know...
-    :ensure t
-    :config
-    (elpy-enable)
-    (elpy-use-ipython)
-    (setq elpy-modules
-          '(elpy-module-company
-            elpy-module-eldoc
-            elpy-module-pyvenv
-            elpy-module-yasnippet
-            elpy-module-sane-defaults))
-    )
-#+END_SRC
-
-*** [[https://github.com/vspinu/imenu-anywhere][imenu-anywhere]]
-imenu on steroids.
-#+BEGIN_SRC emacs-lisp
-  (use-package imenu-anywhere
-    ;; Imenu on steroids
-    :ensure t)
-#+END_SRC
-
-*** [[https://github.com/alpaker/Fill-Column-Indicator][Fill-Column-Indicator]]
-I like a line length limit indicator in Python
-#+BEGIN_SRC emacs-lisp
-
-  (use-package fill-column-indicator
-    :ensure t
-    :init
-    (setq-default fci-rule-column 79)
-    (add-hook 'python-mode-hook 'fci-mode))
-#+END_SRC
-
-*** [[https://github.com/naiquevin/sphinx-doc.el][sphinx-doc]]
-Sphinx doc python integration. Pretty neat, though not entirely
-complete, IMO.
-#+BEGIN_SRC emacs-lisp
-  (use-package sphinx-doc
-    :ensure t
-    :config
-    (add-hook 'python-mode-hook
-              (lambda ()
-                (require 'sphinx-doc)
-                (sphinx-doc-mode t))))
-
-#+END_SRC
-
-** Reference/search
-*** [[https://github.com/xuchunyang/devdocs.el][devdocs]]
-#+BEGIN_SRC emacs-lisp
-  (use-package devdocs
-      :ensure t)
-#+END_SRC
-
-*** [[https://github.com/myrkr/dictionary-el/blob/master/dictionary.el][dictionary]]
-Dictionary search!
-#+BEGIN_SRC emacs-lisp
-  (use-package dictionary
-    :ensure t)
-#+END_SRC
-
-*** [[https://github.com/dtaht/Gnugol][Gnugol]]
-An org-mode google??? Not currently working, apparently.
-#+BEGIN_SRC emacs-lisp
-  (use-package gnugol
-    :load-path "lisp/")
-#+END_SRC
-
-*** [[https://github.com/Malabarba/emacs-google-this][emacs-google-this]]
-Google stuff from emacs.
-#+BEGIN_SRC emacs-lisp
-  (use-package google-this
-    :ensure t
-    :config
-    (google-this-mode 1))
-#+END_SRC
-
-*** [[https://github.com/atykhonov/google-translate][google-translate]]
-#+BEGIN_SRC emacs-lisp
-  (use-package google-translate
-    :ensure t)
-#+END_SRC
-
-*** [[https://github.com/laynor/melpa-upstream-visit][melpa-upstream-visit]]
-#+BEGIN_SRC emacs-lisp
-  (use-package melpa-upstream-visit
-    :ensure t)
-#+END_SRC
-
-** Amusements
-*** zone-matrix
-Eh, why not.
-#+BEGIN_SRC emacs-lisp
-  (use-package zone-matrix
-    :ensure t
-    :config
-    (eval-after-load "zone"
-      '(unless (memq 'zone-matrix (append zone-programs nil))
-         (setq zone-programs
-               (vconcat zone-programs [zone-matrix]))))
-    )
-#+END_SRC
-
-*** [[https://github.com/vibhavp/emacs-xkcd][xkcd]]
-#+BEGIN_SRC emacs-lisp
-  (use-package xkcd
-    :ensure t)
-#+END_SRC
-
-*** [[https://github.com/johanvts/emacs-fireplace/][fireplace]]
-#+BEGIN_SRC emacs-lisp
-  (use-package fireplace
-    :ensure t)
-#+END_SRC
-
-*** [[https://melpa.org/#/highlight-tail][highlight-tail]]
-#+BEGIN_SRC emacs-lisp
-  (use-package highlight-tail
-    :ensure t)
-#+END_SRC
-
-*** [[https://github.com/rbanffy/selectric-mode][selectric-mode]]
-#+BEGIN_SRC emacs-lisp
-  (use-package selectric-mode
-    :ensure t)
-#+END_SRC
-*** [[https://github.com/josuah/drawille][drawille]]
-#+BEGIN_SRC emacs-lisp
-  (use-package drawille
-    :ensure t)
-#+END_SRC
-*** [[https://github.com/agrif/pianobar.el][pianobar]] 
-#+BEGIN_SRC emacs-lisp
-  (use-package pianobar
-    :ensure t
-    :config
-    (setq pianobar-run-in-background t)   ;
-    (setq pianobar-station "Majestic Dance Radio"))
-#+END_SRC
+    (load-file "~/.emacs.d/lisp/paradox-vars.el"))
+#+end_src
 ** Navigation 
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
 #+BEGIN_SRC emacs-lisp
@@ -1758,6 +1844,18 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
       )
 #+END_SRC
 
+*** [[https://github.com/bbatsov/projectile][projectile]]
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :ensure t
+    :config
+    (setq projectile-ignored-projects
+          '("/usr/local"
+            "~/dotfiles/config/emacs.d/lisp/Gnugol"
+            "~/dotfiles/config/emacs.d/lisp/matlab-emacs"))
+    (projectile-global-mode))
+#+END_SRC
+
 *** [[https://github.com/ralesi/ranger.el][ranger]]
 #+BEGIN_SRC emacs-lisp
   (use-package ranger
@@ -1780,19 +1878,346 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
         (call-interactively 'ido-find-file))))
     )
 #+END_SRC
-
-*** [[https://github.com/bbatsov/projectile][projectile]]
-#+BEGIN_SRC emacs-lisp
-  (use-package projectile
+** Not currently in use
+These aren't loaded by the init file.
+*** [[https://github.com/Wilfred/ag.el][ag]]
+Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]] into emacs.
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package ag
+    ;; Silver searcher
     :ensure t
+    :defer t
+    :init
+    (use-package wgrep-ag
+      ;; Guess I need this first
+      :ensure t
+      :commands (wgrep-ag-setup))
     :config
-    (setq projectile-ignored-projects
-          '("/usr/local"
-            "~/dotfiles/config/emacs.d/lisp/Gnugol"
-            "~/dotfiles/config/emacs.d/lisp/matlab-emacs"))
-    (projectile-global-mode))
+    (add-hook 'ag-mode-hook
+              (lambda ()
+                (wgrep-ag-setup)
+                (define-key ag-mode-map (kbd "n") 'evil-search-next)
+                (define-key ag-mode-map (kbd "N") 'evil-search-previous)))
+    (setq ag-executable "/usr/local/bin/ag")
+    (setq ag-highlight-search t)
+    (setq ag-reuse-buffers t)
+    (setq ag-reuse-window t))
 #+END_SRC
 
+*** [[https://github.com/auto-complete/auto-complete][auto-complete]]
+Pretty good autocompletion, but trying out [[github.com/company-mode/company-mode][company-mode]] right now.
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package auto-complete
+    ;; Supposedly not as good as company mode
+    :ensure t
+    :config
+    (global-auto-complete-mode t))
+#+END_SRC
+
+*** [[https://github.com/joaotavora/autopair][autopair]]
+It may be recommended to use =electric-pair-mode= nowadays? That's
+what I'm using anyway.
+#+Begin_src emacs-lisp :tangle no
+  (use-package autopair
+    :ensure t
+    :config
+    (autopair-global-mode))
+#+END_SRC
+
+*** [[https://github.com/tkf/emacs-jedi][emacs-jedi]]
+Integrates [[https://github.com/davidhalter/jedi][jedi]] into emacs for python completion, hasn't been working for me
+recently. Either way, this is for [[https://github.com/auto-complete/auto-complete][auto-complete]] but now I use
+[[https://github.com/syohex/emacs-company-jedi][emacs-company-jedi]].
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package jedi
+    ;; Hasn't been working smoothly recently
+    :ensure t
+    :init
+    (add-hook 'python-mode-hook 'jedi:setup)
+    (setq jedi:complete-on-dot t))
+#+END_SRC
+
+*** [[https://github.com/7696122/evil-terminal-cursor-changer][evil-terminal-cursor-changer]]
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package evil-terminal-cursor-changer
+    :ensure t
+    :config
+    (unless (display-graphic-p)
+      (require 'evil-terminal-cursor-changer)
+      (evil-terminal-cursor-changer-activate) ; or (etcc-on)
+      )
+    (setq evil-motion-state-cursor 'box)  ; █
+    (setq evil-visual-state-cursor 'box)  ; █
+    (setq evil-normal-state-cursor 'box)  ; █
+    (setq evil-insert-state-cursor 'bar)  ; ⎸
+    (setq evil-emacs-state-cursor  'bar)) ; _
+
+#+END_SRC
+
+*** [[https://github.com/Malabarba/smart-mode-line][smart-mode-line]]
+Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][spaceline]].
+
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package smart-mode-powerline-theme
+    :ensure t)
+
+  (use-package smart-mode-line
+    :ensure t
+    :config
+    (setq sml/no-confirm-load-theme t)
+    (setq sml/theme 'dark)
+    (setq rm-whitelist '(""))
+    (setq system-uses-terminfo nil)
+    (sml/setup)
+    (display-time-mode)
+    (display-time-update)
+    (fancy-battery-mode)
+    (setq fancy-battery-show-percentage t))
+#+END_SRC
+
+*** [[https://github.com/zenozeng/yafolding.el][yafolding]]
+Good code folding is hard to come by in Emacs, and isn't /that/ useful. This was
+pretty good but had some known issues.
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package yafolding
+    ;; Man, good code folding is hard to come by in emacs
+    ;; This one's ok, but there are a couple know issues that
+    ;; don't quite make it worth it, I think.
+    :ensure t
+    :config
+    (defun diego/yafolding-kbd ()
+   (local-set-key (kbd "C-c <up>") 'yafolding-hide-all)
+   (local-set-key (kbd "C-c <down>") 'yafolding-show-all)
+   (local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
+   (local-set-key (kbd "C-c <right>") 'yafolding-show-element)
+   (local-set-key [C-tab] 'yafolding-toggle-element))
+    (add-hook 'python-mode-hook 'yafolding-mode)
+    (add-hook 'python-mode-hook 'diego/yafolding-kbd))
+#+END_SRC
+
+** Org mode
+*** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
+#+BEGIN_SRC emacs-lisp
+  (use-package ob-ipython
+    :ensure t)
+#+END_SRC
+*** [[https://github.com/sabof/org-bullets][org-bullets]]
+Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
+
+*** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
+Translates Org-mode file to various other formats via Pandoc. Pretty neat. Code
+under [[Org mode][Major Configs/Org mode/Setup]]
+
+*** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
+Export org to twitter bootstrap compatible HTML. Code under Major configs/Org
+mode/Setup.
+*** [[https://github.com/snosov1/toc-org][toc-org]]
+#+BEGIN_SRC emacs-lisp
+  ;; (use-package toc-org
+  ;;   :ensure t
+  ;;   :config
+  ;;   (add-hook 'org-mode-hook 'toc-org-enable))
+#+END_SRC
+
+** Programming
+*** [[https://github.com/company-mode/company-mode][company-mode]]
+Supposedly better than autocomplete... Also using [[https://github.com/syohex/emacs-company-jedi][company-jedi]]
+#+BEGIN_SRC emacs-lisp
+  (use-package company
+    :ensure t
+    :config
+    (add-hook 'after-init-hook 'global-company-mode)
+    (use-package company-jedi
+      ;; Not sure this is actually working for me
+      :ensure t
+      :config
+      (defun my/python-mode-hook ()
+        (add-to-list 'company-backends 'company-jedi))
+      (add-hook 'python-mode-hook 'my/python-mode-hook)))
+#+END_SRC
+
+*** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
+Edit jupyter notebooks in emacs
+#+BEGIN_SRC emacs-lisp
+  (use-package ein
+    :ensure t
+    :config
+    )
+#+END_SRC
+
+*** [[https://github.com/jorgenschaefer/elpy][elpy]]
+Sets up a python editing environment. I'm not sure yet.
+#+BEGIN_SRC emacs-lisp
+  (use-package elpy
+    ;; Eh, I don't know...
+    :ensure t
+    :config
+    (elpy-enable)
+    (elpy-use-ipython)
+    (setq elpy-modules
+          '(elpy-module-company
+            elpy-module-eldoc
+            elpy-module-pyvenv
+            elpy-module-yasnippet
+            elpy-module-sane-defaults))
+    )
+#+END_SRC
+
+*** [[https://github.com/flycheck/flycheck][flycheck]]
+Syntax check for python. Pretty good.
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :ensure t)
+#+END_SRC
+*** [[https://github.com/alpaker/Fill-Column-Indicator][Fill-Column-Indicator]]
+I like a line length limit indicator in Python
+#+BEGIN_SRC emacs-lisp
+
+  (use-package fill-column-indicator
+    :ensure t
+    :init
+    (setq-default fci-rule-column 79)
+    (add-hook 'python-mode-hook 'fci-mode))
+#+END_SRC
+
+*** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]
+Neat-o
+#+BEGIN_SRC emacs-lisp
+  (use-package highlight-numbers
+    :ensure t
+    :init
+    (add-hook 'python-mode-hook 'highlight-numbers-mode))
+#+END_SRC
+
+*** [[https://github.com/tsdh/highlight-parentheses.el][highlight-parentheses]]
+Makes the parentheses my cursor is between stand out more.
+#+BEGIN_SRC emacs-lisp
+  (use-package highlight-parentheses
+    ;; Make parenthesis I'm currently in stand out
+    :defer t
+    :ensure t)
+#+END_SRC
+
+*** [[https://github.com/Fanael/highlight-defined][highlight-defined]]
+#+begin_src emacs-lisp :tangle no
+  (use-package highlight-defined
+    :ensure t)
+#+end_src
+*** [[https://github.com/vspinu/imenu-anywhere][imenu-anywhere]]
+imenu on steroids.
+#+BEGIN_SRC emacs-lisp
+  (use-package imenu-anywhere
+    ;; Imenu on steroids
+    :ensure t)
+#+END_SRC
+
+*** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
+Better parentheses coloring
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-delimiters
+    :ensure t
+    :init
+    (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
+    (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
+#+END_SRC
+
+*** [[https://github.com/naiquevin/sphinx-doc.el][sphinx-doc]]
+Sphinx doc python integration. Pretty neat, though not entirely
+complete, IMO.
+#+BEGIN_SRC emacs-lisp
+  (use-package sphinx-doc
+    :ensure t
+    :config
+    (add-hook 'python-mode-hook
+              (lambda ()
+                (require 'sphinx-doc)
+                (sphinx-doc-mode t))))
+
+#+END_SRC
+
+*** [[https://github.com/joaotavora/yasnippet][yasnippet]]
+Freakin yasnippet. It's the best.
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+    ;; SNIPPETS!!!
+    :ensure t
+    :config
+    (yas-global-mode 1)
+    ;; (define-key yas-minor-mode-map (kbd "<tab>") nil)
+    ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
+    ;; (define-key yas-minor-mode-map (kbd "SPC") 'yas-expand)
+    )
+#+END_SRC
+
+*** [[https://github.com/therockmandolinist/matlab-emacs][matlab-emacs]]
+#+BEGIN_SRC emacs-lisp
+  ;; (load-library "matlab-load")
+  (use-package matlab-load
+    :load-path "lisp/")
+#+END_SRC
+
+*** [[https://github.com/CodeFalling/nlinum-relative][nlinum-relative]]
+#+begin_src emacs-lisp :tangle no
+  (use-package nlinum-relative
+    :defer t
+    :ensure t
+    :config
+    (nlinum-relative-setup-evil)
+    (setq nlinum-relative-redisplay-delay 0))
+#+end_src
+*** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
+#+begin_src emacs-lisp
+  (use-package evil-nerd-commenter
+    :ensure t)
+#+end_src
+** Reference/search
+*** [[https://github.com/xuchunyang/devdocs.el][devdocs]]
+#+BEGIN_SRC emacs-lisp
+  (use-package devdocs
+      :ensure t)
+#+END_SRC
+
+*** [[https://github.com/myrkr/dictionary-el/blob/master/dictionary.el][dictionary]]
+Dictionary search!
+#+BEGIN_SRC emacs-lisp
+  (use-package dictionary
+    :ensure t)
+#+END_SRC
+
+*** [[https://github.com/Malabarba/emacs-google-this][emacs-google-this]]
+Google stuff from emacs.
+#+BEGIN_SRC emacs-lisp
+  (use-package google-this
+    :ensure t
+    :config
+    (google-this-mode 1))
+#+END_SRC
+
+*** [[https://github.com/dtaht/Gnugol][Gnugol]]
+An org-mode google??? Not currently working, apparently.
+#+BEGIN_SRC emacs-lisp
+  (use-package gnugol
+    :load-path "lisp/")
+#+END_SRC
+
+*** [[https://github.com/atykhonov/google-translate][google-translate]]
+#+BEGIN_SRC emacs-lisp
+  (use-package google-translate
+    :ensure t)
+#+END_SRC
+
+*** [[https://github.com/laynor/melpa-upstream-visit][melpa-upstream-visit]]
+#+BEGIN_SRC emacs-lisp
+  (use-package melpa-upstream-visit
+    :ensure t)
+#+END_SRC
+
+*** [[https://github.com/vermiculus/sx.el/][sx]]
+Stack exchange on emacs.
+#+BEGIN_SRC emacs-lisp
+  (use-package sx
+    :ensure t)
+#+END_SRC
 ** Shell utilities
 *** [[https://github.com/hiddenlotus/eshell-prompt-extras][eshell-prompt-extras]]
 #+BEGIN_SRC emacs-lisp
@@ -1803,6 +2228,11 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
     (autoload 'epe-theme-dakrone "eshell-prompt-extras")
     (setq eshell-highlight-prompt nil
           eshell-prompt-function 'epe-theme-dakrone))
+#+END_SRC
+*** [[https://github.com/xuchunyang/eshell-z][eshell-z]]
+#+BEGIN_SRC emacs-lisp
+  (use-package eshell-z
+    :ensure t)
 #+END_SRC
 
 *** [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]]
@@ -1816,12 +2246,6 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
     )
 #+END_SRC
 
-*** [[https://github.com/xuchunyang/eshell-z][eshell-z]]
-#+BEGIN_SRC emacs-lisp
-  (use-package eshell-z
-    :ensure t)
-#+END_SRC
-
 *** [[https://www.emacswiki.org/emacs/download/multi-term.el][multi-term]]
 I wanted a slightly better terminal in emacs. Not sure
 if this is the answer as I haven't used it much.
@@ -1831,16 +2255,33 @@ if this is the answer as I haven't used it much.
     :ensure t)
 #+END_SRC
 
+*** [[https://github.com/jorgenschaefer/pyvenv][pyvenv]]
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package pyvenv
+    :ensure t
+    :config
+    (defun pyvenv-initialize-eshell ()
+      "Configure eshell for use with pyvenv.el"
+      (setq eshell-modify-global-environment t)
+      (setq eshell-path-env (getenv "PATH"))
+      (defun eshell/workon (arg) (pyvenv-workon arg))
+      (defun eshell/deactivate () (pyvenv-deactivate))
+      (message "Eshell virtualenv support initialized"))
+
+    (pyvenv-initialize-eshell)
+    (advice-add 'pyvenv-workon :after 'diego/sync-venv)
+    (advice-add 'pyvenv-deactivate :after 'diego/sync-venv))
+
+
+#+END_SRC
 *** [[https://github.com/porterjamesj/virtualenvwrapper.el][virtualenvwrapper]]
 #+BEGIN_SRC emacs-lisp
   (use-package virtualenvwrapper
-    :ensure t
-    :config
-    (venv-initialize-interactive-shells)
-    (venv-initialize-eshell)
-    (setq venv-location "~/.virtualenvs"))
+      :ensure t
+      :config
+      ;; (venv-initialize-interactive-shells)
+      (setq venv-location "~/.virtualenvs"))
 #+END_SRC
-
 * Prog-mode
 Properties that apply to all programming modes.
 #+BEGIN_SRC emacs-lisp
@@ -1855,8 +2296,7 @@ Properties that apply to all programming modes.
     ;; (setq-local line-spacing 0.0)
     (setq-local calc-embedded-open-mode (concat comment-start " "))
     (setq-local calc-embedded-close-mode (concat comment-end "\n"))
-    (hl-line-mode 1)
-    )
+    (hl-line-mode 1))
   (add-hook 'prog-mode-hook 'diego/setup-prog-mode)
 #+END_SRC
 * Python
@@ -1882,10 +2322,7 @@ Properties that apply to all programming modes.
           ("in" . "∈")
           ("not in" . "∉")))
       (setq-local prettify-symbols-alist
-                  diego/python-prettify-alist)
-      ;; (setq-local calc-embedded-open-mode
-      ;;             "# ")
-      )
+                  diego/python-prettify-alist))
 
   (add-hook 'python-mode-hook 'diego/setup-python-mode)
 #+END_SRC
@@ -1900,7 +2337,7 @@ Mostly set up hs-minor-mode for emacs-lisp.
     (local-set-key (kbd "C-c <down>") 'hs-show-all)
     (local-set-key (kbd "C-c <left>") 'hs-hide-block)
     (local-set-key (kbd "C-c <right>") 'hs-show-block)
-    ;; (setq-local calc-embedded-open-mode ";; ")
+    ;; (highlight-defined-mode)
     )
 
   (add-hook 'emacs-lisp-mode-hook 'diego/setup-lisp-mode)
@@ -1936,40 +2373,4 @@ started using company-mode.
                (null popup-instances))
       (setq sanityinc/fci-mode-suppressed nil)
       (turn-on-fci-mode)))
-#+END_SRC
-
-* Highlight current line number
-This, too, is from somewhere on the internet. Possibly
-stackoverflow.
-  
-#+BEGIN_SRC emacs-lisp :tangle no
-  (defface my-linum-hl
-    `((t :inherit linum :background ,(face-background 'hl-line nil t)))
-    "Face for the current line number."
-    :group 'linum)
-
-  (defvar my-linum-format-string "%3d")
-
-  (add-hook 'linum-before-numbering-hook 'my-linum-get-format-string)
-
-  (defun my-linum-get-format-string ()
-    (let* ((width (1+ (length (number-to-string
-                               (count-lines (point-min) (point-max))))))
-           (format (concat "%" (number-to-string width) "d ")))
-      (setq my-linum-format-string format)))
-
-  (defvar my-linum-current-line-number 0)
-
-  (setq linum-format 'my-linum-format)
-
-  (defun my-linum-format (line-number)
-    (propertize (format my-linum-format-string line-number) 'face
-                (if (eq line-number my-linum-current-line-number)
-                    'my-linum-hl
-                  'linum)))
-
-  (defadvice linum-update (around my-linum-update)
-    (let ((my-linum-current-line-number (line-number-at-pos)))
-      ad-do-it))
-  (ad-activate 'linum-update)
 #+END_SRC
