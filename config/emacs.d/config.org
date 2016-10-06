@@ -691,21 +691,16 @@ Handling/storing of files, backups, autosaves.
     (dolist (mode '(ag-mode
                     flycheck-error-list-mode
                     git-rebase-mode
-                    octopress-mode
                     eshell-mode
                     calc-mode
                     calc-trail-mode
-                    Info-mode
-                    octopress-server-mode
-                    octopress-process-mode
                     sunshine-mode
                     term-mode))
       (add-to-list 'evil-emacs-state-modes mode))
 
-    (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
+        (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
     (setq evil-emacs-state-modes (delq 'Custom-mode evil-emacs-state-modes))
     (setq evil-insert-state-modes (delq 'term-mode evil-insert-state-modes))
-    (setq evil-motion-state-modes (delq 'Info-mode evil-motion-state-modes)) 
 
     ;; Use insert state in these additional modes.
     (dolist (mode '(magit-log-edit-mode))
