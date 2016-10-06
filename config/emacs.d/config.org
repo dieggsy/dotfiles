@@ -259,7 +259,7 @@ Handling/storing of files, backups, autosaves.
 #+END_SRC
 ** Parentheses
 #+BEGIN_SRC emacs-lisp
-  (electric-pair-mode)
+  ;; (electric-pair-mode)
   (show-paren-mode)
   (setq show-paren-mode ())
 #+END_SRC
@@ -1379,6 +1379,39 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
     (add-hook 'csv-mode-hook 'csv-align-fields))
 #+END_SRC
 
+*** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
+#+begin_src emacs-lisp
+    (use-package which-key
+      :ensure t
+      :config
+      (which-key-mode)
+      (which-key-declare-prefixes
+        "SPC b" "buffer"
+        "SPC f" "file"
+        "SPC w" "window"
+        "SPC s" "search"
+        "SPC n" "narrow"
+        "SPC c" "comment"
+        "SPC h" "help"
+        "SPC hd" "describe"
+        "SPC m" (symbol-name (symbol-value 'major-mode))
+        "SPC j" "jump"
+        "SPC i" "insert"
+        "SPC x" "text"
+        "SPC q" "quit"
+        "SPC t" "toggle"
+        "SPC p" "project"
+        "SPC a" "applications"
+        "SPC ag" "games")
+      (setq which-key-sort-order 'which-key-prefix-then-key-order))
+#+end_src
+*** [[https://github.com/Fuco1/smartparens][smartparens]] 
+#+begin_src emacs-lisp
+    (use-package smartparens
+      :ensure t
+      :config
+      (smartparens-mode))
+#+end_src
 *** [[https://github.com/lewang/flx][flx]]
 Fuzzy matching
 #+BEGIN_SRC emacs-lisp
