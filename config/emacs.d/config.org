@@ -476,6 +476,8 @@ Handling/storing of files, backups, autosaves.
   (evil-leader/set-key
 
     "sa"  'counsel-ag
+    "ss" 'swiper-all
+    "sm" 'swiper-multi
     "/" 'evil-search-forward))
 #+end_src
 
@@ -483,39 +485,75 @@ Handling/storing of files, backups, autosaves.
 #+begin_src emacs-lisp
   (defun diego/leader-projects ()
     (evil-leader/set-key
-
-      "pp" 'counsel-projectile-switch-project
-      "pf" 'counsel-projectile-find-file
+      "pp" 'counsel-projectile
+      "ps" 'counsel-projectile-switch-project
+      "pf" 'diego/project-find-file
       "pd" 'counsel-projectile-find-dir
       "pb" 'counsel-projectile-switch-to-buffer
       "pk" 'projectile-kill-buffers
       "po" 'projectile-multi-occur
       "pr" 'projectile-recentf
-      "pg" 'projectile-vc))
+      "pg" 'projectile-vc)
+
+    (defun diego/project-find-file ()
+      (interactive)
+      (condition-case nil
+        (counsel-git)
+        (error (projectile-find-file)))))
 #+end_src
 **** Window
 #+begin_src emacs-lisp
   (defun diego/leader-window ()
     (evil-leader/set-key
-      "wo" 'ace-window
+      "wa" 'ace-window
       "wv" 'split-window-right
       "wh" 'split-window-below
       "wt" 'diego/toggle-window-split
-      "wd" 'delete-other-windows))
+      "wd" 'delete-window
+      "wD" 'ace-delete-window
+      "wo" 'delete-other-windows
+      "wf" 'new-frame
+      "ws" 'ace-swap-window))
+#+end_src
+**** Jumping 
+#+begin_src emacs-lisp
+  (defun diego/leader-jumping ()
+    (evil-leader/set-key
+      "jc" 'avy-goto-char-2
+      "jw" 'avy-goto-word-1
+      "jl" 'avy-goto-line
+      "jf" 'find-function
+      "ji" 'imenu
+      "jI" 'imenu-anywhere
+      "jv" 'find-variable))
+#+end_src
+**** Applications
+#+begin_src emacs-lisp
+  (defun diego/leader-applications () 
+      (evil-leader/set-key
+        "ax" 'xkcd
+        "agt" 'tetris
+        "agg" 'gomoku
+        "ag2" '2048-game
+        "agd" 'dunnet
+        "ai" 'erc)
+
+)
 #+end_src
 **** Buffers & Files
 #+begin_src emacs-lisp
-  (defun diego/leader-buffers ()
+  (defun diego/leader-buffers-files ()
     (evil-leader/set-key
       "TAB" 'switch-to-previous-buffer
       "bs" 'ivy-switch-buffer
       "bk" 'kill-this-buffer
       "bK" 'kill-buffer
       "bm" 'kill-matching-buffers
-      "br" 'view-mode))
-
-  (defun diego/leader-files ()
-    (evil-leader/set-key
+      "br" 'view-mode
+      "bn" 'next-buffer
+      "be" 'erase-buffer
+      "bi" 'ibuffer
+      
       "ff" 'counsel-find-file
       "fs" 'save-buffer
       "fl" 'counsel-locate
@@ -525,6 +563,28 @@ Handling/storing of files, backups, autosaves.
       "fez" 'diego/zshrc
       "fei" 'diego/init
       "fel" 'locate-library))
+#+end_src
+**** Toggles 
+#+begin_src emacs-lisp
+  (defun diego/leader-toggle ()
+    (evil-leader/set-key
+      "tf" 'fci-mode
+      "tl" 'linum-mode
+      "tw" 'whitespace-mode
+      "ts" 'flycheck-mode
+      "tg" 'diego/github-spacing
+      "tc" 'diego/toggle-linum-fci
+      "tC" 'calc-dispatch
+      "tS" 'flyspell-mode)
+
+  (defun diego/toggle-linum-fci ()
+    (interactive)
+    (cond ((and (eq linum-mode t) (eq fci-mode t))
+           (linum-mode -1)
+           (fci-mode -1))
+          ((and (eq linum-mode nil) (eq fci-mode nil))
+           (linum-mode 1)
+           (fci-mode 1)))))
 #+end_src
 **** Editing
 #+begin_src emacs-lisp
@@ -541,7 +601,18 @@ Handling/storing of files, backups, autosaves.
         "nf" 'narrow-to-defun
         "np" 'narrow-to-page
         "nr" 'narrow-to-region
-     )) 
+        
+        "xar" 'align-regexp
+        "xdw" 'delete-trailing-whitespace
+        "xls" 'sort-lines
+        "xtc" 'transpose-chars
+        "xtw" 'transpose-words
+        "xtl" 'transpose-lines
+        "xu" 'evil-downcase
+        "xU" 'evil-upcase
+        
+        "iu" 'counsel-unicode-char
+        "iy" 'yas-insert-snippet))   
 #+end_src
 **** Help
 #+begin_src emacs-lisp
@@ -560,8 +631,7 @@ Handling/storing of files, backups, autosaves.
 
       "hk" 'which-key-show-top-level
       "hm" 'man
-      "hn" 'emacs-news
-      ))
+      "hn" 'emacs-news))
 #+end_src
 **** Quit
 #+begin_src emacs-lisp
@@ -578,36 +648,23 @@ Handling/storing of files, backups, autosaves.
     (evil-leader/set-leader "SPC")
     (setq evil-leader/in-all-states 1)
     (evil-leader/set-key
-      ",g"        'counsel-git
-      ",y"        'yas-insert-snippet
       "SPC"       'counsel-M-x
       "u"         'universal-argument
-      "7"         'async-shell-command
+      "&"         'async-shell-command
       ":"         'eval-expression
-      "C"         (lambda () (interactive) (calc-dispatch) (evil-insert-state))
-      "aa"        'align-regexp
-      "fl"        'evil-avy-goto-line   
-      "fc"        'evil-avy-goto-char-2
-      "fw"        'evil-avy-goto-word-1
       "g"         'magit-status
-      "i"         'ivy-imenu-anywhere     ;; Jump to function in buffer
-      "la"        'diego/toggle-linum-fci 
-      "lc"        'fci-mode
-      "ld"        'delete-trailing-whitespace
-      "lf"        'flycheck-mode
-      "ll"        'linum-mode
-      "lw"        'whitespace-mode        ;; Show invisible characters
       "r"         'ranger
       "y"         'counsel-yank-pop)
 
-    (diego/leader-search)
-    (diego/leader-window)
-    (diego/leader-projects)
-    (diego/leader-buffers)
-    (diego/leader-files)
+    (diego/leader-applications)
+    (diego/leader-buffers-files)
     (diego/leader-editing)
     (diego/leader-help)
+    (diego/leader-projects)
     (diego/leader-quit)
+    (diego/leader-search)
+    (diego/leader-toggle)
+    (diego/leader-window)
     (define-key universal-argument-map (kbd "SPC u") 'universal-argument-more)
     (defun magit-blame-toggle ()
       "Toggle magit-blame-mode on and off interactively."
@@ -616,14 +673,7 @@ Handling/storing of files, backups, autosaves.
           (magit-blame-quit)
         (call-interactively 'magit-blame)))
 
-    (defun diego/toggle-linum-fci ()
-      (interactive)
-      (cond ((and (eq linum-mode t) (eq fci-mode t))
-             (linum-mode -1)
-             (fci-mode -1))
-            ((and (eq linum-mode nil) (eq fci-mode nil))
-             (linum-mode 1)
-             (fci-mode 1)))))
+    )
 #+END_SRC
 *** Modes
 #+BEGIN_SRC emacs-lisp
@@ -639,7 +689,6 @@ Handling/storing of files, backups, autosaves.
                     calc-mode
                     calc-trail-mode
                     Info-mode
-                    xkcd-mode
                     octopress-server-mode
                     octopress-process-mode
                     sunshine-mode
@@ -704,8 +753,9 @@ Handling/storing of files, backups, autosaves.
     ;; (define-key evil-normal-state-map (kbd "<SPC>") 'counsel-M-x)
     ;; (define-key evil-visual-state-map (kbd "<SPC>") 'counsel-M-x)
 
+    (evil-define-key 'normal help-mode-map (kbd "q") 'Custom-buffer-done)
 
-   (evil-add-hjkl-bindings occur-mode-map 'emacs
+    (evil-add-hjkl-bindings occur-mode-map 'emacs
       (kbd "/")       'evil-search-forward
       (kbd "n")       'evil-search-next
       (kbd "N")       'evil-search-previous
@@ -714,13 +764,13 @@ Handling/storing of files, backups, autosaves.
       (kbd "C-w C-w") 'other-window)
  
     ;; Make escape quit everything, whenever possible.
-   (define-key evil-normal-state-map [escape] 'keyboard-quit)
-   (define-key evil-visual-state-map [escape] 'keyboard-quit)
-   (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-   (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-   (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-   (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-   (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit))
+    (define-key evil-normal-state-map [escape] 'keyboard-quit)
+    (define-key evil-visual-state-map [escape] 'keyboard-quit)
+    (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit))
 #+END_SRC
 *** Tiny menu
 #+BEGIN_SRC emacs-lisp
@@ -1068,19 +1118,19 @@ A really, really neat search/completion system for emacs.
     (add-to-list 'org-latex-packages-alist '("" "color"))
 
     (evil-leader/set-key-for-mode 'org-mode
-      "$"     'org-archive-subtree
-      "a"     'org-agenda
-      ",c"    'air-org-set-category-property
-      ",d"    'org-deadline
-      "ns"    'org-narrow-to-subtree
-      "p"     'org-set-property
-      ",s"    'org-schedule
-      ",t"    'air-org-set-tags
-      ",ic"   'org-table-insert-column
-      ",ir"   'org-table-insert-row
-      ",w"    'fill-paragraph
-      ",e"    'org-export-dispatch
-      ",t"    'org-babel-tangle)
+      "m$"     'org-archive-subtree
+      "ma"     'org-agenda
+      "mc"    'air-org-set-category-property
+      "md"    'org-deadline
+      "mn"    'org-narrow-to-subtree
+      "mp"     'org-set-property
+      "ms"    'org-schedule
+      "mt"    'air-org-set-tags
+      "mic"   'org-table-insert-column
+      "mir"   'org-table-insert-row
+      "mw"    'fill-paragraph
+      "me"    'org-export-dispatch
+      "mb"    'org-babel-tangle)
 
     (add-hook 'org-agenda-mode-hook
               (lambda ()
@@ -1227,7 +1277,14 @@ A really, really neat search/completion system for emacs.
 *** [[https://github.com/vibhavp/emacs-xkcd][xkcd]]
 #+BEGIN_SRC emacs-lisp
   (use-package xkcd
-    :ensure t)
+    :ensure t
+    :config
+    (evil-define-key 'normal xkcd-mode-map
+      (kbd "j") 'xkcd-next
+      (kbd "h") 'xkcd-prev
+      (kbd "k") 'xkcd-prev
+      (kbd "l") 'xkcd-next
+      (kbd "q") 'xkcd-kill-buffer))
 #+END_SRC
 
 *** zone-matrix
@@ -1539,6 +1596,13 @@ Recently used M-x commands
     (add-hook 'twittering-mode-hook #'emojify-mode))
 #+END_SRC
 
+*** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+    :ensure t
+    :config
+    (setq undo-tree-visualizer-timestamps t))
+#+END_SRC
 *** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
 #+BEGIN_SRC emacs-lisp
   (use-package yaml-mode
@@ -1547,45 +1611,6 @@ Recently used M-x commands
     (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 #+END_SRC
 
-*** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
-#+BEGIN_SRC emacs-lisp
-  (use-package undo-tree
-    :ensure t
-    :config
-    (setq undo-tree-visualizer-timestamps t))
-#+END_SRC
-*** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
-#+begin_src emacs-lisp
-    (use-package which-key
-      :ensure t
-      :config
-      (which-key-mode)
-      (which-key-declare-prefixes
-        "SPC b" "buffer"
-        "SPC f" "file"
-        "SPC w" "window"
-        "SPC s" "search"
-        "SPC n" "narrow"
-        "SPC c" "comment"
-        "SPC h" "help"
-        "SPC hd" "describe")
-      (setq which-key-sort-order 'which-key-prefix-then-key-order))
-#+end_src
-*** [[https://github.com/aspiers/smooth-scrolling][smooth-scrolling]]
-#+begin_src emacs-lisp :tangle no
-  (use-package smooth-scrolling
-    :ensure t
-    :config
-    (smooth-scrolling-mode 1)
-    (setq smooth-scroll-margin 1))
-#+end_src
-*** [[https://github.com/Malabarba/paradox][paradox]]
-#+begin_src emacs-lisp
-  (use-package paradox
-    :ensure t
-    :config
-    (load-file "~/.emacs.d/lisp/paradox-vars.el"))
-#+end_src
 ** Navigation 
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
 #+BEGIN_SRC emacs-lisp
