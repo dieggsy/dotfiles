@@ -624,6 +624,17 @@ Handling/storing of files, backups, autosaves.
         "iu" 'counsel-unicode-char
         "iy" 'yas-insert-snippet))   
 #+end_src
+**** magit
+#+begin_src emacs-lisp
+  (defun diego/leader-magit ()
+    (evil-leader/set-key
+      "gs" 'magit-status
+      "gl" 'magit-log-all
+      "gB" 'magit-blame-toggle
+      "gc" 'magit-clone
+      "ga" 'magit-submodule-add
+      "gb" 'magit-branch))
+#+end_src
 **** Help
 #+begin_src emacs-lisp
   (defun diego/leader-help ()
@@ -671,6 +682,7 @@ Handling/storing of files, backups, autosaves.
     (diego/leader-editing)
     (diego/leader-help)
     (diego/leader-jumping)
+    (diego/leader-magit)
     (diego/leader-projects)
     (diego/leader-quit)
     (diego/leader-search)
@@ -1467,7 +1479,8 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
       "SPC p"   "project"
       "SPC a"   "applications"
       "SPC ag"  "games"
-      "SPC m"   "major-mode-cmd")
+      "SPC m"   "major-mode-cmd"
+      "SPC g"   "magit")
     (setq which-key-sort-order 'which-key-key-order-alpha))
 #+end_src
 *** [[https://github.com/Fuco1/smartparens][smartparens]] 
