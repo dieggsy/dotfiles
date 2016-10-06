@@ -763,15 +763,15 @@ Handling/storing of files, backups, autosaves.
 
     (define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
     (define-key evil-normal-state-map (kbd "<up>")   'evil-previous-visual-line)
-    (define-key evil-normal-state-map (kbd "-")     'counsel-find-file)
     (define-key evil-normal-state-map (kbd "g/")    'occur-last-search)
     (define-key evil-normal-state-map (kbd "[i")    'show-first-occurrence)
     (define-key evil-insert-state-map (kbd "C-e")   'end-of-line) ;; I know...
     (define-key evil-normal-state-map (kbd "S-SPC") 'air-pop-to-org-agenda)
     ;; (define-key evil-normal-state-map (kbd "<SPC>") 'counsel-M-x)
     ;; (define-key evil-visual-state-map (kbd "<SPC>") 'counsel-M-x)
-
-    (evil-define-key 'normal help-mode-map (kbd "q") 'Custom-buffer-done)
+  
+    (evil-define-key 'normal custom-mode-map
+      "q" 'Custom-buffer-done)
 
     (evil-add-hjkl-bindings occur-mode-map 'emacs
       (kbd "/")       'evil-search-forward
