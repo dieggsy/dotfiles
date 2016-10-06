@@ -2,4 +2,4 @@
 # name: sqlite CREATE
 # key: sqlcreate
 # --
-{1:cur}.execute("CREATE TABLE ${2:table} (${3:vars})")
+${1:cur}.execute("CREATE TABLE ${2:table} (${3:vars})")
