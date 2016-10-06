@@ -1516,6 +1516,8 @@ Like git, for emacs. But cooler.
   (use-package magit
     :ensure t
     :config
+    (use-package evil-magit
+      :ensure t)
     (setq magit-diff-use-overlays nil))
 #+END_SRC
 
@@ -2108,17 +2110,23 @@ mode/Setup.
 *** [[https://github.com/company-mode/company-mode][company-mode]]
 Supposedly better than autocomplete... Also using [[https://github.com/syohex/emacs-company-jedi][company-jedi]]
 #+BEGIN_SRC emacs-lisp
-  (use-package company
-    :ensure t
-    :config
-    (add-hook 'after-init-hook 'global-company-mode)
-    (use-package company-jedi
-      ;; Not sure this is actually working for me
+    (use-package company
       :ensure t
       :config
-      (defun my/python-mode-hook ()
-        (add-to-list 'company-backends 'company-jedi))
-      (add-hook 'python-mode-hook 'my/python-mode-hook)))
+      (add-hook 'after-init-hook 'global-company-mode)
+      ;; (use-package company-jedi
+      ;;   ;; Not sure this is actually working for me
+      ;;   :ensure t
+      ;;   :config
+      ;;   (defun my/python-mode-hook ()
+      ;;     (add-to-list 'company-backends 'company-jedi))
+      ;;   (add-hook 'python-mode-hook 'my/python-mode-hook))
+      (use-package company-anaconda
+        :ensure t
+        :config
+        (defun my/python-mode-hook ()
+          (add-to-list 'comany-backends 'company-anaconda))
+        (add-hook 'python-mode-hook 'my/python-mode-hook)))
 #+END_SRC
 
 *** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
@@ -2132,7 +2140,7 @@ Edit jupyter notebooks in emacs
 
 *** [[https://github.com/jorgenschaefer/elpy][elpy]]
 Sets up a python editing environment. I'm not sure yet.
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package elpy
     ;; Eh, I don't know...
     :ensure t
@@ -2148,6 +2156,14 @@ Sets up a python editing environment. I'm not sure yet.
     )
 #+END_SRC
 
+*** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]  
+#+begin_src emacs-lisp
+  (use-package anaconda-mode
+    :ensure t
+    :config
+    (add-hook 'python-mode-hook 'anaconda-mode)
+    (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+#+end_src
 *** [[https://github.com/flycheck/flycheck][flycheck]]
 Syntax check for python. Pretty good.
 #+BEGIN_SRC emacs-lisp
