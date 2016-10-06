@@ -31,12 +31,12 @@ mailcap-fix==0.2.0
 markdown2==2.3.1
 matplotlib==1.5.3
 mccabe==0.5.2
-mercurial==3.9.1
+mercurial==3.9.2
 mock==2.0.0
 mpmath==0.19
 nose==1.3.7
 notmuch==0.22.2
-numpy==1.11.1
+numpy==1.11.2
 oauth2==1.9.0.post1
 oauth2client==3.0.0
 parsedatetime==2.1
@@ -46,7 +46,7 @@ pbr==1.10.0
 pep8==1.7.0
 pexpect==4.2.1
 pickleshare==0.7.4
-Pillow==3.3.1
+Pillow==3.4.1
 plac==0.9.6
 powerline-status==2.5
 praw==3.5.0
@@ -67,7 +67,7 @@ PySocks==1.5.7
 pytesseract==0.1.6
 python-dateutil==2.5.3
 python-gflags==3.0.7
-pytz==2016.6.1
+pytz==2016.7
 PyYAML==3.12
 readline==6.2.4.1
 requests==2.11.1
