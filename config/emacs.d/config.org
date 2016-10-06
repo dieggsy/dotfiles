@@ -563,6 +563,14 @@ Handling/storing of files, backups, autosaves.
       "hn" 'emacs-news
       ))
 #+end_src
+**** Quit
+#+begin_src emacs-lisp
+  (defun diego/leader-quit ()
+    (evil-leader/set-key
+      "qq" 'save-buffers-kill-emacs
+      "qr" 'restart-emacs
+      "qz" 'delete-frame))
+#+end_src
 **** Global
 #+BEGIN_SRC emacs-lisp
   (defun diego/config-evil-leader ()
@@ -599,6 +607,7 @@ Handling/storing of files, backups, autosaves.
     (diego/leader-files)
     (diego/leader-editing)
     (diego/leader-help)
+    (diego/leader-quit)
     (define-key universal-argument-map (kbd "SPC u") 'universal-argument-more)
     (defun magit-blame-toggle ()
       "Toggle magit-blame-mode on and off interactively."
