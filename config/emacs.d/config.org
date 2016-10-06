@@ -484,7 +484,6 @@ Handling/storing of files, backups, autosaves.
     "sm" 'swiper-multi
     "/" 'evil-search-forward))
 #+end_src
-
 **** Projects
 #+begin_src emacs-lisp
   (defun diego/leader-projects ()
@@ -507,17 +506,26 @@ Handling/storing of files, backups, autosaves.
 #+end_src
 **** Window
 #+begin_src emacs-lisp
-  (defun diego/leader-window ()
-    (evil-leader/set-key
-      "wa" 'ace-window
-      "wv" 'split-window-right
-      "wh" 'split-window-below
-      "wt" 'diego/toggle-window-split
-      "wd" 'delete-window
-      "wD" 'ace-delete-window
-      "wo" 'delete-other-windows
-      "wf" 'new-frame
-      "ws" 'ace-swap-window))
+    (defun diego/leader-window ()
+      (evil-leader/set-key
+        "wa" 'ace-window
+        "wv" 'diego/split-vert-focus
+        "wh" 'diego/split-horz-focus
+        "wt" 'diego/toggle-window-split
+        "wD" 'delete-window
+        "wd" 'ace-delete-window
+        "wo" 'delete-other-windows
+        "wf" 'new-frame
+        "ws" 'ace-swap-window)
+
+      (defun diego/split-vert-focus ()
+        (interactive)
+        (split-window-right)
+        (other-window 1))
+      (defun diego/split-horz-focus ()
+        (interactive)
+        (split-window-below)
+        (other-window 1)))
 #+end_src
 **** Jumping 
 #+begin_src emacs-lisp
@@ -564,7 +572,8 @@ Handling/storing of files, backups, autosaves.
       "bn" 'next-buffer
       "be" 'erase-buffer
       "bi" 'ibuffer
-      
+      "bc" 'clone-indirect-buffer-other-window
+    
       "ff" 'counsel-find-file
       "fs" 'save-buffer
       "fl" 'counsel-locate
@@ -674,7 +683,6 @@ Handling/storing of files, backups, autosaves.
       "u"         'universal-argument
       "&"         'async-shell-command
       ":"         'eval-expression
-      "g"         'magit-status
       "y"         'counsel-yank-pop)
 
     (diego/leader-applications)
@@ -689,14 +697,13 @@ Handling/storing of files, backups, autosaves.
     (diego/leader-toggle)
     (diego/leader-window)
     (define-key universal-argument-map (kbd "SPC u") 'universal-argument-more)
+
     (defun magit-blame-toggle ()
       "Toggle magit-blame-mode on and off interactively."
       (interactive)
       (if (and (boundp 'magit-blame-mode) magit-blame-mode)
           (magit-blame-quit)
-        (call-interactively 'magit-blame)))
-
-    )
+        (call-interactively 'magit-blame))))
 #+END_SRC
 *** Modes
 #+BEGIN_SRC emacs-lisp
@@ -738,9 +745,7 @@ Handling/storing of files, backups, autosaves.
               (not (org-mark-element))
             t))
 
-    (advice-add 'evil-visual-line :before-while #'evil-visual-line--mark-org-element-when-heading)
-
-    )
+    (advice-add 'evil-visual-line :before-while #'evil-visual-line--mark-org-element-when-heading))
 #+END_SRC
 *** Appearance 
 #+BEGIN_SRC emacs-lisp
@@ -752,8 +757,7 @@ Handling/storing of files, backups, autosaves.
     (setq evil-motion-state-tag " MOTION ")
     (setq evil-visual-state-tag " VISUAL ")
     (setq evil-emacs-state-tag  " EMACS ")
-    (setq evil-replace-state-tag " REPLACE ")
-   )
+    (setq evil-replace-state-tag " REPLACE "))
 #+END_SRC
 *** Bindings
 #+BEGIN_SRC emacs-lisp
@@ -1248,6 +1252,7 @@ A really, really neat search/completion system for emacs.
   (use-package drawille
     :ensure t)
 #+END_SRC
+
 *** [[https://github.com/johanvts/emacs-fireplace/][fireplace]]
 #+BEGIN_SRC emacs-lisp
   (use-package fireplace
@@ -1392,6 +1397,33 @@ For nice battery display info.
     (setq fancy-battery-show-percentage t)
     (fancy-battery-update))
 #+END_SRC
+*** [[https://github.com/nashamri/spacemacs-theme][spacemacs-theme]]
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package spacemacs-theme
+    :ensure t)
+#+END_SRC
+
+*** zenburn-theme
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package zenburn-theme
+    :ensure t
+    :config
+    (zenburn-with-color-variables
+     (custom-theme-set-faces
+      'zenburn
+      '(ivy-current-match ((t nil))))))
+#+END_SRC
+
+*** darktooth-theme 
+#+begin_src emacs-lisp :tangle no
+  (use-package darktooth-theme
+    :ensure t
+    :config
+    (custom-theme-set-faces
+     'darktooth
+     '(ivy-current-match ((t nil)))
+     '(ivy-virtual ((t (:inherit ivy-subdir))))))
+#+end_src
 *** [[https://github.com/TheBB/spaceline][spaceline]]
 I was looking for something with the nice look and simplicity of
 [[https://github.com/itchyny/lightline.vim][this]]. Spaceline does ok.
@@ -1420,28 +1452,6 @@ I was looking for something with the nice look and simplicity of
     (spaceline-compile))
 
 #+END_SRC
-*** [[https://github.com/nashamri/spacemacs-theme][spacemacs-theme]]
-#+BEGIN_SRC emacs-lisp :tangle no
-  (use-package spacemacs-theme
-    :ensure t)
-#+END_SRC
-
-*** zenburn-theme
-#+BEGIN_SRC emacs-lisp :tangle no
-  (use-package zenburn-theme
-    :ensure t
-    :config
-    (zenburn-with-color-variables
-     (custom-theme-set-faces
-      'zenburn
-      '(ivy-current-match ((t nil))))))
-#+END_SRC
-
-*** darktooth-theme 
-#+begin_src emacs-lisp :tangle no
-  (use-package darktooth-theme
-    :ensure t)
-#+end_src
 
 ** Misc utilities
 *** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
