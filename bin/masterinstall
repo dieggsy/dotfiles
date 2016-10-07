@@ -16,6 +16,7 @@ brew tap homebrew/boneyard
 brew tap homebrew/completions
 brew tap homebrew/core
 brew tap homebrew/dupes
+brew tap homebrew/emacs
 brew tap homebrew/python
 brew tap homebrew/science
 brew tap homebrew/services
@@ -236,6 +237,7 @@ brew install theora
 brew install tmux
 brew install todo-txt
 brew install tokyo-cabinet
+brew install trash
 brew install unar
 brew install urlview
 brew install vim
