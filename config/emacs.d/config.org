@@ -563,26 +563,31 @@ Handling/storing of files, backups, autosaves.
 #+begin_src emacs-lisp
   (defun diego/leader-buffers-files ()
     (evil-leader/set-key
-      "TAB" 'switch-to-previous-buffer
-      "bs" 'ivy-switch-buffer
-      "bk" 'kill-this-buffer
-      "bK" 'kill-buffer
-      "bm" 'kill-matching-buffers
-      "br" 'view-mode
-      "bn" 'next-buffer
-      "be" 'erase-buffer
-      "bi" 'ibuffer
-      "bc" 'clone-indirect-buffer-other-window
-    
-      "ff" 'counsel-find-file
-      "fs" 'save-buffer
-      "fl" 'counsel-locate
-      "fr" 'rename-this-file-and-buffer
-      "fD" 'delete-thisfile
-      "fec" 'diego/config
-      "fez" 'diego/zshrc
-      "fei" 'diego/init
-      "fel" 'locate-library))
+      "TAB"   'switch-to-previous-buffer
+      "bs"    'ivy-switch-buffer
+      "bk"    'kill-this-buffer
+      "bK"    'kill-buffer
+      "bm"    'kill-matching-buffers
+      "br"    'view-mode
+      "bn"    'next-buffer
+      "be"    'erase-buffer
+      "bi"    'ibuffer
+      "bc"    'clone-indirect-buffer-other-window
+
+      "ff"    'counsel-find-file
+      "fc"    'diego/copy-file
+      "fs"    'save-buffer
+      "fl"    'counsel-locate
+      "fr"    'rename-this-file-and-buffer
+      "fD"    'move-file-to-trash
+      "fec"   'diego/config
+      "fez"   'diego/zshrc
+      "fei"   'diego/init
+      "fel"   'locate-library)
+
+    (defun diego/copy-file ()
+      (interactive)
+      (call-interactively 'write-file)))
 #+end_src
 **** Toggles 
 #+begin_src emacs-lisp
@@ -609,29 +614,93 @@ Handling/storing of files, backups, autosaves.
 #+begin_src emacs-lisp
   (defun diego/leader-editing ()
       (evil-leader/set-key
-        ";" 'evilnc-comment-operator
-        "cl" 'evilnc-comment-or-uncomment-lines
-        "cL" 'evilnc-invert-comment-line-by-line
-        "cp" 'evilnc-comment-or-uncomment-paragraphs
-        "ct" 'evilnc-comment-or-uncomment-to-the-line
-        "cy" 'evilnc-copy-and-comment-lines
-      
-        "nn" 'air-narrow-dwim
-        "nf" 'narrow-to-defun
-        "np" 'narrow-to-page
-        "nr" 'narrow-to-region
-        
+        ";"   'evilnc-comment-operator
+        "cl"  'evilnc-comment-or-uncomment-lines
+        "cL"  'evilnc-invert-comment-line-by-line
+        "cp"  'evilnc-comment-or-uncomment-paragraphs
+        "ct"  'evilnc-comment-or-uncomment-to-the-line
+        "cy"  'evilnc-copy-and-comment-lines
+
+        "nn"  'air-narrow-dwim
+        "nf"  'narrow-to-defun
+        "np"  'narrow-to-page
+        "nr"  'narrow-to-region
+
         "xar" 'align-regexp
+        "xa&" 'diego/align-repeat-ampersand
+        "xa(" 'diego/align-repeat-left-paren
+        "xa)" 'diego/align-repeat-right-paren
+        "xa," 'diego/align-repeat-comma
+        "xa." 'diego/align-repeat-decimal
+        "xa:" 'diego/align-repeat-colon
+        "xa;" 'diego/align-repeat-semicolon
+        "xa=" 'diego/align-repeat-equal
+        "xaa" 'align
+        "xac" 'align-current
+        "xam" 'diego/align-repeat-math-oper
+        "xar" 'diego/align-repeat
+        "xa|" 'diego/align-repeat-bar
+        "xa'" 'diego/align-repeat-single-quote
+
         "xdw" 'delete-trailing-whitespace
         "xls" 'sort-lines
         "xtc" 'transpose-chars
         "xtw" 'transpose-words
         "xtl" 'transpose-lines
-        "xu" 'evil-downcase
-        "xU" 'evil-upcase
-        
-        "iu" 'counsel-unicode-char
-        "iy" 'yas-insert-snippet))   
+        "xu"  'evil-downcase
+        "xU"  'evil-upcase
+
+        "iu"  'counsel-unicode-char
+        "iy"  'yas-insert-snippet)
+
+      ;; Copy of spacemacs/align-repeat
+      (defun diego/align-repeat (start end regexp &optional justify-right after)
+        "Repeat alignment with respect to the given regular expression.
+  If JUSTIFY-RIGHT is non nil justify to the right instead of the
+  left. If AFTER is non-nil, add whitespace to the left instead of
+  the right."
+        (interactive "r\nsAlign regexp: ")
+        (let* ((ws-regexp (if (string-empty-p regexp)
+                              "\\(\\s-+\\)"
+                            "\\(\\s-*\\)"))
+               (complete-regexp (if after
+                                    (concat regexp ws-regexp)
+                                  (concat ws-regexp regexp)))
+               (group (if justify-right -1 1)))
+          (message "%S" complete-regexp)
+          (align-regexp start end complete-regexp group 1 t)))
+
+
+      (defmacro diego|create-align-repeat-x (name regexp &optional justify-right default-after)
+        (let ((new-func (intern (concat "diego/align-repeat-" name))))
+          `(defun ,new-func (start end switch)
+             (interactive "r\nP")
+             (let ((after (not (eq (if switch t nil) (if ,default-after t nil)))))
+               (diego/align-repeat start end ,regexp ,justify-right after)))))
+
+      (diego|create-align-repeat-x "comma" "," nil t)
+      (diego|create-align-repeat-x "semicolon" ";" nil t)
+      (diego|create-align-repeat-x "colon" ":" nil t)
+      (diego|create-align-repeat-x "equal" "=")
+      (diego|create-align-repeat-x "math-oper" "[+\\-*/]")
+      (diego|create-align-repeat-x "ampersand" "&")
+      (diego|create-align-repeat-x "bar" "|")
+      (diego|create-align-repeat-x "left-paren" "(")
+      (diego|create-align-repeat-x "right-paren" ")" t)
+      (diego|create-align-repeat-x "backslash" "\\\\")
+      (diego|create-align-repeat-x "single-quote" "'")
+
+      (defun diego/align-repeat-decimal (start end)
+        "Align a table of numbers on decimal points and dollar signs (both optional)"
+        (interactive "r")
+        (require 'align)
+        (align-region start end nil
+                      '((nil (regexp . "\\([\t ]*\\)\\$?\\([\t ]+[0-9]+\\)\\.?")
+                             (repeat . t)
+                             (group 1 2)
+                             (spacing 1 1)
+                             (justify nil t)))
+                      nil)))   
 #+end_src
 **** magit
 #+begin_src emacs-lisp
@@ -670,7 +739,7 @@ Handling/storing of files, backups, autosaves.
     (evil-leader/set-key
       "qq" 'save-buffers-kill-emacs
       "qr" 'restart-emacs
-      "qz" 'delete-frame))
+      "qf" 'delete-frame))
 #+end_src
 **** Global
 #+BEGIN_SRC emacs-lisp
