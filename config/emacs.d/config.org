@@ -1719,6 +1719,15 @@ Recently used M-x commands
     (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 #+END_SRC
 
+*** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
+#+begin_src emacs-lisp
+  (use-package osx-trash
+    :ensure t
+    :config
+    (when (eq system-type 'darwin)
+      (osx-trash-setup))
+    (setq delete-by-moving-to-trash t))
+#+end_src
 ** Navigation 
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
 #+BEGIN_SRC emacs-lisp
