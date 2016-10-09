@@ -21,6 +21,8 @@ brew tap homebrew/python
 brew tap homebrew/science
 brew tap homebrew/services
 brew tap homebrew/versions
+brew tap homebrew/x11
+brew tap koekeishiya/kwm
 brew tap mopidy/mopidy
 brew tap neovim/neovim
 brew tap sgeb/mutt
@@ -119,6 +121,7 @@ brew install jpeg
 brew install jq
 brew install jrnl
 brew install json-c
+brew install kwm
 brew install lame
 brew install leptonica
 brew install less
@@ -239,6 +242,7 @@ brew install todo-txt
 brew install tokyo-cabinet
 brew install trash
 brew install unar
+brew install unrar
 brew install urlview
 brew install vim
 brew install vimpager
