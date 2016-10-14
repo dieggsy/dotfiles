@@ -1,3 +1,4 @@
+// -*- mode: conf -*-
 /*
 This is a sample config for Kwm
 
@@ -130,7 +131,7 @@ kwmc rule owner="Emacs"  properties={role="AXStandardWindow"}
 // Enable border for focused window
 kwmc config border focused on
 kwmc config border focused size 2
-kwmc config border focused color 0x88FDF4C1
+kwmc config border focused color 0xFFBDAE93
 kwmc config border focused radius 6
 
 // Enable border for marked window
@@ -186,10 +187,10 @@ kwmc bindsym cmd+alt+ctrl-j window -mk south wrap
 kwmc bindsym cmd+alt+ctrl-k window -mk north wrap
 
 // Give Focus To Window
-kwmc bindsym cmd+alt-h window -f west
-kwmc bindsym cmd+alt-l window -f east
-kwmc bindsym cmd+alt-j window -f south
-kwmc bindsym cmd+alt-k window -f north
+kwmc bindsym cmd+ctrl-h window -f west
+kwmc bindsym cmd+ctrl-l window -f east
+kwmc bindsym cmd+ctrl-j window -f south
+kwmc bindsym cmd+ctrl-k window -f north
 
 kwmc bindsym cmd+alt-n window -fm prev
 kwmc bindsym cmd+alt-m window -fm next
@@ -200,11 +201,11 @@ kwmc bindsym cmd+alt-2 display -f 1
 kwmc bindsym cmd+alt-3 display -f 2
 
 // Swap Focused Window
-/* kwmc bindsym ctrl+alt-h window -s west
-kwmc bindsym ctrl+alt-j window -s south
-kwmc bindsym ctrl+alt-k window -s north
-kwmc bindsym ctrl+alt-l window -s east
-kwmc bindsym ctrl+alt-m window -s mark */
+kwmc bindsym alt+cmd-h window -s west
+kwmc bindsym alt+cmd-j window -s south
+kwmc bindsym alt+cmd-k window -s north
+kwmc bindsym alt+cmd-l window -s east
+kwmc bindsym alt+cmd-m window -s mark
 
 // Pseudo containers
 kwmc bindsym cmd+ctrl+alt-p tree -pseudo create
