@@ -3,7 +3,7 @@ export HOSTNAME=`hostname` # Gets rid of that annyoing question mark on top
 
 # Welcome
 echo "Welcome, diego"
-export PS1="\[\e[91m\]\W\[\e[m\] \u\[\e[32m\]\\$\[\e[m\] "
+export PS1="\[\e[91m\]\w\[\e[m\] \u\[\e[32m\]\\$\[\e[m\] "
 
 eval $(thefuck --alias) #helps with fuckups
 
