@@ -2,8 +2,6 @@
 
 # Path to your oh-my-zsh installation.
 export ZSH=~/.oh-my-zsh
-export ZPLUG_HOME=/usr/local/opt/zplug
-source $ZPLUG_HOME/init.zsh
 
 # Set name of the theme to load.
 # Look in ~/.oh-my-zsh/themes/
@@ -23,7 +21,7 @@ HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable auto-setting terminal title.
 # DISABLE_AUTO_TITLE="true"
-
+#
 # Uncomment the following line to enable command auto-correction.
 # ENABLE_CORRECTION="true"
 
@@ -81,13 +79,13 @@ local venv_info='$(virtualenv_info)'
 NEWLINE=$'\n'
 
 if [ -z "$INSIDE_EMACS" ];then
-	PROMPT="╭─%{$FG[040]%}%n%{$reset_color%} %{$FG[239]%}at%{$reset_color%} %{$FG[033]%}$(box_name)%{$reset_color%} %{$FG[239]%}in%{$reset_color%} %{$terminfo[bold]$FG[009]%}${current_dir}%{$reset_color%}${git_info}${venv_info}${NEWLINE}╰─${prompt_char}%{$reset_color%} "
+	PROMPT="╭─%{$FG[010]%}%n%{$reset_color%} %{$FG[239]%}at%{$reset_color%} %{$FG[012]%}$(box_name)%{$reset_color%} %{$FG[239]%}in%{$reset_color%} %{$terminfo[bold]$FG[009]%}${current_dir}%{$reset_color%}${git_info}${venv_info}${NEWLINE}╰─${prompt_char}%{$reset_color%} "
 	ZSH_THEME_GIT_PROMPT_PREFIX=" %{$FG[239]%}on%{$reset_color%} %{$fg[255]%}"
 	ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
 	ZSH_THEME_GIT_PROMPT_DIRTY="%{$FG[202]%}✘"
 	ZSH_THEME_GIT_PROMPT_CLEAN="%{$FG[040]%}✔"
 else
-	# PROMPT="╭─%{$FG[032]%}%n%{$reset_color%} %{$FG[239]%}at%{$reset_color%} %{$FG[036]%}$(box_name)%{$reset_color%} %{$FG[239]%}in%{$reset_color%} %{$terminfo[bold]$FG[035]%}${current_dir}%{$reset_color%}${git_info}${venv_info}${NEWLINE}╰─${prompt_char}%{$reset_color%} "
+	# PROMPT="╭─%{$FG[032]%}%n%{$reset_color%} %{$FG[239]%}at%{$reset_color%} %{$FG[006]%}$(box_name)%{$reset_color%} %{$FG[239]%}in%{$reset_color%} %{$terminfo[bold]$FG[035]%}${current_dir}%{$reset_color%}${git_info}${venv_info}${NEWLINE}╰─${prompt_char}%{$reset_color%} "
 	PROMPT="$FG[035]%}${current_dir}%{$reset_color%} >> "
 	ZSH_THEME_GIT_PROMPT_PREFIX=" %{$FG[239]%}on%{$reset_color%} %{$fg[255]%}"
 	ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
@@ -106,7 +104,7 @@ eval $(thefuck --alias)
 if [[ -n $SSH_CONNECTION ]]; then
 	export EDITOR='vim'
 else
-	export EDITOR="emacsclient -t" # Set emacs as default editor
+	export EDITOR="emacsclient" # Set emacs as default editor
 	export ALTERNATE_EDITOR="vim"
 fi
 
@@ -122,7 +120,6 @@ fi
 # For a full list of active aliases, run `alias`.
 alias apps="cd /Applications"
 alias cask="brew cask"
-alias clc="clear"
 alias config="$EDITOR ~/dotfiles/config/emacs.d/config.org"
 alias def='dict -d gcide'
 alias desk="cd /Users/diego/Desktop"
@@ -130,8 +127,8 @@ alias docs="cd /Users/diego/Documents/"
 alias down="cd /Users/diego/Downloads/"
 alias drive="cd /Users/diego/Google\ Drive"
 alias drop="cd /Users/diego/Dropbox\ \(MIT\)"
-alias edit="emacsclient -t"
-alias editv="emacsclient -c"
+alias edit="emacsclient"
+alias editv="emacsclient -t"
 alias f='find . -iname'
 alias fd='find . -type d -iname'
 alias ff='find . -type f -iname'
@@ -187,29 +184,29 @@ pythonexec(){
     touch "$*"
     echo '#!/usr/local/bin/python3' | cat - "$*" > temp && mv temp "$*"
     sudo chmod a+x "$*"
-    emacsclient -t "$*"
+    emacsclient "$*"
 }
 
 # Create/edit python script
 pythonscript(){
     touch "$*"
     echo '#!/usr/local/bin/python3' | cat - "$*" > temp && mv temp "$*"
-    emacsclient -t "$*"
+    emacsclient "$*"
 }
 
 # View only mode in emacs
 ev() {
-    emacsclient -t --eval "(find-file-read-only \"$1\")"
+    emacsclient --eval "(find-file-read-only \"$1\")"
 }
 
 # Edit Python 3 files
 bam(){
-    emacsclient -t "$1" --eval '(and (split-window-right) (windmove-right))' -f ipython --eval '(windmove-left)'
+    emacsclient "$1" --eval '(and (split-window-right) (windmove-right))' -f ipython --eval '(windmove-left)'
 }
 
 # Edit Python 2 files
 ham(){
-    emacsclient -t "$1" --eval '(and (split-window-right) (windmove-right))' -f ipython2 --eval '(windmove-left)'
+    emacsclient "$1" --eval '(and (split-window-right) (windmove-right))' -f ipython2 --eval '(windmove-left)'
 }
 
 
@@ -224,7 +221,7 @@ ocrpdf(){
 }
 
 psetzip (){
-	zip -r "$1".zip $1 -x '*.git*' -x '*.ipynb_checkpoints*' -x '*.pyc*' -x '*.DS_Store*' -x '*~*' 
+	zip -r "$1".zip $1 -x '*.git*' -x '*.ipynb_checkpoints*' -x '*.pyc*' -x '*.DS_Store*' -x '*~*' -x "*__pycache__*" 
 }
 
 calc(){
@@ -232,12 +229,17 @@ calc(){
 }
 export WWW_HOME='http://google.com'
 
-# I'm not really sure why I'm using the explicit path here...
 source "/usr/local/bin/virtualenvwrapper.sh"
 export PYTHONSTARTUP=$HOME/.pythonrc.py
 
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ZSH_HIGHLIGHT_STYLES[globbing]='fg=208'
+ZSH_HIGHLIGHT_STYLES[command]='fg=010'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=010'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=010'
+ZSH_HIGHLIGHT_STYLES[function]='fg=010'
+
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 export RTV_EDITOR='vim'
 export RTV_URLVIEWER='urlview'
