@@ -236,6 +236,20 @@ Get rid of menu bars, scroll bars, startup screens, etc.
   ;; (add-hook 'minibuffer-setup-hook (lambda () (show-paren-mode -1)))
 #+END_SRC
 ** Fonts
+*Current:* Currently I'm using the wonderful [[http://input.fontbureau.com/][input]] font. If, like me, you're
+coming from something more like SauceCodePro, Consolas, or even just Menlo,
+this font may at first seem a little "blocky," but it's so wonderfully
+customizable (~Customize your Download~ section under ~Download~ in the above link)
+that you should really give it a try. My current settings are:
+ - Download a custom four-style family
+| Regular     | Input Mono Light         |
+| Italic      | Input Mono Light Italic  |
+| Bold        | Input Mono Medium        |
+| Bold Italic | Input Mono Medium Italic |
+ - ~Source Code Pro style~
+   * second option for ~a~ and ~g~
+ - 1.4x Line spacing
+
 *Note:* Check out [[http://mbauman.net/geek/2009/03/15/minor-truetype-font-editing-on-a-mac/][this post]] for advice on fixing the Consolas font
 on os x. This helps with the modeline text vertical alignments and makes it
 consistent with other fonts. Last updated 2011, last successfully tested
