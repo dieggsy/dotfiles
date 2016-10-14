@@ -987,19 +987,24 @@ Handling/storing of files, backups, autosaves.
     (setq evil-want-C-u-scroll t)
     :config
     ;; (setq evil-move-cursor-back nil)
-    (use-package evil-leader
-      :ensure t
-      :config
-      (global-evil-leader-mode)
-      (diego/config-evil-leader))
-
-    (use-package evil-indent-textobject
-      :ensure t)
     (add-hook 'evil-mode-hook 'diego/evil-modes)
     (add-hook 'evil-mode-hook 'diego/evil-appearance)
     (add-hook 'evil-mode-hook 'diego/evil-bindings)
-    (add-hook 'evil-mode-hook 'diego/evil-tiny-menu)
-    (evil-mode 1))
+    (add-hook 'evil-mode-hook 'diego/evil-tiny-menu))
+
+
+  (use-package evil-leader
+    :ensure t
+    :after evil
+    :config
+    (global-evil-leader-mode)
+    (diego/config-evil-leader))
+
+  (use-package evil-indent-textobject
+    :ensure t
+    :after evil)
+
+  (evil-mode 1)
 #+END_SRC
 
 ** [[https://github.com/abo-abo/swiper][ivy]]
@@ -1260,7 +1265,7 @@ A really, really neat search/completion system for emacs.
            ("C-c f t" . org-tags-view)
            ("C-c f i" . air-org-goto-custom-id))
     :config
-    (org-reload)
+    (org-reload)  ; Not sure I should have to do this...
     (setq org-agenda-text-search-extra-files '(agenda-archives))
     (setq org-agenda-files '("~/Dropbox (MIT)/org/"))
     (setq org-todo-keywords
@@ -1363,25 +1368,7 @@ A really, really neat search/completion system for emacs.
                 (setq fill-column 79)
                 (auto-fill-mode 1)
                 ;; (flyspell-mode)
-                (org-indent-mode)
-                )))
-
-  (use-package org-bullets
-    :ensure t
-    :config
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-    (setq org-bullets-bullet-list '("•")))
-
-  (use-package ox-twbs
-    :ensure t)
-  (use-package ox-pandoc
-    :ensure t
-    :config
-    ;; default options for all output formats
-    (setq org-pandoc-options '((standalone . t)))
-    ;; cancel above settings only for 'docx' format
-    (setq org-pandoc-options-for-docx '((standalone . nil))))
-  ;;; init-org.el ends here"]")))))
+                (org-indent-mode))))
 #+END_SRC
 * Dem packages
 ** Amusements
@@ -2308,19 +2295,39 @@ pretty good but had some known issues.
     :ensure t)
 #+END_SRC
 *** [[https://github.com/sabof/org-bullets][org-bullets]]
-Use nice bullets in org-mode. Code under Major configs/Org mode/Setup.
-
+Use nice bullets in org-mode.
+#+BEGIN_SRC emacs-lisp
+  (use-package org-bullets
+    :ensure t
+    :after org
+    :config
+    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+    (setq org-bullets-bullet-list '("•")))
+#+END_SRC
 *** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
-Translates Org-mode file to various other formats via Pandoc. Pretty neat. Code
-under [[Org mode][Major Configs/Org mode/Setup]]
-
+Translates Org-mode file to various other formats via Pandoc. Pretty neat.
+#+begin_src emacs-lisp
+  (use-package ox-pandoc
+    :ensure t
+    :after org
+    :config
+    ;; default options for all output formats
+    (setq org-pandoc-options '((standalone . t)))
+    ;; cancel above settings only for 'docx' format
+    (setq org-pandoc-options-for-docx '((standalone . nil))))
+#+end_src
 *** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
-Export org to twitter bootstrap compatible HTML. Code under Major configs/Org
-mode/Setup.
+Export org to twitter bootstrap compatible HTML.
+#+begin_src emacs-lisp
+  (use-package ox-twbs
+    :ensure t
+    :after org)
+#+end_src
 *** [[https://github.com/snosov1/toc-org][toc-org]]
 #+BEGIN_SRC emacs-lisp
   (use-package toc-org
     :ensure t
+    :after org
     :config
     (add-hook 'org-mode-hook 'toc-org-enable))
 #+END_SRC
