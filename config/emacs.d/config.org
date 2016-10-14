@@ -242,10 +242,12 @@ this font may at first seem a little "blocky," but it's so wonderfully
 customizable (~Customize your Download~ section under ~Download~ in the above link)
 that you should really give it a try. My current settings are:
  - Download a custom four-style family
+
 | Regular     | Input Mono Light         |
 | Italic      | Input Mono Light Italic  |
 | Bold        | Input Mono Medium        |
 | Bold Italic | Input Mono Medium Italic |
+
  - ~Source Code Pro style~
    * second option for ~a~ and ~g~
  - 1.4x Line spacing
