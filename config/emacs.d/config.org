@@ -1,5 +1,5 @@
 #+TITLE:Emacs Init File!
-#+STARTUP: hideblocks
+
 * Intro
 This is my emacs init file. =init.el= loads the elisp code from here. It's pretty
 cool that I can write it in org mode, because easy organization and
@@ -16,7 +16,7 @@ Minimal info about meself, I guess.
 #+END_SRC
 
 * Init Setup
-  Setup up cool stuff like use-package, and stuff.
+Setup up cool stuff like use-package, and stuff.
 
 ** Misc init
 Setup load directories, mostly.
@@ -30,6 +30,7 @@ Setup load directories, mostly.
   (let ((default-directory  "~/.emacs.d/lisp/"))
     (normal-top-level-add-subdirs-to-load-path))
   (add-to-list 'exec-path "/usr/local/bin")
+  (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/")
 #+END_SRC
 
 ** Init utils
@@ -208,7 +209,6 @@ Set package archives/repos and setup use-package and all that.
 Some nice global settings to have. Does away with most uneccessary visuals to
 make emacs behave more like terminal (ish), sets up smooth scrolling, other
 such goodies.
-
 ** Visual things
 Get rid of menu bars, scroll bars, startup screens, etc.
 #+BEGIN_SRC emacs-lisp
@@ -241,8 +241,15 @@ on os x. This helps with the modeline text vertical alignments and makes it
 consistent with other fonts. Last updated 2011, last successfully tested
 09/2016 (by myself).
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'default-frame-alist '(font . "Consolas-11"))
-  (set-face-attribute 'default t :font "Consolas-11")
+  ;; (add-to-list 'default-frame-alist '(font . "Consolas-11"))
+  ;; (set-face-attribute 'default t :font "Consolas-11")
+
+  ;; (add-to-list 'default-frame-alist '(font . "SauceCodePro Nerd Font-11"))
+  ;; (set-face-attribute 'default t :font "SauceCodePro Nerd Font-11")
+
+  (add-to-list 'default-frame-alist '(font . "Input-10"))
+  (set-face-attribute 'default t :font "Input-10")
+
 
 #+END_SRC
 ** File handling
@@ -255,7 +262,7 @@ Handling/storing of files, backups, autosaves.
   (global-auto-revert-mode t)
   (save-place-mode 1)
   (desktop-save-mode 1)
-
+  (set-frame-parameter (selected-frame) 'buffer-predicate #'buffer-file-name)
 #+END_SRC
 ** Parentheses
 #+BEGIN_SRC emacs-lisp
@@ -289,38 +296,38 @@ Handling/storing of files, backups, autosaves.
 ** Global functions
 *** "Stolen"
 #+BEGIN_SRC emacs-lisp
-    (defun diego/pop-to-file (file &optional split)
-      "Visit a FILE, either in the current window or a SPLIT."
-      (if split
-          (find-file-other-window file)
-        (find-file file)))
+  (defun diego/pop-to-file (file &optional split)
+    "Visit a FILE, either in the current window or a SPLIT."
+    (if split
+        (find-file-other-window file)
+      (find-file file)))
 
-    (defun occur-last-search ()
-       "Run `occur` with the last evil search term."
-       (interactive)
-       ;; Use the appropriate search term based on regexp setting.
-       (let ((term (if evil-regexp-search
-                       (car-safe regexp-search-ring)
-                     (car-safe search-ring))))
-         ;; If a search term exists, execute `occur` on it.
-         (if (> (length term) 0)
-             (occur term)
-           (message "No term to search for."))))
+  (defun occur-last-search ()
+    "Run `occur` with the last evil search term."
+    (interactive)
+    ;; Use the appropriate search term based on regexp setting.
+    (let ((term (if evil-regexp-search
+                    (car-safe regexp-search-ring)
+                  (car-safe search-ring))))
+      ;; If a search term exists, execute `occur` on it.
+      (if (> (length term) 0)
+          (occur term)
+        (message "No term to search for."))))
 
-    (defun show-first-occurrence ()
-      "Display the location of the word at point's first occurrence in the buffer."
-      (interactive)
-      (save-excursion
-        (let ((search-word (thing-at-point 'symbol t)))
-          (goto-char 1)
-          (re-search-forward search-word)
-          (message (concat
-                    "L" (number-to-string (line-number-at-pos)) ": "
-                    (replace-regexp-in-string
-                     "[ \t\n]*\\'"
-                     ""
-                     (thing-at-point 'line t)
-                     ))))))
+  (defun show-first-occurrence ()
+    "Display the location of the word at point's first occurrence in the buffer."
+    (interactive)
+    (save-excursion
+      (let ((search-word (thing-at-point 'symbol t)))
+        (goto-char 1)
+        (re-search-forward search-word)
+        (message (concat
+                  "L" (number-to-string (line-number-at-pos)) ": "
+                  (replace-regexp-in-string
+                   "[ \t\n]*\\'"
+                   ""
+                   (thing-at-point 'line t)
+                   ))))))
 
   (defun zone-choose (pgm)
     "Choose a PGM to run for `zone'."
@@ -334,73 +341,85 @@ Handling/storing of files, backups, autosaves.
       (zone)))
 
   (defun switch-to-previous-buffer ()
-        "Switch to previously open buffer.
+    "Switch to previously open buffer.
     Repeated invocations toggle between the two most recently open buffers."
-        (interactive)
-          (switch-to-buffer (other-buffer (current-buffer) 1)))
+    (interactive)
+    (switch-to-buffer (other-buffer (current-buffer) 1)))
 
     ;;; Helpers for narrowing.
-    (defun narrow-and-set-normal ()
-      "Narrow to the region and, if in a visual mode, set normal mode."
-      (interactive)
-      (narrow-to-region (region-beginning) (region-end))
-      (if (string= evil-state "visual")
-          (progn (evil-normal-state nil)
-                 (evil-goto-first-line))))
+  (defun narrow-and-set-normal ()
+    "Narrow to the region and, if in a visual mode, set normal mode."
+    (interactive)
+    (narrow-to-region (region-beginning) (region-end))
+    (if (string= evil-state "visual")
+        (progn (evil-normal-state nil)
+               (evil-goto-first-line))))
 
-    (defun narrow-to-region-or-subtree ()
-      "Narrow to a region, if set, otherwise to an Org subtree, if present."
-      (interactive)
-      (if (and mark-active
-               (not (= (region-beginning) (region-end))))
-          (narrow-and-set-normal)
-        (if (derived-mode-p 'org-mode)
-            (org-narrow-to-subtree))))
+  (defun narrow-to-region-or-subtree ()
+    "Narrow to a region, if set, otherwise to an Org subtree, if present."
+    (interactive)
+    (if (and mark-active
+             (not (= (region-beginning) (region-end))))
+        (narrow-and-set-normal)
+      (if (derived-mode-p 'org-mode)
+          (org-narrow-to-subtree))))
 
-    (defun air-narrow-dwim ()
-        "Narrow to a thing or widen based on context.
+  (defun air-narrow-dwim ()
+    "Narrow to a thing or widen based on context.
     Attempts to follow the Do What I Mean philosophy."
-        (interactive)
-        (if (buffer-narrowed-p)
-            (widen)
-          (narrow-to-region-or-subtree)))
+    (interactive)
+    (if (buffer-narrowed-p)
+        (widen)
+      (narrow-to-region-or-subtree)))
 
 
-    (defun diego/toggle-window-split ()
-      (interactive)
-      (if (= (count-windows) 2)
-          (let* ((this-win-buffer (window-buffer))
-                 (next-win-buffer (window-buffer (next-window)))
-                 (this-win-edges (window-edges (selected-window)))
-                 (next-win-edges (window-edges (next-window)))
-                 (this-win-2nd (not (and (<= (car this-win-edges)
-                                             (car next-win-edges))
-                                         (<= (cadr this-win-edges)
-                                             (cadr next-win-edges)))))
-                 (splitter
-                  (if (= (car this-win-edges)
-                         (car (window-edges (next-window))))
-                      'split-window-horizontally
-                    'split-window-vertically)))
-            (delete-other-windows)
-            (let ((first-win (selected-window)))
-              (funcall splitter)
-              (if this-win-2nd (other-window 1))
-              (set-window-buffer (selected-window) this-win-buffer)
-              (set-window-buffer (next-window) next-win-buffer)
-              (select-window first-win)
-              (if this-win-2nd (other-window 1))))))
+  (defun diego/toggle-window-split ()
+    (interactive)
+    (if (= (count-windows) 2)
+        (let* ((this-win-buffer (window-buffer))
+               (next-win-buffer (window-buffer (next-window)))
+               (this-win-edges (window-edges (selected-window)))
+               (next-win-edges (window-edges (next-window)))
+               (this-win-2nd (not (and (<= (car this-win-edges)
+                                           (car next-win-edges))
+                                       (<= (cadr this-win-edges)
+                                           (cadr next-win-edges)))))
+               (splitter
+                (if (= (car this-win-edges)
+                       (car (window-edges (next-window))))
+                    'split-window-horizontally
+                  'split-window-vertically)))
+          (delete-other-windows)
+          (let ((first-win (selected-window)))
+            (funcall splitter)
+            (if this-win-2nd (other-window 1))
+            (set-window-buffer (selected-window) this-win-buffer)
+            (set-window-buffer (next-window) next-win-buffer)
+            (select-window first-win)
+            (if this-win-2nd (other-window 1))))))
 
-    (defun minibuffer-keyboard-quit ()
-      "Abort recursive edit.
+  (defun minibuffer-keyboard-quit ()
+    "Abort recursive edit.
       In Delete Selection mode, if the mark is active, just deactivate it;
       then it takes a second \\[keyboard-quit] to abort the minibuffer."
-      (interactive)
-      (if (and delete-selection-mode transient-mark-mode mark-active)
-          (setq deactivate-mark  t)
-        (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
-        (abort-recursive-edit)))
+    (interactive)
+    (if (and delete-selection-mode transient-mark-mode mark-active)
+        (setq deactivate-mark  t)
+      (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+      (abort-recursive-edit)))
+
+
+  (defun diego/fill-or-unfill ()
+    "Like `fill-paragraph', but unfill if used twice."
+    (interactive)
+    (let ((fill-column
+           (if (eq last-command 'diego/fill-or-unfill)
+               (progn (setq this-command nil)
+                      (point-max))
+             fill-column)))
+      (call-interactively #'fill-paragraph)))
   
+   (global-set-key [remap fill-paragraph] #'diego/fill-or-unfill)
 #+END_SRC
 
 *** "Original"
@@ -460,6 +479,18 @@ Handling/storing of files, backups, autosaves.
                          (concat "~/MIT 2016-2017/" x "/notes/" (format-time-string "%Y-%m-%d_lecture.org" ))))
               :caller 'diego/lecture-notes))
 
+    (defun diego/recitation-notes ()
+      "Prompt for a class and create a lecture notes file 
+    matching format %Y-%m-%d_lecture.org in class/notes subdirectory."
+      (interactive)
+      (ivy-read "class: " '("16.410"
+                            "16.621"
+                            "Ethics")
+                :action (lambda (x)
+                          (find-file
+                           (concat "~/MIT 2016-2017/" x "/notes/" (format-time-string "%Y-%m-%d_recitation.org" ))))
+                :caller 'diego/recitation-notes))
+
   (defun diego/sync-venv (&rest args)
     (if (boundp 'pyvenv-virtual-env-name)
         (setq venv-current-name pyvenv-virtual-env-name)
@@ -467,7 +498,12 @@ Handling/storing of files, backups, autosaves.
 
 #+END_SRC
 
-** What? 
+*** Macros?
+#+BEGIN_SRC emacs-lisp
+  (fset 'diego/insert-footnote
+     [?  ?/ ?\{ ?\[ ?0 ?- ?9 ?\] ?+ ?\} return ?a ?f ?n ?: escape ?  ?x ?p ?r ?\[])
+#+END_SRC
+** What?
 #+begin_src emacs-lisp
 (load-file "~/.emacs.d/lisp/nothing-to-see-here.el")
 #+end_src
@@ -515,7 +551,7 @@ Handling/storing of files, backups, autosaves.
         "wD" 'delete-window
         "wd" 'ace-delete-window
         "wo" 'delete-other-windows
-        "wf" 'new-frame
+        "wf" 'make-frame
         "ws" 'ace-swap-window)
 
       (defun diego/split-vert-focus ()
@@ -642,6 +678,7 @@ Handling/storing of files, backups, autosaves.
         "xa|" 'diego/align-repeat-bar
         "xa'" 'diego/align-repeat-single-quote
 
+        "xi"  'indent-region
         "xdw" 'delete-trailing-whitespace
         "xls" 'sort-lines
         "xtc" 'transpose-chars
@@ -649,7 +686,14 @@ Handling/storing of files, backups, autosaves.
         "xtl" 'transpose-lines
         "xu"  'evil-downcase
         "xU"  'evil-upcase
+        "xq"  'diego/fill-or-unfill
 
+        "xpr" 'sp-rewrap-sexp
+        "xpsf" 'sp-forward-slurp-sexp
+        "xpsb" 'sp-backward-slurp-sexp
+        "xpbb" 'sp-backward-barf-sexp
+        "xpbf" 'sp-forward-barf-sexp
+        
         "iu"  'counsel-unicode-char
         "iy"  'yas-insert-snippet)
 
@@ -741,6 +785,35 @@ Handling/storing of files, backups, autosaves.
       "qr" 'restart-emacs
       "qf" 'delete-frame))
 #+end_src
+**** Modes
+#+BEGIN_SRC emacs-lisp 
+  (defun diego/leader-modes ()
+    ;; emacs-lisp
+    (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
+      (evil-leader/set-key-for-mode mode
+        "meb" 'eval-buffer
+        "mef" 'eval-defun
+        "mer" 'eval-region
+        "mel" 'eval-last-sexp))
+
+    ;; org-mode
+    (evil-leader/set-key-for-mode 'org-mode
+      "m$"     'org-archive-subtree
+      "ma"     'org-agenda
+      "mc"    'air-org-set-category-property
+      "md"    'org-deadline
+      "mn"    'org-narrow-to-subtree
+      "mp"     'org-set-property
+      "ms"    'org-schedule
+      "mt"    'air-org-set-tags
+      "mic"   'org-table-insert-column
+      "mir"   'org-table-insert-row
+      "mil"   'org-insert-link
+      "mw"    'fill-paragraph
+      "me"    'org-export-dispatch
+      "mb"    'org-babel-tangle
+      "mz"    'org-emphasize))
+#+END_SRC
 **** Global
 #+BEGIN_SRC emacs-lisp
   (defun diego/config-evil-leader ()
@@ -760,6 +833,7 @@ Handling/storing of files, backups, autosaves.
     (diego/leader-help)
     (diego/leader-jumping)
     (diego/leader-magit)
+    (diego/leader-modes)
     (diego/leader-projects)
     (diego/leader-quit)
     (diego/leader-search)
@@ -790,7 +864,7 @@ Handling/storing of files, backups, autosaves.
                     term-mode))
       (add-to-list 'evil-emacs-state-modes mode))
 
-        (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
+    (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
     (setq evil-emacs-state-modes (delq 'Custom-mode evil-emacs-state-modes))
     (setq evil-insert-state-modes (delq 'term-mode evil-insert-state-modes))
 
@@ -965,12 +1039,14 @@ A really, really neat search/completion system for emacs.
             (counsel-descbinds . ivy--regex-plus)
             (swiper . ivy--regex-plus)
             (swiper-all . ivy--regex-plus)
-            (t . ivy--regex-fuzzy)))
+            ;; (t . ivy--regex-fuzzy)
+            (t . ivy--regex-plus)))
     ;;Don't start searches with '^' by default
     (setq ivy-initial-inputs-alist nil)
     ;; (setq ivy-flip t) ; Flip the direction
     (setq ivy-switch-buffer-faces-alist
           '((dired-mode . ivy-subdir)))
+
     (defalias 'ag 'counsel-ag)
     (defalias 'locate 'counsel-locate))
 #+END_SRC
@@ -1156,7 +1232,6 @@ A really, really neat search/completion system for emacs.
   ;;; Code:
   (use-package org
     :ensure t
-    ;; :defer t
     :commands (org-capture)
     :bind (("C-c c" .   air-org-task-capture)
            ("C-c l" .   org-store-link)
@@ -1169,14 +1244,14 @@ A really, really neat search/completion system for emacs.
            ("C-c f t" . org-tags-view)
            ("C-c f i" . air-org-goto-custom-id))
     :config
-    ;; (org-reload)
+    (org-reload)
     (setq org-agenda-text-search-extra-files '(agenda-archives))
     (setq org-agenda-files '("~/Dropbox (MIT)/org/"))
     (setq org-todo-keywords
           '((sequence "☛ TODO" "○ IN-PROGRESS" "⚑ WAITING" "|" "✓ DONE" "✗ CANCELED")))
-    (setq org-blank-before-new-entry '((heading . t)
-                                       ;; (plain-list-item . t)
-                                       ))
+    ;; (setq org-blank-before-new-entry '((heading . t)
+    ;;                                    ;; (plain-list-item . t)
+    ;;                                    ))
     (setq org-capture-templates
           '(("a" "My TODO task format." entry
              (file "todo.org")
@@ -1205,24 +1280,12 @@ A really, really neat search/completion system for emacs.
     ;; (setq org-highlight-latex-and-related '(latex script entities))
 
     (setq org-latex-listings t)
+    (setq org-src-fontify-natively t)
+    (setq org-src-tab-acts-natively t)
+    (setq org-fontify-quote-and-verse-blocks t)
     (add-to-list 'org-latex-packages-alist '("" "listings"))
     (add-to-list 'org-latex-packages-alist '("" "color"))
 
-    (evil-leader/set-key-for-mode 'org-mode
-      "m$"     'org-archive-subtree
-      "ma"     'org-agenda
-      "mc"    'air-org-set-category-property
-      "md"    'org-deadline
-      "mn"    'org-narrow-to-subtree
-      "mp"     'org-set-property
-      "ms"    'org-schedule
-      "mt"    'air-org-set-tags
-      "mic"   'org-table-insert-column
-      "mir"   'org-table-insert-row
-      "mil"   'org-insert-link
-      "mw"    'fill-paragraph
-      "me"    'org-export-dispatch
-      "mb"    'org-babel-tangle)
 
     (add-hook 'org-agenda-mode-hook
               (lambda ()
@@ -1263,8 +1326,6 @@ A really, really neat search/completion system for emacs.
                 (define-key org-mode-map (kbd "C-c ,")   'org-time-stamp-inactive)
                 (define-key org-mode-map (kbd "C-|")     'air-org-insert-scheduled-heading)
                 (define-key org-mode-map (kbd "C-\\")    'air-org-insert-heading)
-                (define-key org-mode-map (kbd "C-<")     'org-metaleft)
-                (define-key org-mode-map (kbd "C->")     'org-metaright)
                 (define-key org-mode-map (kbd "S-r")     'org-revert-all-org-buffers)
                 (define-key org-mode-map (kbd "C-c C-l") (tiny-menu-run-item "org-links"))
 
@@ -1272,14 +1333,6 @@ A really, really neat search/completion system for emacs.
                 ;; <M-up> correctly. an iTerm issue?
                 ;; (define-key org-mode-map (kbd "M-S-<up>") 'org-metaup)
                 ;; (define-key org-mode-map (kbd "M-S-<down>") 'org-metadown)
-
-                (evil-define-key 'normal org-mode-map (kbd "TAB") 'org-cycle)
-                (evil-define-key 'normal org-mode-map ">>"        'org-metaright)
-                (evil-define-key 'normal org-mode-map "<<"        'org-metaleft)
-                (evil-define-key 'normal org-mode-map (kbd "C-S-l") 'org-shiftright)
-                (evil-define-key 'normal org-mode-map (kbd "C-S-h") 'org-shiftleft)
-                (evil-define-key 'insert org-mode-map (kbd "C-S-l") 'org-shiftright)
-                (evil-define-key 'insert org-mode-map (kbd "C-S-h") 'org-shiftleft)
 
                 ;; Navigation
                 (evil-define-key 'normal org-mode-map (kbd "]n") 'org-forward-heading-same-level)
@@ -1325,12 +1378,14 @@ A really, really neat search/completion system for emacs.
 *** [[https://github.com/johanvts/emacs-fireplace/][fireplace]]
 #+BEGIN_SRC emacs-lisp
   (use-package fireplace
+    :commands fireplace
     :ensure t)
 #+END_SRC
 
 *** [[https://melpa.org/#/highlight-tail][highlight-tail]]
 #+BEGIN_SRC emacs-lisp
   (use-package highlight-tail
+    :commands highlight-tail-mode
     :ensure t)
 #+END_SRC
 
@@ -1338,6 +1393,7 @@ A really, really neat search/completion system for emacs.
 #+BEGIN_SRC emacs-lisp :tangle no
   (use-package nyan-mode
     :ensure t
+    :commands nyan-mode
     :config
     (nyan-mode))
 #+END_SRC
@@ -1345,6 +1401,7 @@ A really, really neat search/completion system for emacs.
 #+BEGIN_SRC emacs-lisp
   (use-package pianobar
     :ensure t
+    :commands pianobar
     :config
     (setq pianobar-run-in-background t)   ;
     (setq pianobar-station "Majestic Dance Radio"))
@@ -1352,12 +1409,14 @@ A really, really neat search/completion system for emacs.
 *** [[https://github.com/rbanffy/selectric-mode][selectric-mode]]
 #+BEGIN_SRC emacs-lisp
   (use-package selectric-mode
+    :commands selectric-mode
     :ensure t)
 #+END_SRC
 *** [[https://github.com/hagleitn/speed-type][speed-type]]
 #+BEGIN_SRC emacs-lisp
   (use-package speed-type
     :ensure t
+    :commands speed-type-text
     :config
     (setq speed-type--gb-url-format
           "http://www.gutenberg.org/cache/epub/%d/pg%d.txt"))
@@ -1365,12 +1424,14 @@ A really, really neat search/completion system for emacs.
 *** [[https://gitlab.com/iankelling/spray][spray]]
 #+BEGIN_SRC emacs-lisp
   (use-package spray
+    :commands spray-mode
     :ensure t)
 #+END_SRC
 *** [[https://github.com/vibhavp/emacs-xkcd][xkcd]]
 #+BEGIN_SRC emacs-lisp
   (use-package xkcd
     :ensure t
+    :commands xkcd
     :config
     (evil-define-key 'normal xkcd-mode-map
       (kbd "j") 'xkcd-next
@@ -1385,6 +1446,7 @@ Eh, why not.
 #+BEGIN_SRC emacs-lisp
   (use-package zone-matrix
     :ensure t
+    :defer 5
     :config
     (eval-after-load "zone"
       '(unless (memq 'zone-matrix (append zone-programs nil))
@@ -1417,7 +1479,7 @@ Eh, why not.
 #+END_SRC
 
 *** doom-themes
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package doom-themes
     :ensure t
     :config
@@ -1484,14 +1546,9 @@ For nice battery display info.
 #+END_SRC
 
 *** darktooth-theme 
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
   (use-package darktooth-theme
-    :ensure t
-    :config
-    (custom-theme-set-faces
-     'darktooth
-     '(ivy-current-match ((t nil)))
-     '(ivy-virtual ((t (:inherit ivy-subdir))))))
+    :load-path "lisp/")
 #+end_src
 *** [[https://github.com/TheBB/spaceline][spaceline]]
 I was looking for something with the nice look and simplicity of
@@ -1538,6 +1595,7 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
 #+BEGIN_SRC emacs-lisp
   (use-package csv-mode
     ;; I'll give this a shot
+    :commands csv-mode
     :ensure t
     :config
     (add-hook 'csv-mode-hook 'csv-align-fields))
@@ -1549,34 +1607,47 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
     :ensure t
     :config
     (which-key-mode)
-    (which-key-declare-prefixes
-      "SPC"     "root"
-      "SPC b"   "buffer"
-      "SPC f"   "file"
-      "SPC w"   "window"
-      "SPC s"   "search"
-      "SPC n"   "narrow"
-      "SPC c"   "comment"
-      "SPC h"   "help"
-      "SPC hd"  "describe"
-      "SPC j"   "jump"
-      "SPC i"   "insert"
-      "SPC x"   "text"
-      "SPC q"   "quit"
-      "SPC t"   "toggle"
-      "SPC p"   "project"
+    (which-key-add-key-based-replacements
       "SPC a"   "applications"
       "SPC ag"  "games"
+      "SPC b"   "buffer"
+      "SPC c"   "comment"
+      "SPC f"   "file"
+      "SPC fe"  "emacs/config"
+      "SPC g"   "magit"
+      "SPC h"   "help"
+      "SPC hd"  "describe"
+      "SPC i"   "insert"
+      "SPC j"   "jump"
       "SPC m"   "major-mode-cmd"
-      "SPC g"   "magit")
+      "SPC n"   "narrow"
+      "SPC p"   "project"
+      "SPC q"   "quit"
+      "SPC s"   "search"
+      "SPC t"   "toggle"
+      "SPC w"   "window"
+      "SPC x"   "text"
+      "SPC xa"  "align"
+      "SPC xd"  "delete"
+      "SPC xl"  "lines"
+      "SPC xt"  "transpose"
+      "SPC"     "root")
+
+    (which-key-add-major-mode-key-based-replacements 'org-mode
+      "SPC mi" "insert")
+
+    (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
+      (which-key-add-major-mode-key-based-replacements mode
+        "SPC me" "eval"))
+
     (setq which-key-sort-order 'which-key-key-order-alpha))
 #+end_src
 *** [[https://github.com/Fuco1/smartparens][smartparens]] 
 #+begin_src emacs-lisp
-    (use-package smartparens
-      :ensure t
-      :config
-      (smartparens-global-mode))
+  (use-package smartparens
+    :ensure t
+    :config
+    (smartparens-global-mode))
 #+end_src
 *** [[https://github.com/lewang/flx][flx]]
 Fuzzy matching
@@ -1589,22 +1660,19 @@ Fuzzy matching
 Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted/flyspell-correct][d12frosted/flyspell-correct]]
 #+BEGIN_SRC emacs-lisp
   (use-package flyspell
+    :commands flyspell-mode
     :ensure t
     :config
     (use-package flyspell-correct-ivy
       :ensure t))
 #+END_SRC
 
-*** [[https://github.com/cadadr/forecast.el][forecast]] 
-#+BEGIN_SRC emacs-lisp
-  (use-package forecast
-    :ensure t)
-#+END_SRC
 *** [[https://www.emacswiki.org/emacs/KeyChord][keychord]]
 Neat way to bind commands to key-stroke combinations
 #+BEGIN_SRC emacs-lisp
   (use-package key-chord
     :ensure t
+    :defer 5
     :config
     (key-chord-mode 1)
     (key-chord-define evil-insert-state-map "jk" 'evil-normal-state))
@@ -1615,6 +1683,7 @@ Like git, for emacs. But cooler.
 #+BEGIN_SRC emacs-lisp
   (use-package magit
     :ensure t
+    :commands magit-status
     :config
     (use-package evil-magit
       :ensure t)
@@ -1655,6 +1724,12 @@ Generates markdown previews? Not sure if working.
     :ensure t)
 #+END_SRC
 
+*** [[https://github.com/larstvei/Focus][focus]] 
+#+BEGIN_SRC emacs-lisp
+  (use-package focus
+    :commands focus-mode
+    :ensure t)
+#+END_SRC
 *** [[https://github.com/emacsfodder/move-text][move-text]]
 #+BEGIN_SRC emacs-lisp
   (use-package move-text
@@ -1664,19 +1739,31 @@ Generates markdown previews? Not sure if working.
 Email!
 #+BEGIN_SRC emacs-lisp
   (use-package notmuch
+    :commands notmuch
     :ensure t)
 #+END_SRC
-
+*** [[https://github.com/tjim/nevermore][nevermore]]
+#+BEGIN_SRC emacs-lisp
+  (use-package nm
+    :ensure t
+    :commands nm)
+#+END_SRC
 *** [[https://github.com/Malabarba/paradox][paradox]]
 #+begin_src emacs-lisp
   (use-package paradox
     :ensure t
-    :config)
+    :commands paradox-list-packages
+    :config
+    (evil-define-key 'normal paradox-menu-mode-map "q" 'paradox-quit-and-close)
+    (evil-define-key 'normal paradox-menu-mode-map "fr" 'paradox-filter-regexp)
+    (evil-define-key 'normal paradox-menu-mode-map "fu" 'paradox-filter-upgrades)
+    (evil-define-key 'normal paradox-menu-mode-map "fs" 'paradox-filter-stars)
+    (evil-define-key 'normal parodox-menu-mode-map "x" 'paradox-menu-execute))
 #+end_src
 *** [[https://github.com/emacsfodder/pbcopy.el][pbcopy]]
 Allow yanking and pasting with osx clipboard in terminal Emacs. Might want to
 look into [[https://melpa.org/#/osx-clipboard][osx-clipboard]] instead.
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package pbcopy
     :config
     (turn-on-pbcopy))
@@ -1686,6 +1773,7 @@ look into [[https://melpa.org/#/osx-clipboard][osx-clipboard]] instead.
 SUPER nifty.
 #+BEGIN_SRC emacs-lisp
   (use-package restart-emacs
+    :defer 5
     :ensure t)
 #+END_SRC
 
@@ -1700,6 +1788,7 @@ Recently used M-x commands
 #+BEGIN_SRC emacs-lisp
   (use-package sunshine
     :ensure t
+    :commands (sunshine-forecast sunshine-quick-forecast) 
     :config
     (setq sunshine-location "02139,USA"))
 #+END_SRC
@@ -1707,6 +1796,7 @@ Recently used M-x commands
 #+BEGIN_SRC emacs-lisp
   (use-package twittering-mode
     :ensure t
+    :commands twit
     :config
     (setq twittering-icon-mode t)
     (setq twittering-convert-fix-size 24)
@@ -1717,6 +1807,7 @@ Recently used M-x commands
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
     :ensure t
+    :commands undo-tree-visualize
     :config
     (setq undo-tree-visualizer-timestamps t))
 #+END_SRC
@@ -1724,6 +1815,7 @@ Recently used M-x commands
 #+BEGIN_SRC emacs-lisp
   (use-package yaml-mode
     :ensure t
+    :defer 5
     :config
     (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 #+END_SRC
@@ -1742,6 +1834,7 @@ Recently used M-x commands
 #+BEGIN_SRC emacs-lisp
   (use-package ace-window
     :ensure t
+    :commands (ace-window ace-delete-window ace-swap-window) 
     :bind ("M-p" . ace-window)
     :config
     (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
@@ -1751,7 +1844,8 @@ Recently used M-x commands
 Jump to things in Emacs tree-style
 #+BEGIN_SRC emacs-lisp
   (use-package avy
-    :ensure t)
+    :ensure t
+    :commands (avy-goto-char-2 avy-goto-word-1 avy-goto-line))
 #+END_SRC
 
 *** [[https://github.com/emacs-helm/helm][Helm]]
@@ -1762,7 +1856,7 @@ out.
 
 For making stuff look nicer, see ~M-x customize-group RET helm-faces~, and
 check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido-like-guide]].
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package helm
       :ensure t
       :init
@@ -2043,6 +2137,7 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :ensure t
+    :commands (projectile-find-file projectile-switch-project projectile-switch-to-buffer)
     :config
     (setq projectile-ignored-projects
           '("/usr/local"
@@ -2208,10 +2303,10 @@ Export org to twitter bootstrap compatible HTML. Code under Major configs/Org
 mode/Setup.
 *** [[https://github.com/snosov1/toc-org][toc-org]]
 #+BEGIN_SRC emacs-lisp
-  ;; (use-package toc-org
-  ;;   :ensure t
-  ;;   :config
-  ;;   (add-hook 'org-mode-hook 'toc-org-enable))
+  (use-package toc-org
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook 'toc-org-enable))
 #+END_SRC
 
 ** Programming
@@ -2233,7 +2328,7 @@ Supposedly better than autocomplete... Also using [[https://github.com/syohex/em
         :ensure t
         :config
         (defun my/python-mode-hook ()
-          (add-to-list 'comany-backends 'company-anaconda))
+          (add-to-list 'company-backends 'company-anaconda))
         (add-hook 'python-mode-hook 'my/python-mode-hook)))
 #+END_SRC
 
@@ -2242,8 +2337,8 @@ Edit jupyter notebooks in emacs
 #+BEGIN_SRC emacs-lisp
   (use-package ein
     :ensure t
-    :config
-    )
+    :commands ein:notebooklist-open
+    :config)
 #+END_SRC
 
 *** [[https://github.com/jorgenschaefer/elpy][elpy]]
@@ -2260,8 +2355,7 @@ Sets up a python editing environment. I'm not sure yet.
             elpy-module-eldoc
             elpy-module-pyvenv
             elpy-module-yasnippet
-            elpy-module-sane-defaults))
-    )
+            elpy-module-sane-defaults)))
 #+END_SRC
 
 *** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]  
@@ -2276,6 +2370,7 @@ Sets up a python editing environment. I'm not sure yet.
 Syntax check for python. Pretty good.
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
+    :commands flycheck-mode
     :ensure t)
 #+END_SRC
 *** [[https://github.com/alpaker/Fill-Column-Indicator][Fill-Column-Indicator]]
@@ -2317,6 +2412,7 @@ imenu on steroids.
 #+BEGIN_SRC emacs-lisp
   (use-package imenu-anywhere
     ;; Imenu on steroids
+    :commands imenu-anywhere
     :ensure t)
 #+END_SRC
 
@@ -2336,6 +2432,7 @@ complete, IMO.
 #+BEGIN_SRC emacs-lisp
   (use-package sphinx-doc
     :ensure t
+    :commands sphinx-doc-mode
     :config
     (add-hook 'python-mode-hook
               (lambda ()
@@ -2350,6 +2447,7 @@ Freakin yasnippet. It's the best.
   (use-package yasnippet
     ;; SNIPPETS!!!
     :ensure t
+    :defer 5
     :config
     (yas-global-mode 1)
     ;; (define-key yas-minor-mode-map (kbd "<tab>") nil)
@@ -2383,13 +2481,7 @@ Freakin yasnippet. It's the best.
 *** [[https://github.com/xuchunyang/devdocs.el][devdocs]]
 #+BEGIN_SRC emacs-lisp
   (use-package devdocs
-      :ensure t)
-#+END_SRC
-
-*** [[https://github.com/myrkr/dictionary-el/blob/master/dictionary.el][dictionary]]
-Dictionary search!
-#+BEGIN_SRC emacs-lisp
-  (use-package dictionary
+    :commands devdocs-search
     :ensure t)
 #+END_SRC
 
@@ -2398,14 +2490,22 @@ Google stuff from emacs.
 #+BEGIN_SRC emacs-lisp
   (use-package google-this
     :ensure t
+    :commands google-this
     :config
     (google-this-mode 1))
 #+END_SRC
 
+*** [[https://github.com/abo-abo/define-word][define-ward]]
+#+BEGIN_SRC emacs-lisp
+  (use-package define-word
+    :commands define-word
+    :ensure t)
+#+END_SRC
 *** [[https://github.com/dtaht/Gnugol][Gnugol]]
 An org-mode google??? Not currently working, apparently.
 #+BEGIN_SRC emacs-lisp
   (use-package gnugol
+    :commands gnugol 
     :load-path "lisp/")
 #+END_SRC
 
@@ -2418,6 +2518,7 @@ An org-mode google??? Not currently working, apparently.
 *** [[https://github.com/laynor/melpa-upstream-visit][melpa-upstream-visit]]
 #+BEGIN_SRC emacs-lisp
   (use-package melpa-upstream-visit
+    :commands muv
     :ensure t)
 #+END_SRC
 
@@ -2425,6 +2526,7 @@ An org-mode google??? Not currently working, apparently.
 Stack exchange on emacs.
 #+BEGIN_SRC emacs-lisp
   (use-package sx
+    :defer 5
     :ensure t)
 #+END_SRC
 ** Shell utilities
@@ -2432,6 +2534,7 @@ Stack exchange on emacs.
 #+BEGIN_SRC emacs-lisp
   (use-package eshell-prompt-extras
     :ensure t
+    :defer 5
     :after 'virtualenvwrapper
     :config
     (autoload 'epe-theme-dakrone "eshell-prompt-extras")
@@ -2441,6 +2544,7 @@ Stack exchange on emacs.
 *** [[https://github.com/xuchunyang/eshell-z][eshell-z]]
 #+BEGIN_SRC emacs-lisp
   (use-package eshell-z
+    :defer 5
     :ensure t)
 #+END_SRC
 
@@ -2539,7 +2643,6 @@ Properties that apply to all programming modes.
 * Emacs-Lisp
 Mostly set up hs-minor-mode for emacs-lisp.
 #+BEGIN_SRC emacs-lisp
-  ;; Emacs-lisp stuff
   (defun diego/setup-lisp-mode ()
     (hs-minor-mode)
     (local-set-key (kbd "C-c <up>") 'hs-hide-all)
@@ -2565,7 +2668,6 @@ This is from somewhere on the internet, and may no longer be relevant since I
 started using company-mode.
 
 #+BEGIN_SRC emacs-lisp
-  ;; Disable fci mode when autocomplete popup menu happens
   (defun sanityinc/fci-enabled-p ()
       (and (boundp 'fci-mode) fci-mode))
   (defvar sanityinc/fci-mode-suppressed nil)

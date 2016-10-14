@@ -32,3 +32,4 @@
 /config/emacs.d/lisp/sensitive-vars.el
 /config/emacs.d/lisp/nothing-to-see-here.el
 /config/emacs.d/anaconda-mode
+/config/gnus.el
