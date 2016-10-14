@@ -118,7 +118,7 @@ python-Levenshtein==0.12.0
 python-twitter==3.1
 pytz==2016.7
 PyYAML==3.12
-pyzmq==15.4.0
+pyzmq==16.0.0
 qtconsole==4.2.1
 rainbow==2.5.0
 readline==6.2.4.1
@@ -165,4 +165,4 @@ xlrd==1.0.0
 xls2db==0.0.8
 XlsxWriter==0.9.3
 xmltodict==0.10.2
-yapf==0.12.1
+yapf==0.12.2
