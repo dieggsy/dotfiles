@@ -236,7 +236,7 @@ Get rid of menu bars, scroll bars, startup screens, etc.
   ;; (add-hook 'minibuffer-setup-hook (lambda () (show-paren-mode -1)))
 #+END_SRC
 ** Fonts
-*Current:* Currently I'm using the wonderful [[http://input.fontbureau.com/][input]] font. If, like me, you're
+*Current:* Currently I'm using the wonderful [[http://input.fontbureau.com/][Input]] font. If, like me, you're
 coming from something more like SauceCodePro, Consolas, or even just Menlo,
 this font may at first seem a little "blocky," but it's so wonderfully
 customizable (~Customize your Download~ section under ~Download~ in the above link)
