@@ -1,0 +1,4 @@
+* blogs                                                              :elfeed:
+** emacs                                                             :emacs:
+*** http://www.reddit.com/r/emacs/.rss
+*** http://planet.emacsen.org/atom.xml

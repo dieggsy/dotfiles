@@ -1832,6 +1832,26 @@ Recently used M-x commands
       (osx-trash-setup))
     (setq delete-by-moving-to-trash t))
 #+end_src
+*** [[https://github.com/remyhonig/elfeed-org][elfeed]]
+#+begin_src emacs-lisp
+  (use-package elfeed
+    :ensure t
+    :config
+    (setq elfeed-feeds
+          '("http://planet.emacsen.org/atom.xml")))
+
+  (use-package elfeed-org
+    :after elfeed
+    :ensure t
+    :config
+    (elfeed-org))
+
+  (use-package elfeed-goodies
+    :after elfeed
+    :ensure t
+    :config
+    (elfeed-goodies/setup))
+#+end_src
 ** Navigation 
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
 #+BEGIN_SRC emacs-lisp
