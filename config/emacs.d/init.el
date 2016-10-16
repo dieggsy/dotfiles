@@ -29,6 +29,7 @@
  '(display-time-default-load-average nil)
  '(display-time-format "%a %d %b  %H:%M ")
  '(doc-view-resolution 300)
+ '(elfeed-goodies/entry-pane-position (quote bottom))
  '(evil-want-fine-undo t)
  '(fci-rule-color "#3E4451")
  '(fill-column 79)
@@ -113,7 +114,7 @@
  '(org-pandoc-options (quote ((standalone . t))))
  '(package-selected-packages
    (quote
-	(nm notmuch-labeler focus evil-smartparens coffee-mode evil-org frame-cmds pp-c-l osx-trash evil-magit yapfify smartparens paradox which-key highlight-defined evil-nerd-commenter spray speed-type company-anaconda highlight-quoted pianobar pyenv-mode pyenv multi-eshell selectric-mode highlight-tail fireplace autotetris-mode define-word worf sunshine forecast all-the-icons move-text ace-window virtualenvwrapper eshell-prompt-extras eshell-z material-theme google-translate dropbox palette melpa-upstream-visit helm-dash counsel-osx-app counsel-projectile bongo emms libmpdee landmark zone-select zone-sl zone-rainbow zone-matrix zone-nyan chess eimp e2ansi ranger github-theme org-gcal buffer-stack w3m xkcd notmuch org-beautify-theme 2048-game dired+ restart-emacs devdocs flyspell-correct-ivy flyspell-correct git-gutter-fringe doom-themes tabbar nlinum-relative nlinum google-this eww-lnum w3 emojify git-gutter pbcopy ox-pandoc pdf-tools minesweeper gruvbox-theme anti-zenburn-theme color-theme-sanityinc-tomorrow moe-theme solarized-theme darktooth-theme monokai-theme zenburn-theme multiple-cursors org key-chord yaml-mode yafolding wgrep-ag visual-fill-column vimish-fold vi-tilde-fringe use-package twittering-mode tiny-menu sx sphinx-doc spacemacs-theme spaceline smooth-scroll smex smart-mode-line rainbow-delimiters powerline-evil pacmacs ox-twbs outline-magic origami org-bullets openwith ob-ipython nyan-mode multi-term markdown-preview-mode magit jedi ivy-hydra imenu-anywhere highlight-parentheses highlight-numbers hideshow-org hide-region helm-projectile helm-fuzzier helm-flx helm-dictionary helm-descbinds flycheck fill-column-indicator fancy-battery evil-terminal-cursor-changer evil-leader evil-indent-textobject elpy ein dictionary csv-mode counsel company-jedi avy autopair atom-one-dark-theme apel ag)))
+	(matlab-load elfeed-goodies elfeed-org elfeed nm notmuch-labeler focus evil-smartparens coffee-mode evil-org frame-cmds pp-c-l osx-trash evil-magit yapfify smartparens paradox which-key highlight-defined evil-nerd-commenter spray speed-type company-anaconda highlight-quoted pianobar pyenv-mode pyenv multi-eshell selectric-mode highlight-tail fireplace autotetris-mode define-word worf sunshine forecast all-the-icons move-text ace-window virtualenvwrapper eshell-prompt-extras eshell-z material-theme google-translate dropbox palette melpa-upstream-visit helm-dash counsel-osx-app counsel-projectile bongo emms libmpdee landmark zone-select zone-sl zone-rainbow zone-matrix zone-nyan chess eimp e2ansi ranger github-theme org-gcal buffer-stack w3m xkcd notmuch org-beautify-theme 2048-game dired+ restart-emacs devdocs flyspell-correct-ivy flyspell-correct git-gutter-fringe doom-themes tabbar nlinum-relative nlinum google-this eww-lnum w3 emojify git-gutter pbcopy ox-pandoc pdf-tools minesweeper gruvbox-theme anti-zenburn-theme color-theme-sanityinc-tomorrow moe-theme solarized-theme darktooth-theme monokai-theme zenburn-theme multiple-cursors org key-chord yaml-mode yafolding wgrep-ag visual-fill-column vimish-fold vi-tilde-fringe use-package twittering-mode tiny-menu sx sphinx-doc spacemacs-theme spaceline smooth-scroll smex smart-mode-line rainbow-delimiters powerline-evil pacmacs ox-twbs outline-magic origami org-bullets openwith ob-ipython nyan-mode multi-term markdown-preview-mode magit jedi ivy-hydra imenu-anywhere highlight-parentheses highlight-numbers hideshow-org hide-region helm-projectile helm-fuzzier helm-flx helm-dictionary helm-descbinds flycheck fill-column-indicator fancy-battery evil-terminal-cursor-changer evil-leader evil-indent-textobject elpy ein dictionary csv-mode counsel company-jedi avy autopair atom-one-dark-theme apel ag)))
  '(paradox-automatically-star nil)
  '(paradox-execute-asynchronously t)
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
@@ -198,5 +199,9 @@
  ;; If there is more than one, they won't work right.
  '(epe-dir-face ((t (:inherit eshell-ls-directory :weight normal))))
  '(erc-prompt-face ((t (:foreground "lightBlue2" :weight bold))))
- '(notmuch-search-unread-face ((t (:foreground "#83a598")))))
+ '(nlinum-relative-current-face ((t (:inherit linum :background "#444444" :foreground "#b8bb26" :weight bold))))
+ '(notmuch-search-unread-face ((t (:foreground "#83a598"))))
+ '(twittering-uri-face ((t (:foreground "#528b8b" :underline t))))
+ '(twittering-username-face ((t (:foreground "#FE8019" :underline t))))
+ '(variable-pitch ((t (:family "Open Sans")))))
 (put 'erase-buffer 'disabled nil)

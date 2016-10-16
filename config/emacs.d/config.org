@@ -7,7 +7,6 @@ rearrangement are pretty sweet. Check out [[https://github.com/aaronbieber/dotfi
 lot of the inspiration (and erm, code) for this is taken from them.
 
 * Personal Info
-Minimal info about meself, I guess.
 #+BEGIN_SRC emacs-lisp
   (setq user-full-name "Diego A. Mundo"
         user-mail-address "diegoamundo@gmail.com"
@@ -1803,7 +1802,8 @@ Recently used M-x commands
     :config
     (setq twittering-icon-mode t)
     (setq twittering-convert-fix-size 24)
-    (add-hook 'twittering-mode-hook #'emojify-mode))
+    (add-hook 'twittering-mode-hook #'emojify-mode)
+    (setq twittering-use-master-password t))
 #+END_SRC
 
 *** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
