@@ -82,15 +82,15 @@ if [ -z "$INSIDE_EMACS" ];then
 	PROMPT="╭─%{$FG[010]%}%n%{$reset_color%} %{$FG[239]%}at%{$reset_color%} %{$FG[012]%}$(box_name)%{$reset_color%} %{$FG[239]%}in%{$reset_color%} %{$terminfo[bold]$FG[009]%}${current_dir}%{$reset_color%}${git_info}${venv_info}${NEWLINE}╰─${prompt_char}%{$reset_color%} "
 	ZSH_THEME_GIT_PROMPT_PREFIX=" %{$FG[239]%}on%{$reset_color%} %{$fg[255]%}"
 	ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-	ZSH_THEME_GIT_PROMPT_DIRTY="%{$FG[202]%}✘"
-	ZSH_THEME_GIT_PROMPT_CLEAN="%{$FG[040]%}✔"
+	ZSH_THEME_GIT_PROMPT_DIRTY="%{$FG[009]%}✘"
+	ZSH_THEME_GIT_PROMPT_CLEAN="%{$FG[010]%}✔"
 else
 	# PROMPT="╭─%{$FG[032]%}%n%{$reset_color%} %{$FG[239]%}at%{$reset_color%} %{$FG[006]%}$(box_name)%{$reset_color%} %{$FG[239]%}in%{$reset_color%} %{$terminfo[bold]$FG[035]%}${current_dir}%{$reset_color%}${git_info}${venv_info}${NEWLINE}╰─${prompt_char}%{$reset_color%} "
 	PROMPT="$FG[035]%}${current_dir}%{$reset_color%} >> "
 	ZSH_THEME_GIT_PROMPT_PREFIX=" %{$FG[239]%}on%{$reset_color%} %{$fg[255]%}"
 	ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-	ZSH_THEME_GIT_PROMPT_DIRTY="%{$FG[031]%}✘"
-	ZSH_THEME_GIT_PROMPT_CLEAN="%{$FG[032]%}✔"
+	ZSH_THEME_GIT_PROMPT_DIRTY="%{$FG[009]%}✘"
+	ZSH_THEME_GIT_PROMPT_CLEAN="%{$FG[010]%}✔"
 	export TERM=xterm-256color
 fi
 
@@ -227,7 +227,11 @@ psetzip (){
 calc(){
 	emacs --batch --eval "(message (calc-eval \"$1\"))"
 }
+
+
 export WWW_HOME='http://google.com'
+
+fpath=(/usr/local/share/zsh-completions $fpath)
 
 source "/usr/local/bin/virtualenvwrapper.sh"
 export PYTHONSTARTUP=$HOME/.pythonrc.py
@@ -238,6 +242,7 @@ ZSH_HIGHLIGHT_STYLES[command]='fg=010'
 ZSH_HIGHLIGHT_STYLES[alias]='fg=010'
 ZSH_HIGHLIGHT_STYLES[builtin]='fg=010'
 ZSH_HIGHLIGHT_STYLES[function]='fg=010'
+
 
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
