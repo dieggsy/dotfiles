@@ -17,11 +17,13 @@ brew tap homebrew/completions
 brew tap homebrew/core
 brew tap homebrew/dupes
 brew tap homebrew/emacs
+brew tap homebrew/games
 brew tap homebrew/python
 brew tap homebrew/science
 brew tap homebrew/services
 brew tap homebrew/versions
 brew tap homebrew/x11
+brew tap koekeishiya/khd
 brew tap koekeishiya/kwm
 brew tap mopidy/mopidy
 brew tap neovim/neovim
@@ -33,6 +35,8 @@ brew install caskroom/cask/brew-cask
 echo Installing brew programs...
 brew install aalib
 brew install aamath
+brew install abuse
+brew install advancemame
 brew install apr
 brew install apr-util
 brew install archey
@@ -85,6 +89,7 @@ brew install gflags
 brew install ghostscript
 brew install giflib
 brew install git
+brew install glew
 brew install glib
 brew install global
 brew install glog
@@ -123,6 +128,7 @@ brew install jpeg
 brew install jq
 brew install jrnl
 brew install json-c
+brew install khd
 brew install kwm
 brew install lame
 brew install leptonica
@@ -159,6 +165,7 @@ brew install libusb
 brew install libusb-compat
 brew install libvo-aacenc
 brew install libvorbis
+brew install libxdg-basedir
 brew install libxml2
 brew install libyaml
 brew install links
@@ -181,9 +188,12 @@ brew install ncmpcpp
 brew install ncurses
 brew install neovim
 brew install nettle
+brew install ninvaders
 brew install node
 brew install notmuch
+brew install nsnake
 brew install numpy
+brew install ode
 brew install offlineimap
 brew install oniguruma
 brew install opencv
@@ -196,6 +206,7 @@ brew install pango
 brew install pcre
 brew install perl
 brew install pianobar
+brew install pillow
 brew install pinentry
 brew install pip-completion
 brew install pixman
@@ -213,6 +224,7 @@ brew install pyqt
 brew install python
 brew install python3
 brew install qt
+brew install qt5
 brew install readline
 brew install reattach-to-user-namespace
 brew install rhyme
@@ -220,11 +232,14 @@ brew install ruby
 brew install scipy
 brew install screen
 brew install sdl
+brew install sdl2
 brew install sdl_image
 brew install sdl_mixer
+brew install sdl_net
 brew install sdl_ttf
 brew install shared-mime-info
 brew install sip
+brew install ski
 brew install smpeg
 brew install snappy
 brew install source-highlight
