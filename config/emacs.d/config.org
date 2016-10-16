@@ -2479,13 +2479,6 @@ Freakin yasnippet. It's the best.
     )
 #+END_SRC
 
-*** [[https://github.com/therockmandolinist/matlab-emacs][matlab-emacs]]
-#+BEGIN_SRC emacs-lisp
-  ;; (load-library "matlab-load")
-  (use-package matlab-load
-    :load-path "lisp/")
-#+END_SRC
-
 *** [[https://github.com/CodeFalling/nlinum-relative][nlinum-relative]]
 #+begin_src emacs-lisp :tangle no
   (use-package nlinum-relative
@@ -2498,6 +2491,11 @@ Freakin yasnippet. It's the best.
 *** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
 #+begin_src emacs-lisp
   (use-package evil-nerd-commenter
+    :ensure t)
+#+end_src
+*** matlab-mode 
+#+begin_src emacs-lisp
+  (use-package matlab-mode
     :ensure t)
 #+end_src
 ** Reference/search
