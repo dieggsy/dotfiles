@@ -646,7 +646,7 @@ Handling/storing of files, backups, autosaves.
   (defun diego/leader-toggle ()
     (evil-leader/set-key
       "tf" 'fci-mode
-      "tl" 'linum-mode
+      "tl" 'nlinum-mode
       "tw" 'whitespace-mode
       "ts" 'flycheck-mode
       "tg" 'diego/github-spacing
@@ -655,11 +655,11 @@ Handling/storing of files, backups, autosaves.
 
   (defun diego/toggle-linum-fci ()
     (interactive)
-    (cond ((and (eq linum-mode t) (eq fci-mode t))
-           (linum-mode -1)
+    (cond ((and (eq nlinum-mode t) (eq fci-mode t))
+           (nlinum-mode -1)
            (fci-mode -1))
-          ((and (eq linum-mode nil) (eq fci-mode nil))
-           (linum-mode 1)
+          ((and (eq nlinum-mode nil) (eq fci-mode nil))
+           (nlinum-mode 1)
            (fci-mode 1)))))
 #+end_src
 **** Editing
@@ -2625,8 +2625,8 @@ Properties that apply to all programming modes.
     ;; (highlight-parentheses-mode 1)
     (make-local-variable 'show-paren-mode)
     (setq show-paren-mode t)
-    ;; (nlinum-relative-mode 1)
-    (linum-mode 1)
+    (nlinum-relative-mode 1)
+    ;; (linum-mode 1)
     (auto-fill-mode 1)
     (setq-local comment-auto-fill-only-comments t)
     ;; (setq-local line-spacing 0.0)
