@@ -11,7 +11,6 @@ lot of the inspiration (and erm, code) for this is taken from them.
   (setq user-full-name "Diego A. Mundo"
         user-mail-address "diegoamundo@gmail.com"
         calendar-location-name "Cambridge, MA")
-
 #+END_SRC
 
 * Init Setup
@@ -227,13 +226,6 @@ Get rid of menu bars, scroll bars, startup screens, etc.
   ;; (require 'zone)
   ;; (zone-when-idle 10)
 #+END_SRC
-** Minibuffer
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'minibuffer-setup-hook (lambda () (setq-local cursor-type '(bar . 1))))
-  (setq enable-recursive-minibuffers t)
-  (savehist-mode 1)
-  ;; (add-hook 'minibuffer-setup-hook (lambda () (show-paren-mode -1)))
-#+END_SRC
 ** Fonts
 *Current:* Currently I'm using the wonderful [[http://input.fontbureau.com/][Input]] font. If, like me, you're
 coming from something more like SauceCodePro, Consolas, or even just Menlo,
@@ -267,6 +259,32 @@ consistent with other fonts. Last updated 2011, last successfully tested
 
 
 #+END_SRC
+** Minibuffer
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'minibuffer-setup-hook (lambda () (setq-local cursor-type '(bar . 1))))
+  (setq enable-recursive-minibuffers t)
+  (savehist-mode 1)
+  ;; (add-hook 'minibuffer-setup-hook (lambda () (show-paren-mode -1)))
+#+END_SRC
+** Scratch buffer
+#+begin_src emacs-lisp
+  (setq initial-major-mode 'org-mode)
+  (setq initial-scratch-message
+        "# This buffer is for text that is not saved, and for Lisp/Python evaluation.
+  # To create a file, visit it with SPC f f and enter text in its buffer.
+
+  ,* Lisp
+  ,#+begin_src emacs
+
+  ,#+end_src
+
+  ,* Python
+  ,#+begin_src python
+
+  ,#+end_src
+
+  ,* Other")
+#+end_src
 ** File handling
 Handling/storing of files, backups, autosaves.
 #+BEGIN_SRC emacs-lisp
