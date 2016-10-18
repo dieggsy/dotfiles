@@ -2681,7 +2681,8 @@ Properties that apply to all programming modes.
     ;; (setq-local line-spacing 0.0)
     (setq-local calc-embedded-open-mode (concat comment-start " "))
     (setq-local calc-embedded-close-mode (concat comment-end "\n"))
-    (hl-line-mode 1))
+    ;; (hl-line-mode 1)
+    )
   (add-hook 'prog-mode-hook 'diego/setup-prog-mode)
 #+END_SRC
 * Python
