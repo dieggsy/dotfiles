@@ -1082,7 +1082,7 @@ A really nice search/completion system for emacs.
       :config
       (define-key evil-normal-state-map (kbd "/") 'swiper)
       (define-key evil-motion-state-map (kbd "/") 'swiper))
-  
+
     (use-package counsel
       :ensure t
       :after ivy
@@ -1093,11 +1093,15 @@ A really nice search/completion system for emacs.
       (defalias 'locate 'counsel-locate))
 
     (use-package counsel-projectile
-      :after conusel
+      :commands (counsel-projectile-switch-project
+                 counsel-projectile-switch-to-buffer
+                 counsel-projectile-find-dir
+                 counsel-projectile-find-file
+                 counsel-projecile) 
       :ensure t)
 
     (use-package counsel-osx-app
-      :after counsel
+      :commands counsel-osx-app
       :ensure t)
 #+END_SRC
 
@@ -1404,6 +1408,7 @@ A really nice search/completion system for emacs.
 *** [[https://github.com/josuah/drawille][drawille]]
 #+BEGIN_SRC emacs-lisp
   (use-package drawille
+    :defer 5
     :ensure t)
 #+END_SRC
 
@@ -1428,15 +1433,6 @@ A really nice search/completion system for emacs.
     :commands nyan-mode
     :config
     (nyan-mode))
-#+END_SRC
-*** [[https://github.com/agrif/pianobar.el][pianobar]] 
-#+BEGIN_SRC emacs-lisp
-  (use-package pianobar
-    :ensure t
-    :commands pianobar
-    :config
-    (setq pianobar-run-in-background t)   ;
-    (setq pianobar-station "Majestic Dance Radio"))
 #+END_SRC
 *** [[https://github.com/rbanffy/selectric-mode][selectric-mode]]
 #+BEGIN_SRC emacs-lisp
@@ -1492,6 +1488,7 @@ Eh, why not.
   (use-package zone-nyan
     :ensure t
     :after 'zone
+    :defer 5
     :config
     (eval-after-load "zone"
       '(unless (memq 'zone-nyan (append zone-programs nil))
@@ -1503,6 +1500,7 @@ Eh, why not.
 *** [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
 #+BEGIN_SRC emacs-lisp 
   (use-package all-the-icons
+    :defer 5
     :ensure t)
 #+END_SRC
 *** diego-theme
@@ -1548,6 +1546,7 @@ Eh, why not.
 Display emojis in emacs. Sweet!
 #+BEGIN_SRC emacs-lisp
   (use-package emojify
+    :defer 5
     :ensure t)
 #+END_SRC
 *** [[https://github.com/lunaryorn/fancy-battery.el][fancy-battery]]
@@ -1628,7 +1627,7 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
 #+BEGIN_SRC emacs-lisp
   (use-package csv-mode
     ;; I'll give this a shot
-    :commands csv-mode
+    :defer 5
     :ensure t
     :config
     (add-hook 'csv-mode-hook 'csv-align-fields))
@@ -1718,9 +1717,11 @@ Like git, for emacs. But cooler.
     :ensure t
     :commands magit-status
     :config
-    (use-package evil-magit
-      :ensure t)
     (setq magit-diff-use-overlays nil))
+
+  (use-package evil-magit
+    :after magit
+    :ensure t)
 #+END_SRC
 
 *** [[https://github.com/defunkt/markdown-mode][markdown-mode]]
@@ -1728,6 +1729,7 @@ Syntax highlighting for markdown files.
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
     :ensure t
+    :defer 5
     :config
     ;; (defun my-adjoin-to-list-or-symbol (element list-or-symbol)
     ;; (let ((list (if (not (listp list-or-symbol))
@@ -1754,6 +1756,7 @@ Generates markdown previews? Not sure if working.
 
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-preview-mode
+    :defer 5
     :ensure t)
 #+END_SRC
 
@@ -1766,6 +1769,7 @@ Generates markdown previews? Not sure if working.
 *** [[https://github.com/emacsfodder/move-text][move-text]]
 #+BEGIN_SRC emacs-lisp
   (use-package move-text
+    :defer 5
     :ensure t)
 #+END_SRC
 *** [[https://www.emacswiki.org/emacs/NotMuch][NotMuch]]
@@ -1867,6 +1871,7 @@ Recently used M-x commands
 #+begin_src emacs-lisp
   (use-package elfeed
     :ensure t
+    :defer 5
     :config
     (setq elfeed-feeds
           '("http://planet.emacsen.org/atom.xml")))
@@ -1913,6 +1918,7 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
 #+BEGIN_SRC emacs-lisp :tangle no
   (use-package helm
       :ensure t
+      :defer 5
       :init
       (require 'helm-config)
       :config
@@ -2197,13 +2203,14 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
           '("/usr/local"
             "~/dotfiles/config/emacs.d/lisp/Gnugol"
             "~/dotfiles/config/emacs.d/lisp/matlab-emacs"))
-    (projectile-global-mode))
+    (projectile-mode))
 #+END_SRC
 
 *** [[https://github.com/ralesi/ranger.el][ranger]]
 #+BEGIN_SRC emacs-lisp
   (use-package ranger
     :ensure t
+    :commands ranger 
     :config
     (setq ranger-show-literal nil)
     (setq ranger-show-dotfiles nil)
@@ -2219,8 +2226,7 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
        ((featurep 'ivy)
         (counsel-find-file default-directory))
        (t
-        (call-interactively 'ido-find-file))))
-    )
+        (call-interactively 'ido-find-file)))))
 #+END_SRC
 ** Not currently in use
 These aren't loaded by the init file.
@@ -2343,6 +2349,7 @@ pretty good but had some known issues.
 *** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
 #+BEGIN_SRC emacs-lisp
   (use-package ob-ipython
+    :defer 5
     :ensure t)
 #+END_SRC
 *** [[https://github.com/sabof/org-bullets][org-bullets]]
@@ -2372,13 +2379,14 @@ Export org to twitter bootstrap compatible HTML.
 #+begin_src emacs-lisp
   (use-package ox-twbs
     :ensure t
+    :defer 5
     :after org)
 #+end_src
 *** [[https://github.com/snosov1/toc-org][toc-org]]
 #+BEGIN_SRC emacs-lisp
   (use-package toc-org
     :ensure t
-    :after org
+    :defer 5
     :config
     (add-hook 'org-mode-hook 'toc-org-enable))
 #+END_SRC
@@ -2478,8 +2486,9 @@ Makes the parentheses my cursor is between stand out more.
 
 *** [[https://github.com/Fanael/highlight-defined][highlight-defined]]
 #+begin_src emacs-lisp :tangle no
-  (use-package highlight-defined
-    :ensure t)
+    (use-package highlight-defined
+      :commands highlight-defined-mode
+      :ensure t)
 #+end_src
 *** [[https://github.com/vspinu/imenu-anywhere][imenu-anywhere]]
 imenu on steroids.
@@ -2533,7 +2542,7 @@ Freakin yasnippet. It's the best.
 *** [[https://github.com/CodeFalling/nlinum-relative][nlinum-relative]]
 #+begin_src emacs-lisp :tangle no
   (use-package nlinum-relative
-    :defer t
+    :defer 5
     :ensure t
     :config
     (nlinum-relative-setup-evil)
@@ -2547,6 +2556,7 @@ Freakin yasnippet. It's the best.
 *** matlab-mode 
 #+begin_src emacs-lisp
   (use-package matlab-mode
+    :defer 5
     :ensure t)
 #+end_src
 ** Reference/search
@@ -2584,6 +2594,7 @@ An org-mode google??? Not currently working, apparently.
 *** [[https://github.com/atykhonov/google-translate][google-translate]]
 #+BEGIN_SRC emacs-lisp
   (use-package google-translate
+    :commands google-translate-at-point
     :ensure t)
 #+END_SRC
 
@@ -2637,6 +2648,7 @@ if this is the answer as I haven't used it much.
 #+BEGIN_SRC emacs-lisp
   (use-package multi-term
     ;; Supposed to be nicer than ansi-term
+    :commands multi-term
     :ensure t)
 #+END_SRC
 
