@@ -1036,28 +1036,14 @@ A really nice search/completion system for emacs.
     :bind (("M-x" . counsel-M-x)
            ("C-x C-f" . counsel-find-file))
     :config
-    (use-package swiper
-      :ensure t
-      :config
-      (define-key evil-normal-state-map (kbd "/") 'swiper)
-      (define-key evil-motion-state-map (kbd "/") 'swiper))
-    (use-package counsel
-      :ensure t
-      :config
-      (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind)
-      (counsel-mode 1))
-    (use-package counsel-projectile
-      :ensure t)
-    (use-package counsel-osx-app
-      :ensure t)
     (ivy-mode 1)
     (define-key ivy-minibuffer-map [escape] 'minibuffer-keyboard-quit)
 
-    (setq ivy-format-function 'ivy-format-function-arrow) ; DAT NICE ARROW THOUGH aorcidkl
-    (setq projectile-completion-system 'ivy) ; Use ivy with projectile
+    (setq ivy-format-function 'ivy-format-function-arrow) ; DAT NICE ARROW THOUGH aosenuth
+    (setq projectile-completion-system 'ivy)
     (setq ivy-use-virtual-buffers t) ; Show recent files
-    (setq ivy-count-format "")
-    (setq ivy-extra-directories '("../"))
+    (setq ivy-count-format "") 
+    (setq ivy-extra-directories '("../")) ; ignore current folder... maybe shouldn't
     (setq ivy-ignore-buffers 
           '("\\` "
             "\\`\\*LV\\*"
@@ -1072,25 +1058,47 @@ A really nice search/completion system for emacs.
             "\\`\\*info"
             "\\`\\*Compile"
             "\\`\\*Messages"))
-    (ivy--resize-minibuffer-to-fit) ; Not actually sure this is doing things
+
     ;; RET enters folder rather than opening dired
     (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
+
     ;; Use flx fuzzy matching except with ag and swiper
-    (setq ivy-re-builders-alist
-          '((counsel-ag . ivy--regex-plus)
-            (counsel-descbinds . ivy--regex-plus)
-            (swiper . ivy--regex-plus)
-            (swiper-all . ivy--regex-plus)
-            ;; (t . ivy--regex-fuzzy)
-            (t . ivy--regex-plus)))
+    ;; (setq ivy-re-builders-alist
+    ;;       '((counsel-ag . ivy--regex-plus)
+    ;;         (counsel-descbinds . ivy--regex-plus)
+    ;;         (swiper . ivy--regex-plus)
+    ;;         (swiper-all . ivy--regex-plus)
+    ;;         (t . ivy--regex-fuzzy))
+
     ;;Don't start searches with '^' by default
     (setq ivy-initial-inputs-alist nil)
-    ;; (setq ivy-flip t) ; Flip the direction
-    (setq ivy-switch-buffer-faces-alist
-          '((dired-mode . ivy-subdir)))
 
-    (defalias 'ag 'counsel-ag)
-    (defalias 'locate 'counsel-locate))
+    (setq ivy-switch-buffer-faces-alist
+          '((dired-mode . ivy-subdir))))
+
+    (use-package swiper
+      :ensure t
+      :after ivy
+      :config
+      (define-key evil-normal-state-map (kbd "/") 'swiper)
+      (define-key evil-motion-state-map (kbd "/") 'swiper))
+  
+    (use-package counsel
+      :ensure t
+      :after ivy
+      :config
+      (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind)
+      (counsel-mode 1)
+      (defalias 'ag 'counsel-ag)
+      (defalias 'locate 'counsel-locate))
+
+    (use-package counsel-projectile
+      :after conusel
+      :ensure t)
+
+    (use-package counsel-osx-app
+      :after counsel
+      :ensure t)
 #+END_SRC
 
 ** [[http://orgmode.org/][org-mode]]
