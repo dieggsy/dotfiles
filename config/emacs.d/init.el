@@ -129,7 +129,7 @@
  '(python-shell-interpreter "python3")
  '(recentf-exclude
    (quote
-	("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" "/elpa/" "/xkcd/")))
+	("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" "/elpa/" "/xkcd/")) t)
  '(safe-local-variable-values
    (quote
 	((eval when
@@ -158,7 +158,7 @@
 	 ("^~/[Gg]it\\([Hh]ub\\|\\)-?[Pp]rojects/" ":Git:")
 	 ("\"^~/Dropbox \\(MIT\\)/\"" "\":DB:\""))))
  '(smtpmail-smtp-server "smtp.gmail.com")
- '(smtpmail-smtp-service 25 t)
+ '(smtpmail-smtp-service 25)
  '(term-default-bg-color "#002b36")
  '(term-default-fg-color "#839496")
  '(vc-annotate-background nil)

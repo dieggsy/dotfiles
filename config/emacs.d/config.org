@@ -1285,7 +1285,7 @@ A really nice search/completion system for emacs.
 #+BEGIN_SRC emacs-lisp
   ;;; Code:
   (use-package org
-    :ensure t
+    :ensure org-plus-contrib
     :commands (org-capture)
     :bind (("C-c c" .   air-org-task-capture)
            ("C-c l" .   org-store-link)
