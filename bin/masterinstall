@@ -8,22 +8,6 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 
 # Set up taps
 echo Tapping taps...
-brew tap ==>
-brew tap Auto-updated
-brew tap Homebrew!
-brew tap Updated
-brew tap 1
-brew tap tap
-brew tap (homebrew/science).
-brew tap ==>
-brew tap New
-brew tap Formulae
-brew tap homebrew/science/omcompiler
-brew tap ==>
-brew tap Updated
-brew tap Formulae
-brew tap homebrew/science/megahit
-brew tap homebrew/science/rstudio-server
 brew tap caskroom/cask
 brew tap caskroom/fonts
 brew tap caskroom/versions
