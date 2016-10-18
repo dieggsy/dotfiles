@@ -295,7 +295,11 @@ Handling/storing of files, backups, autosaves.
   (global-auto-revert-mode t)
   (save-place-mode 1)
   (desktop-save-mode 1)
-  (set-frame-parameter (selected-frame) 'buffer-predicate #'buffer-file-name)
+  ;; (set-frame-parameter (selected-frame) 'buffer-predicate #'buffer-file-name)
+
+  ;; ssh
+  (setq tramp-default-method "ssh")
+  (setq password-cache-expiry nil)
 #+END_SRC
 ** Parentheses
 #+BEGIN_SRC emacs-lisp
@@ -1025,7 +1029,7 @@ Handling/storing of files, backups, autosaves.
 #+END_SRC
 
 ** [[https://github.com/abo-abo/swiper][ivy]]
-A really, really neat search/completion system for emacs.
+A really nice search/completion system for emacs.
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
     :ensure t
@@ -1458,6 +1462,7 @@ A really, really neat search/completion system for emacs.
       (kbd "h") 'xkcd-prev
       (kbd "k") 'xkcd-prev
       (kbd "l") 'xkcd-next
+      (kbd "t") 'xkcd-alt-text
       (kbd "q") 'xkcd-kill-buffer))
 #+END_SRC
 
