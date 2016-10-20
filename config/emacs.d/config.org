@@ -689,7 +689,7 @@ Handling/storing of files, backups, autosaves.
       (evil-leader/set-key
         ";"   'evilnc-comment-operator
         "cl"  'evilnc-comment-or-uncomment-lines
-        "cL"  'evilnc-invert-comment-line-by-line
+        "ci"  'diego/comment-or-uncomment-lines-inverse
         "cp"  'evilnc-comment-or-uncomment-paragraphs
         "ct"  'evilnc-comment-or-uncomment-to-the-line
         "cy"  'evilnc-copy-and-comment-lines
@@ -730,9 +730,16 @@ Handling/storing of files, backups, autosaves.
         "xpsb" 'sp-backward-slurp-sexp
         "xpbb" 'sp-backward-barf-sexp
         "xpbf" 'sp-forward-barf-sexp
-        
+
         "iu"  'counsel-unicode-char
         "iy"  'yas-insert-snippet)
+
+
+      ;; Copy of spacemacs/comment-or-uncomment-lines-inverse
+      (defun diego/comment-or-uncomment-lines-inverse (&optional arg)
+        (interactive "p")
+        (let ((evilnc-invert-comment-line-by-line t))
+          (evilnc-comment-or-uncomment-lines arg)))
 
       ;; Copy of spacemacs/align-repeat
       (defun diego/align-repeat (start end regexp &optional justify-right after)
