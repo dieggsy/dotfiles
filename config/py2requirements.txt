@@ -80,7 +80,7 @@ simplegeneric==0.8.1
 simplejson==3.8.2
 singledispatch==3.4.0.3
 six==1.10.0
-stevedore==1.17.1
+stevedore==1.18.0
 sympy==1.0
 thrift==0.9.3
 tornado==4.4.2
