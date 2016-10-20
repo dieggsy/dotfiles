@@ -2560,11 +2560,45 @@ Freakin yasnippet. It's the best.
   (use-package evil-nerd-commenter
     :ensure t)
 #+end_src
-*** matlab-mode 
+*** matlab-mode
 #+begin_src emacs-lisp
-  (use-package matlab-mode
+  (use-package matlab
     :defer 5
-    :ensure t)
+    :ensure matlab-mode
+    :init
+    (load-library "matlab-load")
+    (add-hook 'matlab-mode-hook (lambda () (nlinum-relative-mode 1))))
+#+end_src
+*** [[https://github.com/defunkt/coffee-mode][coffee-mode]]
+#+begin_src emacs-lisp
+  (use-package coffee-mode
+   :defer 5
+   :ensure t)
+#+end_src
+*** [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]]
+#+begin_src emacs-lisp
+  (use-package git-gutter-fringe
+    :ensure t
+    :config
+    (global-git-gutter-mode)
+    (fringe-helper-define 'git-gutter-fr:added nil
+      "........"
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "........")
+    (fringe-helper-define 'git-gutter-fr:deleted nil
+      "........"
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "........"))
 #+end_src
 ** Reference/search
 *** [[https://github.com/xuchunyang/devdocs.el][devdocs]]
@@ -2686,7 +2720,8 @@ if this is the answer as I haven't used it much.
       ;; (venv-initialize-interactive-shells)
       (setq venv-location "~/.virtualenvs"))
 #+END_SRC
-* Prog-mode
+* Mode Specific 
+** Prog-mode
 Properties that apply to all programming modes.
 #+BEGIN_SRC emacs-lisp
   (defun diego/setup-prog-mode ()
@@ -2704,7 +2739,7 @@ Properties that apply to all programming modes.
     )
   (add-hook 'prog-mode-hook 'diego/setup-prog-mode)
 #+END_SRC
-* Python
+** Python
 #+BEGIN_SRC emacs-lisp
   (defun diego/setup-python-mode ()
       (yas-minor-mode)
@@ -2732,7 +2767,7 @@ Properties that apply to all programming modes.
   (add-hook 'python-mode-hook 'diego/setup-python-mode)
 #+END_SRC
 
-* Emacs-Lisp
+** Emacs-Lisp
 Mostly set up hs-minor-mode for emacs-lisp.
 #+BEGIN_SRC emacs-lisp
   (defun diego/setup-lisp-mode ()
