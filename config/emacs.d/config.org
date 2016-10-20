@@ -1510,6 +1510,11 @@ Eh, why not.
     :defer 5
     :ensure t)
 #+END_SRC
+*** darktooth-theme 
+#+begin_src emacs-lisp
+  (use-package darktooth-theme
+    :load-path "lisp/")
+#+end_src
 *** diego-theme
 #+BEGIN_SRC emacs-lisp :tangle no
   (use-package diego-theme
@@ -1567,6 +1572,7 @@ For nice battery display info.
     (setq fancy-battery-show-percentage t)
     (fancy-battery-update))
 #+END_SRC
+
 *** [[https://github.com/nashamri/spacemacs-theme][spacemacs-theme]]
 #+BEGIN_SRC emacs-lisp :tangle no
   (use-package spacemacs-theme
@@ -1583,12 +1589,6 @@ For nice battery display info.
       'zenburn
       '(ivy-current-match ((t nil))))))
 #+END_SRC
-
-*** darktooth-theme 
-#+begin_src emacs-lisp
-  (use-package darktooth-theme
-    :load-path "lisp/")
-#+end_src
 *** [[https://github.com/TheBB/spaceline][spaceline]]
 I was looking for something with the nice look and simplicity of
 [[https://github.com/itchyny/lightline.vim][this]]. Spaceline does ok.
@@ -1640,6 +1640,27 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
     (add-hook 'csv-mode-hook 'csv-align-fields))
 #+END_SRC
 
+*** [[https://github.com/remyhonig/elfeed-org][elfeed]]
+#+begin_src emacs-lisp
+  (use-package elfeed
+    :ensure t
+    :defer 5
+    :config
+    (setq elfeed-feeds
+          '("http://planet.emacsen.org/atom.xml")))
+
+  (use-package elfeed-org
+    :after elfeed
+    :ensure t
+    :config
+    (elfeed-org))
+
+  (use-package elfeed-goodies
+    :after elfeed
+    :ensure t
+    :config
+    (elfeed-goodies/setup))
+#+end_src
 *** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 #+begin_src emacs-lisp
   (use-package which-key
@@ -1681,13 +1702,6 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
 
     (setq which-key-sort-order 'which-key-key-order-alpha))
 #+end_src
-*** [[https://github.com/Fuco1/smartparens][smartparens]] 
-#+begin_src emacs-lisp
-  (use-package smartparens
-    :ensure t
-    :config
-    (smartparens-global-mode))
-#+end_src
 *** [[https://github.com/lewang/flx][flx]]
 Fuzzy matching
 #+BEGIN_SRC emacs-lisp
@@ -1706,6 +1720,12 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
       :ensure t))
 #+END_SRC
 
+*** [[https://github.com/larstvei/Focus][focus]] 
+#+BEGIN_SRC emacs-lisp
+  (use-package focus
+    :commands focus-mode
+    :ensure t)
+#+END_SRC
 *** [[https://www.emacswiki.org/emacs/KeyChord][keychord]]
 Neat way to bind commands to key-stroke combinations
 #+BEGIN_SRC emacs-lisp
@@ -1767,23 +1787,10 @@ Generates markdown previews? Not sure if working.
     :ensure t)
 #+END_SRC
 
-*** [[https://github.com/larstvei/Focus][focus]] 
-#+BEGIN_SRC emacs-lisp
-  (use-package focus
-    :commands focus-mode
-    :ensure t)
-#+END_SRC
 *** [[https://github.com/emacsfodder/move-text][move-text]]
 #+BEGIN_SRC emacs-lisp
   (use-package move-text
     :defer 5
-    :ensure t)
-#+END_SRC
-*** [[https://www.emacswiki.org/emacs/NotMuch][NotMuch]]
-Email!
-#+BEGIN_SRC emacs-lisp
-  (use-package notmuch
-    :commands notmuch
     :ensure t)
 #+END_SRC
 *** [[https://github.com/tjim/nevermore][nevermore]]
@@ -1792,6 +1799,22 @@ Email!
     :ensure t
     :commands nm)
 #+END_SRC
+*** [[https://www.emacswiki.org/emacs/NotMuch][NotMuch]]
+Email!
+#+BEGIN_SRC emacs-lisp
+  (use-package notmuch
+    :commands notmuch
+    :ensure t)
+#+END_SRC
+*** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
+#+begin_src emacs-lisp
+  (use-package osx-trash
+    :ensure t
+    :config
+    (when (eq system-type 'darwin)
+      (osx-trash-setup))
+    (setq delete-by-moving-to-trash t))
+#+end_src
 *** [[https://github.com/Malabarba/paradox][paradox]]
 #+begin_src emacs-lisp
   (use-package paradox
@@ -1821,6 +1844,13 @@ SUPER nifty.
     :ensure t)
 #+END_SRC
 
+*** [[https://github.com/Fuco1/smartparens][smartparens]] 
+#+begin_src emacs-lisp
+  (use-package smartparens
+    :ensure t
+    :config
+    (smartparens-global-mode))
+#+end_src
 *** [[https://github.com/nonsequitur/smex][smex]]
 Recently used M-x commands
 #+BEGIN_SRC emacs-lisp
@@ -1865,36 +1895,6 @@ Recently used M-x commands
     (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 #+END_SRC
 
-*** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
-#+begin_src emacs-lisp
-  (use-package osx-trash
-    :ensure t
-    :config
-    (when (eq system-type 'darwin)
-      (osx-trash-setup))
-    (setq delete-by-moving-to-trash t))
-#+end_src
-*** [[https://github.com/remyhonig/elfeed-org][elfeed]]
-#+begin_src emacs-lisp
-  (use-package elfeed
-    :ensure t
-    :defer 5
-    :config
-    (setq elfeed-feeds
-          '("http://planet.emacsen.org/atom.xml")))
-
-  (use-package elfeed-org
-    :after elfeed
-    :ensure t
-    :config
-    (elfeed-org))
-
-  (use-package elfeed-goodies
-    :after elfeed
-    :ensure t
-    :config
-    (elfeed-goodies/setup))
-#+end_src
 ** Navigation 
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
 #+BEGIN_SRC emacs-lisp
@@ -2399,6 +2399,20 @@ Export org to twitter bootstrap compatible HTML.
 #+END_SRC
 
 ** Programming
+*** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]  
+#+begin_src emacs-lisp
+  (use-package anaconda-mode
+    :ensure t
+    :config
+    (add-hook 'python-mode-hook 'anaconda-mode)
+    (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+#+end_src
+*** [[https://github.com/defunkt/coffee-mode][coffee-mode]]
+#+begin_src emacs-lisp
+  (use-package coffee-mode
+   :defer 5
+   :ensure t)
+#+end_src
 *** [[https://github.com/company-mode/company-mode][company-mode]]
 Supposedly better than autocomplete... Also using [[https://github.com/syohex/emacs-company-jedi][company-jedi]]
 #+BEGIN_SRC emacs-lisp
@@ -2447,22 +2461,12 @@ Sets up a python editing environment. I'm not sure yet.
             elpy-module-sane-defaults)))
 #+END_SRC
 
-*** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]  
+*** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
 #+begin_src emacs-lisp
-  (use-package anaconda-mode
-    :ensure t
-    :config
-    (add-hook 'python-mode-hook 'anaconda-mode)
-    (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
-#+end_src
-*** [[https://github.com/flycheck/flycheck][flycheck]]
-Syntax check for python. Pretty good.
-#+BEGIN_SRC emacs-lisp
-  (use-package flycheck
-    :commands flycheck-mode
+  (use-package evil-nerd-commenter
     :ensure t)
-#+END_SRC
-*** [[https://github.com/alpaker/Fill-Column-Indicator][Fill-Column-Indicator]]
+#+end_src
+*** [[https://github.com/alpaker/Fill-Column-Indicator][fill-column-indicator]]
 I like a line length limit indicator in Python
 #+BEGIN_SRC emacs-lisp
 
@@ -2473,6 +2477,45 @@ I like a line length limit indicator in Python
     (add-hook 'python-mode-hook 'fci-mode))
 #+END_SRC
 
+*** [[https://github.com/flycheck/flycheck][flycheck]]
+Syntax check for python. Pretty good.
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :commands flycheck-mode
+    :ensure t)
+#+END_SRC
+*** [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]]
+#+begin_src emacs-lisp
+  (use-package git-gutter-fringe
+    :ensure t
+    :config
+    (global-git-gutter-mode)
+    (add-hook 'focus-in-hook 'git-gutter:update-all-windows)
+    (fringe-helper-define 'git-gutter-fr:added nil
+      "........"
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "........")
+    (fringe-helper-define 'git-gutter-fr:deleted nil
+      "........"
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "..XXXX.."
+      "........"))
+#+end_src
+*** [[https://github.com/Fanael/highlight-defined][highlight-defined]]
+#+begin_src emacs-lisp :tangle no
+    (use-package highlight-defined
+      :commands highlight-defined-mode
+      :ensure t)
+#+end_src
 *** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]
 Neat-o
 #+BEGIN_SRC emacs-lisp
@@ -2491,12 +2534,6 @@ Makes the parentheses my cursor is between stand out more.
     :ensure t)
 #+END_SRC
 
-*** [[https://github.com/Fanael/highlight-defined][highlight-defined]]
-#+begin_src emacs-lisp :tangle no
-    (use-package highlight-defined
-      :commands highlight-defined-mode
-      :ensure t)
-#+end_src
 *** [[https://github.com/vspinu/imenu-anywhere][imenu-anywhere]]
 imenu on steroids.
 #+BEGIN_SRC emacs-lisp
@@ -2506,6 +2543,24 @@ imenu on steroids.
     :ensure t)
 #+END_SRC
 
+*** matlab-mode
+#+begin_src emacs-lisp
+  (use-package matlab
+    :defer 5
+    :ensure matlab-mode
+    :init
+    (load-library "matlab-load")
+    (add-hook 'matlab-mode-hook (lambda () (nlinum-relative-mode 1))))
+#+end_src
+*** [[https://github.com/CodeFalling/nlinum-relative][nlinum-relative]]
+#+begin_src emacs-lisp :tangle no
+  (use-package nlinum-relative
+    :defer 5
+    :ensure t
+    :config
+    (nlinum-relative-setup-evil)
+    (setq nlinum-relative-redisplay-delay 0))
+#+end_src
 *** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
 Better parentheses coloring
 #+BEGIN_SRC emacs-lisp
@@ -2546,62 +2601,13 @@ Freakin yasnippet. It's the best.
     )
 #+END_SRC
 
-*** [[https://github.com/CodeFalling/nlinum-relative][nlinum-relative]]
-#+begin_src emacs-lisp :tangle no
-  (use-package nlinum-relative
-    :defer 5
-    :ensure t
-    :config
-    (nlinum-relative-setup-evil)
-    (setq nlinum-relative-redisplay-delay 0))
-#+end_src
-*** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
-#+begin_src emacs-lisp
-  (use-package evil-nerd-commenter
-    :ensure t)
-#+end_src
-*** matlab-mode
-#+begin_src emacs-lisp
-  (use-package matlab
-    :defer 5
-    :ensure matlab-mode
-    :init
-    (load-library "matlab-load")
-    (add-hook 'matlab-mode-hook (lambda () (nlinum-relative-mode 1))))
-#+end_src
-*** [[https://github.com/defunkt/coffee-mode][coffee-mode]]
-#+begin_src emacs-lisp
-  (use-package coffee-mode
-   :defer 5
-   :ensure t)
-#+end_src
-*** [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]]
-#+begin_src emacs-lisp
-  (use-package git-gutter-fringe
-    :ensure t
-    :config
-    (global-git-gutter-mode)
-    (add-hook 'focus-in-hook 'git-gutter:update-all-windows)
-    (fringe-helper-define 'git-gutter-fr:added nil
-      "........"
-      "..XXXX.."
-      "..XXXX.."
-      "..XXXX.."
-      "..XXXX.."
-      "..XXXX.."
-      "..XXXX.."
-      "........")
-    (fringe-helper-define 'git-gutter-fr:deleted nil
-      "........"
-      "..XXXX.."
-      "..XXXX.."
-      "..XXXX.."
-      "..XXXX.."
-      "..XXXX.."
-      "..XXXX.."
-      "........"))
-#+end_src
 ** Reference/search
+*** [[https://github.com/abo-abo/define-word][define-ward]]
+#+BEGIN_SRC emacs-lisp
+  (use-package define-word
+    :commands define-word
+    :ensure t)
+#+END_SRC
 *** [[https://github.com/xuchunyang/devdocs.el][devdocs]]
 #+BEGIN_SRC emacs-lisp
   (use-package devdocs
@@ -2619,12 +2625,6 @@ Google stuff from emacs.
     (google-this-mode 1))
 #+END_SRC
 
-*** [[https://github.com/abo-abo/define-word][define-ward]]
-#+BEGIN_SRC emacs-lisp
-  (use-package define-word
-    :commands define-word
-    :ensure t)
-#+END_SRC
 *** [[https://github.com/dtaht/Gnugol][Gnugol]]
 An org-mode google??? Not currently working, apparently.
 #+BEGIN_SRC emacs-lisp
