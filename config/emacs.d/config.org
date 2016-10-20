@@ -2581,6 +2581,7 @@ Freakin yasnippet. It's the best.
     :ensure t
     :config
     (global-git-gutter-mode)
+    (add-hook 'focus-in-hook 'git-gutter:update-all-windows)
     (fringe-helper-define 'git-gutter-fr:added nil
       "........"
       "..XXXX.."
