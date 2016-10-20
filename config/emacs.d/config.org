@@ -2748,13 +2748,23 @@ Mostly set up hs-minor-mode for emacs-lisp.
   (add-hook 'lisp-interaction-mode-hook 'diego/setup-lisp-mode)
 #+END_SRC
 
-* Term mode
+** Term mode
 #+BEGIN_SRC emacs-lisp
   (defun diego/setup-term-mode ()
     (setq-local yas-dont-activate t)
     (local-set-key (kbd "<C-tab>") 'multi-term-next))
   (add-hook 'term-mode-hook 'diego/setup-term-mode)
 #+END_SRC
+** Calc mode 
+#+begin_src emacs-lisp
+  (add-hook 'calc-mode-hook
+            (lambda ()
+              (local-set-key (kbd "x")
+                             (lambda ()
+                               (interactive)
+                               (counsel-M-x "^calc-")))))
+
+#+end_src
 * Fix fci pop-up menu issue
 This is from somewhere on the internet, and may no longer be relevant since I
 started using company-mode.
