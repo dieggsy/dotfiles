@@ -274,7 +274,7 @@ consistent with other fonts. Last updated 2011, last successfully tested
   # To create a file, visit it with SPC f f and enter text in its buffer.
 
   ,* Lisp
-  ,#+begin_src emacs
+  ,#+begin_src emacs-lisp
 
   ,#+end_src
 
