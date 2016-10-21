@@ -2504,32 +2504,50 @@ Syntax check for python. Pretty good.
     (global-git-gutter-mode)
     (add-hook 'focus-in-hook 'git-gutter:update-all-windows)
     (fringe-helper-define 'git-gutter-fr:modified nil
-      "........"
+      ".....X.."
+      ".....X.."
+      ".....X.."
+      ".....X.."
+      ".....X.."
+      ".....X.."
+      ".....X.."
       ".....x.."
       ".....X.."
       ".....X.."
       ".....X.."
       ".....X.."
       ".....x.."
-      "........")
+      ".....X..")
     (fringe-helper-define 'git-gutter-fr:added nil
-      "........"
+      ".....X.."
+      ".....X.."
+      ".....X.."
+      ".....X.."
+      ".....X.."
+      ".....X.."
+      ".....X.."
       ".....x.."
       ".....X.."
       ".....X.."
       ".....X.."
       ".....X.."
       ".....x.."
-      "........")
+      ".....X..")
     (fringe-helper-define 'git-gutter-fr:deleted nil
-      "........"
+      ".....X.."
+      ".....X.."
+      ".....X.."
+      ".....X.."
+      ".....X.."
+      ".....X.."
+      ".....X.."
       ".....x.."
       ".....X.."
       ".....X.."
       ".....X.."
       ".....X.."
       ".....x.."
-      "........"))
+      ".....X.."))
 #+end_src
 *** [[https://github.com/Fanael/highlight-defined][highlight-defined]]
 #+begin_src emacs-lisp :tangle no
