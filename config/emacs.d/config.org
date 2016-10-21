@@ -643,7 +643,7 @@ Handling/storing of files, backups, autosaves.
       "bm"    'kill-matching-buffers
       "br"    'view-mode
       "bn"    'next-buffer
-      "be"    'erase-buffer
+      "be"    'diego/safe-erase-buffer
       "bi"    'ibuffer
       "bc"    'clone-indirect-buffer-other-window
 
@@ -660,7 +660,15 @@ Handling/storing of files, backups, autosaves.
 
     (defun diego/copy-file ()
       (interactive)
-      (call-interactively 'write-file)))
+      (call-interactively 'write-file))
+
+    (defun diego/safe-erase-buffer ()
+      (interactive)
+      (if (y-or-n-p (format "Erase content of buffer %s ?" (current-buffer)))
+          (progn
+            (erase-buffer)
+            (message "Buffer erased."))
+        (message "erase-buffer cancelled"))))
 #+end_src
 **** Toggles 
 #+begin_src emacs-lisp
