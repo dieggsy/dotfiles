@@ -8,6 +8,23 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 
 # Set up taps
 echo Tapping taps...
+brew tap ==>
+brew tap Auto-updated
+brew tap Homebrew!
+brew tap Updated
+brew tap 1
+brew tap tap
+brew tap (homebrew/core).
+brew tap ==>
+brew tap Updated
+brew tap Formulae
+brew tap castxml
+brew tap creduce
+brew tap crystal-lang
+brew tap emacs-clang-complete-async
+brew tap llvm
+brew tap ponyc
+brew tap rtags
 brew tap caskroom/cask
 brew tap caskroom/fonts
 brew tap caskroom/versions
@@ -40,6 +57,7 @@ brew install advancemame
 brew install apr
 brew install apr-util
 brew install archey
+brew install arpack
 brew install atk
 brew install autoconf
 brew install automake
@@ -48,6 +66,7 @@ brew install bash
 brew install bash-completion2
 brew install bdw-gc
 brew install berkeley-db
+brew install bison
 brew install boost
 brew install boost-python
 brew install brew-cask-completion
@@ -61,6 +80,7 @@ brew install cookiecutter
 brew install coreutils
 brew install cowsay
 brew install ctags
+brew install curl
 brew install ddate
 brew install dict
 brew install dirmngr
@@ -69,19 +89,23 @@ brew install doxygen
 brew install eigen
 brew install elinks
 brew install emacs
+brew install epstool
 brew install evince
 brew install faad2
 brew install ffmpeg
 brew install fftw
 brew install figlet
 brew install flac
+brew install fltk
 brew install fluid-synth
 brew install fontconfig
 brew install fortune
 brew install freetype
 brew install fzf
+brew install gawk
 brew install gcal
 brew install gcc
+brew install gd
 brew install gdbm
 brew install gdk-pixbuf
 brew install gettext
@@ -89,20 +113,25 @@ brew install gflags
 brew install ghostscript
 brew install giflib
 brew install git
+brew install gl2ps
 brew install glew
 brew install glib
 brew install global
 brew install glog
+brew install glpk
 brew install gmime
 brew install gmp
 brew install gnome-icon-theme
+brew install gnu-sed
 brew install gnupg
 brew install gnupg2
+brew install gnuplot
 brew install gnutls
 brew install gobject-introspection
 brew install google-sparsehash
 brew install gperftools
 brew install gpg-agent
+brew install graphicsmagick
 brew install gsettings-desktop-schemas
 brew install gst-plugins-base010
 brew install gstreamer010
@@ -177,6 +206,7 @@ brew install mad
 brew install markdown
 brew install matplotlib
 brew install mercurial
+brew install metis
 brew install mp4v2
 brew install mpc
 brew install mpd
@@ -193,6 +223,7 @@ brew install node
 brew install notmuch
 brew install nsnake
 brew install numpy
+brew install octave
 brew install ode
 brew install offlineimap
 brew install oniguruma
@@ -211,18 +242,24 @@ brew install pinentry
 brew install pip-completion
 brew install pixman
 brew install pkg-config
+brew install plotutils
 brew install poppler
 brew install portaudio
 brew install portmidi
 brew install potrace
 brew install protobuf
+brew install pstoedit
 brew install pth
 brew install py2cairo
 brew install py3cairo
 brew install pygobject3
 brew install pyqt
+brew install pyqt5
 brew install python
 brew install python3
+brew install qhull
+brew install qrupdate
+brew install qscintilla2
 brew install qt
 brew install qt5
 brew install readline
@@ -246,27 +283,33 @@ brew install source-highlight
 brew install sqlite
 brew install ssh-copy-id
 brew install subversion
+brew install suite-sparse
 brew install surfraw
 brew install szip
 brew install taglib
 brew install talloc
+brew install tbb
 brew install tesseract
+brew install texinfo
 brew install the_silver_searcher
 brew install thefuck
 brew install theora
 brew install tmux
 brew install todo-txt
 brew install tokyo-cabinet
+brew install transfig
 brew install trash
 brew install unar
 brew install unrar
 brew install urlview
 brew install utf8proc
+brew install veclibfort
 brew install vim
 brew install vimpager
 brew install w3m
 brew install watch
 brew install webp
+brew install weechat
 brew install wget
 brew install wtf
 brew install wxmac
@@ -305,6 +348,7 @@ brew cask install keycastr
 brew cask install libreoffice
 brew cask install licecap
 brew cask install lilypond
+brew cask install middleclick
 brew cask install musescore
 brew cask install music-manager
 brew cask install pixelstick

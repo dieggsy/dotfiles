@@ -82,6 +82,7 @@ singledispatch==3.4.0.3
 six==1.10.0
 stevedore==1.18.0
 sympy==1.0
+TBB==0.1
 thrift==0.9.3
 tornado==4.4.2
 traitlets==4.3.1
