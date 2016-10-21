@@ -1075,8 +1075,7 @@ A really nice search/completion system for emacs.
             "\\`\\*Packages"
             "\\`\\*Customize"
             "\\`\\*info"
-            "\\`\\*Compile"
-            "\\`\\*Messages"))
+            "\\`\\*Compile"))
 
     ;; RET enters folder rather than opening dired
     (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
