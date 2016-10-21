@@ -2484,8 +2484,7 @@ I like a line length limit indicator in Python
   (use-package fill-column-indicator
     :ensure t
     :init
-    (setq-default fci-rule-column 79)
-    (add-hook 'python-mode-hook 'fci-mode))
+    (setq-default fci-rule-column 79))
 #+END_SRC
 
 *** [[https://github.com/flycheck/flycheck][flycheck]]
@@ -2783,27 +2782,28 @@ Properties that apply to all programming modes.
 ** Python
 #+BEGIN_SRC emacs-lisp
   (defun diego/setup-python-mode ()
-      (yas-minor-mode)
-      (setq-local tab-width 4)
-      (set (make-local-variable 'comment-inline-offset) 2)
-      (setenv "PYTHONPATH" "/usr/local/bin/python3")
-      (defvar diego/python-prettify-alist
-        '(("<=" . "≤")
-          (">=" . "≥")
-          ("!=" . "≠")
-          ("==" . "≈")
-          ("is" . "≡")
-          ("sum" . "∑")
-          ("math.sqrt" . "√")
-          ("math.pi" . "π")
-          ("lambda" . "λ")
-          ("and" . 8743)
-          ("or" . 8744)
-          ("self" . "↻")
-          ("in" . "∈")
-          ("not in" . "∉")))
-      (setq-local prettify-symbols-alist
-                  diego/python-prettify-alist))
+    (fci-mode)
+    (yas-minor-mode)
+    (setq-local tab-width 4)
+    (set (make-local-variable 'comment-inline-offset) 2)
+    (setenv "PYTHONPATH" "/usr/local/bin/python3")
+    (defvar diego/python-prettify-alist
+      '(("<=" . "≤")
+        (">=" . "≥")
+        ("!=" . "≠")
+        ("==" . "≈")
+        ("is" . "≡")
+        ("sum" . "∑")
+        ("math.sqrt" . "√")
+        ("math.pi" . "π")
+        ("lambda" . "λ")
+        ("and" . 8743)
+        ("or" . 8744)
+        ("self" . "↻")
+        ("in" . "∈")
+        ("not in" . "∉")))
+    (setq-local prettify-symbols-alist
+                diego/python-prettify-alist))
 
   (add-hook 'python-mode-hook 'diego/setup-python-mode)
 #+END_SRC
@@ -2812,6 +2812,7 @@ Properties that apply to all programming modes.
 Mostly set up hs-minor-mode for emacs-lisp.
 #+BEGIN_SRC emacs-lisp
   (defun diego/setup-lisp-mode ()
+    (fci-mode)
     (hs-minor-mode)
     (local-set-key (kbd "C-c <up>") 'hs-hide-all)
     (local-set-key (kbd "C-c <down>") 'hs-show-all)
