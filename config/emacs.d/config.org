@@ -1836,7 +1836,7 @@ Email!
     (evil-define-key 'normal paradox-menu-mode-map "fr" 'paradox-filter-regexp)
     (evil-define-key 'normal paradox-menu-mode-map "fu" 'paradox-filter-upgrades)
     (evil-define-key 'normal paradox-menu-mode-map "fs" 'paradox-filter-stars)
-    (evil-define-key 'normal parodox-menu-mode-map "x" 'paradox-menu-execute))
+    (evil-define-key 'normal paradox-menu-mode-map "x" 'paradox-menu-execute))
 #+end_src
 *** [[https://github.com/emacsfodder/pbcopy.el][pbcopy]]
 Allow yanking and pasting with osx clipboard in terminal Emacs. Might want to
