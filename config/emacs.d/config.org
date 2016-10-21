@@ -683,6 +683,7 @@ based on or copied from spacemacs, so definitely check them out!
       "ts" 'flycheck-mode
       "tg" 'diego/github-spacing
       "tc" 'diego/toggle-linum-fci
+      "tr" 'nlinum-relative-toggle
       "tS" 'flyspell-mode)
 
   (defun diego/toggle-linum-fci ()
