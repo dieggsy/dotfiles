@@ -993,32 +993,6 @@ based on or copied from spacemacs, so definitely check them out!
     (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
     (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit))
 #+END_SRC
-*** Tiny menu
-#+BEGIN_SRC emacs-lisp
-  (defun diego/evil-tiny-menu ()
-    (use-package tiny-menu :ensure t)
-    (setq tiny-menu-items
-          '(("org-things"   ("Things"
-                              ((?t "Tag"     org-tags-view)
-                              (?i "ID"      air-org-goto-custom-id)
-                              (?k "Keyword" org-search-view))))
-              ("org-links"    ("Links"
-                              ((?c "Capture"   org-store-link)
-                              (?l "Insert"    org-insert-link)
-                              (?i "Custom ID" air-org-insert-custom-id-link))))
-              ("org-files"    ("Files"
-                              ((?t "TODO"  (lambda () (air-pop-to-org-todo nil)))
-                              (?n "Notes" (lambda () (air-pop-to-org-notes nil)))
-                              (?v "Vault" (lambda () (air-pop-to-org-vault nil))))))
-              ("org-captures" ("Captures"
-                              ((?c "TODO"  air-org-task-capture)
-                              (?n "Note"  (lambda () (interactive) (org-capture nil "n"))))))))
-      (evil-define-key 'normal global-map (kbd "\\ \\") 'tiny-menu)
-      (evil-define-key 'normal global-map (kbd "\\ f") (tiny-menu-run-item "org-files"))
-      (evil-define-key 'normal global-map (kbd "\\ t") (tiny-menu-run-item "org-things"))
-      (evil-define-key 'normal global-map (kbd "\\ c") (tiny-menu-run-item "org-captures"))
-      (evil-define-key 'normal global-map (kbd "\\ l") (tiny-menu-run-item "org-links")))
-#+END_SRC
 *** Final Setup
 #+BEGIN_SRC emacs-lisp
   (use-package evil
@@ -1030,9 +1004,7 @@ based on or copied from spacemacs, so definitely check them out!
     ;; (setq evil-move-cursor-back nil)
     (add-hook 'evil-mode-hook 'diego/evil-modes)
     (add-hook 'evil-mode-hook 'diego/evil-appearance)
-    (add-hook 'evil-mode-hook 'diego/evil-bindings)
-    (add-hook 'evil-mode-hook 'diego/evil-tiny-menu))
-
+    (add-hook 'evil-mode-hook 'diego/evil-bindings))
 
   (use-package evil-leader
     :ensure t
@@ -1910,6 +1882,35 @@ Recently used M-x commands
     :defer 5
     :config
     (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+#+END_SRC
+
+*** [[https://github.com/aaronbieber/tiny-menu.el][tiny-menu]]
+#+BEGIN_SRC emacs-lisp
+  (use-package tiny-menu
+    :commands (tiny-menu tiny-menu-run-item)
+    :ensure t
+    :config
+    (setq tiny-menu-items
+          '(("org-things"   ("Things"
+                             ((?t "Tag"     org-tags-view)
+                              (?i "ID"      air-org-goto-custom-id)
+                              (?k "Keyword" org-search-view))))
+            ("org-links"    ("Links"
+                             ((?c "Capture"   org-store-link)
+                              (?l "Insert"    org-insert-link)
+                              (?i "Custom ID" air-org-insert-custom-id-link))))
+            ("org-files"    ("Files"
+                             ((?t "TODO"  (lambda () (air-pop-to-org-todo nil)))
+                              (?n "Notes" (lambda () (air-pop-to-org-notes nil)))
+                              (?v "Vault" (lambda () (air-pop-to-org-vault nil))))))
+            ("org-captures" ("Captures"
+                             ((?c "TODO"  air-org-task-capture)
+                              (?n "Note"  (lambda () (interactive) (org-capture nil "n"))))))))
+    (evil-define-key 'normal global-map (kbd "\\ \\") 'tiny-menu)
+    (evil-define-key 'normal global-map (kbd "\\ f") (tiny-menu-run-item "org-files"))
+    (evil-define-key 'normal global-map (kbd "\\ t") (tiny-menu-run-item "org-things"))
+    (evil-define-key 'normal global-map (kbd "\\ c") (tiny-menu-run-item "org-captures"))
+    (evil-define-key 'normal global-map (kbd "\\ l") (tiny-menu-run-item "org-links")))
 #+END_SRC
 
 ** Navigation 
