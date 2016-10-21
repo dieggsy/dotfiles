@@ -547,6 +547,9 @@ Handling/storing of files, backups, autosaves.
 * Major configs
 ** [[https://bitbucket.org/lyro/evil/wiki/Home][evil]]
 *** Leader config
+A good chunk if not all of the bindings/functions in this section are either
+based on or copied from spacemacs, so definitely check them out!
+
 **** Search
 #+begin_src emacs-lisp
   (defun diego/leader-search ()
