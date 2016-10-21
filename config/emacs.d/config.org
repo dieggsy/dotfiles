@@ -1025,6 +1025,7 @@ based on or copied from spacemacs, so definitely check them out!
     :ensure t
     :init
     (setq evil-want-C-u-scroll t)
+    (setq evil-want-fine-undo t)
     :config
     ;; (setq evil-move-cursor-back nil)
     (add-hook 'evil-mode-hook 'diego/evil-modes)
@@ -1355,6 +1356,7 @@ A really nice search/completion system for emacs.
     (setq org-src-fontify-natively t)
     (setq org-src-tab-acts-natively t)
     (setq org-fontify-quote-and-verse-blocks t)
+    (setq org-hide-emphasis-markers t)
     (add-to-list 'org-latex-packages-alist '("" "listings"))
     (add-to-list 'org-latex-packages-alist '("" "color"))
 
@@ -1815,7 +1817,9 @@ Email!
 #+BEGIN_SRC emacs-lisp
   (use-package notmuch
     :commands notmuch
-    :ensure t)
+    :ensure t
+    :config
+    (setq notmuch-search-oldest-first nil))
 #+END_SRC
 *** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
 #+begin_src emacs-lisp
@@ -1832,6 +1836,8 @@ Email!
     :ensure t
     :commands paradox-list-packages
     :config
+    (setq paradox-automatically-star t)
+    (setq paradox-execute-asynchronously t)
     (evil-define-key 'normal paradox-menu-mode-map "q" 'paradox-quit-and-close)
     (evil-define-key 'normal paradox-menu-mode-map "fr" 'paradox-filter-regexp)
     (evil-define-key 'normal paradox-menu-mode-map "fu" 'paradox-filter-upgrades)
@@ -2217,6 +2223,9 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
     :ensure t
     :commands (projectile-find-file projectile-switch-project projectile-switch-to-buffer)
     :config
+    (setq projectile-globally-ignored-files
+          '("TAGS"
+            ".DS_Store"))
     (setq projectile-ignored-projects
           '("/usr/local"
             "~/dotfiles/config/emacs.d/lisp/Gnugol"
@@ -2472,7 +2481,9 @@ Syntax check for python. Pretty good.
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
     :commands flycheck-mode
-    :ensure t)
+    :ensure t
+    :config
+    (setq flycheck-completing-read-function 'ivy-completing-read))
 #+END_SRC
 *** [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]]
 #+begin_src emacs-lisp
@@ -2680,7 +2691,9 @@ An org-mode google??? Not currently working, apparently.
 #+BEGIN_SRC emacs-lisp
   (use-package melpa-upstream-visit
     :commands muv
-    :ensure t)
+    :ensure t
+    :config
+    (setq muv:completing-read-function 'ivy-completing-read))
 #+END_SRC
 
 *** [[https://github.com/vermiculus/sx.el/][sx]]
@@ -2831,6 +2844,7 @@ Mostly set up hs-minor-mode for emacs-lisp.
 #+END_SRC
 ** Calc mode 
 #+begin_src emacs-lisp
+  (setq calc-multiplication-has-precedence nil)
   (defun diego/setup-calc-mode()
     (local-set-key (kbd "x") (lambda () (interactive) (counsel-M-x "^calc-")))
     (calc-symbolic-mode 1))
