@@ -2343,26 +2343,6 @@ Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][s
     (setq fancy-battery-show-percentage t))
 #+END_SRC
 
-*** [[https://github.com/zenozeng/yafolding.el][yafolding]]
-Good code folding is hard to come by in Emacs, and isn't /that/ useful. This was
-pretty good but had some known issues.
-#+BEGIN_SRC emacs-lisp :tangle no
-  (use-package yafolding
-    ;; Man, good code folding is hard to come by in emacs
-    ;; This one's ok, but there are a couple know issues that
-    ;; don't quite make it worth it, I think.
-    :ensure t
-    :config
-    (defun diego/yafolding-kbd ()
-   (local-set-key (kbd "C-c <up>") 'yafolding-hide-all)
-   (local-set-key (kbd "C-c <down>") 'yafolding-show-all)
-   (local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
-   (local-set-key (kbd "C-c <right>") 'yafolding-show-element)
-   (local-set-key [C-tab] 'yafolding-toggle-element))
-    (add-hook 'python-mode-hook 'yafolding-mode)
-    (add-hook 'python-mode-hook 'diego/yafolding-kbd))
-#+END_SRC
-
 ** Org mode
 *** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
 #+BEGIN_SRC emacs-lisp
@@ -2638,6 +2618,23 @@ Freakin yasnippet. It's the best.
     ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
     ;; (define-key yas-minor-mode-map (kbd "SPC") 'yas-expand)
     )
+#+END_SRC
+
+*** [[https://github.com/zenozeng/yafolding.el][yafolding]]
+Good code folding is hard to come by in Emacs, and isn't /that/ useful. This was
+pretty good but had some known issues.
+#+BEGIN_SRC emacs-lisp
+  (use-package yafolding
+    :ensure t
+    :config
+    (defun diego/yafolding-kbd ()
+      (local-set-key (kbd "C-c <up>") 'yafolding-hide-all)
+      (local-set-key (kbd "C-c <down>") 'yafolding-show-all)
+      (local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
+      (local-set-key (kbd "C-c <right>") 'yafolding-show-element)
+      (local-set-key [C-tab] 'yafolding-toggle-element))
+    (add-hook 'python-mode-hook 'yafolding-mode)
+    (add-hook 'python-mode-hook 'diego/yafolding-kbd))
 #+END_SRC
 
 ** Reference/search
