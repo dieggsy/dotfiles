@@ -632,21 +632,34 @@ based on or copied from spacemacs, so definitely check them out!
 #+begin_src emacs-lisp
   (defun diego/leader-applications () 
       (evil-leader/set-key
-        "ax" 'xkcd
+        "ax"  'xkcd
         "agt" 'tetris
         "agg" 'gomoku
         "ag2" '2048-game
         "agd" 'dunnet
-        "ai" 'erc
-        "ar" 'ranger
-        "ad" 'deer
-        "ac" 'calc-dispatch
-        "ap" 'paradox-list-packages
-        "au" 'undo-tree-visualize
-        "aw" 'sunshine-forecast
-        "aW" 'sunshine-quick-forecast
-        "as" 'speed-type-text
-        "at" 'twit))
+        "ai"  'erc
+        "ar"  'ranger
+        "ad"  'deer
+        "ac"  'calc-dispatch
+        "ap"  'paradox-list-packages
+        "au"  'undo-tree-visualize
+        "aw"  'sunshine-forecast
+        "aW"  'sunshine-quick-forecast
+        "as"  'speed-type-text
+        "at"  'twit
+
+        ;; org 
+        "ao#" 'org-agenda-list-stuck-projects
+        "ao/" 'org-occur-in-agenda-files
+        "aoa" 'org-agenda-list
+        "aoe" 'org-store-agenda-views
+        "aom" 'org-tags-view
+        "aoo" 'org-agenda
+        "aos" 'org-search-view
+        "aot" 'org-todo-list
+        "aoO" 'org-clock-out
+        "aoc" 'org-capture
+        "aol" 'org-store-link))
 #+end_src
 **** Buffers & Files
 #+begin_src emacs-lisp
@@ -873,14 +886,7 @@ based on or copied from spacemacs, so definitely check them out!
         "meb" 'eval-buffer
         "mef" 'eval-defun
         "mer" 'eval-region
-        "mel" 'eval-last-sexp))
-
-    (defmacro diego|org-emphasize (fname char)
-       "Make function for setting the emphasis in org mode"
-       `(defun ,fname () (interactive)
-               (org-emphasize ,char)))
-
-    )
+        "mel" 'eval-last-sexp)))
 #+END_SRC
 **** Global
 #+BEGIN_SRC emacs-lisp
@@ -889,12 +895,13 @@ based on or copied from spacemacs, so definitely check them out!
     (evil-leader/set-leader "SPC")
     (setq evil-leader/in-all-states 1)
     (evil-leader/set-key
-      "SPC"       'counsel-M-x
-      "u"         'universal-argument
-      "&"         'async-shell-command
-      ":"         'eval-expression
-      "y"         'counsel-yank-pop
-      "z"         'repeat)
+      "SPC" 'counsel-M-x
+      "C"   'org-capture
+      "u"   'universal-argument
+      "&"   'async-shell-command
+      ":"   'eval-expression
+      "y"   'counsel-yank-pop
+      "z"   'repeat)
 
     (diego/leader-applications)
     (diego/leader-buffers-files)
@@ -1288,81 +1295,94 @@ A really nice search/completion system for emacs.
 #+END_SRC
 *** Bindings
 #+begin_src emacs-lisp
-    (defun diego/org-bindings ()
-      (evil-leader/set-key-for-mode 'org-mode
-        "m$"     'org-archive-subtree
-        "ma"     'org-agenda
-        "mc"    'air-org-set-category-property
-        "md"    'org-deadline
-        "mn"    'org-narrow-to-subtree
-        "mp"     'org-set-property
-        "ms"    'org-schedule
-        "m:"    'air-org-set-tags
-        "mic"   'org-table-insert-column
-        "mir"   'org-table-insert-row
-        "mil"   'org-insert-link
-        "mif"   'org-footnote-new
-        "mw"    'fill-paragraph
-        "me"    'org-export-dispatch
-        "mb"    'org-babel-tangle
-        "mxb"   (diego|org-emphasize diego/org-bold ?*)
-        "mxi"   (diego|org-emphasize diego/org-italic ?/)
-        "mxc"   (diego|org-emphasize diego/org-code ?~)
-        "mxu"   (diego|org-emphasize diego/org-underline ?_)
-        "mxv"   (diego|org-emphasize diego/org-verbatim ?=)
-        "mxs"   (diego|org-emphasize diego/org-strike-through ?+)
-        "mxr"   (diego|org-emphasize diego/org-clear ? )
+  (defun diego/org-bindings ()
+  
+    (defmacro diego|org-emphasize (fname char)
+      "Make function for setting the emphasis in org mode"
+      `(defun ,fname () (interactive)
+              (org-emphasize ,char)))
 
-        ;; tables
-        "mta" 'org-table-align
-        "mtb" 'org-table-blank-field
-        "mtc" 'org-table-convert
-        "mtdc" 'org-table-delete-column
-        "mtdr" 'org-table-kill-row
-        "mte" 'org-table-eval-formula
-        "mtE" 'org-table-export
-        "mth" 'org-table-previous-field
-        "mtH" 'org-table-move-column-left
-        "mtic" 'org-table-insert-column
-        "mtih" 'org-table-insert-hline
-        "mtiH" 'org-table-hline-and-move
-        "mtir" 'org-table-insert-row
-        "mtI" 'org-table-import
-        "mtj" 'org-table-next-row
-        "mtJ" 'org-table-move-row-down
-        "mtK" 'org-table-move-row-up
-        "mtl" 'org-table-next-field
-        "mtL" 'org-table-move-column-right
-        "mtn" 'org-table-create
-        "mtN" 'org-table-create-with-table.el
-        "mtr" 'org-table-recalculate
-        "mts" 'org-table-sort-lines
-        "mttf" 'org-table-toggle-formula-debugger
-        "mtto" 'org-table-toggle-coordinate-overlays
-        "mtw" 'org-table-wrap-region)
+    (evil-leader/set-key-for-mode 'org-mode
+      "m$"  'org-archive-subtree
+      "m'"  'org-edit-special
+      "m^"  'org-sort
+      "ma"  'org-agenda
+      "mA"  'org-archive-subtree
+      "mc"  'org-capture
+      "md"  'org-deadline
+      "mn"  'org-narrow-to-subtree
+      "mN"  'widen
+      "mP"  'org-set-property
+      "mR"  'org-refile
+      "ms"  'org-schedule
+      "m:"  'air-org-set-tags
+      "mic" 'org-table-insert-column
+      "mir" 'org-table-insert-row
+      "mil" 'org-insert-link
+      "mif" 'org-footnote-new
+      "me"  'org-export-dispatch
+      "mb"  'org-babel-tangle
+      "mxb" (diego|org-emphasize diego/org-bold ?*)
+      "mxi" (diego|org-emphasize diego/org-italic ?/)
+      "mxc" (diego|org-emphasize diego/org-code ?~)
+      "mxu" (diego|org-emphasize diego/org-underline ?_)
+      "mxv" (diego|org-emphasize diego/org-verbatim ?=)
+      "mxs" (diego|org-emphasize diego/org-strike-through ?+)
+      "mxr" (diego|org-emphasize diego/org-clear ? )
 
+      ;; tables
+      "mta"  'org-table-align
+      "mtb"  'org-table-blank-field
+      "mtc"  'org-table-convert
+      "mtdc" 'org-table-delete-column
+      "mtdr" 'org-table-kill-row
+      "mte"  'org-table-eval-formula
+      "mtE"  'org-table-export
+      "mth"  'org-table-previous-field
+      "mtH"  'org-table-move-column-left
+      "mtic" 'org-table-insert-column
+      "mtih" 'org-table-insert-hline
+      "mtiH" 'org-table-hline-and-move
+      "mtir" 'org-table-insert-row
+      "mtI"  'org-table-import
+      "mtj"  'org-table-next-row
+      "mtJ"  'org-table-move-row-down
+      "mtK"  'org-table-move-row-up
+      "mtl"  'org-table-next-field
+      "mtL"  'org-table-move-column-right
+      "mtn"  'org-table-create
+      "mtN"  'org-table-create-with-table.el
+      "mtr"  'org-table-recalculate
+      "mts"  'org-table-sort-lines
+      "mttf" 'org-table-toggle-formula-debugger
+      "mtto" 'org-table-toggle-coordinate-overlays
+      "mtw"  'org-table-wrap-region)
 
-      (evil-define-key 'normal org-mode-map
-        (kbd "RET") 'org-open-at-point
-        "<"         'org-metaleft
-        ">"         'org-metaright
-        "gh"        'outline-up-heading
-        "gl"        'outline-next-visible-heading
-        "gj"        'org-forward-heading-same-level
-        "gk"        'org-backward-heading-same-level
-        "t"         'org-todo
-        (kbd "M-l") 'org-metaright
-        (kbd "M-h") 'org-metaleft
-        (kbd "M-k") 'org-metaup
-        (kbd "M-j") 'org-metadown
-        (kbd "M-L") 'org-shiftmetaright
-        (kbd "M-H") 'org-shiftmetaleft
-        (kbd "M-K") 'org-shiftmetaup
-        (kbd "M-J") 'org-shiftmetadown))
+    (evil-leader/set-key-for-mode 'org-src-mode
+      "m'" 'org-edit-src-exit)
+
+    (evil-define-key 'normal org-mode-map
+      (kbd "RET") 'org-open-at-point
+      "<"         'org-metaleft
+      ">"         'org-metaright
+      "gh"        'outline-up-heading
+      "gl"        'outline-next-visible-heading
+      "gj"        'org-forward-heading-same-level
+      "gk"        'org-backward-heading-same-level
+      "t"         'org-todo
+      (kbd "M-l") 'org-metaright
+      (kbd "M-h") 'org-metaleft
+      (kbd "M-k") 'org-metaup
+      (kbd "M-j") 'org-metadown
+      (kbd "M-L") 'org-shiftmetaright
+      (kbd "M-H") 'org-shiftmetaleft
+      (kbd "M-K") 'org-shiftmetaup
+      (kbd "M-J") 'org-shiftmetadown))
 #+end_src
 *** Custom vars 
+**** Files
 #+begin_src emacs-lisp
-  (defun diego/org-custom-vars ()
+  (defun diego/org-file-vars ()
     ;; files
     (setq org-agenda-text-search-extra-files '(agenda-archives))
     (setq org-agenda-files '("~/Dropbox (MIT)/org/"))
@@ -1370,8 +1390,11 @@ A really nice search/completion system for emacs.
     (setq diego/todo-file "~/Dropbox (MIT)/org/todo.org")
     (setq diego/notes-file "~Dropbox (MIT)/org/notes.org")
     (setq org-directory "~/Dropbox (MIT)/org")
-    (setq org-archive-location "~/Dropbox (MIT)/org/archive.org::")
-
+    (setq org-archive-location "~/Dropbox (MIT)/org/archive.org::"))
+#+end_src
+**** Todo/agenda
+#+begin_src emacs-lisp
+  (defun diego/org-todo-vars ()
     ;; Todo/tasks/agenda
     (setq org-enforce-todo-dependencies t)
     (setq org-log-done (quote time))
@@ -1394,9 +1417,13 @@ A really nice search/completion system for emacs.
              "* ☛ TODO %?\nSCHEDULED: %t")
             ("s" "School Todo" entry
              (file+olp diego/todo-file "School" "School")
-             "* ☛ TODO %?\nSCHEDULED: %t")))
+             "* ☛ TODO %?\nSCHEDULED: %t"))))
 
+#+end_src 
 
+**** Behavior/appearance
+#+begin_src emacs-lisp
+  (defun diego/org-general-vars () 
     ;; Behavior
     (setq org-insert-heading-respect-content t)
     (setq org-src-window-setup 'current-window)
@@ -1411,8 +1438,8 @@ A really nice search/completion system for emacs.
 
     ;; latex
     (setq org-latex-listings t)
-  (add-to-list 'org-latex-packages-alist '("" "listings"))
-  (add-to-list 'org-latex-packages-alist '("" "color")))
+    (add-to-list 'org-latex-packages-alist '("" "listings"))
+    (add-to-list 'org-latex-packages-alist '("" "color")))
 #+end_src
 *** Setup
 #+BEGIN_SRC emacs-lisp
@@ -1431,9 +1458,10 @@ A really nice search/completion system for emacs.
            ("C-c f i" . air-org-goto-custom-id))
     :config
     (org-reload)  ; Not sure I should have to do this...
-    (diego/org-custom-vars)
+    (diego/org-file-vars)
+    (diego/org-todo-vars)
+    (diego/org-general-vars)
     (diego/org-bindings)
-  
 
     (add-hook 'org-agenda-mode-hook
               (lambda ()
@@ -1493,47 +1521,49 @@ A really nice search/completion system for emacs.
 #+END_SRC
 ** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 #+begin_src emacs-lisp
-    (use-package which-key
-      :ensure t
-      :config
-      (which-key-mode)
-      (which-key-add-key-based-replacements
-        "SPC a"   "applications"
-        "SPC ag"  "games"
-        "SPC b"   "buffer"
-        "SPC c"   "comment"
-        "SPC f"   "file"
-        "SPC fe"  "emacs/config"
-        "SPC g"   "magit"
-        "SPC h"   "help"
-        "SPC hd"  "describe"
-        "SPC i"   "insert"
-        "SPC j"   "jump"
-        "SPC m"   "major-mode-cmd"
-        "SPC n"   "narrow"
-        "SPC p"   "project"
-        "SPC q"   "quit"
-        "SPC s"   "search"
-        "SPC t"   "toggle"
-        "SPC w"   "window"
-        "SPC x"   "text"
-        "SPC xa"  "align"
-        "SPC xd"  "delete"
-        "SPC xl"  "lines"
-        "SPC xt"  "transpose"
-        "SPC xw"  "words"
-        "SPC S"   "spelling"
-        "SPC"     "root")
+  (use-package which-key
+    :ensure t
+    :config
+    (which-key-mode)
+    (which-key-add-key-based-replacements
+      "SPC a"   "applications"
+      "SPC ao"  "org"
+      "SPC ag"  "games"
+      "SPC b"   "buffer"
+      "SPC c"   "comment"
+      "SPC f"   "file"
+      "SPC fe"  "emacs/config"
+      "SPC g"   "magit"
+      "SPC h"   "help"
+      "SPC hd"  "describe"
+      "SPC i"   "insert"
+      "SPC j"   "jump"
+      "SPC m"   "major-mode-cmd"
+      "SPC n"   "narrow"
+      "SPC p"   "project"
+      "SPC q"   "quit"
+      "SPC s"   "search"
+      "SPC t"   "toggle"
+      "SPC w"   "window"
+      "SPC x"   "text"
+      "SPC xa"  "align"
+      "SPC xd"  "delete"
+      "SPC xl"  "lines"
+      "SPC xt"  "transpose"
+      "SPC xw"  "words"
+      "SPC S"   "spelling"
+      "SPC"     "root")
 
-      (which-key-add-major-mode-key-based-replacements 'org-mode
-        "SPC mi" "insert"
-        "SPC mx" "text")
+    (which-key-add-major-mode-key-based-replacements 'org-mode
+      "SPC mi" "insert"
+      "SPC mx" "text"
+      "SPC mt" "table")
 
-      (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
-        (which-key-add-major-mode-key-based-replacements mode
-          "SPC me" "eval"))
+    (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
+      (which-key-add-major-mode-key-based-replacements mode
+        "SPC me" "eval"))
 
-      (setq which-key-sort-order 'which-key-key-order-alpha))
+    (setq which-key-sort-order 'which-key-key-order-alpha))
 #+end_src
 
 * Dem packages
