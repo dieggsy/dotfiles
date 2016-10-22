@@ -545,13 +545,13 @@ Handling/storing of files, backups, autosaves.
     (if (boundp 'pyvenv-virtual-env-name)
         (setq venv-current-name pyvenv-virtual-env-name)
       (setq venv-current-name nil)))
-
 #+END_SRC
 
 *** Macros?
 #+BEGIN_SRC emacs-lisp
   (fset 'diego/insert-footnote
-     [?  ?/ ?\{ ?\[ ?0 ?- ?9 ?\] ?+ ?\} return ?a ?f ?n ?: escape ?  ?x ?p ?r ?\[])
+        [?  ?/ ?\{ ?\[ ?0 ?- ?9 ?\] ?+ ?\} return ?a ?f ?n ?: escape ?  ?x ?p ?r ?\[])
+
 #+END_SRC
 ** What?
 #+begin_src emacs-lisp
@@ -1287,7 +1287,6 @@ A really nice search/completion system for emacs.
 #+END_SRC
 *** Setup
 #+BEGIN_SRC emacs-lisp
-  ;;; Code:
   (use-package org
     :ensure org-plus-contrib
     :commands (org-capture)
@@ -1880,7 +1879,7 @@ SUPER nifty.
     :ensure t)
 #+END_SRC
 
-*** [[https://github.com/Fuco1/smartparens][smartparens]] 
+*** [[https://github.com/Fuco1/smartparens][smartparens]]
 #+begin_src emacs-lisp
   (use-package smartparens
     :ensure t
@@ -1894,41 +1893,13 @@ Recently used M-x commands
     :ensure t)
 #+END_SRC
 
-*** [[https://github.com/aaronbieber/sunshine.el][sunshine]] 
+*** [[https://github.com/aaronbieber/sunshine.el][sunshine]]
 #+BEGIN_SRC emacs-lisp
   (use-package sunshine
     :ensure t
     :commands (sunshine-forecast sunshine-quick-forecast) 
     :config
     (setq sunshine-location "02139,USA"))
-#+END_SRC
-*** [[https://github.com/hayamiz/twittering-mode][twittering-mode]]
-#+BEGIN_SRC emacs-lisp
-  (use-package twittering-mode
-    :ensure t
-    :commands twit
-    :config
-    (setq twittering-icon-mode t)
-    (setq twittering-convert-fix-size 24)
-    (add-hook 'twittering-mode-hook #'emojify-mode)
-    (setq twittering-use-master-password t))
-#+END_SRC
-
-*** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
-#+BEGIN_SRC emacs-lisp
-  (use-package undo-tree
-    :ensure t
-    :commands undo-tree-visualize
-    :config
-    (setq undo-tree-visualizer-timestamps t))
-#+END_SRC
-*** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
-#+BEGIN_SRC emacs-lisp
-  (use-package yaml-mode
-    :ensure t
-    :defer 5
-    :config
-    (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 #+END_SRC
 
 *** [[https://github.com/aaronbieber/tiny-menu.el][tiny-menu]]
@@ -1958,6 +1929,34 @@ Recently used M-x commands
     (evil-define-key 'normal global-map (kbd "\\ t") (tiny-menu-run-item "org-things"))
     (evil-define-key 'normal global-map (kbd "\\ c") (tiny-menu-run-item "org-captures"))
     (evil-define-key 'normal global-map (kbd "\\ l") (tiny-menu-run-item "org-links")))
+#+END_SRC
+*** [[https://github.com/hayamiz/twittering-mode][twittering-mode]]
+#+BEGIN_SRC emacs-lisp
+  (use-package twittering-mode
+    :ensure t
+    :commands twit
+    :config
+    (setq twittering-icon-mode t)
+    (setq twittering-convert-fix-size 24)
+    (add-hook 'twittering-mode-hook #'emojify-mode)
+    (setq twittering-use-master-password t))
+#+END_SRC
+
+*** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+    :ensure t
+    :commands undo-tree-visualize
+    :config
+    (setq undo-tree-visualizer-timestamps t))
+#+END_SRC
+*** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
+#+BEGIN_SRC emacs-lisp
+  (use-package yaml-mode
+    :ensure t
+    :defer 5
+    :config
+    (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 #+END_SRC
 
 ** Navigation 
