@@ -740,15 +740,17 @@ based on or copied from spacemacs, so definitely check them out!
         "xa|" 'diego/align-repeat-bar
         "xa'" 'diego/align-repeat-single-quote
 
-        "xi"  'indent-region
-        "xdw" 'delete-trailing-whitespace
-        "xls" 'sort-lines
-        "xtc" 'transpose-chars
-        "xtw" 'transpose-words
-        "xtl" 'transpose-lines
-        "xu"  'evil-downcase
         "xU"  'evil-upcase
+        "xdw" 'delete-trailing-whitespace
+        "xi"  'indent-region
+        "xls" 'sort-lines
         "xq"  'diego/fill-or-unfill
+        "xtc" 'transpose-chars
+        "xtl" 'transpose-lines
+        "xtw" 'transpose-words
+        "xu"  'evil-downcase
+        "xwd" 'define-word-at-point
+        "xwc" 'count-words
 
         "xpr" 'sp-rewrap-sexp
         "xpsf" 'sp-forward-slurp-sexp
@@ -894,7 +896,8 @@ based on or copied from spacemacs, so definitely check them out!
       "u"         'universal-argument
       "&"         'async-shell-command
       ":"         'eval-expression
-      "y"         'counsel-yank-pop)
+      "y"         'counsel-yank-pop
+      "z"         'repeat)
 
     (diego/leader-applications)
     (diego/leader-buffers-files)
@@ -1688,44 +1691,45 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
 #+end_src
 *** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 #+begin_src emacs-lisp
-  (use-package which-key
-    :ensure t
-    :config
-    (which-key-mode)
-    (which-key-add-key-based-replacements
-      "SPC a"   "applications"
-      "SPC ag"  "games"
-      "SPC b"   "buffer"
-      "SPC c"   "comment"
-      "SPC f"   "file"
-      "SPC fe"  "emacs/config"
-      "SPC g"   "magit"
-      "SPC h"   "help"
-      "SPC hd"  "describe"
-      "SPC i"   "insert"
-      "SPC j"   "jump"
-      "SPC m"   "major-mode-cmd"
-      "SPC n"   "narrow"
-      "SPC p"   "project"
-      "SPC q"   "quit"
-      "SPC s"   "search"
-      "SPC t"   "toggle"
-      "SPC w"   "window"
-      "SPC x"   "text"
-      "SPC xa"  "align"
-      "SPC xd"  "delete"
-      "SPC xl"  "lines"
-      "SPC xt"  "transpose"
-      "SPC"     "root")
+    (use-package which-key
+      :ensure t
+      :config
+      (which-key-mode)
+      (which-key-add-key-based-replacements
+        "SPC a"   "applications"
+        "SPC ag"  "games"
+        "SPC b"   "buffer"
+        "SPC c"   "comment"
+        "SPC f"   "file"
+        "SPC fe"  "emacs/config"
+        "SPC g"   "magit"
+        "SPC h"   "help"
+        "SPC hd"  "describe"
+        "SPC i"   "insert"
+        "SPC j"   "jump"
+        "SPC m"   "major-mode-cmd"
+        "SPC n"   "narrow"
+        "SPC p"   "project"
+        "SPC q"   "quit"
+        "SPC s"   "search"
+        "SPC t"   "toggle"
+        "SPC w"   "window"
+        "SPC x"   "text"
+        "SPC xa"  "align"
+        "SPC xd"  "delete"
+        "SPC xl"  "lines"
+        "SPC xt"  "transpose"
+        "SPC xw"  "words"
+        "SPC"     "root")
 
-    (which-key-add-major-mode-key-based-replacements 'org-mode
-      "SPC mi" "insert")
+      (which-key-add-major-mode-key-based-replacements 'org-mode
+        "SPC mi" "insert")
 
-    (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
-      (which-key-add-major-mode-key-based-replacements mode
-        "SPC me" "eval"))
+      (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
+        (which-key-add-major-mode-key-based-replacements mode
+          "SPC me" "eval"))
 
-    (setq which-key-sort-order 'which-key-key-order-alpha))
+      (setq which-key-sort-order 'which-key-key-order-alpha))
 #+end_src
 *** [[https://github.com/lewang/flx][flx]]
 Fuzzy matching
