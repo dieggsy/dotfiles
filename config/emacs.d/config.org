@@ -1292,21 +1292,25 @@ A really nice search/completion system for emacs.
     (org-reload)  ; Not sure I should have to do this...
     (setq org-agenda-text-search-extra-files '(agenda-archives))
     (setq org-agenda-files '("~/Dropbox (MIT)/org/"))
-    (setq org-todo-keywords
-          '((sequence "☛ TODO" "○ IN-PROGRESS" "⚑ WAITING" "|" "✓ DONE" "✗ CANCELED")))
-    ;; (setq org-blank-before-new-entry '((heading . t)
-    ;;                                    ;; (plain-list-item . t)
-    ;;                                    ))
-    (setq org-capture-templates
-          '(("a" "My TODO task format." entry
-             (file "todo.org")
-             "* ☛ TODO %?\nSCHEDULED: %t")
-            ("n" "A (work-related) note." entry
-             (file+headline "notes.org" "Work")
-             "* %?\n%u\n\n"
-             :jump-to-captured t)))
     (setq org-default-notes-file "~/Dropbox (MIT)/org/todo.org")
+    (setq diego/todo-file "~/Dropbox (MIT)/org/todo.org")
+    (setq diego/notes-file "~Dropbox (MIT)/org/notes.org")
     (setq org-directory "~/Dropbox (MIT)/org")
+    (setq org-todo-keywords
+          '((sequence
+             "☛ TODO"
+             "○ IN-PROGRESS"
+             "⚑ WAITING"
+             "|"
+             "✓ DONE"
+             "✗ CANCELED")))
+    (setq org-capture-templates
+         '(("t" "Todo" entry
+           (file diego/todo-file)
+            "* ☛ TODO %?\nSCHEDULED: %t")
+           ("s" "School Todo" entry
+            (file+olp diego/todo-file "School" "School")
+            "* ☛ TODO %?\nSCHEDULED: %t")))
     (setq org-enforce-todo-dependencies t)
     (setq org-log-done (quote time))
     (setq org-log-redeadline (quote time))
@@ -1316,7 +1320,6 @@ A really nice search/completion system for emacs.
     (setq org-insert-heading-respect-content t)
     (setq org-ellipsis " …")
     (setq org-startup-with-inline-images t)
-    (set-face-attribute 'org-upcoming-deadline nil :foreground "gold1")
     (setq org-archive-location "~/Dropbox (MIT)/org/archive.org::")
     (setq org-hide-emphasis-markers t)
     (setq org-src-window-setup 'current-window)
@@ -1332,29 +1335,44 @@ A really nice search/completion system for emacs.
     (add-to-list 'org-latex-packages-alist '("" "listings"))
     (add-to-list 'org-latex-packages-alist '("" "color"))
 
-
     (add-hook 'org-agenda-mode-hook
               (lambda ()
                 (setq org-habit-graph-column 50)
-                (define-key org-agenda-mode-map "j"          'org-agenda-next-line)
-                (define-key org-agenda-mode-map "k"          'org-agenda-previous-line)
-                (define-key org-agenda-mode-map "n"          'org-agenda-next-date-line)
-                (define-key org-agenda-mode-map "p"          'org-agenda-previous-date-line)
-                (define-key org-agenda-mode-map "c"          'air-org-agenda-capture)
-                (define-key org-agenda-mode-map "R"          'org-revert-all-org-buffers)
-                (define-key org-agenda-mode-map (kbd "RET")  'org-agenda-switch-to)
+                (define-key
+                  org-agenda-mode-map "j"          'org-agenda-next-line)
+                (define-key
+                  org-agenda-mode-map "k"          'org-agenda-previous-line)
+                (define-key
+                  org-agenda-mode-map "n"          'org-agenda-next-date-line)
+                (define-key
+                  org-agenda-mode-map "p"          'org-agenda-previous-date-line)
+                (define-key
+                  org-agenda-mode-map "c"          'air-org-agenda-capture)
+                (define-key
+                  org-agenda-mode-map "R"          'org-revert-all-org-buffers)
+                (define-key
+                  org-agenda-mode-map (kbd "RET")  'org-agenda-switch-to)
 
                 (define-prefix-command 'air-org-run-shortcuts)
-                (define-key air-org-run-shortcuts "f" (tiny-menu-run-item "org-files"))
-                (define-key air-org-run-shortcuts "t" (tiny-menu-run-item "org-things"))
-                (define-key air-org-run-shortcuts "c" (tiny-menu-run-item "org-captures"))
-                (define-key air-org-run-shortcuts "l" (tiny-menu-run-item "org-links"))
-                (define-key org-agenda-mode-map (kbd "\\") air-org-run-shortcuts)))
+                (define-key
+                  air-org-run-shortcuts "f" (tiny-menu-run-item "org-files"))
+                (define-key
+                  air-org-run-shortcuts "t" (tiny-menu-run-item "org-things"))
+                (define-key
+                  air-org-run-shortcuts "c" (tiny-menu-run-item "org-captures"))
+                (define-key
+                  air-org-run-shortcuts "l" (tiny-menu-run-item "org-links"))
+                (define-key
+                  org-agenda-mode-map (kbd "\\") air-org-run-shortcuts)))
 
     (add-hook 'org-capture-mode-hook
               (lambda ()
-                (evil-define-key 'insert org-capture-mode-map (kbd "C-d") 'air-org-agenda-toggle-date)
-                (evil-define-key 'normal org-capture-mode-map (kbd "C-d") 'air-org-agenda-toggle-date)
+                (evil-define-key
+                  'insert org-capture-mode-map (kbd "C-d")
+                  'air-org-agenda-toggle-date)
+                (evil-define-key
+                  'normal org-capture-mode-map (kbd "C-d")
+                  'air-org-agenda-toggle-date)
                 (evil-insert-state)))
 
     (add-hook 'org-mode-hook
@@ -1367,13 +1385,20 @@ A really nice search/completion system for emacs.
                        (diego/org-insert-list-leader-or-self ,char))))
 
                 ;; Normal maps
-                (define-key org-mode-map (kbd "C-c d")   (lambda ()
-                                                           (interactive) (air-org-agenda-toggle-date t)))
-                (define-key org-mode-map (kbd "C-c ,")   'org-time-stamp-inactive)
-                (define-key org-mode-map (kbd "C-|")     'air-org-insert-scheduled-heading)
-                (define-key org-mode-map (kbd "C-\\")    'air-org-insert-heading)
-                (define-key org-mode-map (kbd "S-r")     'org-revert-all-org-buffers)
-                (define-key org-mode-map (kbd "C-c C-l") (tiny-menu-run-item "org-links"))
+                (define-key org-mode-map (kbd "C-c d")
+                  (lambda ()
+                    (interactive)
+                    (air-org-agenda-toggle-date t)))
+                (define-key org-mode-map (kbd "C-c ,")
+                  'org-time-stamp-inactive)
+                (define-key org-mode-map (kbd "C-|")
+                  'air-org-insert-scheduled-heading)
+                (define-key org-mode-map (kbd "C-\\")
+                  'air-org-insert-heading)
+                (define-key org-mode-map (kbd "S-r")
+                  'org-revert-all-org-buffers)
+                (define-key org-mode-map (kbd "C-c C-l")
+                  (tiny-menu-run-item "org-links"))
 
                 ;; Giving up after trying to process
                 ;; <M-up> correctly. an iTerm issue?
@@ -1381,12 +1406,15 @@ A really nice search/completion system for emacs.
                 ;; (define-key org-mode-map (kbd "M-S-<down>") 'org-metadown)
 
                 ;; Navigation
-                (evil-define-key 'normal org-mode-map (kbd "]n") 'org-forward-heading-same-level)
-                (evil-define-key 'normal org-mode-map (kbd "[n") 'org-backward-heading-same-level)
-                (define-key org-mode-map (kbd "C-S-j") (lambda ()
-                                                         (interactive)
-                                                         (org-up-element)
-                                                         (org-forward-heading-same-level 1)))
+                (evil-define-key 'normal org-mode-map (kbd "]n")
+                  'org-forward-heading-same-level)
+                (evil-define-key 'normal org-mode-map (kbd "[n")
+                  'org-backward-heading-same-level)
+                (define-key org-mode-map (kbd "C-S-j")
+                  (lambda ()
+                    (interactive)
+                    (org-up-element)
+                    (org-forward-heading-same-level 1)))
                 (define-key org-mode-map (kbd "C-S-k") 'org-up-element)
 
                 ;; Use fill column, but not in agenda
