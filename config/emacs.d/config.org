@@ -2697,7 +2697,7 @@ pretty good but had some known issues.
 #+END_SRC
 
 ** Reference/search
-*** [[https://github.com/abo-abo/define-word][define-ward]]
+*** [[https://github.com/abo-abo/define-word][define-word]]
 #+BEGIN_SRC emacs-lisp
   (use-package define-word
     :commands define-word
