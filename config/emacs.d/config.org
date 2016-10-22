@@ -455,8 +455,21 @@ Handling/storing of files, backups, autosaves.
                       (point-max))
              fill-column)))
       (call-interactively #'fill-paragraph)))
-  
+
    (global-set-key [remap fill-paragraph] #'diego/fill-or-unfill)
+
+  (defun diego/flyspell-add-to-dictionary ()
+    (interactive)
+    (let ((current-location (point))
+           (word (flyspell-get-word)))
+      (when (consp word)    
+        (flyspell-do-correct 'save
+                             nil
+                             (car word)
+                             current-location
+                             (cadr word)
+                             (caddr word)
+                             current-location))))
 #+END_SRC
 
 *** "Original"
@@ -1729,11 +1742,17 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
     :commands flyspell-mode
     :ensure t
     :config
-    (use-package flyspell-correct-ivy
-      :ensure t))
+    (defun diego/flyspell-correct-next ()
+      (interactive)
+      (flyspell-goto-next-error)
+      (flyspell-auto-correct-word)))
+
+  (use-package flyspell-correct-ivy
+    :after flyspell
+    :ensure t)
 #+END_SRC
 
-*** [[https://github.com/larstvei/Focus][focus]] 
+*** [[https://github.com/larstvei/Focus][focus]]
 #+BEGIN_SRC emacs-lisp
   (use-package focus
     :commands focus-mode
