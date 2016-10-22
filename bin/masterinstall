@@ -18,13 +18,7 @@ brew tap (homebrew/core).
 brew tap ==>
 brew tap Updated
 brew tap Formulae
-brew tap castxml
-brew tap creduce
-brew tap crystal-lang
-brew tap emacs-clang-complete-async
-brew tap llvm
-brew tap ponyc
-brew tap rtags
+brew tap kubernetes-cli
 brew tap caskroom/cask
 brew tap caskroom/fonts
 brew tap caskroom/versions
@@ -58,6 +52,7 @@ brew install apr
 brew install apr-util
 brew install archey
 brew install arpack
+brew install asciinema
 brew install atk
 brew install autoconf
 brew install automake
@@ -141,6 +136,7 @@ brew install hdf5
 brew install hicolor-icon-theme
 brew install highlight
 brew install htop-osx
+brew install hub
 brew install icu4c
 brew install ilmbase
 brew install imagemagick

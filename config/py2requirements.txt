@@ -77,7 +77,7 @@ rtv==1.13.0
 scipy==0.18.1
 sexpdata==0.0.3
 simplegeneric==0.8.1
-simplejson==3.8.2
+simplejson==3.9.0
 singledispatch==3.4.0.3
 six==1.10.0
 stevedore==1.18.0
@@ -100,4 +100,4 @@ wxPython==3.0.2.0
 wxPython-common==3.0.2.0
 xlrd==1.0.0
 xls2db==0.0.8
-yapf==0.13.1
+yapf==0.13.2
