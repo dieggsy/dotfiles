@@ -207,6 +207,7 @@ Set package archives/repos and setup use-package and all that.
 Some nice global settings to have. Does away with most uneccessary visuals to
 make emacs behave more like terminal (ish), sets up smooth scrolling, other
 such goodies.
+
 ** Visual things
 Get rid of menu bars, scroll bars, startup screens, etc.
 #+BEGIN_SRC emacs-lisp
@@ -551,7 +552,6 @@ Handling/storing of files, backups, autosaves.
 #+BEGIN_SRC emacs-lisp
   (fset 'diego/insert-footnote
         [?  ?/ ?\{ ?\[ ?0 ?- ?9 ?\] ?+ ?\} return ?a ?f ?n ?: escape ?  ?x ?p ?r ?\[])
-
 #+END_SRC
 ** What?
 #+begin_src emacs-lisp
@@ -817,6 +817,14 @@ based on or copied from spacemacs, so definitely check them out!
                              (justify nil t)))
                       nil)))   
 #+end_src
+**** Spelling 
+#+begin_src emacs-lisp
+  (defun diego/leader-spelling ()
+    (evil-leader/set-key
+      "Sb" 'flyspell-buffer
+      "Sa" 'diego/flyspell-add-to-dictionary
+      "Sn" 'diego/flyspell-correct-next))
+#+end_src
 **** magit
 #+begin_src emacs-lisp
   (defun diego/leader-magit ()
@@ -867,23 +875,12 @@ based on or copied from spacemacs, so definitely check them out!
         "mer" 'eval-region
         "mel" 'eval-last-sexp))
 
-    ;; org-mode
-    (evil-leader/set-key-for-mode 'org-mode
-      "m$"     'org-archive-subtree
-      "ma"     'org-agenda
-      "mc"    'air-org-set-category-property
-      "md"    'org-deadline
-      "mn"    'org-narrow-to-subtree
-      "mp"     'org-set-property
-      "ms"    'org-schedule
-      "mt"    'air-org-set-tags
-      "mic"   'org-table-insert-column
-      "mir"   'org-table-insert-row
-      "mil"   'org-insert-link
-      "mw"    'fill-paragraph
-      "me"    'org-export-dispatch
-      "mb"    'org-babel-tangle
-      "mz"    'org-emphasize))
+    (defmacro diego|org-emphasize (fname char)
+       "Make function for setting the emphasis in org mode"
+       `(defun ,fname () (interactive)
+               (org-emphasize ,char)))
+
+    )
 #+END_SRC
 **** Global
 #+BEGIN_SRC emacs-lisp
@@ -911,6 +908,7 @@ based on or copied from spacemacs, so definitely check them out!
     (diego/leader-search)
     (diego/leader-toggle)
     (diego/leader-window)
+    (diego/leader-spelling)
     (define-key universal-argument-map (kbd "SPC u") 'universal-argument-more)
 
     (defun magit-blame-toggle ()
@@ -1288,6 +1286,134 @@ A really nice search/completion system for emacs.
         (diego/org-swap-tags new)))
 
 #+END_SRC
+*** Bindings
+#+begin_src emacs-lisp
+    (defun diego/org-bindings ()
+      (evil-leader/set-key-for-mode 'org-mode
+        "m$"     'org-archive-subtree
+        "ma"     'org-agenda
+        "mc"    'air-org-set-category-property
+        "md"    'org-deadline
+        "mn"    'org-narrow-to-subtree
+        "mp"     'org-set-property
+        "ms"    'org-schedule
+        "m:"    'air-org-set-tags
+        "mic"   'org-table-insert-column
+        "mir"   'org-table-insert-row
+        "mil"   'org-insert-link
+        "mif"   'org-footnote-new
+        "mw"    'fill-paragraph
+        "me"    'org-export-dispatch
+        "mb"    'org-babel-tangle
+        "mxb"   (diego|org-emphasize diego/org-bold ?*)
+        "mxi"   (diego|org-emphasize diego/org-italic ?/)
+        "mxc"   (diego|org-emphasize diego/org-code ?~)
+        "mxu"   (diego|org-emphasize diego/org-underline ?_)
+        "mxv"   (diego|org-emphasize diego/org-verbatim ?=)
+        "mxs"   (diego|org-emphasize diego/org-strike-through ?+)
+        "mxr"   (diego|org-emphasize diego/org-clear ? )
+
+        ;; tables
+        "mta" 'org-table-align
+        "mtb" 'org-table-blank-field
+        "mtc" 'org-table-convert
+        "mtdc" 'org-table-delete-column
+        "mtdr" 'org-table-kill-row
+        "mte" 'org-table-eval-formula
+        "mtE" 'org-table-export
+        "mth" 'org-table-previous-field
+        "mtH" 'org-table-move-column-left
+        "mtic" 'org-table-insert-column
+        "mtih" 'org-table-insert-hline
+        "mtiH" 'org-table-hline-and-move
+        "mtir" 'org-table-insert-row
+        "mtI" 'org-table-import
+        "mtj" 'org-table-next-row
+        "mtJ" 'org-table-move-row-down
+        "mtK" 'org-table-move-row-up
+        "mtl" 'org-table-next-field
+        "mtL" 'org-table-move-column-right
+        "mtn" 'org-table-create
+        "mtN" 'org-table-create-with-table.el
+        "mtr" 'org-table-recalculate
+        "mts" 'org-table-sort-lines
+        "mttf" 'org-table-toggle-formula-debugger
+        "mtto" 'org-table-toggle-coordinate-overlays
+        "mtw" 'org-table-wrap-region)
+
+
+      (evil-define-key 'normal org-mode-map
+        (kbd "RET") 'org-open-at-point
+        "<"         'org-metaleft
+        ">"         'org-metaright
+        "gh"        'outline-up-heading
+        "gl"        'outline-next-visible-heading
+        "gj"        'org-forward-heading-same-level
+        "gk"        'org-backward-heading-same-level
+        "t"         'org-todo
+        (kbd "M-l") 'org-metaright
+        (kbd "M-h") 'org-metaleft
+        (kbd "M-k") 'org-metaup
+        (kbd "M-j") 'org-metadown
+        (kbd "M-L") 'org-shiftmetaright
+        (kbd "M-H") 'org-shiftmetaleft
+        (kbd "M-K") 'org-shiftmetaup
+        (kbd "M-J") 'org-shiftmetadown))
+#+end_src
+*** Custom vars 
+#+begin_src emacs-lisp
+  (defun diego/org-custom-vars ()
+    ;; files
+    (setq org-agenda-text-search-extra-files '(agenda-archives))
+    (setq org-agenda-files '("~/Dropbox (MIT)/org/"))
+    (setq org-default-notes-file "~/Dropbox (MIT)/org/todo.org")
+    (setq diego/todo-file "~/Dropbox (MIT)/org/todo.org")
+    (setq diego/notes-file "~Dropbox (MIT)/org/notes.org")
+    (setq org-directory "~/Dropbox (MIT)/org")
+    (setq org-archive-location "~/Dropbox (MIT)/org/archive.org::")
+
+    ;; Todo/tasks/agenda
+    (setq org-enforce-todo-dependencies t)
+    (setq org-log-done (quote time))
+    (setq org-log-redeadline (quote time))
+    (setq org-log-reschedule (quote time))
+    (setq org-agenda-skip-scheduled-if-done t)
+
+    (setq org-todo-keywords
+          '((sequence
+             "☛ TODO"
+             "○ IN-PROGRESS"
+             "⚑ WAITING"
+             "|"
+             "✓ DONE"
+             "✗ CANCELED")))
+
+    (setq org-capture-templates
+          '(("t" "Todo" entry
+             (file diego/todo-file)
+             "* ☛ TODO %?\nSCHEDULED: %t")
+            ("s" "School Todo" entry
+             (file+olp diego/todo-file "School" "School")
+             "* ☛ TODO %?\nSCHEDULED: %t")))
+
+
+    ;; Behavior
+    (setq org-insert-heading-respect-content t)
+    (setq org-src-window-setup 'current-window)
+    (setq org-list-demote-modify-bullet '(("-" . "*")
+                                          ("*" . "+")))
+    ;; appearance
+    (setq org-src-fontify-natively t)
+    (setq org-fontify-quote-and-verse-blocks t)
+    (setq org-hide-emphasis-markers t)
+    (setq org-startup-with-inline-images t)
+    (setq org-ellipsis " …")
+
+    ;; latex
+    (setq org-latex-listings t)
+  (add-to-list 'org-latex-packages-alist '("" "listings"))
+  (add-to-list 'org-latex-packages-alist '("" "color")))
+#+end_src
 *** Setup
 #+BEGIN_SRC emacs-lisp
   (use-package org
@@ -1305,50 +1431,9 @@ A really nice search/completion system for emacs.
            ("C-c f i" . air-org-goto-custom-id))
     :config
     (org-reload)  ; Not sure I should have to do this...
-    (setq org-agenda-text-search-extra-files '(agenda-archives))
-    (setq org-agenda-files '("~/Dropbox (MIT)/org/"))
-    (setq org-default-notes-file "~/Dropbox (MIT)/org/todo.org")
-    (setq diego/todo-file "~/Dropbox (MIT)/org/todo.org")
-    (setq diego/notes-file "~Dropbox (MIT)/org/notes.org")
-    (setq org-directory "~/Dropbox (MIT)/org")
-    (setq org-todo-keywords
-          '((sequence
-             "☛ TODO"
-             "○ IN-PROGRESS"
-             "⚑ WAITING"
-             "|"
-             "✓ DONE"
-             "✗ CANCELED")))
-    (setq org-capture-templates
-         '(("t" "Todo" entry
-           (file diego/todo-file)
-            "* ☛ TODO %?\nSCHEDULED: %t")
-           ("s" "School Todo" entry
-            (file+olp diego/todo-file "School" "School")
-            "* ☛ TODO %?\nSCHEDULED: %t")))
-    (setq org-enforce-todo-dependencies t)
-    (setq org-log-done (quote time))
-    (setq org-log-redeadline (quote time))
-    (setq org-log-reschedule (quote time))
-    ;; (setq org-src-window-setup 'current-window)
-    (setq org-agenda-skip-scheduled-if-done t)
-    (setq org-insert-heading-respect-content t)
-    (setq org-ellipsis " …")
-    (setq org-startup-with-inline-images t)
-    (setq org-archive-location "~/Dropbox (MIT)/org/archive.org::")
-    (setq org-hide-emphasis-markers t)
-    (setq org-src-window-setup 'current-window)
-    (setq org-list-demote-modify-bullet '(("-" . "*")
-                                          ("*" . "+")))
-    ;; (setq org-highlight-latex-and-related '(latex script entities))
-
-    (setq org-latex-listings t)
-    (setq org-src-fontify-natively t)
-    (setq org-src-tab-acts-natively t)
-    (setq org-fontify-quote-and-verse-blocks t)
-    (setq org-hide-emphasis-markers t)
-    (add-to-list 'org-latex-packages-alist '("" "listings"))
-    (add-to-list 'org-latex-packages-alist '("" "color"))
+    (diego/org-custom-vars)
+    (diego/org-bindings)
+  
 
     (add-hook 'org-agenda-mode-hook
               (lambda ()
@@ -1399,45 +1484,58 @@ A really nice search/completion system for emacs.
                        (interactive)
                        (diego/org-insert-list-leader-or-self ,char))))
 
-                ;; Normal maps
-                (define-key org-mode-map (kbd "C-c d")
-                  (lambda ()
-                    (interactive)
-                    (air-org-agenda-toggle-date t)))
-                (define-key org-mode-map (kbd "C-c ,")
-                  'org-time-stamp-inactive)
-                (define-key org-mode-map (kbd "C-|")
-                  'air-org-insert-scheduled-heading)
-                (define-key org-mode-map (kbd "C-\\")
-                  'air-org-insert-heading)
-                (define-key org-mode-map (kbd "S-r")
-                  'org-revert-all-org-buffers)
-                (define-key org-mode-map (kbd "C-c C-l")
-                  (tiny-menu-run-item "org-links"))
+                ;; Bindings
 
-                ;; Giving up after trying to process
-                ;; <M-up> correctly. an iTerm issue?
-                ;; (define-key org-mode-map (kbd "M-S-<up>") 'org-metaup)
-                ;; (define-key org-mode-map (kbd "M-S-<down>") 'org-metadown)
-
-                ;; Navigation
-                (evil-define-key 'normal org-mode-map (kbd "]n")
-                  'org-forward-heading-same-level)
-                (evil-define-key 'normal org-mode-map (kbd "[n")
-                  'org-backward-heading-same-level)
-                (define-key org-mode-map (kbd "C-S-j")
-                  (lambda ()
-                    (interactive)
-                    (org-up-element)
-                    (org-forward-heading-same-level 1)))
-                (define-key org-mode-map (kbd "C-S-k") 'org-up-element)
-
-                ;; Use fill column, but not in agenda
                 (setq fill-column 79)
                 (auto-fill-mode 1)
                 ;; (flyspell-mode)
                 (org-indent-mode))))
 #+END_SRC
+** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
+#+begin_src emacs-lisp
+    (use-package which-key
+      :ensure t
+      :config
+      (which-key-mode)
+      (which-key-add-key-based-replacements
+        "SPC a"   "applications"
+        "SPC ag"  "games"
+        "SPC b"   "buffer"
+        "SPC c"   "comment"
+        "SPC f"   "file"
+        "SPC fe"  "emacs/config"
+        "SPC g"   "magit"
+        "SPC h"   "help"
+        "SPC hd"  "describe"
+        "SPC i"   "insert"
+        "SPC j"   "jump"
+        "SPC m"   "major-mode-cmd"
+        "SPC n"   "narrow"
+        "SPC p"   "project"
+        "SPC q"   "quit"
+        "SPC s"   "search"
+        "SPC t"   "toggle"
+        "SPC w"   "window"
+        "SPC x"   "text"
+        "SPC xa"  "align"
+        "SPC xd"  "delete"
+        "SPC xl"  "lines"
+        "SPC xt"  "transpose"
+        "SPC xw"  "words"
+        "SPC S"   "spelling"
+        "SPC"     "root")
+
+      (which-key-add-major-mode-key-based-replacements 'org-mode
+        "SPC mi" "insert"
+        "SPC mx" "text")
+
+      (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
+        (which-key-add-major-mode-key-based-replacements mode
+          "SPC me" "eval"))
+
+      (setq which-key-sort-order 'which-key-key-order-alpha))
+#+end_src
+
 * Dem packages
 ** Amusements
 *** [[https://github.com/josuah/drawille][drawille]]
@@ -1688,48 +1786,6 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
     :ensure t
     :config
     (elfeed-goodies/setup))
-#+end_src
-*** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
-#+begin_src emacs-lisp
-    (use-package which-key
-      :ensure t
-      :config
-      (which-key-mode)
-      (which-key-add-key-based-replacements
-        "SPC a"   "applications"
-        "SPC ag"  "games"
-        "SPC b"   "buffer"
-        "SPC c"   "comment"
-        "SPC f"   "file"
-        "SPC fe"  "emacs/config"
-        "SPC g"   "magit"
-        "SPC h"   "help"
-        "SPC hd"  "describe"
-        "SPC i"   "insert"
-        "SPC j"   "jump"
-        "SPC m"   "major-mode-cmd"
-        "SPC n"   "narrow"
-        "SPC p"   "project"
-        "SPC q"   "quit"
-        "SPC s"   "search"
-        "SPC t"   "toggle"
-        "SPC w"   "window"
-        "SPC x"   "text"
-        "SPC xa"  "align"
-        "SPC xd"  "delete"
-        "SPC xl"  "lines"
-        "SPC xt"  "transpose"
-        "SPC xw"  "words"
-        "SPC"     "root")
-
-      (which-key-add-major-mode-key-based-replacements 'org-mode
-        "SPC mi" "insert")
-
-      (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
-        (which-key-add-major-mode-key-based-replacements mode
-          "SPC me" "eval"))
-
-      (setq which-key-sort-order 'which-key-key-order-alpha))
 #+end_src
 *** [[https://github.com/lewang/flx][flx]]
 Fuzzy matching
