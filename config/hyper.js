@@ -86,6 +86,22 @@ module.exports = {
     // bellSoundURL: 'http://example.com/bell.mp3',
 
     // for advanced config flags please refer to https://hyper.is/#cfg
+    overlay: {
+      alwaysOnTop: true,
+      animate: true,
+      hasShadow: false,
+      hideDock: false,
+      hideOnBlur: false,
+      hotkeys: ['Option+Space'],
+      position: 'top',
+      primaryDisplay: false,
+      resizable: true,
+      startAlone: false,
+      startup: false,
+      size: 0.4,
+      tray: true,
+      unique: false
+    },
   },
 
   // a list of plugins to fetch and install from npm
@@ -96,7 +112,8 @@ module.exports = {
   //   `project#1.0.1`
 	plugins: [
 		'hypercwd',
-		'hyperterm-blink'
+		'hyperterm-blink',
+		'hyperterm-overlay'
 	],
 
   // in development, you can create a directory under
