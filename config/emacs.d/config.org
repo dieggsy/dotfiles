@@ -551,7 +551,7 @@ Handling/storing of files, backups, autosaves.
 *** Macros?
 #+BEGIN_SRC emacs-lisp
   (fset 'diego/insert-footnote
-        [?  ?/ ?\{ ?\[ ?0 ?- ?9 ?\] ?+ ?\} return ?a ?f ?n ?: escape ?  ?x ?p ?r ?\[])
+        [?/ ?\{ ?\[ ?0 ?- ?9 ?\] ?+ ?\} return ?a ?f ?n ?: escape ?  ?x ?p ?r ?\[])
 #+END_SRC
 ** What?
 #+begin_src emacs-lisp
@@ -568,10 +568,10 @@ based on or copied from spacemacs, so definitely check them out!
   (defun diego/leader-search ()
   (evil-leader/set-key
 
-    "sa"  'counsel-ag
+    "sa" 'counsel-ag
     "ss" 'swiper-all
     "sm" 'swiper-multi
-    "/" 'evil-search-forward))
+    "/"  'swiper))
 #+end_src
 **** Projects
 #+begin_src emacs-lisp
@@ -665,27 +665,27 @@ based on or copied from spacemacs, so definitely check them out!
 #+begin_src emacs-lisp
   (defun diego/leader-buffers-files ()
     (evil-leader/set-key
-      "TAB"   'switch-to-previous-buffer
-      "bs"    'ivy-switch-buffer
-      "bk"    'kill-this-buffer
-      "bK"    'kill-buffer
-      "bm"    'kill-matching-buffers
-      "br"    'view-mode
-      "bn"    'next-buffer
-      "be"    'diego/safe-erase-buffer
-      "bi"    'ibuffer
-      "bc"    'clone-indirect-buffer-other-window
+      "TAB" 'switch-to-previous-buffer
+      "bs"  'ivy-switch-buffer
+      "bk"  'kill-this-buffer
+      "bK"  'kill-buffer
+      "bm"  'kill-matching-buffers
+      "br"  'view-mode
+      "bn"  'next-buffer
+      "be"  'diego/safe-erase-buffer
+      "bi"  'ibuffer
+      "bc"  'clone-indirect-buffer-other-window
 
-      "ff"    'counsel-find-file
-      "fc"    'diego/copy-file
-      "fs"    'save-buffer
-      "fl"    'counsel-locate
-      "fr"    'rename-this-file-and-buffer
-      "fD"    'move-file-to-trash
-      "fec"   'diego/config
-      "fez"   'diego/zshrc
-      "fei"   'diego/init
-      "fel"   'locate-library)
+      "ff"  'counsel-find-file
+      "fc"  'diego/copy-file
+      "fs"  'save-buffer
+      "fl"  'counsel-locate
+      "fr"  'rename-this-file-and-buffer
+      "fD"  'move-file-to-trash
+      "fec" 'diego/config
+      "fez" 'diego/zshrc
+      "fei" 'diego/init
+      "fel" 'locate-library)
 
     (defun diego/copy-file ()
       (interactive)
@@ -865,9 +865,9 @@ based on or copied from spacemacs, so definitely check them out!
       "hdt" 'describe-theme
       "hds" 'describe-symbol
 
-      "hk" 'which-key-show-top-level
-      "hm" 'man
-      "hn" 'emacs-news))
+      "hk"  'which-key-show-top-level
+      "hm"  'man
+      "hn"  'emacs-news))
 #+end_src
 **** Quit
 #+begin_src emacs-lisp
@@ -1092,8 +1092,9 @@ A really nice search/completion system for emacs.
       :ensure t
       :after ivy
       :config
-      (define-key evil-normal-state-map (kbd "/") 'swiper)
-      (define-key evil-motion-state-map (kbd "/") 'swiper))
+      ;; (define-key evil-normal-state-map (kbd "/") 'swiper)
+      ;; (define-key evil-motion-state-map (kbd "/") 'swiper)
+      )
 
     (use-package counsel
       :ensure t
