@@ -19,19 +19,29 @@ module.exports = {
     backgroundColor: '#282828',
 
     // border color (window, tabs)
-    borderColor: '#3c3836',
+    borderColor: '#282828',
 
     // custom css to embed in the main window
-    css: '',
+    css: `
+    .tab_active {
+        color: #fdf4c1 !important;
+        // border-bottom: 1px solid #B8BB26 !important;
+        border-bottom: 1px solid #d3869b !important;
+    }
+
+    .tab_tab{
+        color: #fdf4c1 !important;
+    }
+    `,
 
     // custom css to embed in the terminal window
-    termCSS: '\
-    .cursor-node{\
-        border: none !important;\
-        border-left: 1px solid #fdf4c1 !important;\
-    }',
+    termCSS: `\
+    .cursor-node{
+        border: none !important;
+        border-left: 1px solid #fdf4c1 !important;
+    }`,
     // custom padding (css format, i.e.: `top right bottom left`)
-    padding: '5px 10px',
+    padding: '5px 10px 0px 10px',
 
     // the full list. if you're going to provide the full color palette,
     // including the 6 x 6 color cubes and the grayscale map, just provide
