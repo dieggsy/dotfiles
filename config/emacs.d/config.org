@@ -1546,6 +1546,7 @@ A really nice search/completion system for emacs.
     :ensure t
     :config
     (which-key-mode)
+    (setq which-key-show-operator-state-maps t)
     (which-key-add-key-based-replacements
       "SPC a"   "applications"
       "SPC ao"  "org"
