@@ -436,15 +436,15 @@ Handling/storing of files, backups, autosaves.
             (select-window first-win)
             (if this-win-2nd (other-window 1))))))
 
-  (defun minibuffer-keyboard-quit ()
-    "Abort recursive edit.
-      In Delete Selection mode, if the mark is active, just deactivate it;
-      then it takes a second \\[keyboard-quit] to abort the minibuffer."
-    (interactive)
-    (if (and delete-selection-mode transient-mark-mode mark-active)
-        (setq deactivate-mark  t)
-      (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
-      (abort-recursive-edit)))
+  ;; (defun minibuffer-keyboard-quit ()
+  ;;   "Abort recursive edit.
+  ;;     In Delete Selection mode, if the mark is active, just deactivate it;
+  ;;     then it takes a second \\[keyboard-quit] to abort the minibuffer."
+  ;;   (interactive)
+  ;;   (if (and delete-selection-mode transient-mark-mode mark-active)
+  ;;       (setq deactivate-mark  t)
+  ;;     (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+  ;;     (abort-recursive-edit)))
 
 
   (defun diego/fill-or-unfill ()
@@ -571,7 +571,7 @@ based on or copied from spacemacs, so definitely check them out!
     "sa" 'counsel-ag
     "ss" 'swiper-all
     "sm" 'swiper-multi
-    "/"  'swiper))
+    "/"  'evil-search-forward))
 #+end_src
 **** Projects
 #+begin_src emacs-lisp
@@ -666,15 +666,18 @@ based on or copied from spacemacs, so definitely check them out!
   (defun diego/leader-buffers-files ()
     (evil-leader/set-key
       "TAB" 'switch-to-previous-buffer
-      "bs"  'ivy-switch-buffer
+      "bb"  'ivy-switch-buffer
       "bk"  'kill-this-buffer
       "bK"  'kill-buffer
       "bm"  'kill-matching-buffers
       "br"  'view-mode
       "bn"  'next-buffer
+      "bp"  'previous-buffer
       "be"  'diego/safe-erase-buffer
       "bi"  'ibuffer
       "bc"  'clone-indirect-buffer-other-window
+      "bs"  'diego/switch-to-scratch
+      "bM"  'diego/switch-to-messages
 
       "ff"  'counsel-find-file
       "fc"  'diego/copy-file
@@ -686,6 +689,14 @@ based on or copied from spacemacs, so definitely check them out!
       "fez" 'diego/zshrc
       "fei" 'diego/init
       "fel" 'locate-library)
+
+    (defun diego/switch-to-scratch ()
+      (interactive)
+      (switch-to-buffer (get-buffer-create "*scratch*")))
+  
+    (defun diego/switch-to-messages ()
+      (interactive)
+      (switch-to-buffer (get-buffer "*Messages*")))
 
     (defun diego/copy-file ()
       (interactive)
@@ -1044,78 +1055,84 @@ based on or copied from spacemacs, so definitely check them out!
 ** [[https://github.com/abo-abo/swiper][ivy]]
 A really nice search/completion system for emacs.
 #+BEGIN_SRC emacs-lisp
-  (use-package ivy
-    :ensure t
-    :bind (("M-x" . counsel-M-x)
-           ("C-x C-f" . counsel-find-file))
-    :config
-    (ivy-mode 1)
-    (define-key ivy-minibuffer-map [escape] 'minibuffer-keyboard-quit)
+      (use-package ivy
+        :ensure t
+        :bind (("M-x" . counsel-M-x)
+               ("C-x C-f" . counsel-find-file))
+        :config
+        (ivy-mode 1)
+        (define-key ivy-minibuffer-map [escape] 'minibuffer-keyboard-quit)
 
-    (setq ivy-format-function 'ivy-format-function-arrow) ; DAT NICE ARROW THOUGH aosenuth
-    (setq projectile-completion-system 'ivy)
-    (setq ivy-use-virtual-buffers t) ; Show recent files
-    (setq ivy-count-format "") 
-    (setq ivy-extra-directories '("../")) ; ignore current folder... maybe shouldn't
-    (setq ivy-ignore-buffers 
-          '("\\` "
-            "\\`\\*LV\\*"
-            "\\`\\*magit"
-            "\\`\\*epc"
-            "\\`\\*Calc"
-            "\\`\\*Colors"
-            "\\`\\*helm"
-            "\\`\\*Help"
-            "\\`\\*Packages"
-            "\\`\\*Customize"
-            "\\`\\*info"
-            "\\`\\*Compile"))
+        (setq ivy-format-function 'ivy-format-function-arrow) ; DAT NICE ARROW THOUGH aosenuth
+        (setq projectile-completion-system 'ivy)
+        (setq ivy-use-virtual-buffers t) ; Show recent files
+        (setq ivy-count-format "") 
+        (setq ivy-extra-directories '("../")) ; ignore current folder... maybe shouldn't
+        (setq ivy-ignore-buffers 
+              '("\\` "
+                "\\`\\*LV\\*"
+                "\\`\\*magit"
+                "\\`\\*epc"
+                "\\`\\*Calc"
+                "\\`\\*Colors"
+                "\\`\\*helm"
+                "\\`\\*Help"
+                "\\`\\*Packages"
+                "\\`\\*Customize"
+                "\\`\\*info"
+                "\\`\\*Compile"
+                "\\`\\*anaconda-mode"
+                "\\`\\*scratch"
+                "\\`\\*Messages"))
 
-    ;; RET enters folder rather than opening dired
-    (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
+        ;; RET enters folder rather than opening dired
+        (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
+        (define-key ivy-minibuffer-map (kbd "<S-RET>") #'ivy-dispatching-done)
+        (define-key ivy-minibuffer-map (kbd "<S-up>") #'ivy-previous-history-element)
+        (define-key ivy-minibuffer-map (kbd "<S-down>") #'ivy-next-history-element)
+        (define-key ivy-minibuffer-map (kbd "<escape>") #'minibuffer-keyboard-quit)
 
-    ;; Use flx fuzzy matching except with ag and swiper
-    ;; (setq ivy-re-builders-alist
-    ;;       '((counsel-ag . ivy--regex-plus)
-    ;;         (counsel-descbinds . ivy--regex-plus)
-    ;;         (swiper . ivy--regex-plus)
-    ;;         (swiper-all . ivy--regex-plus)
-    ;;         (t . ivy--regex-fuzzy))
+        ;; Use flx fuzzy matching except with ag and swiper
+        ;; (setq ivy-re-builders-alist
+        ;;       '((counsel-ag . ivy--regex-plus)
+        ;;         (counsel-descbinds . ivy--regex-plus)
+        ;;         (swiper . ivy--regex-plus)
+        ;;         (swiper-all . ivy--regex-plus)
+        ;;         (t . ivy--regex-fuzzy))
 
-    ;;Don't start searches with '^' by default
-    (setq ivy-initial-inputs-alist nil)
+        ;;Don't start searches with '^' by default
+        (setq ivy-initial-inputs-alist nil)
 
-    (setq ivy-switch-buffer-faces-alist
-          '((dired-mode . ivy-subdir))))
+        (setq ivy-switch-buffer-faces-alist
+              '((dired-mode . ivy-subdir))))
 
-    (use-package swiper
-      :ensure t
-      :after ivy
-      :config
-      ;; (define-key evil-normal-state-map (kbd "/") 'swiper)
-      ;; (define-key evil-motion-state-map (kbd "/") 'swiper)
-      )
+        (use-package swiper
+          :ensure t
+          :after ivy
+          :config
+          (define-key evil-normal-state-map (kbd "/") 'swiper)
+          (define-key evil-motion-state-map (kbd "/") 'swiper))
 
-    (use-package counsel
-      :ensure t
-      :after ivy
-      :config
-      (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind)
-      (counsel-mode 1)
-      (defalias 'ag 'counsel-ag)
-      (defalias 'locate 'counsel-locate))
+        (use-package counsel
+          :ensure t
+          :after ivy
+          :config
+          (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind)
+          (counsel-mode 1)
+          (defalias 'ag 'counsel-ag)
+          (defalias 'locate 'counsel-locate))
 
-    (use-package counsel-projectile
-      :commands (counsel-projectile-switch-project
-                 counsel-projectile-switch-to-buffer
-                 counsel-projectile-find-dir
-                 counsel-projectile-find-file
-                 counsel-projecile) 
-      :ensure t)
+        (use-package counsel-projectile
+          :commands (counsel-projectile-switch-project
+                     counsel-projectile-switch-to-buffer
+                     counsel-projectile-find-dir
+                     counsel-projectile-find-file
+                     counsel-projecile) 
+          :ensure t)
 
-    (use-package counsel-osx-app
-      :commands counsel-osx-app
-      :ensure t)
+        (use-package counsel-osx-app
+          :commands counsel-osx-app
+          :ensure t)
 #+END_SRC
 
 ** [[http://orgmode.org/][org-mode]]
@@ -1772,7 +1789,7 @@ I was looking for something with the nice look and simplicity of
     (set-face-foreground 'spaceline-evil-insert "white")
     ;; (set-face-background 'spaceline-evil-visual "#ff8700")
     (set-face-foreground 'spaceline-evil-visual "#870000")
-
+    ;; (set-face-attribute 'spaceline-evil-normal :weight 'bold)
     ;; darktooth
     (set-face-background 'spaceline-evil-normal "#B8BB26")
     (set-face-background 'spaceline-evil-insert "#66999D")
@@ -1832,8 +1849,8 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
     :commands flyspell-mode
     :ensure t
     :config
-    (defun diego/flyspell-correct-next ()
-      (interactive)
+    (defun diego/flyspell-correct-next (&optional arg)
+      (interactive "p")
       (flyspell-goto-next-error)
       (flyspell-auto-correct-word)))
 
@@ -2537,13 +2554,10 @@ Export org to twitter bootstrap compatible HTML.
 #+END_SRC
 
 ** Programming
-*** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]  
+*** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]
 #+begin_src emacs-lisp
   (use-package anaconda-mode
-    :ensure t
-    :config
-    (add-hook 'python-mode-hook 'anaconda-mode)
-    (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+    :ensure t)
 #+end_src
 *** [[https://github.com/defunkt/coffee-mode][coffee-mode]]
 #+begin_src emacs-lisp
@@ -2554,23 +2568,22 @@ Export org to twitter bootstrap compatible HTML.
 *** [[https://github.com/company-mode/company-mode][company-mode]]
 Supposedly better than autocomplete... Also using [[https://github.com/syohex/emacs-company-jedi][company-jedi]]
 #+BEGIN_SRC emacs-lisp
-    (use-package company
-      :ensure t
-      :config
-      (add-hook 'after-init-hook 'global-company-mode)
-      ;; (use-package company-jedi
-      ;;   ;; Not sure this is actually working for me
-      ;;   :ensure t
-      ;;   :config
-      ;;   (defun my/python-mode-hook ()
-      ;;     (add-to-list 'company-backends 'company-jedi))
-      ;;   (add-hook 'python-mode-hook 'my/python-mode-hook))
-      (use-package company-anaconda
-        :ensure t
-        :config
-        (defun my/python-mode-hook ()
-          (add-to-list 'company-backends 'company-anaconda))
-        (add-hook 'python-mode-hook 'my/python-mode-hook)))
+  (use-package company
+    :ensure t
+    :config
+    (add-hook 'after-init-hook 'global-company-mode)
+    ;; (defun on-off-fci-before-company(command)
+    ;;   (when (string= "show" command)
+    ;;     (turn-off-fci-mode))
+    ;;   (when (string= "hide" command)
+    ;;     (turn-on-fci-mode)))
+
+    ;; (advice-add 'company-call-frontends :before #'on-off-fci-before-company)
+    )
+
+  (use-package company-anaconda
+    :ensure t
+    :after company)
 #+END_SRC
 
 *** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
@@ -2686,9 +2699,7 @@ Syntax check for python. Pretty good.
 Neat-o
 #+BEGIN_SRC emacs-lisp
   (use-package highlight-numbers
-    :ensure t
-    :init
-    (add-hook 'python-mode-hook 'highlight-numbers-mode))
+    :ensure t)
 #+END_SRC
 
 *** [[https://github.com/tsdh/highlight-parentheses.el][highlight-parentheses]]
@@ -2733,10 +2744,7 @@ imenu on steroids.
 Better parentheses coloring
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-delimiters
-    :ensure t
-    :init
-    (add-hook 'python-mode-hook 'rainbow-delimiters-mode)
-    (add-hook 'emacs-lisp-mode-hook 'rainbow-delimiters-mode))
+    :ensure t)
 #+END_SRC
 
 *** [[https://github.com/naiquevin/sphinx-doc.el][sphinx-doc]]
@@ -2745,13 +2753,23 @@ complete, IMO.
 #+BEGIN_SRC emacs-lisp
   (use-package sphinx-doc
     :ensure t
-    :commands sphinx-doc-mode
-    :config
-    (add-hook 'python-mode-hook
-              (lambda ()
-                (require 'sphinx-doc)
-                (sphinx-doc-mode t))))
+    :commands sphinx-doc-mode)
 
+#+END_SRC
+
+*** [[https://github.com/zenozeng/yafolding.el][yafolding]]
+Good code folding is hard to come by in Emacs, and isn't /that/ useful. This was
+pretty good but had some known issues.
+#+BEGIN_SRC emacs-lisp
+  (use-package yafolding
+    :ensure t
+    :config
+    (defun diego/yafolding-kbd ()
+      (local-set-key (kbd "C-c <up>") 'yafolding-hide-all)
+      (local-set-key (kbd "C-c <down>") 'yafolding-show-all)
+      (local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
+      (local-set-key (kbd "C-c <right>") 'yafolding-show-element)
+      (local-set-key [C-tab] 'yafolding-toggle-element)))
 #+END_SRC
 
 *** [[https://github.com/joaotavora/yasnippet][yasnippet]]
@@ -2767,23 +2785,6 @@ Freakin yasnippet. It's the best.
     ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
     ;; (define-key yas-minor-mode-map (kbd "SPC") 'yas-expand)
     )
-#+END_SRC
-
-*** [[https://github.com/zenozeng/yafolding.el][yafolding]]
-Good code folding is hard to come by in Emacs, and isn't /that/ useful. This was
-pretty good but had some known issues.
-#+BEGIN_SRC emacs-lisp
-  (use-package yafolding
-    :ensure t
-    :config
-    (defun diego/yafolding-kbd ()
-      (local-set-key (kbd "C-c <up>") 'yafolding-hide-all)
-      (local-set-key (kbd "C-c <down>") 'yafolding-show-all)
-      (local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
-      (local-set-key (kbd "C-c <right>") 'yafolding-show-element)
-      (local-set-key [C-tab] 'yafolding-toggle-element))
-    (add-hook 'python-mode-hook 'yafolding-mode)
-    (add-hook 'python-mode-hook 'diego/yafolding-kbd))
 #+END_SRC
 
 ** Reference/search
@@ -2908,19 +2909,19 @@ if this is the answer as I haven't used it much.
       ;; (venv-initialize-interactive-shells)
       (setq venv-location "~/.virtualenvs"))
 #+END_SRC
-* Mode Specific 
+* Mode Specific
 ** Prog-mode
 Properties that apply to all programming modes.
 #+BEGIN_SRC emacs-lisp
   (defun diego/setup-prog-mode ()
-    ;; (highlight-parentheses-mode 1)
+    (highlight-parentheses-mode 1)
+    (rainbow-delimiters-mode)
     (make-local-variable 'show-paren-mode)
+    (highlight-numbers-mode)
     (setq show-paren-mode t)
     (nlinum-relative-mode 1)
-    ;; (linum-mode 1)
     (auto-fill-mode 1)
     (setq-local comment-auto-fill-only-comments t)
-    ;; (setq-local line-spacing 0.0)
     (setq-local calc-embedded-open-mode (concat comment-start " "))
     (setq-local calc-embedded-close-mode (concat comment-end "\n"))
     ;; (hl-line-mode 1)
@@ -2930,11 +2931,16 @@ Properties that apply to all programming modes.
 ** Python
 #+BEGIN_SRC emacs-lisp
   (defun diego/setup-python-mode ()
+    (yafolding-mode)
+    (diego/yafolding-kbd)
     (fci-mode)
     (yas-minor-mode)
     (setq-local tab-width 4)
     (set (make-local-variable 'comment-inline-offset) 2)
     (setenv "PYTHONPATH" "/usr/local/bin/python3")
+    (anaconda-mode)
+    (anaconda-eldoc-mode)
+    (add-to-list 'company-backends 'company-anaconda)
     (defvar diego/python-prettify-alist
       '(("<=" . "≤")
         (">=" . "≥")
