@@ -1004,9 +1004,12 @@ based on or copied from spacemacs, so definitely check them out!
     (define-key evil-normal-state-map (kbd "S-SPC") 'air-pop-to-org-agenda)
     ;; (define-key evil-normal-state-map (kbd "<SPC>") 'counsel-M-x)
     ;; (define-key evil-visual-state-map (kbd "<SPC>") 'counsel-M-x)
-  
+
     (evil-define-key 'normal custom-mode-map
       "q" 'Custom-buffer-done)
+
+    (evil-define-key 'normal message-mode-map
+      "q" 'switch-to-previous-buffer)
 
     (evil-add-hjkl-bindings occur-mode-map 'emacs
       (kbd "/")       'evil-search-forward
