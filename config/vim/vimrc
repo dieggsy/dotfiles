@@ -3,7 +3,7 @@ filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 Plugin 'VundleVim/Vundle.vim'
-Plugin 'joshdick/onedark.vim'
+"Plugin 'joshdick/onedark.vim'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Shougo/neocomplcache.vim'
@@ -35,12 +35,13 @@ let g:vim_markdown_folding_disabled = 1
 "set foldmethod=indent
 "set foldlevel=99
 set backspace=2 " make backspace work like most other apps
-colorscheme onedark
+colorscheme darktooth
 highlight Comment cterm=italic
-let mapleader = ","
-nnoremap <leader>x :CommandTCommand<CR>
-nnoremap <leader>f :CommandT<CR>
-nnoremap <leader>s :CommandTBuffer<CR>
+let mapleader = "\<Space>"
+nnoremap <leader><leader> :CommandTCommand<CR>
+nnoremap <leader>ff :CommandT<CR>
+nnoremap <leader>fs :w<CR>
+nnoremap <leader>bb :CommandTMRU<CR>
 au BufNewFile,BufRead *.py
     \ set tabstop=4 |
     \ set softtabstop=4 |
