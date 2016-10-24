@@ -8,17 +8,6 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 
 # Set up taps
 echo Tapping taps...
-brew tap ==>
-brew tap Auto-updated
-brew tap Homebrew!
-brew tap Updated
-brew tap 1
-brew tap tap
-brew tap (homebrew/core).
-brew tap ==>
-brew tap Updated
-brew tap Formulae
-brew tap kubernetes-cli
 brew tap caskroom/cask
 brew tap caskroom/fonts
 brew tap caskroom/versions
@@ -338,6 +327,7 @@ brew cask install fontforge
 brew cask install gephi
 brew cask install gimp
 brew cask install google-chrome-beta
+brew cask install hyper
 brew cask install iterm2
 brew cask install iterm2-beta
 brew cask install keycastr
