@@ -23,23 +23,30 @@ module.exports = {
 
 		// custom css to embed in the main window
 		css: `
-    .tab_active {
-        color: #fdf4c1 !important;
-        // border-bottom: 1px solid #B8BB26 !important;
-        border-bottom: 1px solid #d3869b !important;
-    }
+		.tab_active {
+			color: #fdf4c1 !important;
+			// border-bottom: 1px solid #B8BB26 !important;
+			border-bottom: 1px solid #d3869b !important;
+		}
 
-    .tab_tab{
-        color: #fdf4c1 !important;
-    }
-    `,
+		.tab_tab{
+			color: #fdf4c1 !important;
+		}
+
+
+        `,
 
 		// custom css to embed in the terminal window
-		termCSS: `\
-    .cursor-node{
-        border: none !important;
-        border-left: 1px solid #fdf4c1 !important;
-    }`,
+		termCSS: `
+        .cursor-node{
+            border: none !important;
+            border-left: 1px solid #fdf4c1 !important;
+        }
+
+        span {
+            background-color: transparent !important;
+        }
+        `,
 		// custom padding (css format, i.e.: `top right bottom left`)
 		padding: '5px 10px 0px 10px',
 
@@ -112,7 +119,8 @@ module.exports = {
 	//   `project#1.0.1`
 	plugins: [
 		'hypercwd',
-		'hyperterm-blink'
+		'hyperterm-blink',
+		'hyperterm-lastpass'
 	],
 
 	// in development, you can create a directory under
