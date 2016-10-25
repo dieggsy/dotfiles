@@ -999,6 +999,8 @@ based on or copied from spacemacs, so definitely check them out!
   (defun diego/evil-bindings ()
 
 
+    (define-key evil-normal-state-map "gy" 'evilnc-copy-and-comment-lines)
+    (define-key evil-normal-state-map "gc" 'evilnc-comment-operator)
     (define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
     (define-key evil-normal-state-map (kbd "<up>")   'evil-previous-visual-line)
     (define-key evil-normal-state-map (kbd "g/")    'occur-last-search)
