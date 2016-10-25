@@ -43,8 +43,8 @@ module.exports = {
             border-left: 1px solid #fdf4c1 !important;
         }
 
-        span {
-            background-color: transparent !important;
+        // span {
+        //     background-color: transparent !important;
         }
         `,
 		// custom padding (css format, i.e.: `top right bottom left`)
