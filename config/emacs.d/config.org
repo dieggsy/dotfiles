@@ -1054,7 +1054,10 @@ based on or copied from spacemacs, so definitely check them out!
   (use-package evil-indent-textobject
     :ensure t
     :after evil)
-
+  
+  (use-package evil-numbers
+    :ensure t
+    :after evil)
   (evil-mode 1)
 #+END_SRC
 
