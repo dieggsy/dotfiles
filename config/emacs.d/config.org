@@ -746,7 +746,7 @@ based on or copied from spacemacs, so definitely check them out!
         "ct"  'evilnc-comment-or-uncomment-to-the-line
         "cy"  'evilnc-copy-and-comment-lines
 
-        "nn"  'air-narrow-dwim
+        "nn"  'diego/narrow-dwim
         "nf"  'narrow-to-defun
         "np"  'narrow-to-page
         "nr"  'narrow-to-region
@@ -981,7 +981,7 @@ based on or copied from spacemacs, so definitely check them out!
 
     (advice-add 'evil-visual-line :before-while #'evil-visual-line--mark-org-element-when-heading))
 #+END_SRC
-*** Appearance 
+*** Appearance
 #+BEGIN_SRC emacs-lisp
   (defun diego/evil-appearance ()
     (setq evil-insert-state-cursor '(bar . 1))
@@ -1004,7 +1004,7 @@ based on or copied from spacemacs, so definitely check them out!
     (define-key evil-normal-state-map (kbd "g/")    'occur-last-search)
     (define-key evil-normal-state-map (kbd "[i")    'show-first-occurrence)
     (define-key evil-insert-state-map (kbd "C-e")   'end-of-line) ;; I know...
-    (define-key evil-normal-state-map (kbd "S-SPC") 'air-pop-to-org-agenda)
+    (define-key evil-normal-state-map (kbd "S-SPC") 'diego/pop-to-org-agenda)
     ;; (define-key evil-normal-state-map (kbd "<SPC>") 'counsel-M-x)
     ;; (define-key evil-visual-state-map (kbd "<SPC>") 'counsel-M-x)
 
@@ -1160,7 +1160,7 @@ A really nice search/completion system for emacs.
               (goto-char (point-min))
               (while (re-search-forward "^[ \t]*:CUSTOM_ID:[ \t]+\\(\\S-+\\)[ \t]*$"
                                         nil t)
-                (add-to-list 'air-all-org-custom-ids
+                (add-to-list 'diego/all-org-custom-ids
                              `(,(match-string-no-properties 1)
                                ,(concat file ":" (number-to-string (line-number-at-pos))))))))))
       diego/all-org-custom-ids))
@@ -1342,7 +1342,7 @@ A really nice search/completion system for emacs.
       "mP"  'org-set-property
       "mR"  'org-refile
       "ms"  'org-schedule
-      "m:"  'air-org-set-tags
+      "m:"  'diego/org-set-tags
       "mic" 'org-table-insert-column
       "mir" 'org-table-insert-row
       "mil" 'org-insert-link
@@ -1502,13 +1502,13 @@ A really nice search/completion system for emacs.
                 (define-key
                   org-agenda-mode-map "p"          'org-agenda-previous-date-line)
                 (define-key
-                  org-agenda-mode-map "c"          'air-org-agenda-capture)
+                  org-agenda-mode-map "c"          'diego/org-agenda-capture)
                 (define-key
                   org-agenda-mode-map "R"          'org-revert-all-org-buffers)
                 (define-key
                   org-agenda-mode-map (kbd "RET")  'org-agenda-switch-to)
 
-                (define-prefix-command 'air-org-run-shortcuts)
+                (define-prefix-command 'diego/org-run-shortcuts)
                 (define-key
                   diego/org-run-shortcuts "f" (tiny-menu-run-item "org-files"))
                 (define-key
@@ -1524,10 +1524,10 @@ A really nice search/completion system for emacs.
               (lambda ()
                 (evil-define-key
                   'insert org-capture-mode-map (kbd "C-d")
-                  'air-org-agenda-toggle-date)
+                  'diego/org-agenda-toggle-date)
                 (evil-define-key
                   'normal org-capture-mode-map (kbd "C-d")
-                  'air-org-agenda-toggle-date)
+                  'diego/org-agenda-toggle-date)
                 (evil-insert-state)))
 
     (add-hook 'org-mode-hook
