@@ -1423,30 +1423,27 @@ A really nice search/completion system for emacs.
 #+end_src
 **** Todo/agenda
 #+begin_src emacs-lisp
-  (defun diego/org-todo-vars ()
-    ;; Todo/tasks/agenda
-    (setq org-enforce-todo-dependencies t)
-    (setq org-log-done (quote time))
-    (setq org-log-redeadline (quote time))
-    (setq org-log-reschedule (quote time))
-    (setq org-agenda-skip-scheduled-if-done t)
+    (defun diego/org-todo-vars ()
+      ;; Todo/tasks/agenda
+      (setq org-enforce-todo-dependencies t)
+      (setq org-log-done (quote time))
+      (setq org-log-redeadline (quote time))
+      (setq org-log-reschedule (quote time))
+      (setq org-agenda-skip-scheduled-if-done t)
 
-    (setq org-todo-keywords
-          '((sequence
-             "☛ TODO"
-             "○ IN-PROGRESS"
-             "⚑ WAITING"
-             "|"
-             "✓ DONE"
-             "✗ CANCELED")))
+      (setq org-todo-keywords
+            '((sequence "☛ TODO" "○ IN-PROGRESS" "⚑ WAITING" "|"
+                        "✓ DONE" "✗ CANCELED")
+              (sequence "☛ READING" "|"
+                        "✓ DONE")))
 
-    (setq org-capture-templates
-          '(("t" "Todo" entry
-             (file diego/todo-file)
-             "* ☛ TODO %?\nSCHEDULED: %t")
-            ("s" "School Todo" entry
-             (file+olp diego/todo-file "School" "School")
-             "* ☛ TODO %?\nSCHEDULED: %t"))))
+      (setq org-capture-templates
+            '(("t" "Todo" entry
+               (file diego/todo-file)
+               "* ☛ TODO %?\nSCHEDULED: %t")
+              ("s" "School Todo" entry
+               (file+olp diego/todo-file "School" "School")
+               "* ☛ TODO %?\nSCHEDULED: %t"))))
 
 #+end_src 
 
