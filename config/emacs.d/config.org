@@ -881,7 +881,7 @@ based on or copied from spacemacs, so definitely check them out!
 
       "hk"  'which-key-show-top-level
       "hm"  'man
-      "hn"  'emacs-news))
+      "hn"  'view-emacs-news))
 #+end_src
 **** Quit
 #+begin_src emacs-lisp
