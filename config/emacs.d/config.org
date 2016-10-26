@@ -681,6 +681,8 @@ based on or copied from spacemacs, so definitely check them out!
       "bc"  'clone-indirect-buffer-other-window
       "bs"  'diego/switch-to-scratch
       "bM"  'diego/switch-to-messages
+      "bS"  'diego/switch-to-star
+      "bC"  'diego/switch-to-customize
 
       "ff"  'counsel-find-file
       "fc"  'diego/copy-file
