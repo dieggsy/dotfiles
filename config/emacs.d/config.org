@@ -1094,7 +1094,10 @@ A really nice search/completion system for emacs.
                 "\\`\\*Compile"
                 "\\`\\*anaconda-mode"
                 "\\`\\*scratch"
-                "\\`\\*Messages"))
+                "\\`\\*Messages"
+                "\\`todo.org"
+                "\\`notes.org"
+                "\\`archive.org"))
 
         ;; RET enters folder rather than opening dired
         (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
@@ -1325,7 +1328,7 @@ A really nice search/completion system for emacs.
 *** Bindings
 #+begin_src emacs-lisp
   (defun diego/org-bindings ()
-  
+
     (defmacro diego|org-emphasize (fname char)
       "Make function for setting the emphasis in org mode"
       `(defun ,fname () (interactive)
