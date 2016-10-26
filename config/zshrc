@@ -146,11 +146,6 @@ alias rainbowstream='$HOME/.virtualenvs/py3/bin/rainbowstream'
 export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31' # ls colors i've gotten used to
 zstyle ':completion:*' list-colors 'di=0;36:ex=0;35:ln=1;31'
 
-lecture() {
-	touch `date "+%Y-%m-%d"`"_lecture.org"
-	edit `date "+%Y-%m-%d"`"_lecture.org"
-}
-
 py2() {
 	workon py2
 	export PYTHONSTARTUP=/Users/diego/.virtualenvs/py2/bin/.pythonrc.py
@@ -210,9 +205,24 @@ pdftif() {
 }
 
 ocrpdf(){
-	gs -dNOPAUSE -q -r500 -sDEVICE=tiffg4 -dBATCH -sOutputFile=temp.tif $1
-	tesseract temp.tif $2
-	rm temp.tif
+	echo "Converting pdf to png..."
+	gs -dNOPAUSE -q -r500 -sDEVICE=tiffg4 -dBATCH -sOutputFile=$TMPDIR/tempocr.tif $1
+	echo "Running tesseract on pngs..."
+	tesseract $TMPDIR/tempocr.tif $2 >/dev/null 2>&1
+}
+
+ocrpdf2(){
+	echo "Converting pdf to png..."
+	convert -density 500 $1 $TMPDIR/tempocr.png
+	count=0
+	echo "Running tesseract on pngs..."
+	while [ -f $TMPDIR/tempocr-$count.png ]; do
+		echo "    Page $count"
+		tesseract $TMPDIR/tempocr-$count.png $TMPDIR/tempocr >/dev/null 2>&1
+		cat $TMPDIR/tempocr.txt >> $2
+		let count=count+1
+	done
+	echo "Created output file $2"
 }
 
 psetzip (){
