@@ -471,6 +471,23 @@ Handling/storing of files, backups, autosaves.
                              (cadr word)
                              (caddr word)
                              current-location))))
+
+  (defun live-fontify-hex-colors (limit)
+    (remove-overlays (point) limit 'fontify-hex-colors t)
+    (while (re-search-forward "\\(#[[:xdigit:]]\\{6\\}\\)" limit t)
+      (let ((ov (make-overlay (match-beginning 0)
+                              (match-end 0))))
+        (overlay-put ov 'face  (list :background (match-string 1) :foreground "black"))
+        (overlay-put ov 'fontify-hex-colors t)
+        (overlay-put ov 'evaporate t)))
+    ;; return nil telling font-lock not to fontify anything from this
+    ;; function
+    nil)
+
+  (defun live-fontify-hex-colours-in-current-buffer ()
+    (interactive)
+    (font-lock-add-keywords nil
+                            '((live-fontify-hex-colors))))
 #+END_SRC
 
 #+RESULTS:
@@ -698,7 +715,17 @@ based on or copied from spacemacs, so definitely check them out!
     (defun diego/switch-to-scratch ()
       (interactive)
       (switch-to-buffer (get-buffer-create "*scratch*")))
-  
+
+    (defun diego/switch-to-star ()
+      (interactive)   
+      (let ((ivy-initial-inputs-alist '((ivy-switch-buffer . "^*"))))
+        (ivy-switch-buffer)))
+
+    (defun diego/switch-to-customize ()
+      (interactive)   
+      (let ((ivy-initial-inputs-alist '((ivy-switch-buffer . "^*customize "))))
+        (ivy-switch-buffer)))
+
     (defun diego/switch-to-messages ()
       (interactive)
       (switch-to-buffer (get-buffer "*Messages*")))
@@ -1429,27 +1456,32 @@ A really nice search/completion system for emacs.
 #+end_src
 **** Todo/agenda
 #+begin_src emacs-lisp
-    (defun diego/org-todo-vars ()
-      ;; Todo/tasks/agenda
-      (setq org-enforce-todo-dependencies t)
-      (setq org-log-done (quote time))
-      (setq org-log-redeadline (quote time))
-      (setq org-log-reschedule (quote time))
-      (setq org-agenda-skip-scheduled-if-done t)
+  (defun diego/org-todo-vars ()
+    ;; Todo/tasks/agenda
+    (setq org-enforce-todo-dependencies t)
+    (setq org-log-done (quote time))
+    (setq org-log-redeadline (quote time))
+    (setq org-log-reschedule (quote time))
+    (setq org-agenda-skip-scheduled-if-done t)
 
-      (setq org-todo-keywords
-            '((sequence "☛ TODO" "○ IN-PROGRESS" "⚑ WAITING" "|"
-                        "✓ DONE" "✗ CANCELED")
-              (sequence "☛ READING" "|"
-                        "✓ DONE")))
+    (setq org-agenda-deadline-faces
+          '((1.0 . org-warning)
+            (0.5 . org-upcoming-deadline)
+            (0.0 . '(:foreground "#A89984"))))
+  
+    (setq org-todo-keywords
+          '((sequence "☛ TODO" "○ IN-PROGRESS" "⚑ WAITING" "|"
+                      "✓ DONE" "✗ CANCELED")
+            (sequence "☛ READ" "|"
+                      "✓ DONE")))
 
-      (setq org-capture-templates
-            '(("t" "Todo" entry
-               (file diego/todo-file)
-               "* ☛ TODO %?\nSCHEDULED: %t")
-              ("s" "School Todo" entry
-               (file+olp diego/todo-file "School" "School")
-               "* ☛ TODO %?\nSCHEDULED: %t"))))
+    (setq org-capture-templates
+          '(("t" "Todo" entry
+             (file diego/todo-file)
+             "* ☛ TODO %?\nSCHEDULED: %t")
+            ("s" "School Todo" entry
+             (file+olp diego/todo-file "School" "School")
+             "* ☛ TODO %?\nSCHEDULED: %t"))))
 
 #+end_src 
 
@@ -2803,6 +2835,12 @@ Freakin yasnippet. It's the best.
     )
 #+END_SRC
 
+*** [[https://github.com/clojure-emacs/clojure-mode][clojure-mode]]
+#+begin_src emacs-lisp
+  (use-package clojure-mode
+    :ensure t
+    :defer 5)
+#+end_src
 ** Reference/search
 *** [[https://github.com/abo-abo/define-word][define-word]]
 #+BEGIN_SRC emacs-lisp
