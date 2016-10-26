@@ -14,7 +14,7 @@ certifi==2016.9.26
 click==6.6
 configobj==5.0.6
 cycler==0.10.0
-Cython==0.24.1
+Cython==0.25
 daft==0.0.4
 data==0.4
 decorator==4.0.10
@@ -94,7 +94,7 @@ plac==0.9.6
 powerline-status==2.5
 praw==3.5.0
 prompt-toolkit==1.0.8
-psutil==4.4.0
+psutil==4.4.1
 ptyprocess==0.5.1
 pyasn1==0.1.9
 pyasn1-modules==0.0.8

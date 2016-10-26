@@ -8,7 +8,7 @@ beautifulsoup4==4.5.1
 certifi==2016.9.26
 configparser==3.5.0
 cycler==0.10.0
-Cython==0.24.1
+Cython==0.25
 decorator==4.0.10
 docopt==0.6.2
 elpy==1.12.0
