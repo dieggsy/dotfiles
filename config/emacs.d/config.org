@@ -1881,6 +1881,7 @@ Neat way to bind commands to key-stroke combinations
     :ensure t
     :defer 5
     :config
+    (setq key-chord-two-keys-delay .05)
     (key-chord-mode 1)
     (key-chord-define evil-insert-state-map "jk" 'evil-normal-state))
 #+END_SRC
