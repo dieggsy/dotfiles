@@ -1334,6 +1334,7 @@ A really nice search/completion system for emacs.
     (evil-leader/set-key-for-mode 'org-mode
       "m$"  'org-archive-subtree
       "m'"  'org-edit-special
+      "m/"  'org-sparse-tree
       "m^"  'org-sort
       "ma"  'org-agenda
       "mA"  'org-archive-subtree
