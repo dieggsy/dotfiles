@@ -1499,6 +1499,8 @@ A really nice search/completion system for emacs.
     (setq org-hide-emphasis-markers t)
     (setq org-startup-with-inline-images t)
     (setq org-ellipsis " …")
+    (setq org-highlight-latex-and-related '(latex script entities))
+    (setq org-pretty-entities t)
 
     ;; latex
     (setq org-latex-listings t)

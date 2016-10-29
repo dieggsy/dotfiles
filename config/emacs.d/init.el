@@ -76,7 +76,6 @@
 	 (ipython . t))))
  '(org-babel-python-command "python3")
  '(org-confirm-babel-evaluate nil)
- '(org-highlight-latex-and-related nil)
  '(org-latex-classes
    (quote
 	(("article" "\\documentclass[11pt]{article}"
