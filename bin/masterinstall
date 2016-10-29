@@ -145,6 +145,7 @@ brew install json-c
 brew install khd
 brew install kwm
 brew install lame
+brew install leiningen
 brew install leptonica
 brew install less
 brew install leveldb
