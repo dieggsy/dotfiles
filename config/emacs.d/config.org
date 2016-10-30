@@ -460,7 +460,7 @@ Handling/storing of files, backups, autosaves.
     (interactive)
     (let ((current-location (point))
            (word (flyspell-get-word)))
-      (when (consp word)    
+      (when (consp word)
         (flyspell-do-correct 'save
                              nil
                              (car word)
@@ -500,7 +500,7 @@ Handling/storing of files, backups, autosaves.
   (defun diego/init ()
     "Open ~/dotfiles/config/emacs.d/init.el"
     (interactive)
-    (find-file "/Users/diego/dotfiles/config/emacs.d/init.el")) 
+    (find-file "/Users/diego/dotfiles/config/emacs.d/init.el"))
 
   (defun diego/zshrc ()
     "Open ~/dotfiles/config/zshrc"
@@ -519,7 +519,7 @@ Handling/storing of files, backups, autosaves.
   (defun diego/toggle-github-spacing ()
     "Make line spacing similar to github source code."
     (interactive)
-    (setq-local line-spacing 
+    (setq-local line-spacing
                 (if (eq line-spacing nil)
                     0.4
                   nil)))
@@ -536,7 +536,7 @@ Handling/storing of files, backups, autosaves.
       (insert (drawille-from-image x))))
 
   (defun diego/lecture-notes ()
-    "Prompt for a class and create a lecture notes file 
+    "Prompt for a class and create a lecture notes file
   matching format %Y-%m-%d_lecture.org in class/notes subdirectory."
     (interactive)
     (ivy-read "class: " '("16.410"
@@ -548,7 +548,7 @@ Handling/storing of files, backups, autosaves.
               :caller 'diego/lecture-notes))
 
     (defun diego/recitation-notes ()
-      "Prompt for a class and create a lecture notes file 
+      "Prompt for a class and create a lecture notes file
     matching format %Y-%m-%d_lecture.org in class/notes subdirectory."
       (interactive)
       (ivy-read "class: " '("16.410"
@@ -570,7 +570,7 @@ Handling/storing of files, backups, autosaves.
   (fset 'diego/insert-footnote
         [?/ ?\{ ?\[ ?0 ?- ?9 ?\] ?+ ?\} return ?a ?f ?n ?: escape ?  ?x ?p ?r ?\[])
 #+END_SRC
-** Bindings 
+** Bindings
 I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard.
 #+begin_src emacs-lisp
   (with-eval-after-load "undo-tree"
@@ -639,7 +639,7 @@ based on or copied from spacemacs, so definitely check them out!
         (split-window-below)
         (other-window 1)))
 #+end_src
-**** Jumping 
+**** Jumping
 #+begin_src emacs-lisp
   (defun diego/leader-jumping ()
     (evil-leader/set-key
@@ -653,7 +653,7 @@ based on or copied from spacemacs, so definitely check them out!
 #+end_src
 **** Applications
 #+begin_src emacs-lisp
-  (defun diego/leader-applications () 
+  (defun diego/leader-applications ()
       (evil-leader/set-key
         "ax"  'xkcd
         "agt" 'tetris
@@ -671,7 +671,7 @@ based on or copied from spacemacs, so definitely check them out!
         "as"  'speed-type-text
         "at"  'twit
 
-        ;; org 
+        ;; org
         "ao#" 'org-agenda-list-stuck-projects
         "ao/" 'org-occur-in-agenda-files
         "aoa" 'org-agenda-list
@@ -718,12 +718,12 @@ based on or copied from spacemacs, so definitely check them out!
       (switch-to-buffer (get-buffer-create "*scratch*")))
 
     (defun diego/switch-to-star ()
-      (interactive)   
+      (interactive)
       (let ((ivy-initial-inputs-alist '((ivy-switch-buffer . "^*"))))
         (ivy-switch-buffer)))
 
     (defun diego/switch-to-customize ()
-      (interactive)   
+      (interactive)
       (let ((ivy-initial-inputs-alist '((ivy-switch-buffer . "^*customize "))))
         (ivy-switch-buffer)))
 
@@ -743,7 +743,7 @@ based on or copied from spacemacs, so definitely check them out!
             (message "Buffer erased."))
         (message "erase-buffer cancelled"))))
 #+end_src
-**** Toggles 
+**** Toggles
 #+begin_src emacs-lisp
   (defun diego/leader-toggle ()
     (evil-leader/set-key
@@ -872,9 +872,9 @@ based on or copied from spacemacs, so definitely check them out!
                              (group 1 2)
                              (spacing 1 1)
                              (justify nil t)))
-                      nil)))   
+                      nil)))
 #+end_src
-**** Spelling 
+**** Spelling
 #+begin_src emacs-lisp
   (defun diego/leader-spelling ()
     (evil-leader/set-key
@@ -922,7 +922,7 @@ based on or copied from spacemacs, so definitely check them out!
       "qf" 'delete-frame))
 #+end_src
 **** Modes
-#+BEGIN_SRC emacs-lisp 
+#+BEGIN_SRC emacs-lisp
   (defun diego/leader-modes ()
     ;; emacs-lisp
     (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
@@ -1053,7 +1053,7 @@ based on or copied from spacemacs, so definitely check them out!
       (kbd "C-d")     'evil-scroll-down
       (kbd "C-u")     'evil-scroll-up
       (kbd "C-w C-w") 'other-window)
- 
+
     ;; Make escape and C-/ quit everything, whenever possible.
     (define-key evil-insert-state-map [?\C-/] #'evil-normal-state)
     (define-key evil-normal-state-map [escape] #'keyboard-quit)
@@ -1094,7 +1094,7 @@ based on or copied from spacemacs, so definitely check them out!
   (use-package evil-indent-textobject
     :ensure t
     :after evil)
-  
+
   (use-package evil-numbers
     :ensure t
     :after evil)
@@ -1117,9 +1117,9 @@ A really nice search/completion system for emacs.
     (setq ivy-format-function 'ivy-format-function-arrow) ; DAT NICE ARROW THOUGH aosenuth
     (setq projectile-completion-system 'ivy)
     (setq ivy-use-virtual-buffers t) ; Show recent files
-    (setq ivy-count-format "") 
+    (setq ivy-count-format "")
     (setq ivy-extra-directories '("../")) ; ignore current folder... maybe shouldn't
-    (setq ivy-ignore-buffers 
+    (setq ivy-ignore-buffers
           '("\\` "
             "\\`\\*LV\\*"
             "\\`\\*magit"
@@ -1137,7 +1137,8 @@ A really nice search/completion system for emacs.
             "\\`\\*Messages"
             "\\`todo.org"
             "\\`notes.org"
-            "\\`archive.org"))
+            "\\`archive.org"
+            "\\`\\*Man"))
 
     ;; RET enters folder rather than opening dired
     (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
@@ -1155,7 +1156,7 @@ A really nice search/completion system for emacs.
     ;;         (t . ivy--regex-fuzzy))
 
     ;;Don't start searches with '^' by default
-    (setq ivy-initial-inputs-alist nil)
+    (setq ivy-initial-inputs-alist '((man . "^")))
 
     (setq ivy-switch-buffer-faces-alist
           '((dired-mode . ivy-subdir))))
@@ -1183,7 +1184,7 @@ A really nice search/completion system for emacs.
                  counsel-projectile-switch-to-buffer
                  counsel-projectile-find-dir
                  counsel-projectile-find-file
-                 counsel-projecile) 
+                 counsel-projecile)
       :ensure t)
 
     (use-package counsel-osx-app
@@ -1454,7 +1455,7 @@ A really nice search/completion system for emacs.
       (kbd "M-K") 'org-shiftmetaup
       (kbd "M-J") 'org-shiftmetadown))
 #+end_src
-*** Custom vars 
+*** Custom vars
 **** Files
 #+begin_src emacs-lisp
   (defun diego/org-file-vars ()
@@ -1481,7 +1482,7 @@ A really nice search/completion system for emacs.
           '((1.0 . org-warning)
             (0.5 . org-upcoming-deadline)
             (0.0 . '(:foreground "#A89984"))))
-  
+
     (setq org-todo-keywords
           '((sequence "☛ TODO" "○ IN-PROGRESS" "⚑ WAITING" "|"
                       "✓ DONE" "✗ CANCELED")
@@ -1496,11 +1497,11 @@ A really nice search/completion system for emacs.
              (file+olp diego/todo-file "School" "School")
              "* ☛ TODO %?\nSCHEDULED: %t"))))
 
-#+end_src 
+#+end_src
 
 **** Behavior/appearance
 #+begin_src emacs-lisp
-  (defun diego/org-general-vars () 
+  (defun diego/org-general-vars ()
     ;; Behavior
     (setq org-insert-heading-respect-content t)
     (setq org-src-window-setup 'current-window)
@@ -1727,7 +1728,7 @@ Eh, why not.
                (vconcat zone-programs [zone-matrix])))))
 #+END_SRC
 
-*** zone-nyan 
+*** zone-nyan
 #+BEGIN_SRC emacs-lisp
   (use-package zone-nyan
     :ensure t
@@ -1742,12 +1743,12 @@ Eh, why not.
 
 ** Appearance
 *** [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
-#+BEGIN_SRC emacs-lisp 
+#+BEGIN_SRC emacs-lisp
   (use-package all-the-icons
     :defer 5
     :ensure t)
 #+END_SRC
-*** darktooth-theme 
+*** darktooth-theme
 #+begin_src emacs-lisp
   (use-package darktooth-theme
     :load-path "lisp/")
@@ -2060,7 +2061,7 @@ SUPER nifty.
 #+begin_src emacs-lisp
   (use-package smartparens
     :ensure t
-    :config 
+    :config
     (smartparens-global-mode)
     (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil))
 #+end_src
@@ -2075,7 +2076,7 @@ Recently used M-x commands
 #+BEGIN_SRC emacs-lisp
   (use-package sunshine
     :ensure t
-    :commands (sunshine-forecast sunshine-quick-forecast) 
+    :commands (sunshine-forecast sunshine-quick-forecast)
     :config
     (setq sunshine-location "02139,USA"))
 #+END_SRC
@@ -2137,12 +2138,12 @@ Recently used M-x commands
     (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 #+END_SRC
 
-** Navigation 
+** Navigation
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
 #+BEGIN_SRC emacs-lisp
   (use-package ace-window
     :ensure t
-    :commands (ace-window ace-delete-window ace-swap-window) 
+    :commands (ace-window ace-delete-window ace-swap-window)
     :bind ("M-p" . ace-window)
     :config
     (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
@@ -2462,7 +2463,7 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
 #+BEGIN_SRC emacs-lisp
   (use-package ranger
     :ensure t
-    :commands ranger 
+    :commands ranger
     :config
     (setq ranger-show-literal nil)
     (setq ranger-show-dotfiles nil)
@@ -2888,7 +2889,7 @@ Google stuff from emacs.
 An org-mode google??? Not currently working, apparently.
 #+BEGIN_SRC emacs-lisp
   (use-package gnugol
-    :commands gnugol 
+    :commands gnugol
     :load-path "lisp/")
 #+END_SRC
 
@@ -3034,7 +3035,7 @@ Properties that apply to all programming modes.
 
   (add-hook 'python-mode-hook 'diego/setup-python-mode)
 #+END_SRC
-** Matlab 
+** Matlab
 #+begin_src emacs-lisp
 (add-hook 'matlab-mode-hook 'diego/setup-prog-mode)
 #+end_src
@@ -3061,7 +3062,7 @@ Mostly set up hs-minor-mode for emacs-lisp.
     (local-set-key (kbd "<C-tab>") 'multi-term-next))
   (add-hook 'term-mode-hook 'diego/setup-term-mode)
 #+END_SRC
-** Calc mode 
+** Calc mode
 #+begin_src emacs-lisp
   (setq calc-multiplication-has-precedence nil)
   (defun diego/setup-calc-mode()
