@@ -1630,7 +1630,8 @@ A really nice search/completion system for emacs.
       (which-key-add-major-mode-key-based-replacements mode
         "SPC me" "eval"))
 
-    (setq which-key-sort-order 'which-key-key-order-alpha))
+    (setq which-key-sort-order 'which-key-key-order-alpha)
+    (setq which-key-sort-uppercase-first nil))
 #+end_src
 
 * Dem packages
