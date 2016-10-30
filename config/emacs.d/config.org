@@ -257,6 +257,7 @@ consistent with other fonts. Last updated 2011, last successfully tested
     (add-to-list 'default-frame-alist '(font . "Input-10"))
     (set-face-attribute 'default t :font "Input-10"))
 
+  (setq default-input-method "TeX")
 #+END_SRC
 ** Minibuffer
 #+BEGIN_SRC emacs-lisp
