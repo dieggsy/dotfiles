@@ -2970,6 +2970,7 @@ Properties that apply to all programming modes.
     (highlight-parentheses-mode 1)
     (rainbow-delimiters-mode)
     (make-local-variable 'show-paren-mode)
+    (fci-mode)
     (highlight-numbers-mode)
     (setq show-paren-mode t)
     (nlinum-relative-mode 1)
@@ -2986,7 +2987,6 @@ Properties that apply to all programming modes.
   (defun diego/setup-python-mode ()
     (yafolding-mode)
     (diego/yafolding-kbd)
-    (fci-mode)
     (yas-minor-mode)
     (setq-local tab-width 4)
     (set (make-local-variable 'comment-inline-offset) 2)
@@ -3022,7 +3022,6 @@ Properties that apply to all programming modes.
 Mostly set up hs-minor-mode for emacs-lisp.
 #+BEGIN_SRC emacs-lisp
   (defun diego/setup-lisp-mode ()
-    (fci-mode)
     (hs-minor-mode)
     (local-set-key (kbd "C-c <up>") 'hs-hide-all)
     (local-set-key (kbd "C-c <down>") 'hs-show-all)
