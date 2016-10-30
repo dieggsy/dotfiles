@@ -219,15 +219,15 @@ Get rid of menu bars, scroll bars, startup screens, etc.
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (setq custom-raised-buttons nil)
-  ;; (add-hook 'minibuffer-setup-hook (lambda ()
-  ;;                                    (electric-pair-mode)))
   (setq display-time-load-average nil)
   (setq whitespace-style '(face trailing))
   (set-default 'truncate-lines t)
+  (show-paren-mode)
+  (setq show-paren-mode ())
   ;; (require 'zone)
   ;; (zone-when-idle 10)
 #+END_SRC
-** Fonts
+** Font/Text
 *Current:* Currently I'm using the wonderful [[http://input.fontbureau.com/][Input]] font. If, like me, you're
 coming from something more like SauceCodePro, Consolas, or even just Menlo,
 this font may at first seem a little "blocky," but it's so wonderfully
@@ -301,12 +301,6 @@ Handling/storing of files, backups, autosaves.
   ;; ssh
   (setq tramp-default-method "ssh")
   (setq password-cache-expiry nil)
-#+END_SRC
-** Parentheses
-#+BEGIN_SRC emacs-lisp
-  ;; (electric-pair-mode)
-  (show-paren-mode)
-  (setq show-paren-mode ())
 #+END_SRC
 ** Smooth scroll
 #+BEGIN_SRC emacs-lisp
