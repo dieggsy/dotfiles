@@ -454,12 +454,12 @@ Handling/storing of files, backups, autosaves.
              fill-column)))
       (call-interactively #'fill-paragraph)))
 
-   (global-set-key [remap fill-paragraph] #'diego/fill-or-unfill)
+  (global-set-key [remap fill-paragraph] #'diego/fill-or-unfill)
 
   (defun diego/flyspell-add-to-dictionary ()
     (interactive)
     (let ((current-location (point))
-           (word (flyspell-get-word)))
+          (word (flyspell-get-word)))
       (when (consp word)
         (flyspell-do-correct 'save
                              nil
