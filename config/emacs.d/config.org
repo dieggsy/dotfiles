@@ -141,18 +141,12 @@ Set package archives/repos and setup use-package and all that.
       (message "Removing local package.el from load-path to avoid shadowing bundled version")
       (setq load-path (remove package-el-site-lisp-dir load-path))))
 
-  (require 'package)
-
-
   ;;; Standard package repositories
   (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
   (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
   (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
   (add-to-list 'package-archives '("elpy" . "https://jorgenschaefer.github.io/packages/"))
-
-  ;;; Pin some packages to specific repositories.
-  (setq package-pinned-packages '((gtags . "marmalade")))
 
   ;; If gpg cannot be found, signature checking will fail, so we
   ;; conditionally enable it according to whether gpg is available. We
