@@ -1851,6 +1851,12 @@ I was looking for something with the nice look and simplicity of
 #+END_SRC
 
 ** Misc utilities
+*** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
+#+begin_src emacs-lisp
+  (use-package centered-cursor-mode
+    :ensure t
+    :commands centered-cursor-mode)
+#+end_src
 *** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
 Eh, wanted to try a simpler way of editing csv files. (Excel and Numbers both
 kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
@@ -1862,7 +1868,6 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
     :config
     (add-hook 'csv-mode-hook 'csv-align-fields))
 #+END_SRC
-
 *** [[https://github.com/remyhonig/elfeed-org][elfeed]]
 #+begin_src emacs-lisp
   (use-package elfeed
