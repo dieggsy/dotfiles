@@ -2776,10 +2776,7 @@ imenu on steroids.
     :defer 5
     :ensure matlab-mode
     :init
-    (load-library "matlab-load")
-    (add-hook 'matlab-mode-hook (lambda ()
-                                  (nlinum-relative-mode 1)
-                                  (fci-mode 1))))
+    (load-library "matlab-load"))
 #+end_src
 *** [[https://github.com/CodeFalling/nlinum-relative][nlinum-relative]]
 #+begin_src emacs-lisp :tangle no
@@ -3017,7 +3014,10 @@ Properties that apply to all programming modes.
 
   (add-hook 'python-mode-hook 'diego/setup-python-mode)
 #+END_SRC
-
+** Matlab 
+#+begin_src emacs-lisp
+(add-hook 'matlab-mode-hook 'diego/setup-prog-mode)
+#+end_src
 ** Emacs-Lisp
 Mostly set up hs-minor-mode for emacs-lisp.
 #+BEGIN_SRC emacs-lisp
