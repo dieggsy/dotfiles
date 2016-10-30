@@ -248,10 +248,14 @@ consistent with other fonts. Last updated 2011, last successfully tested
 
   ;; (add-to-list 'default-frame-alist '(font . "SauceCodePro Nerd Font-11"))
   ;; (set-face-attribute 'default t :font "SauceCodePro Nerd Font-11")
-
-  (add-to-list 'default-frame-alist '(font . "Input-10"))
-  (set-face-attribute 'default t :font "Input-10")
-
+  (defun font-exists-p (font)
+    "check if font exists"
+    (if (null (x-list-fonts font))
+        nil
+      t))
+  (when (font-exists-p "Input")
+    (add-to-list 'default-frame-alist '(font . "Input-10"))
+    (set-face-attribute 'default t :font "Input-10"))
 
 #+END_SRC
 ** Minibuffer
