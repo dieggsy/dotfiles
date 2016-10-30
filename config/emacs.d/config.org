@@ -310,9 +310,13 @@ Handling/storing of files, backups, autosaves.
 #+END_SRC
 ** Smooth scroll
 #+BEGIN_SRC emacs-lisp
+  ;; Arrow key/jk scroll
   (setq scroll-step 1
         scroll-conservatively 10000)
 
+  ;; Mouse scroll
+  (setq mouse-wheel-scroll-amount '(2 ((shift) . 1) ((control) . nil)))
+  (setq mouse-wheel-progressive-speed nil)
 #+END_SRC
 ** Tabs/completion?
 #+BEGIN_SRC emacs-lisp
