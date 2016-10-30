@@ -184,9 +184,7 @@
  ;; If there is more than one, they won't work right.
  '(epe-dir-face ((t (:inherit eshell-ls-directory :weight normal))))
  '(erc-prompt-face ((t (:foreground "lightBlue2" :weight bold))))
- '(nlinum-relative-current-face ((t (:inherit linum :background "#444444" :foreground "#b8bb26"))))
  '(notmuch-search-unread-face ((t (:foreground "#83a598"))))
- '(org-checkbox ((t (:background "#282828" :foreground "#D5C4A1"))))
  '(twittering-uri-face ((t (:foreground "#528b8b" :underline t))))
  '(twittering-username-face ((t (:foreground "#FE8019" :underline t))))
  '(variable-pitch ((t (:family "Open Sans")))))
