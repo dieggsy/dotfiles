@@ -102,6 +102,8 @@ else
 	export ALTERNATE_EDITOR="vim"
 fi
 
+kwm="koekeishiya/kwm/kwm"
+khd="koekeishiya/khd/khd"
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
