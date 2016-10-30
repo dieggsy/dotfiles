@@ -573,6 +573,12 @@ Handling/storing of files, backups, autosaves.
   (fset 'diego/insert-footnote
         [?/ ?\{ ?\[ ?0 ?- ?9 ?\] ?+ ?\} return ?a ?f ?n ?: escape ?  ?x ?p ?r ?\[])
 #+END_SRC
+** Bindings 
+I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard.
+#+begin_src emacs-lisp
+  (with-eval-after-load "undo-tree"
+    (define-key undo-tree-map (kbd "C-/") nil))
+#+end_src
 ** What?
 #+begin_src emacs-lisp
 (load-file "~/.emacs.d/lisp/nothing-to-see-here.el")
@@ -1053,14 +1059,22 @@ based on or copied from spacemacs, so definitely check them out!
       (kbd "C-u")     'evil-scroll-up
       (kbd "C-w C-w") 'other-window)
  
-    ;; Make escape quit everything, whenever possible.
-    (define-key evil-normal-state-map [escape] 'keyboard-quit)
-    (define-key evil-visual-state-map [escape] 'keyboard-quit)
-    (define-key minibuffer-local-map [escape] 'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-ns-map [escape] 'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-completion-map [escape] 'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-must-match-map [escape] 'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-isearch-map [escape] 'minibuffer-keyboard-quit))
+    ;; Make escape and C-/ quit everything, whenever possible.
+    (define-key evil-insert-state-map [?\C-/] #'evil-normal-state)
+    (define-key evil-normal-state-map [escape] #'keyboard-quit)
+    (define-key evil-normal-state-map [?\C-/] #'keyboard-quit)
+    (define-key evil-visual-state-map [escape] #'keyboard-quit)
+    (define-key evil-visual-state-map [?\C-/] #'keyboard-quit)
+    (define-key minibuffer-local-map [escape] #'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-map [?\C-/] #'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-ns-map [escape] #'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-ns-map [?\C-/] #'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-completion-map [escape] #'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-completion-map [?\C-/] #'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-must-match-map [escape] #'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-must-match-map [?\C-/] #'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-isearch-map [escape] #'minibuffer-keyboard-quit)
+    (define-key minibuffer-local-isearch-map [?\C-/] #'minibuffer-keyboard-quit))
 #+END_SRC
 *** Final Setup
 #+BEGIN_SRC emacs-lisp
