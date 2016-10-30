@@ -74,36 +74,37 @@
 # vi-mode for non-terminal applications
 
 # remap left-control h/j/k/l -> arrow keys
-lctrl - h         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "- left"
-lctrl - j         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "- down"
-lctrl - k         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "- up"
-lctrl - l         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "- right"
+# lctrl - h         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "- left"
+# lctrl - j         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "- down"
+# lctrl - k         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "- up"
+# lctrl - l         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "- right"
+#lctrl - /                                               : khd -p "- escape" 
 
-shift + lctrl - h ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift - left"
-shift + lctrl - j ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift - down"
-shift + lctrl - k ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift - up"
-shift + lctrl - l ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift - right"
+# shift + lctrl - h ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift - left"
+# shift + lctrl - j ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift - down"
+# shift + lctrl - k ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift - up"
+# shift + lctrl - l ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift - right"
 
 # remap left-control 0 / 4   -> start / end of line
-lctrl - 0         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "cmd - left"
-lctrl - 4         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "cmd - right"
+# lctrl - 0         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "cmd - left"
+# lctrl - 4         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "cmd - right"
 
 # remap left-control g / G   -> start / end of text(erase-buffer)
-lctrl - g         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "cmd - up"
-lctrl + shift - g ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "cmd - down"
+# lctrl - g         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "cmd - up"
+# lctrl + shift - g ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "cmd - down"
 
-shift + lctrl - 0 ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift + cmd - left"
-shift + lctrl - 4 ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift + cmd - right"
+# shift + lctrl - 0 ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift + cmd - left"
+# shift + lctrl - 4 ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift + cmd - right"
 
 # remap left-control b / e   -> start / end of word
-lctrl - b         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "alt - left"
-lctrl - e         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "alt - right"
+# lctrl - b         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "alt - left"
+# lctrl - e         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "alt - right"
 
-shift + lctrl - b ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift + alt - left"
-shift + lctrl - e ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift + alt - right"
+# shift + lctrl - b ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift + alt - left"
+# shift + lctrl - e ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift + alt - right"
 
 # remap left-control x       -> forward delete
-lctrl - x         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "- delete"
+# lctrl - x         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "- delete"
 
 
 
@@ -172,25 +173,6 @@ switcher + shift - c    :   kwmc window -m space right;\
 switcher + shift - 1    :   kwmc display -f 0
 switcher + shift - 2    :   kwmc display -f 1
 switcher + shift - 3    :   kwmc display -f 2
-
-
-
-# ytd mode
-# ytd - x                 :   ytc play;\
-#                             khd -e "mode activate default"
-
-# ytd - s                 :   ytc mkfav;\
-                            # khd -e "mode activate default"
-
-# 0x32 == <
-# ytd - 0x32              :   ytc fav
-# ytd - z                 :   ytc prev
-# ytd - c                 :   ytc next
-# ytd - v                 :   ytc stop
-# ytd - a                 :   ytc volup
-# ytd - d                 :   ytc voldown
-# ytd - right             :   ytc seekfw
-# ytd - left              :   ytc seekbk
 
 
 
