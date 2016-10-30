@@ -2046,8 +2046,9 @@ SUPER nifty.
 #+begin_src emacs-lisp
   (use-package smartparens
     :ensure t
-    :config
-    (smartparens-global-mode))
+    :config 
+    (smartparens-global-mode)
+    (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil))
 #+end_src
 *** [[https://github.com/nonsequitur/smex][smex]]
 Recently used M-x commands
