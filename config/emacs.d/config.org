@@ -485,10 +485,11 @@ Handling/storing of files, backups, autosaves.
     (interactive)
     (font-lock-add-keywords nil
                             '((live-fontify-hex-colors))))
-#+END_SRC
 
-#+RESULTS:
-: diego/flyspell-add-to-dictionary
+  (defun indent-buffer ()
+    (interactive)
+    (indent-region (point-min) (point-max) nil))
+#+END_SRC
 
 *** "Original"
 #+BEGIN_SRC emacs-lisp
