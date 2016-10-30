@@ -331,10 +331,10 @@ brew cask install google-chrome-beta
 brew cask install hyper
 brew cask install iterm2
 brew cask install iterm2-beta
-brew cask install keycastr
 brew cask install libreoffice
 brew cask install licecap
 brew cask install lilypond
+brew cask install mactex
 brew cask install middleclick
 brew cask install musescore
 brew cask install music-manager
