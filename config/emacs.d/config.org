@@ -3,7 +3,7 @@
 * Intro
 This is my emacs init file. =init.el= loads the elisp code from here. It's pretty
 cool that I can write it in org mode, because easy organization and
-rearrangement are pretty sweet. Check out [[https://github.com/aaronbieber/dotfiles][@aaronbieber]], [[https://github.com/hrs/dotfiles][@hrs]], and [[https://github.com/syl20bnr/spacemacs][spacemacs]] - a
+rearrangement are pretty sweet. Check out [[https://github.com/aaronbieber/dotfiles/tree/master/configs/emacs.d][@aaronbieber]], [[https://github.com/hrs/dotfiles/tree/master/emacs.d][@hrs]], and [[https://github.com/syl20bnr/spacemacs][spacemacs]] - a
 lot of the inspiration (and erm, code) for this is taken from them.
 
 * Personal Info
