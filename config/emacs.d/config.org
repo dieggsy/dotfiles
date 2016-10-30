@@ -702,21 +702,19 @@ based on or copied from spacemacs, so definitely check them out!
       "be"  'diego/safe-erase-buffer
       "bi"  'ibuffer
       "bc"  'clone-indirect-buffer-other-window
-      "bs"  'diego/switch-to-scratch
+      "bS"  'diego/switch-to-scratch
       "bM"  'diego/switch-to-messages
-      "bS"  'diego/switch-to-star
+      "b*"  'diego/switch-to-star
+      "bs"  'ivy-switch-buffer-other-window
       "bC"  'diego/switch-to-customize
 
       "ff"  'counsel-find-file
+      "fb"  'counsel-bookmark
       "fc"  'diego/copy-file
       "fs"  'save-buffer
       "fl"  'counsel-locate
       "fr"  'rename-this-file-and-buffer
-      "fD"  'move-file-to-trash
-      "fec" 'diego/config
-      "fez" 'diego/zshrc
-      "fei" 'diego/init
-      "fel" 'locate-library)
+      "fD"  'move-file-to-trash)
 
     (defun diego/switch-to-scratch ()
       (interactive)
