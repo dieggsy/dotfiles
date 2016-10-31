@@ -723,6 +723,8 @@ based on or copied from spacemacs, so definitely check them out!
       "fs"  'save-buffer
       "fl"  'counsel-locate
       "fr"  'rename-this-file-and-buffer
+      "fot" 'diego/pop-to-org-todo
+      "fon" 'diego/pop-to-org-notes
       "fD"  'move-file-to-trash)
 
     (defun diego/switch-to-scratch ()
@@ -1324,18 +1326,6 @@ But really, it's life.
     (interactive "P")
     (diego/pop-to-file "~/Dropbox (MIT)/org/notes.org" split))
 
-  (defun diego/pop-to-org-vault (split)
-    "Visit my encrypted vault file, in the current window or a SPLIT."
-    (interactive "P")
-    (diego/pop-to-file "~/Dropbox (MIT)/org/vault.gpg" split))
-
-  (defun diego/pop-to-org-agenda (split)
-    "Visit the org agenda, in the current window or a SPLIT."
-    (interactive "P")
-    (org-agenda-list nil "today" 'day)
-    (when (not split)
-      (delete-other-windows)))
-
   (defun diego/org-insert-list-leader-or-self (char)
       "If on column 0, insert space-padded CHAR; otherwise insert CHAR.
   This has the effect of automatically creating a properly indented list
@@ -1543,16 +1533,6 @@ But really, it's life.
   (use-package org
     :ensure org-plus-contrib
     :commands (org-capture)
-    :bind (("C-c c" .   diego/org-task-capture)
-           ("C-c l" .   org-store-link)
-           ("C-c t n" . diego/pop-to-org-notes)
-           ("C-c t t" . diego/pop-to-org-todo)
-           ("C-c t v" . diego/pop-to-org-vault)
-           ("C-c t a" . diego/pop-to-org-agenda)
-           ("C-c t A" . org-agenda)
-           ("C-c f k" . org-search-view)
-           ("C-c f t" . org-tags-view)
-           ("C-c f i" . diego/org-goto-custom-id))
     :config
     (org-reload)  ; Not sure I should have to do this...
     (diego/org-file-vars)
@@ -1891,6 +1871,7 @@ Edit text area on Chrome with Emacs using Atomic Chrome
 #+begin_src emacs-lisp
     (use-package atomic-chrome
       :ensure t
+      :config
       (atomic-chrome-start-server))
 #+end_src
 *** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
