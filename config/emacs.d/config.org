@@ -1,12 +1,14 @@
 #+TITLE: Emacs Init File!
 
 * Intro
+
 This is my emacs init file. =init.el= loads the elisp code from here. It's pretty
 cool that I can write it in org mode, because easy organization and
 rearrangement are pretty sweet. Check out [[https://github.com/aaronbieber/dotfiles/tree/master/configs/emacs.d][@aaronbieber]], [[https://github.com/hrs/dotfiles/tree/master/emacs.d][@hrs]], and [[https://github.com/syl20bnr/spacemacs][spacemacs]] - a
 lot of the inspiration (and erm, code) for this is taken from them.
 
 * Personal Info
+
 #+BEGIN_SRC emacs-lisp
   (setq user-full-name "Diego A. Mundo"
         user-mail-address "diegoamundo@gmail.com"
@@ -201,6 +203,8 @@ Set package archives/repos and setup use-package and all that.
 Some nice global settings to have. Does away with most uneccessary visuals to
 make emacs behave more like terminal (ish), sets up smooth scrolling, other
 such goodies.
+
+Also, stolen and original functions, and macros.
 
 ** Visual things
 Get rid of menu bars, scroll bars, startup screens, etc.
@@ -585,7 +589,11 @@ I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard.
 (load-file "~/.emacs.d/lisp/nothing-to-see-here.el")
 #+end_src
 * Major configs
+These are packages that I consider /absolutely essential/ to my emacs workflow,
+or that enhance emacs at a deeper level than any regular mode.
 ** [[https://bitbucket.org/lyro/evil/wiki/Home][evil]]
+Evil is an extensible vi layer for Emacs. It emulates the main features of Vim,
+and provides facilities for writing custom extensions.
 *** Leader config
 A good chunk if not all of the bindings/functions in this section are either
 based on or copied from spacemacs, so definitely check them out!
@@ -1197,6 +1205,10 @@ A really nice search/completion system for emacs.
 #+END_SRC
 
 ** [[http://orgmode.org/][org-mode]]
+Org mode is for keeping notes, maintaining TODO lists, planning projects, and
+authoring documents with a fast and effective plain-text system.
+
+But really, it's life.
 *** Helper functions
 #+BEGIN_SRC emacs-lisp
   (defun diego/org-global-custom-ids ()
@@ -1604,6 +1616,7 @@ A really nice search/completion system for emacs.
                 (org-indent-mode))))
 #+END_SRC
 ** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
+Emacs package that displays available keybindings in popup
 #+begin_src emacs-lisp
   (use-package which-key
     :ensure t
@@ -1651,7 +1664,6 @@ A really nice search/completion system for emacs.
     (setq which-key-sort-order 'which-key-key-order-alpha)
     (setq which-key-sort-uppercase-first nil))
 #+end_src
-
 * Dem packages
 ** Amusements
 *** [[https://github.com/josuah/drawille][drawille]]
@@ -3097,7 +3109,7 @@ Mostly set up hs-minor-mode for emacs-lisp.
 #+end_src
 * Fix fci pop-up menu issue
 This is from somewhere on the internet, and may no longer be relevant since I
-started using company-mode.
+started using company-mode. I'm not sure though.
 
 #+BEGIN_SRC emacs-lisp
   (defun sanityinc/fci-enabled-p ()
