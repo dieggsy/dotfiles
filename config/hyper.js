@@ -32,8 +32,6 @@ module.exports = {
 		.tab_tab{
 			color: #fdf4c1 !important;
 		}
-
-
         `,
 
 		// custom css to embed in the terminal window
@@ -41,10 +39,6 @@ module.exports = {
         .cursor-node{
             border: none !important;
             border-left: 1px solid #fdf4c1 !important;
-        }
-
-        // span {
-        //     background-color: transparent !important;
         }
         `,
 		// custom padding (css format, i.e.: `top right bottom left`)
