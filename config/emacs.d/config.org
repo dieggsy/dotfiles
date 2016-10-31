@@ -1655,27 +1655,28 @@ A really nice search/completion system for emacs.
 * Dem packages
 ** Amusements
 *** [[https://github.com/josuah/drawille][drawille]]
+Drawille library implementation in elisp. Draws images/stuff in ascii.
 #+BEGIN_SRC emacs-lisp
   (use-package drawille
     :defer 5
     :ensure t)
 #+END_SRC
-
 *** [[https://github.com/johanvts/emacs-fireplace/][fireplace]]
+A cozy fireplace for emacs. For the cold winters.
 #+BEGIN_SRC emacs-lisp
   (use-package fireplace
     :commands fireplace
     :ensure t)
 #+END_SRC
-
 *** [[https://melpa.org/#/highlight-tail][highlight-tail]]
+Draw a colourful "tail" while you write (A.k.a. pure awesome)
 #+BEGIN_SRC emacs-lisp
   (use-package highlight-tail
     :commands highlight-tail-mode
     :ensure t)
 #+END_SRC
-
 *** [[https://github.com/TeMPOraL/nyan-mode][nyan-mode]]
+Nyan Cat for Emacs! Nyanyanyanyanyanyanyanyanyan!
 #+BEGIN_SRC emacs-lisp :tangle no
   (use-package nyan-mode
     :ensure t
@@ -1684,12 +1685,14 @@ A really nice search/completion system for emacs.
     (nyan-mode))
 #+END_SRC
 *** [[https://github.com/rbanffy/selectric-mode][selectric-mode]]
+Make your Emacs sound like a proper typewriter.
 #+BEGIN_SRC emacs-lisp
   (use-package selectric-mode
     :commands selectric-mode
     :ensure t)
 #+END_SRC
 *** [[https://github.com/hagleitn/speed-type][speed-type]]
+Practice touch/speed typing in emacs.
 #+BEGIN_SRC emacs-lisp
   (use-package speed-type
     :ensure t
@@ -1699,12 +1702,14 @@ A really nice search/completion system for emacs.
           "http://www.gutenberg.org/cache/epub/%d/pg%d.txt"))
 #+END_SRC
 *** [[https://gitlab.com/iankelling/spray][spray]]
+A speed reading mode for Emacs.
 #+BEGIN_SRC emacs-lisp
   (use-package spray
     :commands spray-mode
     :ensure t)
 #+END_SRC
 *** [[https://github.com/vibhavp/emacs-xkcd][xkcd]]
+Read xkcd from Emacs.
 #+BEGIN_SRC emacs-lisp
   (use-package xkcd
     :ensure t
@@ -1732,7 +1737,8 @@ Eh, why not.
                (vconcat zone-programs [zone-matrix])))))
 #+END_SRC
 
-*** zone-nyan
+*** [[https://github.com/wasamasa/zone-nyan][zone-nyan]]
+Nyanyanyanyanyanyanyanyan (but actually).
 #+BEGIN_SRC emacs-lisp
   (use-package zone-nyan
     :ensure t
@@ -1744,26 +1750,29 @@ Eh, why not.
          (setq zone-programs
                (vconcat zone-programs [zone-nyan])))))
 #+END_SRC
-
 ** Appearance
 *** [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
+A utility package to collect various Icon Fonts and propertize them within Emacs.
 #+BEGIN_SRC emacs-lisp
   (use-package all-the-icons
     :defer 5
     :ensure t)
 #+END_SRC
-*** darktooth-theme
+*** [[https://github.com/therockmandolinist/emacs-theme-darktooth][darktooth-theme]]
+An Emacs 24 theme remixed from gruvbox (my fork).
 #+begin_src emacs-lisp
   (use-package darktooth-theme
     :load-path "lisp/")
 #+end_src
 *** diego-theme
+A (kind of nasty?) theme I used for a while, inspired by atom-one
+and. Ignorance?
 #+BEGIN_SRC emacs-lisp :tangle no
   (use-package diego-theme
     :load-path "lisp/")
 #+END_SRC
-
-*** doom-themes
+*** [[https://github.com/hlissner/emacs-doom-theme][doom-theme]]
+Emacs themes inspired by Atom One. Quite nice I might add, if a little intense.
 #+BEGIN_SRC emacs-lisp :tangle no
   (use-package doom-themes
     :ensure t
@@ -1804,7 +1813,7 @@ Display emojis in emacs. Sweet!
     :ensure t)
 #+END_SRC
 *** [[https://github.com/lunaryorn/fancy-battery.el][fancy-battery]]
-For nice battery display info.
+Display battery in Emacs Mode line
 #+BEGIN_SRC emacs-lisp
   (use-package fancy-battery
     ;; Something something battery
@@ -1814,14 +1823,8 @@ For nice battery display info.
     (setq fancy-battery-show-percentage t)
     (fancy-battery-update))
 #+END_SRC
-
-*** [[https://github.com/nashamri/spacemacs-theme][spacemacs-theme]]
-#+BEGIN_SRC emacs-lisp :tangle no
-  (use-package spacemacs-theme
-    :ensure t)
-#+END_SRC
-
-*** zenburn-theme
+*** [[https://github.com/bbatsov/zenburn-emacs][zenburn-theme]]
+The Zenburn colour theme ported to Emacs
 #+BEGIN_SRC emacs-lisp :tangle no
   (use-package zenburn-theme
     :ensure t
@@ -1832,6 +1835,8 @@ For nice battery display info.
       '(ivy-current-match ((t nil))))))
 #+END_SRC
 *** [[https://github.com/TheBB/spaceline][spaceline]]
+Powerline theme from Spacemacs
+
 I was looking for something with the nice look and simplicity of
 [[https://github.com/itchyny/lightline.vim][this]]. Spaceline does ok.
 #+BEGIN_SRC emacs-lisp
@@ -1866,17 +1871,17 @@ I was looking for something with the nice look and simplicity of
 
     (setq powerline-default-separator nil)
     (spaceline-compile))
-
 #+END_SRC
-
 ** Misc utilities
-*** [[https://github.com/alpha22jp/atomic-chrome][atomic-chrome]] 
+*** [[https://github.com/alpha22jp/atomic-chrome][atomic-chrome]]
+Edit text area on Chrome with Emacs using Atomic Chrome
 #+begin_src emacs-lisp
     (use-package atomic-chrome
       :ensure t
       (atomic-chrome-start-server))
 #+end_src
 *** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
+Cursor stays vertically centered. I use this for reading, mostly.
 #+begin_src emacs-lisp
   (use-package centered-cursor-mode
     :ensure t
@@ -1893,7 +1898,8 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
     :config
     (add-hook 'csv-mode-hook 'csv-align-fields))
 #+END_SRC
-*** [[https://github.com/remyhonig/elfeed-org][elfeed]]
+*** [[https://github.com/remyhonig/elfeed-org][elfeed-org]]
+Configure the Elfeed RSS reader with an Orgmode file
 #+begin_src emacs-lisp
   (use-package elfeed
     :ensure t
@@ -1915,12 +1921,11 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
     (elfeed-goodies/setup))
 #+end_src
 *** [[https://github.com/lewang/flx][flx]]
-Fuzzy matching
+Fuzzy matching for Emacs ... a la Sublime Text.
 #+BEGIN_SRC emacs-lisp
   (use-package flx
     :ensure t)
 #+END_SRC
-
 *** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
 Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted/flyspell-correct][d12frosted/flyspell-correct]]
 #+BEGIN_SRC emacs-lisp
@@ -1939,6 +1944,7 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 #+END_SRC
 
 *** [[https://github.com/larstvei/Focus][focus]]
+Dim the font color of text in surrounding paragraphs
 #+BEGIN_SRC emacs-lisp
   (use-package focus
     :commands focus-mode
@@ -1955,7 +1961,6 @@ Neat way to bind commands to key-stroke combinations
     (key-chord-mode 1)
     (key-chord-define evil-insert-state-map "uu" 'evil-normal-state))
 #+END_SRC
-
 *** [[https://github.com/magit/magit][magit]]
 Like git, for emacs. But cooler.
 #+BEGIN_SRC emacs-lisp
@@ -1969,7 +1974,6 @@ Like git, for emacs. But cooler.
     :after magit
     :ensure t)
 #+END_SRC
-
 *** [[https://github.com/defunkt/markdown-mode][markdown-mode]]
 Syntax highlighting for markdown files.
 #+BEGIN_SRC emacs-lisp
@@ -1996,23 +2000,22 @@ Syntax highlighting for markdown files.
     (add-hook 'markdown-mode-hook 'variable-pitch-mode)
    (setq markdown-header-scaling t))
 #+END_SRC
-
 *** [[https://github.com/ancane/markdown-preview-mode][markdown-preview-mode]]
-Generates markdown previews? Not sure if working.
-
+Minor mode to preview markdown output as you save
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-preview-mode
     :defer 5
     :ensure t)
 #+END_SRC
-
 *** [[https://github.com/emacsfodder/move-text][move-text]]
+Move current line or region up or down
 #+BEGIN_SRC emacs-lisp
   (use-package move-text
     :defer 5
     :ensure t)
 #+END_SRC
 *** [[https://github.com/tjim/nevermore][nevermore]]
+Emacs mail reader based on Notmuch
 #+BEGIN_SRC emacs-lisp
   (use-package nm
     :ensure t
@@ -2028,6 +2031,7 @@ Email!
     (setq notmuch-search-oldest-first nil))
 #+END_SRC
 *** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
+Make Emacs' delete-by-moving-to-trash do what you expect it to do on OS X.
 #+begin_src emacs-lisp
   (use-package osx-trash
     :ensure t
@@ -2037,6 +2041,8 @@ Email!
     (setq delete-by-moving-to-trash t))
 #+end_src
 *** [[https://github.com/Malabarba/paradox][paradox]]
+Project for modernizing Emacs' Package Menu. With package ratings, usage
+statistics, customizability, and more.
 #+begin_src emacs-lisp
   (use-package paradox
     :ensure t
@@ -2058,8 +2064,9 @@ look into [[https://melpa.org/#/osx-clipboard][osx-clipboard]] instead.
     :config
     (turn-on-pbcopy))
 #+END_SRC
-
 *** [[https://github.com/iqbalansari/restart-emacs][restart-emacs]]
+A simple emacs package to restart emacs from within emacs.
+
 SUPER nifty.
 #+BEGIN_SRC emacs-lisp
   (use-package restart-emacs
@@ -2068,6 +2075,7 @@ SUPER nifty.
 #+END_SRC
 
 *** [[https://github.com/Fuco1/smartparens][smartparens]]
+Minor mode for Emacs that deals with parens pairs and tries to be smart about it.
 #+begin_src emacs-lisp
   (use-package smartparens
     :ensure t
@@ -2076,13 +2084,16 @@ SUPER nifty.
     (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil))
 #+end_src
 *** [[https://github.com/nonsequitur/smex][smex]]
-Recently used M-x commands
+A smart M-x enhancement for Emacs.
+
+In terms of ivy, sorts by most recently used, I think.
 #+BEGIN_SRC emacs-lisp
   (use-package smex
     :ensure t)
 #+END_SRC
 
 *** [[https://github.com/aaronbieber/sunshine.el][sunshine]]
+An Emacs package for displaying the forecast from OpenWeatherMap.
 #+BEGIN_SRC emacs-lisp
   (use-package sunshine
     :ensure t
@@ -2090,8 +2101,8 @@ Recently used M-x commands
     :config
     (setq sunshine-location "02139,USA"))
 #+END_SRC
-
 *** [[https://github.com/aaronbieber/tiny-menu.el][tiny-menu]]
+Run commands via a tiny menu.
 #+BEGIN_SRC emacs-lisp
   (use-package tiny-menu
     :commands (tiny-menu tiny-menu-run-item)
@@ -2120,6 +2131,7 @@ Recently used M-x commands
     (evil-define-key 'normal global-map (kbd "\\ l") (tiny-menu-run-item "org-links")))
 #+END_SRC
 *** [[https://github.com/hayamiz/twittering-mode][twittering-mode]]
+An Emacs major mode for Twitter
 #+BEGIN_SRC emacs-lisp
   (use-package twittering-mode
     :ensure t
@@ -2130,8 +2142,8 @@ Recently used M-x commands
     (add-hook 'twittering-mode-hook #'emojify-mode)
     (setq twittering-use-master-password t))
 #+END_SRC
-
 *** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
+Kind of makes undo's like git. Or Vim, apparently, if you're into that.
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
     :ensure t
@@ -2140,6 +2152,7 @@ Recently used M-x commands
     (setq undo-tree-visualizer-timestamps t))
 #+END_SRC
 *** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
+The emacs major mode for editing files in the YAML data serialization format.
 #+BEGIN_SRC emacs-lisp
   (use-package yaml-mode
     :ensure t
@@ -2147,9 +2160,9 @@ Recently used M-x commands
     :config
     (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 #+END_SRC
-
 ** Navigation
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
+Quickly switch windows in Emacs
 #+BEGIN_SRC emacs-lisp
   (use-package ace-window
     :ensure t
@@ -2158,7 +2171,6 @@ Recently used M-x commands
     :config
     (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
 #+END_SRC
-
 *** [[https://github.com/abo-abo/avy][avy]]
 Jump to things in Emacs tree-style
 #+BEGIN_SRC emacs-lisp
@@ -2166,12 +2178,13 @@ Jump to things in Emacs tree-style
     :ensure t
     :commands (avy-goto-char-2 avy-goto-word-1 avy-goto-line))
 #+END_SRC
-
-*** [[https://github.com/emacs-helm/helm][Helm]]
+*** [[https://github.com/emacs-helm/helm][helm]]
 *Note:* I'm now using [[https://github.com/abo-abo/swiper][abo-abo/swiper]], which includes ivy, counsel, and swiper,
 for very similar functionality but with a much cleaner and responsive
 interface, in my opinion. It's really neat, and you should definitely check it
 out.
+
+Emacs incremental completion and selection narrowing framework
 
 For making stuff look nicer, see ~M-x customize-group RET helm-faces~, and
 check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido-like-guide]].
@@ -2454,6 +2467,7 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
 #+END_SRC
 
 *** [[https://github.com/bbatsov/projectile][projectile]]
+Project Interaction Library for Emacs
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :ensure t
@@ -2468,8 +2482,8 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
             "~/dotfiles/config/emacs.d/lisp/matlab-emacs"))
     (projectile-mode))
 #+END_SRC
-
 *** [[https://github.com/ralesi/ranger.el][ranger]]
+Bringing the goodness of ranger to dired!
 #+BEGIN_SRC emacs-lisp
   (use-package ranger
     :ensure t
