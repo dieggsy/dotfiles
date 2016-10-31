@@ -81,28 +81,28 @@ module.exports = {
 		bell: false,
 
 		// if true, selected text will automatically be copied to the clipboard
-		copyOnSelect: false
+		copyOnSelect: false,
 
 		// URL to custom bell
 		// bellSoundURL: 'http://example.com/bell.mp3',
 
 		// for advanced config flags please refer to https://hyper.is/#cfg
-		// overlay: {
-		// 	alwaysOnTop: true,
-		// 	animate: true,
-		// 	hasShadow: false,
-		// 	hideDock: false,
-		// 	hideOnBlur: false,
-		// 	hotkeys: ['Command+Space'],
-		// 	position: 'top',
-		// 	primaryDisplay: false,
-		// 	resizable: true,
-		// 	startAlone: false,
-		// 	startup: false,
-		// 	size: 0.4,
-		// 	tray: true,
-		// 	unique: false
-		// },
+		overlay: {
+			alwaysOnTop: true,
+			animate: true,
+			hasShadow: true,
+			hideDock: false,
+			hideOnBlur: false,
+			hotkeys: ['Command+Space'],
+			position: 'top',
+			primaryDisplay: false,
+			resizable: false,
+			startAlone: false,
+			startup: false,
+			size: 0.3,
+			tray: true,
+			unique: false
+		},
 	},
 
 	// a list of plugins to fetch and install from npm
@@ -114,7 +114,8 @@ module.exports = {
 	plugins: [
 		'hypercwd',
 		'hyperterm-blink',
-		'hyperterm-lastpass'
+		'hyperterm-lastpass',
+		'hyperterm-overlay'
 	],
 
 	// in development, you can create a directory under
