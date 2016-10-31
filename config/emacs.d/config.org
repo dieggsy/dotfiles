@@ -1870,6 +1870,12 @@ I was looking for something with the nice look and simplicity of
 #+END_SRC
 
 ** Misc utilities
+*** [[https://github.com/alpha22jp/atomic-chrome][atomic-chrome]] 
+#+begin_src emacs-lisp
+    (use-package atomic-chrome
+      :ensure t
+      (atomic-chrome-start-server))
+#+end_src
 *** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
 #+begin_src emacs-lisp
   (use-package centered-cursor-mode
