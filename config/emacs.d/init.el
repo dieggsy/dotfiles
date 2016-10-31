@@ -114,7 +114,7 @@
  '(python-shell-interpreter "python3")
  '(recentf-exclude
    (quote
-	("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" "/elpa/" "/xkcd/")) t)
+	("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" "/elpa/" "/xkcd/")))
  '(safe-local-variable-values
    (quote
 	((eval when
@@ -189,3 +189,5 @@
  '(twittering-username-face ((t (:foreground "#FE8019" :underline t))))
  '(variable-pitch ((t (:family "Open Sans")))))
 (put 'erase-buffer 'disabled nil)
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
