@@ -113,6 +113,7 @@ brew install gnuplot
 brew install gnutls
 brew install gobject-introspection
 brew install google-sparsehash
+brew install gource
 brew install gperftools
 brew install gpg-agent
 brew install graphicsmagick
@@ -256,6 +257,7 @@ brew install scipy
 brew install screen
 brew install sdl
 brew install sdl2
+brew install sdl2_image
 brew install sdl_image
 brew install sdl_mixer
 brew install sdl_net

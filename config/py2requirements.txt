@@ -17,7 +17,7 @@ epc==0.0.5
 eveimageserver==0.1.2
 flake8==3.0.4
 funcsigs==1.0.2
-future==0.15.2
+future==0.16.0
 futures==3.0.5
 gnureadline==6.3.3
 google-api-python-client==1.5.4
