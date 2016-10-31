@@ -1150,7 +1150,8 @@ A really nice search/completion system for emacs.
             "\\`todo.org"
             "\\`notes.org"
             "\\`archive.org"
-            "\\`\\*Man"))
+            "\\`\\*Man"
+            "\\`\\*Quail"))
 
     ;; RET enters folder rather than opening dired
     (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
