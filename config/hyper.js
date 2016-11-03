@@ -25,7 +25,7 @@ module.exports = {
 		css: `
 		.tab_active {
 			color: #fdf4c1 !important;
-			// border-bottom: 1px solid #B8BB26 !important;
+			// border-bottom: 1px solid #b8bb26 !important;
 			border-bottom: 1px solid #d3869b !important;
 		}
 
@@ -56,6 +56,14 @@ module.exports = {
 			magenta: '#8f3f71',
 			cyan: '#00a7af',
 			white: '#bdae93',
+			// black: '#686868',
+			// red: '#fb4933',
+			// green: '#b8bb26',
+			// yellow: '#fabd2f',
+			// blue: '#83a598',
+			// magenta: '#d3869b',
+			// cyan: '#3fd7e5',
+			// white: '#fdf4c1',
 			lightBlack: '#686868',
 			lightRed: '#fb4933',
 			lightGreen: '#b8bb26',
