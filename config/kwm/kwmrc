@@ -113,11 +113,13 @@ kwmc rule owner="LICEcap" properties={float="true"}
 # Enable border for focused window
 kwmc config border focused on
 kwmc config border focused size 2
-kwmc config border focused color 0xFFBDAE93
+# kwmc config border focused color 0xFFBDAE93
+kwmc config border focused color 0x00BDAE93
 kwmc config border focused radius 6
 
 # Enable border for marked window
 kwmc config border marked on
 kwmc config border marked size 2
-kwmc config border marked color 0xFFCC5577
+# kwmc config border marked color 0xFFCC5577
+kwmc config border marked color 0x00CC5577
 kwmc config border marked radius 6
