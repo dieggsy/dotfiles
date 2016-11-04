@@ -1211,6 +1211,31 @@ Org mode is for keeping notes, maintaining TODO lists, planning projects, and
 authoring documents with a fast and effective plain-text system.
 
 But really, it's life.
+
+*Note:* Getting emacs to run the latest version of org can be weird. Least I
+didn't find a satisfactory solution for a while. Check out this [[http://sachachua.com/blog/2014/05/update-org-7-comes-emacs-org-8-configuration-better-exports/][blog post]] for
+some advice on that (still relevant now-2016). In particular, make sure you
+have something like:
+
+#+begin_src emacs-lisp
+  (package-initialize)
+  (setq package-enable-at-startup nil)
+#+end_src
+
+at the beginning of your init.el/emacs.d, or as in my case something like:
+
+#+begin_src emacs-lisp
+  (package-initialize nil)
+  (setq package-enable-at-startup nil)
+  ;; ---------------------------
+  ;; my load-path settings here
+  ;; ---------------------------
+  (package-initialize)
+#+end_src
+
+I actually don't think I tried the former option, but the latter simply worked
+so I went with it.
+
 *** Helper functions
 #+BEGIN_SRC emacs-lisp
   (defun diego/org-global-custom-ids ()
