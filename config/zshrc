@@ -169,9 +169,9 @@ pdftif() {
 }
 
 ocrpdf(){
-	echo "Converting pdf to png..."
+	echo "Converting pdf to tiff..."
 	gs -dNOPAUSE -q -r500 -sDEVICE=tiffg4 -dBATCH -sOutputFile=$TMPDIR/tempocr.tif $1
-	echo "Running tesseract on pngs..."
+	echo "Running tesseract on tiff..."
 	tesseract $TMPDIR/tempocr.tif $2 >/dev/null 2>&1
 }
 
