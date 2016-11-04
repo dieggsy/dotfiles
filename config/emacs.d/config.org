@@ -40,19 +40,19 @@ Setup load directories, mostly.
   ;;; Code:
   (if (fboundp 'with-eval-after-load)
       (defalias 'after-load 'with-eval-after-load)
-    (defmacro after-load (feature &rest body)
+	(defmacro after-load (feature &rest body)
       "After FEATURE is loaded, evaluate BODY."
       (declare (indent defun))
       `(eval-after-load ,feature
-         '(progn ,@body))))
+		 '(progn ,@body))))
 
 
   ;;----------------------------------------------------------------------------
   ;; Handier way to add modes to auto-mode-alist
   ;;----------------------------------------------------------------------------
   (defun add-auto-mode (mode &rest patterns)
-    "Add entries to `auto-mode-alist' to use `MODE' for all given file `PATTERNS'."
-    (dolist (pattern patterns)
+	"Add entries to `auto-mode-alist' to use `MODE' for all given file `PATTERNS'."
+	(dolist (pattern patterns)
       (add-to-list 'auto-mode-alist (cons pattern mode))))
 
 
@@ -60,18 +60,18 @@ Setup load directories, mostly.
   ;; String utilities missing from core emacs
   ;;----------------------------------------------------------------------------
   (defun sanityinc/string-all-matches (regex str &optional group)
-    "Find all matches for `REGEX' within `STR', returning the full match string or group `GROUP'."
-    (let ((result nil)
+	"Find all matches for `REGEX' within `STR', returning the full match string or group `GROUP'."
+	(let ((result nil)
           (pos 0)
           (group (or group 0)))
       (while (string-match regex str pos)
-        (push (match-string group str) result)
-        (setq pos (match-end group)))
+		(push (match-string group str) result)
+		(setq pos (match-end group)))
       result))
 
   (defun sanityinc/string-rtrim (str)
-    "Remove trailing whitespace from `STR'."
-    (replace-regexp-in-string "[ \t\n]+$" "" str))
+	"Remove trailing whitespace from `STR'."
+	(replace-regexp-in-string "[ \t\n]+$" "" str))
 
 
   ;;----------------------------------------------------------------------------
@@ -79,18 +79,18 @@ Setup load directories, mostly.
   ;;----------------------------------------------------------------------------
   (autoload 'find-library-name "find-func")
   (defun sanityinc/directory-of-library (library-name)
-    "Return the directory in which the `LIBRARY-NAME' load file is found."
-    (file-name-as-directory (file-name-directory (find-library-name library-name))))
+	"Return the directory in which the `LIBRARY-NAME' load file is found."
+	(file-name-as-directory (file-name-directory (find-library-name library-name))))
 
 
   ;;----------------------------------------------------------------------------
   ;; Delete the current file
   ;;----------------------------------------------------------------------------
   (defun delete-this-file ()
-    "Delete the current file, and kill the buffer."
-    (interactive)
-    (or (buffer-file-name) (error "No file is currently being edited"))
-    (when (yes-or-no-p (format "Really delete '%s'?"
+	"Delete the current file, and kill the buffer."
+	(interactive)
+	(or (buffer-file-name) (error "No file is currently being edited"))
+	(when (yes-or-no-p (format "Really delete '%s'?"
                                (file-name-nondirectory buffer-file-name)))
       (delete-file (buffer-file-name))
       (kill-this-buffer)))
@@ -100,15 +100,15 @@ Setup load directories, mostly.
   ;; Rename the current file
   ;;----------------------------------------------------------------------------
   (defun rename-this-file-and-buffer (new-name)
-    "Renames both current buffer and file it's visiting to NEW-NAME."
-    (interactive "sNew name: ")
-    (let ((name (buffer-name))
+	"Renames both current buffer and file it's visiting to NEW-NAME."
+	(interactive "sNew name: ")
+	(let ((name (buffer-name))
           (filename (buffer-file-name)))
       (unless filename
-        (error "Buffer '%s' is not visiting a file!" name))
+		(error "Buffer '%s' is not visiting a file!" name))
       (if (get-buffer new-name)
           (message "A buffer named '%s' already exists!" new-name)
-        (progn
+		(progn
           (when (file-exists-p filename)
            (rename-file filename new-name 1))
           (rename-buffer new-name)
@@ -118,12 +118,12 @@ Setup load directories, mostly.
   ;; Browse current HTML file
   ;;----------------------------------------------------------------------------
   (defun browse-current-file ()
-    "Open the current file as a URL using `browse-url'."
-    (interactive)
-    (let ((file-name (buffer-file-name)))
+	"Open the current file as a URL using `browse-url'."
+	(interactive)
+	(let ((file-name (buffer-file-name)))
       (if (tramp-tramp-file-p file-name)
           (error "Cannot open tramp file")
-        (browse-url (concat "file://" file-name)))))
+		(browse-url (concat "file://" file-name)))))
 
 
   ;;; init-utils.el ends here
@@ -1046,47 +1046,55 @@ based on or copied from spacemacs, so definitely check them out!
   (defun diego/evil-bindings ()
 
 
-    (define-key evil-normal-state-map "gy" 'evilnc-copy-and-comment-lines)
-    (define-key evil-normal-state-map "gc" 'evilnc-comment-operator)
-    (define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
-    (define-key evil-normal-state-map (kbd "<up>")   'evil-previous-visual-line)
-    (define-key evil-normal-state-map (kbd "g/")    'occur-last-search)
-    (define-key evil-normal-state-map (kbd "[i")    'show-first-occurrence)
-    (define-key evil-insert-state-map (kbd "C-e")   'end-of-line) ;; I know...
-    (define-key evil-normal-state-map (kbd "S-SPC") 'diego/pop-to-org-agenda)
-    ;; (define-key evil-normal-state-map (kbd "<SPC>") 'counsel-M-x)
-    ;; (define-key evil-visual-state-map (kbd "<SPC>") 'counsel-M-x)
+	(define-key evil-normal-state-map "gy" 'evilnc-copy-and-comment-lines)
+	(define-key evil-normal-state-map "gc" 'evilnc-comment-operator)
+	(define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
+	(define-key evil-normal-state-map (kbd "<up>")   'evil-previous-visual-line)
+	(define-key evil-normal-state-map (kbd "g/")    'occur-last-search)
+	(define-key evil-normal-state-map (kbd "[i")    'show-first-occurrence)
+	(define-key evil-insert-state-map (kbd "C-e")   'end-of-line) ;; I know...
+	(define-key evil-normal-state-map (kbd "S-SPC") 'diego/pop-to-org-agenda)
+	;; (define-key evil-normal-state-map (kbd "<SPC>") 'counsel-M-x)
+	;; (define-key evil-visual-state-map (kbd "<SPC>") 'counsel-M-x)
 
-    (evil-define-key 'normal custom-mode-map
-      "q" 'Custom-buffer-done)
+	(evil-define-key 'normal custom-mode-map
+	  "q" 'Custom-buffer-done)
 
-    (evil-define-key 'normal message-mode-map
-      "q" 'switch-to-previous-buffer)
+	(evil-define-key 'normal message-mode-map
+	  "q" 'switch-to-previous-buffer)
 
-    (evil-add-hjkl-bindings occur-mode-map 'emacs
-      (kbd "/")       'evil-search-forward
-      (kbd "n")       'evil-search-next
-      (kbd "N")       'evil-search-previous
-      (kbd "C-d")     'evil-scroll-down
-      (kbd "C-u")     'evil-scroll-up
-      (kbd "C-w C-w") 'other-window)
+	(evil-add-hjkl-bindings occur-mode-map 'emacs
+	  (kbd "/")       'evil-search-forward
+	  (kbd "n")       'evil-search-next
+	  (kbd "N")       'evil-search-previous
+	  (kbd "C-d")     'evil-scroll-down
+	  (kbd "C-u")     'evil-scroll-up
+	  (kbd "C-w C-w") 'other-window)
 
-    ;; Make escape and C-/ quit everything, whenever possible.
-    (define-key evil-insert-state-map [?\C-/] #'evil-normal-state)
-    (define-key evil-normal-state-map [escape] #'keyboard-quit)
-    (define-key evil-normal-state-map [?\C-/] #'keyboard-quit)
-    (define-key evil-visual-state-map [escape] #'keyboard-quit)
-    (define-key evil-visual-state-map [?\C-/] #'keyboard-quit)
-    (define-key minibuffer-local-map [escape] #'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-map [?\C-/] #'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-ns-map [escape] #'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-ns-map [?\C-/] #'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-completion-map [escape] #'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-completion-map [?\C-/] #'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-must-match-map [escape] #'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-must-match-map [?\C-/] #'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-isearch-map [escape] #'minibuffer-keyboard-quit)
-    (define-key minibuffer-local-isearch-map [?\C-/] #'minibuffer-keyboard-quit))
+	;; Make escape and C-/ quit everything, whenever possible.
+	(define-key evil-insert-state-map [?\C-/] #'evil-normal-state)
+	(define-key evil-replace-state-map [?\C-/] #'evil-normal-state)
+
+	(define-key evil-normal-state-map [escape] #'keyboard-quit)
+	(define-key evil-normal-state-map [?\C-/] #'keyboard-quit)
+
+	(define-key evil-visual-state-map [escape] #'keyboard-quit)
+	(define-key evil-visual-state-map [?\C-/] #'keyboard-quit)
+
+	(define-key minibuffer-local-map [escape] #'minibuffer-keyboard-quit)
+	(define-key minibuffer-local-map [?\C-/] #'minibuffer-keyboard-quit)
+
+	(define-key minibuffer-local-ns-map [escape] #'minibuffer-keyboard-quit)
+	(define-key minibuffer-local-ns-map [?\C-/] #'minibuffer-keyboard-quit)
+
+	(define-key minibuffer-local-completion-map [escape] #'minibuffer-keyboard-quit)
+	(define-key minibuffer-local-completion-map [?\C-/] #'minibuffer-keyboard-quit)
+
+	(define-key minibuffer-local-must-match-map [escape] #'minibuffer-keyboard-quit)
+	(define-key minibuffer-local-must-match-map [?\C-/] #'minibuffer-keyboard-quit)
+
+	(define-key minibuffer-local-isearch-map [escape] #'minibuffer-keyboard-quit)
+	(define-key minibuffer-local-isearch-map [?\C-/] #'minibuffer-keyboard-quit))
 #+END_SRC
 *** Final Setup
 #+BEGIN_SRC emacs-lisp
@@ -1537,92 +1545,92 @@ so I went with it.
 **** Behavior/appearance
 #+begin_src emacs-lisp
   (defun diego/org-general-vars ()
-    ;; Behavior
-    (setq org-insert-heading-respect-content t)
-    (setq org-src-window-setup 'current-window)
-    (setq org-list-demote-modify-bullet '(("-" . "*")
-                                          ("*" . "+")))
-    ;; appearance
-    (setq org-src-fontify-natively t)
-    (setq org-fontify-quote-and-verse-blocks t)
-    (setq org-hide-emphasis-markers t)
-    (setq org-startup-with-inline-images t)
-    (setq org-ellipsis " …")
-    (setq org-highlight-latex-and-related '(latex script entities))
-    (setq org-pretty-entities t)
+	;; Behavior
+	(setq org-insert-heading-respect-content t)
+	(setq org-src-window-setup 'current-window)
+	(setq org-list-demote-modify-bullet '(("-" . "*")
+										  ("*" . "+")))
+	;; appearance
+	(setq org-src-fontify-natively t)
+	(setq org-src-tab-acts-natively t)
+	(setq org-fontify-quote-and-verse-blocks t)
+	(setq org-hide-emphasis-markers t)
+	(setq org-startup-with-inline-images t)
+	(setq org-ellipsis " …")
+	(setq org-highlight-latex-and-related '(latex script entities))
+	(setq org-pretty-entities t)
 
-    ;; latex
-    (setq org-latex-listings t)
-    (add-to-list 'org-latex-packages-alist '("" "listings"))
-    (add-to-list 'org-latex-packages-alist '("" "color")))
+	;; latex
+	(setq org-latex-listings t)
+	(add-to-list 'org-latex-packages-alist '("" "listings"))
+	(add-to-list 'org-latex-packages-alist '("" "color")))
 #+end_src
 *** Setup
 #+BEGIN_SRC emacs-lisp
   (use-package org
-    :ensure org-plus-contrib
-    :commands (org-capture)
-    :config
-    (org-reload)  ; Not sure I should have to do this...
-    (diego/org-file-vars)
-    (diego/org-todo-vars)
-    (diego/org-general-vars)
-    (diego/org-bindings)
+	:ensure org-plus-contrib
+	:commands (org-capture)
+	:config
+	(diego/org-file-vars)
+	(diego/org-todo-vars)
+	(diego/org-general-vars)
+	(diego/org-bindings)
 
-    (add-hook 'org-agenda-mode-hook
+	(add-hook 'org-agenda-mode-hook
               (lambda ()
-                (setq org-habit-graph-column 50)
-                (define-key
+				(setq org-habit-graph-column 50)
+				(define-key
                   org-agenda-mode-map "j"          'org-agenda-next-line)
-                (define-key
+				(define-key
                   org-agenda-mode-map "k"          'org-agenda-previous-line)
-                (define-key
+				(define-key
                   org-agenda-mode-map "n"          'org-agenda-next-date-line)
-                (define-key
+				(define-key
                   org-agenda-mode-map "p"          'org-agenda-previous-date-line)
-                (define-key
+				(define-key
                   org-agenda-mode-map "c"          'diego/org-agenda-capture)
-                (define-key
+				(define-key
                   org-agenda-mode-map "R"          'org-revert-all-org-buffers)
-                (define-key
+				(define-key
                   org-agenda-mode-map (kbd "RET")  'org-agenda-switch-to)
 
-                (define-prefix-command 'diego/org-run-shortcuts)
-                (define-key
+				(define-prefix-command 'diego/org-run-shortcuts)
+				(define-key
                   diego/org-run-shortcuts "f" (tiny-menu-run-item "org-files"))
-                (define-key
+				(define-key
                   diego/org-run-shortcuts "t" (tiny-menu-run-item "org-things"))
-                (define-key
+				(define-key
                   diego/org-run-shortcuts "c" (tiny-menu-run-item "org-captures"))
-                (define-key
+				(define-key
                   diego/org-run-shortcuts "l" (tiny-menu-run-item "org-links"))
-                (define-key
+				(define-key
                   org-agenda-mode-map (kbd "\\") diego/org-run-shortcuts)))
 
-    (add-hook 'org-capture-mode-hook
+	(add-hook 'org-capture-mode-hook
               (lambda ()
-                (evil-define-key
+				(evil-define-key
                   'insert org-capture-mode-map (kbd "C-d")
                   'diego/org-agenda-toggle-date)
-                (evil-define-key
+				(evil-define-key
                   'normal org-capture-mode-map (kbd "C-d")
                   'diego/org-agenda-toggle-date)
-                (evil-insert-state)))
+				(evil-insert-state)))
 
-    (add-hook 'org-mode-hook
+	(add-hook 'org-mode-hook
               (lambda ()
-                ;; Special plain list leader inserts
-                (dolist (char '("+" "-"))
+				;; Special plain list leader inserts
+				(dolist (char '("+" "-"))
                   (define-key org-mode-map (kbd char)
-                    `(lambda ()
+					`(lambda ()
                        (interactive)
                        (diego/org-insert-list-leader-or-self ,char))))
 
-                ;; Bindings
+				;; Bindings
 
-                (setq fill-column 79)
-                (auto-fill-mode 1)
-                ;; (flyspell-mode)
-                (org-indent-mode))))
+				(setq fill-column 79)
+				(auto-fill-mode 1)
+				;; (flyspell-mode)
+				(org-indent-mode))))
 #+END_SRC
 ** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 Emacs package that displays available keybindings in popup
@@ -1897,10 +1905,10 @@ I was looking for something with the nice look and simplicity of
 *** [[https://github.com/alpha22jp/atomic-chrome][atomic-chrome]]
 Edit text area on Chrome with Emacs using Atomic Chrome
 #+begin_src emacs-lisp
-    (use-package atomic-chrome
-      :ensure t
-      :config
-      (atomic-chrome-start-server))
+;;    (use-package atomic-chrome
+;;      :ensure t
+;;      :config
+;;      (atomic-chrome-start-server))
 #+end_src
 *** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
 Cursor stays vertically centered. I use this for reading, mostly.
@@ -2106,10 +2114,11 @@ SUPER nifty.
 Minor mode for Emacs that deals with parens pairs and tries to be smart about it.
 #+begin_src emacs-lisp
   (use-package smartparens
-    :ensure t
-    :config
-    (smartparens-global-mode)
-    (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil))
+	:ensure t
+	:config
+	(smartparens-global-mode)
+	(sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)
+	(sp-local-pair 'emacs-lisp-mode "`" nil :actions nil))
 #+end_src
 *** [[https://github.com/nonsequitur/smex][smex]]
 A smart M-x enhancement for Emacs.
@@ -2650,30 +2659,30 @@ Use nice bullets in org-mode.
 *** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
 Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 #+begin_src emacs-lisp
-  (use-package ox-pandoc
-    :ensure t
-    :after org
-    :config
-    ;; default options for all output formats
-    (setq org-pandoc-options '((standalone . t)))
-    ;; cancel above settings only for 'docx' format
-    (setq org-pandoc-options-for-docx '((standalone . nil))))
+;;  (use-package ox-pandoc
+;;    :ensure t
+;;    :after org
+;;    :config
+;;    ;; default options for all output formats
+;;    (setq org-pandoc-options '((standalone . t)))
+;;    ;; cancel above settings only for 'docx' format
+;;    (setq org-pandoc-options-for-docx '((standalone . nil))))
 #+end_src
 *** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
 Export org to twitter bootstrap compatible HTML.
 #+begin_src emacs-lisp
-  (use-package ox-twbs
-    :ensure t
-    :defer 5
-    :after org)
+;;  (use-package ox-twbs
+;;    :ensure t
+;;    :defer 5
+;;    :after org)
 #+end_src
 *** [[https://github.com/snosov1/toc-org][toc-org]]
 #+BEGIN_SRC emacs-lisp
-  (use-package toc-org
-    :ensure t
-    :defer 5
-    :config
-    (add-hook 'org-mode-hook 'toc-org-enable))
+;;  (use-package toc-org
+;;    :ensure t
+;;    :defer 5
+;;    :config
+;;    (add-hook 'org-mode-hook 'toc-org-enable))
 #+END_SRC
 
 ** Programming
