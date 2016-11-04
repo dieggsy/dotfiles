@@ -307,6 +307,7 @@ brew install xapian
 brew install xvid
 brew install xz
 brew install youtube-dl
+brew install z
 brew install zeromq
 brew install zsh
 brew install zsh-autosuggestions
