@@ -1938,6 +1938,12 @@ Configure the Elfeed RSS reader with an Orgmode file
     :config
     (elfeed-goodies/setup))
 #+end_src
+*** [[https://github.com/hlissner/evil-multiedit][evil-multiedit]]
+#+begin_src emacs-lisp
+(use-package evil-multiedit
+  :ensure t
+  :commands evil-multiedit-match-all)
+#+end_src
 *** [[https://github.com/lewang/flx][flx]]
 Fuzzy matching for Emacs ... a la Sublime Text.
 #+BEGIN_SRC emacs-lisp
