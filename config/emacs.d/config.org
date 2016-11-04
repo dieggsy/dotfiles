@@ -188,7 +188,6 @@ Set package archives/repos and setup use-package and all that.
 
 
   ;;; Fire up package.el
-  (setq package-enable-at-startup nil)
   (package-initialize)
 
   (unless (package-installed-p 'use-package)
