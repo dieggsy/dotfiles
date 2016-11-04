@@ -1,49 +1,8 @@
 #!/usr/bin/env zsh
 
-# Path to your oh-my-zsh installation.
-export ZSH=~/.oh-my-zsh
-
-# Set name of the theme to load.
-# Look in ~/.oh-my-zsh/themes/
-# Optionally, if you set this to "random", it'll load a random theme each
-# time that oh-my-zsh is loaded.
-# ZSH_THEME="fino"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folderls
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-plugins=(git colorize colored-man-pages github virtualenvwrapper pip python brew osx zsh-syntax-highlighting z)
-
 # User configuration
 export HOSTNAME=`hostname`
-source $ZSH/oh-my-zsh.sh
+# source $ZSH/oh-my-zsh.sh
 echo "Welcome, Diego"
 setopt GLOB_COMPLETE
 setopt auto_cd
@@ -53,31 +12,34 @@ setopt autonamedirs
 # The following is taken pretty much directly from fino theme,
 # but I wanted to make a few tweaks.
 export VIRTUAL_ENV_DISABLE_PROMPT=1
-function prompt_char {
-  git branch >/dev/null 2>/dev/null && echo "±" && return
-  echo '○'
-}
 
-function box_name {
-    [ -f ~/.box-name ] && cat ~/.box-name || echo ${SHORT_HOST:-$HOST}
-}
+# function prompt_char {
+#   git branch >/dev/null 2>/dev/null && echo "±" && return
+#   echo '○'
+# }
 
-function virtualenv_info {
-	[ -n "$VIRTUAL_ENV" ] && echo "%{$FG[239]%} env %{$reset_color%}[`basename $VIRTUAL_ENV`]"
-}
-local current_dir='${PWD/#$HOME/~}'
-local git_info='$(git_prompt_info)'
-local prompt_char='$(prompt_char)'
-local venv_info='$(virtualenv_info)'
+# function box_name {
+#     [ -f ~/.box-name ] && cat ~/.box-name || echo ${SHORT_HOST:-$HOST}
+# }
+
+# function virtualenv_info {
+# 	[ -n "$VIRTUAL_ENV" ] && echo "%{$FG[239]%} env %{$reset_color%}[`basename $VIRTUAL_ENV`]"
+# }
+# local current_dir='${PWD/#$HOME/~}'
+# local git_info='$(git_prompt_info)'
+# local prompt_char='$(prompt_char)'
+# local venv_info='$(virtualenv_info)'
 
 NEWLINE=$'\n'
 
 if [ -z "$INSIDE_EMACS" ];then
-	PROMPT="╭─%{$FG[010]%}%n%{$reset_color%} %{$FG[239]%}at%{$reset_color%} %{$FG[012]%}$(box_name)%{$reset_color%} %{$FG[239]%}in%{$reset_color%} %{$terminfo[bold]$FG[009]%}%~%{$reset_color%}${git_info}${venv_info}${NEWLINE}╰─${prompt_char}%{$reset_color%} "
-	ZSH_THEME_GIT_PROMPT_PREFIX=" %{$FG[239]%}on%{$reset_color%} %{$fg[255]%}"
-	ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-	ZSH_THEME_GIT_PROMPT_DIRTY="%{$FG[009]%}✘"
-	ZSH_THEME_GIT_PROMPT_CLEAN="%{$FG[010]%}✔"
+	autoload -U promptinit; promptinit
+	prompt pure
+	# PROMPT="╭─%{$FG[010]%}%n%{$reset_color%} %{$FG[239]%}at%{$reset_color%} %{$FG[012]%}$(box_name)%{$reset_color%} %{$FG[239]%}in%{$reset_color%} %{$terminfo[bold]$FG[009]%}%~%{$reset_color%}${git_info}${venv_info}${NEWLINE}╰─${prompt_char}%{$reset_color%} "
+	# ZSH_THEME_GIT_PROMPT_PREFIX=" %{$FG[239]%}on%{$reset_color%} %{$fg[255]%}"
+	# ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
+	# ZSH_THEME_GIT_PROMPT_DIRTY="%{$FG[009]%}✘"
+	# ZSH_THEME_GIT_PROMPT_CLEAN="%{$FG[010]%}✔"
 else
 	# PROMPT="╭─%{$FG[032]%}%n%{$reset_color%} %{$FG[239]%}at%{$reset_color%} %{$FG[006]%}$(box_name)%{$reset_color%} %{$FG[239]%}in%{$reset_color%} %{$terminfo[bold]$FG[035]%}${current_dir}%{$reset_color%}${git_info}${venv_info}${NEWLINE}╰─${prompt_char}%{$reset_color%} "
 	PROMPT="$FG[035]%}${current_dir}%{$reset_color%} >> "
