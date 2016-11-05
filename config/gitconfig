@@ -17,11 +17,18 @@
 	helper = osxkeychain
 [alias]
 	add-commit = !git add -A && git commit
-	pusht = push
 	eclipse = !git fetch upstream && git rebase -s recursive -X theirs upstream/master
-	duplicate = "!f() { git clone --bare $1 temp_clone && cd temp_clone && git push --mirror $2 && cd .. && rm -rf temp_clone && git clone $2 $(basename $1);  }; f"
-	myrebase = rebase -s recursive -X theirs
+	gconfig = config --global
+	lconfig = config --local
 	mypull = pull -s recursive -X ours
+	myrebase = rebase -s recursive -X theirs
+	psetize = "!f() { git clone --bare $1 temp_clone && \
+cd temp_clone && \
+git push --mirror https://github.mit.edu/dmundo/16.410_$(basename $1) && \
+cd .. && \
+rm -rf temp_clone && \
+git clone https://github.mit.edu/dmundo/16.410_$(basename $1) $(basename $1);  }; f"
+	update-from-upstream = pull --rebase -s recursive -X theirs upstream/master 
 [http]
 	postBuffer = 524288000
 [color]
