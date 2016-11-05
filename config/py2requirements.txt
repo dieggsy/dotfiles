@@ -58,7 +58,7 @@ protobuf==3.1.0.post1
 ptyprocess==0.5.1
 pyasn1==0.1.9
 pyasn1-modules==0.0.8
-pycodestyle==2.0.0
+pycodestyle==2.1.0
 pycrest==0.0.5
 pyfiglet==0.7.5
 pyflakes==1.3.0
