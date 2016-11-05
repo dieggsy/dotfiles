@@ -609,7 +609,7 @@ based on or copied from spacemacs, so definitely check them out!
     "sa" 'counsel-ag
     "ss" 'swiper-all
     "sm" 'swiper-multi
-    "/"  'evil-search-forward))
+    "/"  'evil-ex-search-forward))
 #+end_src
 **** Projects
 #+begin_src emacs-lisp
@@ -1099,30 +1099,31 @@ based on or copied from spacemacs, so definitely check them out!
 *** Final Setup
 #+BEGIN_SRC emacs-lisp
   (use-package evil
-    :ensure t
-    :init
-    (setq evil-want-C-u-scroll t)
-    (setq evil-want-fine-undo t)
-    :config
-    ;; (setq evil-move-cursor-back nil)
-    (add-hook 'evil-mode-hook 'diego/evil-modes)
-    (add-hook 'evil-mode-hook 'diego/evil-appearance)
-    (add-hook 'evil-mode-hook 'diego/evil-bindings))
+	:ensure t
+	:init
+	(setq evil-want-C-u-scroll t)
+	(setq evil-want-fine-undo t)
+	(setq evil-search-module 'evil-search)
+	:config
+	;; (setq evil-move-cursor-back nil)
+	(add-hook 'evil-mode-hook 'diego/evil-modes)
+	(add-hook 'evil-mode-hook 'diego/evil-appearance)
+	(add-hook 'evil-mode-hook 'diego/evil-bindings))
 
   (use-package evil-leader
-    :ensure t
-    :after evil
-    :config
-    (global-evil-leader-mode)
-    (diego/config-evil-leader))
+	:ensure t
+	:after evil
+	:config
+	(global-evil-leader-mode)
+	(diego/config-evil-leader))
 
   (use-package evil-indent-textobject
-    :ensure t
-    :after evil)
+	:ensure t
+	:after evil)
 
   (use-package evil-numbers
-    :ensure t
-    :after evil)
+	:ensure t
+	:after evil)
   (evil-mode 1)
 #+END_SRC
 
