@@ -639,8 +639,8 @@ based on or copied from spacemacs, so definitely check them out!
         "wv" 'diego/split-vert-focus
         "wh" 'diego/split-horz-focus
         "wt" 'diego/toggle-window-split
-        "wD" 'delete-window
-        "wd" 'ace-delete-window
+        "wd" 'delete-window
+        "wD" 'ace-delete-window
         "wo" 'delete-other-windows
         "wf" 'make-frame
         "ws" 'ace-swap-window)
