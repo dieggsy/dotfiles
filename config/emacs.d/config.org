@@ -1576,7 +1576,8 @@ so I went with it.
 	(diego/org-todo-vars)
 	(diego/org-general-vars)
 	(diego/org-bindings)
-
+	(require 'ox-extra)
+	(ox-extras-activate '(ignore-headlines))
 	(add-hook 'org-agenda-mode-hook
               (lambda ()
 				(setq org-habit-graph-column 50)
