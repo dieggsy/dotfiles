@@ -1104,6 +1104,7 @@ based on or copied from spacemacs, so definitely check them out!
 	(setq evil-want-C-u-scroll t)
 	(setq evil-want-fine-undo t)
 	(setq evil-search-module 'evil-search)
+	(setq evil-ex-search-persistent-highlight nil)
 	:config
 	;; (setq evil-move-cursor-back nil)
 	(add-hook 'evil-mode-hook 'diego/evil-modes)
