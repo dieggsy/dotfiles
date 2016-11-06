@@ -1,13 +1,20 @@
 #!/usr/bin/env zsh
 
-# User configuration
+# Source Prezto.
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
+# Customize to your needs...
 export HOSTNAME=`hostname`
 # source $ZSH/oh-my-zsh.sh
-echo "Welcome, Diego"
 setopt GLOB_COMPLETE
 setopt auto_cd
 setopt histignoredups
 setopt autonamedirs
+. `brew --prefix`/etc/profile.d/z.sh
+unsetopt correct
+unalias rm
 
 # The following is taken pretty much directly from fino theme,
 # but I wanted to make a few tweaks.
@@ -30,25 +37,23 @@ export VIRTUAL_ENV_DISABLE_PROMPT=1
 # local prompt_char='$(prompt_char)'
 # local venv_info='$(virtualenv_info)'
 
-NEWLINE=$'\n'
+# NEWLINE=$'\n'
 
-if [ -z "$INSIDE_EMACS" ];then
-	autoload -U promptinit; promptinit
-	prompt pure
-	# PROMPT="╭─%{$FG[010]%}%n%{$reset_color%} %{$FG[239]%}at%{$reset_color%} %{$FG[012]%}$(box_name)%{$reset_color%} %{$FG[239]%}in%{$reset_color%} %{$terminfo[bold]$FG[009]%}%~%{$reset_color%}${git_info}${venv_info}${NEWLINE}╰─${prompt_char}%{$reset_color%} "
-	# ZSH_THEME_GIT_PROMPT_PREFIX=" %{$FG[239]%}on%{$reset_color%} %{$fg[255]%}"
-	# ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-	# ZSH_THEME_GIT_PROMPT_DIRTY="%{$FG[009]%}✘"
-	# ZSH_THEME_GIT_PROMPT_CLEAN="%{$FG[010]%}✔"
-else
-	# PROMPT="╭─%{$FG[032]%}%n%{$reset_color%} %{$FG[239]%}at%{$reset_color%} %{$FG[006]%}$(box_name)%{$reset_color%} %{$FG[239]%}in%{$reset_color%} %{$terminfo[bold]$FG[035]%}${current_dir}%{$reset_color%}${git_info}${venv_info}${NEWLINE}╰─${prompt_char}%{$reset_color%} "
-	PROMPT="$FG[035]%}${current_dir}%{$reset_color%} >> "
-	ZSH_THEME_GIT_PROMPT_PREFIX=" %{$FG[239]%}on%{$reset_color%} %{$fg[255]%}"
-	ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-	ZSH_THEME_GIT_PROMPT_DIRTY="%{$FG[009]%}✘"
-	ZSH_THEME_GIT_PROMPT_CLEAN="%{$FG[010]%}✔"
-	export TERM=xterm-256color
-fi
+# if [ -z "$INSIDE_EMACS" ];then
+# 	PROMPT="╭─%{$FG[010]%}%n%{$reset_color%} %{$FG[239]%}at%{$reset_color%} %{$FG[012]%}$(box_name)%{$reset_color%} %{$FG[239]%}in%{$reset_color%} %{$terminfo[bold]$FG[009]%}%~%{$reset_color%}${git_info}${venv_info}${NEWLINE}╰─${prompt_char}%{$reset_color%} "
+# 	ZSH_THEME_GIT_PROMPT_PREFIX=" %{$FG[239]%}on%{$reset_color%} %{$fg[255]%}"
+# 	ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
+# 	ZSH_THEME_GIT_PROMPT_DIRTY="%{$FG[009]%}✘"
+# 	ZSH_THEME_GIT_PROMPT_CLEAN="%{$FG[010]%}✔"
+# else
+# 	# PROMPT="╭─%{$FG[032]%}%n%{$reset_color%} %{$FG[239]%}at%{$reset_color%} %{$FG[006]%}$(box_name)%{$reset_color%} %{$FG[239]%}in%{$reset_color%} %{$terminfo[bold]$FG[035]%}${current_dir}%{$reset_color%}${git_info}${venv_info}${NEWLINE}╰─${prompt_char}%{$reset_color%} "
+# 	PROMPT="$FG[035]%}${current_dir}%{$reset_color%} >> "
+# 	ZSH_THEME_GIT_PROMPT_PREFIX=" %{$FG[239]%}on%{$reset_color%} %{$fg[255]%}"
+# 	ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
+# 	ZSH_THEME_GIT_PROMPT_DIRTY="%{$FG[009]%}✘"
+# 	ZSH_THEME_GIT_PROMPT_CLEAN="%{$FG[010]%}✔"
+# 	export TERM=xterm-256color
+# fi
 
 
 eval $(thefuck --alias)
@@ -169,9 +174,9 @@ pdftif() {
 }
 
 ocrpdf(){
-	echo "Converting pdf to tiff..."
+	echo "Converting pdf to png..."
 	gs -dNOPAUSE -q -r500 -sDEVICE=tiffg4 -dBATCH -sOutputFile=$TMPDIR/tempocr.tif $1
-	echo "Running tesseract on tiff..."
+	echo "Running tesseract on pngs..."
 	tesseract $TMPDIR/tempocr.tif $2 >/dev/null 2>&1
 }
 
