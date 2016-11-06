@@ -1913,12 +1913,24 @@ Edit text area on Chrome with Emacs using Atomic Chrome
 ;;      :config
 ;;      (atomic-chrome-start-server))
 #+end_src
+*** [[http://savannah.nongnu.org/projects/bbdb/][bbdb]]
+#+begin_src emacs-lisp
+(use-package bbdb
+  :commands (bbdb-search-name bbdb-create)
+  :ensure t
+  :config
+  (bbdb-initialize))
+
+(use-package bbdb-vcard
+  :after bbdb
+  :ensure t)
+#+end_src
 *** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
 Cursor stays vertically centered. I use this for reading, mostly.
 #+begin_src emacs-lisp
   (use-package centered-cursor-mode
-    :ensure t
-    :commands centered-cursor-mode)
+	:ensure t
+	:commands centered-cursor-mode)
 #+end_src
 *** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
 Eh, wanted to try a simpler way of editing csv files. (Excel and Numbers both
