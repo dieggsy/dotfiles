@@ -34,3 +34,5 @@
 /config/emacs.d/anaconda-mode
 /config/gnus.el
 config/emacs.d/bookmarks
+config/emacs.d/bbdb-vcard
+/config/emacs.d/bbdb
