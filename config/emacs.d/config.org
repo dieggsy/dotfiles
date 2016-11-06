@@ -2017,27 +2017,9 @@ Like git, for emacs. But cooler.
 Syntax highlighting for markdown files.
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
-    :ensure t
-    :defer 5
-    :config
-    (defun my-adjoin-to-list-or-symbol (element list-or-symbol)
-    (let ((list (if (not (listp list-or-symbol))
-                    (list list-or-symbol)
-                  list-or-symbol)))
-      (require 'cl-lib)
-      (cl-adjoin element list)))
-    (eval-after-load "markdown-mode"
-      '(mapc
-        (lambda (face)
-          (set-face-attribute
-           face nil
-           :inherit
-           (my-adjoin-to-list-or-symbol
-            'fixed-pitch
-            (face-attribute face :inherit))))
-        (list 'markdown-pre-face 'markdown-inline-code-face)))
-    (add-hook 'markdown-mode-hook 'variable-pitch-mode)
-   (setq markdown-header-scaling t))
+	:ensure t
+	:defer 5
+	:config)
 #+END_SRC
 *** [[https://github.com/ancane/markdown-preview-mode][markdown-preview-mode]]
 Minor mode to preview markdown output as you save
