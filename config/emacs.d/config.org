@@ -1555,6 +1555,7 @@ so I went with it.
 	;; appearance
 	(setq org-src-fontify-natively t)
 	(setq org-src-tab-acts-natively t)
+	(setq org-src-preserve-indentation t)
 	(setq org-fontify-quote-and-verse-blocks t)
 	(setq org-hide-emphasis-markers t)
 	(setq org-startup-with-inline-images t)
