@@ -1536,18 +1536,18 @@ so I went with it.
             (0.0 . '(:foreground "#A89984"))))
 
     (setq org-todo-keywords
-          '((sequence "☛ TODO" "○ IN-PROGRESS" "⚑ WAITING" "|"
+          '((sequence "► TODO" "○ IN-PROGRESS" "⚑ WAITING" "|"
                       "✓ DONE" "✗ CANCELED")
-            (sequence "☛ READ" "|"
+            (sequence "► READ" "|"
                       "✓ DONE")))
 
     (setq org-capture-templates
           '(("t" "Todo" entry
              (file diego/todo-file)
-             "* ☛ TODO %?\nSCHEDULED: %t")
+             "* ► TODO %?\nSCHEDULED: %t")
             ("s" "School Todo" entry
              (file+olp diego/todo-file "School" "School")
-             "* ☛ TODO %?\nSCHEDULED: %t"))))
+             "* ► TODO %?\nSCHEDULED: %t"))))
 
 #+end_src
 
