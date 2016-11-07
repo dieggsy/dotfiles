@@ -1950,27 +1950,50 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
     :config
     (add-hook 'csv-mode-hook 'csv-align-fields))
 #+END_SRC
-*** [[https://github.com/remyhonig/elfeed-org][elfeed-org]]
+*** [[https://github.com/skeeto/elfeed][elfeed]]
 Configure the Elfeed RSS reader with an Orgmode file
 #+begin_src emacs-lisp
   (use-package elfeed
-    :ensure t
-    :defer 5
-    :config
-    (setq elfeed-feeds
-          '("http://planet.emacsen.org/atom.xml")))
+	:ensure t
+	:defer 5
+	:config
+	(evil-define-key 'normal elfeed-search-mode-map
+	  (kbd "RET") 'elfeed-search-show-entry
+	  "+" 'elfeed-search-tag-all
+	  "-" 'elfeed-search-untag-all
+	  "G" 'elfeed-search-fetch
+	  "S" 'elfeed-search-set-filter
+	  "b" 'elfeed-search-browse-url
+	  "g" 'elfeed-search-update--force
+	  "q" 'quit-window
+	  "r" 'elfeed-search-untag-all-unread
+	  "s" 'elfeed-search-live-filter
+	  "u" 'elfeed-seach-tag-all-unread
+	  "y" 'elfeed-search-yank)
+	(evil-define-key 'normal elfeed-show-mode-map
+	  "+" 'elfeed-show-tag
+	  "-" 'elfeed-show-untag
+	  "P" 'elfeed-show-play-enclosure
+	  "b" 'elfeed-show-visit
+	  "d" 'elfeed-show-save-enclosure
+	  "g" 'elfeed-show-refresh
+	  "l" 'elfeed-goodies/split-show-next
+	  "h" 'elfeed-goodies/split-show-prev
+	  "q" 'elfeed-kill-buffer
+	  "s" 'elfeed-show-new-live-search
+	  "y" 'elfeed-show-yank))
 
   (use-package elfeed-org
-    :after elfeed
-    :ensure t
-    :config
-    (elfeed-org))
+	:after elfeed
+	:ensure t
+	:config
+	(elfeed-org))
 
   (use-package elfeed-goodies
-    :after elfeed
-    :ensure t
-    :config
-    (elfeed-goodies/setup))
+	:after elfeed
+	:ensure t
+	:config
+	(elfeed-goodies/setup))
 #+end_src
 *** [[https://github.com/hlissner/evil-multiedit][evil-multiedit]]
 #+begin_src emacs-lisp
