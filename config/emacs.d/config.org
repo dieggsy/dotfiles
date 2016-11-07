@@ -209,8 +209,8 @@ Also, stolen and original functions, and macros.
 Get rid of menu bars, scroll bars, startup screens, etc.
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-splash-screen t
-        inhibit-startup-message t
-        inhibit-startup-echo-area-message t)
+		inhibit-startup-message t
+		inhibit-startup-echo-area-message t)
   ;; (fringe-mode 0)
   (menu-bar-mode 0)
   (tool-bar-mode -1)
@@ -221,6 +221,7 @@ Get rid of menu bars, scroll bars, startup screens, etc.
   (set-default 'truncate-lines t)
   (show-paren-mode)
   (setq show-paren-mode ())
+  (blink-cursor-mode 0)
   ;; (require 'zone)
   ;; (zone-when-idle 10)
 #+END_SRC
