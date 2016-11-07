@@ -497,76 +497,83 @@ Handling/storing of files, backups, autosaves.
 *** "Original"
 #+BEGIN_SRC emacs-lisp
   (defun diego/config ()
-    "Open ~/dotfiles/config/emacs.d/config.org"
-    (interactive)
-    (find-file "/Users/diego/dotfiles/config/emacs.d/config.org"))
+	"Open ~/dotfiles/config/emacs.d/config.org"
+	(interactive)
+	(find-file "/Users/diego/dotfiles/config/emacs.d/config.org"))
 
   (defun diego/init ()
-    "Open ~/dotfiles/config/emacs.d/init.el"
-    (interactive)
-    (find-file "/Users/diego/dotfiles/config/emacs.d/init.el"))
+	"Open ~/dotfiles/config/emacs.d/init.el"
+	(interactive)
+	(find-file "/Users/diego/dotfiles/config/emacs.d/init.el"))
 
   (defun diego/zshrc ()
-    "Open ~/dotfiles/config/zshrc"
-    (interactive)
-    (find-file "/Users/diego/dotfiles/config/zshrc"))
+	"Open ~/dotfiles/config/zshrc"
+	(interactive)
+	(find-file "/Users/diego/dotfiles/config/zshrc"))
 
   (defun diego/ipython-shell ()
-    "Open an ipython shell using multi-term, respecting virtualenv."
-    (interactive)
-    (if (eq pyvenv-virtual-env nil)
-        (let ((multi-term-program "/usr/local/bin/ipython"))
+	"Open an ipython shell using multi-term, respecting virtualenv."
+	(interactive)
+	(if (eq pyvenv-virtual-env nil)
+		(let ((multi-term-program "/usr/local/bin/ipython"))
           (multi-term))
       (let ((multi-term-program (concat pyvenv-virtual-env "/bin/ipython")))
-        (multi-term))))
+		(multi-term))))
 
   (defun diego/toggle-github-spacing ()
-    "Make line spacing similar to github source code."
-    (interactive)
-    (setq-local line-spacing
-                (if (eq line-spacing nil)
-                    0.4
+	"Make line spacing similar to github source code."
+	(interactive)
+	(setq-local line-spacing
+				(if (eq line-spacing nil)
+					0.4
                   nil)))
 
   (defun diego/date ()
-    "Insert current date at point."
-    (interactive)
-    (insert (shell-command-to-string "echo -n $(date +%Y-%m-%d)")))
+	"Insert current date at point."
+	(interactive)
+	(insert (shell-command-to-string "echo -n $(date +%Y-%m-%d)")))
 
   (defun diego/image-to-text ()
-    "Use `drawille-from-image' to insert image as text into current buffer."
-    (interactive)
-    (let ((x (read-file-name "image: ")))
+	"Use `drawille-from-image' to insert image as text into current buffer."
+	(interactive)
+	(let ((x (read-file-name "image: ")))
       (insert (drawille-from-image x))))
 
   (defun diego/lecture-notes ()
-    "Prompt for a class and create a lecture notes file
+	"Prompt for a class and create a lecture notes file
   matching format %Y-%m-%d_lecture.org in class/notes subdirectory."
-    (interactive)
-    (ivy-read "class: " '("16.410"
+	(interactive)
+	(ivy-read "class: " '("16.410"
                           "16.621"
                           "Ethics")
               :action (lambda (x)
-                        (find-file
-                         (concat "~/MIT 2016-2017/" x "/notes/" (format-time-string "%Y-%m-%d_lecture.org" ))))
+						(find-file
+						 (concat "~/MIT 2016-2017/" x "/notes/" (format-time-string "%Y-%m-%d_lecture.org" ))))
               :caller 'diego/lecture-notes))
 
-    (defun diego/recitation-notes ()
-      "Prompt for a class and create a lecture notes file
-    matching format %Y-%m-%d_lecture.org in class/notes subdirectory."
-      (interactive)
-      (ivy-read "class: " '("16.410"
-                            "16.621"
-                            "Ethics")
-                :action (lambda (x)
-                          (find-file
-                           (concat "~/MIT 2016-2017/" x "/notes/" (format-time-string "%Y-%m-%d_recitation.org" ))))
-                :caller 'diego/recitation-notes))
+  (defun diego/recitation-notes ()
+	"Prompt for a class and create a lecture notes file
+	matching format %Y-%m-%d_lecture.org in class/notes subdirectory."
+	(interactive)
+	(ivy-read "class: " '("16.410"
+						  "16.621"
+						  "Ethics")
+			  :action (lambda (x)
+						(find-file
+						 (concat "~/MIT 2016-2017/" x "/notes/" (format-time-string "%Y-%m-%d_recitation.org" ))))
+			  :caller 'diego/recitation-notes))
 
   (defun diego/sync-venv (&rest args)
-    (if (boundp 'pyvenv-virtual-env-name)
-        (setq venv-current-name pyvenv-virtual-env-name)
+	(if (boundp 'pyvenv-virtual-env-name)
+		(setq venv-current-name pyvenv-virtual-env-name)
       (setq venv-current-name nil)))
+
+  (defun diego/toggle-cursor ()
+	(interactive)
+	(setq-local cursor-type
+				(if (eq cursor-type nil)
+					t
+                  nil)))
 #+END_SRC
 
 *** Macros?
@@ -989,44 +996,44 @@ based on or copied from spacemacs, so definitely check them out!
 *** Modes
 #+BEGIN_SRC emacs-lisp
   (defun diego/evil-modes ()
-    "Configure evil mode."
+	"Configure evil mode."
 
-    ;; Use Emacs state in these additional modes.
-    (dolist (mode '(ag-mode
-                    flycheck-error-list-mode
-                    git-rebase-mode
-                    eshell-mode
-                    calc-mode
-                    calc-trail-mode
-                    sunshine-mode
-                    term-mode))
-      (add-to-list 'evil-emacs-state-modes mode))
+	;; Use Emacs state in these additional modes.
+	(dolist (mode '(ag-mode
+					flycheck-error-list-mode
+					git-rebase-mode
+					eshell-mode
+					calc-mode
+					calc-trail-mode
+					sunshine-mode
+					term-mode))
+	  (add-to-list 'evil-emacs-state-modes mode))
 
-    (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
-    (setq evil-emacs-state-modes (delq 'Custom-mode evil-emacs-state-modes))
-    (setq evil-insert-state-modes (delq 'term-mode evil-insert-state-modes))
+	(setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
+	(setq evil-emacs-state-modes (delq 'Custom-mode evil-emacs-state-modes))
+	(setq evil-insert-state-modes (delq 'term-mode evil-insert-state-modes))
 
-    ;; Use insert state in these additional modes.
-    (dolist (mode '(magit-log-edit-mode))
-      (add-to-list 'evil-insert-state-modes mode))
+	;; Use insert state in these additional modes.
+	(dolist (mode '(magit-log-edit-mode))
+	  (add-to-list 'evil-insert-state-modes mode))
 
-    (add-to-list 'evil-buffer-regexps '("\\*Flycheck"))
+	(add-to-list 'evil-buffer-regexps '("\\*Flycheck"))
 
 
-    (defun evil-visual-line--mark-org-element-when-heading (&rest args)
-          "When marking a visual line in Org, mark the current element.
-  This function is used as a `:before-while' advice on
-  `evil-visual-line'; if the current mode is derived from Org Mode and
-  point is resting on an Org heading, mark the whole element instead of
-  the line. ARGS are passed to `evil-visual-line' when text objects are
-  used, but this function ignores them."
-          (interactive)
-          (if (and (derived-mode-p 'org-mode)
-                   (org-on-heading-p))
-              (not (org-mark-element))
-            t))
+	(defun evil-visual-line--mark-org-element-when-heading (&rest args)
+	  "When marking a visual line in Org, mark the current element.
+	 This function is used as a `:before-while' advice on
+	 `evil-visual-line'; if the current mode is derived from Org Mode and
+	 point is resting on an Org heading, mark the whole element instead of
+	 the line. ARGS are passed to `evil-visual-line' when text objects are
+	 used, but this function ignores them."
+	  (interactive)
+	  (if (and (derived-mode-p 'org-mode)
+			   (org-on-heading-p))
+		  (not (org-mark-element))
+		t))
 
-    (advice-add 'evil-visual-line :before-while #'evil-visual-line--mark-org-element-when-heading))
+	(advice-add 'evil-visual-line :before-while #'evil-visual-line--mark-org-element-when-heading))
 #+END_SRC
 *** Appearance
 #+BEGIN_SRC emacs-lisp
@@ -1504,14 +1511,14 @@ so I went with it.
 **** Files
 #+begin_src emacs-lisp
   (defun diego/org-file-vars ()
-    ;; files
-    (setq org-agenda-text-search-extra-files '(agenda-archives))
-    (setq org-agenda-files '("~/Dropbox (MIT)/org/"))
-    (setq org-default-notes-file "~/Dropbox (MIT)/org/todo.org")
-    (setq diego/todo-file "~/Dropbox (MIT)/org/todo.org")
-    (setq diego/notes-file "~Dropbox (MIT)/org/notes.org")
-    (setq org-directory "~/Dropbox (MIT)/org")
-    (setq org-archive-location "~/Dropbox (MIT)/org/archive.org::"))
+	;; files
+	(setq org-agenda-text-search-extra-files '(agenda-archives))
+	(setq org-agenda-files '("~/Dropbox (MIT)/org/"))
+	(setq org-default-notes-file "~/Dropbox (MIT)/org/todo.org")
+	(setq diego/todo-file "~/Dropbox (MIT)/org/todo.org")
+	(setq diego/notes-file "~Dropbox (MIT)/org/notes.org")
+	(setq org-directory "~/Dropbox (MIT)/org")
+	(setq org-archive-location "~/Dropbox (MIT)/org/archive.org::"))
 #+end_src
 **** Todo/agenda
 #+begin_src emacs-lisp
@@ -1555,7 +1562,6 @@ so I went with it.
 	;; appearance
 	(setq org-src-fontify-natively t)
 	(setq org-src-tab-acts-natively t)
-	(setq org-src-preserve-indentation t)
 	(setq org-fontify-quote-and-verse-blocks t)
 	(setq org-hide-emphasis-markers t)
 	(setq org-startup-with-inline-images t)
@@ -1745,16 +1751,16 @@ A speed reading mode for Emacs.
 Read xkcd from Emacs.
 #+BEGIN_SRC emacs-lisp
   (use-package xkcd
-    :ensure t
-    :commands xkcd
-    :config
-    (evil-define-key 'normal xkcd-mode-map
-      (kbd "j") 'xkcd-next
-      (kbd "h") 'xkcd-prev
-      (kbd "k") 'xkcd-prev
-      (kbd "l") 'xkcd-next
-      (kbd "t") 'xkcd-alt-text
-      (kbd "q") 'xkcd-kill-buffer))
+	:ensure t
+	:commands xkcd
+	:config
+	(evil-define-key 'normal xkcd-mode-map
+      "j" 'xkcd-next
+      "h" 'xkcd-prev
+      "k" 'xkcd-prev
+      "l" 'xkcd-next
+      "t" 'xkcd-alt-text
+      "q" 'xkcd-kill-buffer))
 #+END_SRC
 
 *** zone-matrix
@@ -1915,22 +1921,30 @@ I was looking for something with the nice look and simplicity of
 *** [[https://github.com/alpha22jp/atomic-chrome][atomic-chrome]]
 Edit text area on Chrome with Emacs using Atomic Chrome
 #+begin_src emacs-lisp
-;;    (use-package atomic-chrome
-;;      :ensure t
-;;      :config
-;;      (atomic-chrome-start-server))
+  (use-package atomic-chrome
+	:ensure t
+	:config
+	(atomic-chrome-start-server))
 #+end_src
 *** [[http://savannah.nongnu.org/projects/bbdb/][bbdb]]
 #+begin_src emacs-lisp
-(use-package bbdb
-  :commands (bbdb-search-name bbdb-create)
-  :ensure t
-  :config
-  (bbdb-initialize))
+  (use-package bbdb
+	:commands (bbdb-search-name bbdb-create)
+	:ensure t
+	:config
+	(bbdb-initialize))
 
-(use-package bbdb-vcard
-  :after bbdb
-  :ensure t)
+  (use-package bbdb-vcard
+	:after bbdb
+	:ensure t)
+
+  (use-package bbdb-ext
+	:after bbdb
+	:ensure t)
+
+  (use-package counsel-bbdb
+	:after bbdb
+	:ensure t)
 #+end_src
 *** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
 Cursor stays vertically centered. I use this for reading, mostly.
