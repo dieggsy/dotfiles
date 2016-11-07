@@ -1791,6 +1791,12 @@ A utility package to collect various Icon Fonts and propertize them within Emacs
     :defer 5
     :ensure t)
 #+END_SRC
+*** [[http://git.savannah.gnu.org/cgit/emacs/elpa.git/tree/packages/rainbow-mode/rainbow-mode.el][rainbow-mode]]
+#+begin_src emacs-lisp
+  (use-package rainbow-mode
+	:commands rainbow-mode
+	:ensure t)
+#+end_src
 *** [[https://github.com/therockmandolinist/emacs-theme-darktooth][darktooth-theme]]
 An Emacs 24 theme remixed from gruvbox (my fork).
 #+begin_src emacs-lisp
