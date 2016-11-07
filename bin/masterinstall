@@ -127,6 +127,7 @@ brew install hicolor-icon-theme
 brew install highlight
 brew install htop-osx
 brew install hub
+brew install hugo
 brew install icu4c
 brew install ilmbase
 brew install imagemagick
