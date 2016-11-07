@@ -2,7 +2,7 @@
 
 IFS=$'\n'
 echo  $'Getting outdated pip packages...'
-res=$(pip2 list -o)
+res=$(pip2 list -o --format=legacy)
 
 if [ -z "$res" ]; then
     echo $'All packages up to date.'

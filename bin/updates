@@ -4,7 +4,7 @@ if [ -z $VE ]; then
 	echo -e "\e[1;34mUpdating: \e[91mpip2\e[0;37m"
 	IFS=$'\n'
 	echo  $'Getting outdated pip2 packages...'
-	res=$(pip2 list -o)
+	res=$(pip2 list -o --format=legacy)
 
 	if [ -z "$res" ]; then
 		echo $'All packages up to date.'
@@ -20,7 +20,7 @@ if [ -z $VE ]; then
 	echo -e "\n\e[1;34mUpdating: \e[91mpip3\e[0;37m"
 	IFS=$'\n'
 	echo  $'Getting outdated pip3 packages...'
-	res=$(pip3 list -o)
+	res=$(pip3 list -o --format=legacy)
 
 	if [ -z "$res" ]; then
 		echo $'All packages up to date.'
