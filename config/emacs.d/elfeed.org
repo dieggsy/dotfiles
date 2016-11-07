@@ -2,3 +2,4 @@
 ** emacs                                                             :emacs:
 *** http://www.reddit.com/r/emacs/.rss
 *** http://planet.emacsen.org/atom.xml
+*** http://rss.gmane.org/messages/complete/gmane.emacs.orgmode
