@@ -1506,57 +1506,65 @@ so I went with it.
 #+end_src
 **** Todo/agenda
 #+begin_src emacs-lisp
-  (defun diego/org-todo-vars ()
-    ;; Todo/tasks/agenda
-    (setq org-enforce-todo-dependencies t)
-    (setq org-log-done (quote time))
-    (setq org-log-redeadline (quote time))
-    (setq org-log-reschedule (quote time))
-    (setq org-agenda-skip-scheduled-if-done t)
+	(defun diego/org-todo-vars ()
+	  ;; Todo/tasks/agenda
+	  (setq org-enforce-todo-dependencies t)
+	  (setq org-log-done (quote time))
+	  (setq org-log-redeadline (quote time))
+	  (setq org-log-reschedule (quote time))
+	  (setq org-agenda-skip-scheduled-if-done t)
+	  (setq org-agenda-skip-deadline-if-done t)
+      (setq org-agenda-hide-tags-regexp ".*")
 
-    (setq org-agenda-deadline-faces
-          '((1.0 . org-warning)
-            (0.5 . org-upcoming-deadline)
-            (0.0 . '(:foreground "#A89984"))))
+	  (setq org-agenda-deadline-faces
+			'((1.0 . org-warning)
+			  (0.5 . org-upcoming-deadline)
+			  (0.0 . '(:foreground "#A89984"))))
 
-    (setq org-todo-keywords
-          '((sequence "► TODO" "○ IN-PROGRESS" "⚑ WAITING" "|"
-                      "✓ DONE" "✗ CANCELED")
-            (sequence "► READ" "|"
-                      "✓ DONE")))
+	  ;; (setq org-todo-keywords
+	  ;; 		'((sequence "► TODO(t)" "○ IN-PROGRESS(p)" "⚑ WAITING(w)" "|"
+	  ;; 					"✓ DONE(d)" "✗ CANCELED(c)")
+	  ;; 		  (sequence "► READ(r)" "|"
+	  ;; 					"✓ DONE(h)")))
+	  (setq org-todo-keywords
+			'((sequence "❯ TODO(t)" "○ IN-PROGRESS(p)" "◼ WAITING(w)" "|"
+						"✓ DONE(d)" "✗ CANCELED(c)")
+			  (sequence "❙ READ(r)" "|"
+						"✓ DONE(h)")))
 
-    (setq org-capture-templates
-          '(("t" "Todo" entry
-             (file diego/todo-file)
-             "* ► TODO %?\nSCHEDULED: %t")
-            ("s" "School Todo" entry
-             (file+olp diego/todo-file "School" "School")
-             "* ► TODO %?\nSCHEDULED: %t"))))
+	  (setq org-capture-templates
+			'(("t" "Todo" entry
+			   (file diego/todo-file)
+			   "* ❯ TODO %?\nSCHEDULED: %t")
+			  ("s" "School Todo" entry
+			   (file+olp diego/todo-file "School" "School")
+			   "* ❯ TODO %?\nSCHEDULED: %t"))))
 
 #+end_src
 
 **** Behavior/appearance
 #+begin_src emacs-lisp
-  (defun diego/org-general-vars ()
-	;; Behavior
-	(setq org-insert-heading-respect-content t)
-	(setq org-src-window-setup 'current-window)
-	(setq org-list-demote-modify-bullet '(("-" . "*")
-										  ("*" . "+")))
-	;; appearance
-	(setq org-src-fontify-natively t)
-	(setq org-src-tab-acts-natively t)
-	(setq org-fontify-quote-and-verse-blocks t)
-	(setq org-hide-emphasis-markers t)
-	(setq org-startup-with-inline-images t)
-	(setq org-ellipsis " …")
-	(setq org-highlight-latex-and-related '(latex script entities))
-	(setq org-pretty-entities t)
+	(defun diego/org-general-vars ()
+	  ;; Behavior
+	  ;; (setq org-support-shift-select t)
+	  (setq org-insert-heading-respect-content t)
+	  (setq org-src-window-setup 'current-window)
+	  (setq org-list-demote-modify-bullet '(("-" . "*")
+											("*" . "+")))
+	  ;; appearance
+	  (setq org-src-fontify-natively t)
+	  (setq org-src-tab-acts-natively t)
+	  (setq org-fontify-quote-and-verse-blocks t)
+	  (setq org-hide-emphasis-markers t)
+	  (setq org-startup-with-inline-images t)
+	  (setq org-ellipsis " …")
+	  (setq org-highlight-latex-and-related '(latex))
+	  (setq org-pretty-entities t)
 
-	;; latex
-	(setq org-latex-listings t)
-	(add-to-list 'org-latex-packages-alist '("" "listings"))
-	(add-to-list 'org-latex-packages-alist '("" "color")))
+	  ;; latex
+	  (setq org-latex-listings t)
+	  (add-to-list 'org-latex-packages-alist '("" "listings"))
+	  (add-to-list 'org-latex-packages-alist '("" "color")))
 #+end_src
 *** Setup
 #+BEGIN_SRC emacs-lisp
@@ -1587,6 +1595,15 @@ so I went with it.
                   org-agenda-mode-map "R"          'org-revert-all-org-buffers)
 				(define-key
                   org-agenda-mode-map (kbd "RET")  'org-agenda-switch-to)
+
+				(setq-local prettify-symbols-alist
+							'(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
+							  ("❙ READ"        . (?❙ (Br . Bl) ?❙ (Br . Bl) ?❙))
+							  ("○ IN-PROGRESS" . (?○ (Br . Bl) ?○ (Br . Bl) ?○))
+							  ("◼ WAITING"     . (?◼ (Br . Bl) ?◼ (Br . Bl) ?◼))
+							  ("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
+							  ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
+				(prettify-symbols-mode)
 
 				(define-prefix-command 'diego/org-run-shortcuts)
 				(define-key
@@ -1619,6 +1636,14 @@ so I went with it.
                        (interactive)
                        (diego/org-insert-list-leader-or-self ,char))))
 
+				(setq-local prettify-symbols-alist
+							'(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
+							  ("❙ READ"        . (?❙ (Br . Bl) ?❙ (Br . Bl) ?❙))
+							  ("○ IN-PROGRESS" . (?○ (Br . Bl) ?○ (Br . Bl) ?○))
+							  ("◼ WAITING"     . (?◼ (Br . Bl) ?◼ (Br . Bl) ?◼))
+							  ("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
+							  ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
+				(prettify-symbols-mode)
 				;; Bindings
 
 				(setq fill-column 79)
