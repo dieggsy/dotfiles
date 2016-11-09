@@ -3175,13 +3175,19 @@ Mostly set up hs-minor-mode for emacs-lisp.
   (add-hook 'term-mode-hook 'diego/setup-term-mode)
 #+END_SRC
 ** Calc mode
+*** Settings
 #+begin_src emacs-lisp
   (setq calc-multiplication-has-precedence nil)
   (defun diego/setup-calc-mode()
-    (local-set-key (kbd "x") (lambda () (interactive) (counsel-M-x "^calc-")))
-    (calc-symbolic-mode 1))
+	(local-set-key (kbd "x") (lambda () (interactive) (counsel-M-x "^calc-")))
+	(calc-symbolic-mode 1))
 
   (add-hook 'calc-mode-hook 'diego/setup-calc-mode)
+#+end_src
+*** Custom vars and funcs 
+#+begin_src emacs-lisp
+  (setq var-G '(float 667408 -16))
+  (setq var-c '299792458)
 #+end_src
 * Fix fci pop-up menu issue
 This is from somewhere on the internet, and may no longer be relevant since I
