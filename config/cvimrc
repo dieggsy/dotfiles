@@ -1,0 +1,13 @@
+let configpath='/Users/diego/dotfiles/config/cvimrc'
+set localconfig
+set smoothscroll
+set noautofocus
+
+let defaultengine = "google"
+let hintcharacters = "aoeuidhtns"
+
+let mapleader="\<Space>"
+map <Leader>bb :buffer<Space>
+map <Leader>hh :history<Space>
+
+map <C-/> <ESC>
