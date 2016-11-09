@@ -1481,7 +1481,7 @@ so I went with it.
       "gl"        'outline-next-visible-heading
       "gj"        'org-forward-heading-same-level
       "gk"        'org-backward-heading-same-level
-      "t"         'org-todo
+      "gt"         'org-todo
       (kbd "M-l") 'org-metaright
       (kbd "M-h") 'org-metaleft
       (kbd "M-k") 'org-metaup
