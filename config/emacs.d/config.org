@@ -1545,27 +1545,28 @@ so I went with it.
 
 **** Behavior/appearance
 #+begin_src emacs-lisp
-	(defun diego/org-general-vars ()
-	  ;; Behavior
-	  ;; (setq org-support-shift-select t)
-	  (setq org-insert-heading-respect-content t)
-	  (setq org-src-window-setup 'current-window)
-	  (setq org-list-demote-modify-bullet '(("-" . "*")
-											("*" . "+")))
-	  ;; appearance
-	  (setq org-src-fontify-natively t)
-	  (setq org-src-tab-acts-natively t)
-	  (setq org-fontify-quote-and-verse-blocks t)
-	  (setq org-hide-emphasis-markers t)
-	  (setq org-startup-with-inline-images t)
-	  (setq org-ellipsis " …")
-	  (setq org-highlight-latex-and-related '(latex))
-	  (setq org-pretty-entities t)
+  (defun diego/org-general-vars ()
+	;; Behavior
+	;; (setq org-support-shift-select t)
+	(setq org-insert-heading-respect-content t)
+	(setq org-src-window-setup 'current-window)
+	(setq org-list-demote-modify-bullet '(("-" . "*")
+										  ("*" . "+")))
+	;; appearance
+	(setq org-src-fontify-natively t)
+	(setq org-src-tab-acts-natively t)
+	(setq org-src-preserve-indentation t)
+	(setq org-fontify-quote-and-verse-blocks t)
+	(setq org-hide-emphasis-markers t)
+	(setq org-startup-with-inline-images t)
+	(setq org-ellipsis " …")
+	(setq org-highlight-latex-and-related '(latex))
+	(setq org-pretty-entities t)
 
-	  ;; latex
-	  (setq org-latex-listings t)
-	  (add-to-list 'org-latex-packages-alist '("" "listings"))
-	  (add-to-list 'org-latex-packages-alist '("" "color")))
+	;; latex
+	(setq org-latex-listings t)
+	(add-to-list 'org-latex-packages-alist '("" "listings"))
+	(add-to-list 'org-latex-packages-alist '("" "color")))
 #+end_src
 *** Setup
 #+BEGIN_SRC emacs-lisp
