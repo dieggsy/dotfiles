@@ -1506,39 +1506,40 @@ so I went with it.
 #+end_src
 **** Todo/agenda
 #+begin_src emacs-lisp
-	(defun diego/org-todo-vars ()
-	  ;; Todo/tasks/agenda
-	  (setq org-enforce-todo-dependencies t)
-	  (setq org-log-done (quote time))
-	  (setq org-log-redeadline (quote time))
-	  (setq org-log-reschedule (quote time))
-	  (setq org-agenda-skip-scheduled-if-done t)
-	  (setq org-agenda-skip-deadline-if-done t)
-      (setq org-agenda-hide-tags-regexp ".*")
+  (defun diego/org-todo-vars ()
+	;; Todo/tasks/agenda
+	(setq org-enforce-todo-dependencies t)
+	(setq org-log-done (quote time))
+	(setq org-log-redeadline (quote time))
+	(setq org-log-reschedule (quote time))
+	(setq org-agenda-skip-scheduled-if-done t)
+	(setq org-agenda-skip-deadline-if-done t)
+	(setq org-agenda-hide-tags-regexp ".*")
+	(setq org-agenda-span 'day)
 
-	  (setq org-agenda-deadline-faces
-			'((1.0 . org-warning)
-			  (0.5 . org-upcoming-deadline)
-			  (0.0 . '(:foreground "#A89984"))))
+	(setq org-agenda-deadline-faces
+		  '((1.0 . org-warning)
+			(0.5 . org-upcoming-deadline)
+			(0.0 . '(:foreground "#A89984"))))
 
-	  ;; (setq org-todo-keywords
-	  ;; 		'((sequence "► TODO(t)" "○ IN-PROGRESS(p)" "⚑ WAITING(w)" "|"
-	  ;; 					"✓ DONE(d)" "✗ CANCELED(c)")
-	  ;; 		  (sequence "► READ(r)" "|"
-	  ;; 					"✓ DONE(h)")))
-	  (setq org-todo-keywords
-			'((sequence "❯ TODO(t)" "○ IN-PROGRESS(p)" "◼ WAITING(w)" "|"
-						"✓ DONE(d)" "✗ CANCELED(c)")
-			  (sequence "❙ READ(r)" "|"
-						"✓ DONE(h)")))
+	;; (setq org-todo-keywords
+	;; 		'((sequence "► TODO(t)" "○ IN-PROGRESS(p)" "⚑ WAITING(w)" "|"
+	;; 					"✓ DONE(d)" "✗ CANCELED(c)")
+	;; 		  (sequence "► READ(r)" "|"
+	;; 					"✓ DONE(h)")))
+	(setq org-todo-keywords
+		  '((sequence "❯ TODO(t)" "○ IN-PROGRESS(p)" "◼ WAITING(w)" "|"
+					  "✓ DONE(d)" "✗ CANCELED(c)")
+			(sequence "❙ READ(r)" "|"
+					  "✓ DONE(h)")))
 
-	  (setq org-capture-templates
-			'(("t" "Todo" entry
-			   (file diego/todo-file)
-			   "* ❯ TODO %?\nSCHEDULED: %t")
-			  ("s" "School Todo" entry
-			   (file+olp diego/todo-file "School" "School")
-			   "* ❯ TODO %?\nSCHEDULED: %t"))))
+	(setq org-capture-templates
+		  '(("t" "Todo" entry
+			 (file diego/todo-file)
+			 "* ❯ TODO %?\nSCHEDULED: %t")
+			("s" "School Todo" entry
+			 (file+olp diego/todo-file "School" "School")
+			 "* ❯ TODO %?\nSCHEDULED: %t"))))
 
 #+end_src
 
@@ -1951,9 +1952,9 @@ Edit text area on Chrome with Emacs using Atomic Chrome
 	:after bbdb
 	:ensure t)
 
-  (use-package counsel-bbdb
-	:after bbdb
-	:ensure t)
+  ;;(use-package counsel-bbdb
+  ;;  :after bbdb
+  ;;  :ensure t)
 #+end_src
 *** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
 Cursor stays vertically centered. I use this for reading, mostly.
