@@ -3187,8 +3187,11 @@ Mostly set up hs-minor-mode for emacs-lisp.
 #+end_src
 *** Custom vars and funcs 
 #+begin_src emacs-lisp
-  (setq var-G '(float 667408 -16))
-  (setq var-c '299792458)
+(defvar var-G '(float 667408 -16)
+  "Universal gravitational constant.")
+
+(defvar var-c '299792458
+  "Speed of light in a vaccum.")
 #+end_src
 * Fix fci pop-up menu issue
 This is from somewhere on the internet, and may no longer be relevant since I
