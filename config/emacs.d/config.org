@@ -1978,21 +1978,22 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+begin_src emacs-lisp
   (use-package elfeed
 	:ensure t
-	:defer 5
+	:commands elfeed
 	:config
 	(evil-define-key 'normal elfeed-search-mode-map
 	  (kbd "RET") 'elfeed-search-show-entry
-	  "+" 'elfeed-search-tag-all
-	  "-" 'elfeed-search-untag-all
-	  "G" 'elfeed-search-fetch
-	  "S" 'elfeed-search-set-filter
-	  "b" 'elfeed-search-browse-url
-	  "g" 'elfeed-search-update--force
-	  "q" 'quit-window
-	  "r" 'elfeed-search-untag-all-unread
-	  "s" 'elfeed-search-live-filter
-	  "u" 'elfeed-seach-tag-all-unread
-	  "y" 'elfeed-search-yank)
+	  "+"         'elfeed-search-tag-all
+	  "-"         'elfeed-search-untag-all
+	  "G"         'elfeed-search-fetch
+	  "S"         'elfeed-search-set-filter
+	  "b"         'elfeed-search-browse-url
+	  "g"         'elfeed-search-update--force
+	  "q"         'quit-window
+	  "r"         'elfeed-search-untag-all-unread
+	  "s"         'elfeed-search-live-filter
+	  "u"         'elfeed-seach-tag-all-unread
+	  "y"         'elfeed-search-yank)
+
 	(evil-define-key 'normal elfeed-show-mode-map
 	  "+" 'elfeed-show-tag
 	  "-" 'elfeed-show-untag
