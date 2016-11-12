@@ -842,6 +842,9 @@ based on or copied from spacemacs, so definitely check them out!
       ;; Copy of spacemacs/align-repeat
       (defun diego/align-repeat (start end regexp &optional justify-right after)
         "Repeat alignment with respect to the given regular expression.
+	"xir" 'indent-region
+	"xib" 'indent-buffer
+	"xii" 'indent-rigidly
   If JUSTIFY-RIGHT is non nil justify to the right instead of the
   left. If AFTER is non-nil, add whitespace to the left instead of
   the right."
@@ -1708,6 +1711,7 @@ Emacs package that displays available keybindings in popup
 
 	(setq which-key-sort-order 'which-key-key-order-alpha)
 	(setq which-key-sort-uppercase-first nil))
+	"SPC xi"  "indent"
 #+end_src
 * Dem packages
 ** Amusements
