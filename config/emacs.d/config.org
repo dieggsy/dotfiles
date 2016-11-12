@@ -38,96 +38,74 @@ Setup load directories, mostly.
   ;;; init-utils.el --- Utilities borrowed from Steve Purcell
   ;;; Commentary:
   ;;; Code:
-  (if (fboundp 'with-eval-after-load)
-      (defalias 'after-load 'with-eval-after-load)
-	(defmacro after-load (feature &rest body)
-      "After FEATURE is loaded, evaluate BODY."
-      (declare (indent defun))
-      `(eval-after-load ,feature
-		 '(progn ,@body))))
+(if (fboundp 'with-eval-after-load)
+	(defalias 'after-load 'with-eval-after-load)
+  (defmacro after-load (feature &rest body)
+	"After FEATURE is loaded, evaluate BODY."
+	(declare (indent defun))
+	`(eval-after-load ,feature
+	   '(progn ,@body))))
 
 
-  ;;----------------------------------------------------------------------------
-  ;; Handier way to add modes to auto-mode-alist
-  ;;----------------------------------------------------------------------------
-  (defun add-auto-mode (mode &rest patterns)
-	"Add entries to `auto-mode-alist' to use `MODE' for all given file `PATTERNS'."
-	(dolist (pattern patterns)
-      (add-to-list 'auto-mode-alist (cons pattern mode))))
+(defun add-auto-mode (mode &rest patterns)
+  "Add entries to `auto-mode-alist' to use `MODE' for all given file `PATTERNS'."
+  (dolist (pattern patterns)
+	(add-to-list 'auto-mode-alist (cons pattern mode))))
 
 
-  ;;----------------------------------------------------------------------------
-  ;; String utilities missing from core emacs
-  ;;----------------------------------------------------------------------------
-  (defun sanityinc/string-all-matches (regex str &optional group)
-	"Find all matches for `REGEX' within `STR', returning the full match string or group `GROUP'."
-	(let ((result nil)
-          (pos 0)
-          (group (or group 0)))
-      (while (string-match regex str pos)
-		(push (match-string group str) result)
-		(setq pos (match-end group)))
-      result))
+(defun sanityinc/string-all-matches (regex str &optional group)
+  "Find all matches for `REGEX' within `STR', returning the full match string or group `GROUP'."
+  (let ((result nil)
+		(pos 0)
+		(group (or group 0)))
+	(while (string-match regex str pos)
+	  (push (match-string group str) result)
+	  (setq pos (match-end group)))
+	result))
 
-  (defun sanityinc/string-rtrim (str)
-	"Remove trailing whitespace from `STR'."
-	(replace-regexp-in-string "[ \t\n]+$" "" str))
+(defun sanityinc/string-rtrim (str)
+  "Remove trailing whitespace from `STR'."
+  (replace-regexp-in-string "[ \t\n]+$" "" str))
 
 
-  ;;----------------------------------------------------------------------------
-  ;; Find the directory containing a given library
-  ;;----------------------------------------------------------------------------
-  (autoload 'find-library-name "find-func")
-  (defun sanityinc/directory-of-library (library-name)
-	"Return the directory in which the `LIBRARY-NAME' load file is found."
-	(file-name-as-directory (file-name-directory (find-library-name library-name))))
+(autoload 'find-library-name "find-func")
+(defun sanityinc/directory-of-library (library-name)
+  "Return the directory in which the `LIBRARY-NAME' load file is found."
+  (file-name-as-directory (file-name-directory (find-library-name library-name))))
 
 
-  ;;----------------------------------------------------------------------------
-  ;; Delete the current file
-  ;;----------------------------------------------------------------------------
-  (defun delete-this-file ()
-	"Delete the current file, and kill the buffer."
-	(interactive)
-	(or (buffer-file-name) (error "No file is currently being edited"))
-	(when (yes-or-no-p (format "Really delete '%s'?"
-                               (file-name-nondirectory buffer-file-name)))
-      (delete-file (buffer-file-name))
-      (kill-this-buffer)))
+(defun delete-this-file ()
+  "Delete the current file, and kill the buffer."
+  (interactive)
+  (or (buffer-file-name) (error "No file is currently being edited"))
+  (when (yes-or-no-p (format "Really delete '%s'?"
+							 (file-name-nondirectory buffer-file-name)))
+	(delete-file (buffer-file-name))
+	(kill-this-buffer)))
 
 
-  ;;----------------------------------------------------------------------------
-  ;; Rename the current file
-  ;;----------------------------------------------------------------------------
-  (defun rename-this-file-and-buffer (new-name)
-	"Renames both current buffer and file it's visiting to NEW-NAME."
-	(interactive "sNew name: ")
-	(let ((name (buffer-name))
-          (filename (buffer-file-name)))
-      (unless filename
-		(error "Buffer '%s' is not visiting a file!" name))
-      (if (get-buffer new-name)
-          (message "A buffer named '%s' already exists!" new-name)
-		(progn
-          (when (file-exists-p filename)
-           (rename-file filename new-name 1))
-          (rename-buffer new-name)
-          (set-visited-file-name new-name)))))
+(defun rename-this-file-and-buffer (new-name)
+  "Renames both current buffer and file it's visiting to NEW-NAME."
+  (interactive "sNew name: ")
+  (let ((name (buffer-name))
+		(filename (buffer-file-name)))
+	(unless filename
+	  (error "Buffer '%s' is not visiting a file!" name))
+	(if (get-buffer new-name)
+		(message "A buffer named '%s' already exists!" new-name)
+	  (progn
+		(when (file-exists-p filename)
+		  (rename-file filename new-name 1))
+		(rename-buffer new-name)
+		(set-visited-file-name new-name)))))
 
-  ;;----------------------------------------------------------------------------
-  ;; Browse current HTML file
-  ;;----------------------------------------------------------------------------
-  (defun browse-current-file ()
-	"Open the current file as a URL using `browse-url'."
-	(interactive)
-	(let ((file-name (buffer-file-name)))
-      (if (tramp-tramp-file-p file-name)
-          (error "Cannot open tramp file")
-		(browse-url (concat "file://" file-name)))))
-
-
-  ;;; init-utils.el ends here
-
+(defun browse-current-file ()
+  "Open the current file as a URL using `browse-url'."
+  (interactive)
+  (let ((file-name (buffer-file-name)))
+	(if (tramp-tramp-file-p file-name)
+		(error "Cannot open tramp file")
+	  (browse-url (concat "file://" file-name)))))
 #+END_SRC
 
 ** Package setup
@@ -480,84 +458,84 @@ Handling/storing of files, backups, autosaves.
 
 *** "Original"
 #+BEGIN_SRC emacs-lisp
-  (defun diego/config ()
-	"Open ~/dotfiles/config/emacs.d/config.org"
-	(interactive)
-	(find-file "/Users/diego/dotfiles/config/emacs.d/config.org"))
+(defun diego/config ()
+  "Open ~/dotfiles/config/emacs.d/config.org"
+  (interactive)
+  (find-file "/Users/diego/dotfiles/config/emacs.d/config.org"))
 
-  (defun diego/init ()
-	"Open ~/dotfiles/config/emacs.d/init.el"
-	(interactive)
-	(find-file "/Users/diego/dotfiles/config/emacs.d/init.el"))
+(defun diego/init ()
+  "Open ~/dotfiles/config/emacs.d/init.el"
+  (interactive)
+  (find-file "/Users/diego/dotfiles/config/emacs.d/init.el"))
 
-  (defun diego/zshrc ()
-	"Open ~/dotfiles/config/zshrc"
-	(interactive)
-	(find-file "/Users/diego/dotfiles/config/zshrc"))
+(defun diego/zshrc ()
+  "Open ~/dotfiles/config/zshrc"
+  (interactive)
+  (find-file "/Users/diego/dotfiles/config/zshrc"))
 
-  (defun diego/ipython-shell ()
-	"Open an ipython shell using multi-term, respecting virtualenv."
-	(interactive)
-	(if (eq pyvenv-virtual-env nil)
-		(let ((multi-term-program "/usr/local/bin/ipython"))
-          (multi-term))
-      (let ((multi-term-program (concat pyvenv-virtual-env "/bin/ipython")))
-		(multi-term))))
+(defun diego/ipython-shell ()
+  "Open an ipython shell using multi-term, respecting virtualenv."
+  (interactive)
+  (if (eq pyvenv-virtual-env nil)
+	  (let ((multi-term-program "/usr/local/bin/ipython"))
+		(multi-term))
+	(let ((multi-term-program (concat pyvenv-virtual-env "/bin/ipython")))
+	  (multi-term))))
 
-  (defun diego/toggle-github-spacing ()
-	"Make line spacing similar to github source code."
-	(interactive)
-	(setq-local line-spacing
-				(if (eq line-spacing nil)
-					0.4
-                  nil)))
+(defun diego/toggle-github-spacing ()
+  "Make line spacing similar to github source code."
+  (interactive)
+  (setq-local line-spacing
+			  (if (eq line-spacing nil)
+				  0.4
+				nil)))
 
-  (defun diego/date ()
-	"Insert current date at point."
-	(interactive)
-	(insert (shell-command-to-string "echo -n $(date +%Y-%m-%d)")))
+(defun diego/date ()
+  "Insert current date at point."
+  (interactive)
+  (insert (shell-command-to-string "echo -n $(date +%Y-%m-%d)")))
 
-  (defun diego/image-to-text ()
-	"Use `drawille-from-image' to insert image as text into current buffer."
-	(interactive)
-	(let ((x (read-file-name "image: ")))
-      (insert (drawille-from-image x))))
+(defun diego/image-to-text ()
+  "Use `drawille-from-image' to insert image as text into current buffer."
+  (interactive)
+  (let ((x (read-file-name "image: ")))
+	(insert (drawille-from-image x))))
 
-  (defun diego/lecture-notes ()
-	"Prompt for a class and create a lecture notes file
+(defun diego/lecture-notes ()
+  "Prompt for a class and create a lecture notes file
   matching format %Y-%m-%d_lecture.org in class/notes subdirectory."
-	(interactive)
-	(ivy-read "class: " '("16.410"
-                          "16.621"
-                          "Ethics")
-              :action (lambda (x)
-						(find-file
-						 (concat "~/MIT 2016-2017/" x "/notes/" (format-time-string "%Y-%m-%d_lecture.org" ))))
-              :caller 'diego/lecture-notes))
+  (interactive)
+  (ivy-read "class: " '("16.410"
+						"16.621"
+						"Ethics")
+			:action (lambda (x)
+					  (find-file
+					   (concat "~/MIT 2016-2017/" x "/notes/" (format-time-string "%Y-%m-%d_lecture.org" ))))
+			:caller 'diego/lecture-notes))
 
-  (defun diego/recitation-notes ()
-	"Prompt for a class and create a lecture notes file
+(defun diego/recitation-notes ()
+  "Prompt for a class and create a lecture notes file
 	matching format %Y-%m-%d_lecture.org in class/notes subdirectory."
-	(interactive)
-	(ivy-read "class: " '("16.410"
-						  "16.621"
-						  "Ethics")
-			  :action (lambda (x)
-						(find-file
-						 (concat "~/MIT 2016-2017/" x "/notes/" (format-time-string "%Y-%m-%d_recitation.org" ))))
-			  :caller 'diego/recitation-notes))
+  (interactive)
+  (ivy-read "class: " '("16.410"
+						"16.621"
+						"Ethics")
+			:action (lambda (x)
+					  (find-file
+					   (concat "~/MIT 2016-2017/" x "/notes/" (format-time-string "%Y-%m-%d_recitation.org" ))))
+			:caller 'diego/recitation-notes))
 
-  (defun diego/sync-venv (&rest args)
-	(if (boundp 'pyvenv-virtual-env-name)
-		(setq venv-current-name pyvenv-virtual-env-name)
-      (setq venv-current-name nil)))
+(defun diego/sync-venv (&rest args)
+  (if (boundp 'pyvenv-virtual-env-name)
+	  (setq venv-current-name pyvenv-virtual-env-name)
+	(setq venv-current-name nil)))
 
-  (defun diego/toggle-cursor ()
-	(interactive)
-	(setq-local cursor-type
-				(if (eq cursor-type nil)
-					t
-                  nil)))
+(defun diego/toggle-cursor ()
+  (interactive)
+  (setq-local cursor-type
+			  (if (eq cursor-type nil)
+				  t
+				nil)))
 #+END_SRC
 
 *** Macros?
@@ -599,7 +577,7 @@ based on or copied from spacemacs, so definitely check them out!
 
 **** Search
 #+begin_src emacs-lisp
-  (defun diego/leader-search ()
+(defun diego/leader-search ()
   (evil-leader/set-key
 
 	"sa" 'counsel-ag
@@ -610,23 +588,23 @@ based on or copied from spacemacs, so definitely check them out!
 #+end_src
 **** Projects
 #+begin_src emacs-lisp
-  (defun diego/leader-projects ()
-    (evil-leader/set-key
-      "pp" 'counsel-projectile
-      "ps" 'counsel-projectile-switch-project
-      "pf" 'diego/project-find-file
-      "pd" 'counsel-projectile-find-dir
-      "pb" 'counsel-projectile-switch-to-buffer
-      "pk" 'projectile-kill-buffers
-      "po" 'projectile-multi-occur
-      "pr" 'projectile-recentf
-      "pg" 'projectile-vc)
+(defun diego/leader-projects ()
+  (evil-leader/set-key
+    "pp" 'counsel-projectile
+    "ps" 'counsel-projectile-switch-project
+    "pf" 'diego/project-find-file
+    "pd" 'counsel-projectile-find-dir
+    "pb" 'counsel-projectile-switch-to-buffer
+    "pk" 'projectile-kill-buffers
+    "po" 'projectile-multi-occur
+    "pr" 'projectile-recentf
+    "pg" 'projectile-vc)
 
-    (defun diego/project-find-file ()
-      (interactive)
-      (condition-case nil
-        (counsel-git)
-        (error (projectile-find-file)))))
+  (defun diego/project-find-file ()
+    (interactive)
+    (condition-case nil
+		(counsel-git)
+      (error (projectile-find-file)))))
 #+end_src
 **** Window
 #+begin_src emacs-lisp
@@ -781,115 +759,114 @@ based on or copied from spacemacs, so definitely check them out!
 #+end_src
 **** Editing
 #+begin_src emacs-lisp
-  (defun diego/leader-editing ()
-      (evil-leader/set-key
-        ";"   'evilnc-comment-operator
-        "cl"  'evilnc-comment-or-uncomment-lines
-        "ci"  'diego/comment-or-uncomment-lines-inverse
-        "cp"  'evilnc-comment-or-uncomment-paragraphs
-        "ct"  'evilnc-comment-or-uncomment-to-the-line
-        "cy"  'evilnc-copy-and-comment-lines
+(defun diego/leader-editing ()
+  (evil-leader/set-key
+	";"   'evilnc-comment-operator
+	"cl"  'evilnc-comment-or-uncomment-lines
+	"ci"  'diego/comment-or-uncomment-lines-inverse
+	"cp"  'evilnc-comment-or-uncomment-paragraphs
+	"ct"  'evilnc-comment-or-uncomment-to-the-line
+	"cy"  'evilnc-copy-and-comment-lines
 
-        "nn"  'diego/narrow-dwim
-        "nf"  'narrow-to-defun
-        "np"  'narrow-to-page
-        "nr"  'narrow-to-region
+	"nn"  'diego/narrow-dwim
+	"nf"  'narrow-to-defun
+	"np"  'narrow-to-page
+	"nr"  'narrow-to-region
 
-        "xar" 'align-regexp
-        "xa&" 'diego/align-repeat-ampersand
-        "xa(" 'diego/align-repeat-left-paren
-        "xa)" 'diego/align-repeat-right-paren
-        "xa," 'diego/align-repeat-comma
-        "xa." 'diego/align-repeat-decimal
-        "xa:" 'diego/align-repeat-colon
-        "xa;" 'diego/align-repeat-semicolon
-        "xa=" 'diego/align-repeat-equal
-        "xaa" 'align
-        "xac" 'align-current
-        "xam" 'diego/align-repeat-math-oper
-        "xar" 'diego/align-repeat
-        "xa|" 'diego/align-repeat-bar
-        "xa'" 'diego/align-repeat-single-quote
+	"xar" 'align-regexp
+	"xa&" 'diego/align-repeat-ampersand
+	"xa(" 'diego/align-repeat-left-paren
+	"xa)" 'diego/align-repeat-right-paren
+	"xa," 'diego/align-repeat-comma
+	"xa." 'diego/align-repeat-decimal
+	"xa:" 'diego/align-repeat-colon
+	"xa;" 'diego/align-repeat-semicolon
+	"xa=" 'diego/align-repeat-equal
+	"xaa" 'align
+	"xac" 'align-current
+	"xam" 'diego/align-repeat-math-oper
+	"xar" 'diego/align-repeat
+	"xa|" 'diego/align-repeat-bar
+	"xa'" 'diego/align-repeat-single-quote
 
-        "xU"  'evil-upcase
-        "xdw" 'delete-trailing-whitespace
-        "xi"  'indent-region
-        "xls" 'sort-lines
-        "xq"  'diego/fill-or-unfill
-        "xtc" 'transpose-chars
-        "xtl" 'transpose-lines
-        "xtw" 'transpose-words
-        "xu"  'evil-downcase
-        "xwd" 'define-word-at-point
-        "xwc" 'count-words
-
-        "xpr" 'sp-rewrap-sexp
-        "xpsf" 'sp-forward-slurp-sexp
-        "xpsb" 'sp-backward-slurp-sexp
-        "xpbb" 'sp-backward-barf-sexp
-        "xpbf" 'sp-forward-barf-sexp
-
-        "iu"  'counsel-unicode-char
-        "iy"  'yas-insert-snippet)
-
-
-      ;; Copy of spacemacs/comment-or-uncomment-lines-inverse
-      (defun diego/comment-or-uncomment-lines-inverse (&optional arg)
-        (interactive "p")
-        (let ((evilnc-invert-comment-line-by-line t))
-          (evilnc-comment-or-uncomment-lines arg)))
-
-      ;; Copy of spacemacs/align-repeat
-      (defun diego/align-repeat (start end regexp &optional justify-right after)
-        "Repeat alignment with respect to the given regular expression.
+	"xU"  'evil-upcase
+	"xdw" 'delete-trailing-whitespace
 	"xir" 'indent-region
 	"xib" 'indent-buffer
 	"xii" 'indent-rigidly
+	"xls" 'sort-lines
+	"xq"  'diego/fill-or-unfill
+	"xtc" 'transpose-chars
+	"xtl" 'transpose-lines
+	"xtw" 'transpose-words
+	"xu"  'evil-downcase
+	"xwd" 'define-word-at-point
+	"xwc" 'count-words
+
+	"xpr" 'sp-rewrap-sexp
+	"xpsf" 'sp-forward-slurp-sexp
+	"xpsb" 'sp-backward-slurp-sexp
+	"xpbb" 'sp-backward-barf-sexp
+	"xpbf" 'sp-forward-barf-sexp
+
+	"iu"  'counsel-unicode-char
+	"iy"  'yas-insert-snippet)
+
+
+  ;; Copy of spacemacs/comment-or-uncomment-lines-inverse
+  (defun diego/comment-or-uncomment-lines-inverse (&optional arg)
+	(interactive "p")
+	(let ((evilnc-invert-comment-line-by-line t))
+	  (evilnc-comment-or-uncomment-lines arg)))
+
+  ;; Copy of spacemacs/align-repeat
+  (defun diego/align-repeat (start end regexp &optional justify-right after)
+	"Repeat alignment with respect to the given regular expression.
   If JUSTIFY-RIGHT is non nil justify to the right instead of the
   left. If AFTER is non-nil, add whitespace to the left instead of
   the right."
-        (interactive "r\nsAlign regexp: ")
-        (let* ((ws-regexp (if (string-empty-p regexp)
-                              "\\(\\s-+\\)"
-                            "\\(\\s-*\\)"))
-               (complete-regexp (if after
-                                    (concat regexp ws-regexp)
-                                  (concat ws-regexp regexp)))
-               (group (if justify-right -1 1)))
-          (message "%S" complete-regexp)
-          (align-regexp start end complete-regexp group 1 t)))
+	(interactive "r\nsAlign regexp: ")
+	(let* ((ws-regexp (if (string-empty-p regexp)
+						  "\\(\\s-+\\)"
+						"\\(\\s-*\\)"))
+		   (complete-regexp (if after
+								(concat regexp ws-regexp)
+							  (concat ws-regexp regexp)))
+		   (group (if justify-right -1 1)))
+	  (message "%S" complete-regexp)
+	  (align-regexp start end complete-regexp group 1 t)))
 
 
-      (defmacro diego|create-align-repeat-x (name regexp &optional justify-right default-after)
-        (let ((new-func (intern (concat "diego/align-repeat-" name))))
-          `(defun ,new-func (start end switch)
-             (interactive "r\nP")
-             (let ((after (not (eq (if switch t nil) (if ,default-after t nil)))))
-               (diego/align-repeat start end ,regexp ,justify-right after)))))
+  (defmacro diego|create-align-repeat-x (name regexp &optional justify-right default-after)
+	(let ((new-func (intern (concat "diego/align-repeat-" name))))
+	  `(defun ,new-func (start end switch)
+		 (interactive "r\nP")
+		 (let ((after (not (eq (if switch t nil) (if ,default-after t nil)))))
+		   (diego/align-repeat start end ,regexp ,justify-right after)))))
 
-      (diego|create-align-repeat-x "comma" "," nil t)
-      (diego|create-align-repeat-x "semicolon" ";" nil t)
-      (diego|create-align-repeat-x "colon" ":" nil t)
-      (diego|create-align-repeat-x "equal" "=")
-      (diego|create-align-repeat-x "math-oper" "[+\\-*/]")
-      (diego|create-align-repeat-x "ampersand" "&")
-      (diego|create-align-repeat-x "bar" "|")
-      (diego|create-align-repeat-x "left-paren" "(")
-      (diego|create-align-repeat-x "right-paren" ")" t)
-      (diego|create-align-repeat-x "backslash" "\\\\")
-      (diego|create-align-repeat-x "single-quote" "'")
+  (diego|create-align-repeat-x "comma" "," nil t)
+  (diego|create-align-repeat-x "semicolon" ";" nil t)
+  (diego|create-align-repeat-x "colon" ":" nil t)
+  (diego|create-align-repeat-x "equal" "=")
+  (diego|create-align-repeat-x "math-oper" "[+\\-*/]")
+  (diego|create-align-repeat-x "ampersand" "&")
+  (diego|create-align-repeat-x "bar" "|")
+  (diego|create-align-repeat-x "left-paren" "(")
+  (diego|create-align-repeat-x "right-paren" ")" t)
+  (diego|create-align-repeat-x "backslash" "\\\\")
+  (diego|create-align-repeat-x "single-quote" "'")
 
-      (defun diego/align-repeat-decimal (start end)
-        "Align a table of numbers on decimal points and dollar signs (both optional)"
-        (interactive "r")
-        (require 'align)
-        (align-region start end nil
-                      '((nil (regexp . "\\([\t ]*\\)\\$?\\([\t ]+[0-9]+\\)\\.?")
-                             (repeat . t)
-                             (group 1 2)
-                             (spacing 1 1)
-                             (justify nil t)))
-                      nil)))
+  (defun diego/align-repeat-decimal (start end)
+	"Align a table of numbers on decimal points and dollar signs (both optional)"
+	(interactive "r")
+	(require 'align)
+	(align-region start end nil
+				  '((nil (regexp . "\\([\t ]*\\)\\$?\\([\t ]+[0-9]+\\)\\.?")
+						 (repeat . t)
+						 (group 1 2)
+						 (spacing 1 1)
+						 (justify nil t)))
+				  nil)))
 #+end_src
 **** Spelling
 #+begin_src emacs-lisp
@@ -1131,83 +1108,64 @@ based on or copied from spacemacs, so definitely check them out!
 ** [[https://github.com/abo-abo/swiper][ivy]]
 A really nice search/completion system for emacs.
 #+BEGIN_SRC emacs-lisp
-  (use-package ivy
-    :ensure t
-    :bind (("<f6>" . ivy-resume))
-    :config
-    (ivy-mode 1)
-    (define-key ivy-minibuffer-map [escape] 'minibuffer-keyboard-quit)
-    (define-key ivy-minibuffer-map [?\C-/] 'minibuffer-keyboard-quit)
-    (define-key ivy-minibuffer-map [escape] 'keyboard-escape-quit)
-    (define-key ivy-minibuffer-map (kbd "C-/") 'keyboard-escape-quit)
+(use-package ivy
+  :ensure t
+  :bind (("<f6>" . ivy-resume))
+  :config
+  (ivy-mode 1)
+  (define-key ivy-minibuffer-map [escape] 'minibuffer-keyboard-quit)
+  (define-key ivy-minibuffer-map [?\C-/] 'minibuffer-keyboard-quit)
+  (define-key ivy-minibuffer-map [escape] 'keyboard-escape-quit)
+  (define-key ivy-minibuffer-map (kbd "C-/") 'keyboard-escape-quit)
 
-    (setq ivy-format-function 'ivy-format-function-arrow) ; DAT NICE ARROW THOUGH aosenuth
-    (setq projectile-completion-system 'ivy)
-    (setq ivy-use-virtual-buffers t) ; Show recent files
-    (setq ivy-count-format "")
-    (setq ivy-extra-directories '("../")) ; ignore current folder... maybe shouldn't
-    (setq ivy-ignore-buffers
-          '("\\` "
-            "\\`\\*LV\\*"
-            "\\`\\*magit"
-            "\\`\\*epc"
-            "\\`\\*Calc"
-            "\\`\\*Colors"
-            "\\`\\*helm"
-            "\\`\\*Help"
-            "\\`\\*Packages"
-            "\\`\\*Customize"
-            "\\`\\*info"
-            "\\`\\*Compile"
-            "\\`\\*anaconda-mode"
-            "\\`\\*scratch"
-            "\\`\\*Messages"
-            "\\`todo.org"
-            "\\`notes.org"
-            "\\`archive.org"
-            "\\`\\*Man"
-            "\\`\\*Quail"))
+  (setq ivy-format-function 'ivy-format-function-arrow) ; DAT NICE ARROW THOUGH aosenuth
+  (setq projectile-completion-system 'ivy)
+  (setq ivy-use-virtual-buffers t) ; Show recent files
+  (setq ivy-count-format "")
+  (setq ivy-extra-directories '("../")) ; ignore current folder... maybe shouldn't
+  (setq ivy-ignore-buffers
+		'("\\` "
+		  "\\`\\*LV\\*"
+		  "\\`\\*magit"
+		  "\\`\\*epc"
+		  "\\`\\*Calc"
+		  "\\`\\*Colors"
+		  "\\`\\*helm"
+		  "\\`\\*Help"
+		  "\\`\\*Packages"
+		  "\\`\\*Customize"
+		  "\\`\\*info"
+		  "\\`\\*Compile"
+		  "\\`\\*anaconda-mode"
+		  "\\`\\*scratch"
+		  "\\`\\*Messages"
+		  "\\`todo.org"
+		  "\\`notes.org"
+		  "\\`archive.org"
+		  "\\`\\*Man"
+		  "\\`\\*Quail"))
 
-    ;; RET enters folder rather than opening dired
-    (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
-    (define-key ivy-minibuffer-map [S-return] #'ivy-dispatching-done)
-    (define-key ivy-minibuffer-map (kbd "<S-up>") #'ivy-previous-history-element)
-    (define-key ivy-minibuffer-map (kbd "<S-down>") #'ivy-next-history-element)
-    (define-key ivy-minibuffer-map [escape] #'minibuffer-keyboard-quit)
+  ;; RET enters folder rather than opening dired
+  (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
+  (define-key ivy-minibuffer-map [S-return] #'ivy-dispatching-done)
+  (define-key ivy-minibuffer-map (kbd "<S-up>") #'ivy-previous-history-element)
+  (define-key ivy-minibuffer-map (kbd "<S-down>") #'ivy-next-history-element)
+  (define-key ivy-minibuffer-map [escape] #'minibuffer-keyboard-quit)
 
-    ;; Use flx fuzzy matching except with ag and swiper
-    ;; (setq ivy-re-builders-alist
-    ;;       '((counsel-ag . ivy--regex-plus)
-    ;;         (counsel-descbinds . ivy--regex-plus)
-    ;;         (swiper . ivy--regex-plus)
-    ;;         (swiper-all . ivy--regex-plus)
-    ;;         (t . ivy--regex-fuzzy))
+  ;; Use flx fuzzy matching except with ag and swiper
+  ;; (setq ivy-re-builders-alist
+  ;;       '((counsel-ag . ivy--regex-plus)
+  ;;         (counsel-descbinds . ivy--regex-plus)
+  ;;         (swiper . ivy--regex-plus)
+  ;;         (swiper-all . ivy--regex-plus)
+  ;;         (t . ivy--regex-fuzzy))
 
-    ;;Don't start searches with '^' by default
-    (setq ivy-initial-inputs-alist '((man . "^")))
+  ;;Don't start searches with '^' by default
+  (setq ivy-initial-inputs-alist '((man . "^")))
 
-    (setq ivy-switch-buffer-faces-alist
-          '((dired-mode . ivy-subdir))))
+  (setq ivy-switch-buffer-faces-alist
+		'((dired-mode . ivy-subdir))))
 
-
-    (use-package counsel
-      :ensure t
-      :after ivy
-      :bind (("M-x" . counsel-M-x)
-             ("C-x C-f" . counsel-find-file))
-      :config
-      (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind)
-      (counsel-mode 1)
-      (defalias 'ag 'counsel-ag)
-      (defalias 'locate 'counsel-locate))
-
-    (use-package counsel-projectile
-      :commands (counsel-projectile-switch-project
-                 counsel-projectile-switch-to-buffer
-                 counsel-projectile-find-dir
-                 counsel-projectile-find-file
-                 counsel-projecile)
-      :ensure t)
 (use-package swiper
   :ensure t
   :after ivy
@@ -1216,11 +1174,29 @@ A really nice search/completion system for emacs.
   ;; (define-key evil-motion-state-map (kbd "/") 'swiper)
   )
 
-    (use-package counsel-osx-app
-      :commands counsel-osx-app
-      :ensure t)
-#+END_SRC
+(use-package counsel
+  :ensure t
+  :after ivy
+  :bind (("M-x" . counsel-M-x)
+		 ("C-x C-f" . counsel-find-file))
+  :config
+  (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind)
+  (counsel-mode 1)
+  (defalias 'ag 'counsel-ag)
+  (defalias 'locate 'counsel-locate))
 
+(use-package counsel-projectile
+  :commands (counsel-projectile-switch-project
+			 counsel-projectile-switch-to-buffer
+			 counsel-projectile-find-dir
+			 counsel-projectile-find-file
+			 counsel-projecile)
+  :ensure t)
+
+(use-package counsel-osx-app
+  :commands counsel-osx-app
+  :ensure t)
+#+END_SRC
 ** [[http://orgmode.org/][org-mode]]
 Org mode is for keeping notes, maintaining TODO lists, planning projects, and
 authoring documents with a fast and effective plain-text system.
@@ -1666,52 +1642,52 @@ so I went with it.
 ** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 Emacs package that displays available keybindings in popup
 #+begin_src emacs-lisp
-  (use-package which-key
-	:ensure t
-	:config
-	(which-key-mode)
-	(setq which-key-show-operator-state-maps t)
-	(which-key-add-key-based-replacements
-      "SPC a"   "applications"
-      "SPC ao"  "org"
-      "SPC ag"  "games"
-      "SPC b"   "buffer"
-      "SPC c"   "comment"
-      "SPC f"   "file"
-      "SPC fe"  "emacs/config"
-      "SPC g"   "magit"
-      "SPC h"   "help"
-      "SPC hd"  "describe"
-      "SPC i"   "insert"
-      "SPC j"   "jump"
-      "SPC m"   "major-mode-cmd"
-      "SPC n"   "narrow"
-      "SPC p"   "project"
-      "SPC q"   "quit"
-      "SPC s"   "search"
-      "SPC t"   "toggle"
-      "SPC w"   "window"
-      "SPC x"   "text"
-      "SPC xa"  "align"
-      "SPC xd"  "delete"
-      "SPC xl"  "lines"
-      "SPC xt"  "transpose"
-      "SPC xw"  "words"
-      "SPC S"   "spelling"
-      "SPC"     "root")
-
-	(which-key-add-major-mode-key-based-replacements 'org-mode
-      "SPC mi" "insert"
-      "SPC mx" "text"
-      "SPC mt" "table")
-
-	(dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
-      (which-key-add-major-mode-key-based-replacements mode
-		"SPC me" "eval"))
-
-	(setq which-key-sort-order 'which-key-key-order-alpha)
-	(setq which-key-sort-uppercase-first nil))
+(use-package which-key
+  :ensure t
+  :config
+  (which-key-mode)
+  (setq which-key-show-operator-state-maps t)
+  (which-key-add-key-based-replacements
+	"SPC a"   "applications"
+	"SPC ao"  "org"
+	"SPC ag"  "games"
+	"SPC b"   "buffer"
+	"SPC c"   "comment"
+	"SPC f"   "file"
+	"SPC fe"  "emacs/config"
+	"SPC g"   "magit"
+	"SPC h"   "help"
+	"SPC hd"  "describe"
+	"SPC i"   "insert"
+	"SPC j"   "jump"
+	"SPC m"   "major-mode-cmd"
+	"SPC n"   "narrow"
+	"SPC p"   "project"
+	"SPC q"   "quit"
+	"SPC s"   "search"
+	"SPC t"   "toggle"
+	"SPC w"   "window"
+	"SPC x"   "text"
 	"SPC xi"  "indent"
+	"SPC xa"  "align"
+	"SPC xd"  "delete"
+	"SPC xl"  "lines"
+	"SPC xt"  "transpose"
+	"SPC xw"  "words"
+	"SPC S"   "spelling"
+	"SPC"     "root")
+
+  (which-key-add-major-mode-key-based-replacements 'org-mode
+	"SPC mi" "insert"
+	"SPC mx" "text"
+	"SPC mt" "table")
+
+  (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
+	(which-key-add-major-mode-key-based-replacements mode
+	  "SPC me" "eval"))
+
+  (setq which-key-sort-order 'which-key-key-order-alpha)
+  (setq which-key-sort-uppercase-first nil))
 #+end_src
 * Dem packages
 ** Amusements
@@ -2756,6 +2732,12 @@ Export org to twitter bootstrap compatible HTML.
   (use-package anaconda-mode
     :ensure t)
 #+end_src
+*** [[https://github.com/clojure-emacs/clojure-mode][clojure-mode]]
+#+begin_src emacs-lisp
+  (use-package clojure-mode
+    :ensure t
+    :defer 5)
+#+end_src
 *** [[https://github.com/defunkt/coffee-mode][coffee-mode]]
 #+begin_src emacs-lisp
   (use-package coffee-mode
@@ -2951,7 +2933,7 @@ complete, IMO.
 
 #+END_SRC
 
-*** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]] 
+*** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]]
 #+begin_src emacs-lisp
 (use-package vimrc-mode
   :ensure t)
@@ -2991,12 +2973,6 @@ Freakin yasnippet. It's the best.
     )
 #+END_SRC
 
-*** [[https://github.com/clojure-emacs/clojure-mode][clojure-mode]]
-#+begin_src emacs-lisp
-  (use-package clojure-mode
-    :ensure t
-    :defer 5)
-#+end_src
 ** Reference/search
 *** [[https://github.com/abo-abo/define-word][define-word]]
 #+BEGIN_SRC emacs-lisp
