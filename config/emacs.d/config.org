@@ -1946,7 +1946,8 @@ Edit text area on Chrome with Emacs using Atomic Chrome
   (use-package atomic-chrome
 	:ensure t
 	:config
-	(atomic-chrome-start-server))
+	(atomic-chrome-start-server)
+  (setq atomic-chrome-buffer-open-style 'frame))
 #+end_src
 *** [[http://savannah.nongnu.org/projects/bbdb/][bbdb]]
 #+begin_src emacs-lisp
