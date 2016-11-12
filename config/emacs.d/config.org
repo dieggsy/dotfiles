@@ -2961,6 +2961,11 @@ pretty good but had some known issues.
       (local-set-key [C-tab] 'yafolding-toggle-element)))
 #+END_SRC
 
+*** [[https://github.com/JorisE/yapfify][yapfify]] 
+#+begin_src emacs-lisp
+(use-package yapfify
+  :ensure t)
+#+end_src
 *** [[https://github.com/joaotavora/yasnippet][yasnippet]]
 Freakin yasnippet. It's the best.
 #+BEGIN_SRC emacs-lisp
