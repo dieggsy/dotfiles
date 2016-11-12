@@ -602,10 +602,11 @@ based on or copied from spacemacs, so definitely check them out!
   (defun diego/leader-search ()
   (evil-leader/set-key
 
-    "sa" 'counsel-ag
-    "ss" 'swiper-all
-    "sm" 'swiper-multi
-    "/"  'evil-ex-search-forward))
+	"sa" 'counsel-ag
+	"ss" 'swiper-all
+	"sm" 'swiper-multi
+	;; "/"  'evil-ex-search-forward
+	"/"  'swiper))
 #+end_src
 **** Projects
 #+begin_src emacs-lisp
@@ -1185,12 +1186,6 @@ A really nice search/completion system for emacs.
     (setq ivy-switch-buffer-faces-alist
           '((dired-mode . ivy-subdir))))
 
-    (use-package swiper
-      :ensure t
-      :after ivy
-      :config
-      (define-key evil-normal-state-map (kbd "/") 'swiper)
-      (define-key evil-motion-state-map (kbd "/") 'swiper))
 
     (use-package counsel
       :ensure t
@@ -1210,6 +1205,13 @@ A really nice search/completion system for emacs.
                  counsel-projectile-find-file
                  counsel-projecile)
       :ensure t)
+(use-package swiper
+  :ensure t
+  :after ivy
+  :config
+  ;; (define-key evil-normal-state-map (kbd "/") 'swiper)
+  ;; (define-key evil-motion-state-map (kbd "/") 'swiper)
+  )
 
     (use-package counsel-osx-app
       :commands counsel-osx-app
