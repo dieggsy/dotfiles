@@ -2950,6 +2950,11 @@ complete, IMO.
 
 #+END_SRC
 
+*** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]] 
+#+begin_src emacs-lisp
+(use-package vimrc-mode
+  :ensure t)
+#+end_src
 *** [[https://github.com/zenozeng/yafolding.el][yafolding]]
 Good code folding is hard to come by in Emacs, and isn't /that/ useful. This was
 pretty good but had some known issues.
