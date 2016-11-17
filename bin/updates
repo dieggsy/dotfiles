@@ -1,7 +1,7 @@
 #!/usr/local/bin/bash
 VE=`echo $VIRTUAL_ENV`
 if [ -z $VE ]; then
-	echo -e "\e[1;34mUpdating: \e[91mpip2\e[0;37m"
+	echo -e "\e[1;34mUpdating: \e[91mpip2\e[0;97m"
 	IFS=$'\n'
 	echo  $'Getting outdated pip2 packages...'
 	res=$(pip2 list -o --format=legacy)
@@ -17,7 +17,7 @@ if [ -z $VE ]; then
 			pip2 install --upgrade ${prog%\(*}
 		done
 	fi
-	echo -e "\n\e[1;34mUpdating: \e[91mpip3\e[0;37m"
+	echo -e "\n\e[1;34mUpdating: \e[91mpip3\e[0;97m"
 	IFS=$'\n'
 	echo  $'Getting outdated pip3 packages...'
 	res=$(pip3 list -o --format=legacy)
@@ -33,7 +33,7 @@ if [ -z $VE ]; then
 			pip3 install --upgrade ${prog%\(*}
 		done
 	fi
-	echo -e "\n\e[1;34mUpdating: \e[91mHomebrew\e[0;37m"
+	echo -e "\n\e[1;34mUpdating: \e[91mHomebrew\e[0;97m"
 	brew update
 	brew upgrade
 	brew cleanup
