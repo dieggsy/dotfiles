@@ -23,7 +23,6 @@ Setup load directories, mostly.
 #+begin_src emacs-lisp
 (server-start)
 (require 'package)
-(setq package-enable-at-startup nil)
 (add-to-list 'load-path
 			 (expand-file-name "lisp" user-emacs-directory))
 
@@ -99,14 +98,6 @@ Setup load directories, mostly.
 		  (rename-file filename new-name 1))
 		(rename-buffer new-name)
 		(set-visited-file-name new-name)))))
-
-(defun browse-current-file ()
-  "Open the current file as a URL using `browse-url'."
-  (interactive)
-  (let ((file-name (buffer-file-name)))
-	(if (tramp-tramp-file-p file-name)
-		(error "Cannot open tramp file")
-	  (browse-url (concat "file://" file-name)))))
 #+end_src
 
 ** Package setup
@@ -123,11 +114,11 @@ Set package archives/repos and setup use-package and all that.
 	(setq load-path (remove package-el-site-lisp-dir load-path))))
 
   ;;; Standard package repositories
-(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("org"          . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives '("melpa"        . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
-(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("elpy" . "https://jorgenschaefer.github.io/packages/"))
+(add-to-list 'package-archives '("marmalade"    . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("elpy"         . "https://jorgenschaefer.github.io/packages/"))
 
 ;; If gpg cannot be found, signature checking will fail, so we
 ;; conditionally enable it according to whether gpg is available. We
@@ -190,7 +181,6 @@ Get rid of menu bars, scroll bars, startup screens, etc.
 (setq inhibit-splash-screen t
 	  inhibit-startup-message t
 	  inhibit-startup-echo-area-message t)
-;; (fringe-mode 0)
 (menu-bar-mode 0)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -231,6 +221,7 @@ consistent with other fonts. Last updated 2011, last successfully tested
 
 ;; (add-to-list 'default-frame-alist '(font . "SauceCodePro Nerd Font-11"))
 ;; (set-face-attribute 'default t :font "SauceCodePro Nerd Font-11")
+
 (defun font-exists-p (font)
   "check if font exists"
   (if (null (x-list-fonts font))
@@ -249,7 +240,6 @@ consistent with other fonts. Last updated 2011, last successfully tested
 (add-hook 'minibuffer-setup-hook (lambda () (setq-local cursor-type '(bar . 1))))
 (setq enable-recursive-minibuffers t)
 (savehist-mode 1)
-;; (add-hook 'minibuffer-setup-hook (lambda () (show-paren-mode -1)))
 #+end_src
 ** Scratch buffer
 #+begin_src emacs-lisp
@@ -280,7 +270,6 @@ Handling/storing of files, backups, autosaves.
 (global-auto-revert-mode t)
 (save-place-mode 1)
 (desktop-save-mode 1)
-;; (set-frame-parameter (selected-frame) 'buffer-predicate #'buffer-file-name)
 
 ;; ssh
 (setq tramp-default-method "ssh")
@@ -593,7 +582,6 @@ based on or copied from spacemacs, so definitely check them out!
 	"sa" 'counsel-ag
 	"ss" 'swiper-all
 	"sm" 'swiper-multi
-	;; "/"  'evil-ex-search-forward
 	"/"  'swiper))
 #+end_src
 **** Projects
