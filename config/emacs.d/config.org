@@ -809,10 +809,10 @@ based on or copied from spacemacs, so definitely check them out!
 	"xwc" 'count-words
 
 	"xpr" 'sp-rewrap-sexp
-	"xpsf" 'sp-forward-slurp-sexp
-	"xpsb" 'sp-backward-slurp-sexp
-	"xpbb" 'sp-backward-barf-sexp
-	"xpbf" 'sp-forward-barf-sexp
+	"xps" 'sp-forward-slurp-sexp
+	"xpS" 'sp-backward-slurp-sexp
+	"xpb" 'sp-backward-barf-sexp
+	"xpB" 'sp-forward-barf-sexp
 
 	"iu"  'counsel-unicode-char
 	"iy"  'yas-insert-snippet)
