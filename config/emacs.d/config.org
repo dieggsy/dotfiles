@@ -435,6 +435,7 @@ Handling/storing of files, backups, autosaves.
 (global-set-key [remap fill-paragraph] #'diego/fill-or-unfill)
 
 (defun diego/flyspell-add-to-dictionary ()
+  "Add word at point to flyspell dictionary at `/Users/diego/.ispell_english'"
   (interactive)
   (let ((current-location (point))
 		(word (flyspell-get-word)))
@@ -630,10 +631,13 @@ based on or copied from spacemacs, so definitely check them out!
 	"ws" 'ace-swap-window)
 
   (defun diego/split-vert-focus ()
+	"Split window vertically and move focus to other window."
 	(interactive)
 	(split-window-right)
 	(other-window 1))
+
   (defun diego/split-horz-focus ()
+	"Split window horizontally and move focus to other window."
 	(interactive)
 	(split-window-below)
 	(other-window 1)))
