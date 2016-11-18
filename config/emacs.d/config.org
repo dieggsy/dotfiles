@@ -1211,14 +1211,14 @@ didn't find a satisfactory solution for a while. Check out this [[http://sachach
 some advice on that (still relevant now-2016). In particular, make sure you
 have something like:
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (package-initialize)
   (setq package-enable-at-startup nil)
 #+end_src
 
 at the beginning of your init.el/emacs.d, or as in my case something like:
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
   (package-initialize nil)
   (setq package-enable-at-startup nil)
   ;; ---------------------------
