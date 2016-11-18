@@ -9,18 +9,18 @@ lot of the inspiration (and erm, code) for this is taken from them.
 
 * Personal Info
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (setq user-full-name "Diego A. Mundo"
 	  user-mail-address "diegoamundo@gmail.com"
 	  calendar-location-name "Cambridge, MA")
-#+END_SRC
+#+end_src
 
 * Init Setup
 Setup up cool stuff like use-package, and stuff.
 
 ** Misc init
 Setup load directories, mostly.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (server-start)
 (require 'package)
 (setq package-enable-at-startup nil)
@@ -31,10 +31,10 @@ Setup load directories, mostly.
   (normal-top-level-add-subdirs-to-load-path))
 (add-to-list 'exec-path "/usr/local/bin")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/")
-#+END_SRC
+#+end_src
 
 ** Init utils
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;;; init-utils.el --- Utilities borrowed from Steve Purcell
   ;;; Commentary:
   ;;; Code:
@@ -107,11 +107,11 @@ Setup load directories, mostly.
 	(if (tramp-tramp-file-p file-name)
 		(error "Cannot open tramp file")
 	  (browse-url (concat "file://" file-name)))))
-#+END_SRC
+#+end_src
 
 ** Package setup
 Set package archives/repos and setup use-package and all that.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
   ;;; Find and load the correct package.el
 
 ;; When switching between Emacs 23 and 24, we always use the bundled package.el in Emacs 24
@@ -175,7 +175,7 @@ Set package archives/repos and setup use-package and all that.
 
 (eval-when-compile
   (require 'use-package))
-#+END_SRC
+#+end_src
 
 * Global settings and stuff
 Some nice global settings to have. Does away with most uneccessary visuals to
@@ -186,7 +186,7 @@ Also, stolen and original functions, and macros.
 
 ** Visual things
 Get rid of menu bars, scroll bars, startup screens, etc.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (setq inhibit-splash-screen t
 	  inhibit-startup-message t
 	  inhibit-startup-echo-area-message t)
@@ -203,7 +203,7 @@ Get rid of menu bars, scroll bars, startup screens, etc.
 (blink-cursor-mode 0)
 ;; (require 'zone)
 ;; (zone-when-idle 10)
-#+END_SRC
+#+end_src
 ** Font/Text
 *Current:* Currently I'm using the wonderful [[http://input.fontbureau.com/][Input]] font. If, like me, you're
 coming from something more like SauceCodePro, Consolas, or even just Menlo,
@@ -225,7 +225,7 @@ that you should really give it a try. My current settings are:
 on os x. This helps with the modeline text vertical alignments and makes it
 consistent with other fonts. Last updated 2011, last successfully tested
 09/2016 (by myself).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 ;; (add-to-list 'default-frame-alist '(font . "Consolas-11"))
 ;; (set-face-attribute 'default t :font "Consolas-11")
 
@@ -243,14 +243,14 @@ consistent with other fonts. Last updated 2011, last successfully tested
 (setq default-input-method "TeX")
 
 (setq sentence-end-double-space nil)
-#+END_SRC
+#+end_src
 ** Minibuffer
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (add-hook 'minibuffer-setup-hook (lambda () (setq-local cursor-type '(bar . 1))))
 (setq enable-recursive-minibuffers t)
 (savehist-mode 1)
 ;; (add-hook 'minibuffer-setup-hook (lambda () (show-paren-mode -1)))
-#+END_SRC
+#+end_src
 ** Scratch buffer
 #+begin_src emacs-lisp
 (setq initial-major-mode 'org-mode)
@@ -272,7 +272,7 @@ consistent with other fonts. Last updated 2011, last successfully tested
 #+end_src
 ** File handling
 Handling/storing of files, backups, autosaves.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (defvar backup-dir "~/.emacsbackups/")
 (setq backup-directory-alist (list (cons "." backup-dir)))
 (setq auto-save-file-name-transforms
@@ -285,9 +285,9 @@ Handling/storing of files, backups, autosaves.
 ;; ssh
 (setq tramp-default-method "ssh")
 (setq password-cache-expiry nil)
-#+END_SRC
+#+end_src
 ** Smooth scroll
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 ;; Arrow key/jk scroll
 (setq scroll-step 1
 	  scroll-conservatively 10000)
@@ -295,26 +295,26 @@ Handling/storing of files, backups, autosaves.
 ;; Mouse scroll
 (setq mouse-wheel-scroll-amount '(2 ((shift) . 1) ((control) . nil)))
 (setq mouse-wheel-progressive-speed nil)
-#+END_SRC
+#+end_src
 ** Tabs/completion?
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (setq-default tab-width 4)
 (setq tab-stop-list (number-sequence 4 200 4))
 (setq completion-cycle-threshold t)
 
-#+END_SRC
+#+end_src
 ** <⌘-enter> for fullscreen
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
-#+END_SRC
+#+end_src
 ** Line position/highlighting
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (setq linum-delay t)
 (setq column-number-mode t)
-#+END_SRC
+#+end_src
 ** Global functions
 *** "Stolen"
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (defun occur-last-search ()
   "Run `occur` with the last evil search term."
   (interactive)
@@ -450,9 +450,9 @@ Handling/storing of files, backups, autosaves.
 (defun indent-buffer ()
   (interactive)
   (indent-region (point-min) (point-max) nil))
-#+END_SRC
+#+end_src
 *** "Original"
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (defun diego/config ()
   "Open ~/dotfiles/config/emacs.d/config.org"
   (interactive)
@@ -531,7 +531,7 @@ Handling/storing of files, backups, autosaves.
 			  (if (eq cursor-type nil)
 				  t
 				nil)))
-#+END_SRC
+#+end_src
 *** Macros?
 #+begin_src emacs-lisp
 (defmacro diego|create-block-wrap (blocktype)
@@ -952,7 +952,7 @@ based on or copied from spacemacs, so definitely check them out!
 	"qf" 'delete-frame))
 #+end_src
 **** Modes
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (defun diego/leader-modes ()
   (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
 	(evil-leader/set-key-for-mode mode
@@ -973,9 +973,9 @@ based on or copied from spacemacs, so definitely check them out!
 	(interactive)
 	(evil-visual-line)
 	(eval-region (region-beginning) (region-end))))
-#+END_SRC
+#+end_src
 **** Global
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (defun diego/config-evil-leader ()
   "Configure evil leader mode."
   (evil-leader/set-leader "SPC")
@@ -1010,9 +1010,9 @@ based on or copied from spacemacs, so definitely check them out!
 	(if (and (boundp 'magit-blame-mode) magit-blame-mode)
 		(magit-blame-quit)
 	  (call-interactively 'magit-blame))))
-#+END_SRC
+#+end_src
 *** Modes
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (defun diego/evil-modes ()
   "Configure evil mode."
 
@@ -1052,9 +1052,9 @@ based on or copied from spacemacs, so definitely check them out!
 	  t))
 
   (advice-add 'evil-visual-line :before-while #'evil-visual-line--mark-org-element-when-heading))
-#+END_SRC
+#+end_src
 *** Appearance
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (defun diego/evil-appearance ()
   (setq evil-insert-state-cursor '(bar . 1))
   (setq evil-emacs-state-cursor '(bar . 1))
@@ -1064,9 +1064,9 @@ based on or copied from spacemacs, so definitely check them out!
   (setq evil-visual-state-tag " VISUAL ")
   (setq evil-emacs-state-tag  " EMACS ")
   (setq evil-replace-state-tag " REPLACE "))
-#+END_SRC
+#+end_src
 *** Bindings
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 ;; Global bindings.
 (defun diego/evil-bindings ()
 
@@ -1120,9 +1120,9 @@ based on or copied from spacemacs, so definitely check them out!
 
   (define-key minibuffer-local-isearch-map [escape] #'minibuffer-keyboard-quit)
   (define-key minibuffer-local-isearch-map [?\C-/] #'minibuffer-keyboard-quit))
-#+END_SRC
+#+end_src
 *** Final Setup
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package evil
   :ensure t
   :init
@@ -1151,11 +1151,11 @@ based on or copied from spacemacs, so definitely check them out!
   :ensure t
   :after evil)
 (evil-mode 1)
-#+END_SRC
+#+end_src
 
 ** [[https://github.com/abo-abo/swiper][ivy]]
 A really nice search/completion system for emacs.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package ivy
   :ensure t
   :bind (("<f6>" . ivy-resume))
@@ -1245,7 +1245,7 @@ A really nice search/completion system for emacs.
 (use-package counsel-osx-app
   :commands counsel-osx-app
   :ensure t)
-#+END_SRC
+#+end_src
 ** [[http://orgmode.org/][org-mode]]
 Org mode is for keeping notes, maintaining TODO lists, planning projects, and
 authoring documents with a fast and effective plain-text system.
@@ -1277,7 +1277,7 @@ I actually don't think I tried the former option, but the latter simply worked
 so I went with it.
 
 *** Helper functions
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (defun diego/org-global-custom-ids ()
   "Find custom ID fields in all org agenda files."
   (let ((files (org-agenda-files))
@@ -1440,7 +1440,7 @@ so I went with it.
 				nil)))
 	(diego/org-swap-tags new)))
 
-#+END_SRC
+#+end_src
 *** Bindings
 #+begin_src emacs-lisp
 (defun diego/org-bindings ()
@@ -1607,7 +1607,7 @@ so I went with it.
   (add-to-list 'org-latex-packages-alist '("" "tabularx")))
 #+end_src
 *** Setup
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package org
   :ensure org-plus-contrib
   :commands (org-capture)
@@ -1690,7 +1690,7 @@ so I went with it.
 			  (auto-fill-mode 1)
 			  ;; (flyspell-mode)
 			  (org-indent-mode))))
-#+END_SRC
+#+end_src
 ** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 Emacs package that displays available keybindings in popup
 #+begin_src emacs-lisp
@@ -1746,61 +1746,61 @@ Emacs package that displays available keybindings in popup
 ** Amusements
 *** [[https://github.com/josuah/drawille][drawille]]
 Drawille library implementation in elisp. Draws images/stuff in ascii.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package drawille
   :defer 5
   :ensure t)
-#+END_SRC
+#+end_src
 *** [[https://github.com/johanvts/emacs-fireplace/][fireplace]]
 A cozy fireplace for emacs. For the cold winters.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package fireplace
   :commands fireplace
   :ensure t)
-#+END_SRC
+#+end_src
 *** [[https://melpa.org/#/highlight-tail][highlight-tail]]
 Draw a colourful "tail" while you write (A.k.a. pure awesome)
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package highlight-tail
   :commands highlight-tail-mode
   :ensure t)
-#+END_SRC
+#+end_src
 *** [[https://github.com/TeMPOraL/nyan-mode][nyan-mode]]
 Nyan Cat for Emacs! Nyanyanyanyanyanyanyanyanyan!
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (use-package nyan-mode
   :ensure t
   :commands nyan-mode
   :config
   (nyan-mode))
-#+END_SRC
+#+end_src
 *** [[https://github.com/rbanffy/selectric-mode][selectric-mode]]
 Make your Emacs sound like a proper typewriter.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package selectric-mode
   :commands selectric-mode
   :ensure t)
-#+END_SRC
+#+end_src
 *** [[https://github.com/hagleitn/speed-type][speed-type]]
 Practice touch/speed typing in emacs.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package speed-type
   :ensure t
   :commands speed-type-text
   :config
   (setq speed-type--gb-url-format
 		"http://www.gutenberg.org/cache/epub/%d/pg%d.txt"))
-#+END_SRC
+#+end_src
 *** [[https://gitlab.com/iankelling/spray][spray]]
 A speed reading mode for Emacs.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package spray
   :commands spray-mode
   :ensure t)
-#+END_SRC
+#+end_src
 *** [[https://github.com/vibhavp/emacs-xkcd][xkcd]]
 Read xkcd from Emacs.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package xkcd
   :ensure t
   :commands xkcd
@@ -1812,11 +1812,11 @@ Read xkcd from Emacs.
 	"l" 'xkcd-next
 	"t" 'xkcd-alt-text
 	"q" 'xkcd-kill-buffer))
-#+END_SRC
+#+end_src
 
 *** zone-matrix
 Eh, why not.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package zone-matrix
   :ensure t
   :defer 5
@@ -1825,11 +1825,11 @@ Eh, why not.
 	'(unless (memq 'zone-matrix (append zone-programs nil))
 	   (setq zone-programs
 			 (vconcat zone-programs [zone-matrix])))))
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/wasamasa/zone-nyan][zone-nyan]]
 Nyanyanyanyanyanyanyanyan (but actually).
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package zone-nyan
   :ensure t
   :after 'zone
@@ -1839,15 +1839,15 @@ Nyanyanyanyanyanyanyanyan (but actually).
 	'(unless (memq 'zone-nyan (append zone-programs nil))
 	   (setq zone-programs
 			 (vconcat zone-programs [zone-nyan])))))
-#+END_SRC
+#+end_src
 ** Appearance
 *** [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
 A utility package to collect various Icon Fonts and propertize them within Emacs.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package all-the-icons
   :defer 5
   :ensure t)
-#+END_SRC
+#+end_src
 *** [[http://git.savannah.gnu.org/cgit/emacs/elpa.git/tree/packages/rainbow-mode/rainbow-mode.el][rainbow-mode]]
 #+begin_src emacs-lisp
 (use-package rainbow-mode
@@ -1863,13 +1863,13 @@ An Emacs 24 theme remixed from gruvbox (my fork).
 *** diego-theme
 A (kind of nasty?) theme I used for a while, inspired by atom-one
 and. Ignorance?
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (use-package diego-theme
   :load-path "lisp/")
-#+END_SRC
+#+end_src
 *** [[https://github.com/hlissner/emacs-doom-theme][doom-theme]]
 Emacs themes inspired by Atom One. Quite nice I might add, if a little intense.
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (use-package doom-themes
   :ensure t
   :config
@@ -1900,17 +1900,17 @@ Emacs themes inspired by Atom One. Quite nice I might add, if a little intense.
    '(bold ((t (:weight bold))))
    '(italic ((t (:slant italic))))
    '(org-link ((t (:underline t :foreground "#66D9EF"))))))
-#+END_SRC
+#+end_src
 *** [[https://github.com/iqbalansari/emacs-emojify][emacs-emojify]]
 Display emojis in emacs. Sweet!
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package emojify
   :defer 5
   :ensure t)
-#+END_SRC
+#+end_src
 *** [[https://github.com/lunaryorn/fancy-battery.el][fancy-battery]]
 Display battery in Emacs Mode line
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package fancy-battery
   ;; Something something battery
   :ensure t
@@ -1918,10 +1918,10 @@ Display battery in Emacs Mode line
   (fancy-battery-mode)
   (setq fancy-battery-show-percentage t)
   (fancy-battery-update))
-#+END_SRC
+#+end_src
 *** [[https://github.com/bbatsov/zenburn-emacs][zenburn-theme]]
 The Zenburn colour theme ported to Emacs
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (use-package zenburn-theme
   :ensure t
   :config
@@ -1929,13 +1929,13 @@ The Zenburn colour theme ported to Emacs
    (custom-theme-set-faces
 	'zenburn
 	'(ivy-current-match ((t nil))))))
-#+END_SRC
+#+end_src
 *** [[https://github.com/TheBB/spaceline][spaceline]]
 Powerline theme from Spacemacs
 
 I was looking for something with the nice look and simplicity of
 [[https://github.com/itchyny/lightline.vim][this]]. Spaceline does ok.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package spaceline
   ;; Similar to vim's powerline, this one looks clean
   ;; and 'just works', to an extent
@@ -1967,7 +1967,7 @@ I was looking for something with the nice look and simplicity of
 
   (setq powerline-default-separator nil)
   (spaceline-compile))
-#+END_SRC
+#+end_src
 ** Misc utilities
 *** [[https://github.com/alpha22jp/atomic-chrome][atomic-chrome]]
 Edit text area on Chrome with Emacs using Atomic Chrome
@@ -2015,14 +2015,14 @@ Cursor stays vertically centered. I use this for reading, mostly.
 *** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
 Eh, wanted to try a simpler way of editing csv files. (Excel and Numbers both
 kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package csv-mode
   ;; I'll give this a shot
   :defer 5
   :ensure t
   :config
   (add-hook 'csv-mode-hook 'csv-align-fields))
-#+END_SRC
+#+end_src
 *** [[https://github.com/skeeto/elfeed][elfeed]]
 Configure the Elfeed RSS reader with an Orgmode file
 #+begin_src emacs-lisp
@@ -2077,13 +2077,13 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+end_src
 *** [[https://github.com/lewang/flx][flx]]
 Fuzzy matching for Emacs ... a la Sublime Text.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package flx
   :ensure t)
-#+END_SRC
+#+end_src
 *** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
 Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted/flyspell-correct][d12frosted/flyspell-correct]]
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package flyspell
   :commands flyspell-mode
   :ensure t
@@ -2096,18 +2096,18 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 (use-package flyspell-correct-ivy
   :after flyspell
   :ensure t)
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/larstvei/Focus][focus]]
 Dim the font color of text in surrounding paragraphs
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package focus
   :commands focus-mode
   :ensure t)
-#+END_SRC
+#+end_src
 *** [[https://www.emacswiki.org/emacs/KeyChord][keychord]]
 Neat way to bind commands to key-stroke combinations
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package key-chord
   :ensure t
   :defer 5
@@ -2115,10 +2115,10 @@ Neat way to bind commands to key-stroke combinations
   ;; (setq key-chord-two-keys-delay .05)
   (key-chord-mode 1)
   (key-chord-define evil-insert-state-map "uu" 'evil-normal-state))
-#+END_SRC
+#+end_src
 *** [[https://github.com/magit/magit][magit]]
 Like git, for emacs. But cooler.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package magit
   :ensure t
   :commands magit-status
@@ -2128,45 +2128,45 @@ Like git, for emacs. But cooler.
 (use-package evil-magit
   :after magit
   :ensure t)
-#+END_SRC
+#+end_src
 *** [[https://github.com/defunkt/markdown-mode][markdown-mode]]
 Syntax highlighting for markdown files.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package markdown-mode
   :ensure t
   :defer 5
   :config)
-#+END_SRC
+#+end_src
 *** [[https://github.com/ancane/markdown-preview-mode][markdown-preview-mode]]
 Minor mode to preview markdown output as you save
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package markdown-preview-mode
   :defer 5
   :ensure t)
-#+END_SRC
+#+end_src
 *** [[https://github.com/emacsfodder/move-text][move-text]]
 Move current line or region up or down
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package move-text
   :defer 5
   :ensure t)
-#+END_SRC
+#+end_src
 *** [[https://github.com/tjim/nevermore][nevermore]]
 Emacs mail reader based on Notmuch
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package nm
   :ensure t
   :commands nm)
-#+END_SRC
+#+end_src
 *** [[https://www.emacswiki.org/emacs/NotMuch][NotMuch]]
 Email!
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package notmuch
   :commands notmuch
   :ensure t
   :config
   (setq notmuch-search-oldest-first nil))
-#+END_SRC
+#+end_src
 *** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
 Make Emacs' delete-by-moving-to-trash do what you expect it to do on OS X.
 #+begin_src emacs-lisp
@@ -2196,20 +2196,20 @@ statistics, customizability, and more.
 *** [[https://github.com/emacsfodder/pbcopy.el][pbcopy]]
 Allow yanking and pasting with osx clipboard in terminal Emacs. Might want to
 look into [[https://melpa.org/#/osx-clipboard][osx-clipboard]] instead.
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (use-package pbcopy
   :config
   (turn-on-pbcopy))
-#+END_SRC
+#+end_src
 *** [[https://github.com/iqbalansari/restart-emacs][restart-emacs]]
 A simple emacs package to restart emacs from within emacs.
 
 SUPER nifty.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package restart-emacs
   :defer 5
   :ensure t)
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/Fuco1/smartparens][smartparens]]
 Minor mode for Emacs that deals with parens pairs and tries to be smart about it.
@@ -2225,23 +2225,23 @@ Minor mode for Emacs that deals with parens pairs and tries to be smart about it
 A smart M-x enhancement for Emacs.
 
 In terms of ivy, sorts by most recently used, I think.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package smex
   :ensure t)
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/aaronbieber/sunshine.el][sunshine]]
 An Emacs package for displaying the forecast from OpenWeatherMap.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package sunshine
   :ensure t
   :commands (sunshine-forecast sunshine-quick-forecast)
   :config
   (setq sunshine-location "02139,USA"))
-#+END_SRC
+#+end_src
 *** [[https://github.com/aaronbieber/tiny-menu.el][tiny-menu]]
 Run commands via a tiny menu.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package tiny-menu
   :commands (tiny-menu tiny-menu-run-item)
   :ensure t
@@ -2267,10 +2267,10 @@ Run commands via a tiny menu.
   (evil-define-key 'normal global-map (kbd "\\ t") (tiny-menu-run-item "org-things"))
   (evil-define-key 'normal global-map (kbd "\\ c") (tiny-menu-run-item "org-captures"))
   (evil-define-key 'normal global-map (kbd "\\ l") (tiny-menu-run-item "org-links")))
-#+END_SRC
+#+end_src
 *** [[https://github.com/hayamiz/twittering-mode][twittering-mode]]
 An Emacs major mode for Twitter
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package twittering-mode
   :ensure t
   :commands twit
@@ -2279,43 +2279,43 @@ An Emacs major mode for Twitter
   (setq twittering-convert-fix-size 24)
   (add-hook 'twittering-mode-hook #'emojify-mode)
   (setq twittering-use-master-password t))
-#+END_SRC
+#+end_src
 *** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
 Kind of makes undo's like git. Or Vim, apparently, if you're into that.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package undo-tree
   :ensure t
   :commands undo-tree-visualize
   :config
   (setq undo-tree-visualizer-timestamps t))
-#+END_SRC
+#+end_src
 *** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
 The emacs major mode for editing files in the YAML data serialization format.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package yaml-mode
   :ensure t
   :defer 5
   :config
   (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
-#+END_SRC
+#+end_src
 ** Navigation
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
 Quickly switch windows in Emacs
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package ace-window
   :ensure t
   :commands (ace-window ace-delete-window ace-swap-window)
   :bind ("M-p" . ace-window)
   :config
   (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
-#+END_SRC
+#+end_src
 *** [[https://github.com/abo-abo/avy][avy]]
 Jump to things in Emacs tree-style
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package avy
   :ensure t
   :commands (avy-goto-char-2 avy-goto-word-1 avy-goto-line))
-#+END_SRC
+#+end_src
 *** [[https://github.com/emacs-helm/helm][helm]]
 *Note:* I'm now using [[https://github.com/abo-abo/swiper][abo-abo/swiper]], which includes ivy, counsel, and swiper,
 for very similar functionality but with a much cleaner and responsive
@@ -2326,7 +2326,7 @@ Emacs incremental completion and selection narrowing framework
 
 For making stuff look nicer, see ~M-x customize-group RET helm-faces~, and
 check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido-like-guide]].
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (use-package helm
   :ensure t
   :defer 5
@@ -2602,11 +2602,11 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
 	)
   (helm-ido-like)
   )
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/bbatsov/projectile][projectile]]
 Project Interaction Library for Emacs
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package projectile
   :ensure t
   :commands (projectile-find-file projectile-switch-project projectile-switch-to-buffer)
@@ -2619,10 +2619,10 @@ Project Interaction Library for Emacs
 		  "~/dotfiles/config/emacs.d/lisp/Gnugol"
 		  "~/dotfiles/config/emacs.d/lisp/matlab-emacs"))
   (projectile-mode))
-#+END_SRC
+#+end_src
 *** [[https://github.com/ralesi/ranger.el][ranger]]
 Bringing the goodness of ranger to dired!
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package ranger
   :ensure t
   :commands ranger
@@ -2642,12 +2642,12 @@ Bringing the goodness of ranger to dired!
 	  (counsel-find-file default-directory))
 	 (t
 	  (call-interactively 'ido-find-file)))))
-#+END_SRC
+#+end_src
 ** Not currently in use
 These aren't loaded by the init file.
 *** [[https://github.com/Wilfred/ag.el][ag]]
 Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]] into emacs.
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (use-package ag
   ;; Silver searcher
   :ensure t
@@ -2667,17 +2667,17 @@ Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]]
   (setq ag-highlight-search t)
   (setq ag-reuse-buffers t)
   (setq ag-reuse-window t))
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/auto-complete/auto-complete][auto-complete]]
 Pretty good autocompletion, but trying out [[github.com/company-mode/company-mode][company-mode]] right now.
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (use-package auto-complete
   ;; Supposedly not as good as company mode
   :ensure t
   :config
   (global-auto-complete-mode t))
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/joaotavora/autopair][autopair]]
 It may be recommended to use =electric-pair-mode= nowadays? That's
@@ -2687,23 +2687,23 @@ what I'm using anyway.
   :ensure t
   :config
   (autopair-global-mode))
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/tkf/emacs-jedi][emacs-jedi]]
 Integrates [[https://github.com/davidhalter/jedi][jedi]] into emacs for python completion, hasn't been working for me
 recently. Either way, this is for [[https://github.com/auto-complete/auto-complete][auto-complete]] but now I use
 [[https://github.com/syohex/emacs-company-jedi][emacs-company-jedi]].
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (use-package jedi
   ;; Hasn't been working smoothly recently
   :ensure t
   :init
   (add-hook 'python-mode-hook 'jedi:setup)
   (setq jedi:complete-on-dot t))
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/7696122/evil-terminal-cursor-changer][evil-terminal-cursor-changer]]
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (use-package evil-terminal-cursor-changer
   :ensure t
   :config
@@ -2717,12 +2717,12 @@ recently. Either way, this is for [[https://github.com/auto-complete/auto-comple
   (setq evil-insert-state-cursor 'bar)  ; ⎸
   (setq evil-emacs-state-cursor  'bar)) ; _
 
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/Malabarba/smart-mode-line][smart-mode-line]]
 Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][spaceline]].
 
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (use-package smart-mode-powerline-theme
   :ensure t)
 
@@ -2738,25 +2738,25 @@ Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][s
   (display-time-update)
   (fancy-battery-mode)
   (setq fancy-battery-show-percentage t))
-#+END_SRC
+#+end_src
 
 ** Org mode
 *** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package ob-ipython
   :defer 5
   :ensure t)
-#+END_SRC
+#+end_src
 *** [[https://github.com/sabof/org-bullets][org-bullets]]
 Use nice bullets in org-mode.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package org-bullets
   :ensure t
   :after org
   :config
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
   (setq org-bullets-bullet-list '("•")))
-#+END_SRC
+#+end_src
 *** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
 Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 #+begin_src emacs-lisp
@@ -2778,13 +2778,13 @@ Export org to twitter bootstrap compatible HTML.
   :after org)
 #+end_src
 *** [[https://github.com/snosov1/toc-org][toc-org]]
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package toc-org
   :ensure t
   :defer 5
   :config
   (add-hook 'org-mode-hook 'toc-org-enable))
-#+END_SRC
+#+end_src
 
 ** Programming
 *** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]
@@ -2806,7 +2806,7 @@ Export org to twitter bootstrap compatible HTML.
 #+end_src
 *** [[https://github.com/company-mode/company-mode][company-mode]]
 Supposedly better than autocomplete... Also using [[https://github.com/syohex/emacs-company-jedi][company-jedi]]
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package company
   :ensure t
   :config
@@ -2823,20 +2823,20 @@ Supposedly better than autocomplete... Also using [[https://github.com/syohex/em
 (use-package company-anaconda
   :ensure t
   :after company)
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
 Edit jupyter notebooks in emacs
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package ein
   :ensure t
   :commands ein:notebooklist-open
   :config)
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/jorgenschaefer/elpy][elpy]]
 Sets up a python editing environment. I'm not sure yet.
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (use-package elpy
   ;; Eh, I don't know...
   :ensure t
@@ -2849,7 +2849,7 @@ Sets up a python editing environment. I'm not sure yet.
 		  elpy-module-pyvenv
 		  elpy-module-yasnippet
 		  elpy-module-sane-defaults)))
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
 #+begin_src emacs-lisp
@@ -2858,23 +2858,23 @@ Sets up a python editing environment. I'm not sure yet.
 #+end_src
 *** [[https://github.com/alpaker/Fill-Column-Indicator][fill-column-indicator]]
 I like a line length limit indicator in Python
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 
 (use-package fill-column-indicator
   :ensure t
   :init
   (setq-default fci-rule-column 79))
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/flycheck/flycheck][flycheck]]
 Syntax check for python. Pretty good.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package flycheck
   :commands flycheck-mode
   :ensure t
   :config
   (setq flycheck-completing-read-function 'ivy-completing-read))
-#+END_SRC
+#+end_src
 *** [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]]
 #+begin_src emacs-lisp
 (use-package git-gutter-fringe
@@ -2936,28 +2936,28 @@ Syntax check for python. Pretty good.
 #+end_src
 *** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]
 Neat-o
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package highlight-numbers
   :ensure t)
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/tsdh/highlight-parentheses.el][highlight-parentheses]]
 Makes the parentheses my cursor is between stand out more.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package highlight-parentheses
   ;; Make parenthesis I'm currently in stand out
   :defer t
   :ensure t)
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/vspinu/imenu-anywhere][imenu-anywhere]]
 imenu on steroids.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package imenu-anywhere
   ;; Imenu on steroids
   :commands imenu-anywhere
   :ensure t)
-#+END_SRC
+#+end_src
 
 *** matlab-mode
 #+begin_src emacs-lisp
@@ -2978,20 +2978,20 @@ imenu on steroids.
 #+end_src
 *** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
 Better parentheses coloring
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package rainbow-delimiters
   :ensure t)
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/naiquevin/sphinx-doc.el][sphinx-doc]]
 Sphinx doc python integration. Pretty neat, though not entirely
 complete, IMO.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package sphinx-doc
   :ensure t
   :commands sphinx-doc-mode)
 
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]]
 #+begin_src emacs-lisp
@@ -3001,7 +3001,7 @@ complete, IMO.
 *** [[https://github.com/zenozeng/yafolding.el][yafolding]]
 Good code folding is hard to come by in Emacs, and isn't /that/ useful. This was
 pretty good but had some known issues.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package yafolding
   :ensure t
   :config
@@ -3011,7 +3011,7 @@ pretty good but had some known issues.
 	(local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
 	(local-set-key (kbd "C-c <right>") 'yafolding-show-element)
 	(local-set-key [C-tab] 'yafolding-toggle-element)))
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/JorisE/yapfify][yapfify]]
 #+begin_src emacs-lisp
@@ -3020,7 +3020,7 @@ pretty good but had some known issues.
 #+end_src
 *** [[https://github.com/joaotavora/yasnippet][yasnippet]]
 Freakin yasnippet. It's the best.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package yasnippet
   ;; SNIPPETS!!!
   :ensure t
@@ -3031,66 +3031,66 @@ Freakin yasnippet. It's the best.
   ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
   ;; (define-key yas-minor-mode-map (kbd "SPC") 'yas-expand)
   )
-#+END_SRC
+#+end_src
 
 ** Reference/search
 *** [[https://github.com/abo-abo/define-word][define-word]]
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package define-word
   :commands define-word
   :ensure t)
-#+END_SRC
+#+end_src
 *** [[https://github.com/xuchunyang/devdocs.el][devdocs]]
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package devdocs
   :commands devdocs-search
   :ensure t)
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/Malabarba/emacs-google-this][emacs-google-this]]
 Google stuff from emacs.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package google-this
   :ensure t
   :commands google-this
   :config
   (google-this-mode 1))
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/dtaht/Gnugol][Gnugol]]
 An org-mode google??? Not currently working, apparently.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package gnugol
   :commands gnugol
   :load-path "lisp/")
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/atykhonov/google-translate][google-translate]]
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package google-translate
   :commands google-translate-at-point
   :ensure t)
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/laynor/melpa-upstream-visit][melpa-upstream-visit]]
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package melpa-upstream-visit
   :commands muv
   :ensure t
   :config
   (setq muv:completing-read-function 'ivy-completing-read))
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/vermiculus/sx.el/][sx]]
 Stack exchange on emacs.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package sx
   :defer 5
   :ensure t)
-#+END_SRC
+#+end_src
 ** Shell utilities
 *** [[https://github.com/hiddenlotus/eshell-prompt-extras][eshell-prompt-extras]]
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package eshell-prompt-extras
   :ensure t
   :defer 5
@@ -3099,16 +3099,16 @@ Stack exchange on emacs.
   (autoload 'epe-theme-dakrone "eshell-prompt-extras")
   (setq eshell-highlight-prompt nil
 		eshell-prompt-function 'epe-theme-dakrone))
-#+END_SRC
+#+end_src
 *** [[https://github.com/xuchunyang/eshell-z][eshell-z]]
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package eshell-z
   :defer 5
   :ensure t)
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]]
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package exec-path-from-shell
   :ensure t
   :config
@@ -3116,20 +3116,20 @@ Stack exchange on emacs.
   (when (memq window-system '(mac ns))
 	(exec-path-from-shell-initialize))
   )
-#+END_SRC
+#+end_src
 
 *** [[https://www.emacswiki.org/emacs/download/multi-term.el][multi-term]]
 I wanted a slightly better terminal in emacs. Not sure
 if this is the answer as I haven't used it much.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package multi-term
   ;; Supposed to be nicer than ansi-term
   :commands multi-term
   :ensure t)
-#+END_SRC
+#+end_src
 
 *** [[https://github.com/jorgenschaefer/pyvenv][pyvenv]]
-#+BEGIN_SRC emacs-lisp :tangle no
+#+begin_src emacs-lisp :tangle no
 (use-package pyvenv
   :ensure t
   :config
@@ -3146,19 +3146,19 @@ if this is the answer as I haven't used it much.
   (advice-add 'pyvenv-deactivate :after 'diego/sync-venv))
 
 
-#+END_SRC
+#+end_src
 *** [[https://github.com/porterjamesj/virtualenvwrapper.el][virtualenvwrapper]]
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package virtualenvwrapper
   :ensure t
   :config
   ;; (venv-initialize-interactive-shells)
   (setq venv-location "~/.virtualenvs"))
-#+END_SRC
+#+end_src
 * Mode Specific
 ** Prog-mode
 Properties that apply to all programming modes.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (defun diego/setup-prog-mode ()
   (highlight-parentheses-mode 1)
   (rainbow-delimiters-mode)
@@ -3174,9 +3174,9 @@ Properties that apply to all programming modes.
   (hl-line-mode 1))
 
 (add-hook 'prog-mode-hook 'diego/setup-prog-mode)
-#+END_SRC
+#+end_src
 ** Python
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (defun diego/setup-python-mode ()
   (yafolding-mode)
   (diego/yafolding-kbd)
@@ -3206,14 +3206,14 @@ Properties that apply to all programming modes.
 			  diego/python-prettify-alist))
 
 (add-hook 'python-mode-hook 'diego/setup-python-mode)
-#+END_SRC
+#+end_src
 ** Matlab
 #+begin_src emacs-lisp
 (add-hook 'matlab-mode-hook 'diego/setup-prog-mode)
 #+end_src
 ** Emacs-Lisp
 Mostly set up hs-minor-mode for emacs-lisp.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (defun diego/setup-lisp-mode ()
   (hs-minor-mode)
   (local-set-key (kbd "C-c <up>") 'hs-hide-all)
@@ -3225,15 +3225,15 @@ Mostly set up hs-minor-mode for emacs-lisp.
 
 (add-hook 'emacs-lisp-mode-hook 'diego/setup-lisp-mode)
 (add-hook 'lisp-interaction-mode-hook 'diego/setup-lisp-mode)
-#+END_SRC
+#+end_src
 
 ** Term mode
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (defun diego/setup-term-mode ()
   (setq-local yas-dont-activate t)
   (local-set-key (kbd "<C-tab>") 'multi-term-next))
 (add-hook 'term-mode-hook 'diego/setup-term-mode)
-#+END_SRC
+#+end_src
 ** Calc mode
 *** Settings
 #+begin_src emacs-lisp
@@ -3256,7 +3256,7 @@ Mostly set up hs-minor-mode for emacs-lisp.
 This is from somewhere on the internet, and may no longer be relevant since I
 started using company-mode. I'm not sure though.
 
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (defun sanityinc/fci-enabled-p ()
   (and (boundp 'fci-mode) fci-mode))
 (defvar sanityinc/fci-mode-suppressed nil)
@@ -3273,4 +3273,4 @@ started using company-mode. I'm not sure though.
 			 (null popup-instances))
 	(setq sanityinc/fci-mode-suppressed nil)
 	(turn-on-fci-mode)))
-#+END_SRC
+#+end_src
