@@ -1213,10 +1213,7 @@ A really nice search/completion system for emacs.
 (use-package swiper
   :ensure t
   :after ivy
-  :config
-  ;; (define-key evil-normal-state-map (kbd "/") 'swiper)
-  ;; (define-key evil-motion-state-map (kbd "/") 'swiper)
-  )
+  :config)
 
 (use-package counsel
   :ensure t
@@ -2691,7 +2688,7 @@ Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]]
 #+end_src
 
 *** [[https://github.com/auto-complete/auto-complete][auto-complete]]
-Pretty good autocompletion, but trying out [[github.com/company-mode/company-mode][company-mode]] right now.
+Pretty good autocompletion, but trying out [[https://github.com/company-mode/company-mode][company-mode]] right now.
 #+begin_src emacs-lisp :tangle no
 (use-package auto-complete
   ;; Supposedly not as good as company mode
