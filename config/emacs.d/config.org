@@ -246,19 +246,19 @@ consistent with other fonts. Last updated 2011, last successfully tested
 (setq initial-major-mode 'org-mode)
 (setq initial-scratch-message
 	  "# This buffer is for text that is not saved, and for Lisp/Python evaluation.
-  # To create a file, visit it with SPC f f and enter text in its buffer.
+# To create a file, visit it with SPC f f and enter text in its buffer.
 
-  ,* Lisp
-  ,#+begin_src emacs-lisp
+,* Lisp
+,#+begin_src emacs-lisp
 
-  ,#+end_src
+,#+end_src
 
-  ,* Python
-  ,#+begin_src python
+,* Python
+,#+begin_src python
 
-  ,#+end_src
+,#+end_src
 
-  ,* Other")
+,* Other")
 #+end_src
 ** File handling
 Handling/storing of files, backups, autosaves.
