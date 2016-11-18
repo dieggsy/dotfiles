@@ -1930,6 +1930,13 @@ Edit text area on Chrome with Emacs using Atomic Chrome
 	(atomic-chrome-start-server)
   (setq atomic-chrome-buffer-open-style 'frame))
 #+end_src
+*** [[https://github.com/purcell/disable-mouse][disable-mouse]]
+#+begin_src emacs-lisp
+(use-package disable-mouse
+  :ensure t
+  :config
+  (global-disable-mouse-mode))
+#+end_src
 *** [[http://savannah.nongnu.org/projects/bbdb/][bbdb]]
 #+begin_src emacs-lisp
   (use-package bbdb
@@ -2958,7 +2965,7 @@ pretty good but had some known issues.
       (local-set-key [C-tab] 'yafolding-toggle-element)))
 #+END_SRC
 
-*** [[https://github.com/JorisE/yapfify][yapfify]] 
+*** [[https://github.com/JorisE/yapfify][yapfify]]
 #+begin_src emacs-lisp
 (use-package yapfify
   :ensure t)
@@ -3189,7 +3196,7 @@ Mostly set up hs-minor-mode for emacs-lisp.
 
   (add-hook 'calc-mode-hook 'diego/setup-calc-mode)
 #+end_src
-*** Custom vars and funcs 
+*** Custom vars and funcs
 #+begin_src emacs-lisp
 (defvar var-G '(float 667408 -16)
   "Universal gravitational constant.")
