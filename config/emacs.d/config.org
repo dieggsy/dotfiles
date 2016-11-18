@@ -650,7 +650,7 @@ based on or copied from spacemacs, so definitely check them out!
 	"agd" 'dunnet
 	"ai"  'erc
 	"ar"  'ranger
-	"ad"  'deer
+	"ad"  'diego/deer
 	"ac"  'calc-dispatch
 	"ap"  'paradox-list-packages
 	"au"  'undo-tree-visualize
@@ -670,7 +670,13 @@ based on or copied from spacemacs, so definitely check them out!
 	"aot" 'org-todo-list
 	"aoO" 'org-clock-out
 	"aoc" 'org-capture
-	"aol" 'org-store-link))
+	"aol" 'org-store-link)
+
+	(defun diego/deer (arg)
+	  (interactive "P")
+	  (if (eq arg nil)
+		  (deer-jump-other-window)
+		(deer))))
 #+end_src
 **** Buffers & Files
 #+begin_src emacs-lisp
