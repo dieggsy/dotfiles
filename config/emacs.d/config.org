@@ -1150,6 +1150,7 @@ based on or copied from spacemacs, so definitely check them out!
 
 ** [[https://github.com/abo-abo/swiper][ivy]]
 A really nice search/completion system for emacs.
+*** ivy
 #+begin_src emacs-lisp
 (use-package ivy
   :ensure t
@@ -1209,12 +1210,16 @@ A really nice search/completion system for emacs.
 
   (setq ivy-switch-buffer-faces-alist
 		'((dired-mode . ivy-subdir))))
-
+#+END_SRC
+*** swiper
+#+BEGIN_SRC emacs-lisp
 (use-package swiper
   :ensure t
   :after ivy
   :config)
-
+#+END_SRC
+*** counsel
+#+BEGIN_SRC emacs-lisp
 (use-package counsel
   :ensure t
   :after ivy
