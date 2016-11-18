@@ -205,6 +205,7 @@
  '(twittering-uri-face ((t (:foreground "#528b8b" :underline t))))
  '(twittering-username-face ((t (:foreground "#FE8019" :underline t))))
  '(variable-pitch ((t (:family "Open Sans")))))
+
 (put 'erase-buffer 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
