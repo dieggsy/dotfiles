@@ -84,11 +84,12 @@ Setup load directories, mostly.
 	(kill-this-buffer)))
 
 
-(defun rename-this-file-and-buffer (new-name)
+(defun rename-this-file-and-buffer ()
   "Renames both current buffer and file it's visiting to NEW-NAME."
-  (interactive "sNew name: ")
+  (interactive)
   (let ((name (buffer-name))
-		(filename (buffer-file-name)))
+		(filename (buffer-file-name))
+		(new-name (read-from-minibuffer "New name: " (buffer-name))))
 	(unless filename
 	  (error "Buffer '%s' is not visiting a file!" name))
 	(if (get-buffer new-name)
