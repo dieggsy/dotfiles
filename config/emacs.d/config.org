@@ -775,6 +775,8 @@ based on or copied from spacemacs, so definitely check them out!
 	"nf"  'narrow-to-defun
 	"np"  'narrow-to-page
 	"nr"  'narrow-to-region
+	"n="  'diego/inc-at-pt
+	"n-"  'diego/dec-at-pt
 
 	"xar" 'align-regexp
 	"xa&" 'diego/align-repeat-ampersand
@@ -870,14 +872,39 @@ based on or copied from spacemacs, so definitely check them out!
 						 (spacing 1 1)
 						 (justify nil t)))
 				  nil)))
+
+(setq diego/evil-numbers-transient-map
+      (let ((map (make-sparse-keymap)))
+        (define-key map (kbd "=") #'diego/inc-at-pt)
+		(define-key map (kbd "-") #'diego/dec-at-pt)
+		map))
+
+(defun diego/inc-at-pt (arg)
+  (interactive "P")
+  (if (eq arg nil)
+	  (evil-numbers/inc-at-pt 1)
+	(evil-numbers/inc-at-pt arg))
+  (set-transient-map
+   diego/evil-numbers-transient-map))
+
+(defun diego/dec-at-pt (arg)
+  (interactive "P")
+  (if (eq arg nil)
+	  (evil-numbers/dec-at-pt 1)
+	(evil-numbers/dec-at-pt arg))
+  (set-transient-map
+   diego/evil-numbers-transient-map))
 #+end_src
 **** Spelling
 #+begin_src emacs-lisp
-  (defun diego/leader-spelling ()
-    (evil-leader/set-key
-      "Sb" 'flyspell-buffer
-      "Sa" 'diego/flyspell-add-to-dictionary
-      "Sn" 'diego/flyspell-correct-next))
+(defun diego/leader-spelling ()
+  (evil-leader/set-key
+	"Sb" 'flyspell-buffer
+	"Sa" 'diego/flyspell-add-to-dictionary
+	"Sn" 'flyspell-correct-next-word-generic
+	"Sp" 'flyspell-correct-previous-word-generic
+	"SN" 'diego/flyspell-correct-next
+	"SP" 'flyspell-auto-correct-previous-word))
 #+end_src
 **** magit
 #+begin_src emacs-lisp
