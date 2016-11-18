@@ -1332,17 +1332,19 @@ so I went with it.
           (and (search-forward "SCHEDULED:" search-limit t)
                (replace-match "DEADLINE:"))))))
 
-  (defun diego/pop-to-org-todo ();; (split)
-    "Visit my main TODO list, in the current window or a SPLIT."
-    ;; (interactive "P")
-    ;; (diego/pop-to-file "~/Dropbox (MIT)/org/todo.org" split)
-    (interactive)
-    (find-file-other-window "~/Dropbox (MIT)/org/todo.org"))
+  (defun diego/pop-to-org-todo (split)
+    "Visit todo list, in the current window or a split."
+    (interactive "P")
+	(if (eq split nil)
+		(find-file-other-window "~/Dropbox (MIT)/org/todo.org")
+	  (find-file "~/Dropbox (MIT)/org/todo.org")))
 
   (defun diego/pop-to-org-notes (split)
-    "Visit my main notes file, in the current window or a SPLIT."
+    "Visit my main notes list, in the current window or a split."
     (interactive "P")
-    (diego/pop-to-file "~/Dropbox (MIT)/org/notes.org" split))
+	(if (eq split nil)
+		(find-file-other-window "~/Dropbox (MIT)/org/notes.org")
+	  (find-file "~/Dropbox (MIT)/org/notes.org")))
 
   (defun diego/org-insert-list-leader-or-self (char)
       "If on column 0, insert space-padded CHAR; otherwise insert CHAR.
