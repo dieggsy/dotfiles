@@ -809,6 +809,14 @@ based on or copied from spacemacs, so definitely check them out!
 	"xwd" 'define-word-at-point
 	"xwc" 'count-words
 
+	"xma" 'evil-multiedit-match-all
+	"xmn" 'evil-multiedit-next
+	"xmp" 'evil-multiedit-prev
+	"xmr" 'evil-multiedit-restore
+	"xmt" 'evil-multiedit-toggle-or-restrict-region
+	"xmN" 'evil-multiedit-match-and-next
+	"xmP" 'evil-multiedit-match-and-prev
+
 	"xpr" 'sp-rewrap-sexp
 	"xps" 'sp-forward-slurp-sexp
 	"xpS" 'sp-backward-slurp-sexp
@@ -1749,6 +1757,7 @@ Emacs package that displays available keybindings in popup
 	"SPC xa"  "align"
 	"SPC xd"  "delete"
 	"SPC xl"  "lines"
+    "SPC xm"  "multiedit"
 	"SPC xt"  "transpose"
 	"SPC xp"  "parentheses"
 	"SPC xw"  "words"
@@ -2101,7 +2110,12 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+begin_src emacs-lisp
 (use-package evil-multiedit
   :ensure t
-  :commands evil-multiedit-match-all)
+  :commands (evil-multiedit-match-all
+			 evil-multiedit-match-and-next
+			 evil-multiedit-match-and-prev
+			 evil-multiedit-ex-match)
+  :config
+  (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match))
 #+end_src
 *** [[https://github.com/lewang/flx][flx]]
 Fuzzy matching for Emacs ... a la Sublime Text.
