@@ -290,11 +290,6 @@ Handling/storing of files, backups, autosaves.
 (setq-default tab-width 4)
 (setq tab-stop-list (number-sequence 4 200 4))
 (setq completion-cycle-threshold t)
-
-#+end_src
-** <⌘-enter> for fullscreen
-#+begin_src emacs-lisp
-(global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
 #+end_src
 ** Line position/highlighting
 #+begin_src emacs-lisp
@@ -550,6 +545,8 @@ I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard.
 #+begin_src emacs-lisp
 (with-eval-after-load "undo-tree"
   (define-key undo-tree-map (kbd "C-/") nil))
+
+(global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
 
 (define-key indent-rigidly-map "h" 'indent-rigidly-left)
 (define-key indent-rigidly-map "l" 'indent-rigidly-right)
