@@ -1230,6 +1230,9 @@ A really nice search/completion system for emacs.
   (counsel-mode 1)
   (defalias 'ag 'counsel-ag)
   (defalias 'locate 'counsel-locate)
+  (setq counsel-yank-pop-separator "
+  ─────────────────────────
+")
 
   (advice-add
    'counsel--yank-pop-format-function
@@ -1875,7 +1878,9 @@ A utility package to collect various Icon Fonts and propertize them within Emacs
 #+begin_src emacs-lisp
 (use-package rainbow-mode
   :commands rainbow-mode
-  :ensure t)
+  :ensure t
+  :config
+  (setq rainbow-x-colors-major-mode-list '(c-mode c++-mode java-mode)))
 #+end_src
 *** [[https://github.com/therockmandolinist/emacs-theme-darktooth][darktooth-theme]]
 An Emacs 24 theme remixed from gruvbox (my fork).
