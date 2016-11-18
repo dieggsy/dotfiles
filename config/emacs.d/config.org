@@ -10,9 +10,9 @@ lot of the inspiration (and erm, code) for this is taken from them.
 * Personal Info
 
 #+BEGIN_SRC emacs-lisp
-  (setq user-full-name "Diego A. Mundo"
-        user-mail-address "diegoamundo@gmail.com"
-        calendar-location-name "Cambridge, MA")
+(setq user-full-name "Diego A. Mundo"
+	  user-mail-address "diegoamundo@gmail.com"
+	  calendar-location-name "Cambridge, MA")
 #+END_SRC
 
 * Init Setup
@@ -21,16 +21,16 @@ Setup up cool stuff like use-package, and stuff.
 ** Misc init
 Setup load directories, mostly.
 #+BEGIN_SRC emacs-lisp
-  (server-start)
-  (require 'package)
-  (setq package-enable-at-startup nil)
-  (add-to-list 'load-path
-               (expand-file-name "lisp" user-emacs-directory))
+(server-start)
+(require 'package)
+(setq package-enable-at-startup nil)
+(add-to-list 'load-path
+			 (expand-file-name "lisp" user-emacs-directory))
 
-  (let ((default-directory  "~/.emacs.d/lisp/"))
-    (normal-top-level-add-subdirs-to-load-path))
-  (add-to-list 'exec-path "/usr/local/bin")
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/")
+(let ((default-directory  "~/.emacs.d/lisp/"))
+  (normal-top-level-add-subdirs-to-load-path))
+(add-to-list 'exec-path "/usr/local/bin")
+(add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/")
 #+END_SRC
 
 ** Init utils
@@ -114,67 +114,67 @@ Set package archives/repos and setup use-package and all that.
 #+BEGIN_SRC emacs-lisp
   ;;; Find and load the correct package.el
 
-  ;; When switching between Emacs 23 and 24, we always use the bundled package.el in Emacs 24
-  (let ((package-el-site-lisp-dir
-         (expand-file-name "site-lisp/package" user-emacs-directory)))
-    (when (and (file-directory-p package-el-site-lisp-dir)
-               (> emacs-major-version 23))
-      (message "Removing local package.el from load-path to avoid shadowing bundled version")
-      (setq load-path (remove package-el-site-lisp-dir load-path))))
+;; When switching between Emacs 23 and 24, we always use the bundled package.el in Emacs 24
+(let ((package-el-site-lisp-dir
+	   (expand-file-name "site-lisp/package" user-emacs-directory)))
+  (when (and (file-directory-p package-el-site-lisp-dir)
+			 (> emacs-major-version 23))
+	(message "Removing local package.el from load-path to avoid shadowing bundled version")
+	(setq load-path (remove package-el-site-lisp-dir load-path))))
 
   ;;; Standard package repositories
-  (add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-  (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
-  (add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
-  (add-to-list 'package-archives '("elpy" . "https://jorgenschaefer.github.io/packages/"))
+(add-to-list 'package-archives '("org" . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+(add-to-list 'package-archives '("marmalade" . "http://marmalade-repo.org/packages/"))
+(add-to-list 'package-archives '("elpy" . "https://jorgenschaefer.github.io/packages/"))
 
-  ;; If gpg cannot be found, signature checking will fail, so we
-  ;; conditionally enable it according to whether gpg is available. We
-  ;; re-run this check once $PATH has been configured
-  (defun sanityinc/package-maybe-enable-signatures ()
-    (setq package-check-signature (when (executable-find "gpg") 'allow-unsigned)))
+;; If gpg cannot be found, signature checking will fail, so we
+;; conditionally enable it according to whether gpg is available. We
+;; re-run this check once $PATH has been configured
+(defun sanityinc/package-maybe-enable-signatures ()
+  (setq package-check-signature (when (executable-find "gpg") 'allow-unsigned)))
 
-  (sanityinc/package-maybe-enable-signatures)
-  (after-load 'init-exec-path
-              (sanityinc/package-maybe-enable-signatures))
+(sanityinc/package-maybe-enable-signatures)
+(after-load 'init-exec-path
+  (sanityinc/package-maybe-enable-signatures))
 
 
   ;;; On-demand installation of packages
-  (defun require-package (package &optional min-version no-refresh)
-      "Install given PACKAGE, optionally requiring MIN-VERSION.
+(defun require-package (package &optional min-version no-refresh)
+  "Install given PACKAGE, optionally requiring MIN-VERSION.
   If NO-REFRESH is non-nil, the available package lists will not be
   re-downloaded in order to locate PACKAGE."
-      (if (package-installed-p package min-version)
-          t
-        (if (or (assoc package package-archive-contents) no-refresh)
-            (package-install package)
-          (progn
-            (package-refresh-contents)
-            (require-package package min-version t)))))
+  (if (package-installed-p package min-version)
+	  t
+	(if (or (assoc package package-archive-contents) no-refresh)
+		(package-install package)
+	  (progn
+		(package-refresh-contents)
+		(require-package package min-version t)))))
 
-  (defun maybe-require-package (package &optional min-version no-refresh)
-      "Try to install PACKAGE, and return non-nil if successful.
+(defun maybe-require-package (package &optional min-version no-refresh)
+  "Try to install PACKAGE, and return non-nil if successful.
   In the event of failure, return nil and print a warning message.
   Optionally require MIN-VERSION.  If NO-REFRESH is non-nil, the
   available package lists will not be re-downloaded in order to
   locate PACKAGE."
-      (condition-case err
-          (require-package package min-version no-refresh)
-        (error
-         (message "Couldn't install package `%s': %S" package err)
-         nil)))
+  (condition-case err
+	  (require-package package min-version no-refresh)
+	(error
+	 (message "Couldn't install package `%s': %S" package err)
+	 nil)))
 
 
   ;;; Fire up package.el
-  (package-initialize)
+(package-initialize)
 
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
 
-  (eval-when-compile
-      (require 'use-package))
+(eval-when-compile
+  (require 'use-package))
 #+END_SRC
 
 * Global settings and stuff
@@ -187,22 +187,22 @@ Also, stolen and original functions, and macros.
 ** Visual things
 Get rid of menu bars, scroll bars, startup screens, etc.
 #+BEGIN_SRC emacs-lisp
-  (setq inhibit-splash-screen t
-		inhibit-startup-message t
-		inhibit-startup-echo-area-message t)
-  ;; (fringe-mode 0)
-  (menu-bar-mode 0)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (setq custom-raised-buttons nil)
-  (setq display-time-load-average nil)
-  (setq whitespace-style '(face trailing))
-  (set-default 'truncate-lines t)
-  (show-paren-mode)
-  (setq show-paren-mode ())
-  (blink-cursor-mode 0)
-  ;; (require 'zone)
-  ;; (zone-when-idle 10)
+(setq inhibit-splash-screen t
+	  inhibit-startup-message t
+	  inhibit-startup-echo-area-message t)
+;; (fringe-mode 0)
+(menu-bar-mode 0)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+(setq custom-raised-buttons nil)
+(setq display-time-load-average nil)
+(setq whitespace-style '(face trailing))
+(set-default 'truncate-lines t)
+(show-paren-mode)
+(setq show-paren-mode ())
+(blink-cursor-mode 0)
+;; (require 'zone)
+;; (zone-when-idle 10)
 #+END_SRC
 ** Font/Text
 *Current:* Currently I'm using the wonderful [[http://input.fontbureau.com/][Input]] font. If, like me, you're
@@ -246,16 +246,16 @@ consistent with other fonts. Last updated 2011, last successfully tested
 #+END_SRC
 ** Minibuffer
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'minibuffer-setup-hook (lambda () (setq-local cursor-type '(bar . 1))))
-  (setq enable-recursive-minibuffers t)
-  (savehist-mode 1)
-  ;; (add-hook 'minibuffer-setup-hook (lambda () (show-paren-mode -1)))
+(add-hook 'minibuffer-setup-hook (lambda () (setq-local cursor-type '(bar . 1))))
+(setq enable-recursive-minibuffers t)
+(savehist-mode 1)
+;; (add-hook 'minibuffer-setup-hook (lambda () (show-paren-mode -1)))
 #+END_SRC
 ** Scratch buffer
 #+begin_src emacs-lisp
-  (setq initial-major-mode 'org-mode)
-  (setq initial-scratch-message
-        "# This buffer is for text that is not saved, and for Lisp/Python evaluation.
+(setq initial-major-mode 'org-mode)
+(setq initial-scratch-message
+	  "# This buffer is for text that is not saved, and for Lisp/Python evaluation.
   # To create a file, visit it with SPC f f and enter text in its buffer.
 
   ,* Lisp
@@ -273,192 +273,184 @@ consistent with other fonts. Last updated 2011, last successfully tested
 ** File handling
 Handling/storing of files, backups, autosaves.
 #+BEGIN_SRC emacs-lisp
-  (defvar backup-dir "~/.emacsbackups/")
-  (setq backup-directory-alist (list (cons "." backup-dir)))
-  (setq auto-save-file-name-transforms
-        `((".*" ,temporary-file-directory t)))
-  (global-auto-revert-mode t)
-  (save-place-mode 1)
-  (desktop-save-mode 1)
-  ;; (set-frame-parameter (selected-frame) 'buffer-predicate #'buffer-file-name)
+(defvar backup-dir "~/.emacsbackups/")
+(setq backup-directory-alist (list (cons "." backup-dir)))
+(setq auto-save-file-name-transforms
+	  `((".*" ,temporary-file-directory t)))
+(global-auto-revert-mode t)
+(save-place-mode 1)
+(desktop-save-mode 1)
+;; (set-frame-parameter (selected-frame) 'buffer-predicate #'buffer-file-name)
 
-  ;; ssh
-  (setq tramp-default-method "ssh")
-  (setq password-cache-expiry nil)
+;; ssh
+(setq tramp-default-method "ssh")
+(setq password-cache-expiry nil)
 #+END_SRC
 ** Smooth scroll
 #+BEGIN_SRC emacs-lisp
-  ;; Arrow key/jk scroll
-  (setq scroll-step 1
-        scroll-conservatively 10000)
+;; Arrow key/jk scroll
+(setq scroll-step 1
+	  scroll-conservatively 10000)
 
-  ;; Mouse scroll
-  (setq mouse-wheel-scroll-amount '(2 ((shift) . 1) ((control) . nil)))
-  (setq mouse-wheel-progressive-speed nil)
+;; Mouse scroll
+(setq mouse-wheel-scroll-amount '(2 ((shift) . 1) ((control) . nil)))
+(setq mouse-wheel-progressive-speed nil)
 #+END_SRC
 ** Tabs/completion?
 #+BEGIN_SRC emacs-lisp
-  (setq-default tab-width 4)
-  (setq tab-stop-list (number-sequence 4 200 4))
-  (setq completion-cycle-threshold t)
+(setq-default tab-width 4)
+(setq tab-stop-list (number-sequence 4 200 4))
+(setq completion-cycle-threshold t)
 
 #+END_SRC
 ** <⌘-enter> for fullscreen
 #+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
+(global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
 #+END_SRC
 ** Line position/highlighting
 #+BEGIN_SRC emacs-lisp
-  (setq linum-delay t)
-  (setq column-number-mode t)
-
+(setq linum-delay t)
+(setq column-number-mode t)
 #+END_SRC
 ** Global functions
 *** "Stolen"
 #+BEGIN_SRC emacs-lisp
-  (defun diego/pop-to-file (file &optional split)
-    "Visit a FILE, either in the current window or a SPLIT."
-    (if split
-        (find-file-other-window file)
-      (find-file file)))
+(defun occur-last-search ()
+  "Run `occur` with the last evil search term."
+  (interactive)
+  ;; Use the appropriate search term based on regexp setting.
+  (let ((term (if evil-regexp-search
+				  (car-safe regexp-search-ring)
+				(car-safe search-ring))))
+	;; If a search term exists, execute `occur` on it.
+	(if (> (length term) 0)
+		(occur term)
+	  (message "No term to search for."))))
 
-  (defun occur-last-search ()
-    "Run `occur` with the last evil search term."
-    (interactive)
-    ;; Use the appropriate search term based on regexp setting.
-    (let ((term (if evil-regexp-search
-                    (car-safe regexp-search-ring)
-                  (car-safe search-ring))))
-      ;; If a search term exists, execute `occur` on it.
-      (if (> (length term) 0)
-          (occur term)
-        (message "No term to search for."))))
+(defun show-first-occurrence ()
+  "Display the location of the word at point's first occurrence in the buffer."
+  (interactive)
+  (save-excursion
+	(let ((search-word (thing-at-point 'symbol t)))
+	  (goto-char 1)
+	  (re-search-forward search-word)
+	  (message (concat
+				"L" (number-to-string (line-number-at-pos)) ": "
+				(replace-regexp-in-string
+				 "[ \t\n]*\\'"
+				 ""
+				 (thing-at-point 'line t)
+				 ))))))
 
-  (defun show-first-occurrence ()
-    "Display the location of the word at point's first occurrence in the buffer."
-    (interactive)
-    (save-excursion
-      (let ((search-word (thing-at-point 'symbol t)))
-        (goto-char 1)
-        (re-search-forward search-word)
-        (message (concat
-                  "L" (number-to-string (line-number-at-pos)) ": "
-                  (replace-regexp-in-string
-                   "[ \t\n]*\\'"
-                   ""
-                   (thing-at-point 'line t)
-                   ))))))
+(defun zone-choose (pgm)
+  "Choose a PGM to run for `zone'."
+  (interactive
+   (list
+	(completing-read
+	 "Program: "
+	 (mapcar 'symbol-name zone-programs))))
+  (let ((zone-programs (list (intern pgm))))
+	(redisplay)
+	(zone)))
 
-  (defun zone-choose (pgm)
-    "Choose a PGM to run for `zone'."
-    (interactive
-     (list
-      (completing-read
-       "Program: "
-       (mapcar 'symbol-name zone-programs))))
-    (let ((zone-programs (list (intern pgm))))
-      (redisplay)
-      (zone)))
+(defun switch-to-previous-buffer ()
+  "Switch to previously open buffer.
+	Repeated invocations toggle between the two most recently open buffers."
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) 1)))
 
-  (defun switch-to-previous-buffer ()
-    "Switch to previously open buffer.
-    Repeated invocations toggle between the two most recently open buffers."
-    (interactive)
-    (switch-to-buffer (other-buffer (current-buffer) 1)))
+	;;; Helpers for narrowing.
+(defun narrow-and-set-normal ()
+  "Narrow to the region and, if in a visual mode, set normal mode."
+  (interactive)
+  (narrow-to-region (region-beginning) (region-end))
+  (if (string= evil-state "visual")
+	  (progn (evil-normal-state nil)
+			 (evil-goto-first-line))))
 
-    ;;; Helpers for narrowing.
-  (defun narrow-and-set-normal ()
-    "Narrow to the region and, if in a visual mode, set normal mode."
-    (interactive)
-    (narrow-to-region (region-beginning) (region-end))
-    (if (string= evil-state "visual")
-        (progn (evil-normal-state nil)
-               (evil-goto-first-line))))
+(defun narrow-to-region-or-subtree ()
+  "Narrow to a region, if set, otherwise to an Org subtree, if present."
+  (interactive)
+  (if (and mark-active
+		   (not (= (region-beginning) (region-end))))
+	  (narrow-and-set-normal)
+	(if (derived-mode-p 'org-mode)
+		(org-narrow-to-subtree))))
 
-  (defun narrow-to-region-or-subtree ()
-    "Narrow to a region, if set, otherwise to an Org subtree, if present."
-    (interactive)
-    (if (and mark-active
-             (not (= (region-beginning) (region-end))))
-        (narrow-and-set-normal)
-      (if (derived-mode-p 'org-mode)
-          (org-narrow-to-subtree))))
-
-  (defun diego/narrow-dwim ()
-    "Narrow to a thing or widen based on context.
-    Attempts to follow the Do What I Mean philosophy."
-    (interactive)
-    (if (buffer-narrowed-p)
-        (widen)
-      (narrow-to-region-or-subtree)))
+(defun diego/narrow-dwim ()
+  "Narrow to a thing or widen based on context.
+	Attempts to follow the Do What I Mean philosophy."
+  (interactive)
+  (if (buffer-narrowed-p)
+	  (widen)
+	(narrow-to-region-or-subtree)))
 
 
-  (defun diego/toggle-window-split ()
-    (interactive)
-    (if (= (count-windows) 2)
-        (let* ((this-win-buffer (window-buffer))
-               (next-win-buffer (window-buffer (next-window)))
-               (this-win-edges (window-edges (selected-window)))
-               (next-win-edges (window-edges (next-window)))
-               (this-win-2nd (not (and (<= (car this-win-edges)
-                                           (car next-win-edges))
-                                       (<= (cadr this-win-edges)
-                                           (cadr next-win-edges)))))
-               (splitter
-                (if (= (car this-win-edges)
-                       (car (window-edges (next-window))))
-                    'split-window-horizontally
-                  'split-window-vertically)))
-          (delete-other-windows)
-          (let ((first-win (selected-window)))
-            (funcall splitter)
-            (if this-win-2nd (other-window 1))
-            (set-window-buffer (selected-window) this-win-buffer)
-            (set-window-buffer (next-window) next-win-buffer)
-            (select-window first-win)
-            (if this-win-2nd (other-window 1))))))
+(defun diego/toggle-window-split ()
+  (interactive)
+  (if (= (count-windows) 2)
+	  (let* ((this-win-buffer (window-buffer))
+			 (next-win-buffer (window-buffer (next-window)))
+			 (this-win-edges (window-edges (selected-window)))
+			 (next-win-edges (window-edges (next-window)))
+			 (this-win-2nd (not (and (<= (car this-win-edges)
+										 (car next-win-edges))
+									 (<= (cadr this-win-edges)
+										 (cadr next-win-edges)))))
+			 (splitter
+			  (if (= (car this-win-edges)
+					 (car (window-edges (next-window))))
+				  'split-window-horizontally
+				'split-window-vertically)))
+		(delete-other-windows)
+		(let ((first-win (selected-window)))
+		  (funcall splitter)
+		  (if this-win-2nd (other-window 1))
+		  (set-window-buffer (selected-window) this-win-buffer)
+		  (set-window-buffer (next-window) next-win-buffer)
+		  (select-window first-win)
+		  (if this-win-2nd (other-window 1))))))
 
-  ;; (defun minibuffer-keyboard-quit ()
-  ;;   "Abort recursive edit.
-  ;;     In Delete Selection mode, if the mark is active, just deactivate it;
-  ;;     then it takes a second \\[keyboard-quit] to abort the minibuffer."
-  ;;   (interactive)
-  ;;   (if (and delete-selection-mode transient-mark-mode mark-active)
-  ;;       (setq deactivate-mark  t)
-  ;;     (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
-  ;;     (abort-recursive-edit)))
+;; (defun minibuffer-keyboard-quit ()
+;;   "Abort recursive edit.
+;;     In Delete Selection mode, if the mark is active, just deactivate it;
+;;     then it takes a second \\[keyboard-quit] to abort the minibuffer."
+;;   (interactive)
+;;   (if (and delete-selection-mode transient-mark-mode mark-active)
+;;       (setq deactivate-mark  t)
+;;     (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
+;;     (abort-recursive-edit)))
 
 
-  (defun diego/fill-or-unfill ()
-    "Like `fill-paragraph', but unfill if used twice."
-    (interactive)
-    (let ((fill-column
-           (if (eq last-command 'diego/fill-or-unfill)
-               (progn (setq this-command nil)
-                      (point-max))
-             fill-column)))
-      (call-interactively #'fill-paragraph)))
+(defun diego/fill-or-unfill ()
+  "Like `fill-paragraph', but unfill if used twice."
+  (interactive)
+  (let ((fill-column
+		 (if (eq last-command 'diego/fill-or-unfill)
+			 (progn (setq this-command nil)
+					(point-max))
+		   fill-column)))
+	(call-interactively #'fill-paragraph)))
 
-  (global-set-key [remap fill-paragraph] #'diego/fill-or-unfill)
+(global-set-key [remap fill-paragraph] #'diego/fill-or-unfill)
 
-  (defun diego/flyspell-add-to-dictionary ()
-    (interactive)
-    (let ((current-location (point))
-          (word (flyspell-get-word)))
-      (when (consp word)
-        (flyspell-do-correct 'save
-                             nil
-                             (car word)
-                             current-location
-                             (cadr word)
-                             (caddr word)
-                             current-location))))
+(defun diego/flyspell-add-to-dictionary ()
+  (interactive)
+  (let ((current-location (point))
+		(word (flyspell-get-word)))
+	(when (consp word)
+	  (flyspell-do-correct 'save
+						   nil
+						   (car word)
+						   current-location
+						   (cadr word)
+						   (caddr word)
+						   current-location))))
 
-  (defun indent-buffer ()
-    (interactive)
-    (indent-region (point-min) (point-max) nil))
+(defun indent-buffer ()
+  (interactive)
+  (indent-region (point-min) (point-max) nil))
 #+END_SRC
-
 *** "Original"
 #+BEGIN_SRC emacs-lisp
 (defun diego/config ()
@@ -540,15 +532,29 @@ Handling/storing of files, backups, autosaves.
 				  t
 				nil)))
 #+END_SRC
-
 *** Macros?
-#+BEGIN_SRC emacs-lisp
-  (fset 'diego/insert-footnote
-        [?/ ?\{ ?\[ ?0 ?- ?9 ?\] ?+ ?\} return ?a ?f ?n ?: escape ?  ?x ?p ?r ?\[])
+#+begin_src emacs-lisp
+(defmacro diego|create-block-wrap (blocktype)
+  (let ((newfunc (intern
+				  (concat "diego/org-wrap-with-block-"
+						  (replace-regexp-in-string " " "-" blocktype)))))
+	`(fset (quote ,newfunc)
+		   (vconcat [?\{ ?i return ?# ?+ ?b ?e ?g ?i ?n ?_]
+					(vconcat ,blocktype)
+					[?\C-/ ?\} ?i return up ?# ?+ ?e ?n ?d ?_]
+					(vconcat (car (split-string ,blocktype)))
+					[?\C-/ ?\{ ?j]))))
 
-  (fset 'org-wrap-block-quote
-        [?\( ?i return up ?# ?+ ?b ?e ?g ?i ?n ?_ ?q ?u ?o ?t ?e ?\C-/ ?\) ?\) ?i return up ?# ?+ ?e ?n ?d ?_ ?q ?u ?o ?t ?e ?\C-/ ?\( ?i ?  ?  ?\M-q ?\M-q ?\M-q])
-#+END_SRC
+(diego|create-block-wrap "src")
+(diego|create-block-wrap "src python")
+(diego|create-block-wrap "export latex")
+
+(fset 'diego/insert-footnote
+	  [?/ ?\{ ?\[ ?0 ?- ?9 ?\] ?+ ?\} return ?a ?f ?n ?: escape ?  ?x ?p ?r ?\[])
+
+(fset 'diego/org-wrap-with-block-quote
+	  [?\{ ?i return ?# ?+ ?b ?e ?g ?i ?n ?_ ?q ?u ?o ?t ?e ?\C-/ ?\} ?i return up ?# ?+ ?e ?n ?d ?_ ?q ?u ?o ?t ?e ?\C-/ ?\{ ?j ?i ?  ?  ?\M-q ?\M-q ?\M-q ?\C-/])
+#+end_src
 ** Bindings
 I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard.
 #+begin_src emacs-lisp
@@ -593,172 +599,172 @@ based on or copied from spacemacs, so definitely check them out!
 #+begin_src emacs-lisp
 (defun diego/leader-projects ()
   (evil-leader/set-key
-    "pp" 'counsel-projectile
-    "ps" 'counsel-projectile-switch-project
-    "pf" 'diego/project-find-file
-    "pd" 'counsel-projectile-find-dir
-    "pb" 'counsel-projectile-switch-to-buffer
-    "pk" 'projectile-kill-buffers
-    "po" 'projectile-multi-occur
-    "pr" 'projectile-recentf
-    "pg" 'projectile-vc)
+	"pp" 'counsel-projectile
+	"ps" 'counsel-projectile-switch-project
+	"pf" 'diego/project-find-file
+	"pd" 'counsel-projectile-find-dir
+	"pb" 'counsel-projectile-switch-to-buffer
+	"pk" 'projectile-kill-buffers
+	"po" 'projectile-multi-occur
+	"pr" 'projectile-recentf
+	"pg" 'projectile-vc)
 
   (defun diego/project-find-file ()
-    (interactive)
-    (condition-case nil
+	(interactive)
+	(condition-case nil
 		(counsel-git)
-      (error (projectile-find-file)))))
+	  (error (projectile-find-file)))))
 #+end_src
 **** Window
 #+begin_src emacs-lisp
-    (defun diego/leader-window ()
-      (evil-leader/set-key
-        "wa" 'ace-window
-        "wv" 'diego/split-vert-focus
-        "wh" 'diego/split-horz-focus
-        "wt" 'diego/toggle-window-split
-        "wd" 'delete-window
-        "wD" 'ace-delete-window
-        "wo" 'delete-other-windows
-        "wf" 'make-frame
-        "ws" 'ace-swap-window)
+(defun diego/leader-window ()
+  (evil-leader/set-key
+	"wa" 'ace-window
+	"wv" 'diego/split-vert-focus
+	"wh" 'diego/split-horz-focus
+	"wt" 'diego/toggle-window-split
+	"wd" 'delete-window
+	"wD" 'ace-delete-window
+	"wo" 'delete-other-windows
+	"wf" 'make-frame
+	"ws" 'ace-swap-window)
 
-      (defun diego/split-vert-focus ()
-        (interactive)
-        (split-window-right)
-        (other-window 1))
-      (defun diego/split-horz-focus ()
-        (interactive)
-        (split-window-below)
-        (other-window 1)))
+  (defun diego/split-vert-focus ()
+	(interactive)
+	(split-window-right)
+	(other-window 1))
+  (defun diego/split-horz-focus ()
+	(interactive)
+	(split-window-below)
+	(other-window 1)))
 #+end_src
 **** Jumping
 #+begin_src emacs-lisp
-  (defun diego/leader-jumping ()
-    (evil-leader/set-key
-      "jc" 'avy-goto-char-2
-      "jw" 'avy-goto-word-1
-      "jl" 'avy-goto-line
-      "jf" 'find-function
-      "ji" 'imenu
-      "jI" 'imenu-anywhere
-      "jv" 'find-variable))
+(defun diego/leader-jumping ()
+  (evil-leader/set-key
+	"jc" 'avy-goto-char-2
+	"jw" 'avy-goto-word-1
+	"jl" 'avy-goto-line
+	"jf" 'find-function
+	"ji" 'imenu
+	"jI" 'imenu-anywhere
+	"jv" 'find-variable))
 #+end_src
 **** Applications
 #+begin_src emacs-lisp
-  (defun diego/leader-applications ()
-      (evil-leader/set-key
-        "ax"  'xkcd
-        "agt" 'tetris
-        "agg" 'gomoku
-        "ag2" '2048-game
-        "agd" 'dunnet
-        "ai"  'erc
-        "ar"  'ranger
-        "ad"  'deer
-        "ac"  'calc-dispatch
-        "ap"  'paradox-list-packages
-        "au"  'undo-tree-visualize
-        "aw"  'sunshine-forecast
-        "aW"  'sunshine-quick-forecast
-        "as"  'speed-type-text
-        "at"  'twit
+(defun diego/leader-applications ()
+  (evil-leader/set-key
+	"ax"  'xkcd
+	"agt" 'tetris
+	"agg" 'gomoku
+	"ag2" '2048-game
+	"agd" 'dunnet
+	"ai"  'erc
+	"ar"  'ranger
+	"ad"  'deer
+	"ac"  'calc-dispatch
+	"ap"  'paradox-list-packages
+	"au"  'undo-tree-visualize
+	"aw"  'sunshine-forecast
+	"aW"  'sunshine-quick-forecast
+	"as"  'speed-type-text
+	"at"  'twit
 
-        ;; org
-        "ao#" 'org-agenda-list-stuck-projects
-        "ao/" 'org-occur-in-agenda-files
-        "aoa" 'org-agenda-list
-        "aoe" 'org-store-agenda-views
-        "aom" 'org-tags-view
-        "aoo" 'org-agenda
-        "aos" 'org-search-view
-        "aot" 'org-todo-list
-        "aoO" 'org-clock-out
-        "aoc" 'org-capture
-        "aol" 'org-store-link))
+	;; org
+	"ao#" 'org-agenda-list-stuck-projects
+	"ao/" 'org-occur-in-agenda-files
+	"aoa" 'org-agenda-list
+	"aoe" 'org-store-agenda-views
+	"aom" 'org-tags-view
+	"aoo" 'org-agenda
+	"aos" 'org-search-view
+	"aot" 'org-todo-list
+	"aoO" 'org-clock-out
+	"aoc" 'org-capture
+	"aol" 'org-store-link))
 #+end_src
 **** Buffers & Files
 #+begin_src emacs-lisp
-  (defun diego/leader-buffers-files ()
-    (evil-leader/set-key
-      "TAB" 'switch-to-previous-buffer
-      "bb"  'ivy-switch-buffer
-      "bk"  'kill-this-buffer
-      "bK"  'kill-buffer
-      "bm"  'kill-matching-buffers
-      "br"  'view-mode
-      "bn"  'next-buffer
-      "bp"  'previous-buffer
-      "be"  'diego/safe-erase-buffer
-      "bi"  'ibuffer
-      "bc"  'clone-indirect-buffer-other-window
-      "bS"  'diego/switch-to-scratch
-      "bM"  'diego/switch-to-messages
-      "b*"  'diego/switch-to-star
-      "bs"  'ivy-switch-buffer-other-window
-      "bC"  'diego/switch-to-customize
+(defun diego/leader-buffers-files ()
+  (evil-leader/set-key
+	"TAB" 'switch-to-previous-buffer
+	"bb"  'ivy-switch-buffer
+	"bk"  'kill-this-buffer
+	"bK"  'kill-buffer
+	"bm"  'kill-matching-buffers
+	"br"  'view-mode
+	"bn"  'next-buffer
+	"bp"  'previous-buffer
+	"be"  'diego/safe-erase-buffer
+	"bi"  'ibuffer
+	"bc"  'clone-indirect-buffer-other-window
+	"bS"  'diego/switch-to-scratch
+	"bM"  'diego/switch-to-messages
+	"b*"  'diego/switch-to-star
+	"bs"  'ivy-switch-buffer-other-window
+	"bC"  'diego/switch-to-customize
 
-      "ff"  'counsel-find-file
-      "fb"  'counsel-bookmark
-      "fc"  'diego/copy-file
-      "fs"  'save-buffer
-      "fl"  'counsel-locate
-      "fr"  'rename-this-file-and-buffer
-      "fot" 'diego/pop-to-org-todo
-      "fon" 'diego/pop-to-org-notes
-      "fD"  'move-file-to-trash)
+	"ff"  'counsel-find-file
+	"fb"  'counsel-bookmark
+	"fc"  'diego/copy-file
+	"fs"  'save-buffer
+	"fl"  'counsel-locate
+	"fr"  'rename-this-file-and-buffer
+	"fot" 'diego/pop-to-org-todo
+	"fon" 'diego/pop-to-org-notes
+	"fD"  'move-file-to-trash)
 
-    (defun diego/switch-to-scratch ()
-      (interactive)
-      (switch-to-buffer (get-buffer-create "*scratch*")))
+  (defun diego/switch-to-scratch ()
+	(interactive)
+	(switch-to-buffer (get-buffer-create "*scratch*")))
 
-    (defun diego/switch-to-star ()
-      (interactive)
-      (let ((ivy-initial-inputs-alist '((ivy-switch-buffer . "^*"))))
-        (ivy-switch-buffer)))
+  (defun diego/switch-to-star ()
+	(interactive)
+	(let ((ivy-initial-inputs-alist '((ivy-switch-buffer . "^*"))))
+	  (ivy-switch-buffer)))
 
-    (defun diego/switch-to-customize ()
-      (interactive)
-      (let ((ivy-initial-inputs-alist '((ivy-switch-buffer . "^*customize "))))
-        (ivy-switch-buffer)))
+  (defun diego/switch-to-customize ()
+	(interactive)
+	(let ((ivy-initial-inputs-alist '((ivy-switch-buffer . "^*customize "))))
+	  (ivy-switch-buffer)))
 
-    (defun diego/switch-to-messages ()
-      (interactive)
-      (switch-to-buffer (get-buffer "*Messages*")))
+  (defun diego/switch-to-messages ()
+	(interactive)
+	(switch-to-buffer (get-buffer "*Messages*")))
 
-    (defun diego/copy-file ()
-      (interactive)
-      (call-interactively 'write-file))
+  (defun diego/copy-file ()
+	(interactive)
+	(call-interactively 'write-file))
 
-    (defun diego/safe-erase-buffer ()
-      (interactive)
-      (if (y-or-n-p (format "Erase content of buffer %s ?" (current-buffer)))
-          (progn
-            (erase-buffer)
-            (message "Buffer erased."))
-        (message "erase-buffer cancelled"))))
+  (defun diego/safe-erase-buffer ()
+	(interactive)
+	(if (y-or-n-p (format "Erase content of buffer %s ?" (current-buffer)))
+		(progn
+		  (erase-buffer)
+		  (message "Buffer erased."))
+	  (message "erase-buffer cancelled"))))
 #+end_src
 **** Toggles
 #+begin_src emacs-lisp
-  (defun diego/leader-toggle ()
-    (evil-leader/set-key
-      "tf" 'fci-mode
-      "tl" 'nlinum-mode
-      "tw" 'whitespace-mode
-      "ts" 'flycheck-mode
-      "tg" 'diego/github-spacing
-      "tc" 'diego/toggle-linum-fci
-      "tr" 'nlinum-relative-toggle
-      "tS" 'flyspell-mode)
+(defun diego/leader-toggle ()
+  (evil-leader/set-key
+	"tf" 'fci-mode
+	"tl" 'nlinum-mode
+	"tw" 'whitespace-mode
+	"ts" 'flycheck-mode
+	"tg" 'diego/github-spacing
+	"tc" 'diego/toggle-linum-fci
+	"tr" 'nlinum-relative-toggle
+	"tS" 'flyspell-mode)
 
   (defun diego/toggle-linum-fci ()
-    (interactive)
-    (cond ((and (eq nlinum-mode t) (eq fci-mode t))
-           (nlinum-mode -1)
-           (fci-mode -1))
-          ((and (eq nlinum-mode nil) (eq fci-mode nil))
-           (nlinum-mode 1)
-           (fci-mode 1)))))
+	(interactive)
+	(cond ((and (eq nlinum-mode t) (eq fci-mode t))
+		   (nlinum-mode -1)
+		   (fci-mode -1))
+		  ((and (eq nlinum-mode nil) (eq fci-mode nil))
+		   (nlinum-mode 1)
+		   (fci-mode 1)))))
 #+end_src
 **** Editing
 #+begin_src emacs-lisp
@@ -874,8 +880,8 @@ based on or copied from spacemacs, so definitely check them out!
 				  nil)))
 
 (setq diego/evil-numbers-transient-map
-      (let ((map (make-sparse-keymap)))
-        (define-key map (kbd "=") #'diego/inc-at-pt)
+	  (let ((map (make-sparse-keymap)))
+		(define-key map (kbd "=") #'diego/inc-at-pt)
 		(define-key map (kbd "-") #'diego/dec-at-pt)
 		map))
 
@@ -908,231 +914,243 @@ based on or copied from spacemacs, so definitely check them out!
 #+end_src
 **** magit
 #+begin_src emacs-lisp
-  (defun diego/leader-magit ()
-    (evil-leader/set-key
-      "gs" 'magit-status
-      "gl" 'magit-log-all
-      "gB" 'magit-blame-toggle
-      "gc" 'magit-clone
-      "ga" 'magit-submodule-add
-      "gb" 'magit-branch))
+(defun diego/leader-magit ()
+  (evil-leader/set-key
+	"gs" 'magit-status
+	"gl" 'magit-log-all
+	"gB" 'magit-blame-toggle
+	"gc" 'magit-clone
+	"ga" 'magit-submodule-add
+	"gb" 'magit-branch))
 #+end_src
 **** Help
 #+begin_src emacs-lisp
-  (defun diego/leader-help ()
-    (evil-leader/set-key
-      "hdb" 'counsel-descbinds
-      "hdc" 'describe-char
-      "hdd" 'devdocs-search
-      "hdf" 'counsel-describe-function
-      "hdF" 'counsel-describe-face
-      "hdk" 'describe-key
-      "hdm" 'describe-mode
-      "hdp" 'describe-package
-      "hdv" 'counsel-describe-variable
-      "hdt" 'describe-theme
-      "hds" 'describe-symbol
+(defun diego/leader-help ()
+  (evil-leader/set-key
+	"hdb" 'counsel-descbinds
+	"hdc" 'describe-char
+	"hdd" 'devdocs-search
+	"hdf" 'counsel-describe-function
+	"hdF" 'counsel-describe-face
+	"hdk" 'describe-key
+	"hdm" 'describe-mode
+	"hdp" 'describe-package
+	"hdv" 'counsel-describe-variable
+	"hdt" 'describe-theme
+	"hds" 'describe-symbol
 
-      "hk"  'which-key-show-top-level
-      "hm"  'man
-      "hn"  'view-emacs-news))
+	"hk"  'which-key-show-top-level
+	"hm"  'man
+	"hn"  'view-emacs-news))
 #+end_src
 **** Quit
 #+begin_src emacs-lisp
-  (defun diego/leader-quit ()
-    (evil-leader/set-key
-      "qq" 'save-buffers-kill-emacs
-      "qr" 'restart-emacs
-      "qf" 'delete-frame))
+(defun diego/leader-quit ()
+  (evil-leader/set-key
+	"qq" 'save-buffers-kill-emacs
+	"qr" 'restart-emacs
+	"qf" 'delete-frame))
 #+end_src
 **** Modes
 #+BEGIN_SRC emacs-lisp
-  (defun diego/leader-modes ()
-    ;; emacs-lisp
-    (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
-      (evil-leader/set-key-for-mode mode
-        "meb" 'eval-buffer
-        "mef" 'eval-defun
-        "mer" 'eval-region
-        "mel" 'eval-last-sexp)))
+(defun diego/leader-modes ()
+  (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
+	(evil-leader/set-key-for-mode mode
+	  "meb" 'eval-buffer
+	  "mef" 'eval-defun
+	  "mer" 'eval-region
+	  "mes" 'eval-last-sexp
+	  "mel" 'diego/eval-line))
+
+  (evil-leader/set-key-for-mode 'org-mode
+	"meb" 'eval-buffer
+	"mef" 'eval-defun
+	"mer" 'eval-region
+	"mes" 'eval-last-sexp
+	"mel" 'diego/eval-line)
+
+  (defun diego/eval-line ()
+	(interactive)
+	(evil-visual-line)
+	(eval-region (region-beginning) (region-end))))
 #+END_SRC
 **** Global
 #+BEGIN_SRC emacs-lisp
-  (defun diego/config-evil-leader ()
-    "Configure evil leader mode."
-    (evil-leader/set-leader "SPC")
-    (setq evil-leader/in-all-states 1)
-    (evil-leader/set-key
-      "SPC" 'counsel-M-x
-      "C"   'org-capture
-      "u"   'universal-argument
-      "&"   'async-shell-command
-      ":"   'eval-expression
-      "y"   'counsel-yank-pop
-      "z"   'repeat)
+(defun diego/config-evil-leader ()
+  "Configure evil leader mode."
+  (evil-leader/set-leader "SPC")
+  (setq evil-leader/in-all-states 1)
+  (evil-leader/set-key
+	"SPC" 'counsel-M-x
+	"C"   'org-capture
+	"u"   'universal-argument
+	"&"   'async-shell-command
+	":"   'eval-expression
+	"y"   'counsel-yank-pop
+	"z"   'repeat)
 
-    (diego/leader-applications)
-    (diego/leader-buffers-files)
-    (diego/leader-editing)
-    (diego/leader-help)
-    (diego/leader-jumping)
-    (diego/leader-magit)
-    (diego/leader-modes)
-    (diego/leader-projects)
-    (diego/leader-quit)
-    (diego/leader-search)
-    (diego/leader-toggle)
-    (diego/leader-window)
-    (diego/leader-spelling)
-    (define-key universal-argument-map (kbd "SPC u") 'universal-argument-more)
+  (diego/leader-applications)
+  (diego/leader-buffers-files)
+  (diego/leader-editing)
+  (diego/leader-help)
+  (diego/leader-jumping)
+  (diego/leader-magit)
+  (diego/leader-modes)
+  (diego/leader-projects)
+  (diego/leader-quit)
+  (diego/leader-search)
+  (diego/leader-toggle)
+  (diego/leader-window)
+  (diego/leader-spelling)
+  (define-key universal-argument-map (kbd "SPC u") 'universal-argument-more)
 
-    (defun magit-blame-toggle ()
-      "Toggle magit-blame-mode on and off interactively."
-      (interactive)
-      (if (and (boundp 'magit-blame-mode) magit-blame-mode)
-          (magit-blame-quit)
-        (call-interactively 'magit-blame))))
+  (defun magit-blame-toggle ()
+	"Toggle magit-blame-mode on and off interactively."
+	(interactive)
+	(if (and (boundp 'magit-blame-mode) magit-blame-mode)
+		(magit-blame-quit)
+	  (call-interactively 'magit-blame))))
 #+END_SRC
 *** Modes
 #+BEGIN_SRC emacs-lisp
-  (defun diego/evil-modes ()
-	"Configure evil mode."
+(defun diego/evil-modes ()
+  "Configure evil mode."
 
-	;; Use Emacs state in these additional modes.
-	(dolist (mode '(ag-mode
-					flycheck-error-list-mode
-					git-rebase-mode
-					eshell-mode
-					calc-mode
-					calc-trail-mode
-					sunshine-mode
-					term-mode))
-	  (add-to-list 'evil-emacs-state-modes mode))
+  ;; Use Emacs state in these additional modes.
+  (dolist (mode '(ag-mode
+				  flycheck-error-list-mode
+				  git-rebase-mode
+				  eshell-mode
+				  calc-mode
+				  calc-trail-mode
+				  sunshine-mode
+				  term-mode))
+	(add-to-list 'evil-emacs-state-modes mode))
 
-	(setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
-	(setq evil-emacs-state-modes (delq 'Custom-mode evil-emacs-state-modes))
-	(setq evil-insert-state-modes (delq 'term-mode evil-insert-state-modes))
+  (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
+  (setq evil-emacs-state-modes (delq 'Custom-mode evil-emacs-state-modes))
+  (setq evil-insert-state-modes (delq 'term-mode evil-insert-state-modes))
 
-	;; Use insert state in these additional modes.
-	(dolist (mode '(magit-log-edit-mode))
-	  (add-to-list 'evil-insert-state-modes mode))
+  ;; Use insert state in these additional modes.
+  (dolist (mode '(magit-log-edit-mode))
+	(add-to-list 'evil-insert-state-modes mode))
 
-	(add-to-list 'evil-buffer-regexps '("\\*Flycheck"))
+  (add-to-list 'evil-buffer-regexps '("\\*Flycheck"))
 
 
-	(defun evil-visual-line--mark-org-element-when-heading (&rest args)
-	  "When marking a visual line in Org, mark the current element.
+  (defun evil-visual-line--mark-org-element-when-heading (&rest args)
+	"When marking a visual line in Org, mark the current element.
 	 This function is used as a `:before-while' advice on
 	 `evil-visual-line'; if the current mode is derived from Org Mode and
 	 point is resting on an Org heading, mark the whole element instead of
 	 the line. ARGS are passed to `evil-visual-line' when text objects are
 	 used, but this function ignores them."
-	  (interactive)
-	  (if (and (derived-mode-p 'org-mode)
-			   (org-on-heading-p))
-		  (not (org-mark-element))
-		t))
+	(interactive)
+	(if (and (derived-mode-p 'org-mode)
+			 (org-on-heading-p))
+		(not (org-mark-element))
+	  t))
 
-	(advice-add 'evil-visual-line :before-while #'evil-visual-line--mark-org-element-when-heading))
+  (advice-add 'evil-visual-line :before-while #'evil-visual-line--mark-org-element-when-heading))
 #+END_SRC
 *** Appearance
 #+BEGIN_SRC emacs-lisp
-  (defun diego/evil-appearance ()
-    (setq evil-insert-state-cursor '(bar . 1))
-    (setq evil-emacs-state-cursor '(bar . 1))
-    (setq evil-normal-state-tag " NORMAL ")
-    (setq evil-insert-state-tag " INSERT ")
-    (setq evil-motion-state-tag " MOTION ")
-    (setq evil-visual-state-tag " VISUAL ")
-    (setq evil-emacs-state-tag  " EMACS ")
-    (setq evil-replace-state-tag " REPLACE "))
+(defun diego/evil-appearance ()
+  (setq evil-insert-state-cursor '(bar . 1))
+  (setq evil-emacs-state-cursor '(bar . 1))
+  (setq evil-normal-state-tag " NORMAL ")
+  (setq evil-insert-state-tag " INSERT ")
+  (setq evil-motion-state-tag " MOTION ")
+  (setq evil-visual-state-tag " VISUAL ")
+  (setq evil-emacs-state-tag  " EMACS ")
+  (setq evil-replace-state-tag " REPLACE "))
 #+END_SRC
 *** Bindings
 #+BEGIN_SRC emacs-lisp
-  ;; Global bindings.
-  (defun diego/evil-bindings ()
+;; Global bindings.
+(defun diego/evil-bindings ()
 
 
-	(define-key evil-normal-state-map "gy" 'evilnc-copy-and-comment-lines)
-	(define-key evil-normal-state-map "gc" 'evilnc-comment-operator)
-	(define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
-	(define-key evil-normal-state-map (kbd "<up>")   'evil-previous-visual-line)
-	(define-key evil-normal-state-map (kbd "g/")    'occur-last-search)
-	(define-key evil-normal-state-map (kbd "[i")    'show-first-occurrence)
-	(define-key evil-insert-state-map (kbd "C-e")   'end-of-line) ;; I know...
-	(define-key evil-normal-state-map (kbd "S-SPC") 'diego/pop-to-org-agenda)
-	;; (define-key evil-normal-state-map (kbd "<SPC>") 'counsel-M-x)
-	;; (define-key evil-visual-state-map (kbd "<SPC>") 'counsel-M-x)
+  (define-key evil-normal-state-map "gy" 'evilnc-copy-and-comment-lines)
+  (define-key evil-normal-state-map "gc" 'evilnc-comment-operator)
+  (define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
+  (define-key evil-normal-state-map (kbd "<up>")   'evil-previous-visual-line)
+  (define-key evil-normal-state-map (kbd "g/")    'occur-last-search)
+  (define-key evil-normal-state-map (kbd "[i")    'show-first-occurrence)
+  (define-key evil-insert-state-map (kbd "C-e")   'end-of-line) ;; I know...
+  (define-key evil-normal-state-map (kbd "S-SPC") 'diego/pop-to-org-agenda)
+  ;; (define-key evil-normal-state-map (kbd "<SPC>") 'counsel-M-x)
+  ;; (define-key evil-visual-state-map (kbd "<SPC>") 'counsel-M-x)
 
-	(evil-define-key 'normal custom-mode-map
-	  "q" 'Custom-buffer-done)
+  (evil-define-key 'normal custom-mode-map
+	"q" 'Custom-buffer-done)
 
-	(evil-define-key 'normal message-mode-map
-	  "q" 'switch-to-previous-buffer)
+  (evil-define-key 'normal message-mode-map
+	"q" 'switch-to-previous-buffer)
 
-	(evil-add-hjkl-bindings occur-mode-map 'emacs
-	  (kbd "/")       'evil-search-forward
-	  (kbd "n")       'evil-search-next
-	  (kbd "N")       'evil-search-previous
-	  (kbd "C-d")     'evil-scroll-down
-	  (kbd "C-u")     'evil-scroll-up
-	  (kbd "C-w C-w") 'other-window)
+  (evil-add-hjkl-bindings occur-mode-map 'emacs
+	(kbd "/")       'evil-search-forward
+	(kbd "n")       'evil-search-next
+	(kbd "N")       'evil-search-previous
+	(kbd "C-d")     'evil-scroll-down
+	(kbd "C-u")     'evil-scroll-up
+	(kbd "C-w C-w") 'other-window)
 
-	;; Make escape and C-/ quit everything, whenever possible.
-	(define-key evil-insert-state-map [?\C-/] #'evil-normal-state)
-	(define-key evil-replace-state-map [?\C-/] #'evil-normal-state)
+  ;; Make escape and C-/ quit everything, whenever possible.
+  (define-key evil-insert-state-map [?\C-/] #'evil-normal-state)
+  (define-key evil-replace-state-map [?\C-/] #'evil-normal-state)
 
-	(define-key evil-normal-state-map [escape] #'keyboard-quit)
-	(define-key evil-normal-state-map [?\C-/] #'keyboard-quit)
+  (define-key evil-normal-state-map [escape] #'keyboard-quit)
+  (define-key evil-normal-state-map [?\C-/] #'keyboard-quit)
 
-	(define-key evil-visual-state-map [escape] #'keyboard-quit)
-	(define-key evil-visual-state-map [?\C-/] #'keyboard-quit)
+  (define-key evil-visual-state-map [escape] #'keyboard-quit)
+  (define-key evil-visual-state-map [?\C-/] #'keyboard-quit)
 
-	(define-key minibuffer-local-map [escape] #'minibuffer-keyboard-quit)
-	(define-key minibuffer-local-map [?\C-/] #'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-map [escape] #'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-map [?\C-/] #'minibuffer-keyboard-quit)
 
-	(define-key minibuffer-local-ns-map [escape] #'minibuffer-keyboard-quit)
-	(define-key minibuffer-local-ns-map [?\C-/] #'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-ns-map [escape] #'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-ns-map [?\C-/] #'minibuffer-keyboard-quit)
 
-	(define-key minibuffer-local-completion-map [escape] #'minibuffer-keyboard-quit)
-	(define-key minibuffer-local-completion-map [?\C-/] #'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-completion-map [escape] #'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-completion-map [?\C-/] #'minibuffer-keyboard-quit)
 
-	(define-key minibuffer-local-must-match-map [escape] #'minibuffer-keyboard-quit)
-	(define-key minibuffer-local-must-match-map [?\C-/] #'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-must-match-map [escape] #'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-must-match-map [?\C-/] #'minibuffer-keyboard-quit)
 
-	(define-key minibuffer-local-isearch-map [escape] #'minibuffer-keyboard-quit)
-	(define-key minibuffer-local-isearch-map [?\C-/] #'minibuffer-keyboard-quit))
+  (define-key minibuffer-local-isearch-map [escape] #'minibuffer-keyboard-quit)
+  (define-key minibuffer-local-isearch-map [?\C-/] #'minibuffer-keyboard-quit))
 #+END_SRC
 *** Final Setup
 #+BEGIN_SRC emacs-lisp
-  (use-package evil
-	:ensure t
-	:init
-	(setq evil-want-C-u-scroll t)
-	(setq evil-want-fine-undo t)
-	(setq evil-search-module 'evil-search)
-	(setq evil-ex-search-persistent-highlight nil)
-	:config
-	;; (setq evil-move-cursor-back nil)
-	(add-hook 'evil-mode-hook 'diego/evil-modes)
-	(add-hook 'evil-mode-hook 'diego/evil-appearance)
-	(add-hook 'evil-mode-hook 'diego/evil-bindings))
+(use-package evil
+  :ensure t
+  :init
+  (setq evil-want-C-u-scroll t)
+  (setq evil-want-fine-undo t)
+  (setq evil-search-module 'evil-search)
+  (setq evil-ex-search-persistent-highlight nil)
+  :config
+  ;; (setq evil-move-cursor-back nil)
+  (add-hook 'evil-mode-hook 'diego/evil-modes)
+  (add-hook 'evil-mode-hook 'diego/evil-appearance)
+  (add-hook 'evil-mode-hook 'diego/evil-bindings))
 
-  (use-package evil-leader
-	:ensure t
-	:after evil
-	:config
-	(global-evil-leader-mode)
-	(diego/config-evil-leader))
+(use-package evil-leader
+  :ensure t
+  :after evil
+  :config
+  (global-evil-leader-mode)
+  (diego/config-evil-leader))
 
-  (use-package evil-indent-textobject
-	:ensure t
-	:after evil)
+(use-package evil-indent-textobject
+  :ensure t
+  :after evil)
 
-  (use-package evil-numbers
-	:ensure t
-	:after evil)
-  (evil-mode 1)
+(use-package evil-numbers
+  :ensure t
+  :after evil)
+(evil-mode 1)
 #+END_SRC
 
 ** [[https://github.com/abo-abo/swiper][ivy]]
@@ -1172,6 +1190,7 @@ A really nice search/completion system for emacs.
 		  "\\`todo.org"
 		  "\\`notes.org"
 		  "\\`archive.org"
+		  "\\`elfeed.org"
 		  "\\`\\*Man"
 		  "\\`\\*Quail"))
 
@@ -1239,19 +1258,19 @@ some advice on that (still relevant now-2016). In particular, make sure you
 have something like:
 
 #+begin_src emacs-lisp :tangle no
-  (package-initialize)
-  (setq package-enable-at-startup nil)
+(package-initialize)
+(setq package-enable-at-startup nil)
 #+end_src
 
 at the beginning of your init.el/emacs.d, or as in my case something like:
 
 #+begin_src emacs-lisp :tangle no
-  (package-initialize nil)
-  (setq package-enable-at-startup nil)
-  ;; ---------------------------
-  ;; my load-path settings here
-  ;; ---------------------------
-  (package-initialize)
+(package-initialize nil)
+(setq package-enable-at-startup nil)
+;; ---------------------------
+;; my load-path settings here
+;; ---------------------------
+(package-initialize)
 #+end_src
 
 I actually don't think I tried the former option, but the latter simply worked
@@ -1259,417 +1278,418 @@ so I went with it.
 
 *** Helper functions
 #+BEGIN_SRC emacs-lisp
-  (defun diego/org-global-custom-ids ()
-    "Find custom ID fields in all org agenda files."
-    (let ((files (org-agenda-files))
-          file
-          diego/all-org-custom-ids)
-      (while (setq file (pop files))
-        (with-current-buffer (org-get-agenda-file-buffer file)
-          (save-excursion
-            (save-restriction
-              (widen)
-              (goto-char (point-min))
-              (while (re-search-forward "^[ \t]*:CUSTOM_ID:[ \t]+\\(\\S-+\\)[ \t]*$"
-                                        nil t)
-                (add-to-list 'diego/all-org-custom-ids
-                             `(,(match-string-no-properties 1)
-                               ,(concat file ":" (number-to-string (line-number-at-pos))))))))))
-      diego/all-org-custom-ids))
+(defun diego/org-global-custom-ids ()
+  "Find custom ID fields in all org agenda files."
+  (let ((files (org-agenda-files))
+		file
+		diego/all-org-custom-ids)
+	(while (setq file (pop files))
+	  (with-current-buffer (org-get-agenda-file-buffer file)
+		(save-excursion
+		  (save-restriction
+			(widen)
+			(goto-char (point-min))
+			(while (re-search-forward "^[ \t]*:CUSTOM_ID:[ \t]+\\(\\S-+\\)[ \t]*$"
+									  nil t)
+			  (add-to-list 'diego/all-org-custom-ids
+						   `(,(match-string-no-properties 1)
+							 ,(concat file ":" (number-to-string (line-number-at-pos))))))))))
+	diego/all-org-custom-ids))
 
-  (defun diego/org-goto-custom-id ()
-    "Go to the location of CUSTOM-ID, or prompt interactively."
-    (interactive)
-    (let* ((all-custom-ids (diego/org-global-custom-ids))
-           (custom-id (completing-read
-                       "Custom ID: "
-                       all-custom-ids)))
-      (when custom-id
-        (let* ((val (cadr (assoc custom-id all-custom-ids)))
-               (id-parts (split-string val ":"))
-               (file (car id-parts))
-               (line (string-to-int (cadr id-parts))))
-          (pop-to-buffer (org-get-agenda-file-buffer file))
-          (goto-char (point-min))
-          (forward-line line)
-          (org-reveal)
-          (org-up-element)))))
+(defun diego/org-goto-custom-id ()
+  "Go to the location of CUSTOM-ID, or prompt interactively."
+  (interactive)
+  (let* ((all-custom-ids (diego/org-global-custom-ids))
+		 (custom-id (completing-read
+					 "Custom ID: "
+					 all-custom-ids)))
+	(when custom-id
+	  (let* ((val (cadr (assoc custom-id all-custom-ids)))
+			 (id-parts (split-string val ":"))
+			 (file (car id-parts))
+			 (line (string-to-int (cadr id-parts))))
+		(pop-to-buffer (org-get-agenda-file-buffer file))
+		(goto-char (point-min))
+		(forward-line line)
+		(org-reveal)
+		(org-up-element)))))
 
-  (defun diego/org-insert-custom-id-link ()
-    "Insert an Org link to a custom ID selected interactively."
-    (interactive)
-    (let* ((all-custom-ids (diego/org-global-custom-ids))
-           (custom-id (completing-read
-                       "Custom ID: "
-                       all-custom-ids)))
-      (when custom-id
-        (let* ((val (cadr (assoc custom-id all-custom-ids)))
-               (id-parts (split-string val ":"))
-               (file (car id-parts))
-               (line (string-to-int (cadr id-parts))))
-          (org-insert-link nil (concat file "::#" custom-id) custom-id)))))
+(defun diego/org-insert-custom-id-link ()
+  "Insert an Org link to a custom ID selected interactively."
+  (interactive)
+  (let* ((all-custom-ids (diego/org-global-custom-ids))
+		 (custom-id (completing-read
+					 "Custom ID: "
+					 all-custom-ids)))
+	(when custom-id
+	  (let* ((val (cadr (assoc custom-id all-custom-ids)))
+			 (id-parts (split-string val ":"))
+			 (file (car id-parts))
+			 (line (string-to-int (cadr id-parts))))
+		(org-insert-link nil (concat file "::#" custom-id) custom-id)))))
 
-  (defun diego/org-set-category-property (value)
-    "Set the category property of the current item to VALUE."
-    (interactive (list (org-read-property-value "CATEGORY")))
-    (org-set-property "CATEGORY" value))
+(defun diego/org-set-category-property (value)
+  "Set the category property of the current item to VALUE."
+  (interactive (list (org-read-property-value "CATEGORY")))
+  (org-set-property "CATEGORY" value))
 
-  (defun diego/org-insert-heading (&optional subheading)
-      "Insert a heading or a subheading.
+(defun diego/org-insert-heading (&optional subheading)
+  "Insert a heading or a subheading.
   If the optional SUBHEADING is t, insert a subheading.  Inserting
   headings always respects content."
-      (interactive "P")
-      (if subheading
-          (org-insert-subheading t)
-        (org-insert-heading t)))
+  (interactive "P")
+  (if subheading
+	  (org-insert-subheading t)
+	(org-insert-heading t)))
 
-  (defun diego/org-insert-scheduled-heading (&optional subheading)
-      "Insert a new org heading scheduled for today.
+(defun diego/org-insert-scheduled-heading (&optional subheading)
+  "Insert a new org heading scheduled for today.
   Insert the new heading at the end of the current subtree if
   FORCE-HEADING is non-nil."
-      (interactive "P")
-      (if subheading
-          (org-insert-subheading t)
-        (org-insert-todo-heading t t))
-      (org-schedule nil (format-time-string "%Y-%m-%d")))
+  (interactive "P")
+  (if subheading
+	  (org-insert-subheading t)
+	(org-insert-todo-heading t t))
+  (org-schedule nil (format-time-string "%Y-%m-%d")))
 
-  (defun diego/org-task-capture ()
-    "Capture a task with my default template."
-    (interactive)
-    (org-capture nil "a"))
+(defun diego/org-task-capture ()
+  "Capture a task with my default template."
+  (interactive)
+  (org-capture nil "a"))
 
-  (defun diego/org-agenda-capture ()
-    "Capture a task in agenda mode, using the date at point."
-    (interactive)
-    (let ((org-overriding-default-time (org-get-cursor-date)))
-      (org-capture nil "a")))
+(defun diego/org-agenda-capture ()
+  "Capture a task in agenda mode, using the date at point."
+  (interactive)
+  (let ((org-overriding-default-time (org-get-cursor-date)))
+	(org-capture nil "a")))
 
-  (defun diego/org-agenda-toggle-date (current-line)
-    "Toggle `SCHEDULED' and `DEADLINE' tag in the capture buffer."
-    (interactive "P")
-    (save-excursion
-      (let ((search-limit (if current-line
-                              (line-end-position)
-                            (point-max))))
+(defun diego/org-agenda-toggle-date (current-line)
+  "Toggle `SCHEDULED' and `DEADLINE' tag in the capture buffer."
+  (interactive "P")
+  (save-excursion
+	(let ((search-limit (if current-line
+							(line-end-position)
+						  (point-max))))
 
-        (if current-line (beginning-of-line)
-          (beginning-of-buffer))
-        (if (search-forward "DEADLINE:" search-limit t)
-            (replace-match "SCHEDULED:")
-          (and (search-forward "SCHEDULED:" search-limit t)
-               (replace-match "DEADLINE:"))))))
+	  (if current-line (beginning-of-line)
+		(beginning-of-buffer))
+	  (if (search-forward "DEADLINE:" search-limit t)
+		  (replace-match "SCHEDULED:")
+		(and (search-forward "SCHEDULED:" search-limit t)
+			 (replace-match "DEADLINE:"))))))
 
-  (defun diego/pop-to-org-todo (split)
-    "Visit todo list, in the current window or a split."
-    (interactive "P")
-	(if (eq split nil)
-		(find-file-other-window "~/Dropbox (MIT)/org/todo.org")
-	  (find-file "~/Dropbox (MIT)/org/todo.org")))
+(defun diego/pop-to-org-todo (split)
+  "Visit todo list, in the current window or a split."
+  (interactive "P")
+  (if (eq split nil)
+	  (find-file-other-window "~/Dropbox (MIT)/org/todo.org")
+	(find-file "~/Dropbox (MIT)/org/todo.org")))
 
-  (defun diego/pop-to-org-notes (split)
-    "Visit my main notes list, in the current window or a split."
-    (interactive "P")
-	(if (eq split nil)
-		(find-file-other-window "~/Dropbox (MIT)/org/notes.org")
-	  (find-file "~/Dropbox (MIT)/org/notes.org")))
+(defun diego/pop-to-org-notes (split)
+  "Visit my main notes list, in the current window or a split."
+  (interactive "P")
+  (if (eq split nil)
+	  (find-file-other-window "~/Dropbox (MIT)/org/notes.org")
+	(find-file "~/Dropbox (MIT)/org/notes.org")))
 
-  (defun diego/org-insert-list-leader-or-self (char)
-      "If on column 0, insert space-padded CHAR; otherwise insert CHAR.
+(defun diego/org-insert-list-leader-or-self (char)
+  "If on column 0, insert space-padded CHAR; otherwise insert CHAR.
   This has the effect of automatically creating a properly indented list
   leader; like hyphen, asterisk, or plus sign; without having to use
   list-specific key maps."
-      (if (= (current-column) 0)
-          (insert (concat " " char " "))
-        (insert char)))
+  (if (= (current-column) 0)
+	  (insert (concat " " char " "))
+	(insert char)))
 
-  (defun diego/org-swap-tags (tags)
-      "Replace any tags on the current headline with TAGS.
+(defun diego/org-swap-tags (tags)
+  "Replace any tags on the current headline with TAGS.
   The assumption is that TAGS will be a string conforming to Org Mode's
   tag format specifications, or nil to remove all tags."
-      (let ((old-tags (org-get-tags-string))
-            (tags (if tags
-                      (concat " " tags)
-                    "")))
-        (save-excursion
-          (beginning-of-line)
-          (re-search-forward
-           (concat "[ \t]*" (regexp-quote old-tags) "[ \t]*$")
-           (line-end-position) t)
-          (replace-match tags)
-          (org-set-tags t))))
+  (let ((old-tags (org-get-tags-string))
+		(tags (if tags
+				  (concat " " tags)
+				"")))
+	(save-excursion
+	  (beginning-of-line)
+	  (re-search-forward
+	   (concat "[ \t]*" (regexp-quote old-tags) "[ \t]*$")
+	   (line-end-position) t)
+	  (replace-match tags)
+	  (org-set-tags t))))
 
-  (defun diego/org-set-tags (tag)
-      "Add TAG if it is not in the list of tags, remove it otherwise.
+(defun diego/org-set-tags (tag)
+  "Add TAG if it is not in the list of tags, remove it otherwise.
   TAG is chosen interactively from the global tags completion table."
-      (interactive
-       (list (let ((org-last-tags-completion-table
-                    (if (derived-mode-p 'org-mode)
-                        (org-uniquify
-                         (delq nil (append (org-get-buffer-tags)
-                                           (org-global-tags-completion-table))))
-                      (org-global-tags-completion-table))))
-               (completing-read
-                "Tag: " 'org-tags-completion-function nil nil nil
-                'org-tags-history))))
-      (let* ((cur-list (org-get-tags))
-             (new-tags (mapconcat 'identity
-                                  (if (member tag cur-list)
-                                      (delete tag cur-list)
-                                    (append cur-list (list tag)))
-                                  ":"))
-             (new (if (> (length new-tags) 1) (concat " :" new-tags ":")
-                    nil)))
-        (diego/org-swap-tags new)))
+  (interactive
+   (list (let ((org-last-tags-completion-table
+				(if (derived-mode-p 'org-mode)
+					(org-uniquify
+					 (delq nil (append (org-get-buffer-tags)
+									   (org-global-tags-completion-table))))
+				  (org-global-tags-completion-table))))
+		   (completing-read
+			"Tag: " 'org-tags-completion-function nil nil nil
+			'org-tags-history))))
+  (let* ((cur-list (org-get-tags))
+		 (new-tags (mapconcat 'identity
+							  (if (member tag cur-list)
+								  (delete tag cur-list)
+								(append cur-list (list tag)))
+							  ":"))
+		 (new (if (> (length new-tags) 1) (concat " :" new-tags ":")
+				nil)))
+	(diego/org-swap-tags new)))
 
 #+END_SRC
 *** Bindings
 #+begin_src emacs-lisp
-  (defun diego/org-bindings ()
+(defun diego/org-bindings ()
 
-    (defmacro diego|org-emphasize (fname char)
-      "Make function for setting the emphasis in org mode"
-      `(defun ,fname () (interactive)
-              (org-emphasize ,char)))
+  (defmacro diego|org-emphasize (fname char)
+	"Make function for setting the emphasis in org mode"
+	`(defun ,fname () (interactive)
+			(org-emphasize ,char)))
 
-    (evil-leader/set-key-for-mode 'org-mode
-      "m$"  'org-archive-subtree
-      "m'"  'org-edit-special
-      "m/"  'org-sparse-tree
-      "m^"  'org-sort
-      "ma"  'org-agenda
-      "mA"  'org-archive-subtree
-      "mc"  'org-capture
-      "md"  'org-deadline
-      "mn"  'org-narrow-to-subtree
-      "mN"  'widen
-      "mP"  'org-set-property
-      "mR"  'org-refile
-      "ms"  'org-schedule
-      "m:"  'diego/org-set-tags
-      "mic" 'org-table-insert-column
-      "mir" 'org-table-insert-row
-      "mil" 'org-insert-link
-      "mif" 'org-footnote-new
-      "me"  'org-export-dispatch
-      "mb"  'org-babel-tangle
-      "mxb" (diego|org-emphasize diego/org-bold ?*)
-      "mxi" (diego|org-emphasize diego/org-italic ?/)
-      "mxc" (diego|org-emphasize diego/org-code ?~)
-      "mxu" (diego|org-emphasize diego/org-underline ?_)
-      "mxv" (diego|org-emphasize diego/org-verbatim ?=)
-      "mxs" (diego|org-emphasize diego/org-strike-through ?+)
-      "mxr" (diego|org-emphasize diego/org-clear ? )
+  (evil-leader/set-key-for-mode 'org-mode
+	"m$"  'org-archive-subtree
+	"m'"  'org-edit-special
+	"m/"  'org-sparse-tree
+	"m^"  'org-sort
+	"ma"  'org-agenda
+	"mA"  'org-archive-subtree
+	"mc"  'org-capture
+	"md"  'org-deadline
+	"mn"  'org-narrow-to-subtree
+	"mN"  'widen
+	"mP"  'org-set-property
+	"mR"  'org-refile
+	"ms"  'org-schedule
+	"m:"  'diego/org-set-tags
+	"mic" 'org-table-insert-column
+	"mir" 'org-table-insert-row
+	"mil" 'org-insert-link
+	"mif" 'org-footnote-new
+	"mee"  'org-export-dispatch
+	"mb"  'org-babel-tangle
+	"mxb" (diego|org-emphasize diego/org-bold ?*)
+	"mxi" (diego|org-emphasize diego/org-italic ?/)
+	"mxc" (diego|org-emphasize diego/org-code ?~)
+	"mxu" (diego|org-emphasize diego/org-underline ?_)
+	"mxv" (diego|org-emphasize diego/org-verbatim ?=)
+	"mxs" (diego|org-emphasize diego/org-strike-through ?+)
+	"mxr" (diego|org-emphasize diego/org-clear ? )
 
-      ;; tables
-      "mta"  'org-table-align
-      "mtb"  'org-table-blank-field
-      "mtc"  'org-table-convert
-      "mtdc" 'org-table-delete-column
-      "mtdr" 'org-table-kill-row
-      "mte"  'org-table-eval-formula
-      "mtE"  'org-table-export
-      "mth"  'org-table-previous-field
-      "mtH"  'org-table-move-column-left
-      "mtic" 'org-table-insert-column
-      "mtih" 'org-table-insert-hline
-      "mtiH" 'org-table-hline-and-move
-      "mtir" 'org-table-insert-row
-      "mtI"  'org-table-import
-      "mtj"  'org-table-next-row
-      "mtJ"  'org-table-move-row-down
-      "mtK"  'org-table-move-row-up
-      "mtl"  'org-table-next-field
-      "mtL"  'org-table-move-column-right
-      "mtn"  'org-table-create
-      "mtN"  'org-table-create-with-table.el
-      "mtr"  'org-table-recalculate
-      "mts"  'org-table-sort-lines
-      "mttf" 'org-table-toggle-formula-debugger
-      "mtto" 'org-table-toggle-coordinate-overlays
-      "mtw"  'org-table-wrap-region)
+	;; tables
+	"mta"  'org-table-align
+	"mtb"  'org-table-blank-field
+	"mtc"  'org-table-convert
+	"mtdc" 'org-table-delete-column
+	"mtdr" 'org-table-kill-row
+	"mte"  'org-table-eval-formula
+	"mtE"  'org-table-export
+	"mth"  'org-table-previous-field
+	"mtH"  'org-table-move-column-left
+	"mtic" 'org-table-insert-column
+	"mtih" 'org-table-insert-hline
+	"mtiH" 'org-table-hline-and-move
+	"mtir" 'org-table-insert-row
+	"mtI"  'org-table-import
+	"mtj"  'org-table-next-row
+	"mtJ"  'org-table-move-row-down
+	"mtK"  'org-table-move-row-up
+	"mtl"  'org-table-next-field
+	"mtL"  'org-table-move-column-right
+	"mtn"  'org-table-create
+	"mtN"  'org-table-create-with-table.el
+	"mtr"  'org-table-recalculate
+	"mts"  'org-table-sort-lines
+	"mttf" 'org-table-toggle-formula-debugger
+	"mtto" 'org-table-toggle-coordinate-overlays
+	"mtw"  'org-table-wrap-region)
 
-    (evil-leader/set-key-for-mode 'org-src-mode
-      "m'" 'org-edit-src-exit)
+  (evil-leader/set-key-for-mode 'org-src-mode
+	"m'" 'org-edit-src-exit)
 
-    (evil-define-key 'normal org-mode-map
-      (kbd "RET") 'org-open-at-point
-      "<"         'org-metaleft
-      ">"         'org-metaright
-      "gh"        'outline-up-heading
-      "gl"        'outline-next-visible-heading
-      "gj"        'org-forward-heading-same-level
-      "gk"        'org-backward-heading-same-level
-      "gt"         'org-todo
-      (kbd "M-l") 'org-metaright
-      (kbd "M-h") 'org-metaleft
-      (kbd "M-k") 'org-metaup
-      (kbd "M-j") 'org-metadown
-      (kbd "M-L") 'org-shiftmetaright
-      (kbd "M-H") 'org-shiftmetaleft
-      (kbd "M-K") 'org-shiftmetaup
-      (kbd "M-J") 'org-shiftmetadown))
+  (evil-define-key 'normal org-mode-map
+	(kbd "RET") 'org-open-at-point
+	"<"         'org-metaleft
+	">"         'org-metaright
+	"gh"        'outline-up-heading
+	"gl"        'outline-next-visible-heading
+	"gj"        'org-forward-heading-same-level
+	"gk"        'org-backward-heading-same-level
+	"gt"         'org-todo
+	(kbd "M-l") 'org-metaright
+	(kbd "M-h") 'org-metaleft
+	(kbd "M-k") 'org-metaup
+	(kbd "M-j") 'org-metadown
+	(kbd "M-L") 'org-shiftmetaright
+	(kbd "M-H") 'org-shiftmetaleft
+	(kbd "M-K") 'org-shiftmetaup
+	(kbd "M-J") 'org-shiftmetadown))
 #+end_src
 *** Custom vars
 **** Files
 #+begin_src emacs-lisp
-  (defun diego/org-file-vars ()
-	;; files
-	(setq org-agenda-text-search-extra-files '(agenda-archives))
-	(setq org-agenda-files '("~/Dropbox (MIT)/org/"))
-	(setq org-default-notes-file "~/Dropbox (MIT)/org/todo.org")
-	(setq diego/todo-file "~/Dropbox (MIT)/org/todo.org")
-	(setq diego/notes-file "~Dropbox (MIT)/org/notes.org")
-	(setq org-directory "~/Dropbox (MIT)/org")
-	(setq org-archive-location "~/Dropbox (MIT)/org/archive.org::"))
+(defun diego/org-file-vars ()
+  ;; files
+  (setq org-agenda-text-search-extra-files '(agenda-archives))
+  (setq org-agenda-files '("~/Dropbox (MIT)/org/"))
+  (setq org-default-notes-file "~/Dropbox (MIT)/org/todo.org")
+  (setq diego/todo-file "~/Dropbox (MIT)/org/todo.org")
+  (setq diego/notes-file "~Dropbox (MIT)/org/notes.org")
+  (setq org-directory "~/Dropbox (MIT)/org")
+  (setq org-archive-location "~/Dropbox (MIT)/org/archive.org::"))
 #+end_src
 **** Todo/agenda
 #+begin_src emacs-lisp
-  (defun diego/org-todo-vars ()
-	;; Todo/tasks/agenda
-	(setq org-enforce-todo-dependencies t)
-	(setq org-log-done (quote time))
-	(setq org-log-redeadline (quote time))
-	(setq org-log-reschedule (quote time))
-	(setq org-agenda-skip-scheduled-if-done t)
-	(setq org-agenda-skip-deadline-if-done t)
-	(setq org-agenda-hide-tags-regexp ".*")
-	(setq org-agenda-span 'day)
+(defun diego/org-todo-vars ()
+  ;; Todo/tasks/agenda
+  (setq org-enforce-todo-dependencies t)
+  (setq org-log-done (quote time))
+  (setq org-log-redeadline (quote time))
+  (setq org-log-reschedule (quote time))
+  (setq org-agenda-skip-scheduled-if-done t)
+  (setq org-agenda-skip-deadline-if-done t)
+  (setq org-agenda-hide-tags-regexp ".*")
+  (setq org-agenda-span 'day)
 
-	(setq org-agenda-deadline-faces
-		  '((1.0 . org-warning)
-			(0.5 . org-upcoming-deadline)
-			(0.0 . '(:foreground "#A89984"))))
+  (setq org-agenda-deadline-faces
+		'((1.0 . org-warning)
+		  (0.5 . org-upcoming-deadline)
+		  (0.0 . '(:foreground "#A89984"))))
 
-	;; (setq org-todo-keywords
-	;; 		'((sequence "► TODO(t)" "○ IN-PROGRESS(p)" "⚑ WAITING(w)" "|"
-	;; 					"✓ DONE(d)" "✗ CANCELED(c)")
-	;; 		  (sequence "► READ(r)" "|"
-	;; 					"✓ DONE(h)")))
-	(setq org-todo-keywords
-		  '((sequence "❯ TODO(t)" "○ IN-PROGRESS(p)" "◼ WAITING(w)" "|"
-					  "✓ DONE(d)" "✗ CANCELED(c)")
-			(sequence "❙ READ(r)" "|"
-					  "✓ DONE(h)")))
+  ;; (setq org-todo-keywords
+  ;; 		'((sequence "► TODO(t)" "○ IN-PROGRESS(p)" "⚑ WAITING(w)" "|"
+  ;; 					"✓ DONE(d)" "✗ CANCELED(c)")
+  ;; 		  (sequence "► READ(r)" "|"
+  ;; 					"✓ DONE(h)")))
+  (setq org-todo-keywords
+		'((sequence "❯ TODO(t)" "○ IN-PROGRESS(p)" "◼ WAITING(w)" "|"
+					"✓ DONE(d)" "✗ CANCELED(c)")
+		  (sequence "❙ READ(r)" "|"
+					"✓ DONE(h)")))
 
-	(setq org-capture-templates
-		  '(("t" "Todo" entry
-			 (file diego/todo-file)
-			 "* ❯ TODO %?\nSCHEDULED: %t")
-			("s" "School Todo" entry
-			 (file+olp diego/todo-file "School" "School")
-			 "* ❯ TODO %?\nSCHEDULED: %t"))))
+  (setq org-capture-templates
+		'(("t" "Todo" entry
+		   (file diego/todo-file)
+		   "* ❯ TODO %?\nSCHEDULED: %t")
+		  ("s" "School Todo" entry
+		   (file+olp diego/todo-file "School" "School")
+		   "* ❯ TODO %?\nSCHEDULED: %t"))))
 
 #+end_src
 
 **** Behavior/appearance
 #+begin_src emacs-lisp
-  (defun diego/org-general-vars ()
-	;; Behavior
-	;; (setq org-support-shift-select t)
-	(setq org-insert-heading-respect-content t)
-	(setq org-src-window-setup 'current-window)
-	(setq org-list-demote-modify-bullet '(("-" . "*")
-										  ("*" . "+")))
-	;; appearance
-	(setq org-src-fontify-natively t)
-	(setq org-src-tab-acts-natively t)
-	(setq org-src-preserve-indentation t)
-	(setq org-fontify-quote-and-verse-blocks t)
-	(setq org-hide-emphasis-markers t)
-	(setq org-startup-with-inline-images t)
-	(setq org-ellipsis " …")
-	(setq org-highlight-latex-and-related '(latex))
-	(setq org-pretty-entities t)
+(defun diego/org-general-vars ()
+  ;; Behavior
+  ;; (setq org-support-shift-select t)
+  (setq org-insert-heading-respect-content t)
+  (setq org-src-window-setup 'current-window)
+  (setq org-list-demote-modify-bullet '(("-" . "*")
+										("*" . "+")))
+  ;; appearance
+  (setq org-src-fontify-natively t)
+  (setq org-src-tab-acts-natively t)
+  (setq org-src-preserve-indentation t)
+  (setq org-fontify-quote-and-verse-blocks t)
+  (setq org-hide-emphasis-markers t)
+  (setq org-startup-with-inline-images t)
+  (setq org-ellipsis " …")
+  (setq org-highlight-latex-and-related '(latex))
+  (setq org-pretty-entities t)
 
-	;; latex
-	(setq org-latex-listings t)
-	(add-to-list 'org-latex-packages-alist '("" "listings"))
-	(add-to-list 'org-latex-packages-alist '("" "color")))
+  ;; latex
+  (setq org-latex-listings t)
+  (add-to-list 'org-latex-packages-alist '("" "listings"))
+  (add-to-list 'org-latex-packages-alist '("" "color"))
+  (add-to-list 'org-latex-packages-alist '("" "tabularx")))
 #+end_src
 *** Setup
 #+BEGIN_SRC emacs-lisp
-  (use-package org
-	:ensure org-plus-contrib
-	:commands (org-capture)
-	:config
-	(diego/org-file-vars)
-	(diego/org-todo-vars)
-	(diego/org-general-vars)
-	(diego/org-bindings)
-	(require 'ox-extra)
-	(ox-extras-activate '(ignore-headlines))
-	(add-hook 'org-agenda-mode-hook
-              (lambda ()
-				(setq org-habit-graph-column 50)
-				(define-key
-                  org-agenda-mode-map "j"          'org-agenda-next-line)
-				(define-key
-                  org-agenda-mode-map "k"          'org-agenda-previous-line)
-				(define-key
-                  org-agenda-mode-map "n"          'org-agenda-next-date-line)
-				(define-key
-                  org-agenda-mode-map "p"          'org-agenda-previous-date-line)
-				(define-key
-                  org-agenda-mode-map "c"          'diego/org-agenda-capture)
-				(define-key
-                  org-agenda-mode-map "R"          'org-revert-all-org-buffers)
-				(define-key
-                  org-agenda-mode-map (kbd "RET")  'org-agenda-switch-to)
+(use-package org
+  :ensure org-plus-contrib
+  :commands (org-capture)
+  :config
+  (diego/org-file-vars)
+  (diego/org-todo-vars)
+  (diego/org-general-vars)
+  (diego/org-bindings)
+  (require 'ox-extra)
+  (ox-extras-activate '(ignore-headlines))
+  (add-hook 'org-agenda-mode-hook
+			(lambda ()
+			  (setq org-habit-graph-column 50)
+			  (define-key
+				org-agenda-mode-map "j"          'org-agenda-next-line)
+			  (define-key
+				org-agenda-mode-map "k"          'org-agenda-previous-line)
+			  (define-key
+				org-agenda-mode-map "n"          'org-agenda-next-date-line)
+			  (define-key
+				org-agenda-mode-map "p"          'org-agenda-previous-date-line)
+			  (define-key
+				org-agenda-mode-map "c"          'diego/org-agenda-capture)
+			  (define-key
+				org-agenda-mode-map "R"          'org-revert-all-org-buffers)
+			  (define-key
+				org-agenda-mode-map (kbd "RET")  'org-agenda-switch-to)
 
-				(setq-local prettify-symbols-alist
-							'(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
-							  ("❙ READ"        . (?❙ (Br . Bl) ?❙ (Br . Bl) ?❙))
-							  ("○ IN-PROGRESS" . (?○ (Br . Bl) ?○ (Br . Bl) ?○))
-							  ("◼ WAITING"     . (?◼ (Br . Bl) ?◼ (Br . Bl) ?◼))
-							  ("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
-							  ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
-				(prettify-symbols-mode)
+			  (setq-local prettify-symbols-alist
+						  '(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
+							("❙ READ"        . (?❙ (Br . Bl) ?❙ (Br . Bl) ?❙))
+							("○ IN-PROGRESS" . (?○ (Br . Bl) ?○ (Br . Bl) ?○))
+							("◼ WAITING"     . (?◼ (Br . Bl) ?◼ (Br . Bl) ?◼))
+							("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
+							("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
+			  (prettify-symbols-mode)
 
-				(define-prefix-command 'diego/org-run-shortcuts)
-				(define-key
-                  diego/org-run-shortcuts "f" (tiny-menu-run-item "org-files"))
-				(define-key
-                  diego/org-run-shortcuts "t" (tiny-menu-run-item "org-things"))
-				(define-key
-                  diego/org-run-shortcuts "c" (tiny-menu-run-item "org-captures"))
-				(define-key
-                  diego/org-run-shortcuts "l" (tiny-menu-run-item "org-links"))
-				(define-key
-                  org-agenda-mode-map (kbd "\\") diego/org-run-shortcuts)))
+			  (define-prefix-command 'diego/org-run-shortcuts)
+			  (define-key
+				diego/org-run-shortcuts "f" (tiny-menu-run-item "org-files"))
+			  (define-key
+				diego/org-run-shortcuts "t" (tiny-menu-run-item "org-things"))
+			  (define-key
+				diego/org-run-shortcuts "c" (tiny-menu-run-item "org-captures"))
+			  (define-key
+				diego/org-run-shortcuts "l" (tiny-menu-run-item "org-links"))
+			  (define-key
+				org-agenda-mode-map (kbd "\\") diego/org-run-shortcuts)))
 
-	(add-hook 'org-capture-mode-hook
-              (lambda ()
-				(evil-define-key
-                  'insert org-capture-mode-map (kbd "C-d")
-                  'diego/org-agenda-toggle-date)
-				(evil-define-key
-                  'normal org-capture-mode-map (kbd "C-d")
-                  'diego/org-agenda-toggle-date)
-				(evil-insert-state)))
+  (add-hook 'org-capture-mode-hook
+			(lambda ()
+			  (evil-define-key
+				'insert org-capture-mode-map (kbd "C-d")
+				'diego/org-agenda-toggle-date)
+			  (evil-define-key
+				'normal org-capture-mode-map (kbd "C-d")
+				'diego/org-agenda-toggle-date)
+			  (evil-insert-state)))
 
-	(add-hook 'org-mode-hook
-              (lambda ()
-				;; Special plain list leader inserts
-				(dolist (char '("+" "-"))
-                  (define-key org-mode-map (kbd char)
-					`(lambda ()
-                       (interactive)
-                       (diego/org-insert-list-leader-or-self ,char))))
+  (add-hook 'org-mode-hook
+			(lambda ()
+			  ;; Special plain list leader inserts
+			  (dolist (char '("+" "-"))
+				(define-key org-mode-map (kbd char)
+				  `(lambda ()
+					 (interactive)
+					 (diego/org-insert-list-leader-or-self ,char))))
 
-				(setq-local prettify-symbols-alist
-							'(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
-							  ("❙ READ"        . (?❙ (Br . Bl) ?❙ (Br . Bl) ?❙))
-							  ("○ IN-PROGRESS" . (?○ (Br . Bl) ?○ (Br . Bl) ?○))
-							  ("◼ WAITING"     . (?◼ (Br . Bl) ?◼ (Br . Bl) ?◼))
-							  ("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
-							  ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
-				(prettify-symbols-mode)
-				;; Bindings
+			  (setq-local prettify-symbols-alist
+						  '(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
+							("❙ READ"        . (?❙ (Br . Bl) ?❙ (Br . Bl) ?❙))
+							("○ IN-PROGRESS" . (?○ (Br . Bl) ?○ (Br . Bl) ?○))
+							("◼ WAITING"     . (?◼ (Br . Bl) ?◼ (Br . Bl) ?◼))
+							("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
+							("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
+			  (prettify-symbols-mode)
+			  ;; Bindings
 
-				(setq fill-column 79)
-				(auto-fill-mode 1)
-				;; (flyspell-mode)
-				(org-indent-mode))))
+			  (setq fill-column 79)
+			  (auto-fill-mode 1)
+			  ;; (flyspell-mode)
+			  (org-indent-mode))))
 #+END_SRC
 ** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 Emacs package that displays available keybindings in popup
@@ -1686,14 +1706,13 @@ Emacs package that displays available keybindings in popup
 	"SPC b"   "buffer"
 	"SPC c"   "comment"
 	"SPC f"   "file"
-	"SPC fe"  "emacs/config"
 	"SPC g"   "magit"
 	"SPC h"   "help"
 	"SPC hd"  "describe"
 	"SPC i"   "insert"
 	"SPC j"   "jump"
 	"SPC m"   "major-mode-cmd"
-	"SPC n"   "narrow"
+	"SPC n"   "narrow/numbers"
 	"SPC p"   "project"
 	"SPC q"   "quit"
 	"SPC s"   "search"
@@ -1705,6 +1724,7 @@ Emacs package that displays available keybindings in popup
 	"SPC xd"  "delete"
 	"SPC xl"  "lines"
 	"SPC xt"  "transpose"
+	"SPC xp"  "parentheses"
 	"SPC xw"  "words"
 	"SPC S"   "spelling"
 	"SPC"     "root")
@@ -1712,7 +1732,8 @@ Emacs package that displays available keybindings in popup
   (which-key-add-major-mode-key-based-replacements 'org-mode
 	"SPC mi" "insert"
 	"SPC mx" "text"
-	"SPC mt" "table")
+	"SPC mt" "table"
+	"SPC me" "eval-export")
 
   (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
 	(which-key-add-major-mode-key-based-replacements mode
@@ -1726,188 +1747,188 @@ Emacs package that displays available keybindings in popup
 *** [[https://github.com/josuah/drawille][drawille]]
 Drawille library implementation in elisp. Draws images/stuff in ascii.
 #+BEGIN_SRC emacs-lisp
-  (use-package drawille
-    :defer 5
-    :ensure t)
+(use-package drawille
+  :defer 5
+  :ensure t)
 #+END_SRC
 *** [[https://github.com/johanvts/emacs-fireplace/][fireplace]]
 A cozy fireplace for emacs. For the cold winters.
 #+BEGIN_SRC emacs-lisp
-  (use-package fireplace
-    :commands fireplace
-    :ensure t)
+(use-package fireplace
+  :commands fireplace
+  :ensure t)
 #+END_SRC
 *** [[https://melpa.org/#/highlight-tail][highlight-tail]]
 Draw a colourful "tail" while you write (A.k.a. pure awesome)
 #+BEGIN_SRC emacs-lisp
-  (use-package highlight-tail
-    :commands highlight-tail-mode
-    :ensure t)
+(use-package highlight-tail
+  :commands highlight-tail-mode
+  :ensure t)
 #+END_SRC
 *** [[https://github.com/TeMPOraL/nyan-mode][nyan-mode]]
 Nyan Cat for Emacs! Nyanyanyanyanyanyanyanyanyan!
 #+BEGIN_SRC emacs-lisp :tangle no
-  (use-package nyan-mode
-    :ensure t
-    :commands nyan-mode
-    :config
-    (nyan-mode))
+(use-package nyan-mode
+  :ensure t
+  :commands nyan-mode
+  :config
+  (nyan-mode))
 #+END_SRC
 *** [[https://github.com/rbanffy/selectric-mode][selectric-mode]]
 Make your Emacs sound like a proper typewriter.
 #+BEGIN_SRC emacs-lisp
-  (use-package selectric-mode
-    :commands selectric-mode
-    :ensure t)
+(use-package selectric-mode
+  :commands selectric-mode
+  :ensure t)
 #+END_SRC
 *** [[https://github.com/hagleitn/speed-type][speed-type]]
 Practice touch/speed typing in emacs.
 #+BEGIN_SRC emacs-lisp
-  (use-package speed-type
-    :ensure t
-    :commands speed-type-text
-    :config
-    (setq speed-type--gb-url-format
-          "http://www.gutenberg.org/cache/epub/%d/pg%d.txt"))
+(use-package speed-type
+  :ensure t
+  :commands speed-type-text
+  :config
+  (setq speed-type--gb-url-format
+		"http://www.gutenberg.org/cache/epub/%d/pg%d.txt"))
 #+END_SRC
 *** [[https://gitlab.com/iankelling/spray][spray]]
 A speed reading mode for Emacs.
 #+BEGIN_SRC emacs-lisp
-  (use-package spray
-    :commands spray-mode
-    :ensure t)
+(use-package spray
+  :commands spray-mode
+  :ensure t)
 #+END_SRC
 *** [[https://github.com/vibhavp/emacs-xkcd][xkcd]]
 Read xkcd from Emacs.
 #+BEGIN_SRC emacs-lisp
-  (use-package xkcd
-	:ensure t
-	:commands xkcd
-	:config
-	(evil-define-key 'normal xkcd-mode-map
-      "j" 'xkcd-next
-      "h" 'xkcd-prev
-      "k" 'xkcd-prev
-      "l" 'xkcd-next
-      "t" 'xkcd-alt-text
-      "q" 'xkcd-kill-buffer))
+(use-package xkcd
+  :ensure t
+  :commands xkcd
+  :config
+  (evil-define-key 'normal xkcd-mode-map
+	"j" 'xkcd-next
+	"h" 'xkcd-prev
+	"k" 'xkcd-prev
+	"l" 'xkcd-next
+	"t" 'xkcd-alt-text
+	"q" 'xkcd-kill-buffer))
 #+END_SRC
 
 *** zone-matrix
 Eh, why not.
 #+BEGIN_SRC emacs-lisp
-  (use-package zone-matrix
-    :ensure t
-    :defer 5
-    :config
-    (eval-after-load "zone"
-      '(unless (memq 'zone-matrix (append zone-programs nil))
-         (setq zone-programs
-               (vconcat zone-programs [zone-matrix])))))
+(use-package zone-matrix
+  :ensure t
+  :defer 5
+  :config
+  (eval-after-load "zone"
+	'(unless (memq 'zone-matrix (append zone-programs nil))
+	   (setq zone-programs
+			 (vconcat zone-programs [zone-matrix])))))
 #+END_SRC
 
 *** [[https://github.com/wasamasa/zone-nyan][zone-nyan]]
 Nyanyanyanyanyanyanyanyan (but actually).
 #+BEGIN_SRC emacs-lisp
-  (use-package zone-nyan
-    :ensure t
-    :after 'zone
-    :defer 5
-    :config
-    (eval-after-load "zone"
-      '(unless (memq 'zone-nyan (append zone-programs nil))
-         (setq zone-programs
-               (vconcat zone-programs [zone-nyan])))))
+(use-package zone-nyan
+  :ensure t
+  :after 'zone
+  :defer 5
+  :config
+  (eval-after-load "zone"
+	'(unless (memq 'zone-nyan (append zone-programs nil))
+	   (setq zone-programs
+			 (vconcat zone-programs [zone-nyan])))))
 #+END_SRC
 ** Appearance
 *** [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
 A utility package to collect various Icon Fonts and propertize them within Emacs.
 #+BEGIN_SRC emacs-lisp
-  (use-package all-the-icons
-    :defer 5
-    :ensure t)
+(use-package all-the-icons
+  :defer 5
+  :ensure t)
 #+END_SRC
 *** [[http://git.savannah.gnu.org/cgit/emacs/elpa.git/tree/packages/rainbow-mode/rainbow-mode.el][rainbow-mode]]
 #+begin_src emacs-lisp
-  (use-package rainbow-mode
-	:commands rainbow-mode
-	:ensure t)
+(use-package rainbow-mode
+  :commands rainbow-mode
+  :ensure t)
 #+end_src
 *** [[https://github.com/therockmandolinist/emacs-theme-darktooth][darktooth-theme]]
 An Emacs 24 theme remixed from gruvbox (my fork).
 #+begin_src emacs-lisp
-  (use-package darktooth-theme
-    :load-path "lisp/")
+(use-package darktooth-theme
+  :load-path "lisp/")
 #+end_src
 *** diego-theme
 A (kind of nasty?) theme I used for a while, inspired by atom-one
 and. Ignorance?
 #+BEGIN_SRC emacs-lisp :tangle no
-  (use-package diego-theme
-    :load-path "lisp/")
+(use-package diego-theme
+  :load-path "lisp/")
 #+END_SRC
 *** [[https://github.com/hlissner/emacs-doom-theme][doom-theme]]
 Emacs themes inspired by Atom One. Quite nice I might add, if a little intense.
 #+BEGIN_SRC emacs-lisp :tangle no
-  (use-package doom-themes
-    :ensure t
-    :config
+(use-package doom-themes
+  :ensure t
+  :config
 
-    (load-theme 'doom-molokai t)
-    (custom-theme-set-faces
-     'doom-molokai
-     '(ivy-current-match ((t nil)))
-     '(ivy-virtual ((t (:inherit ivy-subdir))))
-     '(org-level-2 ((t (:foreground "#FD971F"))))
-     '(org-level-1 ((t (:foreground "#F92672"))))
-     '(org-level-3 ((t (:foreground "#9C91E4"))))
-     '(org-level-4 ((t (:foreground "#B6E63E"))))
-     '(org-level-5 ((t (:foreground "#E2C770"))))
-     '(org-level-6 ((t (:foreground "#727280"))))
-     '(org-level-8 ((t (:foreground "#8FA1B3"))))
-     '(iy-modified-buffer ((t (:inherit org-level-1))))
-     '(region ((t (:background "#39393D"))))
-     '(swiper-line-face ((t (:background "#222425"))))
-     '(swiper-match-face-1 ((t (:inherit ivy-minibuffer-match-face-1))))
-     '(swiper-match-face-2 ((t (:inherit ivy-minibuffer-match-face-2))))
-     '(swiper-match-face-3 ((t (:inherit ivy-minibuffer-match-face-3))))
-     '(swiper-match-face-4 ((t (:inherit ivy-minibuffer-match-face-4))))
-     '(message-header-name ((t (:inherit font-lock-comment-face :slant normal))))
-     '(message-header-subject ((t (:foreground "OliveDrab1" :height 1.2))))
-     '(message-mml ((t (:inherit font-lock-comment-face :slant normal))))
-     '(notmuch-search-unread-face ((t (:inherit font-lock-function-name-face))))
-     '(bold ((t (:weight bold))))
-     '(italic ((t (:slant italic))))
-     '(org-link ((t (:underline t :foreground "#66D9EF"))))))
+  (load-theme 'doom-molokai t)
+  (custom-theme-set-faces
+   'doom-molokai
+   '(ivy-current-match ((t nil)))
+   '(ivy-virtual ((t (:inherit ivy-subdir))))
+   '(org-level-2 ((t (:foreground "#FD971F"))))
+   '(org-level-1 ((t (:foreground "#F92672"))))
+   '(org-level-3 ((t (:foreground "#9C91E4"))))
+   '(org-level-4 ((t (:foreground "#B6E63E"))))
+   '(org-level-5 ((t (:foreground "#E2C770"))))
+   '(org-level-6 ((t (:foreground "#727280"))))
+   '(org-level-8 ((t (:foreground "#8FA1B3"))))
+   '(iy-modified-buffer ((t (:inherit org-level-1))))
+   '(region ((t (:background "#39393D"))))
+   '(swiper-line-face ((t (:background "#222425"))))
+   '(swiper-match-face-1 ((t (:inherit ivy-minibuffer-match-face-1))))
+   '(swiper-match-face-2 ((t (:inherit ivy-minibuffer-match-face-2))))
+   '(swiper-match-face-3 ((t (:inherit ivy-minibuffer-match-face-3))))
+   '(swiper-match-face-4 ((t (:inherit ivy-minibuffer-match-face-4))))
+   '(message-header-name ((t (:inherit font-lock-comment-face :slant normal))))
+   '(message-header-subject ((t (:foreground "OliveDrab1" :height 1.2))))
+   '(message-mml ((t (:inherit font-lock-comment-face :slant normal))))
+   '(notmuch-search-unread-face ((t (:inherit font-lock-function-name-face))))
+   '(bold ((t (:weight bold))))
+   '(italic ((t (:slant italic))))
+   '(org-link ((t (:underline t :foreground "#66D9EF"))))))
 #+END_SRC
 *** [[https://github.com/iqbalansari/emacs-emojify][emacs-emojify]]
 Display emojis in emacs. Sweet!
 #+BEGIN_SRC emacs-lisp
-  (use-package emojify
-    :defer 5
-    :ensure t)
+(use-package emojify
+  :defer 5
+  :ensure t)
 #+END_SRC
 *** [[https://github.com/lunaryorn/fancy-battery.el][fancy-battery]]
 Display battery in Emacs Mode line
 #+BEGIN_SRC emacs-lisp
-  (use-package fancy-battery
-    ;; Something something battery
-    :ensure t
-    :config
-    (fancy-battery-mode)
-    (setq fancy-battery-show-percentage t)
-    (fancy-battery-update))
+(use-package fancy-battery
+  ;; Something something battery
+  :ensure t
+  :config
+  (fancy-battery-mode)
+  (setq fancy-battery-show-percentage t)
+  (fancy-battery-update))
 #+END_SRC
 *** [[https://github.com/bbatsov/zenburn-emacs][zenburn-theme]]
 The Zenburn colour theme ported to Emacs
 #+BEGIN_SRC emacs-lisp :tangle no
-  (use-package zenburn-theme
-    :ensure t
-    :config
-    (zenburn-with-color-variables
-     (custom-theme-set-faces
-      'zenburn
-      '(ivy-current-match ((t nil))))))
+(use-package zenburn-theme
+  :ensure t
+  :config
+  (zenburn-with-color-variables
+   (custom-theme-set-faces
+	'zenburn
+	'(ivy-current-match ((t nil))))))
 #+END_SRC
 *** [[https://github.com/TheBB/spaceline][spaceline]]
 Powerline theme from Spacemacs
@@ -1915,46 +1936,46 @@ Powerline theme from Spacemacs
 I was looking for something with the nice look and simplicity of
 [[https://github.com/itchyny/lightline.vim][this]]. Spaceline does ok.
 #+BEGIN_SRC emacs-lisp
-  (use-package spaceline
-    ;; Similar to vim's powerline, this one looks clean
-    ;; and 'just works', to an extent
-    :ensure t
-    :config
-    (require 'spaceline-config)
-    (spaceline-spacemacs-theme)
-    (spaceline-helm-mode)
-    (spaceline-toggle-minor-modes-off)
-    (spaceline-toggle-battery-on)
-    ;; (spaceline-toggle-nyan-cat-on)
-    (spaceline-toggle-hud-off)
-    (spaceline-toggle-buffer-size-off)
-    (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
+(use-package spaceline
+  ;; Similar to vim's powerline, this one looks clean
+  ;; and 'just works', to an extent
+  :ensure t
+  :config
+  (require 'spaceline-config)
+  (spaceline-spacemacs-theme)
+  (spaceline-helm-mode)
+  (spaceline-toggle-minor-modes-off)
+  (spaceline-toggle-battery-on)
+  ;; (spaceline-toggle-nyan-cat-on)
+  (spaceline-toggle-hud-off)
+  (spaceline-toggle-buffer-size-off)
+  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
 
-    ;; General
-    ;; (set-face-background 'spaceline-evil-normal "#afd700")
-    (set-face-foreground 'spaceline-evil-normal "#005f00")
-    ;; (set-face-background 'spaceline-evil-insert "#0087af")
-    (set-face-foreground 'spaceline-evil-insert "white")
-    ;; (set-face-background 'spaceline-evil-visual "#ff8700")
-    (set-face-foreground 'spaceline-evil-visual "#870000")
-    ;; (set-face-attribute 'spaceline-evil-normal :weight 'bold)
-    ;; darktooth
-    (set-face-background 'spaceline-evil-normal "#B8BB26")
-    (set-face-background 'spaceline-evil-insert "#66999D")
-    (set-face-background 'spaceline-evil-visual "#FE8019")
-    (set-face-background 'spaceline-evil-emacs "#83A598")
+  ;; General
+  ;; (set-face-background 'spaceline-evil-normal "#afd700")
+  (set-face-foreground 'spaceline-evil-normal "#005f00")
+  ;; (set-face-background 'spaceline-evil-insert "#0087af")
+  (set-face-foreground 'spaceline-evil-insert "white")
+  ;; (set-face-background 'spaceline-evil-visual "#ff8700")
+  (set-face-foreground 'spaceline-evil-visual "#870000")
+  ;; (set-face-attribute 'spaceline-evil-normal :weight 'bold)
+  ;; darktooth
+  (set-face-background 'spaceline-evil-normal "#B8BB26")
+  (set-face-background 'spaceline-evil-insert "#66999D")
+  (set-face-background 'spaceline-evil-visual "#FE8019")
+  (set-face-background 'spaceline-evil-emacs "#83A598")
 
-    (setq powerline-default-separator nil)
-    (spaceline-compile))
+  (setq powerline-default-separator nil)
+  (spaceline-compile))
 #+END_SRC
 ** Misc utilities
 *** [[https://github.com/alpha22jp/atomic-chrome][atomic-chrome]]
 Edit text area on Chrome with Emacs using Atomic Chrome
 #+begin_src emacs-lisp
-  (use-package atomic-chrome
-	:ensure t
-	:config
-	(atomic-chrome-start-server)
+(use-package atomic-chrome
+  :ensure t
+  :config
+  (atomic-chrome-start-server)
   (setq atomic-chrome-buffer-open-style 'frame))
 #+end_src
 *** [[https://github.com/purcell/disable-mouse][disable-mouse]]
@@ -1966,87 +1987,87 @@ Edit text area on Chrome with Emacs using Atomic Chrome
 #+end_src
 *** [[http://savannah.nongnu.org/projects/bbdb/][bbdb]]
 #+begin_src emacs-lisp
-  (use-package bbdb
-	:commands (bbdb-search-name bbdb-create)
-	:ensure t
-	:config
-	(bbdb-initialize))
+(use-package bbdb
+  :commands (bbdb-search-name bbdb-create)
+  :ensure t
+  :config
+  (bbdb-initialize))
 
-  (use-package bbdb-vcard
-	:after bbdb
-	:ensure t)
+(use-package bbdb-vcard
+  :after bbdb
+  :ensure t)
 
-  (use-package bbdb-ext
-	:after bbdb
-	:ensure t)
+(use-package bbdb-ext
+  :after bbdb
+  :ensure t)
 
-  ;;(use-package counsel-bbdb
-  ;;  :after bbdb
-  ;;  :ensure t)
+;;(use-package counsel-bbdb
+;;  :after bbdb
+;;  :ensure t)
 #+end_src
 *** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
 Cursor stays vertically centered. I use this for reading, mostly.
 #+begin_src emacs-lisp
-  (use-package centered-cursor-mode
-	:ensure t
-	:commands centered-cursor-mode)
+(use-package centered-cursor-mode
+  :ensure t
+  :commands centered-cursor-mode)
 #+end_src
 *** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
 Eh, wanted to try a simpler way of editing csv files. (Excel and Numbers both
 kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
 #+BEGIN_SRC emacs-lisp
-  (use-package csv-mode
-    ;; I'll give this a shot
-    :defer 5
-    :ensure t
-    :config
-    (add-hook 'csv-mode-hook 'csv-align-fields))
+(use-package csv-mode
+  ;; I'll give this a shot
+  :defer 5
+  :ensure t
+  :config
+  (add-hook 'csv-mode-hook 'csv-align-fields))
 #+END_SRC
 *** [[https://github.com/skeeto/elfeed][elfeed]]
 Configure the Elfeed RSS reader with an Orgmode file
 #+begin_src emacs-lisp
-  (use-package elfeed
-	:ensure t
-	:commands elfeed
-	:config
-	(evil-define-key 'normal elfeed-search-mode-map
-	  (kbd "RET") 'elfeed-search-show-entry
-	  "+"         'elfeed-search-tag-all
-	  "-"         'elfeed-search-untag-all
-	  "G"         'elfeed-search-fetch
-	  "S"         'elfeed-search-set-filter
-	  "b"         'elfeed-search-browse-url
-	  "g"         'elfeed-search-update--force
-	  "q"         'quit-window
-	  "r"         'elfeed-search-untag-all-unread
-	  "s"         'elfeed-search-live-filter
-	  "u"         'elfeed-seach-tag-all-unread
-	  "y"         'elfeed-search-yank)
+(use-package elfeed
+  :ensure t
+  :commands elfeed
+  :config
+  (evil-define-key 'normal elfeed-search-mode-map
+	(kbd "RET") 'elfeed-search-show-entry
+	"+"         'elfeed-search-tag-all
+	"-"         'elfeed-search-untag-all
+	"G"         'elfeed-search-fetch
+	"S"         'elfeed-search-set-filter
+	"b"         'elfeed-search-browse-url
+	"g"         'elfeed-search-update--force
+	"q"         'quit-window
+	"r"         'elfeed-search-untag-all-unread
+	"s"         'elfeed-search-live-filter
+	"u"         'elfeed-seach-tag-all-unread
+	"y"         'elfeed-search-yank)
 
-	(evil-define-key 'normal elfeed-show-mode-map
-	  "+" 'elfeed-show-tag
-	  "-" 'elfeed-show-untag
-	  "P" 'elfeed-show-play-enclosure
-	  "b" 'elfeed-show-visit
-	  "d" 'elfeed-show-save-enclosure
-	  "g" 'elfeed-show-refresh
-	  "l" 'elfeed-goodies/split-show-next
-	  "h" 'elfeed-goodies/split-show-prev
-	  "q" 'elfeed-kill-buffer
-	  "s" 'elfeed-show-new-live-search
-	  "y" 'elfeed-show-yank))
+  (evil-define-key 'normal elfeed-show-mode-map
+	"+" 'elfeed-show-tag
+	"-" 'elfeed-show-untag
+	"P" 'elfeed-show-play-enclosure
+	"b" 'elfeed-show-visit
+	"d" 'elfeed-show-save-enclosure
+	"g" 'elfeed-show-refresh
+	"l" 'elfeed-goodies/split-show-next
+	"h" 'elfeed-goodies/split-show-prev
+	"q" 'elfeed-kill-buffer
+	"s" 'elfeed-show-new-live-search
+	"y" 'elfeed-show-yank))
 
-  (use-package elfeed-org
-	:after elfeed
-	:ensure t
-	:config
-	(elfeed-org))
+(use-package elfeed-org
+  :after elfeed
+  :ensure t
+  :config
+  (elfeed-org))
 
-  (use-package elfeed-goodies
-	:after elfeed
-	:ensure t
-	:config
-	(elfeed-goodies/setup))
+(use-package elfeed-goodies
+  :after elfeed
+  :ensure t
+  :config
+  (elfeed-goodies/setup))
 #+end_src
 *** [[https://github.com/hlissner/evil-multiedit][evil-multiedit]]
 #+begin_src emacs-lisp
@@ -2057,243 +2078,243 @@ Configure the Elfeed RSS reader with an Orgmode file
 *** [[https://github.com/lewang/flx][flx]]
 Fuzzy matching for Emacs ... a la Sublime Text.
 #+BEGIN_SRC emacs-lisp
-  (use-package flx
-    :ensure t)
+(use-package flx
+  :ensure t)
 #+END_SRC
 *** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
 Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted/flyspell-correct][d12frosted/flyspell-correct]]
 #+BEGIN_SRC emacs-lisp
-  (use-package flyspell
-    :commands flyspell-mode
-    :ensure t
-    :config
-    (defun diego/flyspell-correct-next (&optional arg)
-      (interactive "p")
-      (flyspell-goto-next-error)
-      (flyspell-auto-correct-word)))
+(use-package flyspell
+  :commands flyspell-mode
+  :ensure t
+  :config
+  (defun diego/flyspell-correct-next (&optional arg)
+	(interactive "p")
+	(flyspell-goto-next-error)
+	(flyspell-auto-correct-word)))
 
-  (use-package flyspell-correct-ivy
-    :after flyspell
-    :ensure t)
+(use-package flyspell-correct-ivy
+  :after flyspell
+  :ensure t)
 #+END_SRC
 
 *** [[https://github.com/larstvei/Focus][focus]]
 Dim the font color of text in surrounding paragraphs
 #+BEGIN_SRC emacs-lisp
-  (use-package focus
-    :commands focus-mode
-    :ensure t)
+(use-package focus
+  :commands focus-mode
+  :ensure t)
 #+END_SRC
 *** [[https://www.emacswiki.org/emacs/KeyChord][keychord]]
 Neat way to bind commands to key-stroke combinations
 #+BEGIN_SRC emacs-lisp
-  (use-package key-chord
-    :ensure t
-    :defer 5
-    :config
-    ;; (setq key-chord-two-keys-delay .05)
-    (key-chord-mode 1)
-    (key-chord-define evil-insert-state-map "uu" 'evil-normal-state))
+(use-package key-chord
+  :ensure t
+  :defer 5
+  :config
+  ;; (setq key-chord-two-keys-delay .05)
+  (key-chord-mode 1)
+  (key-chord-define evil-insert-state-map "uu" 'evil-normal-state))
 #+END_SRC
 *** [[https://github.com/magit/magit][magit]]
 Like git, for emacs. But cooler.
 #+BEGIN_SRC emacs-lisp
-  (use-package magit
-    :ensure t
-    :commands magit-status
-    :config
-    (setq magit-diff-use-overlays nil))
+(use-package magit
+  :ensure t
+  :commands magit-status
+  :config
+  (setq magit-diff-use-overlays nil))
 
-  (use-package evil-magit
-    :after magit
-    :ensure t)
+(use-package evil-magit
+  :after magit
+  :ensure t)
 #+END_SRC
 *** [[https://github.com/defunkt/markdown-mode][markdown-mode]]
 Syntax highlighting for markdown files.
 #+BEGIN_SRC emacs-lisp
-  (use-package markdown-mode
-	:ensure t
-	:defer 5
-	:config)
+(use-package markdown-mode
+  :ensure t
+  :defer 5
+  :config)
 #+END_SRC
 *** [[https://github.com/ancane/markdown-preview-mode][markdown-preview-mode]]
 Minor mode to preview markdown output as you save
 #+BEGIN_SRC emacs-lisp
-  (use-package markdown-preview-mode
-    :defer 5
-    :ensure t)
+(use-package markdown-preview-mode
+  :defer 5
+  :ensure t)
 #+END_SRC
 *** [[https://github.com/emacsfodder/move-text][move-text]]
 Move current line or region up or down
 #+BEGIN_SRC emacs-lisp
-  (use-package move-text
-    :defer 5
-    :ensure t)
+(use-package move-text
+  :defer 5
+  :ensure t)
 #+END_SRC
 *** [[https://github.com/tjim/nevermore][nevermore]]
 Emacs mail reader based on Notmuch
 #+BEGIN_SRC emacs-lisp
-  (use-package nm
-    :ensure t
-    :commands nm)
+(use-package nm
+  :ensure t
+  :commands nm)
 #+END_SRC
 *** [[https://www.emacswiki.org/emacs/NotMuch][NotMuch]]
 Email!
 #+BEGIN_SRC emacs-lisp
-  (use-package notmuch
-    :commands notmuch
-    :ensure t
-    :config
-    (setq notmuch-search-oldest-first nil))
+(use-package notmuch
+  :commands notmuch
+  :ensure t
+  :config
+  (setq notmuch-search-oldest-first nil))
 #+END_SRC
 *** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
 Make Emacs' delete-by-moving-to-trash do what you expect it to do on OS X.
 #+begin_src emacs-lisp
-  (use-package osx-trash
-    :ensure t
-    :config
-    (when (eq system-type 'darwin)
-      (osx-trash-setup))
-    (setq delete-by-moving-to-trash t))
+(use-package osx-trash
+  :ensure t
+  :config
+  (when (eq system-type 'darwin)
+	(osx-trash-setup))
+  (setq delete-by-moving-to-trash t))
 #+end_src
 *** [[https://github.com/Malabarba/paradox][paradox]]
 Project for modernizing Emacs' Package Menu. With package ratings, usage
 statistics, customizability, and more.
 #+begin_src emacs-lisp
-  (use-package paradox
-    :ensure t
-    :commands paradox-list-packages
-    :config
-    (setq paradox-automatically-star t)
-    (setq paradox-execute-asynchronously t)
-    (evil-define-key 'normal paradox-menu-mode-map "q" 'paradox-quit-and-close)
-    (evil-define-key 'normal paradox-menu-mode-map "fr" 'paradox-filter-regexp)
-    (evil-define-key 'normal paradox-menu-mode-map "fu" 'paradox-filter-upgrades)
-    (evil-define-key 'normal paradox-menu-mode-map "fs" 'paradox-filter-stars)
-    (evil-define-key 'normal paradox-menu-mode-map "x" 'paradox-menu-execute))
+(use-package paradox
+  :ensure t
+  :commands paradox-list-packages
+  :config
+  (setq paradox-automatically-star t)
+  (setq paradox-execute-asynchronously t)
+  (evil-define-key 'normal paradox-menu-mode-map "q" 'paradox-quit-and-close)
+  (evil-define-key 'normal paradox-menu-mode-map "fr" 'paradox-filter-regexp)
+  (evil-define-key 'normal paradox-menu-mode-map "fu" 'paradox-filter-upgrades)
+  (evil-define-key 'normal paradox-menu-mode-map "fs" 'paradox-filter-stars)
+  (evil-define-key 'normal paradox-menu-mode-map "x" 'paradox-menu-execute))
 #+end_src
 *** [[https://github.com/emacsfodder/pbcopy.el][pbcopy]]
 Allow yanking and pasting with osx clipboard in terminal Emacs. Might want to
 look into [[https://melpa.org/#/osx-clipboard][osx-clipboard]] instead.
 #+BEGIN_SRC emacs-lisp :tangle no
-  (use-package pbcopy
-    :config
-    (turn-on-pbcopy))
+(use-package pbcopy
+  :config
+  (turn-on-pbcopy))
 #+END_SRC
 *** [[https://github.com/iqbalansari/restart-emacs][restart-emacs]]
 A simple emacs package to restart emacs from within emacs.
 
 SUPER nifty.
 #+BEGIN_SRC emacs-lisp
-  (use-package restart-emacs
-    :defer 5
-    :ensure t)
+(use-package restart-emacs
+  :defer 5
+  :ensure t)
 #+END_SRC
 
 *** [[https://github.com/Fuco1/smartparens][smartparens]]
 Minor mode for Emacs that deals with parens pairs and tries to be smart about it.
 #+begin_src emacs-lisp
-  (use-package smartparens
-	:ensure t
-	:config
-	(smartparens-global-mode)
-	(sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)
-	(sp-local-pair 'emacs-lisp-mode "`" nil :actions nil))
+(use-package smartparens
+  :ensure t
+  :config
+  (smartparens-global-mode)
+  (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)
+  (sp-local-pair 'emacs-lisp-mode "`" nil :actions nil))
 #+end_src
 *** [[https://github.com/nonsequitur/smex][smex]]
 A smart M-x enhancement for Emacs.
 
 In terms of ivy, sorts by most recently used, I think.
 #+BEGIN_SRC emacs-lisp
-  (use-package smex
-    :ensure t)
+(use-package smex
+  :ensure t)
 #+END_SRC
 
 *** [[https://github.com/aaronbieber/sunshine.el][sunshine]]
 An Emacs package for displaying the forecast from OpenWeatherMap.
 #+BEGIN_SRC emacs-lisp
-  (use-package sunshine
-    :ensure t
-    :commands (sunshine-forecast sunshine-quick-forecast)
-    :config
-    (setq sunshine-location "02139,USA"))
+(use-package sunshine
+  :ensure t
+  :commands (sunshine-forecast sunshine-quick-forecast)
+  :config
+  (setq sunshine-location "02139,USA"))
 #+END_SRC
 *** [[https://github.com/aaronbieber/tiny-menu.el][tiny-menu]]
 Run commands via a tiny menu.
 #+BEGIN_SRC emacs-lisp
-  (use-package tiny-menu
-    :commands (tiny-menu tiny-menu-run-item)
-    :ensure t
-    :config
-    (setq tiny-menu-items
-          '(("org-things"   ("Things"
-                             ((?t "Tag"     org-tags-view)
-                              (?i "ID"      diego/org-goto-custom-id)
-                              (?k "Keyword" org-search-view))))
-            ("org-links"    ("Links"
-                             ((?c "Capture"   org-store-link)
-                              (?l "Insert"    org-insert-link)
-                              (?i "Custom ID" diego/org-insert-custom-id-link))))
-            ("org-files"    ("Files"
-                             ((?t "TODO"  (lambda () (diego/pop-to-org-todo nil)))
-                              (?n "Notes" (lambda () (diego/pop-to-org-notes nil)))
-                              (?v "Vault" (lambda () (diego/pop-to-org-vault nil))))))
-            ("org-captures" ("Captures"
-                             ((?c "TODO"  diego/org-task-capture)
-                              (?n "Note"  (lambda () (interactive) (org-capture nil "n"))))))))
-    (evil-define-key 'normal global-map (kbd "\\ \\") 'tiny-menu)
-    (evil-define-key 'normal global-map (kbd "\\ f") (tiny-menu-run-item "org-files"))
-    (evil-define-key 'normal global-map (kbd "\\ t") (tiny-menu-run-item "org-things"))
-    (evil-define-key 'normal global-map (kbd "\\ c") (tiny-menu-run-item "org-captures"))
-    (evil-define-key 'normal global-map (kbd "\\ l") (tiny-menu-run-item "org-links")))
+(use-package tiny-menu
+  :commands (tiny-menu tiny-menu-run-item)
+  :ensure t
+  :config
+  (setq tiny-menu-items
+		'(("org-things"   ("Things"
+						   ((?t "Tag"     org-tags-view)
+							(?i "ID"      diego/org-goto-custom-id)
+							(?k "Keyword" org-search-view))))
+		  ("org-links"    ("Links"
+						   ((?c "Capture"   org-store-link)
+							(?l "Insert"    org-insert-link)
+							(?i "Custom ID" diego/org-insert-custom-id-link))))
+		  ("org-files"    ("Files"
+						   ((?t "TODO"  (lambda () (diego/pop-to-org-todo nil)))
+							(?n "Notes" (lambda () (diego/pop-to-org-notes nil)))
+							(?v "Vault" (lambda () (diego/pop-to-org-vault nil))))))
+		  ("org-captures" ("Captures"
+						   ((?c "TODO"  diego/org-task-capture)
+							(?n "Note"  (lambda () (interactive) (org-capture nil "n"))))))))
+  (evil-define-key 'normal global-map (kbd "\\ \\") 'tiny-menu)
+  (evil-define-key 'normal global-map (kbd "\\ f") (tiny-menu-run-item "org-files"))
+  (evil-define-key 'normal global-map (kbd "\\ t") (tiny-menu-run-item "org-things"))
+  (evil-define-key 'normal global-map (kbd "\\ c") (tiny-menu-run-item "org-captures"))
+  (evil-define-key 'normal global-map (kbd "\\ l") (tiny-menu-run-item "org-links")))
 #+END_SRC
 *** [[https://github.com/hayamiz/twittering-mode][twittering-mode]]
 An Emacs major mode for Twitter
 #+BEGIN_SRC emacs-lisp
-  (use-package twittering-mode
-    :ensure t
-    :commands twit
-    :config
-    (setq twittering-icon-mode t)
-    (setq twittering-convert-fix-size 24)
-    (add-hook 'twittering-mode-hook #'emojify-mode)
-    (setq twittering-use-master-password t))
+(use-package twittering-mode
+  :ensure t
+  :commands twit
+  :config
+  (setq twittering-icon-mode t)
+  (setq twittering-convert-fix-size 24)
+  (add-hook 'twittering-mode-hook #'emojify-mode)
+  (setq twittering-use-master-password t))
 #+END_SRC
 *** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
 Kind of makes undo's like git. Or Vim, apparently, if you're into that.
 #+BEGIN_SRC emacs-lisp
-  (use-package undo-tree
-    :ensure t
-    :commands undo-tree-visualize
-    :config
-    (setq undo-tree-visualizer-timestamps t))
+(use-package undo-tree
+  :ensure t
+  :commands undo-tree-visualize
+  :config
+  (setq undo-tree-visualizer-timestamps t))
 #+END_SRC
 *** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
 The emacs major mode for editing files in the YAML data serialization format.
 #+BEGIN_SRC emacs-lisp
-  (use-package yaml-mode
-    :ensure t
-    :defer 5
-    :config
-    (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+(use-package yaml-mode
+  :ensure t
+  :defer 5
+  :config
+  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 #+END_SRC
 ** Navigation
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
 Quickly switch windows in Emacs
 #+BEGIN_SRC emacs-lisp
-  (use-package ace-window
-    :ensure t
-    :commands (ace-window ace-delete-window ace-swap-window)
-    :bind ("M-p" . ace-window)
-    :config
-    (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
+(use-package ace-window
+  :ensure t
+  :commands (ace-window ace-delete-window ace-swap-window)
+  :bind ("M-p" . ace-window)
+  :config
+  (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
 #+END_SRC
 *** [[https://github.com/abo-abo/avy][avy]]
 Jump to things in Emacs tree-style
 #+BEGIN_SRC emacs-lisp
-  (use-package avy
-    :ensure t
-    :commands (avy-goto-char-2 avy-goto-word-1 avy-goto-line))
+(use-package avy
+  :ensure t
+  :commands (avy-goto-char-2 avy-goto-word-1 avy-goto-line))
 #+END_SRC
 *** [[https://github.com/emacs-helm/helm][helm]]
 *Note:* I'm now using [[https://github.com/abo-abo/swiper][abo-abo/swiper]], which includes ivy, counsel, and swiper,
@@ -2306,366 +2327,366 @@ Emacs incremental completion and selection narrowing framework
 For making stuff look nicer, see ~M-x customize-group RET helm-faces~, and
 check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido-like-guide]].
 #+BEGIN_SRC emacs-lisp :tangle no
-  (use-package helm
-      :ensure t
-      :defer 5
-      :init
-      (require 'helm-config)
-      :config
+(use-package helm
+  :ensure t
+  :defer 5
+  :init
+  (require 'helm-config)
+  :config
 
-      ;; Fuzzy matching
-      (setq helm-completion-in-region-fuzzy-match t
-            helm-mode-fuzzy-match t
-            helm-M-x-fuzzy-match t
-            helm-buffers-fuzzy-matching t
-            helm-recentf-fuzzy-match t
-            helm-locate-fuzzy-match nil     ; Doesn't work with mdfind
-            helm-semantic-fuzzy-match t
-            helm-imenu-fuzzy-match t
-            helm-apropos-fuzzy-match t
-            helm-lisp-fuzzy-completion t)
+  ;; Fuzzy matching
+  (setq helm-completion-in-region-fuzzy-match t
+		helm-mode-fuzzy-match t
+		helm-M-x-fuzzy-match t
+		helm-buffers-fuzzy-matching t
+		helm-recentf-fuzzy-match t
+		helm-locate-fuzzy-match nil     ; Doesn't work with mdfind
+		helm-semantic-fuzzy-match t
+		helm-imenu-fuzzy-match t
+		helm-apropos-fuzzy-match t
+		helm-lisp-fuzzy-completion t)
 
-      (setq helm-boring-buffer-regexp-list
-            '("\\` "
-              "\\*helm"
-              "\\*helm-mode"
-              "\\*Echo Area"
-              "\\*Minibuf"
-              "\\*epc"))
-      (setq helm-buffer-max-length 40)
-      (setq helm-display-buffer-default-height 9)
-      (setq helm-locate-command
-            (cl-case system-type
-              ('darwin "mdfind -name %s %s")
-              ('gnu/linux "locate -i -r %s")
-              ('berkley-unix "locate -i %s")
-              ('windows-nt "es %s")
-              (t "locate %s"))) ; Use spotlight for search
-      (put 'helm-minibuffer-history 'disabled t)
-      ;; (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-      ;;----------------
-      ;; Helm ido-like
-      ;;--------------
-
-
-      (defun helm-ido-like-activate-helm-modes ()
-        (require 'helm-config)
-        (helm-mode 1)
-        (helm-flx-mode 1)
-        (helm-fuzzier-mode 1))
-
-      (defun helm-ido-like-load-ido-like-bottom-buffer ()
-        ;; popup helm-buffer at the bottom
-        (setq helm-split-window-in-side-p t)
-        ;; (add-to-list 'display-buffer-alist
-        ;;              '("\\`\\*helm.*\\*\\'"
-        ;;                (display-buffer-in-side-window)
-        ;;                (window-height . 0.4)))
-        ;; (add-to-list 'display-buffer-alist
-        ;;              '("\\`\\*helm help\\*\\'"
-        ;;                (display-buffer-pop-up-window)))
-
-        ;; dont display the header line
-        (setq helm-display-header-line nil)
-        ;; input in header line
-        (setq helm-echo-input-in-header-line t)
-        ;; (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
-        )
-
-      (defvar helm-ido-like-bottom-buffers nil
-          "List of bottom buffers before helm session started.
-    Its element is a pair of `buffer-name' and `mode-line-format'.")
+  (setq helm-boring-buffer-regexp-list
+		'("\\` "
+		  "\\*helm"
+		  "\\*helm-mode"
+		  "\\*Echo Area"
+		  "\\*Minibuf"
+		  "\\*epc"))
+  (setq helm-buffer-max-length 40)
+  (setq helm-display-buffer-default-height 9)
+  (setq helm-locate-command
+		(cl-case system-type
+		  ('darwin "mdfind -name %s %s")
+		  ('gnu/linux "locate -i -r %s")
+		  ('berkley-unix "locate -i %s")
+		  ('windows-nt "es %s")
+		  (t "locate %s"))) ; Use spotlight for search
+  (put 'helm-minibuffer-history 'disabled t)
+  ;; (global-set-key (kbd "M-y") 'helm-show-kill-ring)
+  ;;----------------
+  ;; Helm ido-like
+  ;;--------------
 
 
-      (defun helm-ido-like-bottom-buffers-init ()
-        (setq-local mode-line-format (default-value 'mode-line-format))
-        (setq helm-ido-like-bottom-buffers
-              (cl-loop for w in (window-list)
-                       when (window-at-side-p w 'bottom)
-                       collect (with-current-buffer (window-buffer w)
-                                 (cons (buffer-name) mode-line-format)))))
+  (defun helm-ido-like-activate-helm-modes ()
+	(require 'helm-config)
+	(helm-mode 1)
+	(helm-flx-mode 1)
+	(helm-fuzzier-mode 1))
+
+  (defun helm-ido-like-load-ido-like-bottom-buffer ()
+	;; popup helm-buffer at the bottom
+	(setq helm-split-window-in-side-p t)
+	;; (add-to-list 'display-buffer-alist
+	;;              '("\\`\\*helm.*\\*\\'"
+	;;                (display-buffer-in-side-window)
+	;;                (window-height . 0.4)))
+	;; (add-to-list 'display-buffer-alist
+	;;              '("\\`\\*helm help\\*\\'"
+	;;                (display-buffer-pop-up-window)))
+
+	;; dont display the header line
+	(setq helm-display-header-line nil)
+	;; input in header line
+	(setq helm-echo-input-in-header-line t)
+	;; (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
+	)
+
+  (defvar helm-ido-like-bottom-buffers nil
+	"List of bottom buffers before helm session started.
+	Its element is a pair of `buffer-name' and `mode-line-format'.")
 
 
-      (defun helm-ido-like-bottom-buffers-hide-mode-line ()
-        (mapc (lambda (elt)
-                (with-current-buffer (car elt)
-                  (setq-local mode-line-format nil)))
-              helm-ido-like-bottom-buffers))
+  (defun helm-ido-like-bottom-buffers-init ()
+	(setq-local mode-line-format (default-value 'mode-line-format))
+	(setq helm-ido-like-bottom-buffers
+		  (cl-loop for w in (window-list)
+				   when (window-at-side-p w 'bottom)
+				   collect (with-current-buffer (window-buffer w)
+							 (cons (buffer-name) mode-line-format)))))
 
 
-      (defun helm-ido-like-bottom-buffers-show-mode-line ()
-        (when helm-ido-like-bottom-buffers
-          (mapc (lambda (elt)
-                  (with-current-buffer (car elt)
-                    (setq-local mode-line-format (cdr elt))))
-                helm-ido-like-bottom-buffers)
-          (setq helm-ido-like-bottom-buffers nil)))
+  (defun helm-ido-like-bottom-buffers-hide-mode-line ()
+	(mapc (lambda (elt)
+			(with-current-buffer (car elt)
+			  (setq-local mode-line-format nil)))
+		  helm-ido-like-bottom-buffers))
 
 
-      (defun helm-ido-like-helm-keyboard-quit-advice (orig-func &rest args)
-        (helm-ido-like-bottom-buffers-show-mode-line)
-        (apply orig-func args))
-
-      (defun helm-ido-like-hide-modelines ()
-        ;; hide The Modelines while Helm is active
-        (add-hook 'helm-before-initialize-hook #'helm-ido-like-bottom-buffers-init)
-        (add-hook 'helm-after-initialize-hook #'helm-ido-like-bottom-buffers-hide-mode-line)
-        (add-hook 'helm-exit-minibuffer-hook #'helm-ido-like-bottom-buffers-show-mode-line)
-        (add-hook 'helm-cleanup-hook #'helm-ido-like-bottom-buffers-show-mode-line)
-        (advice-add 'helm-keyboard-quit :around #'helm-ido-like-helm-keyboard-quit-advice))
-
-      (defun helm-ido-like-hide-helm-modeline-1 ()
-        "Hide mode line in `helm-buffer'."
-        (with-helm-buffer
-          (setq-local mode-line-format nil)))
+  (defun helm-ido-like-bottom-buffers-show-mode-line ()
+	(when helm-ido-like-bottom-buffers
+	  (mapc (lambda (elt)
+			  (with-current-buffer (car elt)
+				(setq-local mode-line-format (cdr elt))))
+			helm-ido-like-bottom-buffers)
+	  (setq helm-ido-like-bottom-buffers nil)))
 
 
-      (defun helm-ido-like-hide-helm-modeline ()
-        (fset 'helm-display-mode-line #'ignore)
-        (add-hook 'helm-after-initialize-hook 'helm-ido-like-hide-helm-modeline-1))
+  (defun helm-ido-like-helm-keyboard-quit-advice (orig-func &rest args)
+	(helm-ido-like-bottom-buffers-show-mode-line)
+	(apply orig-func args))
 
-      (defvar helm-ido-like-source-header-default-background nil)
-      (defvar helm-ido-like-source-header-default-foreground nil)
-      (defvar helm-ido-like-source-header-default-box nil)
+  (defun helm-ido-like-hide-modelines ()
+	;; hide The Modelines while Helm is active
+	(add-hook 'helm-before-initialize-hook #'helm-ido-like-bottom-buffers-init)
+	(add-hook 'helm-after-initialize-hook #'helm-ido-like-bottom-buffers-hide-mode-line)
+	(add-hook 'helm-exit-minibuffer-hook #'helm-ido-like-bottom-buffers-show-mode-line)
+	(add-hook 'helm-cleanup-hook #'helm-ido-like-bottom-buffers-show-mode-line)
+	(advice-add 'helm-keyboard-quit :around #'helm-ido-like-helm-keyboard-quit-advice))
 
-      (defun helm-ido-like-toggle-header-line ()
-        ;; Only Show Source Headers If More Than One
-        (if (> (length helm-sources) 1)
-            (set-face-attribute 'helm-source-header
-                                nil
-                                :foreground helm-ido-like-source-header-default-foreground
-                                :background helm-ido-like-source-header-default-background
-                                :box helm-ido-like-source-header-default-box
-                                :height 1.0)
-          (set-face-attribute 'helm-source-header
-                              nil
-                              :foreground (face-attribute 'helm-selection :background)
-                              :background (face-attribute 'helm-selection :background)
-                              :box nil
-                              :height 0.1)))
-
-      (defun helm-ido-like-header-lines-maybe ()
-        (setq helm-ido-like-source-header-default-background (face-attribute 'helm-source-header :background))
-        (setq helm-ido-like-source-header-default-foreground (face-attribute 'helm-source-header :foreground))
-        (setq helm-ido-like-source-header-default-box (face-attribute 'helm-source-header :box))
-        (add-hook 'helm-before-initialize-hook 'helm-ido-like-toggle-header-line))
-
-      (defvar helm-ido-like-bg-color (face-attribute 'default :background))
-
-      (defun helm-ido-like-setup-bg-color-1 ()
-        (with-helm-buffer
-          (make-local-variable 'face-remapping-alist)
-          (add-to-list 'face-remapping-alist `(default (:background ,helm-ido-like-bg-color)))))
-
-      (defun helm-ido-like-setup-bg-color ()
-        (add-hook 'helm-after-initialize-hook 'helm-ido-like-setup-bg-color-1))
-
-      (defun helm-ido-like-find-files-up-one-level-maybe ()
-        (interactive)
-        (if (looking-back "/" 1)
-            (call-interactively 'helm-find-files-up-one-level)
-          (delete-char -1)))
+  (defun helm-ido-like-hide-helm-modeline-1 ()
+	"Hide mode line in `helm-buffer'."
+	(with-helm-buffer
+	 (setq-local mode-line-format nil)))
 
 
-      (defun helm-ido-like-find-files-navigate-forward (orig-fun &rest args)
-        "Adjust how helm-execute-persistent actions behaves, depending on context."
-        (let ((sel (helm-get-selection)))
-          (if (file-directory-p sel)
-              ;; the current dir needs to work to
-              ;; be able to select directories if needed
-              (cond ((and (stringp sel)
-                          (string-match "\\.\\'" (helm-get-selection)))
-                     (helm-maybe-exit-minibuffer))
-                    (t
-                     (apply orig-fun args)))
-            (helm-maybe-exit-minibuffer))))
+  (defun helm-ido-like-hide-helm-modeline ()
+	(fset 'helm-display-mode-line #'ignore)
+	(add-hook 'helm-after-initialize-hook 'helm-ido-like-hide-helm-modeline-1))
+
+  (defvar helm-ido-like-source-header-default-background nil)
+  (defvar helm-ido-like-source-header-default-foreground nil)
+  (defvar helm-ido-like-source-header-default-box nil)
+
+  (defun helm-ido-like-toggle-header-line ()
+	;; Only Show Source Headers If More Than One
+	(if (> (length helm-sources) 1)
+		(set-face-attribute 'helm-source-header
+							nil
+							:foreground helm-ido-like-source-header-default-foreground
+							:background helm-ido-like-source-header-default-background
+							:box helm-ido-like-source-header-default-box
+							:height 1.0)
+	  (set-face-attribute 'helm-source-header
+						  nil
+						  :foreground (face-attribute 'helm-selection :background)
+						  :background (face-attribute 'helm-selection :background)
+						  :box nil
+						  :height 0.1)))
+
+  (defun helm-ido-like-header-lines-maybe ()
+	(setq helm-ido-like-source-header-default-background (face-attribute 'helm-source-header :background))
+	(setq helm-ido-like-source-header-default-foreground (face-attribute 'helm-source-header :foreground))
+	(setq helm-ido-like-source-header-default-box (face-attribute 'helm-source-header :box))
+	(add-hook 'helm-before-initialize-hook 'helm-ido-like-toggle-header-line))
+
+  (defvar helm-ido-like-bg-color (face-attribute 'default :background))
+
+  (defun helm-ido-like-setup-bg-color-1 ()
+	(with-helm-buffer
+	 (make-local-variable 'face-remapping-alist)
+	 (add-to-list 'face-remapping-alist `(default (:background ,helm-ido-like-bg-color)))))
+
+  (defun helm-ido-like-setup-bg-color ()
+	(add-hook 'helm-after-initialize-hook 'helm-ido-like-setup-bg-color-1))
+
+  (defun helm-ido-like-find-files-up-one-level-maybe ()
+	(interactive)
+	(if (looking-back "/" 1)
+		(call-interactively 'helm-find-files-up-one-level)
+	  (delete-char -1)))
 
 
-      (defun helm-ido-like-load-file-nav ()
-        (advice-add 'helm-execute-persistent-action :around #'helm-ido-like-find-files-navigate-forward)
-        ;; <return> is not bound in helm-map by default
-        (define-key helm-map (kbd "<return>") 'helm-maybe-exit-minibuffer)
-        (with-eval-after-load 'helm-files
-          (define-key helm-read-file-map (kbd "<backspace>") 'helm-ido-like-find-files-up-one-level-maybe)
-          (define-key helm-read-file-map (kbd "DEL") 'helm-ido-like-find-files-up-one-level-maybe)
-          (define-key helm-find-files-map (kbd "<backspace>") 'helm-ido-like-find-files-up-one-level-maybe)
-          (define-key helm-find-files-map (kbd "DEL") 'helm-ido-like-find-files-up-one-level-maybe)
-
-          (define-key helm-find-files-map (kbd "<return>") 'helm-execute-persistent-action)
-          (define-key helm-read-file-map (kbd "<return>") 'helm-execute-persistent-action)
-          (define-key helm-find-files-map (kbd "RET") 'helm-execute-persistent-action)
-          (define-key helm-read-file-map (kbd "RET") 'helm-execute-persistent-action)))
-
-      (defvar helm-ido-like-no-dots-whitelist
-        '("*Helm file completions*")
-        "List of helm buffers in which to show dot directories.")
-
-      (defun helm-ido-like-no-dots-display-file-p (file)
-        ;; in a whitelisted buffer display all but the relative path to parent dir
-        (or (and (member helm-buffer helm-ido-like-no-dots-whitelist)
-                 (not (string-match "\\(?:/\\|\\`\\)\\.\\{2\\}\\'" file)))
-            ;; in all other buffers display all files but the two relative ones
-            (not (string-match "\\(?:/\\|\\`\\)\\.\\{1,2\\}\\'" file))))
+  (defun helm-ido-like-find-files-navigate-forward (orig-fun &rest args)
+	"Adjust how helm-execute-persistent actions behaves, depending on context."
+	(let ((sel (helm-get-selection)))
+	  (if (file-directory-p sel)
+		  ;; the current dir needs to work to
+		  ;; be able to select directories if needed
+		  (cond ((and (stringp sel)
+					  (string-match "\\.\\'" (helm-get-selection)))
+				 (helm-maybe-exit-minibuffer))
+				(t
+				 (apply orig-fun args)))
+		(helm-maybe-exit-minibuffer))))
 
 
-      (defun helm-ido-like-no-dots-auto-add (&rest args)
-        "Auto add buffers which want to read directory names to the whitelist."
-        (if (eq (car (last args)) 'file-directory-p)
-            (add-to-list 'helm-ido-like-no-dots-whitelist
-                         (format "*helm-mode-%s*"
-                                 (helm-symbol-name
-                                  (or (helm-this-command) this-command))))))
+  (defun helm-ido-like-load-file-nav ()
+	(advice-add 'helm-execute-persistent-action :around #'helm-ido-like-find-files-navigate-forward)
+	;; <return> is not bound in helm-map by default
+	(define-key helm-map (kbd "<return>") 'helm-maybe-exit-minibuffer)
+	(with-eval-after-load 'helm-files
+	  (define-key helm-read-file-map (kbd "<backspace>") 'helm-ido-like-find-files-up-one-level-maybe)
+	  (define-key helm-read-file-map (kbd "DEL") 'helm-ido-like-find-files-up-one-level-maybe)
+	  (define-key helm-find-files-map (kbd "<backspace>") 'helm-ido-like-find-files-up-one-level-maybe)
+	  (define-key helm-find-files-map (kbd "DEL") 'helm-ido-like-find-files-up-one-level-maybe)
+
+	  (define-key helm-find-files-map (kbd "<return>") 'helm-execute-persistent-action)
+	  (define-key helm-read-file-map (kbd "<return>") 'helm-execute-persistent-action)
+	  (define-key helm-find-files-map (kbd "RET") 'helm-execute-persistent-action)
+	  (define-key helm-read-file-map (kbd "RET") 'helm-execute-persistent-action)))
+
+  (defvar helm-ido-like-no-dots-whitelist
+	'("*Helm file completions*")
+	"List of helm buffers in which to show dot directories.")
+
+  (defun helm-ido-like-no-dots-display-file-p (file)
+	;; in a whitelisted buffer display all but the relative path to parent dir
+	(or (and (member helm-buffer helm-ido-like-no-dots-whitelist)
+			 (not (string-match "\\(?:/\\|\\`\\)\\.\\{2\\}\\'" file)))
+		;; in all other buffers display all files but the two relative ones
+		(not (string-match "\\(?:/\\|\\`\\)\\.\\{1,2\\}\\'" file))))
 
 
-      (defun helm-ido-like-no-dots ()
-        (require 'cl-lib)
-        (advice-add 'helm-ff-filter-candidate-one-by-one
-                    :before-while 'helm-ido-like-no-dots-display-file-p)
-        (advice-add  'helm--generic-read-file-name :before 'helm-ido-like-no-dots-auto-add))
-
-      (defvar helm-ido-like-user-gc-setting nil)
-
-      (defun helm-ido-like-higher-gc ()
-        (setq helm-ido-like-user-gc-setting gc-cons-threshold)
-        (setq gc-cons-threshold most-positive-fixnum))
+  (defun helm-ido-like-no-dots-auto-add (&rest args)
+	"Auto add buffers which want to read directory names to the whitelist."
+	(if (eq (car (last args)) 'file-directory-p)
+		(add-to-list 'helm-ido-like-no-dots-whitelist
+					 (format "*helm-mode-%s*"
+							 (helm-symbol-name
+							  (or (helm-this-command) this-command))))))
 
 
-      (defun helm-ido-like-lower-gc ()
-        (setq gc-cons-threshold helm-ido-like-user-gc-setting))
+  (defun helm-ido-like-no-dots ()
+	(require 'cl-lib)
+	(advice-add 'helm-ff-filter-candidate-one-by-one
+				:before-while 'helm-ido-like-no-dots-display-file-p)
+	(advice-add  'helm--generic-read-file-name :before 'helm-ido-like-no-dots-auto-add))
 
-      (defun helm-ido-like-helm-make-source (f &rest args)
-        (let ((source-type (cadr args)))
-          (unless (or (memq source-type '(helm-source-async helm-source-ffiles))
-                      (eq (plist-get args :filtered-candidate-transformer)
-                          'helm-ff-sort-candidates)
-                      (eq (plist-get args :persistent-action)
-                          'helm-find-files-persistent-action))
-            (nconc args '(:fuzzy-match t))))
-        (apply f args))
+  (defvar helm-ido-like-user-gc-setting nil)
 
-      (defun helm-ido-like-load-fuzzy-enhancements ()
-        (add-hook 'minibuffer-setup-hook #'helm-ido-like-higher-gc)
-        (add-hook 'minibuffer-exit-hook #'helm-ido-like-lower-gc)
-        (advice-add 'helm-make-source :around 'helm-ido-like-helm-make-source))
-
-      (defun helm-ido-like-fuzzier-deactivate (&rest _)
-        (helm-fuzzier-mode -1))
+  (defun helm-ido-like-higher-gc ()
+	(setq helm-ido-like-user-gc-setting gc-cons-threshold)
+	(setq gc-cons-threshold most-positive-fixnum))
 
 
-      (defun helm-ido-like-fuzzier-activate (&rest _)
-        (unless helm-fuzzier-mode
-          (helm-fuzzier-mode 1)))
+  (defun helm-ido-like-lower-gc ()
+	(setq gc-cons-threshold helm-ido-like-user-gc-setting))
+
+  (defun helm-ido-like-helm-make-source (f &rest args)
+	(let ((source-type (cadr args)))
+	  (unless (or (memq source-type '(helm-source-async helm-source-ffiles))
+				  (eq (plist-get args :filtered-candidate-transformer)
+					  'helm-ff-sort-candidates)
+				  (eq (plist-get args :persistent-action)
+					  'helm-find-files-persistent-action))
+		(nconc args '(:fuzzy-match t))))
+	(apply f args))
+
+  (defun helm-ido-like-load-fuzzy-enhancements ()
+	(add-hook 'minibuffer-setup-hook #'helm-ido-like-higher-gc)
+	(add-hook 'minibuffer-exit-hook #'helm-ido-like-lower-gc)
+	(advice-add 'helm-make-source :around 'helm-ido-like-helm-make-source))
+
+  (defun helm-ido-like-fuzzier-deactivate (&rest _)
+	(helm-fuzzier-mode -1))
 
 
-      (defun helm-ido-like-fix-fuzzy-files ()
-        (add-hook 'helm-find-files-before-init-hook #'helm-ido-like-fuzzier-deactivate)
-        (advice-add 'helm--generic-read-file-name :before #'helm-ido-like-fuzzier-deactivate)
-        (add-hook 'helm-exit-minibuffer-hook #'helm-ido-like-fuzzier-activate)
-        (add-hook 'helm-cleanup-hook #'helm-ido-like-fuzzier-activate)
-        (advice-add 'helm-keyboard-quit :before #'helm-ido-like-fuzzier-activate))
+  (defun helm-ido-like-fuzzier-activate (&rest _)
+	(unless helm-fuzzier-mode
+	  (helm-fuzzier-mode 1)))
 
-    ;;   ;;;###autoload
-      (defun helm-ido-like ()
-        "Configure and activate `helm', `helm-fuzzier' and `helm-flx'."
-        (interactive)
-        ;; (helm-ido-like-activate-helm-modes)
-        (helm-ido-like-load-ido-like-bottom-buffer)
-        ;; (helm-ido-like-hide-modelines)
-        ;; (helm-ido-like-hide-helm-modeline)
-        ;; (helm-ido-like-header-lines-maybe)
-        ;; (helm-ido-like-setup-bg-color)
-        (helm-ido-like-load-file-nav)
-        (helm-ido-like-no-dots)
-        ;; (helm-ido-like-load-fuzzy-enhancements)
-        ;; (helm-ido-like-fix-fuzzy-files)
-        )
-      (helm-ido-like)
-      )
+
+  (defun helm-ido-like-fix-fuzzy-files ()
+	(add-hook 'helm-find-files-before-init-hook #'helm-ido-like-fuzzier-deactivate)
+	(advice-add 'helm--generic-read-file-name :before #'helm-ido-like-fuzzier-deactivate)
+	(add-hook 'helm-exit-minibuffer-hook #'helm-ido-like-fuzzier-activate)
+	(add-hook 'helm-cleanup-hook #'helm-ido-like-fuzzier-activate)
+	(advice-add 'helm-keyboard-quit :before #'helm-ido-like-fuzzier-activate))
+
+  ;;   ;;;###autoload
+  (defun helm-ido-like ()
+	"Configure and activate `helm', `helm-fuzzier' and `helm-flx'."
+	(interactive)
+	;; (helm-ido-like-activate-helm-modes)
+	(helm-ido-like-load-ido-like-bottom-buffer)
+	;; (helm-ido-like-hide-modelines)
+	;; (helm-ido-like-hide-helm-modeline)
+	;; (helm-ido-like-header-lines-maybe)
+	;; (helm-ido-like-setup-bg-color)
+	(helm-ido-like-load-file-nav)
+	(helm-ido-like-no-dots)
+	;; (helm-ido-like-load-fuzzy-enhancements)
+	;; (helm-ido-like-fix-fuzzy-files)
+	)
+  (helm-ido-like)
+  )
 #+END_SRC
 
 *** [[https://github.com/bbatsov/projectile][projectile]]
 Project Interaction Library for Emacs
 #+BEGIN_SRC emacs-lisp
-  (use-package projectile
-    :ensure t
-    :commands (projectile-find-file projectile-switch-project projectile-switch-to-buffer)
-    :config
-    (setq projectile-globally-ignored-files
-          '("TAGS"
-            ".DS_Store"))
-    (setq projectile-ignored-projects
-          '("/usr/local"
-            "~/dotfiles/config/emacs.d/lisp/Gnugol"
-            "~/dotfiles/config/emacs.d/lisp/matlab-emacs"))
-    (projectile-mode))
+(use-package projectile
+  :ensure t
+  :commands (projectile-find-file projectile-switch-project projectile-switch-to-buffer)
+  :config
+  (setq projectile-globally-ignored-files
+		'("TAGS"
+		  ".DS_Store"))
+  (setq projectile-ignored-projects
+		'("/usr/local"
+		  "~/dotfiles/config/emacs.d/lisp/Gnugol"
+		  "~/dotfiles/config/emacs.d/lisp/matlab-emacs"))
+  (projectile-mode))
 #+END_SRC
 *** [[https://github.com/ralesi/ranger.el][ranger]]
 Bringing the goodness of ranger to dired!
 #+BEGIN_SRC emacs-lisp
-  (use-package ranger
-    :ensure t
-    :commands ranger
-    :config
-    (setq ranger-show-literal nil)
-    (setq ranger-show-dotfiles nil)
-    (ranger-override-dired-mode t)
-    (setq ranger-cleanup-eagerly t)
-    (setq ranger-parent-depth 0)
+(use-package ranger
+  :ensure t
+  :commands ranger
+  :config
+  (setq ranger-show-literal nil)
+  (setq ranger-show-dotfiles nil)
+  (ranger-override-dired-mode t)
+  (setq ranger-cleanup-eagerly t)
+  (setq ranger-parent-depth 0)
 
-    (fmakunbound 'range-travel)
-    (defun ranger-travel ()
-      "Open a file or go to a directory in current buffer."
-      (interactive)
-      (cond
-       ((featurep 'ivy)
-        (counsel-find-file default-directory))
-       (t
-        (call-interactively 'ido-find-file)))))
+  (fmakunbound 'range-travel)
+  (defun ranger-travel ()
+	"Open a file or go to a directory in current buffer."
+	(interactive)
+	(cond
+	 ((featurep 'ivy)
+	  (counsel-find-file default-directory))
+	 (t
+	  (call-interactively 'ido-find-file)))))
 #+END_SRC
 ** Not currently in use
 These aren't loaded by the init file.
 *** [[https://github.com/Wilfred/ag.el][ag]]
 Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]] into emacs.
 #+BEGIN_SRC emacs-lisp :tangle no
-  (use-package ag
-    ;; Silver searcher
-    :ensure t
-    :defer t
-    :init
-    (use-package wgrep-ag
-      ;; Guess I need this first
-      :ensure t
-      :commands (wgrep-ag-setup))
-    :config
-    (add-hook 'ag-mode-hook
-              (lambda ()
-                (wgrep-ag-setup)
-                (define-key ag-mode-map (kbd "n") 'evil-search-next)
-                (define-key ag-mode-map (kbd "N") 'evil-search-previous)))
-    (setq ag-executable "/usr/local/bin/ag")
-    (setq ag-highlight-search t)
-    (setq ag-reuse-buffers t)
-    (setq ag-reuse-window t))
+(use-package ag
+  ;; Silver searcher
+  :ensure t
+  :defer t
+  :init
+  (use-package wgrep-ag
+	;; Guess I need this first
+	:ensure t
+	:commands (wgrep-ag-setup))
+  :config
+  (add-hook 'ag-mode-hook
+			(lambda ()
+			  (wgrep-ag-setup)
+			  (define-key ag-mode-map (kbd "n") 'evil-search-next)
+			  (define-key ag-mode-map (kbd "N") 'evil-search-previous)))
+  (setq ag-executable "/usr/local/bin/ag")
+  (setq ag-highlight-search t)
+  (setq ag-reuse-buffers t)
+  (setq ag-reuse-window t))
 #+END_SRC
 
 *** [[https://github.com/auto-complete/auto-complete][auto-complete]]
 Pretty good autocompletion, but trying out [[github.com/company-mode/company-mode][company-mode]] right now.
 #+BEGIN_SRC emacs-lisp :tangle no
-  (use-package auto-complete
-    ;; Supposedly not as good as company mode
-    :ensure t
-    :config
-    (global-auto-complete-mode t))
+(use-package auto-complete
+  ;; Supposedly not as good as company mode
+  :ensure t
+  :config
+  (global-auto-complete-mode t))
 #+END_SRC
 
 *** [[https://github.com/joaotavora/autopair][autopair]]
 It may be recommended to use =electric-pair-mode= nowadays? That's
 what I'm using anyway.
 #+Begin_src emacs-lisp :tangle no
-  (use-package autopair
-    :ensure t
-    :config
-    (autopair-global-mode))
+(use-package autopair
+  :ensure t
+  :config
+  (autopair-global-mode))
 #+END_SRC
 
 *** [[https://github.com/tkf/emacs-jedi][emacs-jedi]]
@@ -2673,28 +2694,28 @@ Integrates [[https://github.com/davidhalter/jedi][jedi]] into emacs for python c
 recently. Either way, this is for [[https://github.com/auto-complete/auto-complete][auto-complete]] but now I use
 [[https://github.com/syohex/emacs-company-jedi][emacs-company-jedi]].
 #+BEGIN_SRC emacs-lisp :tangle no
-  (use-package jedi
-    ;; Hasn't been working smoothly recently
-    :ensure t
-    :init
-    (add-hook 'python-mode-hook 'jedi:setup)
-    (setq jedi:complete-on-dot t))
+(use-package jedi
+  ;; Hasn't been working smoothly recently
+  :ensure t
+  :init
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (setq jedi:complete-on-dot t))
 #+END_SRC
 
 *** [[https://github.com/7696122/evil-terminal-cursor-changer][evil-terminal-cursor-changer]]
 #+BEGIN_SRC emacs-lisp :tangle no
-  (use-package evil-terminal-cursor-changer
-    :ensure t
-    :config
-    (unless (display-graphic-p)
-      (require 'evil-terminal-cursor-changer)
-      (evil-terminal-cursor-changer-activate) ; or (etcc-on)
-      )
-    (setq evil-motion-state-cursor 'box)  ; █
-    (setq evil-visual-state-cursor 'box)  ; █
-    (setq evil-normal-state-cursor 'box)  ; █
-    (setq evil-insert-state-cursor 'bar)  ; ⎸
-    (setq evil-emacs-state-cursor  'bar)) ; _
+(use-package evil-terminal-cursor-changer
+  :ensure t
+  :config
+  (unless (display-graphic-p)
+	(require 'evil-terminal-cursor-changer)
+	(evil-terminal-cursor-changer-activate) ; or (etcc-on)
+	)
+  (setq evil-motion-state-cursor 'box)  ; █
+  (setq evil-visual-state-cursor 'box)  ; █
+  (setq evil-normal-state-cursor 'box)  ; █
+  (setq evil-insert-state-cursor 'bar)  ; ⎸
+  (setq evil-emacs-state-cursor  'bar)) ; _
 
 #+END_SRC
 
@@ -2702,273 +2723,273 @@ recently. Either way, this is for [[https://github.com/auto-complete/auto-comple
 Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][spaceline]].
 
 #+BEGIN_SRC emacs-lisp :tangle no
-  (use-package smart-mode-powerline-theme
-    :ensure t)
+(use-package smart-mode-powerline-theme
+  :ensure t)
 
-  (use-package smart-mode-line
-    :ensure t
-    :config
-    (setq sml/no-confirm-load-theme t)
-    (setq sml/theme 'dark)
-    (setq rm-whitelist '(""))
-    (setq system-uses-terminfo nil)
-    (sml/setup)
-    (display-time-mode)
-    (display-time-update)
-    (fancy-battery-mode)
-    (setq fancy-battery-show-percentage t))
+(use-package smart-mode-line
+  :ensure t
+  :config
+  (setq sml/no-confirm-load-theme t)
+  (setq sml/theme 'dark)
+  (setq rm-whitelist '(""))
+  (setq system-uses-terminfo nil)
+  (sml/setup)
+  (display-time-mode)
+  (display-time-update)
+  (fancy-battery-mode)
+  (setq fancy-battery-show-percentage t))
 #+END_SRC
 
 ** Org mode
 *** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
 #+BEGIN_SRC emacs-lisp
-  (use-package ob-ipython
-    :defer 5
-    :ensure t)
+(use-package ob-ipython
+  :defer 5
+  :ensure t)
 #+END_SRC
 *** [[https://github.com/sabof/org-bullets][org-bullets]]
 Use nice bullets in org-mode.
 #+BEGIN_SRC emacs-lisp
-  (use-package org-bullets
-    :ensure t
-    :after org
-    :config
-    (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-    (setq org-bullets-bullet-list '("•")))
+(use-package org-bullets
+  :ensure t
+  :after org
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  (setq org-bullets-bullet-list '("•")))
 #+END_SRC
 *** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
 Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 #+begin_src emacs-lisp
-;;  (use-package ox-pandoc
-;;    :ensure t
-;;    :after org
-;;    :config
-;;    ;; default options for all output formats
-;;    (setq org-pandoc-options '((standalone . t)))
-;;    ;; cancel above settings only for 'docx' format
-;;    (setq org-pandoc-options-for-docx '((standalone . nil))))
+(use-package ox-pandoc
+  :ensure t
+  :after org
+  :config
+  ;; default options for all output formats
+  (setq org-pandoc-options '((standalone . t)))
+  ;; cancel above settings only for 'docx' format
+  (setq org-pandoc-options-for-docx '((standalone . nil))))
 #+end_src
 *** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
 Export org to twitter bootstrap compatible HTML.
 #+begin_src emacs-lisp
-;;  (use-package ox-twbs
-;;    :ensure t
-;;    :defer 5
-;;    :after org)
+(use-package ox-twbs
+  :ensure t
+  :defer 5
+  :after org)
 #+end_src
 *** [[https://github.com/snosov1/toc-org][toc-org]]
 #+BEGIN_SRC emacs-lisp
-;;  (use-package toc-org
-;;    :ensure t
-;;    :defer 5
-;;    :config
-;;    (add-hook 'org-mode-hook 'toc-org-enable))
+(use-package toc-org
+  :ensure t
+  :defer 5
+  :config
+  (add-hook 'org-mode-hook 'toc-org-enable))
 #+END_SRC
 
 ** Programming
 *** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]
 #+begin_src emacs-lisp
-  (use-package anaconda-mode
-    :ensure t)
+(use-package anaconda-mode
+  :ensure t)
 #+end_src
 *** [[https://github.com/clojure-emacs/clojure-mode][clojure-mode]]
 #+begin_src emacs-lisp
-  (use-package clojure-mode
-    :ensure t
-    :defer 5)
+(use-package clojure-mode
+  :ensure t
+  :defer 5)
 #+end_src
 *** [[https://github.com/defunkt/coffee-mode][coffee-mode]]
 #+begin_src emacs-lisp
-  (use-package coffee-mode
-   :defer 5
-   :ensure t)
+(use-package coffee-mode
+  :defer 5
+  :ensure t)
 #+end_src
 *** [[https://github.com/company-mode/company-mode][company-mode]]
 Supposedly better than autocomplete... Also using [[https://github.com/syohex/emacs-company-jedi][company-jedi]]
 #+BEGIN_SRC emacs-lisp
-  (use-package company
-    :ensure t
-    :config
-    (add-hook 'after-init-hook 'global-company-mode)
-    ;; (defun on-off-fci-before-company(command)
-    ;;   (when (string= "show" command)
-    ;;     (turn-off-fci-mode))
-    ;;   (when (string= "hide" command)
-    ;;     (turn-on-fci-mode)))
+(use-package company
+  :ensure t
+  :config
+  (add-hook 'after-init-hook 'global-company-mode)
+  ;; (defun on-off-fci-before-company(command)
+  ;;   (when (string= "show" command)
+  ;;     (turn-off-fci-mode))
+  ;;   (when (string= "hide" command)
+  ;;     (turn-on-fci-mode)))
 
-    ;; (advice-add 'company-call-frontends :before #'on-off-fci-before-company)
-    )
+  ;; (advice-add 'company-call-frontends :before #'on-off-fci-before-company)
+  )
 
-  (use-package company-anaconda
-    :ensure t
-    :after company)
+(use-package company-anaconda
+  :ensure t
+  :after company)
 #+END_SRC
 
 *** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
 Edit jupyter notebooks in emacs
 #+BEGIN_SRC emacs-lisp
-  (use-package ein
-    :ensure t
-    :commands ein:notebooklist-open
-    :config)
+(use-package ein
+  :ensure t
+  :commands ein:notebooklist-open
+  :config)
 #+END_SRC
 
 *** [[https://github.com/jorgenschaefer/elpy][elpy]]
 Sets up a python editing environment. I'm not sure yet.
 #+BEGIN_SRC emacs-lisp :tangle no
-  (use-package elpy
-    ;; Eh, I don't know...
-    :ensure t
-    :config
-    (elpy-enable)
-    (elpy-use-ipython)
-    (setq elpy-modules
-          '(elpy-module-company
-            elpy-module-eldoc
-            elpy-module-pyvenv
-            elpy-module-yasnippet
-            elpy-module-sane-defaults)))
+(use-package elpy
+  ;; Eh, I don't know...
+  :ensure t
+  :config
+  (elpy-enable)
+  (elpy-use-ipython)
+  (setq elpy-modules
+		'(elpy-module-company
+		  elpy-module-eldoc
+		  elpy-module-pyvenv
+		  elpy-module-yasnippet
+		  elpy-module-sane-defaults)))
 #+END_SRC
 
 *** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
 #+begin_src emacs-lisp
-  (use-package evil-nerd-commenter
-    :ensure t)
+(use-package evil-nerd-commenter
+  :ensure t)
 #+end_src
 *** [[https://github.com/alpaker/Fill-Column-Indicator][fill-column-indicator]]
 I like a line length limit indicator in Python
 #+BEGIN_SRC emacs-lisp
 
-  (use-package fill-column-indicator
-    :ensure t
-    :init
-    (setq-default fci-rule-column 79))
+(use-package fill-column-indicator
+  :ensure t
+  :init
+  (setq-default fci-rule-column 79))
 #+END_SRC
 
 *** [[https://github.com/flycheck/flycheck][flycheck]]
 Syntax check for python. Pretty good.
 #+BEGIN_SRC emacs-lisp
-  (use-package flycheck
-    :commands flycheck-mode
-    :ensure t
-    :config
-    (setq flycheck-completing-read-function 'ivy-completing-read))
+(use-package flycheck
+  :commands flycheck-mode
+  :ensure t
+  :config
+  (setq flycheck-completing-read-function 'ivy-completing-read))
 #+END_SRC
 *** [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]]
 #+begin_src emacs-lisp
-  (use-package git-gutter-fringe
-    :ensure t
-    :config
-    (global-git-gutter-mode)
-    (add-hook 'focus-in-hook 'git-gutter:update-all-windows)
-    (fringe-helper-define 'git-gutter-fr:modified nil
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....x.."
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....x.."
-      ".....X..")
-    (fringe-helper-define 'git-gutter-fr:added nil
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....x.."
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....x.."
-      ".....X..")
-    (fringe-helper-define 'git-gutter-fr:deleted nil
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....x.."
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....X.."
-      ".....x.."
-      ".....X.."))
+(use-package git-gutter-fringe
+  :ensure t
+  :config
+  (global-git-gutter-mode)
+  (add-hook 'focus-in-hook 'git-gutter:update-all-windows)
+  (fringe-helper-define 'git-gutter-fr:modified nil
+	".....X.."
+	".....X.."
+	".....X.."
+	".....X.."
+	".....X.."
+	".....X.."
+	".....X.."
+	".....x.."
+	".....X.."
+	".....X.."
+	".....X.."
+	".....X.."
+	".....x.."
+	".....X..")
+  (fringe-helper-define 'git-gutter-fr:added nil
+	".....X.."
+	".....X.."
+	".....X.."
+	".....X.."
+	".....X.."
+	".....X.."
+	".....X.."
+	".....x.."
+	".....X.."
+	".....X.."
+	".....X.."
+	".....X.."
+	".....x.."
+	".....X..")
+  (fringe-helper-define 'git-gutter-fr:deleted nil
+	".....X.."
+	".....X.."
+	".....X.."
+	".....X.."
+	".....X.."
+	".....X.."
+	".....X.."
+	".....x.."
+	".....X.."
+	".....X.."
+	".....X.."
+	".....X.."
+	".....x.."
+	".....X.."))
 #+end_src
 *** [[https://github.com/Fanael/highlight-defined][highlight-defined]]
 #+begin_src emacs-lisp :tangle no
-    (use-package highlight-defined
-      :commands highlight-defined-mode
-      :ensure t)
+(use-package highlight-defined
+  :commands highlight-defined-mode
+  :ensure t)
 #+end_src
 *** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]
 Neat-o
 #+BEGIN_SRC emacs-lisp
-  (use-package highlight-numbers
-    :ensure t)
+(use-package highlight-numbers
+  :ensure t)
 #+END_SRC
 
 *** [[https://github.com/tsdh/highlight-parentheses.el][highlight-parentheses]]
 Makes the parentheses my cursor is between stand out more.
 #+BEGIN_SRC emacs-lisp
-  (use-package highlight-parentheses
-    ;; Make parenthesis I'm currently in stand out
-    :defer t
-    :ensure t)
+(use-package highlight-parentheses
+  ;; Make parenthesis I'm currently in stand out
+  :defer t
+  :ensure t)
 #+END_SRC
 
 *** [[https://github.com/vspinu/imenu-anywhere][imenu-anywhere]]
 imenu on steroids.
 #+BEGIN_SRC emacs-lisp
-  (use-package imenu-anywhere
-    ;; Imenu on steroids
-    :commands imenu-anywhere
-    :ensure t)
+(use-package imenu-anywhere
+  ;; Imenu on steroids
+  :commands imenu-anywhere
+  :ensure t)
 #+END_SRC
 
 *** matlab-mode
 #+begin_src emacs-lisp
-  (use-package matlab
-    :defer 5
-    :ensure matlab-mode
-    :init
-    (load-library "matlab-load"))
+(use-package matlab
+  :defer 5
+  :ensure matlab-mode
+  :init
+  (load-library "matlab-load"))
 #+end_src
 *** [[https://github.com/CodeFalling/nlinum-relative][nlinum-relative]]
 #+begin_src emacs-lisp :tangle no
-  (use-package nlinum-relative
-    :defer 5
-    :ensure t
-    :config
-    (nlinum-relative-setup-evil)
-    (setq nlinum-relative-redisplay-delay 0))
+(use-package nlinum-relative
+  :defer 5
+  :ensure t
+  :config
+  (nlinum-relative-setup-evil)
+  (setq nlinum-relative-redisplay-delay 0))
 #+end_src
 *** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
 Better parentheses coloring
 #+BEGIN_SRC emacs-lisp
-  (use-package rainbow-delimiters
-    :ensure t)
+(use-package rainbow-delimiters
+  :ensure t)
 #+END_SRC
 
 *** [[https://github.com/naiquevin/sphinx-doc.el][sphinx-doc]]
 Sphinx doc python integration. Pretty neat, though not entirely
 complete, IMO.
 #+BEGIN_SRC emacs-lisp
-  (use-package sphinx-doc
-    :ensure t
-    :commands sphinx-doc-mode)
+(use-package sphinx-doc
+  :ensure t
+  :commands sphinx-doc-mode)
 
 #+END_SRC
 
@@ -2981,15 +3002,15 @@ complete, IMO.
 Good code folding is hard to come by in Emacs, and isn't /that/ useful. This was
 pretty good but had some known issues.
 #+BEGIN_SRC emacs-lisp
-  (use-package yafolding
-    :ensure t
-    :config
-    (defun diego/yafolding-kbd ()
-      (local-set-key (kbd "C-c <up>") 'yafolding-hide-all)
-      (local-set-key (kbd "C-c <down>") 'yafolding-show-all)
-      (local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
-      (local-set-key (kbd "C-c <right>") 'yafolding-show-element)
-      (local-set-key [C-tab] 'yafolding-toggle-element)))
+(use-package yafolding
+  :ensure t
+  :config
+  (defun diego/yafolding-kbd ()
+	(local-set-key (kbd "C-c <up>") 'yafolding-hide-all)
+	(local-set-key (kbd "C-c <down>") 'yafolding-show-all)
+	(local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
+	(local-set-key (kbd "C-c <right>") 'yafolding-show-element)
+	(local-set-key [C-tab] 'yafolding-toggle-element)))
 #+END_SRC
 
 *** [[https://github.com/JorisE/yapfify][yapfify]]
@@ -3000,191 +3021,191 @@ pretty good but had some known issues.
 *** [[https://github.com/joaotavora/yasnippet][yasnippet]]
 Freakin yasnippet. It's the best.
 #+BEGIN_SRC emacs-lisp
-  (use-package yasnippet
-    ;; SNIPPETS!!!
-    :ensure t
-    :defer 5
-    :config
-    (yas-global-mode 1)
-    ;; (define-key yas-minor-mode-map (kbd "<tab>") nil)
-    ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
-    ;; (define-key yas-minor-mode-map (kbd "SPC") 'yas-expand)
-    )
+(use-package yasnippet
+  ;; SNIPPETS!!!
+  :ensure t
+  :defer 5
+  :config
+  (yas-global-mode 1)
+  ;; (define-key yas-minor-mode-map (kbd "<tab>") nil)
+  ;; (define-key yas-minor-mode-map (kbd "TAB") nil)
+  ;; (define-key yas-minor-mode-map (kbd "SPC") 'yas-expand)
+  )
 #+END_SRC
 
 ** Reference/search
 *** [[https://github.com/abo-abo/define-word][define-word]]
 #+BEGIN_SRC emacs-lisp
-  (use-package define-word
-    :commands define-word
-    :ensure t)
+(use-package define-word
+  :commands define-word
+  :ensure t)
 #+END_SRC
 *** [[https://github.com/xuchunyang/devdocs.el][devdocs]]
 #+BEGIN_SRC emacs-lisp
-  (use-package devdocs
-    :commands devdocs-search
-    :ensure t)
+(use-package devdocs
+  :commands devdocs-search
+  :ensure t)
 #+END_SRC
 
 *** [[https://github.com/Malabarba/emacs-google-this][emacs-google-this]]
 Google stuff from emacs.
 #+BEGIN_SRC emacs-lisp
-  (use-package google-this
-    :ensure t
-    :commands google-this
-    :config
-    (google-this-mode 1))
+(use-package google-this
+  :ensure t
+  :commands google-this
+  :config
+  (google-this-mode 1))
 #+END_SRC
 
 *** [[https://github.com/dtaht/Gnugol][Gnugol]]
 An org-mode google??? Not currently working, apparently.
 #+BEGIN_SRC emacs-lisp
-  (use-package gnugol
-    :commands gnugol
-    :load-path "lisp/")
+(use-package gnugol
+  :commands gnugol
+  :load-path "lisp/")
 #+END_SRC
 
 *** [[https://github.com/atykhonov/google-translate][google-translate]]
 #+BEGIN_SRC emacs-lisp
-  (use-package google-translate
-    :commands google-translate-at-point
-    :ensure t)
+(use-package google-translate
+  :commands google-translate-at-point
+  :ensure t)
 #+END_SRC
 
 *** [[https://github.com/laynor/melpa-upstream-visit][melpa-upstream-visit]]
 #+BEGIN_SRC emacs-lisp
-  (use-package melpa-upstream-visit
-    :commands muv
-    :ensure t
-    :config
-    (setq muv:completing-read-function 'ivy-completing-read))
+(use-package melpa-upstream-visit
+  :commands muv
+  :ensure t
+  :config
+  (setq muv:completing-read-function 'ivy-completing-read))
 #+END_SRC
 
 *** [[https://github.com/vermiculus/sx.el/][sx]]
 Stack exchange on emacs.
 #+BEGIN_SRC emacs-lisp
-  (use-package sx
-    :defer 5
-    :ensure t)
+(use-package sx
+  :defer 5
+  :ensure t)
 #+END_SRC
 ** Shell utilities
 *** [[https://github.com/hiddenlotus/eshell-prompt-extras][eshell-prompt-extras]]
 #+BEGIN_SRC emacs-lisp
-  (use-package eshell-prompt-extras
-    :ensure t
-    :defer 5
-    :after 'virtualenvwrapper
-    :config
-    (autoload 'epe-theme-dakrone "eshell-prompt-extras")
-    (setq eshell-highlight-prompt nil
-          eshell-prompt-function 'epe-theme-dakrone))
+(use-package eshell-prompt-extras
+  :ensure t
+  :defer 5
+  :after 'virtualenvwrapper
+  :config
+  (autoload 'epe-theme-dakrone "eshell-prompt-extras")
+  (setq eshell-highlight-prompt nil
+		eshell-prompt-function 'epe-theme-dakrone))
 #+END_SRC
 *** [[https://github.com/xuchunyang/eshell-z][eshell-z]]
 #+BEGIN_SRC emacs-lisp
-  (use-package eshell-z
-    :defer 5
-    :ensure t)
+(use-package eshell-z
+  :defer 5
+  :ensure t)
 #+END_SRC
 
 *** [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]]
 #+BEGIN_SRC emacs-lisp
-  (use-package exec-path-from-shell
-    :ensure t
-    :config
-    (setq exec-path-from-shell-check-startup-files nil)
-    (when (memq window-system '(mac ns))
-      (exec-path-from-shell-initialize))
-    )
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (setq exec-path-from-shell-check-startup-files nil)
+  (when (memq window-system '(mac ns))
+	(exec-path-from-shell-initialize))
+  )
 #+END_SRC
 
 *** [[https://www.emacswiki.org/emacs/download/multi-term.el][multi-term]]
 I wanted a slightly better terminal in emacs. Not sure
 if this is the answer as I haven't used it much.
 #+BEGIN_SRC emacs-lisp
-  (use-package multi-term
-    ;; Supposed to be nicer than ansi-term
-    :commands multi-term
-    :ensure t)
+(use-package multi-term
+  ;; Supposed to be nicer than ansi-term
+  :commands multi-term
+  :ensure t)
 #+END_SRC
 
 *** [[https://github.com/jorgenschaefer/pyvenv][pyvenv]]
 #+BEGIN_SRC emacs-lisp :tangle no
-  (use-package pyvenv
-    :ensure t
-    :config
-    (defun pyvenv-initialize-eshell ()
-      "Configure eshell for use with pyvenv.el"
-      (setq eshell-modify-global-environment t)
-      (setq eshell-path-env (getenv "PATH"))
-      (defun eshell/workon (arg) (pyvenv-workon arg))
-      (defun eshell/deactivate () (pyvenv-deactivate))
-      (message "Eshell virtualenv support initialized"))
+(use-package pyvenv
+  :ensure t
+  :config
+  (defun pyvenv-initialize-eshell ()
+	"Configure eshell for use with pyvenv.el"
+	(setq eshell-modify-global-environment t)
+	(setq eshell-path-env (getenv "PATH"))
+	(defun eshell/workon (arg) (pyvenv-workon arg))
+	(defun eshell/deactivate () (pyvenv-deactivate))
+	(message "Eshell virtualenv support initialized"))
 
-    (pyvenv-initialize-eshell)
-    (advice-add 'pyvenv-workon :after 'diego/sync-venv)
-    (advice-add 'pyvenv-deactivate :after 'diego/sync-venv))
+  (pyvenv-initialize-eshell)
+  (advice-add 'pyvenv-workon :after 'diego/sync-venv)
+  (advice-add 'pyvenv-deactivate :after 'diego/sync-venv))
 
 
 #+END_SRC
 *** [[https://github.com/porterjamesj/virtualenvwrapper.el][virtualenvwrapper]]
 #+BEGIN_SRC emacs-lisp
-  (use-package virtualenvwrapper
-      :ensure t
-      :config
-      ;; (venv-initialize-interactive-shells)
-      (setq venv-location "~/.virtualenvs"))
+(use-package virtualenvwrapper
+  :ensure t
+  :config
+  ;; (venv-initialize-interactive-shells)
+  (setq venv-location "~/.virtualenvs"))
 #+END_SRC
 * Mode Specific
 ** Prog-mode
 Properties that apply to all programming modes.
 #+BEGIN_SRC emacs-lisp
-  (defun diego/setup-prog-mode ()
-    (highlight-parentheses-mode 1)
-    (rainbow-delimiters-mode)
-    (make-local-variable 'show-paren-mode)
-    (fci-mode)
-    (highlight-numbers-mode)
-    (setq show-paren-mode t)
-    (nlinum-relative-mode 1)
-    (auto-fill-mode 1)
-    (setq-local comment-auto-fill-only-comments t)
-    (setq-local calc-embedded-open-mode (concat comment-start " "))
-    (setq-local calc-embedded-close-mode (concat comment-end "\n"))
-    (hl-line-mode 1))
+(defun diego/setup-prog-mode ()
+  (highlight-parentheses-mode 1)
+  (rainbow-delimiters-mode)
+  (make-local-variable 'show-paren-mode)
+  (fci-mode)
+  (highlight-numbers-mode)
+  (setq show-paren-mode t)
+  (nlinum-relative-mode 1)
+  (auto-fill-mode 1)
+  (setq-local comment-auto-fill-only-comments t)
+  (setq-local calc-embedded-open-mode (concat comment-start " "))
+  (setq-local calc-embedded-close-mode (concat comment-end "\n"))
+  (hl-line-mode 1))
 
-  (add-hook 'prog-mode-hook 'diego/setup-prog-mode)
+(add-hook 'prog-mode-hook 'diego/setup-prog-mode)
 #+END_SRC
 ** Python
 #+BEGIN_SRC emacs-lisp
-  (defun diego/setup-python-mode ()
-    (yafolding-mode)
-    (diego/yafolding-kbd)
-    (yas-minor-mode)
-    (setq-local tab-width 4)
-    (set (make-local-variable 'comment-inline-offset) 2)
-    (setenv "PYTHONPATH" "/usr/local/bin/python3")
-    (anaconda-mode)
-    (anaconda-eldoc-mode)
-    (add-to-list 'company-backends 'company-anaconda)
-    (defvar diego/python-prettify-alist
-      '(("<=" . "≤")
-        (">=" . "≥")
-        ("!=" . "≠")
-        ("==" . "≈")
-        ("is" . "≡")
-        ("sum" . "∑")
-        ("math.sqrt" . "√")
-        ("math.pi" . "π")
-        ("lambda" . "λ")
-        ("and" . 8743)
-        ("or" . 8744)
-        ("self" . "↻")
-        ("in" . "∈")
-        ("not in" . "∉")))
-    (setq-local prettify-symbols-alist
-                diego/python-prettify-alist))
+(defun diego/setup-python-mode ()
+  (yafolding-mode)
+  (diego/yafolding-kbd)
+  (yas-minor-mode)
+  (setq-local tab-width 4)
+  (set (make-local-variable 'comment-inline-offset) 2)
+  (setenv "PYTHONPATH" "/usr/local/bin/python3")
+  (anaconda-mode)
+  (anaconda-eldoc-mode)
+  (add-to-list 'company-backends 'company-anaconda)
+  (defvar diego/python-prettify-alist
+	'(("<=" . "≤")
+	  (">=" . "≥")
+	  ("!=" . "≠")
+	  ("==" . "≈")
+	  ("is" . "≡")
+	  ("sum" . "∑")
+	  ("math.sqrt" . "√")
+	  ("math.pi" . "π")
+	  ("lambda" . "λ")
+	  ("and" . 8743)
+	  ("or" . 8744)
+	  ("self" . "↻")
+	  ("in" . "∈")
+	  ("not in" . "∉")))
+  (setq-local prettify-symbols-alist
+			  diego/python-prettify-alist))
 
-  (add-hook 'python-mode-hook 'diego/setup-python-mode)
+(add-hook 'python-mode-hook 'diego/setup-python-mode)
 #+END_SRC
 ** Matlab
 #+begin_src emacs-lisp
@@ -3193,35 +3214,35 @@ Properties that apply to all programming modes.
 ** Emacs-Lisp
 Mostly set up hs-minor-mode for emacs-lisp.
 #+BEGIN_SRC emacs-lisp
-  (defun diego/setup-lisp-mode ()
-    (hs-minor-mode)
-    (local-set-key (kbd "C-c <up>") 'hs-hide-all)
-    (local-set-key (kbd "C-c <down>") 'hs-show-all)
-    (local-set-key (kbd "C-c <left>") 'hs-hide-block)
-    (local-set-key (kbd "C-c <right>") 'hs-show-block)
-    ;; (highlight-defined-mode)
-    )
+(defun diego/setup-lisp-mode ()
+  (hs-minor-mode)
+  (local-set-key (kbd "C-c <up>") 'hs-hide-all)
+  (local-set-key (kbd "C-c <down>") 'hs-show-all)
+  (local-set-key (kbd "C-c <left>") 'hs-hide-block)
+  (local-set-key (kbd "C-c <right>") 'hs-show-block)
+  ;; (highlight-defined-mode)
+  )
 
-  (add-hook 'emacs-lisp-mode-hook 'diego/setup-lisp-mode)
-  (add-hook 'lisp-interaction-mode-hook 'diego/setup-lisp-mode)
+(add-hook 'emacs-lisp-mode-hook 'diego/setup-lisp-mode)
+(add-hook 'lisp-interaction-mode-hook 'diego/setup-lisp-mode)
 #+END_SRC
 
 ** Term mode
 #+BEGIN_SRC emacs-lisp
-  (defun diego/setup-term-mode ()
-    (setq-local yas-dont-activate t)
-    (local-set-key (kbd "<C-tab>") 'multi-term-next))
-  (add-hook 'term-mode-hook 'diego/setup-term-mode)
+(defun diego/setup-term-mode ()
+  (setq-local yas-dont-activate t)
+  (local-set-key (kbd "<C-tab>") 'multi-term-next))
+(add-hook 'term-mode-hook 'diego/setup-term-mode)
 #+END_SRC
 ** Calc mode
 *** Settings
 #+begin_src emacs-lisp
-  (setq calc-multiplication-has-precedence nil)
-  (defun diego/setup-calc-mode()
-	(local-set-key (kbd "x") (lambda () (interactive) (counsel-M-x "^calc-")))
-	(calc-symbolic-mode 1))
+(setq calc-multiplication-has-precedence nil)
+(defun diego/setup-calc-mode()
+  (local-set-key (kbd "x") (lambda () (interactive) (counsel-M-x "^calc-")))
+  (calc-symbolic-mode 1))
 
-  (add-hook 'calc-mode-hook 'diego/setup-calc-mode)
+(add-hook 'calc-mode-hook 'diego/setup-calc-mode)
 #+end_src
 *** Custom vars and funcs
 #+begin_src emacs-lisp
@@ -3236,20 +3257,20 @@ This is from somewhere on the internet, and may no longer be relevant since I
 started using company-mode. I'm not sure though.
 
 #+BEGIN_SRC emacs-lisp
-  (defun sanityinc/fci-enabled-p ()
-      (and (boundp 'fci-mode) fci-mode))
-  (defvar sanityinc/fci-mode-suppressed nil)
-  (defadvice popup-create (before suppress-fci-mode activate)
-    "Suspend fci-mode while popups are visible"
-    (let ((fci-enabled (sanityinc/fci-enabled-p)))
-      (when fci-enabled
-        (set (make-local-variable 'sanityinc/fci-mode-suppressed) fci-enabled)
-        (turn-off-fci-mode))))
+(defun sanityinc/fci-enabled-p ()
+  (and (boundp 'fci-mode) fci-mode))
+(defvar sanityinc/fci-mode-suppressed nil)
+(defadvice popup-create (before suppress-fci-mode activate)
+  "Suspend fci-mode while popups are visible"
+  (let ((fci-enabled (sanityinc/fci-enabled-p)))
+	(when fci-enabled
+	  (set (make-local-variable 'sanityinc/fci-mode-suppressed) fci-enabled)
+	  (turn-off-fci-mode))))
 
-  (defadvice popup-delete (after restore-fci-mode activate)
-    "Restore fci-mode when all popups have closed"
-    (when (and sanityinc/fci-mode-suppressed
-               (null popup-instances))
-      (setq sanityinc/fci-mode-suppressed nil)
-      (turn-on-fci-mode)))
+(defadvice popup-delete (after restore-fci-mode activate)
+  "Restore fci-mode when all popups have closed"
+  (when (and sanityinc/fci-mode-suppressed
+			 (null popup-instances))
+	(setq sanityinc/fci-mode-suppressed nil)
+	(turn-on-fci-mode)))
 #+END_SRC
