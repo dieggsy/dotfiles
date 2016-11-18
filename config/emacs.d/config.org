@@ -1556,7 +1556,9 @@ so I went with it.
   (setq diego/todo-file "~/Dropbox (MIT)/org/todo.org")
   (setq diego/notes-file "~Dropbox (MIT)/org/notes.org")
   (setq org-directory "~/Dropbox (MIT)/org")
-  (setq org-archive-location "~/Dropbox (MIT)/org/archive.org::"))
+  (setq org-archive-location "~/Dropbox (MIT)/org/archive.org::")
+  (setq org-export-async-init-file
+		"/Users/diego/dotfiles/config/emacs.d/lisp/org-async-init.el"))
 #+end_src
 **** Todo/agenda
 #+begin_src emacs-lisp
@@ -1606,6 +1608,8 @@ so I went with it.
   (setq org-src-window-setup 'current-window)
   (setq org-list-demote-modify-bullet '(("-" . "*")
 										("*" . "+")))
+  (setq org-export-in-background t)
+
   ;; appearance
   (setq org-src-fontify-natively t)
   (setq org-src-tab-acts-natively t)
