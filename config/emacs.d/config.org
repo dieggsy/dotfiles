@@ -260,7 +260,7 @@ consistent with other fonts. Last updated 2011, last successfully tested
 
 ,* Other")
 #+end_src
-** File handling
+** File and session handling
 Handling/storing of files, backups, autosaves.
 #+begin_src emacs-lisp
 (defvar backup-dir "~/.emacsbackups/")
@@ -270,6 +270,8 @@ Handling/storing of files, backups, autosaves.
 (global-auto-revert-mode t)
 (save-place-mode 1)
 (desktop-save-mode 1)
+(add-to-list 'desktop-globals-to-save 'ivy-views)
+(add-to-list 'desktop-globals-to-save '(kill-ring . 100))
 
 ;; ssh
 (setq tramp-default-method "ssh")
