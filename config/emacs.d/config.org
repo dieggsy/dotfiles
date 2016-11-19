@@ -2665,7 +2665,7 @@ Bringing the goodness of ranger to dired!
 #+begin_src emacs-lisp
 (use-package ranger
   :ensure t
-  :commands ranger
+  :commands (ranger deer deer-jump-other-window)
   :config
   (setq ranger-show-literal nil)
   (setq ranger-show-dotfiles nil)
@@ -2681,7 +2681,15 @@ Bringing the goodness of ranger to dired!
 	 ((featurep 'ivy)
 	  (counsel-find-file default-directory))
 	 (t
-	  (call-interactively 'ido-find-file)))))
+	  (call-interactively 'ido-find-file))))
+
+  (advice-add
+   'ranger-close
+   :after
+   (lambda ()
+	 (condition-case nil
+		 (delete-window)
+	   (error nil)))))
 #+end_src
 ** Not currently in use
 These aren't loaded by the init file.
