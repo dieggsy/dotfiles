@@ -643,34 +643,35 @@ based on or copied from spacemacs, so definitely check them out!
 #+begin_src emacs-lisp
 (defun diego/leader-applications ()
   (evil-leader/set-key
-	"ax"  'xkcd
-	"agt" 'tetris
-	"agg" 'gomoku
+	"aW"  'sunshine-quick-forecast
+	"ac"  'calc-dispatch
+	"ad"  'diego/deer
+    "ae"  'elfeed
 	"ag2" '2048-game
 	"agd" 'dunnet
+	"agg" 'gomoku
+	"agt" 'tetris
 	"ai"  'erc
-	"ar"  'ranger
-	"ad"  'diego/deer
-	"ac"  'calc-dispatch
 	"ap"  'paradox-list-packages
-	"au"  'undo-tree-visualize
-	"aw"  'sunshine-forecast
-	"aW"  'sunshine-quick-forecast
+	"ar"  'ranger
 	"as"  'speed-type-text
 	"at"  'twit
+	"au"  'undo-tree-visualize
+	"aw"  'sunshine-forecast
+	"ax"  'xkcd
 
 	;; org
 	"ao#" 'org-agenda-list-stuck-projects
 	"ao/" 'org-occur-in-agenda-files
+	"aoO" 'org-clock-out
 	"aoa" 'org-agenda-list
+	"aoc" 'org-capture
 	"aoe" 'org-store-agenda-views
+	"aol" 'org-store-link)
 	"aom" 'org-tags-view
 	"aoo" 'org-agenda
 	"aos" 'org-search-view
 	"aot" 'org-todo-list
-	"aoO" 'org-clock-out
-	"aoc" 'org-capture
-	"aol" 'org-store-link)
 
 	(defun diego/deer (arg)
 	  (interactive "P")
