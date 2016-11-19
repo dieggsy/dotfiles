@@ -119,7 +119,6 @@ pytz==2016.7
 PyYAML==3.12
 pyzmq==16.0.1
 qtconsole==4.2.1
-rainbow==2.5.0
 readline==6.2.4.1
 requests==2.12.1
 requests-oauthlib==0.7.0
