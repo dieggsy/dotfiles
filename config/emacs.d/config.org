@@ -270,6 +270,7 @@ Handling/storing of files, backups, autosaves.
 (desktop-save-mode 1)
 (add-to-list 'desktop-globals-to-save 'ivy-views)
 (add-to-list 'desktop-globals-to-save '(kill-ring . 100))
+(setq save-interprogram-paste-before-kill t)
 
 ;; ssh
 (setq tramp-default-method "ssh")
