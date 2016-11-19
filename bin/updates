@@ -46,8 +46,7 @@ if [ -z $VE ]; then
 	pip freeze > ~/dotfiles/installed-programs/pip3-programs.txt
 	sed -i '' -e 's/=.*//' ~/dotfiles/installed-programs/pip3-programs.txt 
 
-	pyenv global $globalpython # Set python version back to original
-	
+	pyenv global system
 	echo -e "\n\e[1;34mUpdating: \e[91mHomebrew\e[0;97m"
 	brew update
 	brew upgrade
@@ -61,6 +60,8 @@ if [ -z $VE ]; then
 	
 	echo " "
 	echo -e "\e[1;34mDone"
+
+	pyenv global $globalpython # Set python version back to original
 else
 	echo 'Exit virtualenv first'
 fi
