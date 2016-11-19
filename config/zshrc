@@ -18,7 +18,7 @@ unalias rm
 
 # The following is taken pretty much directly from fino theme,
 # but I wanted to make a few tweaks.
-export VIRTUAL_ENV_DISABLE_PROMPT=1
+#export VIRTUAL_ENV_DISABLE_PROMPT=1
 
 # function prompt_char {
 #   git branch >/dev/null 2>/dev/null && echo "±" && return
