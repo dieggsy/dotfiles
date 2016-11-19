@@ -3158,13 +3158,11 @@ Stack exchange on emacs.
   )
 #+end_src
 
-*** [[https://www.emacswiki.org/emacs/download/multi-term.el][multi-term]]
-I wanted a slightly better terminal in emacs. Not sure
-if this is the answer as I haven't used it much.
+*** [[https://github.com/adamrt/sane-term][sane-term]]
+I wanted a slightly better terminal in emacs. This seems to do the trick.
 #+begin_src emacs-lisp
-(use-package multi-term
-  ;; Supposed to be nicer than ansi-term
-  :commands multi-term
+(use-package sane-term 
+  :commands (sane-term sane-term-create)
   :ensure t)
 #+end_src
 
