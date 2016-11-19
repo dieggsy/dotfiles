@@ -456,10 +456,10 @@ Handling/storing of files, backups, autosaves.
 (defun diego/ipython-shell ()
   "Open an ipython shell using multi-term, respecting virtualenv."
   (interactive)
-  (if (eq pyvenv-virtual-env nil)
-	  (let ((multi-term-program "/usr/local/bin/ipython"))
+  (if (eq venv-current-name nil)
+	  (let ((multi-term-program "ipython"))
 		(multi-term))
-	(let ((multi-term-program (concat pyvenv-virtual-env "/bin/ipython")))
+	(let ((multi-term-program (concat venv-current-dir "/bin/ipython")))
 	  (multi-term))))
 
 (defun diego/toggle-github-spacing ()
