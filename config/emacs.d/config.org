@@ -191,8 +191,6 @@ Get rid of menu bars, scroll bars, startup screens, etc.
 (show-paren-mode)
 (setq show-paren-mode ())
 (blink-cursor-mode 0)
-;; (require 'zone)
-;; (zone-when-idle 10)
 #+end_src
 ** Font/Text
 *Current:* Currently I'm using the wonderful [[http://input.fontbureau.com/][Input]] font. If, like me, you're
@@ -1075,17 +1073,15 @@ based on or copied from spacemacs, so definitely check them out!
 ;; Global bindings.
 (defun diego/evil-bindings ()
 
+  (define-key evil-normal-state-map "gc"           'evilnc-comment-operator)
+  (define-key evil-normal-state-map "gy"           'evilnc-copy-and-comment-lines)
+  (define-key evil-normal-state-map (kbd "g/")     'occur-last-search)
+  (define-key evil-normal-state-map (kbd "[i")     'show-first-occurrence)
+  (define-key evil-insert-state-map (kbd "C-e")    'end-of-line)
+  (define-key evil-normal-state-map (kbd "S-SPC")  'org-agenda-list)
+  (define-key evil-normal-state-map (kbd "<down-mouse-1>")  nil)
+  (define-key evil-normal-state-map (kbd "<mouse-1>")  nil)
 
-  (define-key evil-normal-state-map "gy" 'evilnc-copy-and-comment-lines)
-  (define-key evil-normal-state-map "gc" 'evilnc-comment-operator)
-  (define-key evil-normal-state-map (kbd "<down>") 'evil-next-visual-line)
-  (define-key evil-normal-state-map (kbd "<up>")   'evil-previous-visual-line)
-  (define-key evil-normal-state-map (kbd "g/")    'occur-last-search)
-  (define-key evil-normal-state-map (kbd "[i")    'show-first-occurrence)
-  (define-key evil-insert-state-map (kbd "C-e")   'end-of-line) ;; I know...
-  (define-key evil-normal-state-map (kbd "S-SPC") 'diego/pop-to-org-agenda)
-  ;; (define-key evil-normal-state-map (kbd "<SPC>") 'counsel-M-x)
-  ;; (define-key evil-visual-state-map (kbd "<SPC>") 'counsel-M-x)
 
   (evil-define-key 'normal custom-mode-map
 	"q" 'Custom-buffer-done)
@@ -1885,6 +1881,13 @@ A utility package to collect various Icon Fonts and propertize them within Emacs
   :defer 5
   :ensure t)
 #+end_src
+*** [[https://github.com/larstvei/Focus][focus]]
+Dim the font color of text in surrounding paragraphs
+#+begin_src emacs-lisp
+(use-package focus
+  :commands focus-mode
+  :ensure t)
+#+end_src
 *** [[http://git.savannah.gnu.org/cgit/emacs/elpa.git/tree/packages/rainbow-mode/rainbow-mode.el][rainbow-mode]]
 #+begin_src emacs-lisp
 (use-package rainbow-mode
@@ -2142,13 +2145,6 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
   :ensure t)
 #+end_src
 
-*** [[https://github.com/larstvei/Focus][focus]]
-Dim the font color of text in surrounding paragraphs
-#+begin_src emacs-lisp
-(use-package focus
-  :commands focus-mode
-  :ensure t)
-#+end_src
 *** [[https://www.emacswiki.org/emacs/KeyChord][keychord]]
 Neat way to bind commands to key-stroke combinations
 #+begin_src emacs-lisp
@@ -3227,7 +3223,6 @@ Properties that apply to all programming modes.
   (yas-minor-mode)
   (setq-local tab-width 4)
   (set (make-local-variable 'comment-inline-offset) 2)
-  (setenv "PYTHONPATH" "/usr/local/bin/python3")
   (anaconda-mode)
   (anaconda-eldoc-mode)
   (add-to-list 'company-backends 'company-anaconda)
