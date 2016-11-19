@@ -1,8 +1,10 @@
 #!/usr/local/bin/bash
 
+globalpython=$(echo $(pyenv version) | cut -d' ' -f1)
+pyenv global $python2version 
 IFS=$'\n'
 echo  $'Getting outdated pip packages...'
-res=$(pip2 list -o --format=legacy)
+res=$(pip list -o --format=legacy)
 
 if [ -z "$res" ]; then
     echo $'All packages up to date.'
@@ -12,10 +14,13 @@ else
     echo ""
     echo $'Updating packages...\n'
     for prog in $res;do
-	    pip2 install --upgrade ${prog%\(*}
+	    pip install --upgrade ${prog%\(*}
 	done
 fi
 
-mkmasterinstall
+pip freeze > ~/dotfiles/installed-programs/pip2-programs.txt
+sed -i '' -e 's/=.*//' pip2-programs.txt 
+
+pyenv global $globalpython
 echo $'\nDone'
 

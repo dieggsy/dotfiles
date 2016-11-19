@@ -1,10 +1,15 @@
 #!/usr/local/bin/bash
 VE=`echo $VIRTUAL_ENV`
 if [ -z $VE ]; then
+	# Track global python version
+	globalpython=$(echo $(pyenv version) | cut -d' ' -f1)
+
+	# Update pip for python 2
+	pyenv global $python2version 
 	echo -e "\e[1;34mUpdating: \e[91mpip2\e[0;97m"
 	IFS=$'\n'
 	echo  $'Getting outdated pip2 packages...'
-	res=$(pip2 list -o --format=legacy)
+	res=$(pip list -o --format=legacy)
 
 	if [ -z "$res" ]; then
 		echo $'All packages up to date.'
@@ -14,13 +19,18 @@ if [ -z $VE ]; then
 		echo ""
 		echo $'Updating packages...\n'
 		for prog in $res;do
-			pip2 install --upgrade ${prog%\(*}
+			pip install --upgrade ${prog%\(*}
 		done
 	fi
+	pip freeze > ~/dotfiles/installed-programs/pip2-programs.txt
+	sed -i '' -e 's/=.*//' ~/dotfiles/installed-programs/pip2-programs.txt
+
+	# Update pip for python 3
+	pyenv global $python3version
 	echo -e "\n\e[1;34mUpdating: \e[91mpip3\e[0;97m"
 	IFS=$'\n'
 	echo  $'Getting outdated pip3 packages...'
-	res=$(pip3 list -o --format=legacy)
+	res=$(pip list -o --format=legacy)
 
 	if [ -z "$res" ]; then
 		echo $'All packages up to date.'
@@ -30,16 +40,25 @@ if [ -z $VE ]; then
 		echo ""
 		echo $'Updating packages...\n'
 		for prog in $res;do
-			pip3 install --upgrade ${prog%\(*}
+			pip install --upgrade ${prog%\(*}
 		done
 	fi
+	pip freeze > ~/dotfiles/installed-programs/pip3-programs.txt
+	sed -i '' -e 's/=.*//' ~/dotfiles/installed-programs/pip3-programs.txt 
+
+	pyenv global $globalpython # Set python version back to original
+	
 	echo -e "\n\e[1;34mUpdating: \e[91mHomebrew\e[0;97m"
 	brew update
 	brew upgrade
 	brew cleanup
 	brew prune
 	brew doctor
-	mkmasterinstall
+
+	brew tap > ~/dotfiles/installed-programs/brew-taps.txt
+	brew list --full-name > ~/dotfiles/installed-programs/brew-programs.txt
+	brew cask list > ~/dotfiles/installed-programs/brew-casks.txt
+	
 	echo " "
 	echo -e "\e[1;34mDone"
 else

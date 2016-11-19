@@ -5,4 +5,7 @@ brew upgrade
 brew cleanup
 brew prune
 brew doctor
-mkmasterinstall
+
+brew tap > ~/dotfiles/installed-programs/brew-taps.txt
+brew list --full-name > ~/dotfiles/installed-programs/brew-programs.txt
+brew cask list > ~/dotfiles/installed-programs/brew-casks.txt

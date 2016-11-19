@@ -12,6 +12,7 @@ setopt GLOB_COMPLETE
 setopt auto_cd
 setopt histignoredups
 setopt autonamedirs
+setopt clobber
 . `brew --prefix`/etc/profile.d/z.sh
 unsetopt correct
 unalias rm
@@ -69,18 +70,8 @@ else
 	export ALTERNATE_EDITOR="vim"
 fi
 
-kwm="koekeishiya/kwm/kwm"
-khd="koekeishiya/khd/khd"
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
 
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
+# Aliases
 alias apps="cd /Applications"
 alias cask="brew cask"
 alias config="$EDITOR ~/dotfiles/config/emacs.d/config.org"
@@ -112,7 +103,14 @@ alias sz="du -hs"							   # get folder/file size
 alias zshrc="$EDITOR ~/dotfiles/config/zshrc" 
 alias vimrc="$ALTERNATE_EDITOR ~/dotfiles/config/vimrc"
 alias rainbowstream='$HOME/.virtualenvs/py3/bin/rainbowstream'
+
+# Vars
 export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31' # ls colors i've gotten used to
+kwm="koekeishiya/kwm/kwm"
+khd="koekeishiya/khd/khd"
+export python3version=3.5.2
+export python2version=2.7.12
+
 zstyle ':completion:*' list-colors 'di=0;36:ex=0;35:ln=1;31'
 
 py2() {
@@ -125,6 +123,10 @@ out() {
 	deactivate
 	export PYTHONSTARTUP=$HOME/.pythonrc.py
 	alias run="python3"
+}
+
+pip-fromfile() {
+<$1 xargs pip install
 }
 
 athena(){
