@@ -1261,56 +1261,6 @@ so I went with it.
 
 *** Helper functions
 #+begin_src emacs-lisp
-(defun diego/org-global-custom-ids ()
-  "Find custom ID fields in all org agenda files."
-  (let ((files (org-agenda-files))
-		file
-		diego/all-org-custom-ids)
-	(while (setq file (pop files))
-	  (with-current-buffer (org-get-agenda-file-buffer file)
-		(save-excursion
-		  (save-restriction
-			(widen)
-			(goto-char (point-min))
-			(while (re-search-forward "^[ \t]*:CUSTOM_ID:[ \t]+\\(\\S-+\\)[ \t]*$"
-									  nil t)
-			  (add-to-list 'diego/all-org-custom-ids
-						   `(,(match-string-no-properties 1)
-							 ,(concat file ":" (number-to-string (line-number-at-pos))))))))))
-	diego/all-org-custom-ids))
-
-(defun diego/org-goto-custom-id ()
-  "Go to the location of CUSTOM-ID, or prompt interactively."
-  (interactive)
-  (let* ((all-custom-ids (diego/org-global-custom-ids))
-		 (custom-id (completing-read
-					 "Custom ID: "
-					 all-custom-ids)))
-	(when custom-id
-	  (let* ((val (cadr (assoc custom-id all-custom-ids)))
-			 (id-parts (split-string val ":"))
-			 (file (car id-parts))
-			 (line (string-to-int (cadr id-parts))))
-		(pop-to-buffer (org-get-agenda-file-buffer file))
-		(goto-char (point-min))
-		(forward-line line)
-		(org-reveal)
-		(org-up-element)))))
-
-(defun diego/org-insert-custom-id-link ()
-  "Insert an Org link to a custom ID selected interactively."
-  (interactive)
-  (let* ((all-custom-ids (diego/org-global-custom-ids))
-		 (custom-id (completing-read
-					 "Custom ID: "
-					 all-custom-ids)))
-	(when custom-id
-	  (let* ((val (cadr (assoc custom-id all-custom-ids)))
-			 (id-parts (split-string val ":"))
-			 (file (car id-parts))
-			 (line (string-to-int (cadr id-parts))))
-		(org-insert-link nil (concat file "::#" custom-id) custom-id)))))
-
 (defun diego/org-set-category-property (value)
   "Set the category property of the current item to VALUE."
   (interactive (list (org-read-property-value "CATEGORY")))
@@ -2962,7 +2912,7 @@ imenu on steroids.
   :ensure t)
 #+end_src
 
-*** [[https://github.com/immerrr/lua-mode][lua-mode]] 
+*** [[https://github.com/immerrr/lua-mode][lua-mode]]
 #+begin_src emacs-lisp
 (use-package lua-mode
   :ensure t
@@ -3124,7 +3074,7 @@ Stack exchange on emacs.
 *** [[https://github.com/adamrt/sane-term][sane-term]]
 I wanted a slightly better terminal in emacs. This seems to do the trick.
 #+begin_src emacs-lisp
-(use-package sane-term 
+(use-package sane-term
   :commands (sane-term sane-term-create)
   :ensure t)
 #+end_src
