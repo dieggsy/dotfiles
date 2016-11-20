@@ -410,10 +410,10 @@ Handling/storing of files, backups, autosaves.
   "Open an ipython shell using multi-term, respecting virtualenv."
   (interactive)
   (if (eq venv-current-name nil)
-	  (let ((multi-term-program "ipython"))
-		(multi-term))
-	(let ((multi-term-program (concat venv-current-dir "/bin/ipython")))
-	  (multi-term))))
+	  (let ((sane-term-shell-command "ipython"))
+		(sane-term-create))
+	(let ((sane-term-shell-command (concat venv-current-dir "/bin/ipython")))
+	  (sane-term-create))))
 
 (defun diego/toggle-github-spacing ()
   "Make line spacing similar to github source code."
@@ -608,7 +608,7 @@ based on or copied from spacemacs, so definitely check them out!
 	"ap"  'paradox-list-packages
 	"ar"  'ranger
 	"as"  'speed-type-text
-	"at"  'twit
+	"at"  'sane-term
 	"au"  'undo-tree-visualize
 	"aw"  'sunshine-forecast
 	"ax"  'xkcd
