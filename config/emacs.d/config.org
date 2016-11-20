@@ -1314,16 +1314,16 @@ so I went with it.
 (defun diego/pop-to-org-todo (split)
   "Visit todo list, in the current window or a split."
   (interactive "P")
-  (if (eq split nil)
-	  (find-file-other-window "~/Dropbox (MIT)/org/todo.org")
-	(find-file "~/Dropbox (MIT)/org/todo.org")))
+  (if split
+	  (find-file "~/Dropbox (MIT)/org/todo.org")
+	(find-file-other-window "~/Dropbox (MIT)/org/todo.org")))
 
 (defun diego/pop-to-org-notes (split)
   "Visit my main notes list, in the current window or a split."
   (interactive "P")
-  (if (eq split nil)
-	  (find-file-other-window "~/Dropbox (MIT)/org/notes.org")
-	(find-file "~/Dropbox (MIT)/org/notes.org")))
+  (if split
+	  (find-file "~/Dropbox (MIT)/org/notes.org")
+	(find-file-other-window "~/Dropbox (MIT)/org/notes.org")))
 
 (defun diego/org-insert-list-leader-or-self (char)
   "If on column 0, insert space-padded CHAR; otherwise insert CHAR.
