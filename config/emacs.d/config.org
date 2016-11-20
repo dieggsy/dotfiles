@@ -2012,7 +2012,8 @@ Configure the Elfeed RSS reader with an Orgmode file
 	"r"         'elfeed-search-untag-all-unread
 	"s"         'elfeed-search-live-filter
 	"u"         'elfeed-search-tag-all-unread
-	"y"         'elfeed-search-yank)
+	"y"         'elfeed-search-yank
+	"U"         'elfeed-update)
 
   (evil-define-key 'normal elfeed-show-mode-map
 	"+" 'elfeed-show-tag
