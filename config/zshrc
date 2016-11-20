@@ -64,11 +64,12 @@ export python2version=2.7.12
 export WWW_HOME='http://google.com'
 export RTV_EDITOR='vim'
 export RTV_URLVIEWER='urlview'
+
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
 	export EDITOR='vim'
 else
-	export EDITOR="emacsclient" # Set emacs as default editor
+	export EDITOR="emacsclient -n" # Set emacs as default editor
 	export ALTERNATE_EDITOR="vim"
 fi
 
@@ -84,7 +85,7 @@ alias docs="cd /Users/diego/Documents/"
 alias down="cd /Users/diego/Downloads/"
 alias drive="cd /Users/diego/Google\ Drive"
 alias drop="cd /Users/diego/Dropbox\ \(MIT\)"
-alias edit="emacsclient"
+alias edit="emacsclient -n"
 alias editv="emacsclient -t"
 alias f='find . -iname'
 alias fd='find . -type d -iname'
@@ -128,24 +129,24 @@ pythonexec(){
     touch "$*"
     echo '#!/usr/local/bin/python3' | cat - "$*" > temp && mv temp "$*"
     sudo chmod a+x "$*"
-    emacsclient "$*"
+    emacsclient -n "$*"
 }
 
 # Create/edit python script
 pythonscript(){
     touch "$*"
     echo '#!/usr/local/bin/python3' | cat - "$*" > temp && mv temp "$*"
-    emacsclient "$*"
+    emacsclient -n "$*"
 }
 
 # View only mode in emacs
 ev() {
-    emacsclient --eval "(find-file-read-only \"$1\")"
+    emacsclient -n --eval "(find-file-read-only \"$1\")"
 }
 
 # Edit Python 3 files
 bam(){
-    emacsclient "$1" \
+    emacsclient -n "$1" \
 				--eval '(and (split-window-right) (windmove-right))' \
 				-f ipython \
 				--eval '(windmove-left)'
@@ -153,7 +154,7 @@ bam(){
 
 # Edit Python 2 files
 ham(){
-    emacsclient "$1" \
+    emacsclient -n "$1" \
 				--eval '(and (split-window-right) (windmove-right))' \
 				-f ipython2 \
 				--eval '(windmove-left)'
