@@ -92,6 +92,12 @@ alias fd='find . -type d -iname'
 alias ff='find . -type f -iname'
 alias filecount="ls -1 | wc -l"
 alias git=hub
+alias startkwm="brew services start $kwm"
+alias stopkwm="brew services stop $kwm"
+alias restartkwm="brew services restart $kwm"
+alias startkhd="brew services start $khd"
+alias stopkhd="brew services stop $khd"
+alias restartkhd="brew services restart $khd"
 alias ls='ls -NX --group-directories-first --color=always'
 alias lst="ls -t"
 alias math='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
