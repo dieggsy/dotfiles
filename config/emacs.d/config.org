@@ -1147,6 +1147,7 @@ A really nice search/completion system for emacs.
 		  "\\`notes.org"
 		  "\\`archive.org"
 		  "\\`elfeed.org"
+		  "\\`\\*elfeed-log\\*"
 		  "\\`\\*Man"
 		  "\\`\\*Quail"))
 
