@@ -1575,10 +1575,10 @@ so I went with it.
   (setq org-list-demote-modify-bullet '(("-" . "*")
 										("*" . "+")))
   (setq org-export-in-background t)
+  (setq org-src-tab-acts-natively t)
 
   ;; appearance
   (setq org-src-fontify-natively t)
-  (setq org-src-tab-acts-natively t)
   (setq org-src-preserve-indentation t)
   (setq org-fontify-quote-and-verse-blocks t)
   (setq org-hide-emphasis-markers t)
@@ -2038,7 +2038,7 @@ Configure the Elfeed RSS reader with an Orgmode file
 	"q"         'quit-window
 	"r"         'elfeed-search-untag-all-unread
 	"s"         'elfeed-search-live-filter
-	"u"         'elfeed-seach-tag-all-unread
+	"u"         'elfeed-search-tag-all-unread
 	"y"         'elfeed-search-yank)
 
   (evil-define-key 'normal elfeed-show-mode-map
