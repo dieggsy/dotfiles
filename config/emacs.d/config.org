@@ -1373,6 +1373,24 @@ so I went with it.
 				nil)))
 	(diego/org-swap-tags new)))
 
+(defun diego/org-choose-bullet-type ()
+  (interactive)
+  (let ((char (read-char-choice
+			   "enter bullet type (-|*|+|1|2|a|b|A|B): "
+			   '(?* ?- ?+ ?1 ?2 ?a ?b ?A ?B))))
+	(cond ((eq char ?1)
+		   (org-cycle-list-bullet 3))
+		  ((eq char ?2)
+		   (org-cycle-list-bullet 4))
+		  ((eq char ?a)
+		   (org-cycle-list-bullet 5))
+		  ((eq char ?b)
+		   (org-cycle-list-bullet 7))
+		  ((eq char ?A)
+		   (org-cycle-list-bullet 6))
+		  ((eq char ?B)
+		   (org-cycle-list-bullet 8))
+		  (t (org-cycle-list-bullet (char-to-string char))))))
 #+end_src
 *** Bindings
 #+begin_src emacs-lisp
@@ -1392,6 +1410,7 @@ so I went with it.
 	"mA"  'org-archive-subtree
 	"mc"  'org-capture
 	"md"  'org-deadline
+	"ml"  'diego/org-choose-bullet-type
 	"mn"  'org-narrow-to-subtree
 	"mN"  'widen
 	"mP"  'org-set-property
@@ -1526,6 +1545,8 @@ so I went with it.
 										("*" . "+")))
   (setq org-export-in-background t)
   (setq org-src-tab-acts-natively t)
+  (setq org-M-RET-may-split-line nil)
+  (setq org-list-use-circular-motion t)
 
   ;; appearance
   (setq org-src-fontify-natively t)
@@ -1548,6 +1569,8 @@ so I went with it.
 (use-package org
   :ensure org-plus-contrib
   :commands (org-capture)
+  :init
+  (setq org-list-allow-alphabetical t)
   :config
   (diego/org-file-vars)
   (diego/org-todo-vars)
