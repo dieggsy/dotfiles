@@ -1,67 +1,69 @@
 #!/usr/bin/env zsh
 
-# Source Prezto.
+# ------------------------------------
+# Source Prezto
+# ------------------------------------
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-# Customize to your needs...
+# Undo some prezto defaults
+unalias rm
+
+# terminal.app used to get confused, so this was added
 export HOSTNAME=`hostname`
-# source $ZSH/oh-my-zsh.sh
+
+# ------------------------------------
+# zsh opts 
+# ------------------------------------
 setopt GLOB_COMPLETE
 setopt auto_cd
 setopt histignoredups
 setopt autonamedirs
 setopt clobber
-. `brew --prefix`/etc/profile.d/z.sh
 unsetopt correct
-unalias rm
 
-# The following is taken pretty much directly from fino theme,
-# but I wanted to make a few tweaks.
-#export VIRTUAL_ENV_DISABLE_PROMPT=1
+# ------------------------------------
+# Initalize and source some more stuff
+# ------------------------------------
 
-# function prompt_char {
-#   git branch >/dev/null 2>/dev/null && echo "±" && return
-#   echo '○'
-# }
+# z plugin
+source `brew --prefix`/etc/profile.d/z.sh
 
-# function box_name {
-#     [ -f ~/.box-name ] && cat ~/.box-name || echo ${SHORT_HOST:-$HOST}
-# }
-
-# function virtualenv_info {
-# 	[ -n "$VIRTUAL_ENV" ] && echo "%{$FG[239]%} env %{$reset_color%}[`basename $VIRTUAL_ENV`]"
-# }
-# local current_dir='${PWD/#$HOME/~}'
-# local git_info='$(git_prompt_info)'
-# local prompt_char='$(prompt_char)'
-# local venv_info='$(virtualenv_info)'
-
-# NEWLINE=$'\n'
-
-# if [ -z "$INSIDE_EMACS" ];then
-# 	PROMPT="╭─%{$FG[010]%}%n%{$reset_color%} %{$FG[239]%}at%{$reset_color%} %{$FG[012]%}$(box_name)%{$reset_color%} %{$FG[239]%}in%{$reset_color%} %{$terminfo[bold]$FG[009]%}%~%{$reset_color%}${git_info}${venv_info}${NEWLINE}╰─${prompt_char}%{$reset_color%} "
-# 	ZSH_THEME_GIT_PROMPT_PREFIX=" %{$FG[239]%}on%{$reset_color%} %{$fg[255]%}"
-# 	ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-# 	ZSH_THEME_GIT_PROMPT_DIRTY="%{$FG[009]%}✘"
-# 	ZSH_THEME_GIT_PROMPT_CLEAN="%{$FG[010]%}✔"
-# else
-# 	# PROMPT="╭─%{$FG[032]%}%n%{$reset_color%} %{$FG[239]%}at%{$reset_color%} %{$FG[006]%}$(box_name)%{$reset_color%} %{$FG[239]%}in%{$reset_color%} %{$terminfo[bold]$FG[035]%}${current_dir}%{$reset_color%}${git_info}${venv_info}${NEWLINE}╰─${prompt_char}%{$reset_color%} "
-# 	PROMPT="$FG[035]%}${current_dir}%{$reset_color%} >> "
-# 	ZSH_THEME_GIT_PROMPT_PREFIX=" %{$FG[239]%}on%{$reset_color%} %{$fg[255]%}"
-# 	ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%}"
-# 	ZSH_THEME_GIT_PROMPT_DIRTY="%{$FG[009]%}✘"
-# 	ZSH_THEME_GIT_PROMPT_CLEAN="%{$FG[010]%}✔"
-# 	export TERM=xterm-256color
-# fi
-
-
+# fuck!
 eval $(thefuck --alias)
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+# pyenv
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
+# syntax highlighting
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+ZSH_HIGHLIGHT_STYLES[globbing]='fg=208'
+ZSH_HIGHLIGHT_STYLES[command]='fg=010'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=010'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=010'
+ZSH_HIGHLIGHT_STYLES[function]='fg=010'
+
+# auto suggestions
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# virtualenvwrapper
+source "/usr/local/bin/virtualenvwrapper.sh"
+export PYTHONSTARTUP=$HOME/.pythonrc.py
+
+zstyle ':completion:*' list-colors 'di=0;36:ex=0;35:ln=1;31'
+
+# ------------------------------------
+# Vars 
+# ------------------------------------
+export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31' # ls colors i've gotten used to
+kwm="koekeishiya/kwm/kwm"
+khd="koekeishiya/khd/khd"
+export python3version=3.5.2
+export python2version=2.7.12
+export WWW_HOME='http://google.com'
+export RTV_EDITOR='vim'
+export RTV_URLVIEWER='urlview'
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
 	export EDITOR='vim'
@@ -70,8 +72,9 @@ else
 	export ALTERNATE_EDITOR="vim"
 fi
 
-
+# ------------------------------------
 # Aliases
+# ------------------------------------
 alias apps="cd /Applications"
 alias cask="brew cask"
 alias config="$EDITOR ~/dotfiles/config/emacs.d/config.org"
@@ -95,38 +98,20 @@ alias pep8="pep8 --first --ignore=E129,W503,E226"
 alias piphere="pip install --target=./"
 alias printers="lpstat -p | awk '{print $2}'"
 alias resetb="source ~/.zshrc"
-alias resetwifi="networksetup -setairportpower en0 off; sleep 2; networksetup -setairportpower en0 on" 
-alias run="python3"			  # I got super used to just tying 'run' in iPython
+alias resetwifi="networksetup -setairportpower en0 off; sleep 2;"\
+"networksetup -setairportpower en0 on" 
 alias starwars="telnet towel.blinkenlights.nl" # heh 
 alias sudo='sudo '							   # recognize aliases 
 alias sz="du -hs"							   # get folder/file size 
 alias zshrc="$EDITOR ~/dotfiles/config/zshrc" 
 alias vimrc="$ALTERNATE_EDITOR ~/dotfiles/config/vimrc"
-alias rainbowstream='$HOME/.virtualenvs/py3/bin/rainbowstream'
 
-# Vars
-export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31' # ls colors i've gotten used to
-kwm="koekeishiya/kwm/kwm"
-khd="koekeishiya/khd/khd"
-export python3version=3.5.2
-export python2version=2.7.12
 
-zstyle ':completion:*' list-colors 'di=0;36:ex=0;35:ln=1;31'
-
-py2() {
-	workon py2
-	export PYTHONSTARTUP=/Users/diego/.virtualenvs/py2/bin/.pythonrc.py
-	alias run="python2"
-}
-
-out() {
-	deactivate
-	export PYTHONSTARTUP=$HOME/.pythonrc.py
-	alias run="python3"
-}
-
+# ------------------------------------
+# Functions
+# ------------------------------------
 pip-fromfile() {
-<$1 xargs pip install
+	<$1 xargs pip install
 }
 
 athena(){
@@ -135,12 +120,10 @@ athena(){
 	ssh -Y "$username@athena.dialup.mit.edu"
 }
 
-# Make a file executable
 mkexec(){
     chmod a+x "$@"
 }
 
-# Create/edit executable python script
 pythonexec(){
     touch "$*"
     echo '#!/usr/local/bin/python3' | cat - "$*" > temp && mv temp "$*"
@@ -162,22 +145,37 @@ ev() {
 
 # Edit Python 3 files
 bam(){
-    emacsclient "$1" --eval '(and (split-window-right) (windmove-right))' -f ipython --eval '(windmove-left)'
+    emacsclient "$1" \
+				--eval '(and (split-window-right) (windmove-right))' \
+				-f ipython \
+				--eval '(windmove-left)'
 }
 
 # Edit Python 2 files
 ham(){
-    emacsclient "$1" --eval '(and (split-window-right) (windmove-right))' -f ipython2 --eval '(windmove-left)'
+    emacsclient "$1" \
+				--eval '(and (split-window-right) (windmove-right))' \
+				-f ipython2 \
+				--eval '(windmove-left)'
 }
 
-
 pdftif() {
-	gs -dNOPAUSE -q -r500 -sDEVICE=tiffg4 -dBATCH -dFirstPage=$2 -dLastPage=$3 -sOutputFile=$4 $1
+	gs -dNOPAUSE -q -r500 \
+	   -sDEVICE=tiffg4 \
+	   -dBATCH \
+	   -dFirstPage=$2 \
+	   -dLastPage=$3 \
+	   -sOutputFile=$4 \
+	   $1
 }
 
 ocrpdf(){
 	echo "Converting pdf to png..."
-	gs -dNOPAUSE -q -r500 -sDEVICE=tiffg4 -dBATCH -sOutputFile=$TMPDIR/tempocr.tif $1
+	gs -dNOPAUSE -q -r500 \
+	   -sDEVICE=tiffg4 \
+	   -dBATCH \
+	   -sOutputFile=$TMPDIR/tempocr.tif \
+	   $1
 	echo "Running tesseract on pngs..."
 	tesseract $TMPDIR/tempocr.tif $2 >/dev/null 2>&1
 }
@@ -197,34 +195,24 @@ ocrpdf2(){
 }
 
 psetzip (){
-	zip -r "$1".zip $1 -x '*.git*' -x '*.ipynb_checkpoints*' -x '*.pyc*' -x '*.DS_Store*' -x '*~*' -x "*__pycache__*" 
+	zip -r "$1".zip $1\
+		-x '*.git*' \
+		-x '*.ipynb_checkpoints*' \
+		-x '*.pyc*' \
+		-x '*.DS_Store*' \
+		-x '*~*' \
+		-x "*__pycache__*" 
 }
 
 calc(){
 	emacs --batch --eval "(message (calc-eval \"$1\"))"
 }
 
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
-
-export WWW_HOME='http://google.com'
-
+# ------------------------------------
+# Some path stuff
+# ------------------------------------
 fpath=(/usr/local/share/zsh-completions $fpath)
 
-source "/usr/local/bin/virtualenvwrapper.sh"
-export PYTHONSTARTUP=$HOME/.pythonrc.py
-
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-ZSH_HIGHLIGHT_STYLES[globbing]='fg=208'
-ZSH_HIGHLIGHT_STYLES[command]='fg=010'
-ZSH_HIGHLIGHT_STYLES[alias]='fg=010'
-ZSH_HIGHLIGHT_STYLES[builtin]='fg=010'
-ZSH_HIGHLIGHT_STYLES[function]='fg=010'
-
-
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-export RTV_EDITOR='vim'
-export RTV_URLVIEWER='urlview'
-
-export PATH="$HOME/bin:/usr/local/sbin:/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+export PATH="$HOME/bin:/usr/local/sbin:"\
+"/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
