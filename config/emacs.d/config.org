@@ -2962,6 +2962,12 @@ imenu on steroids.
   :ensure t)
 #+end_src
 
+*** [[https://github.com/immerrr/lua-mode][lua-mode]] 
+#+begin_src emacs-lisp
+(use-package lua-mode
+  :ensure t
+  :defer t)
+#+end_src
 *** matlab-mode
 #+begin_src emacs-lisp
 (use-package matlab
