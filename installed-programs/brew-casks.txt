@@ -39,4 +39,5 @@ slack
 slate
 spotify
 suspicious-package
+virtualbox
 vivaldi-snapshot

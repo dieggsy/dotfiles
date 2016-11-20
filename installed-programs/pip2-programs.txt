@@ -21,7 +21,6 @@ future
 futures
 gnureadline
 google-api-python-client
-greenlet
 html2text
 httplib2
 importmagic

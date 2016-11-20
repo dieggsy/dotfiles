@@ -183,6 +183,7 @@ pyenv
 pyenv-virtualenvwrapper
 pygobject3
 pyqt5
+python3
 qscintilla2
 qt
 qt5
@@ -205,6 +206,7 @@ sqlite
 ssh-copy-id
 subversion
 surfraw
+swig
 szip
 taglib
 talloc
