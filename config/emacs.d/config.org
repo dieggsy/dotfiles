@@ -244,6 +244,7 @@ Handling/storing of files, backups, autosaves.
 (setq-default tab-width 4)
 (setq tab-stop-list (number-sequence 4 200 4))
 (setq completion-cycle-threshold t)
+(setq tab-always-indent 'complete)
 #+end_src
 ** Line position/highlighting
 #+begin_src emacs-lisp
