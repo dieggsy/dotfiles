@@ -391,21 +391,6 @@ Handling/storing of files, backups, autosaves.
 #+end_src
 *** "Original"
 #+begin_src emacs-lisp
-(defun diego/config ()
-  "Open ~/dotfiles/config/emacs.d/config.org"
-  (interactive)
-  (find-file "/Users/diego/dotfiles/config/emacs.d/config.org"))
-
-(defun diego/init ()
-  "Open ~/dotfiles/config/emacs.d/init.el"
-  (interactive)
-  (find-file "/Users/diego/dotfiles/config/emacs.d/init.el"))
-
-(defun diego/zshrc ()
-  "Open ~/dotfiles/config/zshrc"
-  (interactive)
-  (find-file "/Users/diego/dotfiles/config/zshrc"))
-
 (defun diego/ipython-shell ()
   "Open an ipython shell using multi-term, respecting virtualenv."
   (interactive)
@@ -416,23 +401,12 @@ Handling/storing of files, backups, autosaves.
 	  (sane-term-create))))
 
 (defun diego/toggle-github-spacing ()
-  "Make line spacing similar to github source code."
+  "Make line spacing similar to github source code. Probably outdated"
   (interactive)
   (setq-local line-spacing
 			  (if (eq line-spacing nil)
 				  0.4
 				nil)))
-
-(defun diego/date ()
-  "Insert current date at point."
-  (interactive)
-  (insert (shell-command-to-string "echo -n $(date +%Y-%m-%d)")))
-
-(defun diego/image-to-text ()
-  "Use `drawille-from-image' to insert image as text into current buffer."
-  (interactive)
-  (let ((x (read-file-name "image: ")))
-	(insert (drawille-from-image x))))
 
 (defun diego/lecture-notes ()
   "Prompt for a class and create a lecture notes file
@@ -443,7 +417,8 @@ Handling/storing of files, backups, autosaves.
 						"Ethics")
 			:action (lambda (x)
 					  (find-file
-					   (concat "~/MIT 2016-2017/" x "/notes/" (format-time-string "%Y-%m-%d_lecture.org" ))))
+					   (concat "~/MIT 2016-2017/" x "/notes/"
+							   (format-time-string "%Y-%m-%d_lecture.org" ))))
 			:caller 'diego/lecture-notes))
 
 (defun diego/recitation-notes ()
@@ -455,13 +430,9 @@ Handling/storing of files, backups, autosaves.
 						"Ethics")
 			:action (lambda (x)
 					  (find-file
-					   (concat "~/MIT 2016-2017/" x "/notes/" (format-time-string "%Y-%m-%d_recitation.org" ))))
+					   (concat "~/MIT 2016-2017/" x "/notes/" 
+							   (format-time-string "%Y-%m-%d_recitation.org" ))))
 			:caller 'diego/recitation-notes))
-
-(defun diego/sync-venv (&rest args)
-  (if (boundp 'pyvenv-virtual-env-name)
-	  (setq venv-current-name pyvenv-virtual-env-name)
-	(setq venv-current-name nil)))
 
 (defun diego/toggle-cursor ()
   (interactive)
