@@ -1654,6 +1654,20 @@ Emacs package that displays available keybindings in popup
   (setq which-key-sort-order 'which-key-key-order-alpha)
   (setq which-key-sort-uppercase-first nil))
 #+end_src
+** [[https://github.com/magit/magit][magit]]
+Like git, for emacs. But cooler.
+#+begin_src emacs-lisp
+(use-package magit
+  :ensure t
+  :commands magit-status
+  :config
+  (setq magit-diff-use-overlays nil))
+
+(use-package evil-magit
+  :after magit
+  :ensure t)
+#+end_src
+
 * Dem packages
 ** Amusements
 *** [[https://github.com/josuah/drawille][drawille]]
@@ -1890,23 +1904,18 @@ I was looking for something with the nice look and simplicity of
   (spaceline-compile))
 #+end_src
 ** Misc utilities
-*** [[https://github.com/alpha22jp/atomic-chrome][atomic-chrome]]
-Edit text area on Chrome with Emacs using Atomic Chrome
-#+begin_src emacs-lisp
-(use-package atomic-chrome
-  :ensure t
-  :config
-  (atomic-chrome-start-server)
-  (setq atomic-chrome-buffer-open-style 'frame))
-#+end_src
 *** [[https://github.com/purcell/disable-mouse][disable-mouse]]
-*** [[https://github.com/bbatsov/crux][crux]]
 #+begin_src emacs-lisp
 (use-package disable-mouse
-(use-package crux
   :ensure t
   :config
   (global-disable-mouse-mode))
+#+end_src
+*** [[https://github.com/bbatsov/crux][crux]]
+#+begin_src emacs-lisp
+(use-package crux
+  :ensure t
+  :config
   (crux-with-region-or-line eval-region)
   (crux-with-region-or-buffer indent-region)
   (crux-with-region-or-buffer untabify))
@@ -1937,17 +1946,6 @@ Cursor stays vertically centered. I use this for reading, mostly.
 (use-package centered-cursor-mode
   :ensure t
   :commands centered-cursor-mode)
-#+end_src
-*** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
-Eh, wanted to try a simpler way of editing csv files. (Excel and Numbers both
-kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
-#+begin_src emacs-lisp
-(use-package csv-mode
-  ;; I'll give this a shot
-  :defer 5
-  :ensure t
-  :config
-  (add-hook 'csv-mode-hook 'csv-align-fields))
 #+end_src
 *** [[https://github.com/skeeto/elfeed][elfeed]]
 Configure the Elfeed RSS reader with an Orgmode file
@@ -1996,17 +1994,6 @@ Configure the Elfeed RSS reader with an Orgmode file
   :config
   (elfeed-goodies/setup))
 #+end_src
-*** [[https://github.com/hlissner/evil-multiedit][evil-multiedit]]
-#+begin_src emacs-lisp
-(use-package evil-multiedit
-  :ensure t
-  :commands (evil-multiedit-match-all
-             evil-multiedit-match-and-next
-             evil-multiedit-match-and-prev
-             evil-multiedit-ex-match)
-  :config
-  (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match))
-#+end_src
 *** [[https://github.com/lewang/flx][flx]]
 Fuzzy matching for Emacs ... a la Sublime Text.
 #+begin_src emacs-lisp
@@ -2041,38 +2028,10 @@ Neat way to bind commands to key-stroke combinations
   (key-chord-mode 1)
   (key-chord-define evil-insert-state-map "uu" 'evil-normal-state))
 #+end_src
-*** [[https://github.com/magit/magit][magit]]
-Like git, for emacs. But cooler.
-#+begin_src emacs-lisp
-(use-package magit
-  :ensure t
-  :commands magit-status
-  :config
-  (setq magit-diff-use-overlays nil))
-
-(use-package evil-magit
-  :after magit
-  :ensure t)
-#+end_src
-*** [[https://github.com/defunkt/markdown-mode][markdown-mode]]
-Syntax highlighting for markdown files.
-#+begin_src emacs-lisp
-(use-package markdown-mode
-  :ensure t
-  :defer 5
-  :config)
-#+end_src
 *** [[https://github.com/ancane/markdown-preview-mode][markdown-preview-mode]]
 Minor mode to preview markdown output as you save
 #+begin_src emacs-lisp
 (use-package markdown-preview-mode
-  :defer 5
-  :ensure t)
-#+end_src
-*** [[https://github.com/emacsfodder/move-text][move-text]]
-Move current line or region up or down
-#+begin_src emacs-lisp
-(use-package move-text
   :defer 5
   :ensure t)
 #+end_src
@@ -2136,19 +2095,6 @@ SUPER nifty.
   :ensure t)
 #+end_src
 
-*** [[https://github.com/Fuco1/smartparens][smartparens]]
-Minor mode for Emacs that deals with parens pairs and tries to be smart about it.
-#+begin_src emacs-lisp
-(use-package smartparens
-  :ensure t
-  :config
-  (smartparens-global-strict-mode)
-  (show-smartparens-global-mode)
-  (add-hook 'eval-expression-minibuffer-setup-hook #'smartparens-strict-mode)
-  (add-hook 'eval-expression-minibuffer-setup-hook #'show-smartparens-mode)
-  (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)
-  (sp-local-pair 'emacs-lisp-mode "`" nil :actions nil))
-#+end_src
 *** [[https://github.com/nonsequitur/smex][smex]]
 A smart M-x enhancement for Emacs.
 
@@ -2217,6 +2163,27 @@ Kind of makes undo's like git. Or Vim, apparently, if you're into that.
   :config
   (setq undo-tree-visualizer-timestamps t))
 #+end_src
+** Editing Major Modes 
+*** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
+Eh, wanted to try a simpler way of editing csv files. (Excel and Numbers both
+kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
+#+begin_src emacs-lisp
+(use-package csv-mode
+  ;; I'll give this a shot
+  :defer 5
+  :ensure t
+  :config
+  (add-hook 'csv-mode-hook 'csv-align-fields))
+#+end_src
+
+*** [[https://github.com/defunkt/markdown-mode][markdown-mode]]
+Syntax highlighting for markdown files.
+#+begin_src emacs-lisp
+(use-package markdown-mode
+  :ensure t
+  :defer 5
+  :config)
+#+end_src
 *** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
 The emacs major mode for editing files in the YAML data serialization format.
 #+begin_src emacs-lisp
@@ -2226,537 +2193,110 @@ The emacs major mode for editing files in the YAML data serialization format.
   :config
   (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
 #+end_src
-** Navigation
-*** [[https://github.com/abo-abo/ace-window][ace-window]]
-Quickly switch windows in Emacs
-#+begin_src emacs-lisp
-(use-package ace-window
-  :ensure t
-  :commands (ace-window ace-delete-window ace-swap-window)
-  :bind ("M-p" . ace-window)
-  :config
-  (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
-#+end_src
-*** [[https://github.com/abo-abo/avy][avy]]
-Jump to things in Emacs tree-style
-#+begin_src emacs-lisp
-(use-package avy
-  :ensure t
-  :commands (avy-goto-char-2 avy-goto-word-1 avy-goto-line))
-#+end_src
-*** [[https://github.com/emacs-helm/helm][helm]]
-*Note:* I'm now using [[https://github.com/abo-abo/swiper][abo-abo/swiper]], which includes ivy, counsel, and swiper,
-for very similar functionality but with a much cleaner and responsive
-interface, in my opinion. It's really neat, and you should definitely check it
-out.
 
-Emacs incremental completion and selection narrowing framework
-
-For making stuff look nicer, see ~M-x customize-group RET helm-faces~, and
-check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido-like-guide]].
-#+begin_src emacs-lisp :tangle no
-(use-package helm
-  :ensure t
-  :defer 5
-  :init
-  (require 'helm-config)
-  :config
-
-  ;; Fuzzy matching
-  (setq helm-completion-in-region-fuzzy-match t
-        helm-mode-fuzzy-match t
-        helm-M-x-fuzzy-match t
-        helm-buffers-fuzzy-matching t
-        helm-recentf-fuzzy-match t
-        helm-locate-fuzzy-match nil     ; Doesn't work with mdfind
-        helm-semantic-fuzzy-match t
-        helm-imenu-fuzzy-match t
-        helm-apropos-fuzzy-match t
-        helm-lisp-fuzzy-completion t)
-
-  (setq helm-boring-buffer-regexp-list
-        '("\\` "
-          "\\*helm"
-          "\\*helm-mode"
-          "\\*Echo Area"
-          "\\*Minibuf"
-          "\\*epc"))
-  (setq helm-buffer-max-length 40)
-  (setq helm-display-buffer-default-height 9)
-  (setq helm-locate-command
-        (cl-case system-type
-          ('darwin "mdfind -name %s %s")
-          ('gnu/linux "locate -i -r %s")
-          ('berkley-unix "locate -i %s")
-          ('windows-nt "es %s")
-          (t "locate %s"))) ; Use spotlight for search
-  (put 'helm-minibuffer-history 'disabled t)
-  ;; (global-set-key (kbd "M-y") 'helm-show-kill-ring)
-  ;;----------------
-  ;; Helm ido-like
-  ;;--------------
-
-
-  (defun helm-ido-like-activate-helm-modes ()
-    (require 'helm-config)
-    (helm-mode 1)
-    (helm-flx-mode 1)
-    (helm-fuzzier-mode 1))
-
-  (defun helm-ido-like-load-ido-like-bottom-buffer ()
-    ;; popup helm-buffer at the bottom
-    (setq helm-split-window-in-side-p t)
-    ;; (add-to-list 'display-buffer-alist
-    ;;              '("\\`\\*helm.*\\*\\'"
-    ;;                (display-buffer-in-side-window)
-    ;;                (window-height . 0.4)))
-    ;; (add-to-list 'display-buffer-alist
-    ;;              '("\\`\\*helm help\\*\\'"
-    ;;                (display-buffer-pop-up-window)))
-
-    ;; dont display the header line
-    (setq helm-display-header-line nil)
-    ;; input in header line
-    (setq helm-echo-input-in-header-line t)
-    ;; (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
-    )
-
-  (defvar helm-ido-like-bottom-buffers nil
-    "List of bottom buffers before helm session started.
-    Its element is a pair of `buffer-name' and `mode-line-format'.")
-
-
-  (defun helm-ido-like-bottom-buffers-init ()
-    (setq-local mode-line-format (default-value 'mode-line-format))
-    (setq helm-ido-like-bottom-buffers
-          (cl-loop for w in (window-list)
-                   when (window-at-side-p w 'bottom)
-                   collect (with-current-buffer (window-buffer w)
-                             (cons (buffer-name) mode-line-format)))))
-
-
-  (defun helm-ido-like-bottom-buffers-hide-mode-line ()
-    (mapc (lambda (elt)
-            (with-current-buffer (car elt)
-              (setq-local mode-line-format nil)))
-          helm-ido-like-bottom-buffers))
-
-
-  (defun helm-ido-like-bottom-buffers-show-mode-line ()
-    (when helm-ido-like-bottom-buffers
-      (mapc (lambda (elt)
-              (with-current-buffer (car elt)
-                (setq-local mode-line-format (cdr elt))))
-            helm-ido-like-bottom-buffers)
-      (setq helm-ido-like-bottom-buffers nil)))
-
-
-  (defun helm-ido-like-helm-keyboard-quit-advice (orig-func &rest args)
-    (helm-ido-like-bottom-buffers-show-mode-line)
-    (apply orig-func args))
-
-  (defun helm-ido-like-hide-modelines ()
-    ;; hide The Modelines while Helm is active
-    (add-hook 'helm-before-initialize-hook #'helm-ido-like-bottom-buffers-init)
-    (add-hook 'helm-after-initialize-hook #'helm-ido-like-bottom-buffers-hide-mode-line)
-    (add-hook 'helm-exit-minibuffer-hook #'helm-ido-like-bottom-buffers-show-mode-line)
-    (add-hook 'helm-cleanup-hook #'helm-ido-like-bottom-buffers-show-mode-line)
-    (advice-add 'helm-keyboard-quit :around #'helm-ido-like-helm-keyboard-quit-advice))
-
-  (defun helm-ido-like-hide-helm-modeline-1 ()
-    "Hide mode line in `helm-buffer'."
-    (with-helm-buffer
-     (setq-local mode-line-format nil)))
-
-
-  (defun helm-ido-like-hide-helm-modeline ()
-    (fset 'helm-display-mode-line #'ignore)
-    (add-hook 'helm-after-initialize-hook 'helm-ido-like-hide-helm-modeline-1))
-
-  (defvar helm-ido-like-source-header-default-background nil)
-  (defvar helm-ido-like-source-header-default-foreground nil)
-  (defvar helm-ido-like-source-header-default-box nil)
-
-  (defun helm-ido-like-toggle-header-line ()
-    ;; Only Show Source Headers If More Than One
-    (if (> (length helm-sources) 1)
-        (set-face-attribute 'helm-source-header
-                            nil
-                            :foreground helm-ido-like-source-header-default-foreground
-                            :background helm-ido-like-source-header-default-background
-                            :box helm-ido-like-source-header-default-box
-                            :height 1.0)
-      (set-face-attribute 'helm-source-header
-                          nil
-                          :foreground (face-attribute 'helm-selection :background)
-                          :background (face-attribute 'helm-selection :background)
-                          :box nil
-                          :height 0.1)))
-
-  (defun helm-ido-like-header-lines-maybe ()
-    (setq helm-ido-like-source-header-default-background (face-attribute 'helm-source-header :background))
-    (setq helm-ido-like-source-header-default-foreground (face-attribute 'helm-source-header :foreground))
-    (setq helm-ido-like-source-header-default-box (face-attribute 'helm-source-header :box))
-    (add-hook 'helm-before-initialize-hook 'helm-ido-like-toggle-header-line))
-
-  (defvar helm-ido-like-bg-color (face-attribute 'default :background))
-
-  (defun helm-ido-like-setup-bg-color-1 ()
-    (with-helm-buffer
-     (make-local-variable 'face-remapping-alist)
-     (add-to-list 'face-remapping-alist `(default (:background ,helm-ido-like-bg-color)))))
-
-  (defun helm-ido-like-setup-bg-color ()
-    (add-hook 'helm-after-initialize-hook 'helm-ido-like-setup-bg-color-1))
-
-  (defun helm-ido-like-find-files-up-one-level-maybe ()
-    (interactive)
-    (if (looking-back "/" 1)
-        (call-interactively 'helm-find-files-up-one-level)
-      (delete-char -1)))
-
-
-  (defun helm-ido-like-find-files-navigate-forward (orig-fun &rest args)
-    "Adjust how helm-execute-persistent actions behaves, depending on context."
-    (let ((sel (helm-get-selection)))
-      (if (file-directory-p sel)
-          ;; the current dir needs to work to
-          ;; be able to select directories if needed
-          (cond ((and (stringp sel)
-                      (string-match "\\.\\'" (helm-get-selection)))
-                 (helm-maybe-exit-minibuffer))
-                (t
-                 (apply orig-fun args)))
-        (helm-maybe-exit-minibuffer))))
-
-
-  (defun helm-ido-like-load-file-nav ()
-    (advice-add 'helm-execute-persistent-action :around #'helm-ido-like-find-files-navigate-forward)
-    ;; <return> is not bound in helm-map by default
-    (define-key helm-map (kbd "<return>") 'helm-maybe-exit-minibuffer)
-    (with-eval-after-load 'helm-files
-      (define-key helm-read-file-map (kbd "<backspace>") 'helm-ido-like-find-files-up-one-level-maybe)
-      (define-key helm-read-file-map (kbd "DEL") 'helm-ido-like-find-files-up-one-level-maybe)
-      (define-key helm-find-files-map (kbd "<backspace>") 'helm-ido-like-find-files-up-one-level-maybe)
-      (define-key helm-find-files-map (kbd "DEL") 'helm-ido-like-find-files-up-one-level-maybe)
-
-      (define-key helm-find-files-map (kbd "<return>") 'helm-execute-persistent-action)
-      (define-key helm-read-file-map (kbd "<return>") 'helm-execute-persistent-action)
-      (define-key helm-find-files-map (kbd "RET") 'helm-execute-persistent-action)
-      (define-key helm-read-file-map (kbd "RET") 'helm-execute-persistent-action)))
-
-  (defvar helm-ido-like-no-dots-whitelist
-    '("*Helm file completions*")
-    "List of helm buffers in which to show dot directories.")
-
-  (defun helm-ido-like-no-dots-display-file-p (file)
-    ;; in a whitelisted buffer display all but the relative path to parent dir
-    (or (and (member helm-buffer helm-ido-like-no-dots-whitelist)
-             (not (string-match "\\(?:/\\|\\`\\)\\.\\{2\\}\\'" file)))
-        ;; in all other buffers display all files but the two relative ones
-        (not (string-match "\\(?:/\\|\\`\\)\\.\\{1,2\\}\\'" file))))
-
-
-  (defun helm-ido-like-no-dots-auto-add (&rest args)
-    "Auto add buffers which want to read directory names to the whitelist."
-    (if (eq (car (last args)) 'file-directory-p)
-        (add-to-list 'helm-ido-like-no-dots-whitelist
-                     (format "*helm-mode-%s*"
-                             (helm-symbol-name
-                              (or (helm-this-command) this-command))))))
-
-
-  (defun helm-ido-like-no-dots ()
-    (require 'cl-lib)
-    (advice-add 'helm-ff-filter-candidate-one-by-one
-                :before-while 'helm-ido-like-no-dots-display-file-p)
-    (advice-add  'helm--generic-read-file-name :before 'helm-ido-like-no-dots-auto-add))
-
-  (defvar helm-ido-like-user-gc-setting nil)
-
-  (defun helm-ido-like-higher-gc ()
-    (setq helm-ido-like-user-gc-setting gc-cons-threshold)
-    (setq gc-cons-threshold most-positive-fixnum))
-
-
-  (defun helm-ido-like-lower-gc ()
-    (setq gc-cons-threshold helm-ido-like-user-gc-setting))
-
-  (defun helm-ido-like-helm-make-source (f &rest args)
-    (let ((source-type (cadr args)))
-      (unless (or (memq source-type '(helm-source-async helm-source-ffiles))
-                  (eq (plist-get args :filtered-candidate-transformer)
-                      'helm-ff-sort-candidates)
-                  (eq (plist-get args :persistent-action)
-                      'helm-find-files-persistent-action))
-        (nconc args '(:fuzzy-match t))))
-    (apply f args))
-
-  (defun helm-ido-like-load-fuzzy-enhancements ()
-    (add-hook 'minibuffer-setup-hook #'helm-ido-like-higher-gc)
-    (add-hook 'minibuffer-exit-hook #'helm-ido-like-lower-gc)
-    (advice-add 'helm-make-source :around 'helm-ido-like-helm-make-source))
-
-  (defun helm-ido-like-fuzzier-deactivate (&rest _)
-    (helm-fuzzier-mode -1))
-
-
-  (defun helm-ido-like-fuzzier-activate (&rest _)
-    (unless helm-fuzzier-mode
-      (helm-fuzzier-mode 1)))
-
-
-  (defun helm-ido-like-fix-fuzzy-files ()
-    (add-hook 'helm-find-files-before-init-hook #'helm-ido-like-fuzzier-deactivate)
-    (advice-add 'helm--generic-read-file-name :before #'helm-ido-like-fuzzier-deactivate)
-    (add-hook 'helm-exit-minibuffer-hook #'helm-ido-like-fuzzier-activate)
-    (add-hook 'helm-cleanup-hook #'helm-ido-like-fuzzier-activate)
-    (advice-add 'helm-keyboard-quit :before #'helm-ido-like-fuzzier-activate))
-
-  ;;   ;;;###autoload
-  (defun helm-ido-like ()
-    "Configure and activate `helm', `helm-fuzzier' and `helm-flx'."
-    (interactive)
-    ;; (helm-ido-like-activate-helm-modes)
-    (helm-ido-like-load-ido-like-bottom-buffer)
-    ;; (helm-ido-like-hide-modelines)
-    ;; (helm-ido-like-hide-helm-modeline)
-    ;; (helm-ido-like-header-lines-maybe)
-    ;; (helm-ido-like-setup-bg-color)
-    (helm-ido-like-load-file-nav)
-    (helm-ido-like-no-dots)
-    ;; (helm-ido-like-load-fuzzy-enhancements)
-    ;; (helm-ido-like-fix-fuzzy-files)
-    )
-  (helm-ido-like)
-  )
-#+end_src
-
-*** [[https://github.com/bbatsov/projectile][projectile]]
-Project Interaction Library for Emacs
-#+begin_src emacs-lisp
-(use-package projectile
-  :ensure t
-  :commands (projectile-find-file projectile-switch-project projectile-switch-to-buffer)
-  :config
-  (setq projectile-globally-ignored-files
-        '("TAGS"
-          ".DS_Store"))
-  (setq projectile-ignored-projects
-        '("/usr/local"
-          "~/dotfiles/config/emacs.d/lisp/Gnugol"
-          "~/dotfiles/config/emacs.d/lisp/matlab-emacs"))
-  (projectile-mode))
-#+end_src
-*** [[https://github.com/ralesi/ranger.el][ranger]]
-Bringing the goodness of ranger to dired!
-#+begin_src emacs-lisp
-(use-package ranger
-  :ensure t
-  :commands (ranger deer deer-jump-other-window)
-  :config
-  (setq ranger-show-literal nil)
-  (setq ranger-show-dotfiles nil)
-  (ranger-override-dired-mode t)
-  (setq ranger-cleanup-eagerly t)
-  (setq ranger-parent-depth 0)
-
-  (fmakunbound 'ranger-travel)
-  (defun ranger-travel ()
-    "Open a file or go to a directory in current buffer."
-    (interactive)
-    (cond
-     ((featurep 'ivy)
-      (counsel-find-file default-directory))
-     (t
-      (call-interactively 'ido-find-file))))
-
-  ;; (advice-add
-  ;;  'deer-jump-other-window
-  ;;  :before
-  ;;  (lambda ()
-  ;;    (when (> (length (window-list)) 1)
-  ;;      (setq diego/temp-buff-name (window-buffer (next-window))))))
-
-  ;; (advice-add
-  ;;  'ranger-close
-  ;;  :after
-  ;;  (lambda ()
-  ;;    (if (boundp 'diego/temp-buff-name)
-  ;;        (progn
-  ;;          (switch-to-buffer-other-window diego/temp-buff-name)
-  ;;          (makunbound 'diego/temp-buff-name))
-  ;;      (condition-case nil
-  ;;          (delete-window)
-  ;;        (error nil)))))
-  ;; (advice-add
-  ;;  'ranger-close
-  ;;  :after
-  ;;  (lambda ()
-  ;;    (condition-case nil
-  ;;        (delete-window)
-  ;;      (error nil))))
-  )
-#+end_src
-** Not currently in use
-These aren't loaded by the init file.
-*** [[https://github.com/Wilfred/ag.el][ag]]
-Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]] into emacs.
-#+begin_src emacs-lisp :tangle no
-(use-package ag
-  ;; Silver searcher
-  :ensure t
-  :defer t
-  :init
-  (use-package wgrep-ag
-    ;; Guess I need this first
-    :ensure t
-    :commands (wgrep-ag-setup))
-  :config
-  (add-hook 'ag-mode-hook
-            (lambda ()
-              (wgrep-ag-setup)
-              (define-key ag-mode-map (kbd "n") 'evil-search-next)
-              (define-key ag-mode-map (kbd "N") 'evil-search-previous)))
-  (setq ag-executable "/usr/local/bin/ag")
-  (setq ag-highlight-search t)
-  (setq ag-reuse-buffers t)
-  (setq ag-reuse-window t))
-#+end_src
-
-*** [[https://github.com/auto-complete/auto-complete][auto-complete]]
-Pretty good autocompletion, but trying out [[https://github.com/company-mode/company-mode][company-mode]] right now.
-#+begin_src emacs-lisp :tangle no
-(use-package auto-complete
-  ;; Supposedly not as good as company mode
-  :ensure t
-  :config
-  (global-auto-complete-mode t))
-#+end_src
-
-*** [[https://github.com/joaotavora/autopair][autopair]]
-It may be recommended to use =electric-pair-mode= nowadays? That's
-what I'm using anyway.
-#+Begin_src emacs-lisp :tangle no
-(use-package autopair
-  :ensure t
-  :config
-  (autopair-global-mode))
-#+end_src
-
-*** [[https://github.com/tkf/emacs-jedi][emacs-jedi]]
-Integrates [[https://github.com/davidhalter/jedi][jedi]] into emacs for python completion, hasn't been working for me
-recently. Either way, this is for [[https://github.com/auto-complete/auto-complete][auto-complete]] but now I use
-[[https://github.com/syohex/emacs-company-jedi][emacs-company-jedi]].
-#+begin_src emacs-lisp :tangle no
-(use-package jedi
-  ;; Hasn't been working smoothly recently
-  :ensure t
-  :init
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (setq jedi:complete-on-dot t))
-#+end_src
-
-*** [[https://github.com/7696122/evil-terminal-cursor-changer][evil-terminal-cursor-changer]]
-#+begin_src emacs-lisp :tangle no
-(use-package evil-terminal-cursor-changer
-  :ensure t
-  :config
-  (unless (display-graphic-p)
-    (require 'evil-terminal-cursor-changer)
-    (evil-terminal-cursor-changer-activate) ; or (etcc-on)
-    )
-  (setq evil-motion-state-cursor 'box)  ; █
-  (setq evil-visual-state-cursor 'box)  ; █
-  (setq evil-normal-state-cursor 'box)  ; █
-  (setq evil-insert-state-cursor 'bar)  ; ⎸
-  (setq evil-emacs-state-cursor  'bar)) ; _
-
-#+end_src
-
-*** [[https://github.com/Malabarba/smart-mode-line][smart-mode-line]]
-Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][spaceline]].
-
-#+begin_src emacs-lisp :tangle no
-(use-package smart-mode-powerline-theme
-  :ensure t)
-
-(use-package smart-mode-line
-  :ensure t
-  :config
-  (setq sml/no-confirm-load-theme t)
-  (setq sml/theme 'dark)
-  (setq rm-whitelist '(""))
-  (setq system-uses-terminfo nil)
-  (sml/setup)
-  (display-time-mode)
-  (display-time-update)
-  (fancy-battery-mode)
-  (setq fancy-battery-show-percentage t))
-#+end_src
-
-** Org mode
-*** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
-#+begin_src emacs-lisp
-(use-package ob-ipython
-  :defer 5
-  :ensure t)
-#+end_src
-*** [[https://github.com/sabof/org-bullets][org-bullets]]
-Use nice bullets in org-mode.
-#+begin_src emacs-lisp
-(use-package org-bullets
-  :ensure t
-  :after org
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-  (setq org-bullets-bullet-list '("•")))
-#+end_src
-*** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
-Translates Org-mode file to various other formats via Pandoc. Pretty neat.
-#+begin_src emacs-lisp
-(use-package ox-pandoc
-  :ensure t
-  :after org
-  :config
-  ;; default options for all output formats
-  (setq org-pandoc-options '((standalone . t)))
-  ;; cancel above settings only for 'docx' format
-  (setq org-pandoc-options-for-docx '((standalone . nil))))
-#+end_src
-*** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
-Export org to twitter bootstrap compatible HTML.
-#+begin_src emacs-lisp
-(use-package ox-twbs
-  :ensure t
-  :defer 5
-  :after org)
-#+end_src
-*** [[https://github.com/snosov1/toc-org][toc-org]]
-#+begin_src emacs-lisp
-(use-package toc-org
-  :ensure t
-  :defer 5
-  :config
-  (add-hook 'org-mode-hook 'toc-org-enable))
-#+end_src
-
-** Programming
-*** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]
-#+begin_src emacs-lisp
-(use-package anaconda-mode
-  :ensure t)
-#+end_src
 *** [[https://github.com/clojure-emacs/clojure-mode][clojure-mode]]
 #+begin_src emacs-lisp
 (use-package clojure-mode
   :ensure t
   :defer 5)
 #+end_src
+
 *** [[https://github.com/defunkt/coffee-mode][coffee-mode]]
 #+begin_src emacs-lisp
 (use-package coffee-mode
   :defer 5
+  :ensure t)
+#+end_src
+
+*** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
+Edit jupyter notebooks in emacs
+#+begin_src emacs-lisp
+(use-package ein
+  :ensure t
+  :commands ein:notebooklist-open
+  :config)
+#+end_src
+
+*** [[https://github.com/immerrr/lua-mode][lua-mode]]
+#+begin_src emacs-lisp
+(use-package lua-mode
+  :ensure t
+  :defer t)
+#+end_src
+*** matlab-mode
+#+begin_src emacs-lisp
+(use-package matlab
+  :defer 5
+  :ensure matlab-mode
+  :init
+  (load-library "matlab-load"))
+#+end_src
+
+*** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]]
+#+begin_src emacs-lisp
+(use-package vimrc-mode
+  :ensure t)
+#+end_src
+
+** Editing utilities 
+*** [[https://github.com/Fuco1/smartparens][smartparens]]
+Minor mode for Emacs that deals with parens pairs and tries to be smart about it.
+#+begin_src emacs-lisp
+(use-package smartparens
+  :ensure t
+  :config
+  (smartparens-global-strict-mode)
+  (show-smartparens-global-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook #'smartparens-strict-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook #'show-smartparens-mode)
+  (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)
+  (sp-local-pair 'emacs-lisp-mode "`" nil :actions nil))
+#+end_src
+*** [[https://github.com/alpha22jp/atomic-chrome][atomic-chrome]]
+Edit text area on Chrome with Emacs using Atomic Chrome
+#+begin_src emacs-lisp
+(use-package atomic-chrome
+  :ensure t
+  :config
+  (atomic-chrome-start-server)
+  (setq atomic-chrome-buffer-open-style 'frame))
+#+end_src
+
+*** [[https://github.com/joaotavora/yasnippet][yasnippet]]
+Freakin yasnippet. It's the best.
+#+begin_src emacs-lisp
+(use-package yasnippet
+  ;; SNIPPETS!!!
+  :ensure t
+  :defer 5
+  :config
+  (yas-global-mode 1))
+#+end_src
+
+*** [[https://github.com/hlissner/evil-multiedit][evil-multiedit]]
+#+begin_src emacs-lisp
+(use-package evil-multiedit
+  :ensure t
+  :commands (evil-multiedit-match-all
+             evil-multiedit-match-and-next
+             evil-multiedit-match-and-prev
+             evil-multiedit-ex-match)
+  :config
+  (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match))
+#+end_src
+
+*** [[https://github.com/emacsfodder/move-text][move-text]]
+Move current line or region up or down
+#+begin_src emacs-lisp
+(use-package move-text
+  :defer 5
+  :ensure t)
+#+end_src
+
+** Programming utilites
+*** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]
+#+begin_src emacs-lisp
+(use-package anaconda-mode
   :ensure t)
 #+end_src
 *** [[https://github.com/company-mode/company-mode][company-mode]]
@@ -2778,15 +2318,6 @@ Supposedly better than autocomplete... Also using [[https://github.com/syohex/em
 (use-package company-anaconda
   :ensure t
   :after company)
-#+end_src
-
-*** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
-Edit jupyter notebooks in emacs
-#+begin_src emacs-lisp
-(use-package ein
-  :ensure t
-  :commands ein:notebooklist-open
-  :config)
 #+end_src
 
 *** [[https://github.com/jorgenschaefer/elpy][elpy]]
@@ -2914,20 +2445,6 @@ imenu on steroids.
   :ensure t)
 #+end_src
 
-*** [[https://github.com/immerrr/lua-mode][lua-mode]]
-#+begin_src emacs-lisp
-(use-package lua-mode
-  :ensure t
-  :defer t)
-#+end_src
-*** matlab-mode
-#+begin_src emacs-lisp
-(use-package matlab
-  :defer 5
-  :ensure matlab-mode
-  :init
-  (load-library "matlab-load"))
-#+end_src
 *** [[https://github.com/CodeFalling/nlinum-relative][nlinum-relative]]
 #+begin_src emacs-lisp :tangle no
 (use-package nlinum-relative
@@ -2954,11 +2471,6 @@ complete, IMO.
 
 #+end_src
 
-*** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]]
-#+begin_src emacs-lisp
-(use-package vimrc-mode
-  :ensure t)
-#+end_src
 *** [[https://github.com/zenozeng/yafolding.el][yafolding]]
 Good code folding is hard to come by in Emacs, and isn't /that/ useful. This was
 pretty good but had some known issues.
@@ -2979,15 +2491,136 @@ pretty good but had some known issues.
 (use-package yapfify
   :ensure t)
 #+end_src
-*** [[https://github.com/joaotavora/yasnippet][yasnippet]]
-Freakin yasnippet. It's the best.
+
+** Navigation
+*** [[https://github.com/abo-abo/ace-window][ace-window]]
+Quickly switch windows in Emacs
 #+begin_src emacs-lisp
-(use-package yasnippet
-  ;; SNIPPETS!!!
+(use-package ace-window
+  :ensure t
+  :commands (ace-window ace-delete-window ace-swap-window)
+  :bind ("M-p" . ace-window)
+  :config
+  (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
+#+end_src
+*** [[https://github.com/abo-abo/avy][avy]]
+Jump to things in Emacs tree-style
+#+begin_src emacs-lisp
+(use-package avy
+  :ensure t
+  :commands (avy-goto-char-2 avy-goto-word-1 avy-goto-line))
+#+end_src
+*** [[https://github.com/bbatsov/projectile][projectile]]
+Project Interaction Library for Emacs
+#+begin_src emacs-lisp
+(use-package projectile
+  :ensure t
+  :commands (projectile-find-file projectile-switch-project projectile-switch-to-buffer)
+  :config
+  (setq projectile-globally-ignored-files
+        '("TAGS"
+          ".DS_Store"))
+  (setq projectile-ignored-projects
+        '("/usr/local"
+          "~/dotfiles/config/emacs.d/lisp/Gnugol"
+          "~/dotfiles/config/emacs.d/lisp/matlab-emacs"))
+  (projectile-mode))
+#+end_src
+*** [[https://github.com/ralesi/ranger.el][ranger]]
+Bringing the goodness of ranger to dired!
+#+begin_src emacs-lisp
+(use-package ranger
+  :ensure t
+  :commands (ranger deer deer-jump-other-window)
+  :config
+  (setq ranger-show-literal nil)
+  (setq ranger-show-dotfiles nil)
+  (ranger-override-dired-mode t)
+  (setq ranger-cleanup-eagerly t)
+  (setq ranger-parent-depth 0)
+
+  (fmakunbound 'ranger-travel)
+  (defun ranger-travel ()
+    "Open a file or go to a directory in current buffer."
+    (interactive)
+    (cond
+     ((featurep 'ivy)
+      (counsel-find-file default-directory))
+     (t
+      (call-interactively 'ido-find-file))))
+
+  ;; (advice-add
+  ;;  'deer-jump-other-window
+  ;;  :before
+  ;;  (lambda ()
+  ;;    (when (> (length (window-list)) 1)
+  ;;      (setq diego/temp-buff-name (window-buffer (next-window))))))
+
+  ;; (advice-add
+  ;;  'ranger-close
+  ;;  :after
+  ;;  (lambda ()
+  ;;    (if (boundp 'diego/temp-buff-name)
+  ;;        (progn
+  ;;          (switch-to-buffer-other-window diego/temp-buff-name)
+  ;;          (makunbound 'diego/temp-buff-name))
+  ;;      (condition-case nil
+  ;;          (delete-window)
+  ;;        (error nil)))))
+  ;; (advice-add
+  ;;  'ranger-close
+  ;;  :after
+  ;;  (lambda ()
+  ;;    (condition-case nil
+  ;;        (delete-window)
+  ;;      (error nil))))
+  )
+#+end_src
+
+** Org mode
+*** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
+#+begin_src emacs-lisp
+(use-package ob-ipython
+  :defer 5
+  :ensure t)
+#+end_src
+*** [[https://github.com/sabof/org-bullets][org-bullets]]
+Use nice bullets in org-mode.
+#+begin_src emacs-lisp
+(use-package org-bullets
+  :ensure t
+  :after org
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  (setq org-bullets-bullet-list '("•")))
+#+end_src
+*** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
+Translates Org-mode file to various other formats via Pandoc. Pretty neat.
+#+begin_src emacs-lisp
+(use-package ox-pandoc
+  :ensure t
+  :after org
+  :config
+  ;; default options for all output formats
+  (setq org-pandoc-options '((standalone . t)))
+  ;; cancel above settings only for 'docx' format
+  (setq org-pandoc-options-for-docx '((standalone . nil))))
+#+end_src
+*** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
+Export org to twitter bootstrap compatible HTML.
+#+begin_src emacs-lisp
+(use-package ox-twbs
+  :ensure t
+  :defer 5
+  :after org)
+#+end_src
+*** [[https://github.com/snosov1/toc-org][toc-org]]
+#+begin_src emacs-lisp
+(use-package toc-org
   :ensure t
   :defer 5
   :config
-  (yas-global-mode 1))
+  (add-hook 'org-mode-hook 'toc-org-enable))
 #+end_src
 ** Reference/search
 *** [[https://github.com/abo-abo/define-word][define-word]]
@@ -3107,6 +2740,102 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
   :config
   ;; (venv-initialize-interactive-shells)
   (setq venv-location "~/.virtualenvs"))
+#+end_src
+** Not currently in use
+These aren't loaded by the init file.
+*** [[https://github.com/Wilfred/ag.el][ag]]
+Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]] into emacs.
+#+begin_src emacs-lisp :tangle no
+(use-package ag
+  ;; Silver searcher
+  :ensure t
+  :defer t
+  :init
+  (use-package wgrep-ag
+    ;; Guess I need this first
+    :ensure t
+    :commands (wgrep-ag-setup))
+  :config
+  (add-hook 'ag-mode-hook
+            (lambda ()
+              (wgrep-ag-setup)
+              (define-key ag-mode-map (kbd "n") 'evil-search-next)
+              (define-key ag-mode-map (kbd "N") 'evil-search-previous)))
+  (setq ag-executable "/usr/local/bin/ag")
+  (setq ag-highlight-search t)
+  (setq ag-reuse-buffers t)
+  (setq ag-reuse-window t))
+#+end_src
+
+*** [[https://github.com/auto-complete/auto-complete][auto-complete]]
+Pretty good autocompletion, but trying out [[https://github.com/company-mode/company-mode][company-mode]] right now.
+#+begin_src emacs-lisp :tangle no
+(use-package auto-complete
+  ;; Supposedly not as good as company mode
+  :ensure t
+  :config
+  (global-auto-complete-mode t))
+#+end_src
+
+*** [[https://github.com/joaotavora/autopair][autopair]]
+It may be recommended to use =electric-pair-mode= nowadays? That's
+what I'm using anyway.
+#+Begin_src emacs-lisp :tangle no
+(use-package autopair
+  :ensure t
+  :config
+  (autopair-global-mode))
+#+end_src
+
+*** [[https://github.com/tkf/emacs-jedi][emacs-jedi]]
+Integrates [[https://github.com/davidhalter/jedi][jedi]] into emacs for python completion, hasn't been working for me
+recently. Either way, this is for [[https://github.com/auto-complete/auto-complete][auto-complete]] but now I use
+[[https://github.com/syohex/emacs-company-jedi][emacs-company-jedi]].
+#+begin_src emacs-lisp :tangle no
+(use-package jedi
+  ;; Hasn't been working smoothly recently
+  :ensure t
+  :init
+  (add-hook 'python-mode-hook 'jedi:setup)
+  (setq jedi:complete-on-dot t))
+#+end_src
+
+*** [[https://github.com/7696122/evil-terminal-cursor-changer][evil-terminal-cursor-changer]]
+#+begin_src emacs-lisp :tangle no
+(use-package evil-terminal-cursor-changer
+  :ensure t
+  :config
+  (unless (display-graphic-p)
+    (require 'evil-terminal-cursor-changer)
+    (evil-terminal-cursor-changer-activate) ; or (etcc-on)
+    )
+  (setq evil-motion-state-cursor 'box)  ; █
+  (setq evil-visual-state-cursor 'box)  ; █
+  (setq evil-normal-state-cursor 'box)  ; █
+  (setq evil-insert-state-cursor 'bar)  ; ⎸
+  (setq evil-emacs-state-cursor  'bar)) ; _
+
+#+end_src
+
+*** [[https://github.com/Malabarba/smart-mode-line][smart-mode-line]]
+Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][spaceline]].
+
+#+begin_src emacs-lisp :tangle no
+(use-package smart-mode-powerline-theme
+  :ensure t)
+
+(use-package smart-mode-line
+  :ensure t
+  :config
+  (setq sml/no-confirm-load-theme t)
+  (setq sml/theme 'dark)
+  (setq rm-whitelist '(""))
+  (setq system-uses-terminfo nil)
+  (sml/setup)
+  (display-time-mode)
+  (display-time-update)
+  (fancy-battery-mode)
+  (setq fancy-battery-show-percentage t))
 #+end_src
 * Mode Specific
 ** Prog-mode
