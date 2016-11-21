@@ -11,8 +11,8 @@ lot of the inspiration (and erm, code) for this is taken from them.
 
 #+begin_src emacs-lisp
 (setq user-full-name "Diego A. Mundo"
-	  user-mail-address "diegoamundo@gmail.com"
-	  calendar-location-name "Cambridge, MA")
+      user-mail-address "diegoamundo@gmail.com"
+      calendar-location-name "Cambridge, MA")
 #+end_src
 
 * Init Setup
@@ -24,7 +24,7 @@ Setup load directories, mostly.
 (server-start)
 (require 'package)
 (add-to-list 'load-path
-			 (expand-file-name "lisp" user-emacs-directory))
+             (expand-file-name "lisp" user-emacs-directory))
 
 (let ((default-directory  "~/.emacs.d/lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
@@ -38,29 +38,29 @@ Setup load directories, mostly.
   ;;; Commentary:
   ;;; Code:
 (if (fboundp 'with-eval-after-load)
-	(defalias 'after-load 'with-eval-after-load)
+    (defalias 'after-load 'with-eval-after-load)
   (defmacro after-load (feature &rest body)
-	"After FEATURE is loaded, evaluate BODY."
-	(declare (indent defun))
-	`(eval-after-load ,feature
-	   '(progn ,@body))))
+    "After FEATURE is loaded, evaluate BODY."
+    (declare (indent defun))
+    `(eval-after-load ,feature
+       '(progn ,@body))))
 
 
 (defun add-auto-mode (mode &rest patterns)
   "Add entries to `auto-mode-alist' to use `MODE' for all given file `PATTERNS'."
   (dolist (pattern patterns)
-	(add-to-list 'auto-mode-alist (cons pattern mode))))
+    (add-to-list 'auto-mode-alist (cons pattern mode))))
 
 
 (defun sanityinc/string-all-matches (regex str &optional group)
   "Find all matches for `REGEX' within `STR', returning the full match string or group `GROUP'."
   (let ((result nil)
-		(pos 0)
-		(group (or group 0)))
-	(while (string-match regex str pos)
-	  (push (match-string group str) result)
-	  (setq pos (match-end group)))
-	result))
+        (pos 0)
+        (group (or group 0)))
+    (while (string-match regex str pos)
+      (push (match-string group str) result)
+      (setq pos (match-end group)))
+    result))
 
 (defun sanityinc/string-rtrim (str)
   "Remove trailing whitespace from `STR'."
@@ -78,26 +78,26 @@ Setup load directories, mostly.
   (interactive)
   (or (buffer-file-name) (error "No file is currently being edited"))
   (when (yes-or-no-p (format "Really delete '%s'?"
-							 (file-name-nondirectory buffer-file-name)))
-	(delete-file (buffer-file-name))
-	(kill-this-buffer)))
+                             (file-name-nondirectory buffer-file-name)))
+    (delete-file (buffer-file-name))
+    (kill-this-buffer)))
 
 
 (defun rename-this-file-and-buffer ()
   "Renames both current buffer and file it's visiting to NEW-NAME."
   (interactive)
   (let ((name (buffer-name))
-		(filename (buffer-file-name))
-		(new-name (read-from-minibuffer "New name: " (buffer-name))))
-	(unless filename
-	  (error "Buffer '%s' is not visiting a file!" name))
-	(if (get-buffer new-name)
-		(message "A buffer named '%s' already exists!" new-name)
-	  (progn
-		(when (file-exists-p filename)
-		  (rename-file filename new-name 1))
-		(rename-buffer new-name)
-		(set-visited-file-name new-name)))))
+        (filename (buffer-file-name))
+        (new-name (read-from-minibuffer "New name: " (buffer-name))))
+    (unless filename
+      (error "Buffer '%s' is not visiting a file!" name))
+    (if (get-buffer new-name)
+        (message "A buffer named '%s' already exists!" new-name)
+      (progn
+        (when (file-exists-p filename)
+          (rename-file filename new-name 1))
+        (rename-buffer new-name)
+        (set-visited-file-name new-name)))))
 #+end_src
 
 ** Package setup
@@ -131,8 +131,8 @@ Also, stolen and original functions, and macros.
 Get rid of menu bars, scroll bars, startup screens, etc.
 #+begin_src emacs-lisp
 (setq inhibit-splash-screen t
-	  inhibit-startup-message t
-	  inhibit-startup-echo-area-message t)
+      inhibit-startup-message t
+      inhibit-startup-echo-area-message t)
 (menu-bar-mode 0)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -175,8 +175,8 @@ consistent with other fonts. Last updated 2011, last successfully tested
 (defun font-exists-p (font)
   "check if font exists"
   (if (null (x-list-fonts font))
-	  nil
-	t))
+      nil
+    t))
 (when (font-exists-p "Input")
   (add-to-list 'default-frame-alist '(font . "Input-10"))
   (set-face-attribute 'default t :font "Input-10"))
@@ -184,6 +184,7 @@ consistent with other fonts. Last updated 2011, last successfully tested
 (setq default-input-method "TeX")
 
 (setq sentence-end-double-space nil)
+(setq-default indent-tabs-mode nil)
 #+end_src
 ** Minibuffer
 #+begin_src emacs-lisp
@@ -195,7 +196,7 @@ consistent with other fonts. Last updated 2011, last successfully tested
 #+begin_src emacs-lisp
 (setq initial-major-mode 'org-mode)
 (setq initial-scratch-message
-	  "# This buffer is for text that is not saved, and for Lisp/Python evaluation.
+      "# This buffer is for text that is not saved, and for Lisp/Python evaluation.
 # To create a file, visit it with SPC f f and enter text in its buffer.
 
 ,* Lisp
@@ -216,7 +217,7 @@ Handling/storing of files, backups, autosaves.
 (defvar backup-dir "~/.emacsbackups/")
 (setq backup-directory-alist (list (cons "." backup-dir)))
 (setq auto-save-file-name-transforms
-	  `((".*" ,temporary-file-directory t)))
+      `((".*" ,temporary-file-directory t)))
 (global-auto-revert-mode t)
 (save-place-mode 1)
 (desktop-save-mode 1)
@@ -232,7 +233,7 @@ Handling/storing of files, backups, autosaves.
 #+begin_src emacs-lisp
 ;; Arrow key/jk scroll
 (setq scroll-step 1
-	  scroll-conservatively 10000)
+      scroll-conservatively 10000)
 
 ;; Mouse scroll
 (setq mouse-wheel-scroll-amount '(2 ((shift) . 1) ((control) . nil)))
@@ -257,96 +258,96 @@ Handling/storing of files, backups, autosaves.
   (interactive)
   ;; Use the appropriate search term based on regexp setting.
   (let ((term (if evil-regexp-search
-				  (car-safe regexp-search-ring)
-				(car-safe search-ring))))
-	;; If a search term exists, execute `occur` on it.
-	(if (> (length term) 0)
-		(occur term)
-	  (message "No term to search for."))))
+                  (car-safe regexp-search-ring)
+                (car-safe search-ring))))
+    ;; If a search term exists, execute `occur` on it.
+    (if (> (length term) 0)
+        (occur term)
+      (message "No term to search for."))))
 
 (defun show-first-occurrence ()
   "Display the location of the word at point's first occurrence in the buffer."
   (interactive)
   (save-excursion
-	(let ((search-word (thing-at-point 'symbol t)))
-	  (goto-char 1)
-	  (re-search-forward search-word)
-	  (message (concat
-				"L" (number-to-string (line-number-at-pos)) ": "
-				(replace-regexp-in-string
-				 "[ \t\n]*\\'"
-				 ""
-				 (thing-at-point 'line t)
-				 ))))))
+    (let ((search-word (thing-at-point 'symbol t)))
+      (goto-char 1)
+      (re-search-forward search-word)
+      (message (concat
+                "L" (number-to-string (line-number-at-pos)) ": "
+                (replace-regexp-in-string
+                 "[ \t\n]*\\'"
+                 ""
+                 (thing-at-point 'line t)
+                 ))))))
 
 (defun zone-choose (pgm)
   "Choose a PGM to run for `zone'."
   (interactive
    (list
-	(completing-read
-	 "Program: "
-	 (mapcar 'symbol-name zone-programs))))
+    (completing-read
+     "Program: "
+     (mapcar 'symbol-name zone-programs))))
   (let ((zone-programs (list (intern pgm))))
-	(redisplay)
-	(zone)))
+    (redisplay)
+    (zone)))
 
 (defun switch-to-previous-buffer ()
   "Switch to previously open buffer.
-	Repeated invocations toggle between the two most recently open buffers."
+    Repeated invocations toggle between the two most recently open buffers."
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
-	;;; Helpers for narrowing.
+    ;;; Helpers for narrowing.
 (defun narrow-and-set-normal ()
   "Narrow to the region and, if in a visual mode, set normal mode."
   (interactive)
   (narrow-to-region (region-beginning) (region-end))
   (if (string= evil-state "visual")
-	  (progn (evil-normal-state nil)
-			 (evil-goto-first-line))))
+      (progn (evil-normal-state nil)
+             (evil-goto-first-line))))
 
 (defun narrow-to-region-or-subtree ()
   "Narrow to a region, if set, otherwise to an Org subtree, if present."
   (interactive)
   (if (and mark-active
-		   (not (= (region-beginning) (region-end))))
-	  (narrow-and-set-normal)
-	(if (derived-mode-p 'org-mode)
-		(org-narrow-to-subtree))))
+           (not (= (region-beginning) (region-end))))
+      (narrow-and-set-normal)
+    (if (derived-mode-p 'org-mode)
+        (org-narrow-to-subtree))))
 
 (defun diego/narrow-dwim ()
   "Narrow to a thing or widen based on context.
-	Attempts to follow the Do What I Mean philosophy."
+    Attempts to follow the Do What I Mean philosophy."
   (interactive)
   (if (buffer-narrowed-p)
-	  (widen)
-	(narrow-to-region-or-subtree)))
+      (widen)
+    (narrow-to-region-or-subtree)))
 
 
 (defun diego/toggle-window-split ()
   (interactive)
   (if (= (count-windows) 2)
-	  (let* ((this-win-buffer (window-buffer))
-			 (next-win-buffer (window-buffer (next-window)))
-			 (this-win-edges (window-edges (selected-window)))
-			 (next-win-edges (window-edges (next-window)))
-			 (this-win-2nd (not (and (<= (car this-win-edges)
-										 (car next-win-edges))
-									 (<= (cadr this-win-edges)
-										 (cadr next-win-edges)))))
-			 (splitter
-			  (if (= (car this-win-edges)
-					 (car (window-edges (next-window))))
-				  'split-window-horizontally
-				'split-window-vertically)))
-		(delete-other-windows)
-		(let ((first-win (selected-window)))
-		  (funcall splitter)
-		  (if this-win-2nd (other-window 1))
-		  (set-window-buffer (selected-window) this-win-buffer)
-		  (set-window-buffer (next-window) next-win-buffer)
-		  (select-window first-win)
-		  (if this-win-2nd (other-window 1))))))
+      (let* ((this-win-buffer (window-buffer))
+             (next-win-buffer (window-buffer (next-window)))
+             (this-win-edges (window-edges (selected-window)))
+             (next-win-edges (window-edges (next-window)))
+             (this-win-2nd (not (and (<= (car this-win-edges)
+                                         (car next-win-edges))
+                                     (<= (cadr this-win-edges)
+                                         (cadr next-win-edges)))))
+             (splitter
+              (if (= (car this-win-edges)
+                     (car (window-edges (next-window))))
+                  'split-window-horizontally
+                'split-window-vertically)))
+        (delete-other-windows)
+        (let ((first-win (selected-window)))
+          (funcall splitter)
+          (if this-win-2nd (other-window 1))
+          (set-window-buffer (selected-window) this-win-buffer)
+          (set-window-buffer (next-window) next-win-buffer)
+          (select-window first-win)
+          (if this-win-2nd (other-window 1))))))
 
 ;; (defun minibuffer-keyboard-quit ()
 ;;   "Abort recursive edit.
@@ -363,11 +364,11 @@ Handling/storing of files, backups, autosaves.
   "Like `fill-paragraph', but unfill if used twice."
   (interactive)
   (let ((fill-column
-		 (if (eq last-command 'diego/fill-or-unfill)
-			 (progn (setq this-command nil)
-					(point-max))
-		   fill-column)))
-	(call-interactively #'fill-paragraph)))
+         (if (eq last-command 'diego/fill-or-unfill)
+             (progn (setq this-command nil)
+                    (point-max))
+           fill-column)))
+    (call-interactively #'fill-paragraph)))
 
 (global-set-key [remap fill-paragraph] #'diego/fill-or-unfill)
 
@@ -375,15 +376,15 @@ Handling/storing of files, backups, autosaves.
   "Add word at point to flyspell dictionary at `/Users/diego/.ispell_english'"
   (interactive)
   (let ((current-location (point))
-		(word (flyspell-get-word)))
-	(when (consp word)
-	  (flyspell-do-correct 'save
-						   nil
-						   (car word)
-						   current-location
-						   (cadr word)
-						   (caddr word)
-						   current-location))))
+        (word (flyspell-get-word)))
+    (when (consp word)
+      (flyspell-do-correct 'save
+                           nil
+                           (car word)
+                           current-location
+                           (cadr word)
+                           (caddr word)
+                           current-location))))
 
 (defun indent-buffer ()
   (interactive)
@@ -395,74 +396,74 @@ Handling/storing of files, backups, autosaves.
   "Open an ipython shell using multi-term, respecting virtualenv."
   (interactive)
   (if (eq venv-current-name nil)
-	  (let ((sane-term-shell-command "ipython"))
-		(sane-term-create))
-	(let ((sane-term-shell-command (concat venv-current-dir "/bin/ipython")))
-	  (sane-term-create))))
+      (let ((sane-term-shell-command "ipython"))
+        (sane-term-create))
+    (let ((sane-term-shell-command (concat venv-current-dir "/bin/ipython")))
+      (sane-term-create))))
 
 (defun diego/toggle-github-spacing ()
   "Make line spacing similar to github source code. Probably outdated"
   (interactive)
   (setq-local line-spacing
-			  (if (eq line-spacing nil)
-				  0.4
-				nil)))
+              (if (eq line-spacing nil)
+                  0.4
+                nil)))
 
 (defun diego/lecture-notes ()
   "Prompt for a class and create a lecture notes file
   matching format %Y-%m-%d_lecture.org in class/notes subdirectory."
   (interactive)
   (ivy-read "class: " '("16.410"
-						"16.621"
-						"Ethics")
-			:action (lambda (x)
-					  (find-file
-					   (concat "~/MIT 2016-2017/" x "/notes/"
-							   (format-time-string "%Y-%m-%d_lecture.org" ))))
-			:caller 'diego/lecture-notes))
+                        "16.621"
+                        "Ethics")
+            :action (lambda (x)
+                      (find-file
+                       (concat "~/MIT 2016-2017/" x "/notes/"
+                               (format-time-string "%Y-%m-%d_lecture.org" ))))
+            :caller 'diego/lecture-notes))
 
 (defun diego/recitation-notes ()
   "Prompt for a class and create a lecture notes file
-	matching format %Y-%m-%d_lecture.org in class/notes subdirectory."
+    matching format %Y-%m-%d_lecture.org in class/notes subdirectory."
   (interactive)
   (ivy-read "class: " '("16.410"
-						"16.621"
-						"Ethics")
-			:action (lambda (x)
-					  (find-file
-					   (concat "~/MIT 2016-2017/" x "/notes/" 
-							   (format-time-string "%Y-%m-%d_recitation.org" ))))
-			:caller 'diego/recitation-notes))
+                        "16.621"
+                        "Ethics")
+            :action (lambda (x)
+                      (find-file
+                       (concat "~/MIT 2016-2017/" x "/notes/" 
+                               (format-time-string "%Y-%m-%d_recitation.org" ))))
+            :caller 'diego/recitation-notes))
 
 (defun diego/toggle-cursor ()
   (interactive)
   (setq-local cursor-type
-			  (if (eq cursor-type nil)
-				  t
-				nil)))
+              (if (eq cursor-type nil)
+                  t
+                nil)))
 #+end_src
 *** Macros?
 #+begin_src emacs-lisp
 (defmacro diego|create-block-wrap (blocktype)
   (let ((newfunc (intern
-				  (concat "diego/org-wrap-with-block-"
-						  (replace-regexp-in-string " " "-" blocktype)))))
-	`(fset (quote ,newfunc)
-		   (vconcat [?\{ ?i return ?# ?+ ?b ?e ?g ?i ?n ?_]
-					(vconcat ,blocktype)
-					[?\C-/ ?\} ?i return up ?# ?+ ?e ?n ?d ?_]
-					(vconcat (car (split-string ,blocktype)))
-					[?\C-/ ?\{ ?j]))))
+                  (concat "diego/org-wrap-with-block-"
+                          (replace-regexp-in-string " " "-" blocktype)))))
+    `(fset (quote ,newfunc)
+           (vconcat [?\{ ?i return ?# ?+ ?b ?e ?g ?i ?n ?_]
+                    (vconcat ,blocktype)
+                    [?\C-/ ?\} ?i return up ?# ?+ ?e ?n ?d ?_]
+                    (vconcat (car (split-string ,blocktype)))
+                    [?\C-/ ?\{ ?j]))))
 
 (diego|create-block-wrap "src")
 (diego|create-block-wrap "src python")
 (diego|create-block-wrap "export latex")
 
 (fset 'diego/insert-footnote
-	  [?/ ?\{ ?\[ ?0 ?- ?9 ?\] ?+ ?\} return ?a ?f ?n ?: escape ?  ?x ?p ?r ?\[])
+      [?/ ?\{ ?\[ ?0 ?- ?9 ?\] ?+ ?\} return ?a ?f ?n ?: escape ?  ?x ?p ?r ?\[])
 
 (fset 'diego/org-wrap-with-block-quote
-	  [?\{ ?i return ?# ?+ ?b ?e ?g ?i ?n ?_ ?q ?u ?o ?t ?e ?\C-/ ?\} ?i return up ?# ?+ ?e ?n ?d ?_ ?q ?u ?o ?t ?e ?\C-/ ?\{ ?j ?i ?  ?  ?\M-q ?\M-q ?\M-q ?\C-/])
+      [?\{ ?i return ?# ?+ ?b ?e ?g ?i ?n ?_ ?q ?u ?o ?t ?e ?\C-/ ?\} ?i return up ?# ?+ ?e ?n ?d ?_ ?q ?u ?o ?t ?e ?\C-/ ?\{ ?j ?i ?  ?  ?\M-q ?\M-q ?\M-q ?\C-/])
 #+end_src
 ** Bindings
 I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard.
@@ -500,288 +501,288 @@ based on or copied from spacemacs, so definitely check them out!
 (defun diego/leader-search ()
   (evil-leader/set-key
 
-	"sa" 'counsel-ag
-	"ss" 'swiper-all
-	"sm" 'swiper-multi
-	"/"  'swiper))
+    "sa" 'counsel-ag
+    "ss" 'swiper-all
+    "sm" 'swiper-multi
+    "/"  'swiper))
 #+end_src
 **** Projects
 #+begin_src emacs-lisp
 (defun diego/leader-projects ()
   (evil-leader/set-key
-	"pp" 'counsel-projectile
-	"ps" 'counsel-projectile-switch-project
-	"pf" 'diego/project-find-file
-	"pd" 'counsel-projectile-find-dir
-	"pb" 'counsel-projectile-switch-to-buffer
-	"pk" 'projectile-kill-buffers
-	"po" 'projectile-multi-occur
-	"pr" 'projectile-recentf
-	"pg" 'projectile-vc)
+    "pp" 'counsel-projectile
+    "ps" 'counsel-projectile-switch-project
+    "pf" 'diego/project-find-file
+    "pd" 'counsel-projectile-find-dir
+    "pb" 'counsel-projectile-switch-to-buffer
+    "pk" 'projectile-kill-buffers
+    "po" 'projectile-multi-occur
+    "pr" 'projectile-recentf
+    "pg" 'projectile-vc)
 
   (defun diego/project-find-file ()
-	(interactive)
-	(condition-case nil
-		(counsel-git)
-	  (error (projectile-find-file)))))
+    (interactive)
+    (condition-case nil
+        (counsel-git)
+      (error (projectile-find-file)))))
 #+end_src
 **** Window
 #+begin_src emacs-lisp
 (defun diego/leader-window ()
   (evil-leader/set-key
-	"wa" 'ace-window
-	"wv" 'diego/split-vert-focus
-	"wh" 'diego/split-horz-focus
-	"wt" 'diego/toggle-window-split
-	"wd" 'delete-window
-	"wD" 'ace-delete-window
-	"wo" 'delete-other-windows
-	"wf" 'make-frame
-	"ws" 'ace-swap-window)
+    "wa" 'ace-window
+    "wv" 'diego/split-vert-focus
+    "wh" 'diego/split-horz-focus
+    "wt" 'diego/toggle-window-split
+    "wd" 'delete-window
+    "wD" 'ace-delete-window
+    "wo" 'delete-other-windows
+    "wf" 'make-frame
+    "ws" 'ace-swap-window)
 
   (defun diego/split-vert-focus ()
-	"Split window vertically and move focus to other window."
-	(interactive)
-	(split-window-right)
-	(other-window 1))
+    "Split window vertically and move focus to other window."
+    (interactive)
+    (split-window-right)
+    (other-window 1))
 
   (defun diego/split-horz-focus ()
-	"Split window horizontally and move focus to other window."
-	(interactive)
-	(split-window-below)
-	(other-window 1)))
+    "Split window horizontally and move focus to other window."
+    (interactive)
+    (split-window-below)
+    (other-window 1)))
 #+end_src
 **** Jumping
 #+begin_src emacs-lisp
 (defun diego/leader-jumping ()
   (evil-leader/set-key
-	"jc" 'avy-goto-char-2
-	"jw" 'avy-goto-word-1
-	"jl" 'avy-goto-line
-	"jf" 'find-function
-	"ji" 'imenu
-	"jI" 'imenu-anywhere
-	"jv" 'find-variable))
+    "jc" 'avy-goto-char-2
+    "jw" 'avy-goto-word-1
+    "jl" 'avy-goto-line
+    "jf" 'find-function
+    "ji" 'imenu
+    "jI" 'imenu-anywhere
+    "jv" 'find-variable))
 #+end_src
 **** Applications
 #+begin_src emacs-lisp
 (defun diego/leader-applications ()
   (evil-leader/set-key
-	"aW"  'sunshine-quick-forecast
-	"ac"  'calc-dispatch
-	"ad"  'diego/deer
+    "aW"  'sunshine-quick-forecast
+    "ac"  'calc-dispatch
+    "ad"  'diego/deer
     "ae"  'elfeed
-	"ag2" '2048-game
-	"agd" 'dunnet
-	"agg" 'gomoku
-	"agt" 'tetris
-	"ai"  'erc
-	"ap"  'paradox-list-packages
-	"ar"  'ranger
-	"as"  'speed-type-text
-	"at"  'sane-term
-	"au"  'undo-tree-visualize
-	"aw"  'sunshine-forecast
-	"ax"  'xkcd
+    "ag2" '2048-game
+    "agd" 'dunnet
+    "agg" 'gomoku
+    "agt" 'tetris
+    "ai"  'erc
+    "ap"  'paradox-list-packages
+    "ar"  'ranger
+    "as"  'speed-type-text
+    "at"  'sane-term
+    "au"  'undo-tree-visualize
+    "aw"  'sunshine-forecast
+    "ax"  'xkcd
 
-	;; org
-	"ao#" 'org-agenda-list-stuck-projects
-	"ao/" 'org-occur-in-agenda-files
-	"aoO" 'org-clock-out
-	"aoa" 'org-agenda-list
-	"aoc" 'org-capture
-	"aoe" 'org-store-agenda-views
-	"aol" 'org-store-link)
-	"aom" 'org-tags-view
-	"aoo" 'org-agenda
-	"aos" 'org-search-view
-	"aot" 'org-todo-list
+    ;; org
+    "ao#" 'org-agenda-list-stuck-projects
+    "ao/" 'org-occur-in-agenda-files
+    "aoO" 'org-clock-out
+    "aoa" 'org-agenda-list
+    "aoc" 'org-capture
+    "aoe" 'org-store-agenda-views
+    "aol" 'org-store-link)
+  "aom" 'org-tags-view
+  "aoo" 'org-agenda
+  "aos" 'org-search-view
+  "aot" 'org-todo-list
 
-	(defun diego/deer (arg)
-	  (interactive "P")
-	  (if (eq arg nil)
-		  (deer-jump-other-window)
-		(deer))))
+  (defun diego/deer (arg)
+    (interactive "P")
+    (if (eq arg nil)
+        (deer-jump-other-window)
+      (deer))))
 #+end_src
 **** Buffers & Files
 #+begin_src emacs-lisp
 (defun diego/leader-buffers-files ()
   (evil-leader/set-key
-	"TAB" 'switch-to-previous-buffer
-	"bb"  'ivy-switch-buffer
-	"bk"  'kill-this-buffer
-	"bK"  'kill-buffer
-	"bm"  'kill-matching-buffers
-	"br"  'view-mode
-	"bn"  'next-buffer
-	"bp"  'previous-buffer
-	"be"  'diego/safe-erase-buffer
-	"bi"  'ibuffer
-	"bc"  'clone-indirect-buffer-other-window
-	"bS"  'diego/switch-to-scratch
-	"bM"  'diego/switch-to-messages
-	"b*"  'diego/switch-to-star
-	"bs"  'ivy-switch-buffer-other-window
-	"bC"  'diego/switch-to-customize
+    "TAB" 'switch-to-previous-buffer
+    "bb"  'ivy-switch-buffer
+    "bk"  'kill-this-buffer
+    "bK"  'kill-buffer
+    "bm"  'kill-matching-buffers
+    "br"  'view-mode
+    "bn"  'next-buffer
+    "bp"  'previous-buffer
+    "be"  'diego/safe-erase-buffer
+    "bi"  'ibuffer
+    "bc"  'clone-indirect-buffer-other-window
+    "bS"  'diego/switch-to-scratch
+    "bM"  'diego/switch-to-messages
+    "b*"  'diego/switch-to-star
+    "bs"  'ivy-switch-buffer-other-window
+    "bC"  'diego/switch-to-customize
 
-	"ff"  'counsel-find-file
-	"fb"  'counsel-bookmark
-	"fc"  'diego/copy-file
-	"fs"  'save-buffer
-	"fl"  'counsel-locate
-	"fr"  'rename-this-file-and-buffer
-	"fot" 'diego/pop-to-org-todo
-	"fon" 'diego/pop-to-org-notes
-	"fD"  'move-file-to-trash)
+    "ff"  'counsel-find-file
+    "fb"  'counsel-bookmark
+    "fc"  'diego/copy-file
+    "fs"  'save-buffer
+    "fl"  'counsel-locate
+    "fr"  'rename-this-file-and-buffer
+    "fot" 'diego/pop-to-org-todo
+    "fon" 'diego/pop-to-org-notes
+    "fD"  'move-file-to-trash)
 
   (defun diego/switch-to-scratch ()
-	(interactive)
-	(switch-to-buffer (get-buffer-create "*scratch*")))
+    (interactive)
+    (switch-to-buffer (get-buffer-create "*scratch*")))
 
   (defun diego/switch-to-star ()
-	(interactive)
-	(let ((ivy-initial-inputs-alist '((ivy-switch-buffer . "^*"))))
-	  (ivy-switch-buffer)))
+    (interactive)
+    (let ((ivy-initial-inputs-alist '((ivy-switch-buffer . "^*"))))
+      (ivy-switch-buffer)))
 
   (defun diego/switch-to-customize ()
-	(interactive)
-	(let ((ivy-initial-inputs-alist '((ivy-switch-buffer . "^*customize "))))
-	  (ivy-switch-buffer)))
+    (interactive)
+    (let ((ivy-initial-inputs-alist '((ivy-switch-buffer . "^*customize "))))
+      (ivy-switch-buffer)))
 
   (defun diego/switch-to-messages ()
-	(interactive)
-	(switch-to-buffer (get-buffer "*Messages*")))
+    (interactive)
+    (switch-to-buffer (get-buffer "*Messages*")))
 
   (defun diego/copy-file ()
-	(interactive)
-	(call-interactively 'write-file))
+    (interactive)
+    (call-interactively 'write-file))
 
   (defun diego/safe-erase-buffer ()
-	(interactive)
-	(if (y-or-n-p (format "Erase content of buffer %s ?" (current-buffer)))
-		(progn
-		  (erase-buffer)
-		  (message "Buffer erased."))
-	  (message "erase-buffer cancelled"))))
+    (interactive)
+    (if (y-or-n-p (format "Erase content of buffer %s ?" (current-buffer)))
+        (progn
+          (erase-buffer)
+          (message "Buffer erased."))
+      (message "erase-buffer cancelled"))))
 #+end_src
 **** Toggles
 #+begin_src emacs-lisp
 (defun diego/leader-toggle ()
   (evil-leader/set-key
-	"tf" 'fci-mode
-	"tl" 'nlinum-mode
-	"tw" 'whitespace-mode
-	"ts" 'flycheck-mode
-	"tg" 'diego/github-spacing
-	"tc" 'diego/toggle-linum-fci
-	"tr" 'nlinum-relative-toggle
-	"tS" 'flyspell-mode)
+    "tf" 'fci-mode
+    "tl" 'nlinum-mode
+    "tw" 'whitespace-mode
+    "ts" 'flycheck-mode
+    "tg" 'diego/github-spacing
+    "tc" 'diego/toggle-linum-fci
+    "tr" 'nlinum-relative-toggle
+    "tS" 'flyspell-mode)
 
   (defun diego/toggle-linum-fci ()
-	(interactive)
-	(cond ((and (eq nlinum-mode t) (eq fci-mode t))
-		   (nlinum-mode -1)
-		   (fci-mode -1))
-		  ((and (eq nlinum-mode nil) (eq fci-mode nil))
-		   (nlinum-mode 1)
-		   (fci-mode 1)))))
+    (interactive)
+    (cond ((and (eq nlinum-mode t) (eq fci-mode t))
+           (nlinum-mode -1)
+           (fci-mode -1))
+          ((and (eq nlinum-mode nil) (eq fci-mode nil))
+           (nlinum-mode 1)
+           (fci-mode 1)))))
 #+end_src
 **** Editing
 #+begin_src emacs-lisp
 (defun diego/leader-editing ()
   (evil-leader/set-key
-	";"   'evilnc-comment-operator
-	"cl"  'evilnc-comment-or-uncomment-lines
-	"ci"  'diego/comment-or-uncomment-lines-inverse
-	"cp"  'evilnc-comment-or-uncomment-paragraphs
-	"ct"  'evilnc-comment-or-uncomment-to-the-line
-	"cy"  'evilnc-copy-and-comment-lines
+    ";"   'evilnc-comment-operator
+    "cl"  'evilnc-comment-or-uncomment-lines
+    "ci"  'diego/comment-or-uncomment-lines-inverse
+    "cp"  'evilnc-comment-or-uncomment-paragraphs
+    "ct"  'evilnc-comment-or-uncomment-to-the-line
+    "cy"  'evilnc-copy-and-comment-lines
 
-	"nn"  'diego/narrow-dwim
-	"nf"  'narrow-to-defun
-	"np"  'narrow-to-page
-	"nr"  'narrow-to-region
-	"n="  'diego/inc-at-pt
-	"n-"  'diego/dec-at-pt
+    "nn"  'diego/narrow-dwim
+    "nf"  'narrow-to-defun
+    "np"  'narrow-to-page
+    "nr"  'narrow-to-region
+    "n="  'diego/inc-at-pt
+    "n-"  'diego/dec-at-pt
 
-	"xar" 'align-regexp
-	"xa&" 'diego/align-repeat-ampersand
-	"xa(" 'diego/align-repeat-left-paren
-	"xa)" 'diego/align-repeat-right-paren
-	"xa," 'diego/align-repeat-comma
-	"xa." 'diego/align-repeat-decimal
-	"xa:" 'diego/align-repeat-colon
-	"xa;" 'diego/align-repeat-semicolon
-	"xa=" 'diego/align-repeat-equal
-	"xaa" 'align
-	"xac" 'align-current
-	"xam" 'diego/align-repeat-math-oper
-	"xar" 'diego/align-repeat
-	"xa|" 'diego/align-repeat-bar
-	"xa'" 'diego/align-repeat-single-quote
+    "xar" 'align-regexp
+    "xa&" 'diego/align-repeat-ampersand
+    "xa(" 'diego/align-repeat-left-paren
+    "xa)" 'diego/align-repeat-right-paren
+    "xa," 'diego/align-repeat-comma
+    "xa." 'diego/align-repeat-decimal
+    "xa:" 'diego/align-repeat-colon
+    "xa;" 'diego/align-repeat-semicolon
+    "xa=" 'diego/align-repeat-equal
+    "xaa" 'align
+    "xac" 'align-current
+    "xam" 'diego/align-repeat-math-oper
+    "xar" 'diego/align-repeat
+    "xa|" 'diego/align-repeat-bar
+    "xa'" 'diego/align-repeat-single-quote
 
-	"xU"  'evil-upcase
-	"xdw" 'delete-trailing-whitespace
-	"xir" 'indent-region
-	"xib" 'indent-buffer
-	"xii" 'indent-rigidly
-	"xls" 'sort-lines
-	"xq"  'diego/fill-or-unfill
-	"xtc" 'transpose-chars
-	"xtl" 'transpose-lines
-	"xtw" 'transpose-words
-	"xu"  'evil-downcase
-	"xwd" 'define-word-at-point
-	"xwc" 'count-words
+    "xU"  'evil-upcase
+    "xdw" 'delete-trailing-whitespace
+    "xir" 'indent-region
+    "xib" 'indent-buffer
+    "xii" 'indent-rigidly
+    "xls" 'sort-lines
+    "xq"  'diego/fill-or-unfill
+    "xtc" 'transpose-chars
+    "xtl" 'transpose-lines
+    "xtw" 'transpose-words
+    "xu"  'evil-downcase
+    "xwd" 'define-word-at-point
+    "xwc" 'count-words
 
-	"xma" 'evil-multiedit-match-all
-	"xmn" 'evil-multiedit-next
-	"xmp" 'evil-multiedit-prev
-	"xmr" 'evil-multiedit-restore
-	"xmt" 'evil-multiedit-toggle-or-restrict-region
-	"xmN" 'evil-multiedit-match-and-next
-	"xmP" 'evil-multiedit-match-and-prev
+    "xma" 'evil-multiedit-match-all
+    "xmn" 'evil-multiedit-next
+    "xmp" 'evil-multiedit-prev
+    "xmr" 'evil-multiedit-restore
+    "xmt" 'evil-multiedit-toggle-or-restrict-region
+    "xmN" 'evil-multiedit-match-and-next
+    "xmP" 'evil-multiedit-match-and-prev
 
-	"xpr" 'sp-rewrap-sexp
-	"xps" 'sp-forward-slurp-sexp
-	"xpS" 'sp-backward-slurp-sexp
-	"xpb" 'sp-backward-barf-sexp
-	"xpB" 'sp-forward-barf-sexp
+    "xpr" 'sp-rewrap-sexp
+    "xps" 'sp-forward-slurp-sexp
+    "xpS" 'sp-backward-slurp-sexp
+    "xpb" 'sp-backward-barf-sexp
+    "xpB" 'sp-forward-barf-sexp
 
-	"iu"  'counsel-unicode-char
-	"iy"  'yas-insert-snippet)
+    "iu"  'counsel-unicode-char
+    "iy"  'yas-insert-snippet)
 
 
   ;; Copy of spacemacs/comment-or-uncomment-lines-inverse
   (defun diego/comment-or-uncomment-lines-inverse (&optional arg)
-	(interactive "p")
-	(let ((evilnc-invert-comment-line-by-line t))
-	  (evilnc-comment-or-uncomment-lines arg)))
+    (interactive "p")
+    (let ((evilnc-invert-comment-line-by-line t))
+      (evilnc-comment-or-uncomment-lines arg)))
 
   ;; Copy of spacemacs/align-repeat
   (defun diego/align-repeat (start end regexp &optional justify-right after)
-	"Repeat alignment with respect to the given regular expression.
+    "Repeat alignment with respect to the given regular expression.
   If JUSTIFY-RIGHT is non nil justify to the right instead of the
   left. If AFTER is non-nil, add whitespace to the left instead of
   the right."
-	(interactive "r\nsAlign regexp: ")
-	(let* ((ws-regexp (if (string-empty-p regexp)
-						  "\\(\\s-+\\)"
-						"\\(\\s-*\\)"))
-		   (complete-regexp (if after
-								(concat regexp ws-regexp)
-							  (concat ws-regexp regexp)))
-		   (group (if justify-right -1 1)))
-	  (message "%S" complete-regexp)
-	  (align-regexp start end complete-regexp group 1 t)))
+    (interactive "r\nsAlign regexp: ")
+    (let* ((ws-regexp (if (string-empty-p regexp)
+                          "\\(\\s-+\\)"
+                        "\\(\\s-*\\)"))
+           (complete-regexp (if after
+                                (concat regexp ws-regexp)
+                              (concat ws-regexp regexp)))
+           (group (if justify-right -1 1)))
+      (message "%S" complete-regexp)
+      (align-regexp start end complete-regexp group 1 t)))
 
 
   (defmacro diego|create-align-repeat-x (name regexp &optional justify-right default-after)
-	(let ((new-func (intern (concat "diego/align-repeat-" name))))
-	  `(defun ,new-func (start end switch)
-		 (interactive "r\nP")
-		 (let ((after (not (eq (if switch t nil) (if ,default-after t nil)))))
-		   (diego/align-repeat start end ,regexp ,justify-right after)))))
+    (let ((new-func (intern (concat "diego/align-repeat-" name))))
+      `(defun ,new-func (start end switch)
+         (interactive "r\nP")
+         (let ((after (not (eq (if switch t nil) (if ,default-after t nil)))))
+           (diego/align-repeat start end ,regexp ,justify-right after)))))
 
   (diego|create-align-repeat-x "comma" "," nil t)
   (diego|create-align-repeat-x "semicolon" ";" nil t)
@@ -796,36 +797,36 @@ based on or copied from spacemacs, so definitely check them out!
   (diego|create-align-repeat-x "single-quote" "'")
 
   (defun diego/align-repeat-decimal (start end)
-	"Align a table of numbers on decimal points and dollar signs (both optional)"
-	(interactive "r")
-	(require 'align)
-	(align-region start end nil
-				  '((nil (regexp . "\\([\t ]*\\)\\$?\\([\t ]+[0-9]+\\)\\.?")
-						 (repeat . t)
-						 (group 1 2)
-						 (spacing 1 1)
-						 (justify nil t)))
-				  nil)))
+    "Align a table of numbers on decimal points and dollar signs (both optional)"
+    (interactive "r")
+    (require 'align)
+    (align-region start end nil
+                  '((nil (regexp . "\\([\t ]*\\)\\$?\\([\t ]+[0-9]+\\)\\.?")
+                         (repeat . t)
+                         (group 1 2)
+                         (spacing 1 1)
+                         (justify nil t)))
+                  nil)))
 
 (setq diego/evil-numbers-transient-map
-	  (let ((map (make-sparse-keymap)))
-		(define-key map (kbd "=") #'diego/inc-at-pt)
-		(define-key map (kbd "-") #'diego/dec-at-pt)
-		map))
+      (let ((map (make-sparse-keymap)))
+        (define-key map (kbd "=") #'diego/inc-at-pt)
+        (define-key map (kbd "-") #'diego/dec-at-pt)
+        map))
 
 (defun diego/inc-at-pt (arg)
   (interactive "P")
   (if (eq arg nil)
-	  (evil-numbers/inc-at-pt 1)
-	(evil-numbers/inc-at-pt arg))
+      (evil-numbers/inc-at-pt 1)
+    (evil-numbers/inc-at-pt arg))
   (set-transient-map
    diego/evil-numbers-transient-map))
 
 (defun diego/dec-at-pt (arg)
   (interactive "P")
   (if (eq arg nil)
-	  (evil-numbers/dec-at-pt 1)
-	(evil-numbers/dec-at-pt arg))
+      (evil-numbers/dec-at-pt 1)
+    (evil-numbers/dec-at-pt arg))
   (set-transient-map
    diego/evil-numbers-transient-map))
 #+end_src
@@ -833,74 +834,74 @@ based on or copied from spacemacs, so definitely check them out!
 #+begin_src emacs-lisp
 (defun diego/leader-spelling ()
   (evil-leader/set-key
-	"Sb" 'flyspell-buffer
-	"Sa" 'diego/flyspell-add-to-dictionary
-	"Sn" 'flyspell-correct-next-word-generic
-	"Sp" 'flyspell-correct-previous-word-generic
-	"SN" 'diego/flyspell-correct-next
-	"SP" 'flyspell-auto-correct-previous-word))
+    "Sb" 'flyspell-buffer
+    "Sa" 'diego/flyspell-add-to-dictionary
+    "Sn" 'flyspell-correct-next-word-generic
+    "Sp" 'flyspell-correct-previous-word-generic
+    "SN" 'diego/flyspell-correct-next
+    "SP" 'flyspell-auto-correct-previous-word))
 #+end_src
 **** magit
 #+begin_src emacs-lisp
 (defun diego/leader-magit ()
   (evil-leader/set-key
-	"gs" 'magit-status
-	"gl" 'magit-log-all
-	"gB" 'magit-blame-toggle
-	"gc" 'magit-clone
-	"ga" 'magit-submodule-add
-	"gb" 'magit-branch))
+    "gs" 'magit-status
+    "gl" 'magit-log-all
+    "gB" 'magit-blame-toggle
+    "gc" 'magit-clone
+    "ga" 'magit-submodule-add
+    "gb" 'magit-branch))
 #+end_src
 **** Help
 #+begin_src emacs-lisp
 (defun diego/leader-help ()
   (evil-leader/set-key
-	"hdb" 'counsel-descbinds
-	"hdc" 'describe-char
-	"hdd" 'devdocs-search
-	"hdf" 'counsel-describe-function
-	"hdF" 'counsel-describe-face
-	"hdk" 'describe-key
-	"hdm" 'describe-mode
-	"hdp" 'describe-package
-	"hdv" 'counsel-describe-variable
-	"hdt" 'describe-theme
-	"hds" 'describe-symbol
+    "hdb" 'counsel-descbinds
+    "hdc" 'describe-char
+    "hdd" 'devdocs-search
+    "hdf" 'counsel-describe-function
+    "hdF" 'counsel-describe-face
+    "hdk" 'describe-key
+    "hdm" 'describe-mode
+    "hdp" 'describe-package
+    "hdv" 'counsel-describe-variable
+    "hdt" 'describe-theme
+    "hds" 'describe-symbol
 
-	"hk"  'which-key-show-top-level
-	"hm"  'man
-	"hn"  'view-emacs-news))
+    "hk"  'which-key-show-top-level
+    "hm"  'man
+    "hn"  'view-emacs-news))
 #+end_src
 **** Quit
 #+begin_src emacs-lisp
 (defun diego/leader-quit ()
   (evil-leader/set-key
-	"qq" 'save-buffers-kill-emacs
-	"qr" 'restart-emacs
-	"qf" 'delete-frame))
+    "qq" 'save-buffers-kill-emacs
+    "qr" 'restart-emacs
+    "qf" 'delete-frame))
 #+end_src
 **** Modes
 #+begin_src emacs-lisp
 (defun diego/leader-modes ()
   (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
-	(evil-leader/set-key-for-mode mode
-	  "meb" 'eval-buffer
-	  "mef" 'eval-defun
-	  "mer" 'eval-region
-	  "mes" 'eval-last-sexp
-	  "mel" 'diego/eval-line))
+    (evil-leader/set-key-for-mode mode
+      "meb" 'eval-buffer
+      "mef" 'eval-defun
+      "mer" 'eval-region
+      "mes" 'eval-last-sexp
+      "mel" 'diego/eval-line))
 
   (evil-leader/set-key-for-mode 'org-mode
-	"meb" 'eval-buffer
-	"mef" 'eval-defun
-	"mer" 'eval-region
-	"mes" 'eval-last-sexp
-	"mel" 'diego/eval-line)
+    "meb" 'eval-buffer
+    "mef" 'eval-defun
+    "mer" 'eval-region
+    "mes" 'eval-last-sexp
+    "mel" 'diego/eval-line)
 
   (defun diego/eval-line ()
-	(interactive)
-	(evil-visual-line)
-	(eval-region (region-beginning) (region-end))))
+    (interactive)
+    (evil-visual-line)
+    (eval-region (region-beginning) (region-end))))
 #+end_src
 **** Global
 #+begin_src emacs-lisp
@@ -909,13 +910,13 @@ based on or copied from spacemacs, so definitely check them out!
   (evil-leader/set-leader "SPC")
   (setq evil-leader/in-all-states 1)
   (evil-leader/set-key
-	"SPC" 'counsel-M-x
-	"C"   'org-capture
-	"u"   'universal-argument
-	"&"   'async-shell-command
-	":"   'eval-expression
-	"y"   'counsel-yank-pop
-	"z"   'repeat)
+    "SPC" 'counsel-M-x
+    "C"   'org-capture
+    "u"   'universal-argument
+    "&"   'async-shell-command
+    ":"   'eval-expression
+    "y"   'counsel-yank-pop
+    "z"   'repeat)
 
   (diego/leader-applications)
   (diego/leader-buffers-files)
@@ -933,11 +934,11 @@ based on or copied from spacemacs, so definitely check them out!
   (define-key universal-argument-map (kbd "SPC u") 'universal-argument-more)
 
   (defun magit-blame-toggle ()
-	"Toggle magit-blame-mode on and off interactively."
-	(interactive)
-	(if (and (boundp 'magit-blame-mode) magit-blame-mode)
-		(magit-blame-quit)
-	  (call-interactively 'magit-blame))))
+    "Toggle magit-blame-mode on and off interactively."
+    (interactive)
+    (if (and (boundp 'magit-blame-mode) magit-blame-mode)
+        (magit-blame-quit)
+      (call-interactively 'magit-blame))))
 #+end_src
 *** Modes
 #+begin_src emacs-lisp
@@ -946,14 +947,14 @@ based on or copied from spacemacs, so definitely check them out!
 
   ;; Use Emacs state in these additional modes.
   (dolist (mode '(ag-mode
-				  flycheck-error-list-mode
-				  git-rebase-mode
-				  eshell-mode
-				  calc-mode
-				  calc-trail-mode
-				  sunshine-mode
-				  term-mode))
-	(add-to-list 'evil-emacs-state-modes mode))
+                  flycheck-error-list-mode
+                  git-rebase-mode
+                  eshell-mode
+                  calc-mode
+                  calc-trail-mode
+                  sunshine-mode
+                  term-mode))
+    (add-to-list 'evil-emacs-state-modes mode))
 
   (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
   (setq evil-emacs-state-modes (delq 'Custom-mode evil-emacs-state-modes))
@@ -961,23 +962,23 @@ based on or copied from spacemacs, so definitely check them out!
 
   ;; Use insert state in these additional modes.
   (dolist (mode '(magit-log-edit-mode))
-	(add-to-list 'evil-insert-state-modes mode))
+    (add-to-list 'evil-insert-state-modes mode))
 
   (add-to-list 'evil-buffer-regexps '("\\*Flycheck"))
 
 
   (defun evil-visual-line--mark-org-element-when-heading (&rest args)
-	"When marking a visual line in Org, mark the current element.
-	 This function is used as a `:before-while' advice on
-	 `evil-visual-line'; if the current mode is derived from Org Mode and
-	 point is resting on an Org heading, mark the whole element instead of
-	 the line. ARGS are passed to `evil-visual-line' when text objects are
-	 used, but this function ignores them."
-	(interactive)
-	(if (and (derived-mode-p 'org-mode)
-			 (org-on-heading-p))
-		(not (org-mark-element))
-	  t))
+    "When marking a visual line in Org, mark the current element.
+     This function is used as a `:before-while' advice on
+     `evil-visual-line'; if the current mode is derived from Org Mode and
+     point is resting on an Org heading, mark the whole element instead of
+     the line. ARGS are passed to `evil-visual-line' when text objects are
+     used, but this function ignores them."
+    (interactive)
+    (if (and (derived-mode-p 'org-mode)
+             (org-on-heading-p))
+        (not (org-mark-element))
+      t))
 
   (advice-add 'evil-visual-line :before-while #'evil-visual-line--mark-org-element-when-heading))
 #+end_src
@@ -1009,18 +1010,18 @@ based on or copied from spacemacs, so definitely check them out!
 
 
   (evil-define-key 'normal custom-mode-map
-	"q" 'Custom-buffer-done)
+    "q" 'Custom-buffer-done)
 
   (evil-define-key 'normal message-mode-map
-	"q" 'switch-to-previous-buffer)
+    "q" 'switch-to-previous-buffer)
 
   (evil-add-hjkl-bindings occur-mode-map 'emacs
-	(kbd "/")       'evil-search-forward
-	(kbd "n")       'evil-search-next
-	(kbd "N")       'evil-search-previous
-	(kbd "C-d")     'evil-scroll-down
-	(kbd "C-u")     'evil-scroll-up
-	(kbd "C-w C-w") 'other-window)
+    (kbd "/")       'evil-search-forward
+    (kbd "n")       'evil-search-next
+    (kbd "N")       'evil-search-previous
+    (kbd "C-d")     'evil-scroll-down
+    (kbd "C-u")     'evil-scroll-up
+    (kbd "C-w C-w") 'other-window)
 
   ;; Make escape and C-/ quit everything, whenever possible.
   (define-key evil-insert-state-map [?\C-/] #'evil-normal-state)
@@ -1099,28 +1100,28 @@ A really nice search/completion system for emacs.
   (setq ivy-count-format "")
   (setq ivy-extra-directories '("../")) ; ignore current folder... maybe shouldn't
   (setq ivy-ignore-buffers
-		'("\\` "
-		  "\\`\\*LV\\*"
-		  "\\`\\*magit"
-		  "\\`\\*epc"
-		  "\\`\\*Calc"
-		  "\\`\\*Colors"
-		  "\\`\\*helm"
-		  "\\`\\*Help"
-		  "\\`\\*Packages"
-		  "\\`\\*Customize"
-		  "\\`\\*info"
-		  "\\`\\*Compile"
-		  "\\`\\*anaconda-mode"
-		  "\\`\\*scratch"
-		  "\\`\\*Messages"
-		  "\\`todo.org"
-		  "\\`notes.org"
-		  "\\`archive.org"
-		  "\\`elfeed.org"
-		  "\\`\\*elfeed-log\\*"
-		  "\\`\\*Man"
-		  "\\`\\*Quail"))
+        '("\\` "
+          "\\`\\*LV\\*"
+          "\\`\\*magit"
+          "\\`\\*epc"
+          "\\`\\*Calc"
+          "\\`\\*Colors"
+          "\\`\\*helm"
+          "\\`\\*Help"
+          "\\`\\*Packages"
+          "\\`\\*Customize"
+          "\\`\\*info"
+          "\\`\\*Compile"
+          "\\`\\*anaconda-mode"
+          "\\`\\*scratch"
+          "\\`\\*Messages"
+          "\\`todo.org"
+          "\\`notes.org"
+          "\\`archive.org"
+          "\\`elfeed.org"
+          "\\`\\*elfeed-log\\*"
+          "\\`\\*Man"
+          "\\`\\*Quail"))
 
   ;; RET enters folder rather than opening dired
   (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
@@ -1141,7 +1142,7 @@ A really nice search/completion system for emacs.
   (setq ivy-initial-inputs-alist '((man . "^")))
 
   (setq ivy-switch-buffer-faces-alist
-		'((dired-mode . ivy-subdir))))
+        '((dired-mode . ivy-subdir))))
 #+END_SRC
 *** swiper
 #+BEGIN_SRC emacs-lisp
@@ -1156,7 +1157,7 @@ A really nice search/completion system for emacs.
   :ensure t
   :after ivy
   :bind (("M-x" . counsel-M-x)
-		 ("C-x C-f" . counsel-find-file))
+         ("C-x C-f" . counsel-find-file))
   :config
   (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind)
   (counsel-mode 1)
@@ -1170,30 +1171,30 @@ A really nice search/completion system for emacs.
    'counsel--yank-pop-format-function
    :override
    (lambda (cand-pairs)
-	 (ivy--format-function-generic
-	  (lambda (str)
-		(let ((temp-list (split-string (counsel--yank-pop-truncate str) "\n" t)))
-		  (mapconcat
-		   'identity
-		   (append (list (concat "> " (car temp-list)))
-				   (mapcar (lambda (s) (concat "  " s)) (cdr temp-list)))
-		   "\n")))
-	  (lambda (str)
-		(mapconcat
-		 (lambda (s)
-		   (concat "  " s))
-		 (split-string
-		  (counsel--yank-pop-truncate str) "\n" t)
-		 "\n"))
-	  cand-pairs
-	  counsel-yank-pop-separator))))
+     (ivy--format-function-generic
+      (lambda (str)
+        (let ((temp-list (split-string (counsel--yank-pop-truncate str) "\n" t)))
+          (mapconcat
+           'identity
+           (append (list (concat "> " (car temp-list)))
+                   (mapcar (lambda (s) (concat "  " s)) (cdr temp-list)))
+           "\n")))
+      (lambda (str)
+        (mapconcat
+         (lambda (s)
+           (concat "  " s))
+         (split-string
+          (counsel--yank-pop-truncate str) "\n" t)
+         "\n"))
+      cand-pairs
+      counsel-yank-pop-separator))))
 
 (use-package counsel-projectile
   :commands (counsel-projectile-switch-project
-			 counsel-projectile-switch-to-buffer
-			 counsel-projectile-find-dir
-			 counsel-projectile-find-file
-			 counsel-projecile)
+             counsel-projectile-switch-to-buffer
+             counsel-projectile-find-dir
+             counsel-projectile-find-file
+             counsel-projecile)
   :ensure t)
 
 (use-package counsel-osx-app
@@ -1243,8 +1244,8 @@ so I went with it.
   headings always respects content."
   (interactive "P")
   (if subheading
-	  (org-insert-subheading t)
-	(org-insert-heading t)))
+      (org-insert-subheading t)
+    (org-insert-heading t)))
 
 (defun diego/org-insert-scheduled-heading (&optional subheading)
   "Insert a new org heading scheduled for today.
@@ -1252,8 +1253,8 @@ so I went with it.
   FORCE-HEADING is non-nil."
   (interactive "P")
   (if subheading
-	  (org-insert-subheading t)
-	(org-insert-todo-heading t t))
+      (org-insert-subheading t)
+    (org-insert-todo-heading t t))
   (org-schedule nil (format-time-string "%Y-%m-%d")))
 
 (defun diego/org-task-capture ()
@@ -1265,36 +1266,36 @@ so I went with it.
   "Capture a task in agenda mode, using the date at point."
   (interactive)
   (let ((org-overriding-default-time (org-get-cursor-date)))
-	(org-capture nil "a")))
+    (org-capture nil "a")))
 
 (defun diego/org-agenda-toggle-date (current-line)
   "Toggle `SCHEDULED' and `DEADLINE' tag in the capture buffer."
   (interactive "P")
   (save-excursion
-	(let ((search-limit (if current-line
-							(line-end-position)
-						  (point-max))))
+    (let ((search-limit (if current-line
+                            (line-end-position)
+                          (point-max))))
 
-	  (if current-line (beginning-of-line)
-		(beginning-of-buffer))
-	  (if (search-forward "DEADLINE:" search-limit t)
-		  (replace-match "SCHEDULED:")
-		(and (search-forward "SCHEDULED:" search-limit t)
-			 (replace-match "DEADLINE:"))))))
+      (if current-line (beginning-of-line)
+        (beginning-of-buffer))
+      (if (search-forward "DEADLINE:" search-limit t)
+          (replace-match "SCHEDULED:")
+        (and (search-forward "SCHEDULED:" search-limit t)
+             (replace-match "DEADLINE:"))))))
 
 (defun diego/pop-to-org-todo (split)
   "Visit todo list, in the current window or a split."
   (interactive "P")
   (if split
-	  (find-file "~/Dropbox (MIT)/org/todo.org")
-	(find-file-other-window "~/Dropbox (MIT)/org/todo.org")))
+      (find-file "~/Dropbox (MIT)/org/todo.org")
+    (find-file-other-window "~/Dropbox (MIT)/org/todo.org")))
 
 (defun diego/pop-to-org-notes (split)
   "Visit my main notes list, in the current window or a split."
   (interactive "P")
   (if split
-	  (find-file "~/Dropbox (MIT)/org/notes.org")
-	(find-file-other-window "~/Dropbox (MIT)/org/notes.org")))
+      (find-file "~/Dropbox (MIT)/org/notes.org")
+    (find-file-other-window "~/Dropbox (MIT)/org/notes.org")))
 
 (defun diego/org-insert-list-leader-or-self (char)
   "If on column 0, insert space-padded CHAR; otherwise insert CHAR.
@@ -1302,154 +1303,154 @@ so I went with it.
   leader; like hyphen, asterisk, or plus sign; without having to use
   list-specific key maps."
   (if (= (current-column) 0)
-	  (insert (concat " " char " "))
-	(insert char)))
+      (insert (concat " " char " "))
+    (insert char)))
 
 (defun diego/org-swap-tags (tags)
   "Replace any tags on the current headline with TAGS.
   The assumption is that TAGS will be a string conforming to Org Mode's
   tag format specifications, or nil to remove all tags."
   (let ((old-tags (org-get-tags-string))
-		(tags (if tags
-				  (concat " " tags)
-				"")))
-	(save-excursion
-	  (beginning-of-line)
-	  (re-search-forward
-	   (concat "[ \t]*" (regexp-quote old-tags) "[ \t]*$")
-	   (line-end-position) t)
-	  (replace-match tags)
-	  (org-set-tags t))))
+        (tags (if tags
+                  (concat " " tags)
+                "")))
+    (save-excursion
+      (beginning-of-line)
+      (re-search-forward
+       (concat "[ \t]*" (regexp-quote old-tags) "[ \t]*$")
+       (line-end-position) t)
+      (replace-match tags)
+      (org-set-tags t))))
 
 (defun diego/org-set-tags (tag)
   "Add TAG if it is not in the list of tags, remove it otherwise.
   TAG is chosen interactively from the global tags completion table."
   (interactive
    (list (let ((org-last-tags-completion-table
-				(if (derived-mode-p 'org-mode)
-					(org-uniquify
-					 (delq nil (append (org-get-buffer-tags)
-									   (org-global-tags-completion-table))))
-				  (org-global-tags-completion-table))))
-		   (completing-read
-			"Tag: " 'org-tags-completion-function nil nil nil
-			'org-tags-history))))
+                (if (derived-mode-p 'org-mode)
+                    (org-uniquify
+                     (delq nil (append (org-get-buffer-tags)
+                                       (org-global-tags-completion-table))))
+                  (org-global-tags-completion-table))))
+           (completing-read
+            "Tag: " 'org-tags-completion-function nil nil nil
+            'org-tags-history))))
   (let* ((cur-list (org-get-tags))
-		 (new-tags (mapconcat 'identity
-							  (if (member tag cur-list)
-								  (delete tag cur-list)
-								(append cur-list (list tag)))
-							  ":"))
-		 (new (if (> (length new-tags) 1) (concat " :" new-tags ":")
-				nil)))
-	(diego/org-swap-tags new)))
+         (new-tags (mapconcat 'identity
+                              (if (member tag cur-list)
+                                  (delete tag cur-list)
+                                (append cur-list (list tag)))
+                              ":"))
+         (new (if (> (length new-tags) 1) (concat " :" new-tags ":")
+                nil)))
+    (diego/org-swap-tags new)))
 
 (defun diego/org-choose-bullet-type ()
   (interactive)
   (let ((char (read-char-choice
-			   "enter bullet type (-|*|+|1|2|a|b|A|B): "
-			   '(?* ?- ?+ ?1 ?2 ?a ?b ?A ?B))))
-	(cond ((eq char ?1)
-		   (org-cycle-list-bullet 3))
-		  ((eq char ?2)
-		   (org-cycle-list-bullet 4))
-		  ((eq char ?a)
-		   (org-cycle-list-bullet 5))
-		  ((eq char ?b)
-		   (org-cycle-list-bullet 7))
-		  ((eq char ?A)
-		   (org-cycle-list-bullet 6))
-		  ((eq char ?B)
-		   (org-cycle-list-bullet 8))
-		  (t (org-cycle-list-bullet (char-to-string char))))))
+               "enter bullet type (-|*|+|1|2|a|b|A|B): "
+               '(?* ?- ?+ ?1 ?2 ?a ?b ?A ?B))))
+    (cond ((eq char ?1)
+           (org-cycle-list-bullet 3))
+          ((eq char ?2)
+           (org-cycle-list-bullet 4))
+          ((eq char ?a)
+           (org-cycle-list-bullet 5))
+          ((eq char ?b)
+           (org-cycle-list-bullet 7))
+          ((eq char ?A)
+           (org-cycle-list-bullet 6))
+          ((eq char ?B)
+           (org-cycle-list-bullet 8))
+          (t (org-cycle-list-bullet (char-to-string char))))))
 #+end_src
 *** Bindings
 #+begin_src emacs-lisp
 (defun diego/org-bindings ()
 
   (defmacro diego|org-emphasize (fname char)
-	"Make function for setting the emphasis in org mode"
-	`(defun ,fname () (interactive)
-			(org-emphasize ,char)))
+    "Make function for setting the emphasis in org mode"
+    `(defun ,fname () (interactive)
+            (org-emphasize ,char)))
 
   (evil-leader/set-key-for-mode 'org-mode
-	"m$"  'org-archive-subtree
-	"m'"  'org-edit-special
-	"m/"  'org-sparse-tree
-	"m^"  'org-sort
-	"ma"  'org-agenda
-	"mA"  'org-archive-subtree
-	"mc"  'org-capture
-	"md"  'org-deadline
-	"ml"  'diego/org-choose-bullet-type
-	"mn"  'org-narrow-to-subtree
-	"mN"  'widen
-	"mP"  'org-set-property
-	"mR"  'org-refile
-	"ms"  'org-schedule
-	"m:"  'diego/org-set-tags
-	"mic" 'org-table-insert-column
-	"mir" 'org-table-insert-row
-	"mil" 'org-insert-link
-	"mif" 'org-footnote-new
-	"mee"  'org-export-dispatch
-	"mb"  'org-babel-tangle
-	"mxb" (diego|org-emphasize diego/org-bold ?*)
-	"mxi" (diego|org-emphasize diego/org-italic ?/)
-	"mxc" (diego|org-emphasize diego/org-code ?~)
-	"mxu" (diego|org-emphasize diego/org-underline ?_)
-	"mxv" (diego|org-emphasize diego/org-verbatim ?=)
-	"mxs" (diego|org-emphasize diego/org-strike-through ?+)
-	"mxr" (diego|org-emphasize diego/org-clear ? )
+    "m$"  'org-archive-subtree
+    "m'"  'org-edit-special
+    "m/"  'org-sparse-tree
+    "m^"  'org-sort
+    "ma"  'org-agenda
+    "mA"  'org-archive-subtree
+    "mc"  'org-capture
+    "md"  'org-deadline
+    "ml"  'diego/org-choose-bullet-type
+    "mn"  'org-narrow-to-subtree
+    "mN"  'widen
+    "mP"  'org-set-property
+    "mR"  'org-refile
+    "ms"  'org-schedule
+    "m:"  'diego/org-set-tags
+    "mic" 'org-table-insert-column
+    "mir" 'org-table-insert-row
+    "mil" 'org-insert-link
+    "mif" 'org-footnote-new
+    "mee"  'org-export-dispatch
+    "mb"  'org-babel-tangle
+    "mxb" (diego|org-emphasize diego/org-bold ?*)
+    "mxi" (diego|org-emphasize diego/org-italic ?/)
+    "mxc" (diego|org-emphasize diego/org-code ?~)
+    "mxu" (diego|org-emphasize diego/org-underline ?_)
+    "mxv" (diego|org-emphasize diego/org-verbatim ?=)
+    "mxs" (diego|org-emphasize diego/org-strike-through ?+)
+    "mxr" (diego|org-emphasize diego/org-clear ? )
 
-	;; tables
-	"mta"  'org-table-align
-	"mtb"  'org-table-blank-field
-	"mtc"  'org-table-convert
-	"mtdc" 'org-table-delete-column
-	"mtdr" 'org-table-kill-row
-	"mte"  'org-table-eval-formula
-	"mtE"  'org-table-export
-	"mth"  'org-table-previous-field
-	"mtH"  'org-table-move-column-left
-	"mtic" 'org-table-insert-column
-	"mtih" 'org-table-insert-hline
-	"mtiH" 'org-table-hline-and-move
-	"mtir" 'org-table-insert-row
-	"mtI"  'org-table-import
-	"mtj"  'org-table-next-row
-	"mtJ"  'org-table-move-row-down
-	"mtK"  'org-table-move-row-up
-	"mtl"  'org-table-next-field
-	"mtL"  'org-table-move-column-right
-	"mtn"  'org-table-create
-	"mtN"  'org-table-create-with-table.el
-	"mtr"  'org-table-recalculate
-	"mts"  'org-table-sort-lines
-	"mttf" 'org-table-toggle-formula-debugger
-	"mtto" 'org-table-toggle-coordinate-overlays
-	"mtw"  'org-table-wrap-region)
+    ;; tables
+    "mta"  'org-table-align
+    "mtb"  'org-table-blank-field
+    "mtc"  'org-table-convert
+    "mtdc" 'org-table-delete-column
+    "mtdr" 'org-table-kill-row
+    "mte"  'org-table-eval-formula
+    "mtE"  'org-table-export
+    "mth"  'org-table-previous-field
+    "mtH"  'org-table-move-column-left
+    "mtic" 'org-table-insert-column
+    "mtih" 'org-table-insert-hline
+    "mtiH" 'org-table-hline-and-move
+    "mtir" 'org-table-insert-row
+    "mtI"  'org-table-import
+    "mtj"  'org-table-next-row
+    "mtJ"  'org-table-move-row-down
+    "mtK"  'org-table-move-row-up
+    "mtl"  'org-table-next-field
+    "mtL"  'org-table-move-column-right
+    "mtn"  'org-table-create
+    "mtN"  'org-table-create-with-table.el
+    "mtr"  'org-table-recalculate
+    "mts"  'org-table-sort-lines
+    "mttf" 'org-table-toggle-formula-debugger
+    "mtto" 'org-table-toggle-coordinate-overlays
+    "mtw"  'org-table-wrap-region)
 
   (evil-leader/set-key-for-mode 'org-src-mode
-	"m'" 'org-edit-src-exit)
+    "m'" 'org-edit-src-exit)
 
   (evil-define-key 'normal org-mode-map
-	(kbd "RET") 'org-open-at-point
-	"<"         'org-metaleft
-	">"         'org-metaright
-	"gh"        'outline-up-heading
-	"gl"        'outline-next-visible-heading
-	"gj"        'org-forward-heading-same-level
-	"gk"        'org-backward-heading-same-level
-	"gt"         'org-todo
-	(kbd "M-l") 'org-metaright
-	(kbd "M-h") 'org-metaleft
-	(kbd "M-k") 'org-metaup
-	(kbd "M-j") 'org-metadown
-	(kbd "M-L") 'org-shiftmetaright
-	(kbd "M-H") 'org-shiftmetaleft
-	(kbd "M-K") 'org-shiftmetaup
-	(kbd "M-J") 'org-shiftmetadown))
+    (kbd "RET") 'org-open-at-point
+    "<"         'org-metaleft
+    ">"         'org-metaright
+    "gh"        'outline-up-heading
+    "gl"        'outline-next-visible-heading
+    "gj"        'org-forward-heading-same-level
+    "gk"        'org-backward-heading-same-level
+    "gt"         'org-todo
+    (kbd "M-l") 'org-metaright
+    (kbd "M-h") 'org-metaleft
+    (kbd "M-k") 'org-metaup
+    (kbd "M-j") 'org-metadown
+    (kbd "M-L") 'org-shiftmetaright
+    (kbd "M-H") 'org-shiftmetaleft
+    (kbd "M-K") 'org-shiftmetaup
+    (kbd "M-J") 'org-shiftmetadown))
 #+end_src
 *** Custom vars
 **** Files
@@ -1464,7 +1465,7 @@ so I went with it.
   (setq org-directory "~/Dropbox (MIT)/org")
   (setq org-archive-location "~/Dropbox (MIT)/org/archive.org::")
   (setq org-export-async-init-file
-		"/Users/diego/dotfiles/config/emacs.d/lisp/org-async-init.el"))
+        "/Users/diego/dotfiles/config/emacs.d/lisp/org-async-init.el"))
 #+end_src
 **** Todo/agenda
 #+begin_src emacs-lisp
@@ -1480,28 +1481,28 @@ so I went with it.
   (setq org-agenda-span 'day)
 
   (setq org-agenda-deadline-faces
-		'((1.0 . org-warning)
-		  (0.5 . org-upcoming-deadline)
-		  (0.0 . '(:foreground "#A89984"))))
+        '((1.0 . org-warning)
+          (0.5 . org-upcoming-deadline)
+          (0.0 . '(:foreground "#A89984"))))
 
   ;; (setq org-todo-keywords
-  ;; 		'((sequence "► TODO(t)" "○ IN-PROGRESS(p)" "⚑ WAITING(w)" "|"
-  ;; 					"✓ DONE(d)" "✗ CANCELED(c)")
-  ;; 		  (sequence "► READ(r)" "|"
-  ;; 					"✓ DONE(h)")))
+  ;;         '((sequence "► TODO(t)" "○ IN-PROGRESS(p)" "⚑ WAITING(w)" "|"
+  ;;                     "✓ DONE(d)" "✗ CANCELED(c)")
+  ;;           (sequence "► READ(r)" "|"
+  ;;                     "✓ DONE(h)")))
   (setq org-todo-keywords
-		'((sequence "❯ TODO(t)" "○ IN-PROGRESS(p)" "◼ WAITING(w)" "|"
-					"✓ DONE(d)" "✗ CANCELED(c)")
-		  (sequence "❙ READ(r)" "|"
-					"✓ DONE(h)")))
+        '((sequence "❯ TODO(t)" "○ IN-PROGRESS(p)" "◼ WAITING(w)" "|"
+                    "✓ DONE(d)" "✗ CANCELED(c)")
+          (sequence "❙ READ(r)" "|"
+                    "✓ DONE(h)")))
 
   (setq org-capture-templates
-		'(("t" "Todo" entry
-		   (file diego/todo-file)
-		   "* ❯ TODO %?\nSCHEDULED: %t")
-		  ("s" "School Todo" entry
-		   (file+olp diego/todo-file "School" "School")
-		   "* ❯ TODO %?\nSCHEDULED: %t"))))
+        '(("t" "Todo" entry
+           (file diego/todo-file)
+           "* ❯ TODO %?\nSCHEDULED: %t")
+          ("s" "School Todo" entry
+           (file+olp diego/todo-file "School" "School")
+           "* ❯ TODO %?\nSCHEDULED: %t"))))
 
 #+end_src
 
@@ -1513,7 +1514,7 @@ so I went with it.
   (setq org-insert-heading-respect-content t)
   (setq org-src-window-setup 'current-window)
   (setq org-list-demote-modify-bullet '(("-" . "*")
-										("*" . "+")))
+                                        ("*" . "+")))
   (setq org-export-in-background t)
   (setq org-src-tab-acts-natively t)
   (setq org-M-RET-may-split-line nil)
@@ -1550,77 +1551,77 @@ so I went with it.
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines))
   (add-hook 'org-agenda-mode-hook
-			(lambda ()
-			  (setq org-habit-graph-column 50)
-			  (define-key
-				org-agenda-mode-map "j"          'org-agenda-next-line)
-			  (define-key
-				org-agenda-mode-map "k"          'org-agenda-previous-line)
-			  (define-key
-				org-agenda-mode-map "n"          'org-agenda-next-date-line)
-			  (define-key
-				org-agenda-mode-map "p"          'org-agenda-previous-date-line)
-			  (define-key
-				org-agenda-mode-map "c"          'diego/org-agenda-capture)
-			  (define-key
-				org-agenda-mode-map "R"          'org-revert-all-org-buffers)
-			  (define-key
-				org-agenda-mode-map (kbd "RET")  'org-agenda-switch-to)
+            (lambda ()
+              (setq org-habit-graph-column 50)
+              (define-key
+                org-agenda-mode-map "j"          'org-agenda-next-line)
+              (define-key
+                org-agenda-mode-map "k"          'org-agenda-previous-line)
+              (define-key
+                org-agenda-mode-map "n"          'org-agenda-next-date-line)
+              (define-key
+                org-agenda-mode-map "p"          'org-agenda-previous-date-line)
+              (define-key
+                org-agenda-mode-map "c"          'diego/org-agenda-capture)
+              (define-key
+                org-agenda-mode-map "R"          'org-revert-all-org-buffers)
+              (define-key
+                org-agenda-mode-map (kbd "RET")  'org-agenda-switch-to)
 
-			  (setq-local prettify-symbols-alist
-						  '(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
-							("❙ READ"        . (?❙ (Br . Bl) ?❙ (Br . Bl) ?❙))
-							("○ IN-PROGRESS" . (?○ (Br . Bl) ?○ (Br . Bl) ?○))
-							("◼ WAITING"     . (?◼ (Br . Bl) ?◼ (Br . Bl) ?◼))
-							("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
-							("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
-			  (prettify-symbols-mode)
+              (setq-local prettify-symbols-alist
+                          '(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
+                            ("❙ READ"        . (?❙ (Br . Bl) ?❙ (Br . Bl) ?❙))
+                            ("○ IN-PROGRESS" . (?○ (Br . Bl) ?○ (Br . Bl) ?○))
+                            ("◼ WAITING"     . (?◼ (Br . Bl) ?◼ (Br . Bl) ?◼))
+                            ("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
+                            ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
+              (prettify-symbols-mode)
 
-			  (define-prefix-command 'diego/org-run-shortcuts)
-			  (define-key
-				diego/org-run-shortcuts "f" (tiny-menu-run-item "org-files"))
-			  (define-key
-				diego/org-run-shortcuts "t" (tiny-menu-run-item "org-things"))
-			  (define-key
-				diego/org-run-shortcuts "c" (tiny-menu-run-item "org-captures"))
-			  (define-key
-				diego/org-run-shortcuts "l" (tiny-menu-run-item "org-links"))
-			  (define-key
-				org-agenda-mode-map (kbd "\\") diego/org-run-shortcuts)))
+              (define-prefix-command 'diego/org-run-shortcuts)
+              (define-key
+                diego/org-run-shortcuts "f" (tiny-menu-run-item "org-files"))
+              (define-key
+                diego/org-run-shortcuts "t" (tiny-menu-run-item "org-things"))
+              (define-key
+                diego/org-run-shortcuts "c" (tiny-menu-run-item "org-captures"))
+              (define-key
+                diego/org-run-shortcuts "l" (tiny-menu-run-item "org-links"))
+              (define-key
+                org-agenda-mode-map (kbd "\\") diego/org-run-shortcuts)))
 
   (add-hook 'org-capture-mode-hook
-			(lambda ()
-			  (evil-define-key
-				'insert org-capture-mode-map (kbd "C-d")
-				'diego/org-agenda-toggle-date)
-			  (evil-define-key
-				'normal org-capture-mode-map (kbd "C-d")
-				'diego/org-agenda-toggle-date)
-			  (evil-insert-state)))
+            (lambda ()
+              (evil-define-key
+                'insert org-capture-mode-map (kbd "C-d")
+                'diego/org-agenda-toggle-date)
+              (evil-define-key
+                'normal org-capture-mode-map (kbd "C-d")
+                'diego/org-agenda-toggle-date)
+              (evil-insert-state)))
 
   (add-hook 'org-mode-hook
-			(lambda ()
-			  ;; Special plain list leader inserts
-			  (dolist (char '("+" "-"))
-				(define-key org-mode-map (kbd char)
-				  `(lambda ()
-					 (interactive)
-					 (diego/org-insert-list-leader-or-self ,char))))
+            (lambda ()
+              ;; Special plain list leader inserts
+              (dolist (char '("+" "-"))
+                (define-key org-mode-map (kbd char)
+                  `(lambda ()
+                     (interactive)
+                     (diego/org-insert-list-leader-or-self ,char))))
 
-			  (setq-local prettify-symbols-alist
-						  '(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
-							("❙ READ"        . (?❙ (Br . Bl) ?❙ (Br . Bl) ?❙))
-							("○ IN-PROGRESS" . (?○ (Br . Bl) ?○ (Br . Bl) ?○))
-							("◼ WAITING"     . (?◼ (Br . Bl) ?◼ (Br . Bl) ?◼))
-							("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
-							("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
-			  (prettify-symbols-mode)
-			  ;; Bindings
+              (setq-local prettify-symbols-alist
+                          '(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
+                            ("❙ READ"        . (?❙ (Br . Bl) ?❙ (Br . Bl) ?❙))
+                            ("○ IN-PROGRESS" . (?○ (Br . Bl) ?○ (Br . Bl) ?○))
+                            ("◼ WAITING"     . (?◼ (Br . Bl) ?◼ (Br . Bl) ?◼))
+                            ("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
+                            ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
+              (prettify-symbols-mode)
+              ;; Bindings
 
-			  (setq fill-column 79)
-			  (auto-fill-mode 1)
-			  ;; (flyspell-mode)
-			  (org-indent-mode))))
+              (setq fill-column 79)
+              (auto-fill-mode 1)
+              ;; (flyspell-mode)
+              (org-indent-mode))))
 #+end_src
 ** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 Emacs package that displays available keybindings in popup
@@ -1631,45 +1632,45 @@ Emacs package that displays available keybindings in popup
   (which-key-mode)
   (setq which-key-show-operator-state-maps t)
   (which-key-add-key-based-replacements
-	"SPC a"   "applications"
-	"SPC ao"  "org"
-	"SPC ag"  "games"
-	"SPC b"   "buffer"
-	"SPC c"   "comment"
-	"SPC f"   "file"
-	"SPC g"   "magit"
-	"SPC h"   "help"
-	"SPC hd"  "describe"
-	"SPC i"   "insert"
-	"SPC j"   "jump"
-	"SPC m"   "major-mode-cmd"
-	"SPC n"   "narrow/numbers"
-	"SPC p"   "project"
-	"SPC q"   "quit"
-	"SPC s"   "search"
-	"SPC t"   "toggle"
-	"SPC w"   "window"
-	"SPC x"   "text"
-	"SPC xi"  "indent"
-	"SPC xa"  "align"
-	"SPC xd"  "delete"
-	"SPC xl"  "lines"
+    "SPC a"   "applications"
+    "SPC ao"  "org"
+    "SPC ag"  "games"
+    "SPC b"   "buffer"
+    "SPC c"   "comment"
+    "SPC f"   "file"
+    "SPC g"   "magit"
+    "SPC h"   "help"
+    "SPC hd"  "describe"
+    "SPC i"   "insert"
+    "SPC j"   "jump"
+    "SPC m"   "major-mode-cmd"
+    "SPC n"   "narrow/numbers"
+    "SPC p"   "project"
+    "SPC q"   "quit"
+    "SPC s"   "search"
+    "SPC t"   "toggle"
+    "SPC w"   "window"
+    "SPC x"   "text"
+    "SPC xi"  "indent"
+    "SPC xa"  "align"
+    "SPC xd"  "delete"
+    "SPC xl"  "lines"
     "SPC xm"  "multiedit"
-	"SPC xt"  "transpose"
-	"SPC xp"  "parentheses"
-	"SPC xw"  "words"
-	"SPC S"   "spelling"
-	"SPC"     "root")
+    "SPC xt"  "transpose"
+    "SPC xp"  "parentheses"
+    "SPC xw"  "words"
+    "SPC S"   "spelling"
+    "SPC"     "root")
 
   (which-key-add-major-mode-key-based-replacements 'org-mode
-	"SPC mi" "insert"
-	"SPC mx" "text"
-	"SPC mt" "table"
-	"SPC me" "eval-export")
+    "SPC mi" "insert"
+    "SPC mx" "text"
+    "SPC mt" "table"
+    "SPC me" "eval-export")
 
   (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
-	(which-key-add-major-mode-key-based-replacements mode
-	  "SPC me" "eval"))
+    (which-key-add-major-mode-key-based-replacements mode
+      "SPC me" "eval"))
 
   (setq which-key-sort-order 'which-key-key-order-alpha)
   (setq which-key-sort-uppercase-first nil))
@@ -1721,7 +1722,7 @@ Practice touch/speed typing in emacs.
   :commands speed-type-text
   :config
   (setq speed-type--gb-url-format
-		"http://www.gutenberg.org/cache/epub/%d/pg%d.txt"))
+        "http://www.gutenberg.org/cache/epub/%d/pg%d.txt"))
 #+end_src
 *** [[https://gitlab.com/iankelling/spray][spray]]
 A speed reading mode for Emacs.
@@ -1738,12 +1739,12 @@ Read xkcd from Emacs.
   :commands xkcd
   :config
   (evil-define-key 'normal xkcd-mode-map
-	"j" 'xkcd-next
-	"h" 'xkcd-prev
-	"k" 'xkcd-prev
-	"l" 'xkcd-next
-	"t" 'xkcd-alt-text
-	"q" 'xkcd-kill-buffer))
+    "j" 'xkcd-next
+    "h" 'xkcd-prev
+    "k" 'xkcd-prev
+    "l" 'xkcd-next
+    "t" 'xkcd-alt-text
+    "q" 'xkcd-kill-buffer))
 #+end_src
 
 *** zone-matrix
@@ -1754,9 +1755,9 @@ Eh, why not.
   :defer 5
   :config
   (eval-after-load "zone"
-	'(unless (memq 'zone-matrix (append zone-programs nil))
-	   (setq zone-programs
-			 (vconcat zone-programs [zone-matrix])))))
+    '(unless (memq 'zone-matrix (append zone-programs nil))
+       (setq zone-programs
+             (vconcat zone-programs [zone-matrix])))))
 #+end_src
 
 *** [[https://github.com/wasamasa/zone-nyan][zone-nyan]]
@@ -1768,9 +1769,9 @@ Nyanyanyanyanyanyanyanyan (but actually).
   :defer 5
   :config
   (eval-after-load "zone"
-	'(unless (memq 'zone-nyan (append zone-programs nil))
-	   (setq zone-programs
-			 (vconcat zone-programs [zone-nyan])))))
+    '(unless (memq 'zone-nyan (append zone-programs nil))
+       (setq zone-programs
+             (vconcat zone-programs [zone-nyan])))))
 #+end_src
 ** Appearance
 *** [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
@@ -1868,8 +1869,8 @@ The Zenburn colour theme ported to Emacs
   :config
   (zenburn-with-color-variables
    (custom-theme-set-faces
-	'zenburn
-	'(ivy-current-match ((t nil))))))
+    'zenburn
+    '(ivy-current-match ((t nil))))))
 #+end_src
 *** [[https://github.com/TheBB/spaceline][spaceline]]
 Powerline theme from Spacemacs
@@ -1972,32 +1973,32 @@ Configure the Elfeed RSS reader with an Orgmode file
   :commands elfeed
   :config
   (evil-define-key 'normal elfeed-search-mode-map
-	(kbd "RET") 'elfeed-search-show-entry
-	"+"         'elfeed-search-tag-all
-	"-"         'elfeed-search-untag-all
-	"G"         'elfeed-search-fetch
-	"S"         'elfeed-search-set-filter
-	"b"         'elfeed-search-browse-url
-	"g"         'elfeed-search-update--force
-	"q"         'quit-window
-	"r"         'elfeed-search-untag-all-unread
-	"s"         'elfeed-search-live-filter
-	"u"         'elfeed-search-tag-all-unread
-	"y"         'elfeed-search-yank
-	"U"         'elfeed-update)
+    (kbd "RET") 'elfeed-search-show-entry
+    "+"         'elfeed-search-tag-all
+    "-"         'elfeed-search-untag-all
+    "G"         'elfeed-search-fetch
+    "S"         'elfeed-search-set-filter
+    "b"         'elfeed-search-browse-url
+    "g"         'elfeed-search-update--force
+    "q"         'quit-window
+    "r"         'elfeed-search-untag-all-unread
+    "s"         'elfeed-search-live-filter
+    "u"         'elfeed-search-tag-all-unread
+    "y"         'elfeed-search-yank
+    "U"         'elfeed-update)
 
   (evil-define-key 'normal elfeed-show-mode-map
-	"+" 'elfeed-show-tag
-	"-" 'elfeed-show-untag
-	"P" 'elfeed-show-play-enclosure
-	"b" 'elfeed-show-visit
-	"d" 'elfeed-show-save-enclosure
-	"g" 'elfeed-show-refresh
-	"l" 'elfeed-goodies/split-show-next
-	"h" 'elfeed-goodies/split-show-prev
-	"q" 'elfeed-kill-buffer
-	"s" 'elfeed-show-new-live-search
-	"y" 'elfeed-show-yank))
+    "+" 'elfeed-show-tag
+    "-" 'elfeed-show-untag
+    "P" 'elfeed-show-play-enclosure
+    "b" 'elfeed-show-visit
+    "d" 'elfeed-show-save-enclosure
+    "g" 'elfeed-show-refresh
+    "l" 'elfeed-goodies/split-show-next
+    "h" 'elfeed-goodies/split-show-prev
+    "q" 'elfeed-kill-buffer
+    "s" 'elfeed-show-new-live-search
+    "y" 'elfeed-show-yank))
 
 (use-package elfeed-org
   :after elfeed
@@ -2016,9 +2017,9 @@ Configure the Elfeed RSS reader with an Orgmode file
 (use-package evil-multiedit
   :ensure t
   :commands (evil-multiedit-match-all
-			 evil-multiedit-match-and-next
-			 evil-multiedit-match-and-prev
-			 evil-multiedit-ex-match)
+             evil-multiedit-match-and-next
+             evil-multiedit-match-and-prev
+             evil-multiedit-ex-match)
   :config
   (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match))
 #+end_src
@@ -2036,9 +2037,9 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
   :ensure t
   :config
   (defun diego/flyspell-correct-next (&optional arg)
-	(interactive "p")
-	(flyspell-goto-next-error)
-	(flyspell-auto-correct-word)))
+    (interactive "p")
+    (flyspell-goto-next-error)
+    (flyspell-auto-correct-word)))
 
 (use-package flyspell-correct-ivy
   :after flyspell
@@ -2114,7 +2115,7 @@ Make Emacs' delete-by-moving-to-trash do what you expect it to do on OS X.
   :ensure t
   :config
   (when (eq system-type 'darwin)
-	(osx-trash-setup))
+    (osx-trash-setup))
   (setq delete-by-moving-to-trash t))
 #+end_src
 *** [[https://github.com/Malabarba/paradox][paradox]]
@@ -2187,21 +2188,21 @@ Run commands via a tiny menu.
   :ensure t
   :config
   (setq tiny-menu-items
-		'(("org-things"   ("Things"
-						   ((?t "Tag"     org-tags-view)
-							(?i "ID"      diego/org-goto-custom-id)
-							(?k "Keyword" org-search-view))))
-		  ("org-links"    ("Links"
-						   ((?c "Capture"   org-store-link)
-							(?l "Insert"    org-insert-link)
-							(?i "Custom ID" diego/org-insert-custom-id-link))))
-		  ("org-files"    ("Files"
-						   ((?t "TODO"  (lambda () (diego/pop-to-org-todo nil)))
-							(?n "Notes" (lambda () (diego/pop-to-org-notes nil)))
-							(?v "Vault" (lambda () (diego/pop-to-org-vault nil))))))
-		  ("org-captures" ("Captures"
-						   ((?c "TODO"  diego/org-task-capture)
-							(?n "Note"  (lambda () (interactive) (org-capture nil "n"))))))))
+        '(("org-things"   ("Things"
+                           ((?t "Tag"     org-tags-view)
+                            (?i "ID"      diego/org-goto-custom-id)
+                            (?k "Keyword" org-search-view))))
+          ("org-links"    ("Links"
+                           ((?c "Capture"   org-store-link)
+                            (?l "Insert"    org-insert-link)
+                            (?i "Custom ID" diego/org-insert-custom-id-link))))
+          ("org-files"    ("Files"
+                           ((?t "TODO"  (lambda () (diego/pop-to-org-todo nil)))
+                            (?n "Notes" (lambda () (diego/pop-to-org-notes nil)))
+                            (?v "Vault" (lambda () (diego/pop-to-org-vault nil))))))
+          ("org-captures" ("Captures"
+                           ((?c "TODO"  diego/org-task-capture)
+                            (?n "Note"  (lambda () (interactive) (org-capture nil "n"))))))))
   (evil-define-key 'normal global-map (kbd "\\ \\") 'tiny-menu)
   (evil-define-key 'normal global-map (kbd "\\ f") (tiny-menu-run-item "org-files"))
   (evil-define-key 'normal global-map (kbd "\\ t") (tiny-menu-run-item "org-things"))
@@ -2276,32 +2277,32 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
 
   ;; Fuzzy matching
   (setq helm-completion-in-region-fuzzy-match t
-		helm-mode-fuzzy-match t
-		helm-M-x-fuzzy-match t
-		helm-buffers-fuzzy-matching t
-		helm-recentf-fuzzy-match t
-		helm-locate-fuzzy-match nil     ; Doesn't work with mdfind
-		helm-semantic-fuzzy-match t
-		helm-imenu-fuzzy-match t
-		helm-apropos-fuzzy-match t
-		helm-lisp-fuzzy-completion t)
+        helm-mode-fuzzy-match t
+        helm-M-x-fuzzy-match t
+        helm-buffers-fuzzy-matching t
+        helm-recentf-fuzzy-match t
+        helm-locate-fuzzy-match nil     ; Doesn't work with mdfind
+        helm-semantic-fuzzy-match t
+        helm-imenu-fuzzy-match t
+        helm-apropos-fuzzy-match t
+        helm-lisp-fuzzy-completion t)
 
   (setq helm-boring-buffer-regexp-list
-		'("\\` "
-		  "\\*helm"
-		  "\\*helm-mode"
-		  "\\*Echo Area"
-		  "\\*Minibuf"
-		  "\\*epc"))
+        '("\\` "
+          "\\*helm"
+          "\\*helm-mode"
+          "\\*Echo Area"
+          "\\*Minibuf"
+          "\\*epc"))
   (setq helm-buffer-max-length 40)
   (setq helm-display-buffer-default-height 9)
   (setq helm-locate-command
-		(cl-case system-type
-		  ('darwin "mdfind -name %s %s")
-		  ('gnu/linux "locate -i -r %s")
-		  ('berkley-unix "locate -i %s")
-		  ('windows-nt "es %s")
-		  (t "locate %s"))) ; Use spotlight for search
+        (cl-case system-type
+          ('darwin "mdfind -name %s %s")
+          ('gnu/linux "locate -i -r %s")
+          ('berkley-unix "locate -i %s")
+          ('windows-nt "es %s")
+          (t "locate %s"))) ; Use spotlight for search
   (put 'helm-minibuffer-history 'disabled t)
   ;; (global-set-key (kbd "M-y") 'helm-show-kill-ring)
   ;;----------------
@@ -2310,236 +2311,236 @@ check out [[https://github.com/compunaut/helm-ido-like-guide][compunaut/helm-ido
 
 
   (defun helm-ido-like-activate-helm-modes ()
-	(require 'helm-config)
-	(helm-mode 1)
-	(helm-flx-mode 1)
-	(helm-fuzzier-mode 1))
+    (require 'helm-config)
+    (helm-mode 1)
+    (helm-flx-mode 1)
+    (helm-fuzzier-mode 1))
 
   (defun helm-ido-like-load-ido-like-bottom-buffer ()
-	;; popup helm-buffer at the bottom
-	(setq helm-split-window-in-side-p t)
-	;; (add-to-list 'display-buffer-alist
-	;;              '("\\`\\*helm.*\\*\\'"
-	;;                (display-buffer-in-side-window)
-	;;                (window-height . 0.4)))
-	;; (add-to-list 'display-buffer-alist
-	;;              '("\\`\\*helm help\\*\\'"
-	;;                (display-buffer-pop-up-window)))
+    ;; popup helm-buffer at the bottom
+    (setq helm-split-window-in-side-p t)
+    ;; (add-to-list 'display-buffer-alist
+    ;;              '("\\`\\*helm.*\\*\\'"
+    ;;                (display-buffer-in-side-window)
+    ;;                (window-height . 0.4)))
+    ;; (add-to-list 'display-buffer-alist
+    ;;              '("\\`\\*helm help\\*\\'"
+    ;;                (display-buffer-pop-up-window)))
 
-	;; dont display the header line
-	(setq helm-display-header-line nil)
-	;; input in header line
-	(setq helm-echo-input-in-header-line t)
-	;; (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
-	)
+    ;; dont display the header line
+    (setq helm-display-header-line nil)
+    ;; input in header line
+    (setq helm-echo-input-in-header-line t)
+    ;; (add-hook 'helm-minibuffer-set-up-hook 'helm-hide-minibuffer-maybe)
+    )
 
   (defvar helm-ido-like-bottom-buffers nil
-	"List of bottom buffers before helm session started.
-	Its element is a pair of `buffer-name' and `mode-line-format'.")
+    "List of bottom buffers before helm session started.
+    Its element is a pair of `buffer-name' and `mode-line-format'.")
 
 
   (defun helm-ido-like-bottom-buffers-init ()
-	(setq-local mode-line-format (default-value 'mode-line-format))
-	(setq helm-ido-like-bottom-buffers
-		  (cl-loop for w in (window-list)
-				   when (window-at-side-p w 'bottom)
-				   collect (with-current-buffer (window-buffer w)
-							 (cons (buffer-name) mode-line-format)))))
+    (setq-local mode-line-format (default-value 'mode-line-format))
+    (setq helm-ido-like-bottom-buffers
+          (cl-loop for w in (window-list)
+                   when (window-at-side-p w 'bottom)
+                   collect (with-current-buffer (window-buffer w)
+                             (cons (buffer-name) mode-line-format)))))
 
 
   (defun helm-ido-like-bottom-buffers-hide-mode-line ()
-	(mapc (lambda (elt)
-			(with-current-buffer (car elt)
-			  (setq-local mode-line-format nil)))
-		  helm-ido-like-bottom-buffers))
+    (mapc (lambda (elt)
+            (with-current-buffer (car elt)
+              (setq-local mode-line-format nil)))
+          helm-ido-like-bottom-buffers))
 
 
   (defun helm-ido-like-bottom-buffers-show-mode-line ()
-	(when helm-ido-like-bottom-buffers
-	  (mapc (lambda (elt)
-			  (with-current-buffer (car elt)
-				(setq-local mode-line-format (cdr elt))))
-			helm-ido-like-bottom-buffers)
-	  (setq helm-ido-like-bottom-buffers nil)))
+    (when helm-ido-like-bottom-buffers
+      (mapc (lambda (elt)
+              (with-current-buffer (car elt)
+                (setq-local mode-line-format (cdr elt))))
+            helm-ido-like-bottom-buffers)
+      (setq helm-ido-like-bottom-buffers nil)))
 
 
   (defun helm-ido-like-helm-keyboard-quit-advice (orig-func &rest args)
-	(helm-ido-like-bottom-buffers-show-mode-line)
-	(apply orig-func args))
+    (helm-ido-like-bottom-buffers-show-mode-line)
+    (apply orig-func args))
 
   (defun helm-ido-like-hide-modelines ()
-	;; hide The Modelines while Helm is active
-	(add-hook 'helm-before-initialize-hook #'helm-ido-like-bottom-buffers-init)
-	(add-hook 'helm-after-initialize-hook #'helm-ido-like-bottom-buffers-hide-mode-line)
-	(add-hook 'helm-exit-minibuffer-hook #'helm-ido-like-bottom-buffers-show-mode-line)
-	(add-hook 'helm-cleanup-hook #'helm-ido-like-bottom-buffers-show-mode-line)
-	(advice-add 'helm-keyboard-quit :around #'helm-ido-like-helm-keyboard-quit-advice))
+    ;; hide The Modelines while Helm is active
+    (add-hook 'helm-before-initialize-hook #'helm-ido-like-bottom-buffers-init)
+    (add-hook 'helm-after-initialize-hook #'helm-ido-like-bottom-buffers-hide-mode-line)
+    (add-hook 'helm-exit-minibuffer-hook #'helm-ido-like-bottom-buffers-show-mode-line)
+    (add-hook 'helm-cleanup-hook #'helm-ido-like-bottom-buffers-show-mode-line)
+    (advice-add 'helm-keyboard-quit :around #'helm-ido-like-helm-keyboard-quit-advice))
 
   (defun helm-ido-like-hide-helm-modeline-1 ()
-	"Hide mode line in `helm-buffer'."
-	(with-helm-buffer
-	 (setq-local mode-line-format nil)))
+    "Hide mode line in `helm-buffer'."
+    (with-helm-buffer
+     (setq-local mode-line-format nil)))
 
 
   (defun helm-ido-like-hide-helm-modeline ()
-	(fset 'helm-display-mode-line #'ignore)
-	(add-hook 'helm-after-initialize-hook 'helm-ido-like-hide-helm-modeline-1))
+    (fset 'helm-display-mode-line #'ignore)
+    (add-hook 'helm-after-initialize-hook 'helm-ido-like-hide-helm-modeline-1))
 
   (defvar helm-ido-like-source-header-default-background nil)
   (defvar helm-ido-like-source-header-default-foreground nil)
   (defvar helm-ido-like-source-header-default-box nil)
 
   (defun helm-ido-like-toggle-header-line ()
-	;; Only Show Source Headers If More Than One
-	(if (> (length helm-sources) 1)
-		(set-face-attribute 'helm-source-header
-							nil
-							:foreground helm-ido-like-source-header-default-foreground
-							:background helm-ido-like-source-header-default-background
-							:box helm-ido-like-source-header-default-box
-							:height 1.0)
-	  (set-face-attribute 'helm-source-header
-						  nil
-						  :foreground (face-attribute 'helm-selection :background)
-						  :background (face-attribute 'helm-selection :background)
-						  :box nil
-						  :height 0.1)))
+    ;; Only Show Source Headers If More Than One
+    (if (> (length helm-sources) 1)
+        (set-face-attribute 'helm-source-header
+                            nil
+                            :foreground helm-ido-like-source-header-default-foreground
+                            :background helm-ido-like-source-header-default-background
+                            :box helm-ido-like-source-header-default-box
+                            :height 1.0)
+      (set-face-attribute 'helm-source-header
+                          nil
+                          :foreground (face-attribute 'helm-selection :background)
+                          :background (face-attribute 'helm-selection :background)
+                          :box nil
+                          :height 0.1)))
 
   (defun helm-ido-like-header-lines-maybe ()
-	(setq helm-ido-like-source-header-default-background (face-attribute 'helm-source-header :background))
-	(setq helm-ido-like-source-header-default-foreground (face-attribute 'helm-source-header :foreground))
-	(setq helm-ido-like-source-header-default-box (face-attribute 'helm-source-header :box))
-	(add-hook 'helm-before-initialize-hook 'helm-ido-like-toggle-header-line))
+    (setq helm-ido-like-source-header-default-background (face-attribute 'helm-source-header :background))
+    (setq helm-ido-like-source-header-default-foreground (face-attribute 'helm-source-header :foreground))
+    (setq helm-ido-like-source-header-default-box (face-attribute 'helm-source-header :box))
+    (add-hook 'helm-before-initialize-hook 'helm-ido-like-toggle-header-line))
 
   (defvar helm-ido-like-bg-color (face-attribute 'default :background))
 
   (defun helm-ido-like-setup-bg-color-1 ()
-	(with-helm-buffer
-	 (make-local-variable 'face-remapping-alist)
-	 (add-to-list 'face-remapping-alist `(default (:background ,helm-ido-like-bg-color)))))
+    (with-helm-buffer
+     (make-local-variable 'face-remapping-alist)
+     (add-to-list 'face-remapping-alist `(default (:background ,helm-ido-like-bg-color)))))
 
   (defun helm-ido-like-setup-bg-color ()
-	(add-hook 'helm-after-initialize-hook 'helm-ido-like-setup-bg-color-1))
+    (add-hook 'helm-after-initialize-hook 'helm-ido-like-setup-bg-color-1))
 
   (defun helm-ido-like-find-files-up-one-level-maybe ()
-	(interactive)
-	(if (looking-back "/" 1)
-		(call-interactively 'helm-find-files-up-one-level)
-	  (delete-char -1)))
+    (interactive)
+    (if (looking-back "/" 1)
+        (call-interactively 'helm-find-files-up-one-level)
+      (delete-char -1)))
 
 
   (defun helm-ido-like-find-files-navigate-forward (orig-fun &rest args)
-	"Adjust how helm-execute-persistent actions behaves, depending on context."
-	(let ((sel (helm-get-selection)))
-	  (if (file-directory-p sel)
-		  ;; the current dir needs to work to
-		  ;; be able to select directories if needed
-		  (cond ((and (stringp sel)
-					  (string-match "\\.\\'" (helm-get-selection)))
-				 (helm-maybe-exit-minibuffer))
-				(t
-				 (apply orig-fun args)))
-		(helm-maybe-exit-minibuffer))))
+    "Adjust how helm-execute-persistent actions behaves, depending on context."
+    (let ((sel (helm-get-selection)))
+      (if (file-directory-p sel)
+          ;; the current dir needs to work to
+          ;; be able to select directories if needed
+          (cond ((and (stringp sel)
+                      (string-match "\\.\\'" (helm-get-selection)))
+                 (helm-maybe-exit-minibuffer))
+                (t
+                 (apply orig-fun args)))
+        (helm-maybe-exit-minibuffer))))
 
 
   (defun helm-ido-like-load-file-nav ()
-	(advice-add 'helm-execute-persistent-action :around #'helm-ido-like-find-files-navigate-forward)
-	;; <return> is not bound in helm-map by default
-	(define-key helm-map (kbd "<return>") 'helm-maybe-exit-minibuffer)
-	(with-eval-after-load 'helm-files
-	  (define-key helm-read-file-map (kbd "<backspace>") 'helm-ido-like-find-files-up-one-level-maybe)
-	  (define-key helm-read-file-map (kbd "DEL") 'helm-ido-like-find-files-up-one-level-maybe)
-	  (define-key helm-find-files-map (kbd "<backspace>") 'helm-ido-like-find-files-up-one-level-maybe)
-	  (define-key helm-find-files-map (kbd "DEL") 'helm-ido-like-find-files-up-one-level-maybe)
+    (advice-add 'helm-execute-persistent-action :around #'helm-ido-like-find-files-navigate-forward)
+    ;; <return> is not bound in helm-map by default
+    (define-key helm-map (kbd "<return>") 'helm-maybe-exit-minibuffer)
+    (with-eval-after-load 'helm-files
+      (define-key helm-read-file-map (kbd "<backspace>") 'helm-ido-like-find-files-up-one-level-maybe)
+      (define-key helm-read-file-map (kbd "DEL") 'helm-ido-like-find-files-up-one-level-maybe)
+      (define-key helm-find-files-map (kbd "<backspace>") 'helm-ido-like-find-files-up-one-level-maybe)
+      (define-key helm-find-files-map (kbd "DEL") 'helm-ido-like-find-files-up-one-level-maybe)
 
-	  (define-key helm-find-files-map (kbd "<return>") 'helm-execute-persistent-action)
-	  (define-key helm-read-file-map (kbd "<return>") 'helm-execute-persistent-action)
-	  (define-key helm-find-files-map (kbd "RET") 'helm-execute-persistent-action)
-	  (define-key helm-read-file-map (kbd "RET") 'helm-execute-persistent-action)))
+      (define-key helm-find-files-map (kbd "<return>") 'helm-execute-persistent-action)
+      (define-key helm-read-file-map (kbd "<return>") 'helm-execute-persistent-action)
+      (define-key helm-find-files-map (kbd "RET") 'helm-execute-persistent-action)
+      (define-key helm-read-file-map (kbd "RET") 'helm-execute-persistent-action)))
 
   (defvar helm-ido-like-no-dots-whitelist
-	'("*Helm file completions*")
-	"List of helm buffers in which to show dot directories.")
+    '("*Helm file completions*")
+    "List of helm buffers in which to show dot directories.")
 
   (defun helm-ido-like-no-dots-display-file-p (file)
-	;; in a whitelisted buffer display all but the relative path to parent dir
-	(or (and (member helm-buffer helm-ido-like-no-dots-whitelist)
-			 (not (string-match "\\(?:/\\|\\`\\)\\.\\{2\\}\\'" file)))
-		;; in all other buffers display all files but the two relative ones
-		(not (string-match "\\(?:/\\|\\`\\)\\.\\{1,2\\}\\'" file))))
+    ;; in a whitelisted buffer display all but the relative path to parent dir
+    (or (and (member helm-buffer helm-ido-like-no-dots-whitelist)
+             (not (string-match "\\(?:/\\|\\`\\)\\.\\{2\\}\\'" file)))
+        ;; in all other buffers display all files but the two relative ones
+        (not (string-match "\\(?:/\\|\\`\\)\\.\\{1,2\\}\\'" file))))
 
 
   (defun helm-ido-like-no-dots-auto-add (&rest args)
-	"Auto add buffers which want to read directory names to the whitelist."
-	(if (eq (car (last args)) 'file-directory-p)
-		(add-to-list 'helm-ido-like-no-dots-whitelist
-					 (format "*helm-mode-%s*"
-							 (helm-symbol-name
-							  (or (helm-this-command) this-command))))))
+    "Auto add buffers which want to read directory names to the whitelist."
+    (if (eq (car (last args)) 'file-directory-p)
+        (add-to-list 'helm-ido-like-no-dots-whitelist
+                     (format "*helm-mode-%s*"
+                             (helm-symbol-name
+                              (or (helm-this-command) this-command))))))
 
 
   (defun helm-ido-like-no-dots ()
-	(require 'cl-lib)
-	(advice-add 'helm-ff-filter-candidate-one-by-one
-				:before-while 'helm-ido-like-no-dots-display-file-p)
-	(advice-add  'helm--generic-read-file-name :before 'helm-ido-like-no-dots-auto-add))
+    (require 'cl-lib)
+    (advice-add 'helm-ff-filter-candidate-one-by-one
+                :before-while 'helm-ido-like-no-dots-display-file-p)
+    (advice-add  'helm--generic-read-file-name :before 'helm-ido-like-no-dots-auto-add))
 
   (defvar helm-ido-like-user-gc-setting nil)
 
   (defun helm-ido-like-higher-gc ()
-	(setq helm-ido-like-user-gc-setting gc-cons-threshold)
-	(setq gc-cons-threshold most-positive-fixnum))
+    (setq helm-ido-like-user-gc-setting gc-cons-threshold)
+    (setq gc-cons-threshold most-positive-fixnum))
 
 
   (defun helm-ido-like-lower-gc ()
-	(setq gc-cons-threshold helm-ido-like-user-gc-setting))
+    (setq gc-cons-threshold helm-ido-like-user-gc-setting))
 
   (defun helm-ido-like-helm-make-source (f &rest args)
-	(let ((source-type (cadr args)))
-	  (unless (or (memq source-type '(helm-source-async helm-source-ffiles))
-				  (eq (plist-get args :filtered-candidate-transformer)
-					  'helm-ff-sort-candidates)
-				  (eq (plist-get args :persistent-action)
-					  'helm-find-files-persistent-action))
-		(nconc args '(:fuzzy-match t))))
-	(apply f args))
+    (let ((source-type (cadr args)))
+      (unless (or (memq source-type '(helm-source-async helm-source-ffiles))
+                  (eq (plist-get args :filtered-candidate-transformer)
+                      'helm-ff-sort-candidates)
+                  (eq (plist-get args :persistent-action)
+                      'helm-find-files-persistent-action))
+        (nconc args '(:fuzzy-match t))))
+    (apply f args))
 
   (defun helm-ido-like-load-fuzzy-enhancements ()
-	(add-hook 'minibuffer-setup-hook #'helm-ido-like-higher-gc)
-	(add-hook 'minibuffer-exit-hook #'helm-ido-like-lower-gc)
-	(advice-add 'helm-make-source :around 'helm-ido-like-helm-make-source))
+    (add-hook 'minibuffer-setup-hook #'helm-ido-like-higher-gc)
+    (add-hook 'minibuffer-exit-hook #'helm-ido-like-lower-gc)
+    (advice-add 'helm-make-source :around 'helm-ido-like-helm-make-source))
 
   (defun helm-ido-like-fuzzier-deactivate (&rest _)
-	(helm-fuzzier-mode -1))
+    (helm-fuzzier-mode -1))
 
 
   (defun helm-ido-like-fuzzier-activate (&rest _)
-	(unless helm-fuzzier-mode
-	  (helm-fuzzier-mode 1)))
+    (unless helm-fuzzier-mode
+      (helm-fuzzier-mode 1)))
 
 
   (defun helm-ido-like-fix-fuzzy-files ()
-	(add-hook 'helm-find-files-before-init-hook #'helm-ido-like-fuzzier-deactivate)
-	(advice-add 'helm--generic-read-file-name :before #'helm-ido-like-fuzzier-deactivate)
-	(add-hook 'helm-exit-minibuffer-hook #'helm-ido-like-fuzzier-activate)
-	(add-hook 'helm-cleanup-hook #'helm-ido-like-fuzzier-activate)
-	(advice-add 'helm-keyboard-quit :before #'helm-ido-like-fuzzier-activate))
+    (add-hook 'helm-find-files-before-init-hook #'helm-ido-like-fuzzier-deactivate)
+    (advice-add 'helm--generic-read-file-name :before #'helm-ido-like-fuzzier-deactivate)
+    (add-hook 'helm-exit-minibuffer-hook #'helm-ido-like-fuzzier-activate)
+    (add-hook 'helm-cleanup-hook #'helm-ido-like-fuzzier-activate)
+    (advice-add 'helm-keyboard-quit :before #'helm-ido-like-fuzzier-activate))
 
   ;;   ;;;###autoload
   (defun helm-ido-like ()
-	"Configure and activate `helm', `helm-fuzzier' and `helm-flx'."
-	(interactive)
-	;; (helm-ido-like-activate-helm-modes)
-	(helm-ido-like-load-ido-like-bottom-buffer)
-	;; (helm-ido-like-hide-modelines)
-	;; (helm-ido-like-hide-helm-modeline)
-	;; (helm-ido-like-header-lines-maybe)
-	;; (helm-ido-like-setup-bg-color)
-	(helm-ido-like-load-file-nav)
-	(helm-ido-like-no-dots)
-	;; (helm-ido-like-load-fuzzy-enhancements)
-	;; (helm-ido-like-fix-fuzzy-files)
-	)
+    "Configure and activate `helm', `helm-fuzzier' and `helm-flx'."
+    (interactive)
+    ;; (helm-ido-like-activate-helm-modes)
+    (helm-ido-like-load-ido-like-bottom-buffer)
+    ;; (helm-ido-like-hide-modelines)
+    ;; (helm-ido-like-hide-helm-modeline)
+    ;; (helm-ido-like-header-lines-maybe)
+    ;; (helm-ido-like-setup-bg-color)
+    (helm-ido-like-load-file-nav)
+    (helm-ido-like-no-dots)
+    ;; (helm-ido-like-load-fuzzy-enhancements)
+    ;; (helm-ido-like-fix-fuzzy-files)
+    )
   (helm-ido-like)
   )
 #+end_src
@@ -2552,12 +2553,12 @@ Project Interaction Library for Emacs
   :commands (projectile-find-file projectile-switch-project projectile-switch-to-buffer)
   :config
   (setq projectile-globally-ignored-files
-		'("TAGS"
-		  ".DS_Store"))
+        '("TAGS"
+          ".DS_Store"))
   (setq projectile-ignored-projects
-		'("/usr/local"
-		  "~/dotfiles/config/emacs.d/lisp/Gnugol"
-		  "~/dotfiles/config/emacs.d/lisp/matlab-emacs"))
+        '("/usr/local"
+          "~/dotfiles/config/emacs.d/lisp/Gnugol"
+          "~/dotfiles/config/emacs.d/lisp/matlab-emacs"))
   (projectile-mode))
 #+end_src
 *** [[https://github.com/ralesi/ranger.el][ranger]]
@@ -2575,21 +2576,21 @@ Bringing the goodness of ranger to dired!
 
   (fmakunbound 'range-travel)
   (defun ranger-travel ()
-	"Open a file or go to a directory in current buffer."
-	(interactive)
-	(cond
-	 ((featurep 'ivy)
-	  (counsel-find-file default-directory))
-	 (t
-	  (call-interactively 'ido-find-file))))
+    "Open a file or go to a directory in current buffer."
+    (interactive)
+    (cond
+     ((featurep 'ivy)
+      (counsel-find-file default-directory))
+     (t
+      (call-interactively 'ido-find-file))))
 
   (advice-add
    'ranger-close
    :after
    (lambda ()
-	 (condition-case nil
-		 (delete-window)
-	   (error nil)))))
+     (condition-case nil
+         (delete-window)
+       (error nil)))))
 #+end_src
 ** Not currently in use
 These aren't loaded by the init file.
@@ -2602,15 +2603,15 @@ Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]]
   :defer t
   :init
   (use-package wgrep-ag
-	;; Guess I need this first
-	:ensure t
-	:commands (wgrep-ag-setup))
+    ;; Guess I need this first
+    :ensure t
+    :commands (wgrep-ag-setup))
   :config
   (add-hook 'ag-mode-hook
-			(lambda ()
-			  (wgrep-ag-setup)
-			  (define-key ag-mode-map (kbd "n") 'evil-search-next)
-			  (define-key ag-mode-map (kbd "N") 'evil-search-previous)))
+            (lambda ()
+              (wgrep-ag-setup)
+              (define-key ag-mode-map (kbd "n") 'evil-search-next)
+              (define-key ag-mode-map (kbd "N") 'evil-search-previous)))
   (setq ag-executable "/usr/local/bin/ag")
   (setq ag-highlight-search t)
   (setq ag-reuse-buffers t)
@@ -2656,9 +2657,9 @@ recently. Either way, this is for [[https://github.com/auto-complete/auto-comple
   :ensure t
   :config
   (unless (display-graphic-p)
-	(require 'evil-terminal-cursor-changer)
-	(evil-terminal-cursor-changer-activate) ; or (etcc-on)
-	)
+    (require 'evil-terminal-cursor-changer)
+    (evil-terminal-cursor-changer-activate) ; or (etcc-on)
+    )
   (setq evil-motion-state-cursor 'box)  ; █
   (setq evil-visual-state-cursor 'box)  ; █
   (setq evil-normal-state-cursor 'box)  ; █
@@ -2792,11 +2793,11 @@ Sets up a python editing environment. I'm not sure yet.
   (elpy-enable)
   (elpy-use-ipython)
   (setq elpy-modules
-		'(elpy-module-company
-		  elpy-module-eldoc
-		  elpy-module-pyvenv
-		  elpy-module-yasnippet
-		  elpy-module-sane-defaults)))
+        '(elpy-module-company
+          elpy-module-eldoc
+          elpy-module-pyvenv
+          elpy-module-yasnippet
+          elpy-module-sane-defaults)))
 #+end_src
 
 *** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
@@ -2831,50 +2832,50 @@ Syntax check for python. Pretty good.
   (global-git-gutter-mode)
   (add-hook 'focus-in-hook 'git-gutter:update-all-windows)
   (fringe-helper-define 'git-gutter-fr:modified nil
-	".....X.."
-	".....X.."
-	".....X.."
-	".....X.."
-	".....X.."
-	".....X.."
-	".....X.."
-	".....x.."
-	".....X.."
-	".....X.."
-	".....X.."
-	".....X.."
-	".....x.."
-	".....X..")
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....x.."
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....x.."
+    ".....X..")
   (fringe-helper-define 'git-gutter-fr:added nil
-	".....X.."
-	".....X.."
-	".....X.."
-	".....X.."
-	".....X.."
-	".....X.."
-	".....X.."
-	".....x.."
-	".....X.."
-	".....X.."
-	".....X.."
-	".....X.."
-	".....x.."
-	".....X..")
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....x.."
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....x.."
+    ".....X..")
   (fringe-helper-define 'git-gutter-fr:deleted nil
-	".....X.."
-	".....X.."
-	".....X.."
-	".....X.."
-	".....X.."
-	".....X.."
-	".....X.."
-	".....x.."
-	".....X.."
-	".....X.."
-	".....X.."
-	".....X.."
-	".....x.."
-	".....X.."))
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....x.."
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....X.."
+    ".....x.."
+    ".....X.."))
 #+end_src
 *** [[https://github.com/Fanael/highlight-defined][highlight-defined]]
 #+begin_src emacs-lisp :tangle no
@@ -2960,11 +2961,11 @@ pretty good but had some known issues.
   :ensure t
   :config
   (defun diego/yafolding-kbd ()
-	(local-set-key (kbd "C-c <up>") 'yafolding-hide-all)
-	(local-set-key (kbd "C-c <down>") 'yafolding-show-all)
-	(local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
-	(local-set-key (kbd "C-c <right>") 'yafolding-show-element)
-	(local-set-key [C-tab] 'yafolding-toggle-element)))
+    (local-set-key (kbd "C-c <up>") 'yafolding-hide-all)
+    (local-set-key (kbd "C-c <down>") 'yafolding-show-all)
+    (local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
+    (local-set-key (kbd "C-c <right>") 'yafolding-show-element)
+    (local-set-key [C-tab] 'yafolding-toggle-element)))
 #+end_src
 
 *** [[https://github.com/JorisE/yapfify][yapfify]]
@@ -3046,7 +3047,7 @@ Stack exchange on emacs.
   :config
   (autoload 'epe-theme-dakrone "eshell-prompt-extras")
   (setq eshell-highlight-prompt nil
-		eshell-prompt-function 'epe-theme-dakrone))
+        eshell-prompt-function 'epe-theme-dakrone))
 #+end_src
 *** [[https://github.com/xuchunyang/eshell-z][eshell-z]]
 #+begin_src emacs-lisp
@@ -3062,7 +3063,7 @@ Stack exchange on emacs.
   :config
   (setq exec-path-from-shell-check-startup-files nil)
   (when (memq window-system '(mac ns))
-	(exec-path-from-shell-initialize))
+    (exec-path-from-shell-initialize))
   )
 #+end_src
 
@@ -3080,12 +3081,12 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
   :ensure t
   :config
   (defun pyvenv-initialize-eshell ()
-	"Configure eshell for use with pyvenv.el"
-	(setq eshell-modify-global-environment t)
-	(setq eshell-path-env (getenv "PATH"))
-	(defun eshell/workon (arg) (pyvenv-workon arg))
-	(defun eshell/deactivate () (pyvenv-deactivate))
-	(message "Eshell virtualenv support initialized"))
+    "Configure eshell for use with pyvenv.el"
+    (setq eshell-modify-global-environment t)
+    (setq eshell-path-env (getenv "PATH"))
+    (defun eshell/workon (arg) (pyvenv-workon arg))
+    (defun eshell/deactivate () (pyvenv-deactivate))
+    (message "Eshell virtualenv support initialized"))
 
   (pyvenv-initialize-eshell)
   (advice-add 'pyvenv-workon :after 'diego/sync-venv)
@@ -3133,22 +3134,22 @@ Properties that apply to all programming modes.
   (anaconda-eldoc-mode)
   (add-to-list 'company-backends 'company-anaconda)
   (defvar diego/python-prettify-alist
-	'(("<=" . "≤")
-	  (">=" . "≥")
-	  ("!=" . "≠")
-	  ("==" . "≈")
-	  ("is" . "≡")
-	  ("sum" . "∑")
-	  ("math.sqrt" . "√")
-	  ("math.pi" . "π")
-	  ("lambda" . "λ")
-	  ("and" . 8743)
-	  ("or" . 8744)
-	  ("self" . "↻")
-	  ("in" . "∈")
-	  ("not in" . "∉")))
+    '(("<=" . "≤")
+      (">=" . "≥")
+      ("!=" . "≠")
+      ("==" . "≈")
+      ("is" . "≡")
+      ("sum" . "∑")
+      ("math.sqrt" . "√")
+      ("math.pi" . "π")
+      ("lambda" . "λ")
+      ("and" . 8743)
+      ("or" . 8744)
+      ("self" . "↻")
+      ("in" . "∈")
+      ("not in" . "∉")))
   (setq-local prettify-symbols-alist
-			  diego/python-prettify-alist))
+              diego/python-prettify-alist))
 
 (add-hook 'python-mode-hook 'diego/setup-python-mode)
 #+end_src
@@ -3208,14 +3209,14 @@ started using company-mode. I'm not sure though.
 (defadvice popup-create (before suppress-fci-mode activate)
   "Suspend fci-mode while popups are visible"
   (let ((fci-enabled (sanityinc/fci-enabled-p)))
-	(when fci-enabled
-	  (set (make-local-variable 'sanityinc/fci-mode-suppressed) fci-enabled)
-	  (turn-off-fci-mode))))
+    (when fci-enabled
+      (set (make-local-variable 'sanityinc/fci-mode-suppressed) fci-enabled)
+      (turn-off-fci-mode))))
 
 (defadvice popup-delete (after restore-fci-mode activate)
   "Restore fci-mode when all popups have closed"
   (when (and sanityinc/fci-mode-suppressed
-			 (null popup-instances))
-	(setq sanityinc/fci-mode-suppressed nil)
-	(turn-on-fci-mode)))
+             (null popup-instances))
+    (setq sanityinc/fci-mode-suppressed nil)
+    (turn-on-fci-mode)))
 #+end_src
