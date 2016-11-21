@@ -81,23 +81,6 @@ Setup load directories, mostly.
                              (file-name-nondirectory buffer-file-name)))
     (delete-file (buffer-file-name))
     (kill-this-buffer)))
-
-
-(defun rename-this-file-and-buffer ()
-  "Renames both current buffer and file it's visiting to NEW-NAME."
-  (interactive)
-  (let ((name (buffer-name))
-        (filename (buffer-file-name))
-        (new-name (read-from-minibuffer "New name: " (buffer-name))))
-    (unless filename
-      (error "Buffer '%s' is not visiting a file!" name))
-    (if (get-buffer new-name)
-        (message "A buffer named '%s' already exists!" new-name)
-      (progn
-        (when (file-exists-p filename)
-          (rename-file filename new-name 1))
-        (rename-buffer new-name)
-        (set-visited-file-name new-name)))))
 #+end_src
 
 ** Package setup
@@ -386,10 +369,6 @@ Handling/storing of files, backups, autosaves.
                            (cadr word)
                            (caddr word)
                            current-location))))
-
-(defun indent-buffer ()
-  (interactive)
-  (indent-region (point-min) (point-max) nil))
 #+end_src
 *** "Original"
 #+begin_src emacs-lisp
@@ -631,7 +610,7 @@ based on or copied from spacemacs, so definitely check them out!
     "fc"  'diego/copy-file
     "fs"  'save-buffer
     "fl"  'counsel-locate
-    "fr"  'rename-this-file-and-buffer
+    "fr"  'crux-rename-file-and-buffer
     "fot" 'diego/pop-to-org-todo
     "fon" 'diego/pop-to-org-notes
     "fD"  'move-file-to-trash)
@@ -1921,11 +1900,16 @@ Edit text area on Chrome with Emacs using Atomic Chrome
   (setq atomic-chrome-buffer-open-style 'frame))
 #+end_src
 *** [[https://github.com/purcell/disable-mouse][disable-mouse]]
+*** [[https://github.com/bbatsov/crux][crux]]
 #+begin_src emacs-lisp
 (use-package disable-mouse
+(use-package crux
   :ensure t
   :config
   (global-disable-mouse-mode))
+  (crux-with-region-or-line eval-region)
+  (crux-with-region-or-buffer indent-region)
+  (crux-with-region-or-buffer untabify))
 #+end_src
 *** [[http://savannah.nongnu.org/projects/bbdb/][bbdb]]
 #+begin_src emacs-lisp
