@@ -140,8 +140,8 @@ Get rid of menu bars, scroll bars, startup screens, etc.
 (setq display-time-load-average nil)
 (setq whitespace-style '(face trailing))
 (set-default 'truncate-lines t)
-(show-paren-mode)
-(setq show-paren-mode ())
+;; (show-paren-mode)
+;; (setq show-paren-mode ())
 (blink-cursor-mode 0)
 #+end_src
 ** Font/Text
@@ -867,7 +867,6 @@ based on or copied from spacemacs, so definitely check them out!
     "hdv" 'counsel-describe-variable
     "hdt" 'describe-theme
     "hds" 'describe-symbol
-
     "hk"  'which-key-show-top-level
     "hm"  'man
     "hn"  'view-emacs-news))
@@ -2158,7 +2157,10 @@ Minor mode for Emacs that deals with parens pairs and tries to be smart about it
 (use-package smartparens
   :ensure t
   :config
-  (smartparens-global-mode)
+  (smartparens-global-strict-mode)
+  (show-smartparens-global-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook #'smartparens-strict-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook #'show-smartparens-mode)
   (sp-local-pair 'emacs-lisp-mode "'" nil :actions nil)
   (sp-local-pair 'emacs-lisp-mode "`" nil :actions nil))
 #+end_src
@@ -2574,7 +2576,7 @@ Bringing the goodness of ranger to dired!
   (setq ranger-cleanup-eagerly t)
   (setq ranger-parent-depth 0)
 
-  (fmakunbound 'range-travel)
+  (fmakunbound 'ranger-travel)
   (defun ranger-travel ()
     "Open a file or go to a directory in current buffer."
     (interactive)
@@ -2584,13 +2586,32 @@ Bringing the goodness of ranger to dired!
      (t
       (call-interactively 'ido-find-file))))
 
-  (advice-add
-   'ranger-close
-   :after
-   (lambda ()
-     (condition-case nil
-         (delete-window)
-       (error nil)))))
+  ;; (advice-add
+  ;;  'deer-jump-other-window
+  ;;  :before
+  ;;  (lambda ()
+  ;;    (when (> (length (window-list)) 1)
+  ;;      (setq diego/temp-buff-name (window-buffer (next-window))))))
+
+  ;; (advice-add
+  ;;  'ranger-close
+  ;;  :after
+  ;;  (lambda ()
+  ;;    (if (boundp 'diego/temp-buff-name)
+  ;;        (progn
+  ;;          (switch-to-buffer-other-window diego/temp-buff-name)
+  ;;          (makunbound 'diego/temp-buff-name))
+  ;;      (condition-case nil
+  ;;          (delete-window)
+  ;;        (error nil)))))
+  ;; (advice-add
+  ;;  'ranger-close
+  ;;  :after
+  ;;  (lambda ()
+  ;;    (condition-case nil
+  ;;        (delete-window)
+  ;;      (error nil))))
+  )
 #+end_src
 ** Not currently in use
 These aren't loaded by the init file.
@@ -3109,10 +3130,10 @@ Properties that apply to all programming modes.
 (defun diego/setup-prog-mode ()
   (highlight-parentheses-mode 1)
   (rainbow-delimiters-mode)
-  (make-local-variable 'show-paren-mode)
+  ;; (make-local-variable 'show-paren-mode)
+  ;; (setq show-paren-mode t)
   (fci-mode)
   (highlight-numbers-mode)
-  (setq show-paren-mode t)
   (nlinum-relative-mode 1)
   (auto-fill-mode 1)
   (setq-local comment-auto-fill-only-comments t)
