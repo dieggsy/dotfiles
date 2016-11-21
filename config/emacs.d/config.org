@@ -595,6 +595,7 @@ based on or copied from spacemacs, so definitely check them out!
     "bm"  'kill-matching-buffers
     "br"  'view-mode
     "bn"  'next-buffer
+    "bo"  'org-iswitchb
     "bp"  'previous-buffer
     "be"  'diego/safe-erase-buffer
     "bi"  'ibuffer
