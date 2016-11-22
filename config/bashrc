@@ -1,43 +1,86 @@
 #!/usr/bin/env bash
-export HOSTNAME=`hostname` # Gets rid of that annyoing question mark on top
 
-# Welcome
-echo "Welcome, diego"
+# terminal.app used to get confused, so this was added
+export HOSTNAME=`hostname`
+
 export PS1="\[\e[91m\]\w\[\e[m\] \u\[\e[32m\]\\$\[\e[m\] "
 
-eval $(thefuck --alias) #helps with fuckups
+# ------------------------------------
+# bash opts 
+# ------------------------------------
 
-export EDITOR="emacsclient -t"
-export ALTERNATE_EDITOR="vim"   
-
-# Supposedly, sets up case insensitive bash completion. Seems to work
 shopt -s nocaseglob
 bind 'set completion-ignore-case on'
 
-# Colors!
+# ------------------------------------
+# Initalize and source some more stuff
+# ------------------------------------
 
+# z plugin
+source `brew --prefix`/etc/profile.d/z.sh
+
+# fuck!
+eval $(thefuck --alias) #helps with fuckups
+
+# pyenv
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+
+# virtualenvwrapper
+source "/usr/local/bin/virtualenvwrapper.sh"
+
+
+# ------------------------------------
+# Vars 
+# ------------------------------------
+export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31'
 export CLICOLOR=1
 export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 
-# (gnu ls)
-export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31'
+kwm="koekeishiya/kwm/kwm"
+khd="koekeishiya/khd/khd"
 
-### Aliases
+export python3version=3.5.2
+export python2version=2.7.12
+export PYTHONSTARTUP=$HOME/.pythonrc.py
+
+export WWW_HOME='http://google.com'
+export RTV_EDITOR='vim'
+export RTV_URLVIEWER='urlview'
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+	export EDITOR='vim'
+else
+	export EDITOR="emacsclient -n" # Set emacs as default editor
+	export ALTERNATE_EDITOR="vim"
+fi
+
+
+# ------------------------------------
+# Aliases
+# ------------------------------------
 alias apps="cd /Applications"
 alias cask="brew cask"
-alias clc="clear"
+alias config="$EDITOR ~/dotfiles/config/emacs.d/config.org"
 alias def='dict -d gcide'
 alias desk="cd /Users/diego/Desktop"
 alias docs="cd /Users/diego/Documents/"
 alias down="cd /Users/diego/Downloads/"
 alias drive="cd /Users/diego/Google\ Drive"
 alias drop="cd /Users/diego/Dropbox\ \(MIT\)"
-alias edit="emacsclient -t"
-alias editv="emacsclient -c"
+alias edit="emacsclient -n"
+alias editv="emacsclient -t"
 alias f='find . -iname'
 alias fd='find . -type d -iname'
 alias ff='find . -type f -iname'
 alias filecount="ls -1 | wc -l"
+alias git=hub
+alias startkwm="brew services start $kwm"
+alias stopkwm="brew services stop $kwm"
+alias restartkwm="brew services restart $kwm"
+alias startkhd="brew services start $khd"
+alias stopkhd="brew services stop $khd"
+alias restartkhd="brew services restart $khd"
 alias ls='ls -NX --group-directories-first --color=always'
 alias lst="ls -t"
 alias math='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
@@ -45,25 +88,20 @@ alias pep8="pep8 --first --ignore=E129,W503,E226"
 alias piphere="pip install --target=./"
 alias printers="lpstat -p | awk '{print $2}'"
 alias resetb="source ~/.zshrc"
-alias resetwifi="networksetup -setairportpower en0 off; sleep2;networksetup -setairportpower en0 on" 
-alias run="python3"			  # I got super used to just tying 'run' in iPython
+alias resetwifi="networksetup -setairportpower en0 off; sleep 2;"\
+"networksetup -setairportpower en0 on" 
 alias starwars="telnet towel.blinkenlights.nl" # heh 
-alias pip=pip3
 alias sudo='sudo '							   # recognize aliases 
 alias sz="du -hs"							   # get folder/file size 
-alias bashrc="$EDITOR ~/dotfiles/zshrc" 
+alias zshrc="$EDITOR ~/dotfiles/config/zshrc" 
+alias vimrc="$ALTERNATE_EDITOR ~/dotfiles/config/vimrc"
 
 
-py2() {
-	workon py2
-	export PYTHONSTARTUP=/Users/diego/.virtualenvs/py2/bin/.pythonrc.py
-	alias run="python2"
-}
-
-out() {
-	deactivate
-	export PYTHONSTARTUP=$HOME/.pythonrc.py
-	alias run="python3"
+# ------------------------------------
+# Functions
+# ------------------------------------
+pip-fromfile() {
+	<$1 xargs pip install
 }
 
 athena(){
@@ -72,50 +110,98 @@ athena(){
 	ssh -Y "$username@athena.dialup.mit.edu"
 }
 
-# Make a file executable
 mkexec(){
     chmod a+x "$@"
 }
 
-# Create/edit executable python script
 pythonexec(){
     touch "$*"
     echo '#!/usr/local/bin/python3' | cat - "$*" > temp && mv temp "$*"
     sudo chmod a+x "$*"
-    emacsclient -t "$*"
+    emacsclient -n "$*"
 }
 
 # Create/edit python script
 pythonscript(){
     touch "$*"
     echo '#!/usr/local/bin/python3' | cat - "$*" > temp && mv temp "$*"
-    emacsclient -t "$*"
+    emacsclient -n "$*"
 }
 
 # View only mode in emacs
 ev() {
-    emacsclient -t --eval "(view-file $1)"
+    emacsclient -n --eval "(find-file-read-only \"$1\")"
 }
 
 # Edit Python 3 files
 bam(){
-    emacsclient -t "$1" --eval '(and (split-window-right) (windmove-right))' -f ipython --eval '(windmove-left)'
+    emacsclient -n "$1" \
+				--eval '(and (split-window-right) (windmove-right))' \
+				-f ipython \
+				--eval '(windmove-left)'
 }
 
 # Edit Python 2 files
 ham(){
-    emacsclient -t "$1" --eval '(and (split-window-right) (windmove-right))' -f ipython2 --eval '(windmove-left)'
+    emacsclient -n "$1" \
+				--eval '(and (split-window-right) (windmove-right))' \
+				-f ipython2 \
+				--eval '(windmove-left)'
 }
 
+pdftif() {
+	gs -dNOPAUSE -q -r500 \
+	   -sDEVICE=tiffg4 \
+	   -dBATCH \
+	   -dFirstPage=$2 \
+	   -dLastPage=$3 \
+	   -sOutputFile=$4 \
+	   $1
+}
+
+ocrpdf(){
+	echo "Converting pdf to png..."
+	gs -dNOPAUSE -q -r500 \
+	   -sDEVICE=tiffg4 \
+	   -dBATCH \
+	   -sOutputFile=$TMPDIR/tempocr.tif \
+	   $1
+	echo "Running tesseract on pngs..."
+	tesseract $TMPDIR/tempocr.tif $2 >/dev/null 2>&1
+}
+
+ocrpdf2(){
+	echo "Converting pdf to png..."
+	convert -density 500 $1 $TMPDIR/tempocr.png
+	count=0
+	echo "Running tesseract on pngs..."
+	while [ -f $TMPDIR/tempocr-$count.png ]; do
+		echo "    Page $count"
+		tesseract $TMPDIR/tempocr-$count.png $TMPDIR/tempocr >/dev/null 2>&1
+		cat $TMPDIR/tempocr.txt >> $2
+		let count=count+1
+	done
+	echo "Created output file $2"
+}
+
+psetzip (){
+	zip -r "$1".zip $1\
+		-x '*.git*' \
+		-x '*.ipynb_checkpoints*' \
+		-x '*.pyc*' \
+		-x '*.DS_Store*' \
+		-x '*~*' \
+		-x "*__pycache__*" 
+}
+
+calc(){
+	emacs --batch --eval "(message (calc-eval \"$1\"))"
+}
+
+
+# ------------------------------------
+# Some path stuff
+# ------------------------------------
+
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-
-export PYTHONSTARTUP=$HOME/.pythonrc.py
-
-# Set home page for lynx browser (and others I think)
-export WWW_HOME='http://google.com'
-
-export GREP_OPTIONS='--color=auto'
-
-source "/usr/local/bin/virtualenvwrapper.sh"
-
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"

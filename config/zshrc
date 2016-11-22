@@ -1,5 +1,9 @@
 #!/usr/bin/env zsh
 
+# terminal.app used to get confused, so this was added
+export HOSTNAME=`hostname`
+
+
 # ------------------------------------
 # Source Prezto
 # ------------------------------------
@@ -10,8 +14,6 @@ fi
 # Undo some prezto defaults
 unalias rm
 
-# terminal.app used to get confused, so this was added
-export HOSTNAME=`hostname`
 
 # ------------------------------------
 # zsh opts 
@@ -22,6 +24,7 @@ setopt histignoredups
 setopt autonamedirs
 setopt clobber
 unsetopt correct
+
 
 # ------------------------------------
 # Initalize and source some more stuff
@@ -49,18 +52,26 @@ source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # virtualenvwrapper
 source "/usr/local/bin/virtualenvwrapper.sh"
-export PYTHONSTARTUP=$HOME/.pythonrc.py
 
 zstyle ':completion:*' list-colors 'di=0;36:ex=0;35:ln=1;31'
+
 
 # ------------------------------------
 # Vars 
 # ------------------------------------
-export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31' # ls colors i've gotten used to
+
+# some ls colors i've gotten used to
+export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31' 
+
+# kwm/khd
 kwm="koekeishiya/kwm/kwm"
 khd="koekeishiya/khd/khd"
+
+# Python
 export python3version=3.5.2
 export python2version=2.7.12
+export PYTHONSTARTUP=$HOME/.pythonrc.py
+
 export WWW_HOME='http://google.com'
 export RTV_EDITOR='vim'
 export RTV_URLVIEWER='urlview'
@@ -72,6 +83,7 @@ else
 	export EDITOR="emacsclient -n" # Set emacs as default editor
 	export ALTERNATE_EDITOR="vim"
 fi
+
 
 # ------------------------------------
 # Aliases
@@ -214,6 +226,7 @@ psetzip (){
 calc(){
 	emacs --batch --eval "(message (calc-eval \"$1\"))"
 }
+
 
 # ------------------------------------
 # Some path stuff
