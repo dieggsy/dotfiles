@@ -38,6 +38,7 @@ if which thefuck > /dev/null; then eval $(thefuck --alias); fi
 
 # pyenv
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+if which pyenv-virtualenv-init > /dev/null; then eval "$(pyenv virtualenv-init -)"; fi
 
 # syntax highlighting
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
