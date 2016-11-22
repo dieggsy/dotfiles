@@ -51,9 +51,6 @@ ZSH_HIGHLIGHT_STYLES[function]='fg=010'
 # auto suggestions
 source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-# virtualenvwrapper
-source "/usr/local/bin/virtualenvwrapper.sh"
-
 zstyle ':completion:*' list-colors 'di=0;36:ex=0;35:ln=1;31'
 
 

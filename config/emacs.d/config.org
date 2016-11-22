@@ -2455,6 +2455,18 @@ imenu on steroids.
   (nlinum-relative-setup-evil)
   (setq nlinum-relative-redisplay-delay 0))
 #+end_src
+*** [[https://github.com/proofit404/pyenv-mode][pyenv-mode]]
+#+begin_src emacs-lisp
+(use-package pyenv-mode
+  :ensure t
+  :commands (pyenv-mode-set)
+  :config
+  (pyenv-mode))
+
+(use-package pyenv-mode-auto
+  :ensure t
+  :after pyenv-mode)
+#+end_src
 *** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
 Better parentheses coloring
 #+begin_src emacs-lisp
@@ -2715,33 +2727,6 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
   :ensure t)
 #+end_src
 
-*** [[https://github.com/jorgenschaefer/pyvenv][pyvenv]]
-#+begin_src emacs-lisp :tangle no
-(use-package pyvenv
-  :ensure t
-  :config
-  (defun pyvenv-initialize-eshell ()
-    "Configure eshell for use with pyvenv.el"
-    (setq eshell-modify-global-environment t)
-    (setq eshell-path-env (getenv "PATH"))
-    (defun eshell/workon (arg) (pyvenv-workon arg))
-    (defun eshell/deactivate () (pyvenv-deactivate))
-    (message "Eshell virtualenv support initialized"))
-
-  (pyvenv-initialize-eshell)
-  (advice-add 'pyvenv-workon :after 'diego/sync-venv)
-  (advice-add 'pyvenv-deactivate :after 'diego/sync-venv))
-
-
-#+end_src
-*** [[https://github.com/porterjamesj/virtualenvwrapper.el][virtualenvwrapper]]
-#+begin_src emacs-lisp
-(use-package virtualenvwrapper
-  :ensure t
-  :config
-  ;; (venv-initialize-interactive-shells)
-  (setq venv-location "~/.virtualenvs"))
-#+end_src
 ** Not currently in use
 These aren't loaded by the init file.
 *** [[https://github.com/Wilfred/ag.el][ag]]
