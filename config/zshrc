@@ -34,7 +34,7 @@ unsetopt correct
 source `brew --prefix`/etc/profile.d/z.sh
 
 # fuck!
-eval $(thefuck --alias)
+if which thefuck > /dev/null; then eval $(thefuck --alias); fi
 
 # pyenv
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
@@ -103,7 +103,7 @@ alias f='find . -iname'
 alias fd='find . -type d -iname'
 alias ff='find . -type f -iname'
 alias filecount="ls -1 | wc -l"
-alias git=hub
+if which hub > /dev/null; then alias git=hub; fi
 alias startkwm="brew services start $kwm"
 alias stopkwm="brew services stop $kwm"
 alias restartkwm="brew services restart $kwm"
