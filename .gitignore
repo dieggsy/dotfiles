@@ -36,3 +36,4 @@
 config/emacs.d/bookmarks
 config/emacs.d/bbdb-vcard
 /config/emacs.d/bbdb
+/config/emacs.d/config.elc
