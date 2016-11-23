@@ -1,5 +1,5 @@
 #+TITLE: Emacs Init File!
-
+#
 * Intro
 
 This is my emacs init file. =init.el= loads the elisp code from here. It's pretty
@@ -411,7 +411,7 @@ Handling/storing of files, backups, autosaves.
                         "Ethics")
             :action (lambda (x)
                       (find-file
-                       (concat "~/MIT 2016-2017/" x "/notes/" 
+                       (concat "~/MIT 2016-2017/" x "/notes/"
                                (format-time-string "%Y-%m-%d_recitation.org" ))))
             :caller 'diego/recitation-notes))
 
@@ -968,7 +968,7 @@ based on or copied from spacemacs, so definitely check them out!
      used, but this function ignores them."
     (interactive)
     (if (and (derived-mode-p 'org-mode)
-             (org-on-heading-p))
+             (org-at-heading-p))
         (not (org-mark-element))
       t))
 
@@ -1269,7 +1269,7 @@ so I went with it.
                           (point-max))))
 
       (if current-line (beginning-of-line)
-        (beginning-of-buffer))
+        (goto-char (point-min)))
       (if (search-forward "DEADLINE:" search-limit t)
           (replace-match "SCHEDULED:")
         (and (search-forward "SCHEDULED:" search-limit t)
@@ -1687,7 +1687,7 @@ Like git, for emacs. But cooler.
 Drawille library implementation in elisp. Draws images/stuff in ascii.
 #+begin_src emacs-lisp
 (use-package drawille
-  :defer 5
+  :defer t
   :ensure t)
 #+end_src
 *** [[https://github.com/johanvts/emacs-fireplace/][fireplace]]
@@ -1758,7 +1758,7 @@ Eh, why not.
 #+begin_src emacs-lisp
 (use-package zone-matrix
   :ensure t
-  :defer 5
+  :defer t
   :config
   (eval-after-load "zone"
     '(unless (memq 'zone-matrix (append zone-programs nil))
@@ -1771,8 +1771,7 @@ Nyanyanyanyanyanyanyanyan (but actually).
 #+begin_src emacs-lisp
 (use-package zone-nyan
   :ensure t
-  :after 'zone
-  :defer 5
+  :defer t
   :config
   (eval-after-load "zone"
     '(unless (memq 'zone-nyan (append zone-programs nil))
@@ -1784,7 +1783,7 @@ Nyanyanyanyanyanyanyanyan (but actually).
 A utility package to collect various Icon Fonts and propertize them within Emacs.
 #+begin_src emacs-lisp
 (use-package all-the-icons
-  :defer 5
+  :defer t
   :ensure t)
 #+end_src
 *** [[https://github.com/larstvei/Focus][focus]]
@@ -1853,7 +1852,7 @@ Emacs themes inspired by Atom One. Quite nice I might add, if a little intense.
 Display emojis in emacs. Sweet!
 #+begin_src emacs-lisp
 (use-package emojify
-  :defer 5
+  :defer t
   :ensure t)
 #+end_src
 *** [[https://github.com/lunaryorn/fancy-battery.el][fancy-battery]]
@@ -1928,6 +1927,7 @@ I was looking for something with the nice look and simplicity of
 #+begin_src emacs-lisp
 (use-package crux
   :ensure t
+  :defer 5
   :config
   (crux-with-region-or-line eval-region)
   (crux-with-region-or-buffer indent-region)
@@ -2176,14 +2176,14 @@ Kind of makes undo's like git. Or Vim, apparently, if you're into that.
   :config
   (setq undo-tree-visualizer-timestamps t))
 #+end_src
-** Editing Major Modes 
+** Editing Major Modes
 *** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
 Eh, wanted to try a simpler way of editing csv files. (Excel and Numbers both
 kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
 #+begin_src emacs-lisp
 (use-package csv-mode
   ;; I'll give this a shot
-  :defer 5
+  :defer t
   :ensure t
   :config
   (add-hook 'csv-mode-hook 'csv-align-fields))
@@ -2226,8 +2226,7 @@ Edit jupyter notebooks in emacs
 #+begin_src emacs-lisp
 (use-package ein
   :ensure t
-  :commands ein:notebooklist-open
-  :config)
+  :commands ein:notebooklist-open)
 #+end_src
 
 *** [[https://github.com/immerrr/lua-mode][lua-mode]]
@@ -2239,7 +2238,7 @@ Edit jupyter notebooks in emacs
 *** matlab-mode
 #+begin_src emacs-lisp
 (use-package matlab
-  :defer 5
+  :defer t
   :ensure matlab-mode
   :init
   (load-library "matlab-load"))
@@ -2248,10 +2247,11 @@ Edit jupyter notebooks in emacs
 *** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]]
 #+begin_src emacs-lisp
 (use-package vimrc-mode
-  :ensure t)
+  :ensure t
+  :defer t)
 #+end_src
 
-** Editing utilities 
+** Editing utilities
 *** [[https://github.com/Fuco1/smartparens][smartparens]]
 Minor mode for Emacs that deals with parens pairs and tries to be smart about it.
 #+begin_src emacs-lisp
@@ -2270,6 +2270,7 @@ Edit text area on Chrome with Emacs using Atomic Chrome
 #+begin_src emacs-lisp
 (use-package atomic-chrome
   :ensure t
+  :defer t
   :config
   (atomic-chrome-start-server)
   (setq atomic-chrome-buffer-open-style 'frame))
@@ -2358,9 +2359,9 @@ Sets up a python editing environment. I'm not sure yet.
 *** [[https://github.com/alpaker/Fill-Column-Indicator][fill-column-indicator]]
 I like a line length limit indicator in Python
 #+begin_src emacs-lisp
-
 (use-package fill-column-indicator
   :ensure t
+  :defer t
   :init
   (setq-default fci-rule-column 79))
 #+end_src
@@ -2437,6 +2438,7 @@ Syntax check for python. Pretty good.
 Neat-o
 #+begin_src emacs-lisp
 (use-package highlight-numbers
+  :defer t
   :ensure t)
 #+end_src
 
@@ -2493,27 +2495,12 @@ complete, IMO.
 (use-package sphinx-doc
   :ensure t
   :commands sphinx-doc-mode)
-
-#+end_src
-
-*** [[https://github.com/zenozeng/yafolding.el][yafolding]]
-Good code folding is hard to come by in Emacs, and isn't /that/ useful. This was
-pretty good but had some known issues.
-#+begin_src emacs-lisp
-(use-package yafolding
-  :ensure t
-  :config
-  (defun diego/yafolding-kbd ()
-    (local-set-key (kbd "C-c <up>") 'yafolding-hide-all)
-    (local-set-key (kbd "C-c <down>") 'yafolding-show-all)
-    (local-set-key (kbd "C-c <left>") 'yafolding-hide-element)
-    (local-set-key (kbd "C-c <right>") 'yafolding-show-element)
-    (local-set-key [C-tab] 'yafolding-toggle-element)))
 #+end_src
 
 *** [[https://github.com/JorisE/yapfify][yapfify]]
 #+begin_src emacs-lisp
 (use-package yapfify
+  :commands yapfify-buffer
   :ensure t)
 #+end_src
 
@@ -2540,7 +2527,9 @@ Project Interaction Library for Emacs
 #+begin_src emacs-lisp
 (use-package projectile
   :ensure t
-  :commands (projectile-find-file projectile-switch-project projectile-switch-to-buffer)
+  :commands (projectile-find-file
+             projectile-switch-project
+             projectile-switch-to-buffer)
   :config
   (setq projectile-globally-ignored-files
         '("TAGS"
@@ -2606,7 +2595,7 @@ Bringing the goodness of ranger to dired!
 *** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
 #+begin_src emacs-lisp
 (use-package ob-ipython
-  :defer 5
+  :after org
   :ensure t)
 #+end_src
 *** [[https://github.com/sabof/org-bullets][org-bullets]]
@@ -2636,14 +2625,13 @@ Export org to twitter bootstrap compatible HTML.
 #+begin_src emacs-lisp
 (use-package ox-twbs
   :ensure t
-  :defer 5
   :after org)
 #+end_src
 *** [[https://github.com/snosov1/toc-org][toc-org]]
 #+begin_src emacs-lisp
 (use-package toc-org
   :ensure t
-  :defer 5
+  :after org
   :config
   (add-hook 'org-mode-hook 'toc-org-enable))
 #+end_src
@@ -2671,14 +2659,6 @@ Google stuff from emacs.
   (google-this-mode 1))
 #+end_src
 
-*** [[https://github.com/dtaht/Gnugol][Gnugol]]
-An org-mode google??? Not currently working, apparently.
-#+begin_src emacs-lisp
-(use-package gnugol
-  :commands gnugol
-  :load-path "lisp/")
-#+end_src
-
 *** [[https://github.com/atykhonov/google-translate][google-translate]]
 #+begin_src emacs-lisp
 (use-package google-translate
@@ -2698,7 +2678,10 @@ An org-mode google??? Not currently working, apparently.
 Stack exchange on emacs.
 #+begin_src emacs-lisp
 (use-package sx
-  :defer 5
+  :commands (sx-search
+             sx-ask
+             sx-answer
+             sx-tab-frontpage)
   :ensure t)
 #+end_src
 ** Shell utilities
@@ -2706,7 +2689,7 @@ Stack exchange on emacs.
 #+begin_src emacs-lisp
 (use-package eshell-prompt-extras
   :ensure t
-  :defer 5
+  :defer t
   :after 'virtualenvwrapper
   :config
   (autoload 'epe-theme-dakrone "eshell-prompt-extras")
@@ -2716,7 +2699,7 @@ Stack exchange on emacs.
 *** [[https://github.com/xuchunyang/eshell-z][eshell-z]]
 #+begin_src emacs-lisp
 (use-package eshell-z
-  :defer 5
+  :defer t
   :ensure t)
 #+end_src
 
@@ -2739,102 +2722,6 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
   :ensure t)
 #+end_src
 
-** Not currently in use
-These aren't loaded by the init file.
-*** [[https://github.com/Wilfred/ag.el][ag]]
-Sweet package to integrate [[https://github.com/ggreer/the_silver_searcher][ag]] into emacs.
-#+begin_src emacs-lisp :tangle no
-(use-package ag
-  ;; Silver searcher
-  :ensure t
-  :defer t
-  :init
-  (use-package wgrep-ag
-    ;; Guess I need this first
-    :ensure t
-    :commands (wgrep-ag-setup))
-  :config
-  (add-hook 'ag-mode-hook
-            (lambda ()
-              (wgrep-ag-setup)
-              (define-key ag-mode-map (kbd "n") 'evil-search-next)
-              (define-key ag-mode-map (kbd "N") 'evil-search-previous)))
-  (setq ag-executable "/usr/local/bin/ag")
-  (setq ag-highlight-search t)
-  (setq ag-reuse-buffers t)
-  (setq ag-reuse-window t))
-#+end_src
-
-*** [[https://github.com/auto-complete/auto-complete][auto-complete]]
-Pretty good autocompletion, but trying out [[https://github.com/company-mode/company-mode][company-mode]] right now.
-#+begin_src emacs-lisp :tangle no
-(use-package auto-complete
-  ;; Supposedly not as good as company mode
-  :ensure t
-  :config
-  (global-auto-complete-mode t))
-#+end_src
-
-*** [[https://github.com/joaotavora/autopair][autopair]]
-It may be recommended to use =electric-pair-mode= nowadays? That's
-what I'm using anyway.
-#+Begin_src emacs-lisp :tangle no
-(use-package autopair
-  :ensure t
-  :config
-  (autopair-global-mode))
-#+end_src
-
-*** [[https://github.com/tkf/emacs-jedi][emacs-jedi]]
-Integrates [[https://github.com/davidhalter/jedi][jedi]] into emacs for python completion, hasn't been working for me
-recently. Either way, this is for [[https://github.com/auto-complete/auto-complete][auto-complete]] but now I use
-[[https://github.com/syohex/emacs-company-jedi][emacs-company-jedi]].
-#+begin_src emacs-lisp :tangle no
-(use-package jedi
-  ;; Hasn't been working smoothly recently
-  :ensure t
-  :init
-  (add-hook 'python-mode-hook 'jedi:setup)
-  (setq jedi:complete-on-dot t))
-#+end_src
-
-*** [[https://github.com/7696122/evil-terminal-cursor-changer][evil-terminal-cursor-changer]]
-#+begin_src emacs-lisp :tangle no
-(use-package evil-terminal-cursor-changer
-  :ensure t
-  :config
-  (unless (display-graphic-p)
-    (require 'evil-terminal-cursor-changer)
-    (evil-terminal-cursor-changer-activate) ; or (etcc-on)
-    )
-  (setq evil-motion-state-cursor 'box)  ; █
-  (setq evil-visual-state-cursor 'box)  ; █
-  (setq evil-normal-state-cursor 'box)  ; █
-  (setq evil-insert-state-cursor 'bar)  ; ⎸
-  (setq evil-emacs-state-cursor  'bar)) ; _
-
-#+end_src
-
-*** [[https://github.com/Malabarba/smart-mode-line][smart-mode-line]]
-Used it for quite a while, but now I use [[https://github.com/TheBB/spaceline][spaceline]].
-
-#+begin_src emacs-lisp :tangle no
-(use-package smart-mode-powerline-theme
-  :ensure t)
-
-(use-package smart-mode-line
-  :ensure t
-  :config
-  (setq sml/no-confirm-load-theme t)
-  (setq sml/theme 'dark)
-  (setq rm-whitelist '(""))
-  (setq system-uses-terminfo nil)
-  (sml/setup)
-  (display-time-mode)
-  (display-time-update)
-  (fancy-battery-mode)
-  (setq fancy-battery-show-percentage t))
-#+end_src
 * Mode Specific
 ** Prog-mode
 Properties that apply to all programming modes.
@@ -2858,8 +2745,6 @@ Properties that apply to all programming modes.
 ** Python
 #+begin_src emacs-lisp
 (defun diego/setup-python-mode ()
-  (yafolding-mode)
-  (diego/yafolding-kbd)
   (yas-minor-mode)
   (setq-local tab-width 4)
   (set (make-local-variable 'comment-inline-offset) 2)
@@ -2909,7 +2794,7 @@ Mostly set up hs-minor-mode for emacs-lisp.
 ** Term mode
 #+begin_src emacs-lisp
 (defun diego/setup-term-mode ()
-  (setq-local yas-dont-activate t)
+  (setq-local yas-dont-activate-functions t)
   (local-set-key (kbd "<C-tab>") 'multi-term-next))
 (add-hook 'term-mode-hook 'diego/setup-term-mode)
 #+end_src
@@ -2959,6 +2844,6 @@ excited about file local vars.
 
 #+BEGIN_SRC
 # Local Variables:
-# after-save-hook: diego/async-tangle-init 
+# after-save-hook: diego/async-tangle-init
 # End:
 #+END_SRC
