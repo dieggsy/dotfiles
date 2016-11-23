@@ -421,6 +421,18 @@ Handling/storing of files, backups, autosaves.
               (if (eq cursor-type nil)
                   t
                 nil)))
+
+(defun diego/async-tangle-init ()
+  (async-start
+   (lambda ()
+     (require 'org)
+     (org-babel-tangle-file
+      (expand-file-name (concat user-emacs-directory "config.org"))
+      (expand-file-name (concat user-emacs-directory "config.el"))
+      "emacs-lisp")
+     (byte-compile-file
+      (expand-file-name  (concat user-emacs-directory "config.el"))))
+   'ignore))
 #+end_src
 *** Macros?
 #+begin_src emacs-lisp
@@ -2941,3 +2953,12 @@ started using company-mode. I'm not sure though.
     (setq sanityinc/fci-mode-suppressed nil)
     (turn-on-fci-mode)))
 #+end_src
+* Local vars!
+I'll probably remove that exclamation point at some point, but right now I'm
+excited about file local vars.
+
+#+BEGIN_SRC
+# Local Variables:
+# after-save-hook: diego/async-tangle-init 
+# End:
+#+END_SRC

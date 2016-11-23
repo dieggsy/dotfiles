@@ -5,7 +5,8 @@
 (package-initialize nil)
 (setq package-enable-at-startup nil)
 
-(org-babel-load-file "~/.emacs.d/config.org")
+;; (org-babel-load-file "~/.emacs.d/config.org")
+(load-file "~/.emacs.d/config.el")
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -141,7 +142,8 @@
            (require
             (quote rainbow-mode)
             nil t)
-           (rainbow-mode 1)))))
+           (rainbow-mode 1))
+     (after-save-hook . diego/async-tangle-init))))
  '(send-mail-function (quote smtpmail-send-it))
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
  '(sml/name-width 40)
