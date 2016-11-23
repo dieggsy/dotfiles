@@ -165,7 +165,6 @@ pandoc
 pango
 pcre
 perl
-pianobar
 pinentry
 pixman
 pkg-config
@@ -180,7 +179,7 @@ pth
 py2cairo
 py3cairo
 pyenv
-pyenv-virtualenvwrapper
+pyenv-virtualenv
 pygobject3
 pyqt5
 python
@@ -242,6 +241,7 @@ xz
 youtube-dl
 z
 zeromq
+zplug
 zsh
 zsh-autosuggestions
 zsh-completions

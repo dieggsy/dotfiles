@@ -154,7 +154,6 @@ urllib3
 urwid
 virtualenv
 virtualenv-clone
-virtualenvwrapper
 wcwidth
 Werkzeug
 widgetsnbextension

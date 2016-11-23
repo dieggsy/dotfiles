@@ -95,7 +95,6 @@ uritemplate
 urllib3
 virtualenv
 virtualenv-clone
-virtualenvwrapper
 vobject
 wcwidth
 xlrd
