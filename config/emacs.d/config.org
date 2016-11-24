@@ -2476,6 +2476,7 @@ imenu on steroids.
 (use-package nlinum-relative
   :defer 5
   :ensure t
+  :disabled t
   :config
   (nlinum-relative-setup-evil)
   (setq nlinum-relative-redisplay-delay 0))
