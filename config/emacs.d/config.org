@@ -378,11 +378,8 @@ Handling/storing of files, backups, autosaves.
 (defun diego/ipython-shell ()
   "Open an ipython shell using multi-term, respecting virtualenv."
   (interactive)
-  (if (eq venv-current-name nil)
-      (let ((sane-term-shell-command "ipython"))
-        (sane-term-create))
-    (let ((sane-term-shell-command (concat venv-current-dir "/bin/ipython")))
-      (sane-term-create))))
+  (let ((sane-term-shell-command "ipython"))
+    (sane-term-create)))
 
 (defun diego/toggle-github-spacing ()
   "Make line spacing similar to github source code. Probably outdated"
@@ -753,8 +750,8 @@ based on or copied from spacemacs, so definitely check them out!
     "xpr" 'sp-rewrap-sexp
     "xps" 'sp-forward-slurp-sexp
     "xpS" 'sp-backward-slurp-sexp
-    "xpb" 'sp-backward-barf-sexp
-    "xpB" 'sp-forward-barf-sexp
+    "xpb" 'sp-forward-barf-sexp
+    "xpB" 'sp-backward-barf-sexp
 
     "iu"  'counsel-unicode-char
     "iy"  'yas-insert-snippet)
@@ -2475,7 +2472,7 @@ imenu on steroids.
 #+end_src
 
 *** [[https://github.com/CodeFalling/nlinum-relative][nlinum-relative]]
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package nlinum-relative
   :defer 5
   :ensure t
@@ -2704,7 +2701,6 @@ Stack exchange on emacs.
 (use-package eshell-prompt-extras
   :ensure t
   :defer t
-  :after 'virtualenvwrapper
   :config
   (autoload 'epe-theme-dakrone "eshell-prompt-extras")
   (setq eshell-highlight-prompt nil
