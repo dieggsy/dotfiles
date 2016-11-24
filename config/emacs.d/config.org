@@ -21,7 +21,9 @@ Setup up cool stuff like use-package, and stuff.
 ** Misc init
 Setup load directories, mostly.
 #+begin_src emacs-lisp
-(server-start)
+(require 'server)
+(unless (server-running-p)
+  (server-start))
 (require 'package)
 (add-to-list 'load-path
              (expand-file-name "lisp" user-emacs-directory))
@@ -155,14 +157,15 @@ consistent with other fonts. Last updated 2011, last successfully tested
 ;; (add-to-list 'default-frame-alist '(font . "SauceCodePro Nerd Font-11"))
 ;; (set-face-attribute 'default t :font "SauceCodePro Nerd Font-11")
 
-(defun font-exists-p (font)
-  "check if font exists"
-  (if (null (x-list-fonts font))
-      nil
-    t))
-(when (font-exists-p "Input")
-  (add-to-list 'default-frame-alist '(font . "Input-10"))
-  (set-face-attribute 'default t :font "Input-10"))
+(when (eq window-system 'ns)
+  (defun font-exists-p (font)
+    "check if font exists"
+    (if (null (x-list-fonts font))
+        nil
+      t))
+  (when (font-exists-p "Input")
+    (add-to-list 'default-frame-alist '(font . "Input-10"))
+    (set-face-attribute 'default t :font "Input-10")))
 
 (setq default-input-method "TeX")
 
