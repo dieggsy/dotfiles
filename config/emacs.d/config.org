@@ -1,5 +1,5 @@
 #+TITLE: Emacs Init File!
-#
+
 * Intro
 
 This is my emacs init file. =init.el= loads the elisp code from here. It's pretty
@@ -428,11 +428,22 @@ Handling/storing of files, backups, autosaves.
 (defun diego/async-tangle-init ()
   (async-start
    (lambda ()
+     ;; make async emacs aware of packages (for byte-compilation)
+     (package-initialize)
+     (setq package-enable-at-startup nil)
      (require 'org)
+
+     ;; tangle
      (org-babel-tangle-file
       (expand-file-name (concat user-emacs-directory "config.org"))
       (expand-file-name (concat user-emacs-directory "config.el"))
       "emacs-lisp")
+
+     ;; these guys were misbehaving at byte-compilation
+     (require 'crux)
+     (require 'fringe-helper)
+
+     ;; byte-compile
      (byte-compile-file
       (expand-file-name  (concat user-emacs-directory "config.el"))))
    'ignore))
