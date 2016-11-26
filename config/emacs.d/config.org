@@ -130,9 +130,8 @@ Get rid of menu bars, scroll bars, startup screens, etc.
 (setq display-time-load-average nil)
 (setq whitespace-style '(face trailing))
 (set-default 'truncate-lines t)
-;; (show-paren-mode)
-;; (setq show-paren-mode ())
 (blink-cursor-mode 0)
+(goto-address-mode)
 #+end_src
 ** Font/Text
 *Current:* Currently I'm using the wonderful [[http://input.fontbureau.com/][Input]] font. If, like me, you're
@@ -2748,6 +2747,8 @@ Properties that apply to all programming modes.
 (defun diego/setup-prog-mode ()
   (highlight-parentheses-mode 1)
   (rainbow-delimiters-mode)
+  (goto-address-mode 0)
+  (goto-address-prog-mode)
   ;; (make-local-variable 'show-paren-mode)
   ;; (setq show-paren-mode t)
   (fci-mode)
