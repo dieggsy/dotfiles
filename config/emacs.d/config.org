@@ -1430,8 +1430,8 @@ so I went with it.
     "mtto" 'org-table-toggle-coordinate-overlays
     "mtw"  'org-table-wrap-region)
 
-  (evil-leader/set-key-for-mode 'org-src-mode
-    "m'" 'org-edit-src-exit)
+ (add-hook 'org-src-mode-hook '(lambda ()
+    (evil-leader/set-key "m'" 'org-edit-src-exit)))
 
   (evil-define-key 'normal org-mode-map
     (kbd "RET") 'org-open-at-point
