@@ -5,7 +5,6 @@
 (package-initialize nil)
 (setq package-enable-at-startup nil)
 
-;; (org-babel-load-file "~/.emacs.d/config.org")
 (load-file "~/.emacs.d/config.el")
 
 (custom-set-variables
@@ -127,34 +126,8 @@
  '(recentf-exclude
    (quote
     ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" "/elpa/" "/xkcd/")))
- '(safe-local-variable-values
-   (quote
-    ((eval when
-           (fboundp
-            (quote rainbow-mode))
-           (rainbow-mode 1))
-     (eval when
-           (require
-            (quote rainbow-mode)
-            nil t)
-           (rainbow-mode 1))
-     (after-save-hook . diego/async-tangle-init))))
  '(send-mail-function (quote smtpmail-send-it))
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
- '(sml/name-width 40)
- '(sml/replacer-regexp-list
-   (quote
-    (("^~/org/" ":Org:")
-     ("^~/\\.emacs\\.d/elpa/" ":ELPA:")
-     ("^~/\\.emacs\\.d/" ":ED:")
-     ("^/sudo:.*:" ":SU:")
-     ("^~/Documents/" ":Doc:")
-     ("^~/Dropbox/" ":DB:")
-     ("^:\\([^:]*\\):Documento?s/" ":\\1/Doc:")
-     ("^~/[Gg]it/" ":Git:")
-     ("^~/[Gg]it[Hh]ub/" ":Git:")
-     ("^~/[Gg]it\\([Hh]ub\\|\\)-?[Pp]rojects/" ":Git:")
-     ("\"^~/Dropbox \\(MIT\\)/\"" "\":DB:\""))))
  '(smtpmail-smtp-server "smtp.gmail.com")
  '(smtpmail-smtp-service 25)
  '(term-default-bg-color "#002b36")

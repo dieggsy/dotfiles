@@ -1,5 +1,5 @@
 #+TITLE: Emacs Init File!
-
+#
 * Intro
 
 This is my emacs init file. =init.el= loads the elisp code from here. It's pretty
@@ -426,29 +426,6 @@ Handling/storing of files, backups, autosaves.
               (if (eq cursor-type nil)
                   t
                 nil)))
-
-(defun diego/async-tangle-init ()
-  (async-start
-   (lambda ()
-     ;; make async emacs aware of packages (for byte-compilation)
-     (package-initialize)
-     (setq package-enable-at-startup nil)
-     (require 'org)
-
-     ;; tangle
-     (org-babel-tangle-file
-      (expand-file-name (concat user-emacs-directory "config.org"))
-      (expand-file-name (concat user-emacs-directory "config.el"))
-      "emacs-lisp")
-
-     ;; these guys were misbehaving at byte-compilation
-     (require 'crux)
-     (require 'fringe-helper)
-
-     ;; byte-compile
-     (byte-compile-file
-      (expand-file-name  (concat user-emacs-directory "config.el"))))
-   'ignore))
 #+end_src
 *** Macros?
 #+begin_src emacs-lisp
@@ -1138,14 +1115,6 @@ A really nice search/completion system for emacs.
   (define-key ivy-minibuffer-map (kbd "<S-down>") #'ivy-next-history-element)
   (define-key ivy-minibuffer-map [escape] #'minibuffer-keyboard-quit)
 
-  ;; Use flx fuzzy matching except with ag and swiper
-  ;; (setq ivy-re-builders-alist
-  ;;       '((counsel-ag . ivy--regex-plus)
-  ;;         (counsel-descbinds . ivy--regex-plus)
-  ;;         (swiper . ivy--regex-plus)
-  ;;         (swiper-all . ivy--regex-plus)
-  ;;         (t . ivy--regex-fuzzy))
-
   ;;Don't start searches with '^' by default
   (setq ivy-initial-inputs-alist '((man . "^")))
 
@@ -1371,6 +1340,29 @@ so I went with it.
           ((eq char ?B)
            (org-cycle-list-bullet 8))
           (t (org-cycle-list-bullet (char-to-string char))))))
+
+(defun diego/async-tangle-init ()
+  (async-start
+   (lambda ()
+     ;; make async emacs aware of packages (for byte-compilation)
+     (package-initialize)
+     (setq package-enable-at-startup nil)
+     (require 'org)
+
+     ;; tangle
+     (org-babel-tangle-file
+      (expand-file-name (concat user-emacs-directory "config.org"))
+      (expand-file-name (concat user-emacs-directory "config.el"))
+      "emacs-lisp")
+
+     ;; these guys were misbehaving at byte-compilation
+     (require 'crux)
+     (require 'fringe-helper)
+
+     ;; byte-compile
+     (byte-compile-file
+      (expand-file-name  (concat user-emacs-directory "config.el"))))
+   'ignore))
 #+end_src
 *** Bindings
 #+begin_src emacs-lisp
@@ -1943,7 +1935,6 @@ I was looking for something with the nice look and simplicity of
 #+begin_src emacs-lisp
 (use-package crux
   :ensure t
-  :defer 5
   :config
   (crux-with-region-or-line eval-region)
   (crux-with-region-or-buffer indent-region)
@@ -2453,7 +2444,7 @@ Syntax check for python. Pretty good.
     ".....X.."))
 #+end_src
 *** [[https://github.com/Fanael/highlight-defined][highlight-defined]]
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package highlight-defined
   :commands highlight-defined-mode
   :ensure t)
@@ -2714,7 +2705,7 @@ Stack exchange on emacs.
 #+begin_src emacs-lisp
 (use-package eshell-prompt-extras
   :ensure t
-  :defer t
+  :after eshell
   :config
   (autoload 'epe-theme-dakrone "eshell-prompt-extras")
   (setq eshell-highlight-prompt nil
@@ -2723,7 +2714,7 @@ Stack exchange on emacs.
 *** [[https://github.com/xuchunyang/eshell-z][eshell-z]]
 #+begin_src emacs-lisp
 (use-package eshell-z
-  :defer t
+  :after eshell
   :ensure t)
 #+end_src
 
@@ -2734,8 +2725,7 @@ Stack exchange on emacs.
   :config
   (setq exec-path-from-shell-check-startup-files nil)
   (when (memq window-system '(mac ns))
-    (exec-path-from-shell-initialize))
-  )
+    (exec-path-from-shell-initialize)))
 #+end_src
 
 *** [[https://github.com/adamrt/sane-term][sane-term]]
