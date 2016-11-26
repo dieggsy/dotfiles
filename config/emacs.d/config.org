@@ -118,6 +118,11 @@ Get rid of menu bars, scroll bars, startup screens, etc.
 (setq inhibit-splash-screen t
       inhibit-startup-message t
       inhibit-startup-echo-area-message t)
+
+(setq  display-time-24hr-format t
+       display-time-default-load-average nil
+       display-time-format "%a %d %b  %H:%M ")
+
 (menu-bar-mode 0)
 (tool-bar-mode -1)
 (scroll-bar-mode -1)
@@ -2016,7 +2021,8 @@ Configure the Elfeed RSS reader with an Orgmode file
   :after elfeed
   :ensure t
   :config
-  (elfeed-goodies/setup))
+  (elfeed-goodies/setup)
+  (setq elfeed-goodies/entry-pane-position 'bottom))
 #+end_src
 *** [[https://github.com/lewang/flx][flx]]
 Fuzzy matching for Emacs ... a la Sublime Text.
