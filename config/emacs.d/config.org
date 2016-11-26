@@ -1,5 +1,5 @@
 #+TITLE: Emacs Init File!
-#
+
 * Intro
 
 This is my emacs init file. =init.el= loads the elisp code from here. It's pretty
@@ -181,6 +181,8 @@ consistent with other fonts. Last updated 2011, last successfully tested
 (add-hook 'minibuffer-setup-hook (lambda () (setq-local cursor-type '(bar . 1))))
 (setq enable-recursive-minibuffers t)
 (savehist-mode 1)
+
+(setq resize-mini-windows t)
 #+end_src
 ** Scratch buffer
 #+begin_src emacs-lisp
