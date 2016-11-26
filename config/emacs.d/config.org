@@ -1685,7 +1685,8 @@ Like git, for emacs. But cooler.
   :ensure t
   :commands magit-status
   :config
-  (setq magit-diff-use-overlays nil))
+  (setq magit-diff-use-overlays nil)
+  (setq auto-revert-check-vc-info t))
 
 (use-package evil-magit
   :after magit
