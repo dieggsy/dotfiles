@@ -1518,6 +1518,8 @@ so I went with it.
   (setq org-src-tab-acts-natively t)
   (setq org-M-RET-may-split-line nil)
   (setq org-list-use-circular-motion t)
+  (add-to-list 'safe-local-variable-values
+               '(after-save-hook . diego/async-tangle-init))
 
   ;; appearance
   (setq org-src-fontify-natively t)
@@ -1806,7 +1808,8 @@ Dim the font color of text in surrounding paragraphs
   :commands rainbow-mode
   :ensure t
   :config
-  (setq rainbow-x-colors-major-mode-list '(c-mode c++-mode java-mode)))
+  (setq rainbow-x-colors-major-mode-list '(c-mode c++-mode java-mode))
+  (add-to-list 'safe-local-eval-forms '(when (fboundp 'rainbow-mode) (rainbow-mode 1))))
 #+end_src
 *** [[https://github.com/therockmandolinist/emacs-theme-darktooth][darktooth-theme]]
 An Emacs 24 theme remixed from gruvbox (my fork).
