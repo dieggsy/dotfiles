@@ -2682,6 +2682,11 @@ Google stuff from emacs.
   :ensure t)
 #+end_src
 
+*** [[https://www.emacswiki.org/emacs/info+.el][info+]]
+#+begin_src emacs-lisp
+(use-package info+
+  :ensure t)
+#+end_src
 *** [[https://github.com/laynor/melpa-upstream-visit][melpa-upstream-visit]]
 #+begin_src emacs-lisp
 (use-package melpa-upstream-visit
