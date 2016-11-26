@@ -2790,7 +2790,10 @@ Properties that apply to all programming modes.
 #+end_src
 ** Matlab
 #+begin_src emacs-lisp
-(add-hook 'matlab-mode-hook 'diego/setup-prog-mode)
+(defun diego/setup-matlab-mode ()
+  (diego/setup-prog-mode)
+  (highlight-numbers-mode 0))
+(add-hook 'matlab-mode-hook 'diego/setup-matlab-mode)
 #+end_src
 ** Emacs-Lisp
 Mostly set up hs-minor-mode for emacs-lisp.
