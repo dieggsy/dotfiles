@@ -470,6 +470,7 @@ or that enhance emacs at a deeper level than any regular mode.
 ** [[https://github.com/tarsius/no-littering/blob/master/no-littering.el][no-littering]]
 #+begin_src emacs-lisp
 (use-package no-littering
+  :load-path "lisp/"
   :ensure t)
 #+end_src
 ** [[https://bitbucket.org/lyro/evil/wiki/Home][evil]]
