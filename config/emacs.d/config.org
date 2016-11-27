@@ -1764,7 +1764,13 @@ Read xkcd from Emacs.
     "k" 'xkcd-prev
     "l" 'xkcd-next
     "t" 'xkcd-alt-text
-    "q" 'xkcd-kill-buffer))
+    "q" 'xkcd-kill-buffer
+    "c" 'xkcd-copy-link
+    "g" 'xkcd-get
+    "r" 'xkcd-rand
+    "o" 'xkcd-open-browser
+    "e" 'xkcd-open-explanation-browser
+    "G" 'xkcd-get-latest))
 #+end_src
 
 *** zone-matrix
