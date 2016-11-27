@@ -206,10 +206,6 @@ consistent with other fonts. Last updated 2011, last successfully tested
 ** File and session handling
 Handling/storing of files, backups, autosaves.
 #+begin_src emacs-lisp
-(defvar backup-dir "~/.emacsbackups/")
-(setq backup-directory-alist (list (cons "." backup-dir)))
-(setq auto-save-file-name-transforms
-      `((".*" ,temporary-file-directory t)))
 (global-auto-revert-mode t)
 (save-place-mode 1)
 (desktop-save-mode 1)
@@ -471,6 +467,11 @@ I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard.
 * Major configs
 These are packages that I consider /absolutely essential/ to my emacs workflow,
 or that enhance emacs at a deeper level than any regular mode.
+** [[https://github.com/tarsius/no-littering/blob/master/no-littering.el][no-littering]]
+#+begin_src emacs-lisp
+(use-package no-littering
+  :ensure t)
+#+end_src
 ** [[https://bitbucket.org/lyro/evil/wiki/Home][evil]]
 Evil is an extensible vi layer for Emacs. It emulates the main features of Vim,
 and provides facilities for writing custom extensions.
