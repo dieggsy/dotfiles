@@ -566,7 +566,7 @@ based on or copied from spacemacs, so definitely check them out!
     "ap"  'paradox-list-packages
     "ar"  'ranger
     "as"  'speed-type-text
-    "at"  'sane-term
+    "at"  'sane-term-create
     "au"  'undo-tree-visualize
     "aw"  'sunshine-forecast
     "ax"  'xkcd
@@ -663,7 +663,8 @@ based on or copied from spacemacs, so definitely check them out!
     "tg" 'diego/github-spacing
     "tc" 'diego/toggle-linum-fci
     "tr" 'nlinum-relative-toggle
-    "tS" 'flyspell-mode)
+    "tS" 'flyspell-mode
+    "tp" 'smartparens-mode)
 
   (defun diego/toggle-linum-fci ()
     (interactive)
@@ -1063,9 +1064,9 @@ based on or copied from spacemacs, so definitely check them out!
 (use-package evil-numbers
   :ensure t
   :after evil)
+
 (evil-mode 1)
 #+end_src
-
 ** [[https://github.com/abo-abo/swiper][ivy]]
 A really nice search/completion system for emacs.
 *** ivy
@@ -2567,10 +2568,11 @@ Bringing the goodness of ranger to dired!
 (use-package ranger
   :ensure t
   :commands (ranger deer deer-jump-other-window)
+  :init
   :config
-  (setq ranger-show-literal nil)
-  (setq ranger-show-dotfiles nil)
   (ranger-override-dired-mode t)
+  (setq ranger-show-literal nil)
+  (setq ranger-show-hidden nil)
   (setq ranger-cleanup-eagerly t)
   (setq ranger-parent-depth 0)
 
@@ -2581,8 +2583,7 @@ Bringing the goodness of ranger to dired!
     (cond
      ((featurep 'ivy)
       (counsel-find-file default-directory))
-     (t
-      (call-interactively 'ido-find-file))))
+     (t (call-interactively 'ido-find-file))))
 
   ;; (advice-add
   ;;  'deer-jump-other-window
