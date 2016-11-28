@@ -44,3 +44,4 @@
 /config/gnus.el
 /config/mutt/cache
 /config/mutt/certificates
+/config/emacs.d/init.elc
