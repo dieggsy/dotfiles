@@ -1,3 +1,4 @@
+# -*- mode: conf -*-
 default_context:
     full_name: "Diego A. Mundo"
     email: "diegoamundo@gmail.com"
