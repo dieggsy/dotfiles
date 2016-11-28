@@ -84,6 +84,7 @@ highlight
 htop-osx
 hub
 hugo
+hunspell
 icu4c
 ilmbase
 imagemagick
