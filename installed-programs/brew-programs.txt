@@ -96,6 +96,7 @@ isync
 jack
 jansson
 jbig2dec
+jemalloc
 jpeg
 jq
 jrnl
@@ -128,12 +129,15 @@ libsigc++
 libsndfile
 libspectre
 libtasn1
+libtermkey
 libtiff
 libtool
 libusb
 libusb-compat
+libuv
 libvo-aacenc
 libvorbis
+libvterm
 libxdg-basedir
 libxml2
 libyaml
@@ -149,6 +153,7 @@ mpc
 mpd
 mpfr
 mplayer
+msgpack
 mutt
 ncmpcpp
 nettle
@@ -221,6 +226,7 @@ todo-txt
 tokyo-cabinet
 trash
 unar
+unibilium
 unrar
 urlview
 utf8proc
