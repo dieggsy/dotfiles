@@ -7,6 +7,7 @@
 /config/emacs.d/config.elc
 /config/emacs.d/elpa
 /config/emacs.d/etc/anaconda-mode
+/config/emacs.d/etc/url
 /config/emacs.d/helm-doc.org
 /config/emacs.d/history
 /config/emacs.d/lisp/nothing-to-see-here.el
