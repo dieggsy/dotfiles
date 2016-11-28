@@ -125,7 +125,33 @@
  '(python-shell-interpreter "python")
  '(recentf-exclude
    (quote
-    ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" "/elpa/" "/xkcd/")) t)
+    ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" "/elpa/" "/xkcd/")))
+ '(safe-local-eval-forms
+   (quote
+    ((add-hook
+      (quote write-file-hooks)
+      (quote time-stamp))
+     (add-hook
+      (quote write-file-functions)
+      (quote time-stamp))
+     (add-hook
+      (quote before-save-hook)
+      (quote time-stamp)
+      nil t)
+     (add-hook
+      (quote before-save-hook)
+      (quote delete-trailing-whitespace)
+      nil t)
+     (when
+         (fboundp
+          (quote rainbow-mode))
+       (rainbow-mode 1)))))
+ '(safe-local-variable-values
+   (quote
+    ((after-save-hook lambda nil
+                      (byte-compile-file
+                       (locate-user-emacs-file "init.el")))
+     (after-save-hook . diego/async-tangle-init))))
  '(send-mail-function (quote smtpmail-send-it))
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
  '(smtpmail-smtp-server "smtp.gmail.com")
