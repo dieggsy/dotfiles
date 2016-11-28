@@ -204,7 +204,6 @@ consistent with other fonts. Last updated 2011, last successfully tested
 ,* Other")
 #+end_src
 ** File and session handling
-Handling/storing of files, backups, autosaves.
 #+begin_src emacs-lisp
 (global-auto-revert-mode t)
 (save-place-mode 1)
@@ -474,8 +473,7 @@ or that enhance emacs at a deeper level than any regular mode.
 ** [[https://github.com/tarsius/no-littering/blob/master/no-littering.el][no-littering]]
 #+begin_src emacs-lisp
 (use-package no-littering
-  :load-path "lisp/"
-  :ensure t)
+  :load-path "lisp/")
 #+end_src
 ** [[https://bitbucket.org/lyro/evil/wiki/Home][evil]]
 Evil is an extensible vi layer for Emacs. It emulates the main features of Vim,
