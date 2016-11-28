@@ -423,6 +423,10 @@ Handling/storing of files, backups, autosaves.
               (if (eq cursor-type nil)
                   t
                 nil)))
+
+(defun diego/paragraphize ()
+  (interactive)
+  (flush-lines "^$" (region-beginning) (region-end)))
 #+end_src
 *** Macros?
 #+begin_src emacs-lisp
