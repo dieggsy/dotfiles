@@ -28,7 +28,6 @@ Setup load directories, mostly.
 (require 'server)
 (unless (server-running-p)
   (server-start))
-(require 'package)
 (add-to-list 'load-path
              (expand-file-name "lisp" user-emacs-directory))
 
@@ -189,7 +188,7 @@ consistent with other fonts. Last updated 2011, last successfully tested
 (setq resize-mini-windows t)
 #+end_src
 ** Scratch buffer
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (setq initial-major-mode 'org-mode)
 (setq initial-scratch-message
       "# This buffer is for text that is not saved, and for Lisp/Python evaluation.
@@ -212,6 +211,7 @@ consistent with other fonts. Last updated 2011, last successfully tested
 (global-auto-revert-mode t)
 (save-place-mode 1)
 (desktop-save-mode 1)
+
 (add-to-list 'desktop-globals-to-save 'ivy-views)
 (add-to-list 'desktop-globals-to-save '(kill-ring . 100))
 (setq save-interprogram-paste-before-kill t)
@@ -1082,6 +1082,9 @@ A really nice search/completion system for emacs.
 (use-package ivy
   :ensure t
   :bind (("<f6>" . ivy-resume))
+  :commands (ivy-switch-buffer
+             ivy-switch-buffer-other-window
+             counsel-M-x)
   :config
   (ivy-mode 1)
   (define-key ivy-minibuffer-map [escape] 'minibuffer-keyboard-quit)
@@ -1135,14 +1138,13 @@ A really nice search/completion system for emacs.
 #+BEGIN_SRC emacs-lisp
 (use-package swiper
   :ensure t
-  :after ivy
-  :config)
+  :commands (swiper swiper-all swiper-multi))
 #+END_SRC
 *** counsel
 #+BEGIN_SRC emacs-lisp
 (use-package counsel
   :ensure t
-  :after ivy
+  :commands (counsel-M-x counsel-find-file)
   :bind (("M-x" . counsel-M-x)
          ("C-x C-f" . counsel-find-file))
   :config
@@ -1355,23 +1357,20 @@ so I went with it.
   (async-start
    (lambda ()
      ;; make async emacs aware of packages (for byte-compilation)
-     (package-initialize)
-     (setq package-enable-at-startup nil)
+     ;;(setq package-enable-at-startup nil)
+     (load-file (locate-user-emacs-file "init.el"))
+     ;;(package-initialize)
      (require 'org)
 
      ;; tangle
      (org-babel-tangle-file
-      (expand-file-name (concat user-emacs-directory "config.org"))
-      (expand-file-name (concat user-emacs-directory "config.el"))
+      (expand-file-name (locate-user-emacs-file "config.org"))
+      (expand-file-name (locate-user-emacs-file "config.el"))
       "emacs-lisp")
-
-     ;; these guys were misbehaving at byte-compilation
-     (require 'crux)
-     (require 'fringe-helper)
 
      ;; byte-compile
      (byte-compile-file
-      (expand-file-name  (concat user-emacs-directory "config.el"))))
+      (expand-file-name  (locate-user-emacs-file "config.el"))))
    'ignore))
 #+end_src
 *** Bindings
@@ -1551,6 +1550,7 @@ so I went with it.
 (use-package org
   :ensure org-plus-contrib
   :commands (org-capture)
+  :defer t
   :init
   (setq org-list-allow-alphabetical t)
   :config
@@ -1633,11 +1633,16 @@ so I went with it.
               ;; (flyspell-mode)
               (org-indent-mode))))
 #+end_src
+
+#+RESULTS:
+: t
+
 ** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 Emacs package that displays available keybindings in popup
 #+begin_src emacs-lisp
 (use-package which-key
   :ensure t
+  :defer 5
   :config
   (which-key-mode)
   (setq which-key-show-operator-state-maps t)
@@ -2251,6 +2256,7 @@ Edit jupyter notebooks in emacs
 #+begin_src emacs-lisp
 (use-package ein
   :ensure t
+  :defer t
   :commands ein:notebooklist-open)
 #+end_src
 
@@ -2265,7 +2271,7 @@ Edit jupyter notebooks in emacs
 (use-package matlab
   :defer t
   :ensure matlab-mode
-  :init
+  :config
   (load-library "matlab-load"))
 #+end_src
 
