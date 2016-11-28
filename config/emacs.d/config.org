@@ -497,7 +497,9 @@ based on or copied from spacemacs, so definitely check them out!
     "sa" 'counsel-ag
     "ss" 'swiper-all
     "sm" 'swiper-multi
-    "sw" 'define-word-at-point
+    "sw" 'diego/define-word
+    "sg" 'google-this-search
+    "sd" 'ddg-this-search
     "/"  'swiper))
 #+end_src
 **** Projects
@@ -2674,8 +2676,15 @@ Export org to twitter bootstrap compatible HTML.
 *** [[https://github.com/abo-abo/define-word][define-word]]
 #+begin_src emacs-lisp
 (use-package define-word
-  :commands define-word
-  :ensure t)
+  :commands (define-word diego/define-word)
+  :ensure t
+  :config
+  (defun diego/define-word ()
+    (interactive)
+    (let ((word (read-string
+                 (concat "Define word [" (thing-at-point 'word) "]: ") nil nil
+                 (thing-at-point 'word))))
+      (define-word word))))
 #+end_src
 *** [[https://github.com/xuchunyang/devdocs.el][devdocs]]
 #+begin_src emacs-lisp
@@ -2689,9 +2698,46 @@ Google stuff from emacs.
 #+begin_src emacs-lisp
 (use-package google-this
   :ensure t
-  :commands google-this
+  :commands google-this-search
   :config
-  (google-this-mode 1))
+  (defun ddg-this-parse-and-search-string (text prefix &optional search-url)
+    "Convert illegal characters in TEXT to their %XX versions, and then duckduckgo.
+PREFIX determines quoting.
+
+Don't call this function directly, it could change depending on
+version. Use `ddg-this-string' instead."
+    (let* (;; Create the url
+           (query-string (google-this--maybe-wrap-in-quotes text prefix))
+           ;; Perform the actual search.
+           (browse-result (funcall google-this-browse-url-function
+                                   (format (or search-url "https://duckduckgo.com/?q=%s")
+                                           (url-hexify-string query-string)))))
+      ;; Maybe suspend emacs.
+      (when google-this-suspend-after-search (suspend-frame))
+      ;; Return what browse-url returned (very usefull for tests).
+      browse-result))
+
+  (defun ddg-this-pick-term (prefix)
+    "Decide what \"this\" and return it.
+PREFIX determines quoting."
+    (let* ((term (if (region-active-p)
+                     (buffer-substring-no-properties (region-beginning) (region-end))
+                   (or (thing-at-point 'symbol)
+                       (thing-at-point 'word)
+                       (buffer-substring-no-properties (line-beginning-position)
+                                                       (line-end-position)))))
+           (term (read-string (concat "DuckDuckGo [" term "]: ") nil nil term)))
+      term))
+
+  (defun ddg-this-search (prefix &optional search-string)
+    "Write and do a DuckDuckGo search.
+Interactively PREFIX determines quoting.
+Non-interactively SEARCH-STRING is the string to search."
+    (interactive "P")
+    (let* ((term (ddg-this-pick-term prefix)))
+      (if (stringp term)
+          (ddg-this-parse-and-search-string term prefix search-string)
+        (message "[google-this-string] Empty query.")))))
 #+end_src
 
 *** [[https://github.com/atykhonov/google-translate][google-translate]]
