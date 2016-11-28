@@ -490,10 +490,10 @@ based on or copied from spacemacs, so definitely check them out!
 #+begin_src emacs-lisp
 (defun diego/leader-search ()
   (evil-leader/set-key
-
     "sa" 'counsel-ag
     "ss" 'swiper-all
     "sm" 'swiper-multi
+    "sw" 'define-word-at-point
     "/"  'swiper))
 #+end_src
 **** Projects
@@ -713,7 +713,6 @@ based on or copied from spacemacs, so definitely check them out!
     "xa|" 'diego/align-repeat-bar
     "xa'" 'diego/align-repeat-single-quote
 
-    "xU"  'evil-upcase
     "xdw" 'delete-trailing-whitespace
     "xir" 'indent-region
     "xib" 'indent-buffer
@@ -723,8 +722,6 @@ based on or copied from spacemacs, so definitely check them out!
     "xtc" 'transpose-chars
     "xtl" 'transpose-lines
     "xtw" 'transpose-words
-    "xu"  'evil-downcase
-    "xwd" 'define-word-at-point
     "xwc" 'count-words
 
     "xma" 'evil-multiedit-match-all
