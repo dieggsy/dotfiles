@@ -203,3 +203,7 @@
 (put 'erase-buffer 'disabled nil)
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
+
+;; Local Variables:
+;; after-save-hook: (lambda () (byte-compile-file (locate-user-emacs-file "init.el")))
+;; End:
