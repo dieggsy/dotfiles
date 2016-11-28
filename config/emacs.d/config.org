@@ -7,6 +7,10 @@ cool that I can write it in org mode, because easy organization and
 rearrangement are pretty sweet. Check out [[https://github.com/aaronbieber/dotfiles/tree/master/configs/emacs.d][@aaronbieber]], [[https://github.com/hrs/dotfiles/tree/master/emacs.d][@hrs]], and [[https://github.com/syl20bnr/spacemacs][spacemacs]] - a
 lot of the inspiration (and erm, code) for this is taken from them.
 
+#+begin_src emacs-lisp
+(defconst emacs-start-time (current-time))
+#+end_src
+
 * Personal Info
 
 #+begin_src emacs-lisp
@@ -2880,6 +2884,21 @@ started using company-mode. I'm not sure though.
 * Local vars!
 I'll probably remove that exclamation point at some point, but right now I'm
 excited about file local vars.
+
+#+begin_src emacs-lisp
+(when window-system
+  (let ((elapsed (float-time (time-subtract (current-time)
+                                            emacs-start-time))))
+    (message "Loading %s...done (%.3fs)" load-file-name elapsed))
+
+  (add-hook 'after-init-hook
+            `(lambda ()
+               (let ((elapsed (float-time (time-subtract (current-time)
+                                                         emacs-start-time))))
+                 (message "Loading %s...done (%.3fs) [after-init]"
+                          ,load-file-name elapsed)))
+            t))
+#+end_src
 
 #+BEGIN_SRC
 # Local Variables:
