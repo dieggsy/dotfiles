@@ -344,17 +344,6 @@ consistent with other fonts. Last updated 2011, last successfully tested
           (select-window first-win)
           (if this-win-2nd (other-window 1))))))
 
-;; (defun minibuffer-keyboard-quit ()
-;;   "Abort recursive edit.
-;;     In Delete Selection mode, if the mark is active, just deactivate it;
-;;     then it takes a second \\[keyboard-quit] to abort the minibuffer."
-;;   (interactive)
-;;   (if (and delete-selection-mode transient-mark-mode mark-active)
-;;       (setq deactivate-mark  t)
-;;     (when (get-buffer "*Completions*") (delete-windows-on "*Completions*"))
-;;     (abort-recursive-edit)))
-
-
 (defun diego/fill-or-unfill ()
   "Like `fill-paragraph', but unfill if used twice."
   (interactive)
@@ -916,9 +905,7 @@ based on or copied from spacemacs, so definitely check them out!
   (diego/leader-toggle)
   (diego/leader-window)
   (diego/leader-spelling)
-  (define-key universal-argument-map (kbd "SPC u") 'universal-argument-more)
-
-  )
+  (define-key universal-argument-map (kbd "SPC u") 'universal-argument-more))
 #+end_src
 *** Modes
 #+begin_src emacs-lisp
