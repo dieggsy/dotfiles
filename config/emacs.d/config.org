@@ -1583,19 +1583,7 @@ so I went with it.
                             ("◼ WAITING"     . (?◼ (Br . Bl) ?◼ (Br . Bl) ?◼))
                             ("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
                             ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
-              (prettify-symbols-mode)
-
-              (define-prefix-command 'diego/org-run-shortcuts)
-              (define-key
-                diego/org-run-shortcuts "f" (tiny-menu-run-item "org-files"))
-              (define-key
-                diego/org-run-shortcuts "t" (tiny-menu-run-item "org-things"))
-              (define-key
-                diego/org-run-shortcuts "c" (tiny-menu-run-item "org-captures"))
-              (define-key
-                diego/org-run-shortcuts "l" (tiny-menu-run-item "org-links"))
-              (define-key
-                org-agenda-mode-map (kbd "\\") diego/org-run-shortcuts)))
+              (prettify-symbols-mode)))
 
   (add-hook 'org-capture-mode-hook
             (lambda ()
@@ -2180,35 +2168,6 @@ An Emacs package for displaying the forecast from OpenWeatherMap.
   :commands (sunshine-forecast sunshine-quick-forecast)
   :config
   (setq sunshine-location "02139,USA"))
-#+end_src
-*** [[https://github.com/aaronbieber/tiny-menu.el][tiny-menu]]
-Run commands via a tiny menu.
-#+begin_src emacs-lisp
-(use-package tiny-menu
-  :commands (tiny-menu tiny-menu-run-item)
-  :ensure t
-  :config
-  (setq tiny-menu-items
-        '(("org-things"   ("Things"
-                           ((?t "Tag"     org-tags-view)
-                            (?i "ID"      diego/org-goto-custom-id)
-                            (?k "Keyword" org-search-view))))
-          ("org-links"    ("Links"
-                           ((?c "Capture"   org-store-link)
-                            (?l "Insert"    org-insert-link)
-                            (?i "Custom ID" diego/org-insert-custom-id-link))))
-          ("org-files"    ("Files"
-                           ((?t "TODO"  (lambda () (diego/pop-to-org-todo nil)))
-                            (?n "Notes" (lambda () (diego/pop-to-org-notes nil)))
-                            (?v "Vault" (lambda () (diego/pop-to-org-vault nil))))))
-          ("org-captures" ("Captures"
-                           ((?c "TODO"  diego/org-task-capture)
-                            (?n "Note"  (lambda () (interactive) (org-capture nil "n"))))))))
-  (evil-define-key 'normal global-map (kbd "\\ \\") 'tiny-menu)
-  (evil-define-key 'normal global-map (kbd "\\ f") (tiny-menu-run-item "org-files"))
-  (evil-define-key 'normal global-map (kbd "\\ t") (tiny-menu-run-item "org-things"))
-  (evil-define-key 'normal global-map (kbd "\\ c") (tiny-menu-run-item "org-captures"))
-  (evil-define-key 'normal global-map (kbd "\\ l") (tiny-menu-run-item "org-links")))
 #+end_src
 *** [[https://github.com/hayamiz/twittering-mode][twittering-mode]]
 An Emacs major mode for Twitter
