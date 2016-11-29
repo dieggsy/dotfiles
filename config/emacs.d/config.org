@@ -1950,9 +1950,9 @@ I was looking for something with the nice look and simplicity of
   :after bbdb
   :ensure t)
 
-;;(use-package counsel-bbdb
-;;  :after bbdb
-;;  :ensure t)
+(use-package counsel-bbdb
+ :after bbdb
+ :ensure t)
 #+end_src
 *** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
 Cursor stays vertically centered. I use this for reading, mostly.
