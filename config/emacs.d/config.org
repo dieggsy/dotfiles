@@ -1071,12 +1071,10 @@ A really nice search/completion system for emacs.
   :commands (ivy-switch-buffer
              ivy-switch-buffer-other-window
              counsel-M-x)
-  :preface
-  (eval-when-compile
-    (declare-function ivy-alt-done "ivy")
-    (declare-function ivy-dispatching-done "ivy")
-    (declare-function ivy-previous-history-element "ivy")
-    (declare-function ivy-next-history-element "ivy"))
+  :functions (ivy-alt-done
+              ivy-dispatching-done
+              ivy-previous-history-element
+              ivy-next-history-element)
   :config
   (ivy-mode 1)
   (define-key ivy-minibuffer-map [escape] #'minibuffer-keyboard-quit)
@@ -1138,10 +1136,8 @@ A really nice search/completion system for emacs.
   :commands (counsel-M-x counsel-find-file)
   :bind (("M-x" . counsel-M-x)
          ("C-x C-f" . counsel-find-file))
-  :preface
-  (eval-when-compile
-    (declare-function ivy--format-function-generic "ivy")
-    (declare-function counsel--yank-pop-truncate "counsel"))
+  :functions (ivy--format-function-generic
+              counsel--yank-pop-truncate)
   :config
   (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind)
   (counsel-mode 1)
@@ -1546,9 +1542,7 @@ so I went with it.
   :ensure org-plus-contrib
   :commands (org-capture)
   :defer t
-  :preface
-  (eval-when-compile
-    (defvar org-habit-graph-column))
+  :defines (org-habit-graph-column)
   :init
   (setq org-list-allow-alphabetical t)
   :config
@@ -1679,9 +1673,7 @@ Like git, for emacs. But cooler.
 (use-package magit
   :ensure t
   :commands magit-status
-  :preface
-  (eval-when-compile
-    (declare-function magit-blame-quit "magit-blame"))
+  :functions (magit-blame-quit)
   :config
   (setq magit-diff-use-overlays nil)
   (setq auto-revert-check-vc-info t)
@@ -2042,12 +2034,10 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 (use-package flyspell
   :commands flyspell-mode
   :ensure t
-  :preface
-  (eval-when-compile
-    (declare-function flyspell-goto-next-error "flyspell")
-    (declare-function flyspell-get-word "flyspell")
-    (declare-function flyspell-do-correct "flyspell")
-    (declare-function flyspell-auto-correct-word "flyspell"))
+  :functions (flyspell-goto-next-error
+              flyspell-get-word
+              flyspell-do-correct
+              flyspell-auto-correct-word)
   :config
   (defun diego/flyspell-correct-next (&optional arg)
     (interactive "p")
@@ -2687,9 +2677,7 @@ Google stuff from emacs.
 (use-package google-this
   :ensure t
   :commands google-this-search
-  :preface
-  (eval-when-compile
-    (declare-function google-this--maybe-wrap-in-quotes "google-this"))
+  :functions (google-this--maybe-wrap-in-quotes)
   :config
   (defun ddg-this-parse-and-search-string (text prefix &optional search-url)
     "Convert illegal characters in TEXT to their %XX versions, and then duckduckgo.
