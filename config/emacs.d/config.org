@@ -39,9 +39,9 @@ Setup load directories, mostly.
 
 ** Init utils
 #+begin_src emacs-lisp
-  ;;; init-utils.el --- Utilities borrowed from Steve Purcell
-  ;;; Commentary:
-  ;;; Code:
+;; init-utils.el --- Utilities borrowed from Steve Purcell
+;; Commentary:
+;; Code:
 (if (fboundp 'with-eval-after-load)
     (defalias 'after-load 'with-eval-after-load)
   (defmacro after-load (feature &rest body)
@@ -163,6 +163,8 @@ consistent with other fonts. Last updated 2011, last successfully tested
 
 ;; (add-to-list 'default-frame-alist '(font . "SauceCodePro Nerd Font-11"))
 ;; (set-face-attribute 'default t :font "SauceCodePro Nerd Font-11")
+(eval-when-compile
+  (declare-function font-exists-p "config"))
 
 (when (eq window-system 'ns)
   (defun font-exists-p (font)
@@ -211,7 +213,6 @@ consistent with other fonts. Last updated 2011, last successfully tested
 (global-auto-revert-mode t)
 (save-place-mode 1)
 (desktop-save-mode 1)
-
 (add-to-list 'desktop-globals-to-save 'ivy-views)
 (add-to-list 'desktop-globals-to-save '(kill-ring . 100))
 (setq save-interprogram-paste-before-kill t)
@@ -272,6 +273,8 @@ consistent with other fonts. Last updated 2011, last successfully tested
                  (thing-at-point 'line t)
                  ))))))
 
+(eval-when-compile
+  (defvar zone-programs))
 (defun zone-choose (pgm)
   "Choose a PGM to run for `zone'."
   (interactive
@@ -363,20 +366,6 @@ consistent with other fonts. Last updated 2011, last successfully tested
     (call-interactively #'fill-paragraph)))
 
 (global-set-key [remap fill-paragraph] #'diego/fill-or-unfill)
-
-(defun diego/flyspell-add-to-dictionary ()
-  "Add word at point to flyspell dictionary at `/Users/diego/.ispell_english'"
-  (interactive)
-  (let ((current-location (point))
-        (word (flyspell-get-word)))
-    (when (consp word)
-      (flyspell-do-correct 'save
-                           nil
-                           (car word)
-                           current-location
-                           (cadr word)
-                           (caddr word)
-                           current-location))))
 #+end_src
 *** "Original"
 #+begin_src emacs-lisp
@@ -791,6 +780,8 @@ based on or copied from spacemacs, so definitely check them out!
   (diego|create-align-repeat-x "backslash" "\\\\")
   (diego|create-align-repeat-x "single-quote" "'")
 
+  (eval-when-compile
+    (declare-function align-region "align"))
   (defun diego/align-repeat-decimal (start end)
     "Align a table of numbers on decimal points and dollar signs (both optional)"
     (interactive "r")
@@ -927,12 +918,7 @@ based on or copied from spacemacs, so definitely check them out!
   (diego/leader-spelling)
   (define-key universal-argument-map (kbd "SPC u") 'universal-argument-more)
 
-  (defun magit-blame-toggle ()
-    "Toggle magit-blame-mode on and off interactively."
-    (interactive)
-    (if (and (boundp 'magit-blame-mode) magit-blame-mode)
-        (magit-blame-quit)
-      (call-interactively 'magit-blame))))
+  )
 #+end_src
 *** Modes
 #+begin_src emacs-lisp
@@ -1085,12 +1071,18 @@ A really nice search/completion system for emacs.
   :commands (ivy-switch-buffer
              ivy-switch-buffer-other-window
              counsel-M-x)
+  :preface
+  (eval-when-compile
+    (declare-function ivy-alt-done "ivy")
+    (declare-function ivy-dispatching-done "ivy")
+    (declare-function ivy-previous-history-element "ivy")
+    (declare-function ivy-next-history-element "ivy"))
   :config
   (ivy-mode 1)
-  (define-key ivy-minibuffer-map [escape] 'minibuffer-keyboard-quit)
-  (define-key ivy-minibuffer-map [?\C-/] 'minibuffer-keyboard-quit)
-  (define-key ivy-minibuffer-map [escape] 'keyboard-escape-quit)
-  (define-key ivy-minibuffer-map (kbd "C-/") 'keyboard-escape-quit)
+  (define-key ivy-minibuffer-map [escape] #'minibuffer-keyboard-quit)
+  (define-key ivy-minibuffer-map [?\C-/] #'minibuffer-keyboard-quit)
+  (define-key ivy-minibuffer-map [escape] #'keyboard-escape-quit)
+  (define-key ivy-minibuffer-map (kbd "C-/") #'keyboard-escape-quit)
 
   (setq ivy-format-function 'ivy-format-function-arrow) ; DAT NICE ARROW THOUGH aosenuth
   (setq projectile-completion-system 'ivy)
@@ -1126,7 +1118,6 @@ A really nice search/completion system for emacs.
   (define-key ivy-minibuffer-map [S-return] #'ivy-dispatching-done)
   (define-key ivy-minibuffer-map (kbd "<S-up>") #'ivy-previous-history-element)
   (define-key ivy-minibuffer-map (kbd "<S-down>") #'ivy-next-history-element)
-  (define-key ivy-minibuffer-map [escape] #'minibuffer-keyboard-quit)
 
   ;;Don't start searches with '^' by default
   (setq ivy-initial-inputs-alist '((man . "^")))
@@ -1147,6 +1138,10 @@ A really nice search/completion system for emacs.
   :commands (counsel-M-x counsel-find-file)
   :bind (("M-x" . counsel-M-x)
          ("C-x C-f" . counsel-find-file))
+  :preface
+  (eval-when-compile
+    (declare-function ivy--format-function-generic "ivy")
+    (declare-function counsel--yank-pop-truncate "counsel"))
   :config
   (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind)
   (counsel-mode 1)
@@ -1551,6 +1546,9 @@ so I went with it.
   :ensure org-plus-contrib
   :commands (org-capture)
   :defer t
+  :preface
+  (eval-when-compile
+    (defvar org-habit-graph-column))
   :init
   (setq org-list-allow-alphabetical t)
   :config
@@ -1634,9 +1632,6 @@ so I went with it.
               (org-indent-mode))))
 #+end_src
 
-#+RESULTS:
-: t
-
 ** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 Emacs package that displays available keybindings in popup
 #+begin_src emacs-lisp
@@ -1696,9 +1691,19 @@ Like git, for emacs. But cooler.
 (use-package magit
   :ensure t
   :commands magit-status
+  :preface
+  (eval-when-compile
+    (declare-function magit-blame-quit "magit-blame"))
   :config
   (setq magit-diff-use-overlays nil)
-  (setq auto-revert-check-vc-info t))
+  (setq auto-revert-check-vc-info t)
+
+  (defun magit-blame-toggle ()
+    "Toggle magit-blame-mode on and off interactively."
+    (interactive)
+    (if (and (boundp 'magit-blame-mode) magit-blame-mode)
+        (magit-blame-quit)
+      (call-interactively 'magit-blame))))
 
 (use-package evil-magit
   :after magit
@@ -2049,11 +2054,31 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 (use-package flyspell
   :commands flyspell-mode
   :ensure t
+  :preface
+  (eval-when-compile
+    (declare-function flyspell-goto-next-error "flyspell")
+    (declare-function flyspell-get-word "flyspell")
+    (declare-function flyspell-do-correct "flyspell")
+    (declare-function flyspell-auto-correct-word "flyspell"))
   :config
   (defun diego/flyspell-correct-next (&optional arg)
     (interactive "p")
     (flyspell-goto-next-error)
-    (flyspell-auto-correct-word)))
+    (flyspell-auto-correct-word))
+
+  (defun diego/flyspell-add-to-dictionary ()
+    "Add word at point to flyspell dictionary at `/Users/diego/.ispell_english'"
+    (interactive)
+    (let ((current-location (point))
+          (word (flyspell-get-word)))
+      (when (consp word)
+        (flyspell-do-correct 'save
+                             nil
+                             (car word)
+                             current-location
+                             (cadr word)
+                             (caddr word)
+                             current-location)))))
 
 (use-package flyspell-correct-ivy
   :after flyspell
@@ -2311,7 +2336,8 @@ Edit text area on Chrome with Emacs using Atomic Chrome
   :ensure t
   :defer t
   :config
-  (atomic-chrome-start-server)
+  (unless atomic-chrome-server-atomic-chrome
+    (atomic-chrome-start-server))
   (setq atomic-chrome-buffer-open-style 'frame))
 #+end_src
 
@@ -2702,6 +2728,9 @@ Google stuff from emacs.
 (use-package google-this
   :ensure t
   :commands google-this-search
+  :preface
+  (eval-when-compile
+    (declare-function google-this--maybe-wrap-in-quotes "google-this"))
   :config
   (defun ddg-this-parse-and-search-string (text prefix &optional search-url)
     "Convert illegal characters in TEXT to their %XX versions, and then duckduckgo.
