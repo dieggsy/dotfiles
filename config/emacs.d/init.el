@@ -148,7 +148,7 @@
     ((after-save-hook lambda nil
                       (byte-compile-file
                        (locate-user-emacs-file "init.el")))
-     (after-save-hook . diego/async-tangle-init))))
+     (after-save-hook git-gutter diego/async-tangle-init))))
  '(send-mail-function (quote smtpmail-send-it))
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
  '(smtpmail-smtp-server "smtp.gmail.com")

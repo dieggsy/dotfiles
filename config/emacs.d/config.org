@@ -2914,6 +2914,6 @@ excited about file local vars.
 
 #+BEGIN_SRC
 # Local Variables:
-# after-save-hook: diego/async-tangle-init
+# after-save-hook: (git-gutter diego/async-tangle-init)
 # End:
 #+END_SRC
