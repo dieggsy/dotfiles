@@ -1590,6 +1590,8 @@ so I went with it.
                             ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
               (prettify-symbols-mode)
               ;; Bindings
+              (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+              (setq org-bullets-bullet-list '("•"))
 
               (setq fill-column 79)
               (auto-fill-mode 1)
@@ -2604,16 +2606,6 @@ Bringing the goodness of ranger to dired!
 (use-package ob-ipython
   :after org
   :ensure t)
-#+end_src
-*** [[https://github.com/sabof/org-bullets][org-bullets]]
-Use nice bullets in org-mode.
-#+begin_src emacs-lisp
-(use-package org-bullets
-  :ensure t
-  :after org
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-  (setq org-bullets-bullet-list '("•")))
 #+end_src
 *** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
 Translates Org-mode file to various other formats via Pandoc. Pretty neat.
