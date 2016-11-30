@@ -57,7 +57,8 @@ Set package archives/repos and setup use-package and all that.
   (package-refresh-contents)
   (package-install 'use-package))
 
-(setq use-package-always-defer t)
+(when (not noninteractive)
+(setq use-package-always-defer t))
 (eval-when-compile
   (require 'use-package))
 
