@@ -57,6 +57,7 @@ Set package archives/repos and setup use-package and all that.
   (package-refresh-contents)
   (package-install 'use-package))
 
+(setq use-package-always-defer t)
 (eval-when-compile
   (require 'use-package))
 
@@ -986,6 +987,7 @@ based on or copied from spacemacs, so definitely check them out!
 #+begin_src emacs-lisp
 (use-package evil
   :ensure t
+  :demand t
   :if (not noninteractive)
   :functions (evil-visual-line--mark-org-element-when-heading)
   :init
@@ -1779,6 +1781,7 @@ Dim the font color of text in surrounding paragraphs
 An Emacs 24 theme remixed from gruvbox (my fork).
 #+begin_src emacs-lisp
 (use-package darktooth-theme
+  :demand t
   :load-path "lisp/")
 #+end_src
 *** diego-theme
@@ -1861,6 +1864,7 @@ I was looking for something with the nice look and simplicity of
   ;; Similar to vim's powerline, this one looks clean
   ;; and 'just works', to an extent
   :ensure t
+  :demand t
   :config
   (require 'spaceline-config)
   (spaceline-spacemacs-theme)
