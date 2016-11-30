@@ -51,6 +51,7 @@ Set package archives/repos and setup use-package and all that.
   (package-install 'use-package))
 
 (when (not noninteractive)
+(setq use-package-verbose t)
 (setq use-package-always-defer t))
 (eval-when-compile
   (require 'use-package))
@@ -419,7 +420,8 @@ or that enhance emacs at a deeper level than any regular mode.
 #+begin_src emacs-lisp
 (use-package no-littering
   :demand t
-  :load-path "lisp/")
+  :load-path "lisp/"
+  :config)
 #+end_src
 ** [[https://bitbucket.org/lyro/evil/wiki/Home][evil]]
 Evil is an extensible vi layer for Emacs. It emulates the main features of Vim,
