@@ -2369,6 +2369,7 @@ Syntax check for python. Pretty good.
 #+begin_src emacs-lisp
 (use-package git-gutter-fringe
   :ensure t
+  :demand t
   :config
   (global-git-gutter-mode)
   (add-hook 'focus-in-hook 'git-gutter:update-all-windows)
