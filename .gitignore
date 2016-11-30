@@ -46,3 +46,4 @@
 /config/mutt/certificates
 /config/emacs.d/init.elc
 /config/emacs.d/var/tramp-persistency.el
+/config/emacs.d/var/persistent-scratch.el

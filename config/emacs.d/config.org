@@ -1926,6 +1926,13 @@ I was looking for something with the nice look and simplicity of
   :config
   (global-disable-mouse-mode))
 #+end_src
+*** [[https://github.com/Fanael/persistent-scratch][persistent-scratch]] 
+#+begin_src emacs-lisp
+(use-package persistent-scratch
+  :ensure t
+  :config
+  (persistent-scratch-setup-default))
+#+end_src
 *** [[https://github.com/bbatsov/crux][crux]]
 #+begin_src emacs-lisp
 (use-package crux
