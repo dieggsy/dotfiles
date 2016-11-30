@@ -1,4 +1,5 @@
 ;;(package-initialize)
+(defconst emacs-start-time (current-time))
 (require 'package)
 (setq package-enable-at-startup nil)
 
