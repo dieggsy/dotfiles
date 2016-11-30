@@ -15,15 +15,17 @@ lot of the inspiration (and erm, code) for this is taken from them.
       calendar-location-name "Cambridge, MA")
 #+end_src
 
-* Init Setup
+* Initial Setup
 Setup up cool stuff like use-package, and stuff.
 
-** Misc init
-Setup load directories, mostly.
+** Start Server
 #+begin_src emacs-lisp
 (require 'server)
 (unless (server-running-p)
   (server-start))
+#+end_src
+** Load Path
+#+begin_src emacs-lisp
 (add-to-list 'load-path
              (expand-file-name "lisp" user-emacs-directory))
 
@@ -32,56 +34,11 @@ Setup load directories, mostly.
 (add-to-list 'exec-path "/usr/local/bin")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/")
 #+end_src
-
 ** Init utils
 #+begin_src emacs-lisp
 ;; init-utils.el --- Utilities borrowed from Steve Purcell
 ;; Commentary:
 ;; Code:
-(if (fboundp 'with-eval-after-load)
-    (defalias 'after-load 'with-eval-after-load)
-  (defmacro after-load (feature &rest body)
-    "After FEATURE is loaded, evaluate BODY."
-    (declare (indent defun))
-    `(eval-after-load ,feature
-       '(progn ,@body))))
-
-
-(defun add-auto-mode (mode &rest patterns)
-  "Add entries to `auto-mode-alist' to use `MODE' for all given file `PATTERNS'."
-  (dolist (pattern patterns)
-    (add-to-list 'auto-mode-alist (cons pattern mode))))
-
-
-(defun sanityinc/string-all-matches (regex str &optional group)
-  "Find all matches for `REGEX' within `STR', returning the full match string or group `GROUP'."
-  (let ((result nil)
-        (pos 0)
-        (group (or group 0)))
-    (while (string-match regex str pos)
-      (push (match-string group str) result)
-      (setq pos (match-end group)))
-    result))
-
-(defun sanityinc/string-rtrim (str)
-  "Remove trailing whitespace from `STR'."
-  (replace-regexp-in-string "[ \t\n]+$" "" str))
-
-
-(autoload 'find-library-name "find-func")
-(defun sanityinc/directory-of-library (library-name)
-  "Return the directory in which the `LIBRARY-NAME' load file is found."
-  (file-name-as-directory (file-name-directory (find-library-name library-name))))
-
-
-(defun delete-this-file ()
-  "Delete the current file, and kill the buffer."
-  (interactive)
-  (or (buffer-file-name) (error "No file is currently being edited"))
-  (when (yes-or-no-p (format "Really delete '%s'?"
-                             (file-name-nondirectory buffer-file-name)))
-    (delete-file (buffer-file-name))
-    (kill-this-buffer)))
 #+end_src
 
 ** Package setup
@@ -102,9 +59,11 @@ Set package archives/repos and setup use-package and all that.
 
 (eval-when-compile
   (require 'use-package))
+
+(async-bytecomp-package-mode 1)
 #+end_src
 
-* Global settings and stuff
+* Global settings
 Some nice global settings to have. Does away with most uneccessary visuals to
 make emacs behave more like terminal (ish), sets up smooth scrolling, other
 such goodies.
@@ -216,6 +175,9 @@ consistent with other fonts. Last updated 2011, last successfully tested
 ;; ssh
 (setq tramp-default-method "ssh")
 (setq password-cache-expiry nil)
+
+(autoload 'dired-async-mode "dired-async.el" nil t)
+(dired-async-mode 1)
 #+end_src
 ** Smooth scroll
 #+begin_src emacs-lisp
@@ -242,6 +204,15 @@ consistent with other fonts. Last updated 2011, last successfully tested
 ** Global functions
 *** "Stolen"
 #+begin_src emacs-lisp
+(defun delete-this-file ()
+  "Delete the current file, and kill the buffer."
+  (interactive)
+  (or (buffer-file-name) (error "No file is currently being edited"))
+  (when (yes-or-no-p (format "Really delete '%s'?"
+                             (file-name-nondirectory buffer-file-name)))
+    (delete-file (buffer-file-name))
+    (kill-this-buffer)))
+
 (defun occur-last-search ()
   "Run `occur` with the last evil search term."
   (interactive)
@@ -405,7 +376,7 @@ consistent with other fonts. Last updated 2011, last successfully tested
   (interactive)
   (flush-lines "^$" (region-beginning) (region-end)))
 #+end_src
-*** Macros?
+*** Macros
 #+begin_src emacs-lisp
 (defmacro diego|create-block-wrap (blocktype)
   (let ((newfunc (intern
