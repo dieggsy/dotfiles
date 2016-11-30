@@ -37,7 +37,7 @@
 /config/emacs.d/var/save-place.el
 /config/emacs.d/var/savehist.el
 /config/emacs.d/var/smex-save.el
-/config/emacs.d/var/sx-cache
+/config/emacs.d/var/sx/
 /config/emacs.d/var/trash
 /config/emacs.d/var/url
 /config/emacs.d/var/xkcd
