@@ -2621,13 +2621,13 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 #+end_src
 *** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
 Export org to twitter bootstrap compatible HTML.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package ox-twbs
   :ensure t
   :after org)
 #+end_src
 *** [[https://github.com/snosov1/toc-org][toc-org]]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package toc-org
   :ensure t
   :after org
