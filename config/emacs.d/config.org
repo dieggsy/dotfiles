@@ -423,6 +423,16 @@ or that enhance emacs at a deeper level than any regular mode.
   :load-path "lisp/"
   :config)
 #+end_src
+** [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]]
+#+begin_src emacs-lisp
+(use-package exec-path-from-shell
+  :ensure t
+  :defer 5
+  :config
+  (setq exec-path-from-shell-check-startup-files nil)
+  (when (memq window-system '(mac ns))
+    (exec-path-from-shell-initialize)))
+#+end_src
 ** [[https://bitbucket.org/lyro/evil/wiki/Home][evil]]
 Evil is an extensible vi layer for Emacs. It emulates the main features of Vim,
 and provides facilities for writing custom extensions.
@@ -2713,17 +2723,6 @@ Stack exchange on emacs.
 (use-package eshell-z
   :after eshell
   :ensure t)
-#+end_src
-
-*** [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]]
-#+begin_src emacs-lisp
-(use-package exec-path-from-shell
-  :ensure t
-  :demand t
-  :config
-  (setq exec-path-from-shell-check-startup-files nil)
-  (when (memq window-system '(mac ns))
-    (exec-path-from-shell-initialize)))
 #+end_src
 
 *** [[https://github.com/adamrt/sane-term][sane-term]]
