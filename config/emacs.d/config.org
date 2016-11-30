@@ -1015,6 +1015,8 @@ based on or copied from spacemacs, so definitely check them out!
 #+begin_src emacs-lisp
 (use-package evil
   :ensure t
+  :if (not noninteractive)
+  :functions (evil-visual-line--mark-org-element-when-heading)
   :init
   (setq evil-want-C-u-scroll t)
   (setq evil-want-fine-undo t)
@@ -1331,9 +1333,7 @@ so I went with it.
   (async-start
    (lambda ()
      ;; make async emacs aware of packages (for byte-compilation)
-     ;;(setq package-enable-at-startup nil)
      (load-file (locate-user-emacs-file "init.el"))
-     ;;(package-initialize)
      (require 'org)
 
      ;; tangle
@@ -1656,7 +1656,9 @@ Like git, for emacs. But cooler.
 (use-package magit
   :ensure t
   :commands magit-status
+  :if (not noninteractive)
   :functions (magit-blame-quit)
+  :defines (magit-diff-use-overlays)
   :config
   (setq magit-diff-use-overlays nil)
   (setq auto-revert-check-vc-info t)
@@ -1670,6 +1672,7 @@ Like git, for emacs. But cooler.
 
 (use-package evil-magit
   :after magit
+  :if (not noninteractive)
   :ensure t)
 #+end_src
 
@@ -1963,6 +1966,7 @@ Configure the Elfeed RSS reader with an Orgmode file
 (use-package elfeed
   :ensure t
   :commands elfeed
+  :if (not noninteractive)
   :config
   (evil-define-key 'normal elfeed-search-mode-map
     (kbd "RET") 'elfeed-search-show-entry
@@ -1995,6 +1999,7 @@ Configure the Elfeed RSS reader with an Orgmode file
 (use-package elfeed-org
   :after elfeed
   :ensure t
+  :if (not noninteractive)
   :config
   (elfeed-org))
 
@@ -2052,6 +2057,7 @@ Neat way to bind commands to key-stroke combinations
 (use-package key-chord
   :ensure t
   :defer 5
+  :if (not noninteractive)
   :config
   ;; (setq key-chord-two-keys-delay .05)
   (key-chord-mode 1)
@@ -2227,6 +2233,7 @@ Edit jupyter notebooks in emacs
 #+begin_src emacs-lisp
 (use-package matlab
   :defer t
+  :if (not noninteractive)
   :ensure matlab-mode
   :config
   (load-library "matlab-load"))
@@ -2280,6 +2287,7 @@ Freakin yasnippet. It's the best.
   ;; SNIPPETS!!!
   :ensure t
   :defer 5
+  :if (not noninteractive)
   :config
   (yas-global-mode 1))
 #+end_src
@@ -2288,6 +2296,7 @@ Freakin yasnippet. It's the best.
 #+begin_src emacs-lisp
 (use-package evil-multiedit
   :ensure t
+  :if (not noninteractive)
   :commands (evil-multiedit-match-all
              evil-multiedit-match-and-next
              evil-multiedit-match-and-prev
