@@ -84,7 +84,6 @@ Get rid of menu bars, scroll bars, startup screens, etc.
 (setq whitespace-style '(face trailing))
 (set-default 'truncate-lines t)
 (blink-cursor-mode 0)
-(goto-address-mode)
 #+end_src
 ** Font/Text
 *Current:* Currently I'm using the wonderful [[http://input.fontbureau.com/][Input]] font. If, like me, you're
@@ -1556,10 +1555,11 @@ so I went with it.
                             ("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
                             ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
               (prettify-symbols-mode)
-              ;; Bindings
+
               (org-bullets-mode 1)
               (setq org-bullets-bullet-list '("•"))
 
+              (goto-adress-mode)
               (setq fill-column 79)
               (auto-fill-mode 1)
               ;; (flyspell-mode)
@@ -2713,7 +2713,6 @@ Properties that apply to all programming modes.
   (company-mode)
   (highlight-parentheses-mode 1)
   (rainbow-delimiters-mode)
-  (goto-address-mode 0)
   (goto-address-prog-mode)
   ;; (make-local-variable 'show-paren-mode)
   ;; (setq show-paren-mode t)
