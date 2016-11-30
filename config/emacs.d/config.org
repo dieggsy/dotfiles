@@ -1563,7 +1563,7 @@ so I went with it.
                             ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
               (prettify-symbols-mode)
               ;; Bindings
-              (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+              (org-bullets-mode 1)
               (setq org-bullets-bullet-list '("•"))
 
               (setq fill-column 79)
