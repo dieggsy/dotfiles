@@ -86,6 +86,7 @@ Get rid of menu bars, scroll bars, startup screens, etc.
 (blink-cursor-mode 0)
 #+end_src
 ** Font/Text
+:NOTES:
 *Current:* Currently I'm using the wonderful [[http://input.fontbureau.com/][Input]] font. If, like me, you're
 coming from something more like SauceCodePro, Consolas, or even just Menlo,
 this font may at first seem a little "blocky," but it's so wonderfully
@@ -106,6 +107,7 @@ that you should really give it a try. My current settings are:
 on os x. This helps with the modeline text vertical alignments and makes it
 consistent with other fonts. Last updated 2011, last successfully tested
 09/2016 (by myself).
+:END:
 #+begin_src emacs-lisp
 ;; (add-to-list 'default-frame-alist '(font . "Consolas-11"))
 ;; (set-face-attribute 'default t :font "Consolas-11")
@@ -1139,6 +1141,7 @@ authoring documents with a fast and effective plain-text system.
 
 But really, it's life.
 
+:NOTES:
 *Note:* Getting emacs to run the latest version of org can be weird. Least I
 didn't find a satisfactory solution for a while. Check out this [[http://sachachua.com/blog/2014/05/update-org-7-comes-emacs-org-8-configuration-better-exports/][blog post]] for
 some advice on that (still relevant now-2016). In particular, make sure you
@@ -1162,6 +1165,7 @@ at the beginning of your init.el/emacs.d, or as in my case something like:
 
 I actually don't think I tried the former option, but the latter simply worked
 so I went with it.
+:END:
 
 *** Helper functions
 #+begin_src emacs-lisp
