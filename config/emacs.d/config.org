@@ -1576,7 +1576,7 @@ Emacs package that displays available keybindings in popup
 #+begin_src emacs-lisp
 (use-package which-key
   :ensure t
-  :defer 5
+  :defer 10
   :config
   (which-key-mode)
   (setq which-key-show-operator-state-maps t)
@@ -1906,7 +1906,8 @@ I was looking for something with the nice look and simplicity of
 #+begin_src emacs-lisp
 (use-package crux
   :ensure t
-  :demand t
+  :commands crux-rename-file-and-buffer
+  :defer 5
   :config
   (crux-with-region-or-line eval-region)
   (crux-with-region-or-buffer indent-region)
@@ -2304,7 +2305,11 @@ Sets up a python editing environment. I'm not sure yet.
 *** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
 #+begin_src emacs-lisp
 (use-package evil-nerd-commenter
-  :demand t
+  :commands (evilnc-comment-operator
+             evilnc-comment-or-uncomment-lines
+             evilnc-comment-or-uncomment-paragraphs
+             evilnc-comment-or-uncomment-to-the-line
+             evilnc-copy-and-comment-lines)
   :ensure t)
 #+end_src
 *** [[https://github.com/alpaker/Fill-Column-Indicator][fill-column-indicator]]
