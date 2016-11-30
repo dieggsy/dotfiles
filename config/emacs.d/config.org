@@ -1475,6 +1475,7 @@ so I went with it.
   (setq org-src-tab-acts-natively t)
   (setq org-M-RET-may-split-line nil)
   (setq org-list-use-circular-motion t)
+  (setq org-log-into-drawer t)
 
   ;; appearance
   (setq org-src-fontify-natively t)
