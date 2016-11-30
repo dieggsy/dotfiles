@@ -1565,10 +1565,9 @@ so I went with it.
               (org-bullets-mode 1)
               (setq org-bullets-bullet-list '("•"))
 
-              (goto-adress-mode)
+              (goto-address-mode)
               (setq fill-column 79)
               (auto-fill-mode 1)
-              ;; (flyspell-mode)
               (org-indent-mode))))
 #+end_src
 
@@ -1651,7 +1650,7 @@ Like git, for emacs. But cooler.
   :ensure t)
 #+end_src
 
-* Dem packages
+* Packages
 ** Amusements
 *** [[https://github.com/josuah/drawille][drawille]]
 Drawille library implementation in elisp. Draws images/stuff in ascii.
@@ -2022,8 +2021,8 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
                              nil
                              (car word)
                              current-location
-                             (cadr word)
-                             (caddr word)
+                             (cl-caddr word)
+                             (cl-caddr word)
                              current-location)))))
 
 (use-package flyspell-correct-ivy
@@ -2314,7 +2313,24 @@ I like a line length limit indicator in Python
 (use-package fill-column-indicator
   :ensure t
   :init
-  (setq-default fci-rule-column 79))
+  (setq-default fci-rule-column 79)
+
+  (defun sanityinc/fci-enabled-p ()
+    (and (boundp 'fci-mode) fci-mode))
+  (defvar sanityinc/fci-mode-suppressed nil)
+  (defadvice popup-create (before suppress-fci-mode activate)
+    "Suspend fci-mode while popups are visible"
+    (let ((fci-enabled (sanityinc/fci-enabled-p)))
+      (when fci-enabled
+        (set (make-local-variable 'sanityinc/fci-mode-suppressed) fci-enabled)
+        (turn-off-fci-mode))))
+
+  (defadvice popup-delete (after restore-fci-mode activate)
+    "Restore fci-mode when all popups have closed"
+    (when (and sanityinc/fci-mode-suppressed
+               (null popup-instances))
+      (setq sanityinc/fci-mode-suppressed nil)
+      (turn-on-fci-mode))))
 #+end_src
 
 *** [[https://github.com/flycheck/flycheck][flycheck]]
@@ -2711,7 +2727,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
   :ensure t)
 #+end_src
 
-* Mode Specific
+* Mode Specific Configuration
 ** Prog-mode
 Properties that apply to all programming modes.
 #+begin_src emacs-lisp
@@ -2809,28 +2825,6 @@ Mostly set up hs-minor-mode for emacs-lisp.
 
 (defvar var-c '299792458
   "Speed of light in a vaccum.")
-#+end_src
-* Fix fci pop-up menu issue
-This is from somewhere on the internet, and may no longer be relevant since I
-started using company-mode. I'm not sure though.
-
-#+begin_src emacs-lisp
-(defun sanityinc/fci-enabled-p ()
-  (and (boundp 'fci-mode) fci-mode))
-(defvar sanityinc/fci-mode-suppressed nil)
-(defadvice popup-create (before suppress-fci-mode activate)
-  "Suspend fci-mode while popups are visible"
-  (let ((fci-enabled (sanityinc/fci-enabled-p)))
-    (when fci-enabled
-      (set (make-local-variable 'sanityinc/fci-mode-suppressed) fci-enabled)
-      (turn-off-fci-mode))))
-
-(defadvice popup-delete (after restore-fci-mode activate)
-  "Restore fci-mode when all popups have closed"
-  (when (and sanityinc/fci-mode-suppressed
-             (null popup-instances))
-    (setq sanityinc/fci-mode-suppressed nil)
-    (turn-on-fci-mode)))
 #+end_src
 * Local vars!
 I'll probably remove that exclamation point at some point, but right now I'm
