@@ -34,13 +34,6 @@ Setup up cool stuff like use-package, and stuff.
 (add-to-list 'exec-path "/usr/local/bin")
 (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/")
 #+end_src
-** Init utils
-#+begin_src emacs-lisp
-;; init-utils.el --- Utilities borrowed from Steve Purcell
-;; Commentary:
-;; Code:
-#+end_src
-
 ** Package setup
 Set package archives/repos and setup use-package and all that.
 #+begin_src emacs-lisp
@@ -424,6 +417,7 @@ or that enhance emacs at a deeper level than any regular mode.
 ** [[https://github.com/tarsius/no-littering/blob/master/no-littering.el][no-littering]]
 #+begin_src emacs-lisp
 (use-package no-littering
+  :demand t
   :load-path "lisp/")
 #+end_src
 ** [[https://bitbucket.org/lyro/evil/wiki/Home][evil]]
@@ -1498,7 +1492,6 @@ so I went with it.
 (use-package org
   :ensure org-plus-contrib
   :commands (org-capture)
-  :defer t
   :defines (org-habit-graph-column)
   :init
   (setq org-list-allow-alphabetical t)
@@ -1658,7 +1651,6 @@ Like git, for emacs. But cooler.
 Drawille library implementation in elisp. Draws images/stuff in ascii.
 #+begin_src emacs-lisp
 (use-package drawille
-  :defer t
   :ensure t)
 #+end_src
 *** [[https://github.com/johanvts/emacs-fireplace/][fireplace]]
@@ -1735,7 +1727,6 @@ Eh, why not.
 #+begin_src emacs-lisp
 (use-package zone-matrix
   :ensure t
-  :defer t
   :config
   (eval-after-load "zone"
     '(unless (memq 'zone-matrix (append zone-programs nil))
@@ -1748,7 +1739,6 @@ Nyanyanyanyanyanyanyanyan (but actually).
 #+begin_src emacs-lisp
 (use-package zone-nyan
   :ensure t
-  :defer t
   :config
   (eval-after-load "zone"
     '(unless (memq 'zone-nyan (append zone-programs nil))
@@ -1760,7 +1750,6 @@ Nyanyanyanyanyanyanyanyan (but actually).
 A utility package to collect various Icon Fonts and propertize them within Emacs.
 #+begin_src emacs-lisp
 (use-package all-the-icons
-  :defer t
   :ensure t)
 #+end_src
 *** [[https://github.com/larstvei/Focus][focus]]
@@ -1830,7 +1819,6 @@ Emacs themes inspired by Atom One. Quite nice I might add, if a little intense.
 Display emojis in emacs. Sweet!
 #+begin_src emacs-lisp
 (use-package emojify
-  :defer t
   :ensure t)
 #+end_src
 *** [[https://github.com/lunaryorn/fancy-battery.el][fancy-battery]]
@@ -1913,6 +1901,7 @@ I was looking for something with the nice look and simplicity of
 #+begin_src emacs-lisp
 (use-package crux
   :ensure t
+  :demand t
   :config
   (crux-with-region-or-line eval-region)
   (crux-with-region-or-buffer indent-region)
@@ -2036,23 +2025,11 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
   :ensure t)
 #+end_src
 
-*** [[https://www.emacswiki.org/emacs/KeyChord][keychord]]
-Neat way to bind commands to key-stroke combinations
-#+begin_src emacs-lisp
-(use-package key-chord
-  :ensure t
-  :defer 5
-  :if (not noninteractive)
-  :config
-  ;; (setq key-chord-two-keys-delay .05)
-  (key-chord-mode 1)
-  (key-chord-define evil-insert-state-map "uu" 'evil-normal-state))
-#+end_src
 *** [[https://github.com/ancane/markdown-preview-mode][markdown-preview-mode]]
 Minor mode to preview markdown output as you save
 #+begin_src emacs-lisp
 (use-package markdown-preview-mode
-  :defer 5
+  :after markdown-mode
   :ensure t)
 #+end_src
 *** [[https://github.com/tjim/nevermore][nevermore]]
@@ -2076,6 +2053,7 @@ Make Emacs' delete-by-moving-to-trash do what you expect it to do on OS X.
 #+begin_src emacs-lisp
 (use-package osx-trash
   :ensure t
+  :defer 5
   :config
   (when (eq system-type 'darwin)
     (osx-trash-setup))
@@ -2161,8 +2139,8 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
 #+begin_src emacs-lisp
 (use-package csv-mode
   ;; I'll give this a shot
-  :defer t
   :ensure t
+  :mode "\\.csv\\'"
   :config
   (add-hook 'csv-mode-hook 'csv-align-fields))
 #+end_src
@@ -2172,7 +2150,7 @@ Syntax highlighting for markdown files.
 #+begin_src emacs-lisp
 (use-package markdown-mode
   :ensure t
-  :defer 5
+  :mode "\\.md\\'"
   :config)
 #+end_src
 *** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
@@ -2180,22 +2158,19 @@ The emacs major mode for editing files in the YAML data serialization format.
 #+begin_src emacs-lisp
 (use-package yaml-mode
   :ensure t
-  :defer 5
-  :config
-  (add-to-list 'auto-mode-alist '("\\.yml\\'" . yaml-mode)))
+  :mode "\\.yml\\'")
 #+end_src
 
 *** [[https://github.com/clojure-emacs/clojure-mode][clojure-mode]]
 #+begin_src emacs-lisp
 (use-package clojure-mode
-  :ensure t
-  :defer 5)
+  :ensure t)
 #+end_src
 
 *** [[https://github.com/defunkt/coffee-mode][coffee-mode]]
 #+begin_src emacs-lisp
 (use-package coffee-mode
-  :defer 5
+  :mode "\\.coffee\\'"
   :ensure t)
 #+end_src
 
@@ -2204,31 +2179,28 @@ Edit jupyter notebooks in emacs
 #+begin_src emacs-lisp
 (use-package ein
   :ensure t
-  :defer t
+  :mode "\\.ipynb\\'"
   :commands ein:notebooklist-open)
 #+end_src
 
 *** [[https://github.com/immerrr/lua-mode][lua-mode]]
 #+begin_src emacs-lisp
 (use-package lua-mode
-  :ensure t
-  :defer t)
+  :ensure t)
 #+end_src
 *** matlab-mode
 #+begin_src emacs-lisp
 (use-package matlab
-  :defer t
   :if (not noninteractive)
   :ensure matlab-mode
+  :mode "\\.m\\'"
   :config
   (load-library "matlab-load"))
 #+end_src
-
 *** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]]
 #+begin_src emacs-lisp
 (use-package vimrc-mode
-  :ensure t
-  :defer t)
+  :ensure t)
 #+end_src
 
 ** Editing utilities
@@ -2237,6 +2209,7 @@ Minor mode for Emacs that deals with parens pairs and tries to be smart about it
 #+begin_src emacs-lisp
 (use-package smartparens
   :ensure t
+  :defer 5
   :config
   (smartparens-global-strict-mode)
   (show-smartparens-global-mode)
@@ -2258,7 +2231,6 @@ Edit text area on Chrome with Emacs using Atomic Chrome
 #+begin_src emacs-lisp
 (use-package atomic-chrome
   :ensure t
-  :defer t
   :config
   (unless atomic-chrome-server-atomic-chrome
     (atomic-chrome-start-server))
@@ -2290,14 +2262,6 @@ Freakin yasnippet. It's the best.
   (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match))
 #+end_src
 
-*** [[https://github.com/emacsfodder/move-text][move-text]]
-Move current line or region up or down
-#+begin_src emacs-lisp
-(use-package move-text
-  :defer 5
-  :ensure t)
-#+end_src
-
 ** Programming utilites
 *** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]
 #+begin_src emacs-lisp
@@ -2308,17 +2272,7 @@ Move current line or region up or down
 Supposedly better than autocomplete... Also using [[https://github.com/syohex/emacs-company-jedi][company-jedi]]
 #+begin_src emacs-lisp
 (use-package company
-  :ensure t
-  :config
-  (add-hook 'after-init-hook 'global-company-mode)
-  ;; (defun on-off-fci-before-company(command)
-  ;;   (when (string= "show" command)
-  ;;     (turn-off-fci-mode))
-  ;;   (when (string= "hide" command)
-  ;;     (turn-on-fci-mode)))
-
-  ;; (advice-add 'company-call-frontends :before #'on-off-fci-before-company)
-  )
+  :ensure t)
 
 (use-package company-anaconda
   :ensure t
@@ -2345,6 +2299,7 @@ Sets up a python editing environment. I'm not sure yet.
 *** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
 #+begin_src emacs-lisp
 (use-package evil-nerd-commenter
+  :demand t
   :ensure t)
 #+end_src
 *** [[https://github.com/alpaker/Fill-Column-Indicator][fill-column-indicator]]
@@ -2352,7 +2307,6 @@ I like a line length limit indicator in Python
 #+begin_src emacs-lisp
 (use-package fill-column-indicator
   :ensure t
-  :defer t
   :init
   (setq-default fci-rule-column 79))
 #+end_src
@@ -2430,7 +2384,6 @@ Syntax check for python. Pretty good.
 Neat-o
 #+begin_src emacs-lisp
 (use-package highlight-numbers
-  :defer t
   :ensure t)
 #+end_src
 
@@ -2439,7 +2392,6 @@ Makes the parentheses my cursor is between stand out more.
 #+begin_src emacs-lisp
 (use-package highlight-parentheses
   ;; Make parenthesis I'm currently in stand out
-  :defer t
   :ensure t)
 #+end_src
 
@@ -2758,6 +2710,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 Properties that apply to all programming modes.
 #+begin_src emacs-lisp
 (defun diego/setup-prog-mode ()
+  (company-mode)
   (highlight-parentheses-mode 1)
   (rainbow-delimiters-mode)
   (goto-address-mode 0)
