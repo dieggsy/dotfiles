@@ -51,6 +51,7 @@ Set package archives/repos and setup use-package and all that.
   (package-install 'use-package))
 
 (when (not noninteractive)
+(setq use-package-minimum-reported-time .001)
 (setq use-package-verbose t)
 (setq use-package-always-defer t))
 (eval-when-compile
