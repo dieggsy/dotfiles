@@ -1887,6 +1887,7 @@ I was looking for something with the nice look and simplicity of
 #+begin_src emacs-lisp
 (use-package persistent-scratch
   :ensure t
+  :defer 10
   :config
   (persistent-scratch-setup-default))
 #+end_src
