@@ -1434,12 +1434,18 @@ so I went with it.
                     "✓ DONE(h)")))
 
   (setq org-capture-templates
-        '(("t" "Todo" entry
-           (file diego/todo-file)
-           "* ❯ TODO %?\nSCHEDULED: %t")
-          ("s" "School Todo" entry
-           (file+olp diego/todo-file "School" "School")
-           "* ❯ TODO %?\nSCHEDULED: %t"))))
+        '(("t" "Todo")
+          ("ts" "Todo: School")
+          ("tse" "Ethics" entry
+           (file+olp diego/todo-file "School" "School" "Ethics")
+           "* ❯ TODO %?\nDEADLINE: %t")
+          ("ts6" "621" entry
+           (file+olp diego/todo-file "School" "School" "621")
+           "* ❯ TODO %?\nDEADLINE: %t")
+          ("te" "Todo: Emacs" entry
+           (file+olp diego/todo-file "Emacs")
+           "* ❯ TODO %?")
+          ("n" "Note"))))
 
 #+end_src
 
@@ -1877,7 +1883,7 @@ I was looking for something with the nice look and simplicity of
   :config
   (global-disable-mouse-mode))
 #+end_src
-*** [[https://github.com/Fanael/persistent-scratch][persistent-scratch]] 
+*** [[https://github.com/Fanael/persistent-scratch][persistent-scratch]]
 #+begin_src emacs-lisp
 (use-package persistent-scratch
   :ensure t
