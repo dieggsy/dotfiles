@@ -59,7 +59,6 @@ Set package archives/repos and setup use-package and all that.
 
 (async-bytecomp-package-mode 1)
 #+end_src
-
 * Global settings
 Some nice global settings to have. Does away with most uneccessary visuals to
 make emacs behave more like terminal (ish), sets up smooth scrolling, other
@@ -210,33 +209,6 @@ consistent with other fonts. Last updated 2011, last successfully tested
                              (file-name-nondirectory buffer-file-name)))
     (delete-file (buffer-file-name))
     (kill-this-buffer)))
-
-(defun occur-last-search ()
-  "Run `occur` with the last evil search term."
-  (interactive)
-  ;; Use the appropriate search term based on regexp setting.
-  (let ((term (if evil-regexp-search
-                  (car-safe regexp-search-ring)
-                (car-safe search-ring))))
-    ;; If a search term exists, execute `occur` on it.
-    (if (> (length term) 0)
-        (occur term)
-      (message "No term to search for."))))
-
-(defun show-first-occurrence ()
-  "Display the location of the word at point's first occurrence in the buffer."
-  (interactive)
-  (save-excursion
-    (let ((search-word (thing-at-point 'symbol t)))
-      (goto-char 1)
-      (re-search-forward search-word)
-      (message (concat
-                "L" (number-to-string (line-number-at-pos)) ": "
-                (replace-regexp-in-string
-                 "[ \t\n]*\\'"
-                 ""
-                 (thing-at-point 'line t)
-                 ))))))
 
 (eval-when-compile
   (defvar zone-programs))
@@ -945,8 +917,6 @@ based on or copied from spacemacs, so definitely check them out!
 
   (define-key evil-normal-state-map "gc"           'evilnc-comment-operator)
   (define-key evil-normal-state-map "gy"           'evilnc-copy-and-comment-lines)
-  (define-key evil-normal-state-map (kbd "g/")     'occur-last-search)
-  (define-key evil-normal-state-map (kbd "[i")     'show-first-occurrence)
   (define-key evil-insert-state-map (kbd "C-e")    'end-of-line)
   (define-key evil-normal-state-map (kbd "S-SPC")  'org-agenda-list)
   (define-key evil-normal-state-map (kbd "<down-mouse-1>")  nil)
