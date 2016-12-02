@@ -20,6 +20,7 @@ cgal
 cmake
 cmatrix
 cmus
+contacts
 cookiecutter
 coreutils
 cowsay

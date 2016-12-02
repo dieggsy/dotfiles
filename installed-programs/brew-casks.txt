@@ -13,6 +13,7 @@ fontforge
 gephi
 gimp
 google-chrome-beta
+google-earth-pro
 hyper
 iterm2
 iterm2-beta

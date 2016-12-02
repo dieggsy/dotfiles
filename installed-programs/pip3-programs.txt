@@ -95,6 +95,7 @@ Pillow
 plac
 powerline-status
 praw
+prawcore
 prompt-toolkit
 psutil
 ptyprocess
