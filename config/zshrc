@@ -233,4 +233,5 @@ fpath=(/usr/local/share/zsh-completions $fpath)
 
 export PATH="$HOME/bin:/usr/local/sbin:"\
 "/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+typeset -U path
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
