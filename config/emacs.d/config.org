@@ -461,7 +461,8 @@ based on or copied from spacemacs, so definitely check them out!
     "wD" 'ace-delete-window
     "wo" 'delete-other-windows
     "wf" 'make-frame
-    "ws" 'ace-swap-window)
+    "wS" 'ace-swap-window
+    "ws" 'hydra-splitter/body)
 
   (defun diego/split-vert-focus ()
     "Split window vertically and move focus to other window."
@@ -627,8 +628,8 @@ based on or copied from spacemacs, so definitely check them out!
     "nf"  'narrow-to-defun
     "np"  'narrow-to-page
     "nr"  'narrow-to-region
-    "n="  'diego/inc-at-pt
-    "n-"  'diego/dec-at-pt
+    "n="  'hydra-numbers/evil-numbers/inc-at-pt
+    "n-"  'hydra-numbers/evil-numbers/dec-at-pt
 
     "xar" 'align-regexp
     "xa&" 'diego/align-repeat-ampersand
@@ -731,28 +732,6 @@ based on or copied from spacemacs, so definitely check them out!
                          (spacing 1 1)
                          (justify nil t)))
                   nil)))
-
-(setq diego/evil-numbers-transient-map
-      (let ((map (make-sparse-keymap)))
-        (define-key map (kbd "=") #'diego/inc-at-pt)
-        (define-key map (kbd "-") #'diego/dec-at-pt)
-        map))
-
-(defun diego/inc-at-pt (arg)
-  (interactive "P")
-  (if (eq arg nil)
-      (evil-numbers/inc-at-pt 1)
-    (evil-numbers/inc-at-pt arg))
-  (set-transient-map
-   diego/evil-numbers-transient-map))
-
-(defun diego/dec-at-pt (arg)
-  (interactive "P")
-  (if (eq arg nil)
-      (evil-numbers/dec-at-pt 1)
-    (evil-numbers/dec-at-pt arg))
-  (set-transient-map
-   diego/evil-numbers-transient-map))
 #+end_src
 **** Spelling
 #+begin_src emacs-lisp
@@ -839,7 +818,8 @@ based on or copied from spacemacs, so definitely check them out!
     "&"   'async-shell-command
     ":"   'eval-expression
     "y"   'counsel-yank-pop
-    "z"   'repeat)
+    "r"   'repeat
+    "z"   'hydra-zoom/body)
 
   (diego/leader-applications)
   (diego/leader-buffers-files)
@@ -1558,7 +1538,63 @@ so I went with it.
               (auto-fill-mode 1)
               (org-indent-mode))))
 #+end_src
+** [[https://github.com/abo-abo/hydra][hydra]]
+#+begin_src emacs-lisp
+(use-package hydra
+  :ensure t
+  :demand t
+  :config
+  (defhydra hydra-splitter ()
+    "splitter"
+    ("h" hydra-move-splitter-left "←")
+    ("j" hydra-move-splitter-down "↓")
+    ("k" hydra-move-splitter-up "↑")
+    ("l" hydra-move-splitter-right "→" )
+    ("=" balance-windows "balance"))
 
+  (defun hydra-move-splitter-left (arg)
+    "Move window splitter left."
+    (interactive "p")
+    (if (let ((windmove-wrap-around))
+          (windmove-find-other-window 'right))
+        (shrink-window-horizontally arg)
+      (enlarge-window-horizontally arg)))
+
+  (defun hydra-move-splitter-right (arg)
+    "Move window splitter right."
+    (interactive "p")
+    (if (let ((windmove-wrap-around))
+          (windmove-find-other-window 'right))
+        (enlarge-window-horizontally arg)
+      (shrink-window-horizontally arg)))
+
+  (defun hydra-move-splitter-up (arg)
+    "Move window splitter up."
+    (interactive "p")
+    (if (let ((windmove-wrap-around))
+          (windmove-find-other-window 'up))
+        (enlarge-window arg)
+      (shrink-window arg)))
+
+  (defun hydra-move-splitter-down (arg)
+    "Move window splitter down."
+    (interactive "p")
+    (if (let ((windmove-wrap-around))
+          (windmove-find-other-window 'up))
+        (shrink-window arg)
+      (enlarge-window arg)))
+
+  (defhydra hydra-numbers ()
+    "evil-numbers" 
+    ("="  evil-numbers/inc-at-pt "inc")
+    ("-" evil-numbers/dec-at-pt "dec"))
+
+  (defhydra hydra-zoom ()
+    "zoom"
+    ("=" text-scale-increase "in")
+    ("-" text-scale-decrease "out")
+    ("0" (text-scale-adjust 0) "reset")))
+#+end_src
 ** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 Emacs package that displays available keybindings in popup
 #+begin_src emacs-lisp
@@ -1743,6 +1779,7 @@ Nyanyanyanyanyanyanyanyan (but actually).
 A utility package to collect various Icon Fonts and propertize them within Emacs.
 #+begin_src emacs-lisp
 (use-package all-the-icons
+  :disabled t
   :ensure t)
 #+end_src
 *** [[https://github.com/larstvei/Focus][focus]]
