@@ -130,6 +130,7 @@ libsecret
 libsigc++
 libsndfile
 libspectre
+libssh2
 libtasn1
 libtermkey
 libtiff
@@ -196,7 +197,9 @@ qt
 qt5
 readline
 reattach-to-user-namespace
+ripgrep
 ruby
+rust
 sdl
 sdl2
 sdl2_image
