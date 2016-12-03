@@ -97,9 +97,6 @@ alias drive="cd /Users/diego/Google\ Drive"
 alias drop="cd /Users/diego/Dropbox\ \(MIT\)"
 alias edit="emacsclient -n"
 alias editv="emacsclient -t"
-alias f='find . -iname'
-alias fd='find . -type d -iname'
-alias ff='find . -type f -iname'
 alias filecount="ls -1 | wc -l"
 if which hub > /dev/null; then alias git=hub; fi
 alias startkwm="brew services start $kwm"
@@ -128,6 +125,18 @@ alias vimrc="$ALTERNATE_EDITOR ~/dotfiles/config/vimrc"
 # ------------------------------------
 # Functions
 # ------------------------------------
+ff(){
+    find . -type f -iname *"$1"*
+}
+
+fd(){
+    find . -type d -iname *"$1"*
+}
+
+f(){
+    find . -iname *"$1"*
+}
+
 pip-fromfile() {
 	<$1 xargs pip install
 }
