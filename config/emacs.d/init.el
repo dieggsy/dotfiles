@@ -4,6 +4,12 @@
 (setq package-enable-at-startup nil)
 
 (load-file "~/.emacs.d/config.el")
+;; (setq-default mode-line-format
+;;               '(" "
+;;                 evil-mode-line-tag
+;;                 mode-line-modified
+;;                 " %[" mode-line-buffer-identification "%] %l | %c "
+;;                 vc-mode))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
