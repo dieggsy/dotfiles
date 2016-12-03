@@ -1,6 +1,0 @@
-# -*- mode: snippet -*-
-# name: test
-# key: test
-# --
-${1:'this'}
-${2:'that'}
