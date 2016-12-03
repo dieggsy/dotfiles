@@ -226,6 +226,11 @@ calc(){
 	emacs --batch --eval "(message (calc-eval \"$1\"))"
 }
 
+spectrum_ls() {
+  for code in {000..255}; do
+    print -P -- "$code: %F{$code}Test%f"
+  done
+}
 
 # ------------------------------------
 # Some path stuff
