@@ -427,6 +427,7 @@ based on or copied from spacemacs, so definitely check them out!
     "sw" 'diego/define-word
     "sg" 'google-this-search
     "sd" 'ddg-this-search
+    "sr" 'counsel-rg
     "/"  'swiper))
 #+end_src
 **** Projects
