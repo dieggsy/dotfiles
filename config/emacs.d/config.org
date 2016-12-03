@@ -1454,6 +1454,12 @@ so I went with it.
   (setq org-ellipsis " …")
   (setq org-highlight-latex-and-related '(latex))
   (setq org-pretty-entities t)
+  (mapcar (lambda (arg) (setcdr arg (list (downcase (nth 1 arg)))))
+          org-structure-template-alist)
+  (add-to-list 'org-structure-template-alist
+               (list "sel" (concat "#+begin_src emacs-lisp\n"
+                                   "?\n"
+                                   "#+end_src")))
 
   ;; latex
   (setq org-latex-listings t)
