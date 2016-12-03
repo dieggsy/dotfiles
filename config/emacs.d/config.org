@@ -1456,8 +1456,13 @@ so I went with it.
   (setq org-pretty-entities t)
   (mapcar (lambda (arg) (setcdr arg (list (downcase (nth 1 arg)))))
           org-structure-template-alist)
+
   (add-to-list 'org-structure-template-alist
                (list "sel" (concat "#+begin_src emacs-lisp\n"
+                                   "?\n"
+                                   "#+end_src")))
+  (add-to-list 'org-structure-template-alist
+               (list "sp" (concat "#+begin_src python"
                                    "?\n"
                                    "#+end_src")))
 
@@ -1592,7 +1597,7 @@ so I went with it.
       (enlarge-window arg)))
 
   (defhydra hydra-numbers ()
-    "evil-numbers" 
+    "evil-numbers"
     ("="  evil-numbers/inc-at-pt "inc")
     ("-" evil-numbers/dec-at-pt "dec"))
 

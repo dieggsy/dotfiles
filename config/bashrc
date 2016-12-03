@@ -40,10 +40,6 @@ eval $(thefuck --alias) #helps with fuckups
 # pyenv
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 
-# virtualenvwrapper
-source "/usr/local/bin/virtualenvwrapper.sh"
-
-
 # ------------------------------------
 # Vars 
 # ------------------------------------
