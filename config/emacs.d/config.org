@@ -656,6 +656,7 @@ based on or copied from spacemacs, so definitely check them out!
     "xtc" 'transpose-chars
     "xtl" 'transpose-lines
     "xtw" 'transpose-words
+    "xts" 'transpose-sexps
     "xwc" 'count-words
 
     "xma" 'evil-multiedit-match-all
