@@ -117,6 +117,7 @@ alias printers="lpstat -p | awk '{print $2}'"
 alias resetb="source ~/.zshrc"
 alias resetwifi="networksetup -setairportpower en0 off; sleep 2;"\
 "networksetup -setairportpower en0 on" 
+alias rg="rg -i"
 alias starwars="telnet towel.blinkenlights.nl" # heh 
 alias sudo='sudo '							   # recognize aliases 
 alias sz="du -hs"							   # get folder/file size 
