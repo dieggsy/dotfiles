@@ -463,7 +463,8 @@ based on or copied from spacemacs, so definitely check them out!
     "wo" 'delete-other-windows
     "wf" 'make-frame
     "wS" 'ace-swap-window
-    "ws" 'hydra-splitter/body)
+    "ws" 'hydra-splitter/body
+    "\\" 'ace-window)
 
   (defun diego/split-vert-focus ()
     "Split window vertically and move focus to other window."
@@ -603,7 +604,8 @@ based on or copied from spacemacs, so definitely check them out!
     "tc" 'diego/toggle-linum-fci
     "tr" 'nlinum-relative-toggle
     "tS" 'flyspell-mode
-    "tp" 'smartparens-mode)
+    "tp" 'smartparens-mode
+    "te" 'evil-smartparens-mode)
 
   (defun diego/toggle-linum-fci ()
     (interactive)
@@ -617,6 +619,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** Editing
 #+begin_src emacs-lisp
 (defun diego/leader-editing ()
+
   (evil-leader/set-key
     ";"   'evilnc-comment-operator
     "cl"  'evilnc-comment-or-uncomment-lines
@@ -675,7 +678,8 @@ based on or copied from spacemacs, so definitely check them out!
     "xpB" 'sp-backward-barf-sexp
 
     "iu"  'counsel-unicode-char
-    "iy"  'yas-insert-snippet)
+    "iy"  'yas-insert-snippet
+    "im" 'insert-kbd-macro)
 
 
   ;; Copy of spacemacs/comment-or-uncomment-lines-inverse
@@ -1308,11 +1312,14 @@ so I went with it.
     "mR"  'org-refile
     "ms"  'org-schedule
     "m:"  'diego/org-set-tags
+
     "mic" 'org-table-insert-column
     "mir" 'org-table-insert-row
     "mil" 'org-insert-link
     "mif" 'org-footnote-new
-    "mee"  'org-export-dispatch
+    "mid" 'org-insert-drawer
+
+    "mee" 'org-export-dispatch
     "mb"  'org-babel-tangle
     "mxb" (diego|org-emphasize diego/org-bold ?*)
     "mxi" (diego|org-emphasize diego/org-italic ?/)
@@ -1321,6 +1328,7 @@ so I went with it.
     "mxv" (diego|org-emphasize diego/org-verbatim ?=)
     "mxs" (diego|org-emphasize diego/org-strike-through ?+)
     "mxr" (diego|org-emphasize diego/org-clear ? )
+    "mxq" 'diego/org-wrap-with-block-quote
 
     ;; tables
     "mta"  'org-table-align
