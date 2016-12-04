@@ -16,7 +16,7 @@ unalias rm
 
 
 # ------------------------------------
-# zsh opts 
+# zsh opts
 # ------------------------------------
 setopt GLOB_COMPLETE
 setopt auto_cd
@@ -56,11 +56,11 @@ zstyle ':completion:*' list-colors 'di=0;36:ex=0;35:ln=1;31'
 
 
 # ------------------------------------
-# Vars 
+# Vars
 # ------------------------------------
 
 # some ls colors i've gotten used to
-export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31' 
+export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31'
 
 # kwm/khd
 kwm="koekeishiya/kwm/kwm"
@@ -83,6 +83,7 @@ else
 	export ALTERNATE_EDITOR="vim"
 fi
 
+export GIT_PAGER=less
 
 # ------------------------------------
 # Aliases
@@ -115,12 +116,12 @@ alias piphere="pip install --target=./"
 alias printers="lpstat -p | awk '{print $2}'"
 alias resetb="source ~/.zshrc"
 alias resetwifi="networksetup -setairportpower en0 off; sleep 2;"\
-"networksetup -setairportpower en0 on" 
+"networksetup -setairportpower en0 on"
 alias rg="rg -i"
-alias starwars="telnet towel.blinkenlights.nl" # heh 
-alias sudo='sudo '							   # recognize aliases 
-alias sz="du -hs"							   # get folder/file size 
-alias zshrc="$EDITOR ~/dotfiles/config/zshrc" 
+alias starwars="telnet towel.blinkenlights.nl" # heh
+alias sudo='sudo '							   # recognize aliases
+alias sz="du -hs"							   # get folder/file size
+alias zshrc="$EDITOR ~/dotfiles/config/zshrc"
 alias vimrc="$ALTERNATE_EDITOR ~/dotfiles/config/vimrc"
 
 
@@ -230,7 +231,7 @@ psetzip (){
 		-x '*.pyc*' \
 		-x '*.DS_Store*' \
 		-x '*~*' \
-		-x "*__pycache__*" 
+		-x "*__pycache__*"
 }
 
 calc(){
