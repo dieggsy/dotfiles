@@ -85,6 +85,7 @@ Get rid of menu bars, scroll bars, startup screens, etc.
 (setq whitespace-style '(face trailing))
 (set-default 'truncate-lines t)
 (blink-cursor-mode 0)
+(global-whitespace-mode)
 #+end_src
 ** Font/Text
 :NOTES:
