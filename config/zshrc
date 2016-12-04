@@ -249,6 +249,6 @@ spectrum_ls() {
 fpath=(/usr/local/share/zsh-completions $fpath)
 
 export PATH="$HOME/bin:/usr/local/sbin:"\
-"/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+"$(brew --prefix coreutils)/libexec/gnubin:$PATH"
 typeset -U path
-export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+export MANPATH="$(brew --prefix coreutils)/libexec/gnuman:$MANPATH"
