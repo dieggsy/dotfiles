@@ -2671,7 +2671,7 @@ Google stuff from emacs.
 #+begin_src emacs-lisp
 (use-package google-this
   :ensure t
-  :commands google-this-search
+  :commands (google-this-search ddg-this-search)
   :functions (google-this--maybe-wrap-in-quotes)
   :config
   (defun ddg-this-parse-and-search-string (text prefix &optional search-url)
@@ -2695,11 +2695,11 @@ version. Use `ddg-this-string' instead."
     "Decide what \"this\" and return it.
 PREFIX determines quoting."
     (let* ((term (if (region-active-p)
-                     (buffer-substring-no-properties (region-beginning) (region-end))
+                     (buffer-substring (region-beginning) (region-end))
                    (or (thing-at-point 'symbol)
                        (thing-at-point 'word)
-                       (buffer-substring-no-properties (line-beginning-position)
-                                                       (line-end-position)))))
+                       (buffer-substring (line-beginning-position)
+                                         (line-end-position)))))
            (term (read-string (concat "DuckDuckGo [" term "]: ") nil nil term)))
       term))
 
