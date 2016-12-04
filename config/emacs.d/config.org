@@ -345,6 +345,26 @@ consistent with other fonts. Last updated 2011, last successfully tested
 (defun diego/paragraphize ()
   (interactive)
   (flush-lines "^$" (region-beginning) (region-end)))
+
+(defun diego/move-line-or-region (arg)
+  (interactive "P")
+  (if (or (not arg) (>= arg 0))
+      (let ((reg-or-lin (if (region-active-p) "'>" "."))
+            (reactivate-region (if (region-active-p) "gv=gv" ""))
+            (num (if arg arg 1)))
+        (execute-kbd-macro
+         (concat ":m" reg-or-lin "+" (number-to-string num) (kbd "RET") reactivate-region)))
+    (diego/backward-move-line-or-region (- arg))))
+
+(defun diego/backward-move-line-or-region (arg)
+  (interactive "P")
+  (if (or (not arg) (>= arg 0))
+      (let ((reg-or-lin (if (region-active-p) "'<" "."))
+            (reactivate-region (if (region-active-p) "gv=gv" ""))
+            (num (if arg (+ arg 1) 2)))
+        (execute-kbd-macro
+         (concat ":m" reg-or-lin "-" (number-to-string num) (kbd "RET") reactivate-region)))
+    (diego/move-line-or-region (- arg))))
 #+end_src
 *** Macros
 #+begin_src emacs-lisp
@@ -657,29 +677,17 @@ based on or copied from spacemacs, so definitely check them out!
     "xii" 'indent-rigidly
     "xls" 'sort-lines
     "xq"  'diego/fill-or-unfill
-    "xtc" 'transpose-chars
-    "xtl" 'transpose-lines
-    "xtw" 'transpose-words
-    "xts" 'transpose-sexps
+    "xt" 'hydra-transpose/body
     "xwc" 'count-words
 
-    "xma" 'evil-multiedit-match-all
-    "xmn" 'evil-multiedit-next
-    "xmp" 'evil-multiedit-prev
-    "xmr" 'evil-multiedit-restore
-    "xmt" 'evil-multiedit-toggle-or-restrict-region
-    "xmN" 'evil-multiedit-match-and-next
-    "xmP" 'evil-multiedit-match-and-prev
+    "xm" 'hydra-multiedit/body
 
-    "xpr" 'sp-rewrap-sexp
-    "xps" 'sp-forward-slurp-sexp
-    "xpS" 'sp-backward-slurp-sexp
-    "xpb" 'sp-forward-barf-sexp
-    "xpB" 'sp-backward-barf-sexp
+    "xp" 'hydra-smartparens/body
 
     "iu"  'counsel-unicode-char
     "iy"  'yas-insert-snippet
     "im" 'insert-kbd-macro)
+
 
 
   ;; Copy of spacemacs/comment-or-uncomment-lines-inverse
@@ -1614,7 +1622,88 @@ so I went with it.
     "zoom"
     ("=" text-scale-increase "in")
     ("-" text-scale-decrease "out")
-    ("0" (text-scale-adjust 0) "reset")))
+    ("0" (text-scale-adjust 0) "reset"))
+
+  (defmacro diego|sp-wrap-with (fname char)
+    "Make function for setting the emphasis in org mode"
+    `(defun ,fname (&optional arg)
+       (interactive "P")
+       (sp-wrap-with-pair ,char)))
+
+  (diego|sp-wrap-with diego/sp-wrap-with-paren   "(")
+  (diego|sp-wrap-with diego/sp-wrap-with-bracket "[")
+  (diego|sp-wrap-with diego/sp-wrap-with-curly   "{")
+  (diego|sp-wrap-with diego/sp-wrap-with-quote2  "\"")
+  (diego|sp-wrap-with diego/sp-wrap-with-quote   "'")
+
+  (defhydra hydra-smartparens (:hint nil)
+    "
+smartparens:
+_r_ewrap  _s_lurp             _(_
+_u_nwrap  _S_lurp (back)   _[_ wrap _{_
+        _b_arf             _'_  _\"_
+        _B_arf (back)
+"
+    ("r"  sp-rewrap-sexp)
+    ("u"  sp-unwrap-sexp)
+    ("b"  sp-forward-barf-sexp)
+    ("B"  sp-backward-barf-sexp)
+    ("s"  sp-forward-slurp-sexp)
+    ("S"  sp-backward-slurp-sexp)
+    ("("  diego/sp-wrap-with-paren)
+    ("["  diego/sp-wrap-with-bracket)
+    ("{"  diego/sp-wrap-with-curly)
+    ("\"" diego/sp-wrap-with-quote2)
+    ("'"  diego/sp-wrap-with-quote))
+
+  (defhydra hydra-multiedit (:hint nil)
+    "
+multiedit:
+_r_estore  _t_oggle/restrict  match _a_ll
+_n_ext     match and _N_ext   _q_: abort
+_p_rev     match and _P_rev
+"
+    ("a"   evil-multiedit-match-all)
+    ("n"   evil-multiedit-next)
+    ("p"   evil-multiedit-prev)
+    ("r"   evil-multiedit-restore)
+    ("t"   evil-multiedit-toggle-or-restrict-region)
+    ("N"   evil-multiedit-match-and-next)
+    ("P"   evil-multiedit-match-and-prev)
+    ("q"   evil-multiedit-abort :exit t))
+
+  (defun diego/transpose-chars (arg)
+    (interactive "P")
+    (forward-char)
+    (if arg
+        (transpose-chars arg)
+      (transpose-chars 1))
+    (backward-char))
+
+  (defun diego/backward-transpose-chars (arg)
+    (interactive "P")
+    (forward-char)
+    (if arg
+        (transpose-chars (- arg))
+      (transpose-chars -1))
+    (backward-char))
+
+  (defun diego/backward-transpose-words (arg)
+    (interactive "P")
+    (if arg
+        (transpose-words (- arg))
+      (transpose-words -1)))
+
+  (defhydra hydra-transpose ()
+    "transpose"
+
+    ("c" diego/transpose-chars "char")
+    ("C" diego/backward-transpose-chars "backward char")
+    ("j" diego/move-line-or-region "line or region")
+    ("k" diego/backward-move-line-or-region "backward line or region")
+    ("w" transpose-words "word")
+    ("W" diego/backward-transpose-words "backward word")
+    ("s" transpose-sexps "sexp" :exit t)))
 #+end_src
 ** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 Emacs package that displays available keybindings in popup
