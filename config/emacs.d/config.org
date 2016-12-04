@@ -2651,7 +2651,11 @@ Export org to twitter bootstrap compatible HTML.
   (defun diego/define-word ()
     (interactive)
     (let ((word (read-string
-                 (concat "Define word [" (thing-at-point 'word) "]: ") nil nil
+                 (concat "Define word ["
+                         (if (region-active-p)
+                             (buffer-substring (region-beginning) (region-end))
+                           (thing-at-point 'word)) "]: ")
+                 nil nil
                  (thing-at-point 'word))))
       (define-word word))))
 #+end_src
