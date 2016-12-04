@@ -24,6 +24,7 @@ setopt histignoredups
 setopt autonamedirs
 setopt clobber
 unsetopt correct
+setopt complete_aliases
 
 
 # ------------------------------------
