@@ -387,7 +387,7 @@ consistent with other fonts. Last updated 2011, last successfully tested
 (fset 'diego/insert-footnote
       [?/ ?\{ ?\[ ?0 ?- ?9 ?\] ?+ ?\} return ?a ?f ?n ?: escape ?  ?x ?p ?r ?\[])
 
-(fset 'diego/org-wrap-with-block-quote
+(fset 'diego/org-wrap-with-quote
       [?\{ ?i return ?# ?+ ?b ?e ?g ?i ?n ?_ ?q ?u ?o ?t ?e ?\C-/ ?\} ?i return up ?# ?+ ?e ?n ?d ?_ ?q ?u ?o ?t ?e ?\C-/ ?\{ ?j ?i ?  ?  ?\M-q ?\M-q ?\M-q ?\C-/])
 #+end_src
 ** Bindings
@@ -1337,7 +1337,7 @@ so I went with it.
     "mxv" (diego|org-emphasize diego/org-verbatim ?=)
     "mxs" (diego|org-emphasize diego/org-strike-through ?+)
     "mxr" (diego|org-emphasize diego/org-clear ? )
-    "mxq" 'diego/org-wrap-with-block-quote
+    "mxq" 'diego/org-wrap-with-quote
 
     ;; tables
     "mta"  'org-table-align
