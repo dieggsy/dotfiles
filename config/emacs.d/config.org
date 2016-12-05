@@ -170,6 +170,8 @@ consistent with other fonts. Last updated 2011, last successfully tested
 (add-to-list 'desktop-globals-to-save '(kill-ring . 100))
 (setq save-interprogram-paste-before-kill t)
 
+(add-hook 'after-save-hook 'whitespace-cleanup)
+
 ;; ssh
 (setq tramp-default-method "ssh")
 (setq password-cache-expiry nil)
