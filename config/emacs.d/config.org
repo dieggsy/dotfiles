@@ -2411,6 +2411,12 @@ Freakin yasnippet. It's the best.
 #+end_src
 
 ** Programming utilites
+*** [[https://github.com/Malabarba/aggressive-indent-mode/][aggressive-indent]]
+#+begin_src emacs-lisp
+(use-package aggressive-indent
+  :ensure t
+  :commands aggressive-indent-mode)
+#+end_src
 *** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]
 #+begin_src emacs-lisp
 (use-package anaconda-mode
@@ -2931,6 +2937,7 @@ Mostly set up hs-minor-mode for emacs-lisp.
 #+begin_src emacs-lisp
 (defun diego/setup-lisp-mode ()
   (hs-minor-mode)
+  (aggressive-indent-mode)
   (local-set-key (kbd "C-c <up>") 'hs-hide-all)
   (local-set-key (kbd "C-c <down>") 'hs-show-all)
   (local-set-key (kbd "C-c <left>") 'hs-hide-block)
