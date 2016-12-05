@@ -27,7 +27,7 @@
 /config/emacs.d/var/bookmark-default.el
 /config/emacs.d/var/desktop/.emacs.desktop
 /config/emacs.d/var/desktop/.emacs.desktop.lock
-/config/emacs.d/var/elfeed
+/config/emacs.d/var/elfeed/db
 /config/emacs.d/var/emojify
 /config/emacs.d/var/eshell/history
 /config/emacs.d/var/eshell/lastdir
