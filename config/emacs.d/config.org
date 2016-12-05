@@ -304,39 +304,22 @@ consistent with other fonts. Last updated 2011, last successfully tested
   (let ((sane-term-shell-command "ipython"))
     (sane-term-create)))
 
-(defun diego/toggle-github-spacing ()
-  "Make line spacing similar to github source code. Probably outdated"
-  (interactive)
-  (setq-local line-spacing
-              (if (eq line-spacing nil)
-                  0.4
-                nil)))
-
-(defun diego/lecture-notes ()
-  "Prompt for a class and create a lecture notes file
+(defun diego/class-notes ()
+  "Prompt for a class and create a lecture/recitation notes file
   matching format %Y-%m-%d_lecture.org in class/notes subdirectory."
   (interactive)
-  (ivy-read "class: " '("16.410"
-                        "16.621"
-                        "Ethics")
-            :action (lambda (x)
-                      (find-file
-                       (concat "~/MIT 2016-2017/" x "/notes/"
-                               (format-time-string "%Y-%m-%d_lecture.org" ))))
-            :caller 'diego/lecture-notes))
-
-(defun diego/recitation-notes ()
-  "Prompt for a class and create a lecture notes file
-    matching format %Y-%m-%d_lecture.org in class/notes subdirectory."
-  (interactive)
-  (ivy-read "class: " '("16.410"
-                        "16.621"
-                        "Ethics")
-            :action (lambda (x)
-                      (find-file
-                       (concat "~/MIT 2016-2017/" x "/notes/"
-                               (format-time-string "%Y-%m-%d_recitation.org" ))))
-            :caller 'diego/recitation-notes))
+  (let ((rec-or-lec
+         (ivy-completing-read "choose: "
+                              '("lecture" "recitation"))))
+    (ivy-read "class: " '("16.410"
+                          "16.621"
+                          "Ethics")
+              :action (lambda (x)
+                        (find-file
+                         (concat "~/MIT 2016-2017/" x "/notes/"
+                                 (format-time-string "%Y-%m-%d_")
+                                 rec-or-lec ".org" )))
+              :caller 'diego/class-notes)))
 
 (defun diego/toggle-cursor ()
   (interactive)
