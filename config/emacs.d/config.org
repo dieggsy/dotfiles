@@ -1685,8 +1685,8 @@ _p_rev     match and _P_rev
 
     ("c" diego/transpose-chars "char")
     ("C" diego/backward-transpose-chars "backward char")
-    ("j" diego/move-line-or-region "line or region")
-    ("k" diego/backward-move-line-or-region "backward line or region")
+    ("j" diego/move-line-or-region "line/region")
+    ("k" diego/backward-move-line-or-region "backward line/region")
     ("w" transpose-words "word")
     ("W" diego/backward-transpose-words "backward word")
     ("s" transpose-sexps "sexp" :exit t)))
