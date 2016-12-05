@@ -2075,6 +2075,7 @@ Configure the Elfeed RSS reader with an Orgmode file
   :commands elfeed
   :if (not noninteractive)
   :config
+  (add-hook 'elfeed-search-mode-hook (lambda () (evil-smartparens-mode -1)))
   (evil-define-key 'normal elfeed-search-mode-map
     (kbd "RET") 'elfeed-search-show-entry
     "+"         'elfeed-search-tag-all
