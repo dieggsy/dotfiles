@@ -51,9 +51,10 @@ Set package archives/repos and setup use-package and all that.
   (package-install 'use-package))
 
 (when (not noninteractive)
-(setq use-package-minimum-reported-time .001)
-(setq use-package-verbose t)
-(setq use-package-always-defer t))
+  (setq use-package-minimum-reported-time .001
+        use-package-verbose t
+        use-package-always-defer t))
+
 (eval-when-compile
   (require 'use-package))
 
@@ -78,11 +79,11 @@ Get rid of menu bars, scroll bars, startup screens, etc.
        display-time-format "%a %d %b  %H:%M ")
 
 (menu-bar-mode 0)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
+(tool-bar-mode 0)
+(scroll-bar-mode 0)
 (setq custom-raised-buttons nil)
 (setq display-time-load-average nil)
-(setq whitespace-style '(face trailing))
+
 (set-default 'truncate-lines t)
 (blink-cursor-mode 0)
 (global-whitespace-mode)
@@ -136,16 +137,16 @@ consistent with other fonts. Last updated 2011, last successfully tested
 #+end_src
 ** Minibuffer
 #+begin_src emacs-lisp
-(add-hook 'minibuffer-setup-hook (lambda () (setq-local cursor-type '(bar . 1))))
-(setq enable-recursive-minibuffers t)
+(add-hook 'minibuffer-setup-hook
+          (lambda () (setq-local cursor-type '(bar . 1))))
 (savehist-mode 1)
-
-(setq resize-mini-windows t)
+(setq enable-recursive-minibuffers t
+      resize-mini-windows t)
 #+end_src
 ** Scratch buffer
 #+begin_src emacs-lisp :tangle no
-(setq initial-major-mode 'org-mode)
-(setq initial-scratch-message
+(setq initial-major-mode 'org-mode
+      initial-scratch-message
       "# This buffer is for text that is not saved, and for Lisp/Python evaluation.
 # To create a file, visit it with SPC f f and enter text in its buffer.
 
@@ -170,7 +171,7 @@ consistent with other fonts. Last updated 2011, last successfully tested
 (add-to-list 'desktop-globals-to-save '(kill-ring . 100))
 (setq save-interprogram-paste-before-kill t)
 
-(add-hook 'after-save-hook 'whitespace-cleanup)
+(add-hook 'before-save-hook 'whitespace-cleanup)
 
 ;; ssh
 (setq tramp-default-method "ssh")
@@ -186,20 +187,20 @@ consistent with other fonts. Last updated 2011, last successfully tested
       scroll-conservatively 10000)
 
 ;; Mouse scroll
-(setq mouse-wheel-scroll-amount '(2 ((shift) . 1) ((control) . nil)))
-(setq mouse-wheel-progressive-speed nil)
+(setq mouse-wheel-scroll-amount '(2 ((shift) . 1) ((control) . nil))
+      mouse-wheel-progressive-speed nil)
 #+end_src
 ** Tabs/completion?
 #+begin_src emacs-lisp
 (setq-default tab-width 4)
-(setq tab-stop-list (number-sequence 4 200 4))
-(setq completion-cycle-threshold t)
-(setq tab-always-indent 'complete)
+(setq tab-stop-list (number-sequence 4 200 4)
+      completion-cycle-threshold t
+      tab-always-indent 'complete)
 #+end_src
 ** Line position/highlighting
 #+begin_src emacs-lisp
-(setq linum-delay t)
-(setq column-number-mode t)
+(setq linum-delay t
+      column-number-mode t)
 #+end_src
 ** Global functions
 *** "Stolen"
@@ -293,8 +294,6 @@ consistent with other fonts. Last updated 2011, last successfully tested
                     (point-max))
            fill-column)))
     (call-interactively #'fill-paragraph)))
-
-(global-set-key [remap fill-paragraph] #'diego/fill-or-unfill)
 #+end_src
 *** "Original"
 #+begin_src emacs-lisp
@@ -367,6 +366,7 @@ consistent with other fonts. Last updated 2011, last successfully tested
 
 (diego|create-block-wrap "src")
 (diego|create-block-wrap "src python")
+(diego|create-block-wrap "src emacs-lisp")
 (diego|create-block-wrap "export latex")
 
 (fset 'diego/insert-footnote
@@ -387,6 +387,8 @@ I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard.
 (define-key indent-rigidly-map "l" 'indent-rigidly-right)
 (define-key indent-rigidly-map "H" 'indent-rigidly-left-to-tab-stop)
 (define-key indent-rigidly-map "L" 'indent-rigidly-right-to-tab-stop)
+
+(global-set-key [remap fill-paragraph] #'diego/fill-or-unfill)
 #+end_src
 ** What?
 #+begin_src emacs-lisp
@@ -881,14 +883,14 @@ based on or copied from spacemacs, so definitely check them out!
 *** Appearance
 #+begin_src emacs-lisp
 (defun diego/evil-appearance ()
-  (setq evil-insert-state-cursor '(bar . 1))
-  (setq evil-emacs-state-cursor '(bar . 1))
-  (setq evil-normal-state-tag " NORMAL ")
-  (setq evil-insert-state-tag " INSERT ")
-  (setq evil-motion-state-tag " MOTION ")
-  (setq evil-visual-state-tag " VISUAL ")
-  (setq evil-emacs-state-tag  " EMACS ")
-  (setq evil-replace-state-tag " REPLACE "))
+  (setq evil-insert-state-cursor '(bar . 1)
+        evil-emacs-state-cursor '(bar . 1)
+        evil-normal-state-tag  " NORMAL "
+        evil-insert-state-tag  " INSERT "
+        evil-motion-state-tag  " MOTION "
+        evil-visual-state-tag  " VISUAL "
+        evil-emacs-state-tag   " EMACS "
+        evil-replace-state-tag " REPLACE "))
 #+end_src
 *** Bindings
 #+begin_src emacs-lisp
@@ -950,11 +952,11 @@ based on or copied from spacemacs, so definitely check them out!
   :if (not noninteractive)
   :functions (evil-visual-line--mark-org-element-when-heading)
   :init
-  (setq evil-want-C-u-scroll t)
-  (setq evil-want-fine-undo t)
-  (setq evil-search-module 'evil-search)
-  (setq evil-ex-search-persistent-highlight nil)
-  (setq evil-lookup-func (lambda () (man (thing-at-point 'word))))
+  (setq evil-want-C-u-scroll t
+        evil-want-fine-undo t
+        evil-search-module 'evil-search
+        evil-ex-search-persistent-highlight nil
+        evil-lookup-func (lambda () (man (thing-at-point 'word))))
   :config
   ;; (setq evil-move-cursor-back nil)
   (add-hook 'evil-mode-hook 'diego/evil-modes)
@@ -999,12 +1001,14 @@ A really nice search/completion system for emacs.
   (define-key ivy-minibuffer-map [escape] #'keyboard-escape-quit)
   (define-key ivy-minibuffer-map (kbd "C-/") #'keyboard-escape-quit)
 
-  (setq ivy-format-function 'ivy-format-function-arrow) ; DAT NICE ARROW THOUGH aosenuth
-  (setq projectile-completion-system 'ivy)
-  (setq ivy-use-virtual-buffers t) ; Show recent files
-  (setq ivy-count-format "")
-  (setq ivy-extra-directories '("../")) ; ignore current folder... maybe shouldn't
-  (setq ivy-ignore-buffers
+  (setq ivy-format-function 'ivy-format-function-arrow ; DAT NICE ARROW THOUGH aosenuth
+        projectile-completion-system 'ivy
+        ivy-use-virtual-buffers t ; Show recent files
+        ivy-count-format ""
+        ivy-extra-directories '("../") ; ignore current folder... maybe shouldn't
+        ivy-initial-inputs-alist '((man . "^"))
+        ivy-switch-buffer-faces-alist '((dired-mode . ivy-subdir))
+        ivy-ignore-buffers
         '("\\` "
           "\\`\\*LV\\*"
           "\\`\\*magit"
@@ -1032,13 +1036,7 @@ A really nice search/completion system for emacs.
   (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
   (define-key ivy-minibuffer-map [S-return] #'ivy-dispatching-done)
   (define-key ivy-minibuffer-map (kbd "<S-up>") #'ivy-previous-history-element)
-  (define-key ivy-minibuffer-map (kbd "<S-down>") #'ivy-next-history-element)
-
-  ;;Don't start searches with '^' by default
-  (setq ivy-initial-inputs-alist '((man . "^")))
-
-  (setq ivy-switch-buffer-faces-alist
-        '((dired-mode . ivy-subdir))))
+  (define-key ivy-minibuffer-map (kbd "<S-down>") #'ivy-next-history-element))
 #+END_SRC
 *** swiper
 #+BEGIN_SRC emacs-lisp
@@ -1056,13 +1054,13 @@ A really nice search/completion system for emacs.
   :functions (ivy--format-function-generic
               counsel--yank-pop-truncate)
   :config
-  (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind)
+  (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind
+        counsel-yank-pop-separator "
+  ─────────────────────────
+")
   (counsel-mode 1)
   (defalias 'ag 'counsel-ag)
   (defalias 'locate 'counsel-locate)
-  (setq counsel-yank-pop-separator "
-  ─────────────────────────
-")
 
   (advice-add
    'counsel--yank-pop-format-function
@@ -1378,39 +1376,34 @@ so I went with it.
 #+begin_src emacs-lisp
 (defun diego/org-file-vars ()
   ;; files
-  (setq org-agenda-text-search-extra-files '(agenda-archives))
-  (setq org-agenda-files '("~/Dropbox (MIT)/org/"))
-  (setq org-default-notes-file "~/Dropbox (MIT)/org/todo.org")
-  (setq diego/todo-file "~/Dropbox (MIT)/org/todo.org")
-  (setq diego/notes-file "~Dropbox (MIT)/org/notes.org")
-  (setq org-directory "~/Dropbox (MIT)/org")
-  (setq org-archive-location "~/Dropbox (MIT)/org/archive.org::")
-  (setq org-export-async-init-file
-        "/Users/diego/dotfiles/config/emacs.d/lisp/org-async-init.el"))
+  (setq org-agenda-text-search-extra-files '(agenda-archives)
+        org-agenda-files '("~/Dropbox (MIT)/org/")
+        org-default-notes-file "~/Dropbox (MIT)/org/todo.org"
+        diego/todo-file "~/Dropbox (MIT)/org/todo.org"
+        diego/notes-file "~Dropbox (MIT)/org/notes.org"
+        org-directory "~/Dropbox (MIT)/org"
+        org-archive-location "~/Dropbox (MIT)/org/archive.org::"
+        org-export-async-init-file
+        (locate-user-emacs-file "lisp/org-async-init.el")))
 #+end_src
 **** Todo/agenda
 #+begin_src emacs-lisp
 (defun diego/org-todo-vars ()
   ;; Todo/tasks/agenda
-  (setq org-enforce-todo-dependencies t)
-  (setq org-log-done (quote time))
-  (setq org-log-redeadline (quote time))
-  (setq org-log-reschedule (quote time))
-  (setq org-agenda-skip-scheduled-if-done t)
-  (setq org-agenda-skip-deadline-if-done t)
-  (setq org-agenda-hide-tags-regexp ".*")
-  (setq org-agenda-span 'day)
+  (setq org-enforce-todo-dependencies t
+        org-log-done (quote time)
+        org-log-redeadline (quote time)
+        org-log-reschedule (quote time)
+        org-agenda-skip-scheduled-if-done t
+        org-agenda-skip-deadline-if-done t
+        org-agenda-hide-tags-regexp ".*"
+        org-agenda-span 'day)
 
   (setq org-agenda-deadline-faces
         '((1.0 . org-warning)
           (0.5 . org-upcoming-deadline)
           (0.0 . '(:foreground "#A89984"))))
 
-  ;; (setq org-todo-keywords
-  ;;         '((sequence "► TODO(t)" "○ IN-PROGRESS(p)" "⚑ WAITING(w)" "|"
-  ;;                     "✓ DONE(d)" "✗ CANCELED(c)")
-  ;;           (sequence "► READ(r)" "|"
-  ;;                     "✓ DONE(h)")))
   (setq org-todo-keywords
         '((sequence "❯ TODO(t)" "○ IN-PROGRESS(p)" "◼ WAITING(w)" "|"
                     "✓ DONE(d)" "✗ CANCELED(c)")
@@ -1430,35 +1423,34 @@ so I went with it.
            (file+olp diego/todo-file "Emacs")
            "* ❯ TODO %?")
           ("n" "Note"))))
-
 #+end_src
 
 **** Behavior/appearance
 #+begin_src emacs-lisp
 (defun diego/org-general-vars ()
   ;; Behavior
-  ;; (setq org-support-shift-select t)
-  (setq org-insert-heading-respect-content t)
-  (setq org-src-window-setup 'current-window)
-  (setq org-list-demote-modify-bullet '(("-" . "*")
-                                        ("*" . "+")))
-  (setq org-export-in-background t)
-  (setq org-src-tab-acts-natively t)
-  (setq org-M-RET-may-split-line nil)
-  (setq org-list-use-circular-motion t)
-  (setq org-log-into-drawer t)
+  (setq org-insert-heading-respect-content t
+        org-src-window-setup 'current-window
+        org-list-demote-modify-bullet '(("-" . "*")
+                                        ("*" . "+"))
+        org-export-in-background t
+        org-src-tab-acts-natively t
+        org-M-RET-may-split-line nil
+        org-list-use-circular-motion t
+        org-log-into-drawer t)
 
   ;; appearance
-  (setq org-src-fontify-natively t)
-  (setq org-src-preserve-indentation t)
-  (setq org-fontify-quote-and-verse-blocks t)
-  (setq org-hide-emphasis-markers t)
-  (setq org-startup-with-inline-images t)
-  (setq org-ellipsis " …")
-  (setq org-highlight-latex-and-related '(latex))
-  (setq org-pretty-entities t)
+  (setq org-src-fontify-natively t
+        org-src-preserve-indentation t
+        org-fontify-quote-and-verse-blocks t
+        org-hide-emphasis-markers t
+        org-startup-with-inline-images t
+        org-ellipsis " …"
+        org-highlight-latex-and-related '(latex)
+        org-pretty-entities t)
+
   (mapc (lambda (arg) (setcdr arg (list (downcase (nth 1 arg)))))
-          org-structure-template-alist)
+        org-structure-template-alist)
 
   (add-to-list 'org-structure-template-alist
                (list "sel" (concat "#+begin_src emacs-lisp\n"
@@ -1466,8 +1458,8 @@ so I went with it.
                                    "#+end_src")))
   (add-to-list 'org-structure-template-alist
                (list "sp" (concat "#+begin_src python"
-                                   "?\n"
-                                   "#+end_src")))
+                                  "?\n"
+                                  "#+end_src")))
 
   ;; latex
   (setq org-latex-listings t)
@@ -1754,8 +1746,8 @@ Like git, for emacs. But cooler.
   :functions (magit-blame-quit)
   :defines (magit-diff-use-overlays)
   :config
-  (setq magit-diff-use-overlays nil)
-  (setq auto-revert-check-vc-info t)
+  (setq magit-diff-use-overlays nil
+        auto-revert-check-vc-info t)
 
   (defun magit-blame-toggle ()
     "Toggle magit-blame-mode on and off interactively."
@@ -2201,8 +2193,8 @@ statistics, customizability, and more.
   :ensure t
   :commands paradox-list-packages
   :config
-  (setq paradox-automatically-star t)
-  (setq paradox-execute-asynchronously t)
+  (setq paradox-automatically-star t
+        paradox-execute-asynchronously t)
   (evil-define-key 'normal paradox-menu-mode-map "q" 'paradox-quit-and-close)
   (evil-define-key 'normal paradox-menu-mode-map "fr" 'paradox-filter-regexp)
   (evil-define-key 'normal paradox-menu-mode-map "fu" 'paradox-filter-upgrades)
@@ -2252,10 +2244,10 @@ An Emacs major mode for Twitter
   :ensure t
   :commands twit
   :config
-  (setq twittering-icon-mode t)
-  (setq twittering-convert-fix-size 24)
-  (add-hook 'twittering-mode-hook #'emojify-mode)
-  (setq twittering-use-master-password t))
+  (setq twittering-icon-mode t
+        twittering-convert-fix-size 24
+        twittering-use-master-password t)
+  (add-hook 'twittering-mode-hook #'emojify-mode))
 #+end_src
 *** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
 Kind of makes undo's like git. Or Vim, apparently, if you're into that.
@@ -2655,10 +2647,10 @@ Bringing the goodness of ranger to dired!
   :init
   :config
   (ranger-override-dired-mode t)
-  (setq ranger-show-literal nil)
-  (setq ranger-show-hidden nil)
-  (setq ranger-cleanup-eagerly t)
-  (setq ranger-parent-depth 0)
+  (setq ranger-show-literal nil
+        ranger-show-hidden nil
+        ranger-cleanup-eagerly t
+        ranger-parent-depth 0)
 
   (fmakunbound 'ranger-travel)
   (defun ranger-travel ()
