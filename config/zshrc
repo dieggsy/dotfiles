@@ -13,7 +13,7 @@ fi
 
 # Undo some prezto defaults
 unalias rm
-
+unalias gs
 
 # ------------------------------------
 # zsh opts
@@ -83,7 +83,7 @@ else
 	export ALTERNATE_EDITOR="vim"
 fi
 
-export GIT_PAGER=less
+# export GIT_PAGER=less
 
 # ------------------------------------
 # Aliases
