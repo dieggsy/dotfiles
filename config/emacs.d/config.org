@@ -1357,7 +1357,8 @@ so I went with it.
     "gl"        'outline-next-visible-heading
     "gj"        'org-forward-heading-same-level
     "gk"        'org-backward-heading-same-level
-    "gt"         'org-todo
+    "gt"        'org-todo
+    "ga"        'org-archive-subtree
     (kbd "M-l") 'org-metaright
     (kbd "M-h") 'org-metaleft
     (kbd "M-k") 'org-metaup
@@ -1373,7 +1374,7 @@ so I went with it.
 (defun diego/org-file-vars ()
   ;; files
   (setq org-agenda-text-search-extra-files '(agenda-archives)
-        org-agenda-files '("~/Dropbox (MIT)/org/")
+        org-agenda-files '("~/Dropbox (MIT)/org/todo.org")
         org-default-notes-file "~/Dropbox (MIT)/org/todo.org"
         diego/todo-file "~/Dropbox (MIT)/org/todo.org"
         diego/notes-file "~Dropbox (MIT)/org/notes.org"
@@ -1433,7 +1434,8 @@ so I went with it.
         org-src-tab-acts-natively t
         org-M-RET-may-split-line nil
         org-list-use-circular-motion t
-        org-log-into-drawer t)
+        org-log-into-drawer t
+        org-link-search-must-match-exact-headline nil)
 
   ;; appearance
   (setq org-src-fontify-natively t
@@ -2375,7 +2377,6 @@ Freakin yasnippet. It's the best.
   ;; SNIPPETS!!!
   :ensure t
   :defer 5
-  :if (not noninteractive)
   :config
   (yas-global-mode 1))
 #+end_src
