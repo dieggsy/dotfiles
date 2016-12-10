@@ -739,12 +739,7 @@ based on or copied from spacemacs, so definitely check them out!
 #+begin_src emacs-lisp
 (defun diego/leader-spelling ()
   (evil-leader/set-key
-    "Sb" 'flyspell-buffer
-    "Sa" 'diego/flyspell-add-to-dictionary
-    "Sn" 'flyspell-correct-next-word-generic
-    "Sp" 'flyspell-correct-previous-word-generic
-    "SN" 'diego/flyspell-correct-next
-    "SP" 'flyspell-auto-correct-previous-word))
+    "S" 'hydra-spelling/body))
 #+end_src
 **** magit
 #+begin_src emacs-lisp
@@ -1674,14 +1669,23 @@ _p_rev     match and _P_rev
 
   (defhydra hydra-transpose ()
     "transpose"
-
     ("c" diego/transpose-chars "char")
     ("C" diego/backward-transpose-chars "backward char")
     ("j" diego/move-line-or-region "line/region")
     ("k" diego/backward-move-line-or-region "backward line/region")
     ("w" transpose-words "word")
     ("W" diego/backward-transpose-words "backward word")
-    ("s" transpose-sexps "sexp" :exit t)))
+    ("s" transpose-sexps "sexp" :exit t))
+
+  (defhydra hydra-spelling ()
+    "flyspell"
+    ("b" flyspell-buffer "buffer")
+    ("g" flyspell-goto-next-error "go to next")
+    ("a" diego/flyspell-add-to-dictionary "add to dict")
+    ("n" flyspell-correct-next-word-generic "correct next generic")
+    ("p" flyspell-correct-previous-word-generic "correct prev generic")
+    ("N" diego/flyspell-correct-next "correct next")
+    ("P" flyspell-auto-correct-previous-word "correct pref")))
 #+end_src
 ** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 Emacs package that displays available keybindings in popup
