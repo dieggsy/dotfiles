@@ -40,6 +40,7 @@ faad2
 ffmpeg
 fftw
 figlet
+findutils
 flac
 fltk
 fluid-synth
@@ -66,7 +67,10 @@ glog
 gmime
 gmp
 gnome-icon-theme
+gnu-barcode
 gnu-sed
+gnu-tar
+gnu-which
 gnupg
 gnupg2
 gnuplot
@@ -120,6 +124,7 @@ libgpg-error
 libid3tag
 libksba
 libmaa
+libmagic
 libmpc
 libmpdclient
 libogg
@@ -149,6 +154,7 @@ little-cms2
 lmdb
 lua
 lynx
+lzip
 mad
 markdown
 mp4v2
@@ -168,6 +174,7 @@ oniguruma
 openexr
 openjpeg
 openssl
+ossp-uuid
 oysttyer
 pandoc
 pango
@@ -178,6 +185,7 @@ pixman
 pkg-config
 plotutils
 poppler
+popt
 portaudio
 portmidi
 potrace
@@ -198,6 +206,7 @@ qt5
 readline
 reattach-to-user-namespace
 ripgrep
+rpm
 ruby
 rust
 sdl
@@ -223,6 +232,7 @@ talloc
 tbb
 tesseract
 texinfo
+the_platinum_searcher
 the_silver_searcher
 thefuck
 theora
@@ -239,6 +249,7 @@ vim
 vimpager
 w3m
 watch
+wdiff
 webp
 weechat
 wget
@@ -261,10 +272,19 @@ homebrew/binary/libspotify
 homebrew/boneyard/pyqt
 homebrew/completions/brew-cask-completion
 homebrew/completions/pip-completion
+homebrew/dupes/diffutils
+homebrew/dupes/ed
+homebrew/dupes/file-formula
+homebrew/dupes/gpatch
+homebrew/dupes/grep
+homebrew/dupes/gzip
 homebrew/dupes/less
+homebrew/dupes/make
 homebrew/dupes/nano
 homebrew/dupes/ncurses
+homebrew/dupes/openssh
 homebrew/dupes/screen
+homebrew/dupes/unzip
 homebrew/games/abuse
 homebrew/games/advancemame
 homebrew/games/ninvaders

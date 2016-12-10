@@ -62,6 +62,7 @@ Kivy
 Kivy-Garden
 latex
 lazy-object-proxy
+loopfield
 loremipsum
 mailcap-fix
 markdown2
@@ -146,6 +147,7 @@ terminado
 texttable
 tornado
 traitlets
+translate
 twitter
 typing
 update-checker

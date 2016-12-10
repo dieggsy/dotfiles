@@ -12,11 +12,13 @@ flux
 fontforge
 gephi
 gimp
+github-desktop
 google-chrome-beta
 google-earth-pro
 hyper
 iterm2
 iterm2-beta
+iterm2-nightly
 karabiner-elements
 libreoffice
 licecap
