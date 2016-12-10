@@ -86,6 +86,7 @@ Get rid of menu bars, scroll bars, startup screens, etc.
 
 (set-default 'truncate-lines t)
 (blink-cursor-mode 0)
+(setq whitespace-style '(face trailing tabs))
 (global-whitespace-mode)
 #+end_src
 ** Font/Text
@@ -953,7 +954,7 @@ based on or copied from spacemacs, so definitely check them out!
         evil-ex-search-persistent-highlight nil
         evil-lookup-func (lambda () (man (thing-at-point 'word))))
   :config
-  ;; (setq evil-move-cursor-back nil)
+  (add-hook 'evil-normal-state-entry-hook 'whitespace-cleanup)
   (add-hook 'evil-mode-hook 'diego/evil-modes)
   (add-hook 'evil-mode-hook 'diego/evil-appearance)
   (add-hook 'evil-mode-hook 'diego/evil-bindings))
