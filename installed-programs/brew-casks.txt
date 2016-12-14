@@ -13,6 +13,7 @@ fontforge
 gephi
 gimp
 github-desktop
+goofy
 google-chrome-beta
 google-earth-pro
 hyper
@@ -20,6 +21,7 @@ iterm2
 iterm2-beta
 iterm2-nightly
 karabiner-elements
+lastpass
 libreoffice
 licecap
 lilypond

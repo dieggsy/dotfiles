@@ -108,6 +108,7 @@ jq
 jrnl
 json-c
 lame
+lastpass-cli
 leiningen
 leptonica
 leveldb
