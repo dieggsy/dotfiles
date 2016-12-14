@@ -155,6 +155,7 @@ lmdb
 lua
 lynx
 lzip
+m-cli
 mad
 markdown
 mp4v2

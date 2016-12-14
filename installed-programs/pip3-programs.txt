@@ -13,6 +13,7 @@ bs4
 certifi
 click
 configobj
+cssselect
 cycler
 Cython
 daft
@@ -38,6 +39,7 @@ GephiStreamer
 git-remote-dropbox
 gnureadline
 google-api-python-client
+howdoi
 html2text
 htmlPy
 httplib2
@@ -64,6 +66,7 @@ latex
 lazy-object-proxy
 loopfield
 loremipsum
+lxml
 mailcap-fix
 markdown2
 MarkupSafe
@@ -113,6 +116,7 @@ pylint
 pync
 pyparsing
 pyPdf
+pyquery
 PySocks
 pytesseract
 python-dateutil
@@ -125,6 +129,7 @@ pyzmq
 qtconsole
 readline
 requests
+requests-cache
 requests-oauthlib
 rope
 rsa
