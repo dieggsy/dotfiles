@@ -5,7 +5,7 @@ if [ -z $VE ]; then
 	globalpython=$(echo $(pyenv version) | cut -d' ' -f1)
 
 	# Update pip for python 2
-	pyenv global $python2version 
+	pyenv global $python2version
 	echo -e "\e[1;34mUpdating: \e[91mpip2\e[0;97m"
 	IFS=$'\n'
 	echo  $'Getting outdated pip2 packages...'
@@ -23,7 +23,7 @@ if [ -z $VE ]; then
 		done
 	fi
 	pip freeze > ~/dotfiles/installed-programs/pip2-programs.txt
-	sed -i '' -e 's/=.*//' ~/dotfiles/installed-programs/pip2-programs.txt
+	sed -i -e 's/=.*//' ~/dotfiles/installed-programs/pip2-programs.txt
 
 	# Update pip for python 3
 	pyenv global $python3version
@@ -44,7 +44,7 @@ if [ -z $VE ]; then
 		done
 	fi
 	pip freeze > ~/dotfiles/installed-programs/pip3-programs.txt
-	sed -i '' -e 's/=.*//' ~/dotfiles/installed-programs/pip3-programs.txt 
+	sed -i -e 's/=.*//' ~/dotfiles/installed-programs/pip3-programs.txt
 
 	pyenv global system
 	echo -e "\n\e[1;34mUpdating: \e[91mHomebrew\e[0;97m"
