@@ -1990,19 +1990,10 @@ I was looking for something with the nice look and simplicity of
   (spaceline-helm-mode)
   (spaceline-toggle-minor-modes-off)
   (spaceline-toggle-battery-on)
-  ;; (spaceline-toggle-nyan-cat-on)
   (spaceline-toggle-hud-off)
   (spaceline-toggle-buffer-size-off)
   (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
 
-  ;; General
-  ;; (set-face-background 'spaceline-evil-normal "#afd700")
-  (set-face-foreground 'spaceline-evil-normal "#005f00")
-  ;; (set-face-background 'spaceline-evil-insert "#0087af")
-  (set-face-foreground 'spaceline-evil-insert "white")
-  ;; (set-face-background 'spaceline-evil-visual "#ff8700")
-  (set-face-foreground 'spaceline-evil-visual "#870000")
-  ;; (set-face-attribute 'spaceline-evil-normal :weight 'bold)
   ;; darktooth
   (set-face-background 'spaceline-evil-normal "#B8BB26")
   (set-face-background 'spaceline-evil-insert "#66999D")
@@ -2374,7 +2365,6 @@ Edit text area on Chrome with Emacs using Atomic Chrome
 Freakin yasnippet. It's the best.
 #+begin_src emacs-lisp
 (use-package yasnippet
-  ;; SNIPPETS!!!
   :ensure t
   :defer 5
   :config
