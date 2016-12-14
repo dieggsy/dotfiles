@@ -1036,6 +1036,7 @@ A really nice search/completion system for emacs.
   ;; RET enters folder rather than opening dired
   (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
   (define-key ivy-minibuffer-map [S-return] #'ivy-dispatching-done)
+  (define-key ivy-minibuffer-map [C-return] #'ivy-immediate-done)
   (define-key ivy-minibuffer-map (kbd "<S-up>") #'ivy-previous-history-element)
   (define-key ivy-minibuffer-map (kbd "<S-down>") #'ivy-next-history-element))
 #+END_SRC
