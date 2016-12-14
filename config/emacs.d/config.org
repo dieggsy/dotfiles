@@ -1553,6 +1553,17 @@ so I went with it.
 (use-package hydra
   :ensure t
   :demand t
+  :functions (sp-wrap-with-pair
+              sp-rewrap-sexp
+              sp-unwrap-sexp
+              sp-forward-barf-sexp
+              sp-backward-barf-sexp
+              sp-forward-slurp-sexp
+              sp-backward-slurp-sexp
+              diego/flyspell-add-to-dictionary
+              diego/flyspell-correct-next
+              flyspell-auto-correct-previous-word
+              sp-local-pair)
   :config
   (defhydra hydra-splitter ()
     "splitter"
