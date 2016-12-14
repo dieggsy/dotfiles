@@ -167,9 +167,6 @@ consistent with other fonts. Last updated 2011, last successfully tested
 #+begin_src emacs-lisp
 (global-auto-revert-mode t)
 (save-place-mode 1)
-(desktop-save-mode 1)
-(add-to-list 'desktop-globals-to-save 'ivy-views)
-(add-to-list 'desktop-globals-to-save '(kill-ring . 100))
 (setq save-interprogram-paste-before-kill t)
 
 (add-hook 'before-save-hook 'whitespace-cleanup)
@@ -403,7 +400,15 @@ or that enhance emacs at a deeper level than any regular mode.
 (use-package no-littering
   :demand t
   :load-path "lisp/"
-  :config)
+  :config
+  (desktop-save-mode 1)
+  (setq desktop-buffers-not-to-save
+        '("\\`todo.org"
+          "\\`notes.org"
+          "\\`archive.org"))
+
+  (add-to-list 'desktop-globals-to-save 'ivy-views)
+  (add-to-list 'desktop-globals-to-save '(kill-ring . 100)))
 #+end_src
 ** [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]]
 #+begin_src emacs-lisp
