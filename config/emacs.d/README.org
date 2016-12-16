@@ -2,7 +2,7 @@
 
 Ah, emacs. Home. The /real/ reason for this repo. I don't have much to say here
 other than expressing how much I love emacs and that you should definitely try
-it if you haven't—but no pressure, do you. 
+it if you haven't—but no pressure, do you.
 
 You should have a look at my [[./config.org][config.org]] — it's where my emacs configuration is
 kept ([[./init.el][init.el]] loads this file). It's nothing special, but I try to keep it
