@@ -8,6 +8,7 @@ Babel
 backports-abc
 backports.shutil-get-terminal-size
 beautifulsoup4
+bleach
 blinker
 bs4
 certifi
@@ -41,6 +42,7 @@ gnureadline
 google-api-python-client
 howdoi
 html2text
+html5lib
 htmlPy
 httplib2
 imagesize
@@ -87,6 +89,7 @@ oauth2client
 oauthlib
 ordereddict
 pandas
+pandocfilters
 parsedatetime
 passlib
 path.py
@@ -149,6 +152,7 @@ stevedore
 sympy
 tempdir
 terminado
+testpath
 texttable
 tornado
 traitlets

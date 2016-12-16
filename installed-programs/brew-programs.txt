@@ -40,7 +40,6 @@ faad2
 ffmpeg
 fftw
 figlet
-findutils
 flac
 fltk
 fluid-synth
