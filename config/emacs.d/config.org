@@ -2955,6 +2955,16 @@ Mostly set up hs-minor-mode for emacs-lisp.
   (local-set-key (kbd "<C-tab>") 'multi-term-next))
 (add-hook 'term-mode-hook 'diego/setup-term-mode)
 #+end_src
+
+** Eshell
+#+begin_src emacs-lisp
+(with-eval-after-load "eshell"
+  (defun eshell/clear ()
+    (interactive)
+    (let ((inhibit-read-only t))
+      (erase-buffer))
+    (eshell-send-input)))
+#+end_src
 ** Calc mode
 *** Settings
 #+begin_src emacs-lisp
