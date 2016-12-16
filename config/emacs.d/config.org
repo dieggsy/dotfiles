@@ -1655,7 +1655,12 @@ so I went with it.
               diego/flyspell-add-to-dictionary
               diego/flyspell-correct-next
               flyspell-auto-correct-previous-word
-              sp-local-pair)
+              sp-local-pair
+              diego/sp-wrap-with-paren
+              diego/sp-wrap-with-bracket
+              diego/sp-wrap-with-curly
+              diego/sp-wrap-with-quote2
+              diego/sp-wrap-with-quote)
   :config
   ;; window
   (defhydra hydra-splitter ()
