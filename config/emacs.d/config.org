@@ -2992,21 +2992,6 @@ Mostly set up hs-minor-mode for emacs-lisp.
 I'll probably remove that exclamation point at some point, but right now I'm
 excited about file local vars.
 
-#+begin_src emacs-lisp
-(when window-system
-  (let ((elapsed (float-time (time-subtract (current-time)
-                                            emacs-start-time))))
-    (message "Loading %s...done (%.3fs)" load-file-name elapsed))
-
-  (add-hook 'after-init-hook
-            `(lambda ()
-               (let ((elapsed (float-time (time-subtract (current-time)
-                                                         emacs-start-time))))
-                 (message "Loading %s...done (%.3fs) [after-init]"
-                          ,load-file-name elapsed)))
-            t))
-#+end_src
-
 #+BEGIN_SRC
 # Local Variables:
 # after-save-hook: (git-gutter diego/async-tangle-init)
