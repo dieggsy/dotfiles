@@ -1969,40 +1969,6 @@ and. Ignorance?
 (use-package diego-theme
   :load-path "lisp/")
 #+end_src
-*** [[https://github.com/hlissner/emacs-doom-theme][doom-theme]]
-Emacs themes inspired by Atom One. Quite nice I might add, if a little intense.
-#+begin_src emacs-lisp :tangle no
-(use-package doom-themes
-  :ensure t
-  :config
-
-  (load-theme 'doom-molokai t)
-  (custom-theme-set-faces
-   'doom-molokai
-   '(ivy-current-match ((t nil)))
-   '(ivy-virtual ((t (:inherit ivy-subdir))))
-   '(org-level-2 ((t (:foreground "#FD971F"))))
-   '(org-level-1 ((t (:foreground "#F92672"))))
-   '(org-level-3 ((t (:foreground "#9C91E4"))))
-   '(org-level-4 ((t (:foreground "#B6E63E"))))
-   '(org-level-5 ((t (:foreground "#E2C770"))))
-   '(org-level-6 ((t (:foreground "#727280"))))
-   '(org-level-8 ((t (:foreground "#8FA1B3"))))
-   '(iy-modified-buffer ((t (:inherit org-level-1))))
-   '(region ((t (:background "#39393D"))))
-   '(swiper-line-face ((t (:background "#222425"))))
-   '(swiper-match-face-1 ((t (:inherit ivy-minibuffer-match-face-1))))
-   '(swiper-match-face-2 ((t (:inherit ivy-minibuffer-match-face-2))))
-   '(swiper-match-face-3 ((t (:inherit ivy-minibuffer-match-face-3))))
-   '(swiper-match-face-4 ((t (:inherit ivy-minibuffer-match-face-4))))
-   '(message-header-name ((t (:inherit font-lock-comment-face :slant normal))))
-   '(message-header-subject ((t (:foreground "OliveDrab1" :height 1.2))))
-   '(message-mml ((t (:inherit font-lock-comment-face :slant normal))))
-   '(notmuch-search-unread-face ((t (:inherit font-lock-function-name-face))))
-   '(bold ((t (:weight bold))))
-   '(italic ((t (:slant italic))))
-   '(org-link ((t (:underline t :foreground "#66D9EF"))))))
-#+end_src
 *** [[https://github.com/iqbalansari/emacs-emojify][emacs-emojify]]
 Display emojis in emacs. Sweet!
 #+begin_src emacs-lisp
@@ -2019,17 +1985,6 @@ Display battery in Emacs Mode line
   (fancy-battery-mode)
   (setq fancy-battery-show-percentage t)
   (fancy-battery-update))
-#+end_src
-*** [[https://github.com/bbatsov/zenburn-emacs][zenburn-theme]]
-The Zenburn colour theme ported to Emacs
-#+begin_src emacs-lisp :tangle no
-(use-package zenburn-theme
-  :ensure t
-  :config
-  (zenburn-with-color-variables
-   (custom-theme-set-faces
-    'zenburn
-    '(ivy-current-match ((t nil))))))
 #+end_src
 *** [[https://github.com/TheBB/spaceline][spaceline]]
 Powerline theme from Spacemacs
