@@ -32,3 +32,21 @@
 
 (diego/drawille-from-image-2 "~/Desktop/warpdrive.jpg")
 (generate-new-buffer "THIS")
+
+(defun matlab-suggest-function (search-term)
+  (mapcar (lambda (x) (cdr (assoc 'title x)))
+          (cdr (assoc 'results
+                      (request-response-data
+                       (request
+                        "https://www.mathworks.com/help/search/json/doccenter/en/R2016b"
+                        :type "GET"
+                        :params `(("submitsearch" . "") ("qdoc" . ,search-term))
+                        :parser 'json-read
+                        :sync t))))))
+
+(defun diego/matlab-suggest ()
+  (interactive)
+  (ivy-read "Matlab search: "
+            #'matlab-suggest-function
+            :dynamic-collection t
+            :caller 'diego/matlab-suggest))
