@@ -167,6 +167,7 @@ urwid
 virtualenv
 virtualenv-clone
 wcwidth
+webencodings
 Werkzeug
 widgetsnbextension
 workflow
