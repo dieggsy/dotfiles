@@ -1967,13 +1967,6 @@ An Emacs 24 theme remixed from gruvbox (my fork).
   :demand t
   :load-path "lisp/")
 #+end_src
-*** diego-theme
-A (kind of nasty?) theme I used for a while, inspired by atom-one
-and. Ignorance?
-#+begin_src emacs-lisp :tangle no
-(use-package diego-theme
-  :load-path "lisp/")
-#+end_src
 *** [[https://github.com/iqbalansari/emacs-emojify][emacs-emojify]]
 Display emojis in emacs. Sweet!
 #+begin_src emacs-lisp
