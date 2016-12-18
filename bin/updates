@@ -57,7 +57,7 @@ if [ -z $VE ]; then
 	brew tap > ~/dotfiles/installed-programs/brew-taps.txt
 	brew list --full-name > ~/dotfiles/installed-programs/brew-programs.txt
 	brew cask list > ~/dotfiles/installed-programs/brew-casks.txt
-	
+
 	echo " "
 	echo -e "\e[1;34mDone"
 

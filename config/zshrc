@@ -68,7 +68,7 @@ khd="koekeishiya/khd/khd"
 
 # Python
 export python3version=3.5.2
-export python2version=2.7.12
+export python2version=2.7.13
 export PYTHONSTARTUP=$HOME/.pythonrc.py
 
 export WWW_HOME='http://google.com'

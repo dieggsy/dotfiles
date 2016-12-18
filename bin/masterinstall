@@ -3,8 +3,8 @@
 # REMEMBER TO INSTALL XCODE
 xcode-select --install
 
-# This installs Homebrew 
-echo Installing homebrew... 
+# This installs Homebrew
+echo Installing homebrew...
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 # Set up taps
