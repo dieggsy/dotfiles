@@ -1389,6 +1389,7 @@ so I went with it.
     "mA"  'org-archive-subtree
     "mc"  'org-capture
     "md"  'org-deadline
+    "m."  'org-time-stamp
     "ml"  'diego/org-choose-bullet-type
     "mn"  'org-narrow-to-subtree
     "mN"  'widen
