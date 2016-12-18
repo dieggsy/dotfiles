@@ -6,10 +6,23 @@
 (load-file "~/.emacs.d/config.el")
 ;; (setq-default mode-line-format
 ;;               '(" "
-;;                 evil-mode-line-tag
-;;                 mode-line-modified
-;;                 " %[" mode-line-buffer-identification "%] %l | %c "
-;;                 vc-mode))
+;;                 (:eval (substring-no-properties evil-mode-line-tag 0 nil))
+;;                 "%*"
+;;                 " %[" mode-line-buffer-identification "%]  "
+;;                 (:eval (powerline-raw
+;;                         (s-trim (concat vc-mode
+;;                                         (when (buffer-file-name)
+;;                                           (pcase (vc-state (buffer-file-name))
+;;                                             (`up-to-date " ")
+;;                                             (`edited " Mod")
+;;                                             (`added " Add")
+;;                                             (`unregistered " ??")
+;;                                             (`removed " Del")
+;;                                             (`needs-merge " Con")
+;;                                             (`needs-update " Upd")
+;;                                             (`ignored " Ign")
+;;                                             (_ " Unk")))))))
+;;                 "  %l | %c"))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
