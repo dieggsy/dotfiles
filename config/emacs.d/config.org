@@ -1645,7 +1645,7 @@ so I went with it.
 #+begin_src emacs-lisp
 (use-package hydra
   :ensure t
-  :demand t
+  :defer 5
   :functions (sp-wrap-with-pair
               sp-rewrap-sexp
               sp-unwrap-sexp
