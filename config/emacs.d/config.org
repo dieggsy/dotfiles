@@ -89,6 +89,10 @@ Get rid of menu bars, scroll bars, startup screens, etc.
 (setq whitespace-style '(face trailing tabs))
 (global-whitespace-mode)
 #+end_src
+** Messages
+#+begin_src emacs-lisp
+(setq message-log-max 10000)
+#+end_src
 ** Font/Text
 :NOTES:
 *Current:* Currently I'm using the wonderful [[http://input.fontbureau.com/][Input]] font. If, like me, you're
