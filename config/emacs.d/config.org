@@ -660,7 +660,11 @@ consistent with other fonts. Last updated 2011, last successfully tested
      ;; byte-compile
      (byte-compile-file
       (expand-file-name  (locate-user-emacs-file "config.el"))))
-   'ignore))
+   ;; 'ignore
+   (lambda (result)
+     (if result
+         (message "config.org successfully tangled and compiled.")
+       (message "ERROR in config.org tangle/compilation.")))))
 #+end_src
 
 ** Misc.
