@@ -748,10 +748,11 @@ or that enhance emacs at a deeper level than any regular mode.
   :config
   (desktop-save-mode 1)
   (setq desktop-buffers-not-to-save
-        '("\\`todo.org"
-          "\\`notes.org"
-          "\\`archive.org"))
-
+        (concat "\\(^todo\\.org\\|"
+                "^notes\\.org\\|"
+                "^archive\\.org\\)$"))
+  (dolist (mode minor-mode-list)
+    (add-to-list 'desktop-minor-mode-table (list mode nil)))
   (add-to-list 'desktop-globals-to-save 'ivy-views)
   (add-to-list 'desktop-globals-to-save '(kill-ring . 100)))
 #+end_src
