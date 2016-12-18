@@ -9,6 +9,8 @@
 
 (define-abbrev-table 'Man-mode-abbrev-table '())
 
+(define-abbrev-table 'anaconda-mode-view-mode-abbrev-table '())
+
 (define-abbrev-table 'apropos-mode-abbrev-table '())
 
 (define-abbrev-table 'awk-mode-abbrev-table '())
@@ -71,6 +73,12 @@
 
 (define-abbrev-table 'emojify-apropos-mode-abbrev-table '())
 
+(define-abbrev-table 'epa-info-mode-abbrev-table '())
+
+(define-abbrev-table 'epa-key-list-mode-abbrev-table '())
+
+(define-abbrev-table 'epa-key-mode-abbrev-table '())
+
 (define-abbrev-table 'erc-list-menu-mode-abbrev-table '())
 
 (define-abbrev-table 'erc-mode-abbrev-table '())
@@ -97,8 +105,10 @@
 
 (define-abbrev-table 'global-abbrev-table
   '(
-    ("thedate" "" diego/date 17)
+    ("thedate" "" diego/date 18)
    ))
+
+(define-abbrev-table 'google-maps-static-mode-abbrev-table '())
 
 (define-abbrev-table 'grep-mode-abbrev-table '())
 
@@ -192,13 +202,17 @@
 
 (define-abbrev-table 'org-mode-abbrev-table
   '(
-    ("env" "environment" nil 5)
-    ("indep" "independent" nil 1)
+    ("env" "environment" nil 13)
+    ("indep" "independent" nil 3)
    ))
 
 (define-abbrev-table 'outline-mode-abbrev-table '())
 
 (define-abbrev-table 'package-menu-mode-abbrev-table '())
+
+(define-abbrev-table 'paradox-commit-list-mode-abbrev-table '())
+
+(define-abbrev-table 'paradox-menu-mode-abbrev-table '())
 
 (define-abbrev-table 'pianobar-mode-abbrev-table '())
 
@@ -250,7 +264,11 @@
 
 (define-abbrev-table 'tex-shell-abbrev-table '())
 
-(define-abbrev-table 'text-mode-abbrev-table '())
+(define-abbrev-table 'text-mode-abbrev-table
+  '(
+    ("en" "environment" nil 6)
+    ("indep" "independent" nil 1)
+   ))
 
 (define-abbrev-table 'twittering-edit-mode-abbrev-table '())
 
