@@ -667,8 +667,8 @@ consistent with other fonts. Last updated 2011, last successfully tested
    ;; 'ignore
    (lambda (result)
      (if result
-         (message "config.org successfully tangled and compiled.")
-       (message "ERROR in config.org tangle/compilation.")))))
+         (message "SUCCESS: config.org successfully tangled and compiled.")
+       (message "ERROR: config.org tangle/compilation failed.")))))
 #+end_src
 
 ** Misc.
