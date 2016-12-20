@@ -911,21 +911,6 @@ based on or copied from spacemacs, so definitely check them out!
     "fon" 'diego/pop-to-org-notes
     "fD"  'move-file-to-trash))
 #+end_src
-**** Toggles
-#+begin_src emacs-lisp
-(defun diego/leader-toggle ()
-  (evil-leader/set-key
-    "tf" 'fci-mode
-    "tl" 'nlinum-mode
-    "tw" 'whitespace-mode
-    "ts" 'flycheck-mode
-    "tg" 'diego/github-spacing
-    "tc" 'diego/toggle-linum-fci
-    "tr" 'nlinum-relative-toggle
-    "tS" 'flyspell-mode
-    "tp" 'smartparens-mode
-    "te" 'evil-smartparens-mode))
-#+end_src
 **** Editing
 #+begin_src emacs-lisp
 (defun diego/leader-editing ()
@@ -1046,6 +1031,7 @@ based on or copied from spacemacs, so definitely check them out!
     "y"   'counsel-yank-pop
     "r"   'repeat
     "S"   'hydra-spelling/body
+    "t"   'hydra-toggle/body
     "z"   'hydra-zoom/body)
 
   (diego/leader-applications)
@@ -1058,7 +1044,6 @@ based on or copied from spacemacs, so definitely check them out!
   (diego/leader-projects)
   (diego/leader-quit)
   (diego/leader-search)
-  (diego/leader-toggle)
   (diego/leader-window)
   (define-key universal-argument-map (kbd "SPC u") 'universal-argument-more))
 #+end_src
@@ -1761,7 +1746,27 @@ _p_rev     match and _P_rev
     ("l" diego/justify-left "left" :exit t)
     ("c" diego/justify-center "center" :exit t)
     ("f" diego/justify-full "full" :exit t)
-    ("n" diego/justify-none "none" :exit t)))
+    ("n" diego/justify-none "none" :exit t))
+
+  ;; toggle
+  (defhydra hydra-toggle (:color pink)
+    "
+_f_ fci-mode:                 %-3s`fci-mode   _p_ smartparens-mode:   %-3s`smartparens-mode
+_l_ nlinum-mode:              %-3s`nlinum-mode   _S_ flyspell-mode:      %-3s`flyspell-mode
+_r_ nlinum-relative:          %-3s`nlinum-relative-mode   _a_ abbrev-mode:        %-3s`abbrev-mode
+_s_ flycheck-mode:            %-3s`flycheck-mode   _c_ linum-fci
+_w_ global-whitespace-mode:   %-3s`global-whitespace-mode
+"
+    ("f" fci-mode nil)
+    ("l" nlinum-mode nil)
+    ("r" nlinum-relative-toggle nil)
+    ("s" flycheck-mode nil)
+    ("w" global-whitespace-mode nil)
+    ("p" smartparens-mode nil)
+    ("S" flyspell-mode nil)
+    ("a" abbrev-mode nil)
+    ("c" diego/toggle-linum-fci nil)
+    ("q" nil "quit")))
 #+end_src
 ** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 Emacs package that displays available keybindings in popup
