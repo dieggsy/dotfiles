@@ -78,7 +78,7 @@
 # lctrl - j         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "- down"
 # lctrl - k         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "- up"
 # lctrl - l         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "- right"
-#lctrl - /                                               : khd -p "- escape" 
+#lctrl - /                                               : khd -p "- escape"
 
 # shift + lctrl - h ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift - left"
 # shift + lctrl - j ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift - down"

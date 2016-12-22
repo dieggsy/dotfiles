@@ -69,7 +69,9 @@
     ("#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36")))
  '(notmuch-hello-sections
    (quote
-    (notmuch-hello-insert-saved-searches notmuch-hello-insert-search notmuch-hello-insert-recent-searches notmuch-hello-insert-alltags notmuch-hello-insert-footer)))
+    (notmuch-hello-insert-saved-searches
+     notmuch-hello-insert-search notmuch-hello-insert-recent-searches
+     notmuch-hello-insert-alltags notmuch-hello-insert-footer)))
  '(notmuch-saved-searches
    (quote
     ((:name "inbox" :query "folder:Inbox" :key "i")
@@ -133,15 +135,14 @@
      ("html" . html))))
  '(package-selected-packages
    (quote
-    (request-deferred emacs-request aggressive-indent agressive-indent magithub ibuffer-vc ibuffer-git google-maps flx drawille exec-path-from-shell matlab-mode yasnippet persistent-scratch info+ pyenv-mode-auto crux lua-mode ipython sane-term disable-mouse vimrc-mode xterm-color counsel-bbdb calfw rainbow-mode bbdb-ext bbdb-vcard bbdb org-plus-contrib evil-multiedit iedit atomic-chrome centered-cursor-mode clojure-mode evil-numbers weechat vim-empty-lines-mode matlab matlab-load elfeed-goodies elfeed-org elfeed nm notmuch-labeler focus evil-smartparens coffee-mode evil-org frame-cmds pp-c-l osx-trash evil-magit yapfify smartparens paradox which-key highlight-defined evil-nerd-commenter spray speed-type company-anaconda highlight-quoted pianobar pyenv-mode pyenv multi-eshell selectric-mode highlight-tail fireplace autotetris-mode define-word worf sunshine forecast all-the-icons move-text ace-window virtualenvwrapper eshell-prompt-extras eshell-z material-theme google-translate dropbox palette melpa-upstream-visit helm-dash counsel-osx-app counsel-projectile bongo emms libmpdee landmark zone-select zone-sl zone-rainbow zone-matrix zone-nyan chess eimp e2ansi ranger github-theme org-gcal buffer-stack w3m xkcd notmuch org-beautify-theme 2048-game dired+ restart-emacs devdocs flyspell-correct-ivy flyspell-correct git-gutter-fringe doom-themes tabbar nlinum-relative nlinum google-this eww-lnum w3 emojify git-gutter pbcopy ox-pandoc pdf-tools minesweeper gruvbox-theme anti-zenburn-theme color-theme-sanityinc-tomorrow moe-theme solarized-theme darktooth-theme monokai-theme zenburn-theme multiple-cursors org key-chord yaml-mode yafolding wgrep-ag visual-fill-column vimish-fold vi-tilde-fringe use-package twittering-mode tiny-menu sx sphinx-doc spacemacs-theme spaceline smooth-scroll smex smart-mode-line rainbow-delimiters powerline-evil pacmacs ox-twbs outline-magic origami org-bullets openwith ob-ipython nyan-mode multi-term markdown-preview-mode magit jedi ivy-hydra imenu-anywhere highlight-parentheses highlight-numbers hideshow-org hide-region helm-projectile helm-fuzzier helm-flx helm-dictionary helm-descbinds flycheck fill-column-indicator fancy-battery evil-terminal-cursor-changer evil-leader evil-indent-textobject elpy ein dictionary csv-mode counsel company-jedi avy autopair atom-one-dark-theme apel ag)))
+    (nlinum-relative zone-nyan zone-matrix yasnippet yapfify yaml-mode xkcd which-key vimrc-mode use-package twittering-mode sx sunshine spray sphinx-doc speed-type spaceline smex selectric-mode sane-term restart-emacs ranger rainbow-mode rainbow-delimiters pyenv-mode-auto persistent-scratch paradox ox-pandoc osx-trash org-plus-contrib ob-ipython nm melpa-upstream-visit matlab-mode markdown-preview-mode magithub lua-mode info+ imenu-anywhere highlight-tail highlight-parentheses highlight-numbers highlight-defined google-translate google-this git-gutter-fringe focus flyspell-correct-ivy flycheck flx fireplace fill-column-indicator fancy-battery exec-path-from-shell evil-smartparens evil-numbers evil-nerd-commenter evil-multiedit evil-magit evil-leader evil-indent-textobject eshell-z eshell-prompt-extras emojify elfeed-org elfeed-goodies ein drawille disable-mouse devdocs define-word csv-mode crux counsel-projectile counsel-osx-app counsel-bbdb company-anaconda coffee-mode clojure-mode centered-cursor-mode bbdb-vcard bbdb-ext atomic-chrome aggressive-indent ace-window)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(pos-tip-background-color "#36473A")
  '(pos-tip-foreground-color "#FFFFC8")
  '(python-shell-completion-native-enable nil)
- '(python-shell-interpreter "python")
- '(recentf-exclude
-   (quote
-    ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" "/elpa/" "/xkcd/")))
+ '(python-shell-interpreter "python") '(recentf-exclude
+                                        (quote
+                                         ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" "/elpa/" "/xkcd/")))
  '(safe-local-eval-forms
    (quote
     ((add-hook

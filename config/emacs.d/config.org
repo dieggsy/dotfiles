@@ -1749,6 +1749,7 @@ _p_rev     match and _P_rev
     ("n" diego/justify-none "none" :exit t))
 
   ;; toggle
+  (setq flycheck-mode nil)
   (defhydra hydra-toggle (:color pink)
     "
 _f_ fci-mode:                 %-3s`fci-mode   _p_ smartparens-mode:   %-3s`smartparens-mode
@@ -1953,13 +1954,6 @@ Nyanyanyanyanyanyanyanyan (but actually).
              (vconcat zone-programs [zone-nyan])))))
 #+end_src
 ** Appearance
-*** [[https://github.com/domtronn/all-the-icons.el][all-the-icons]]
-A utility package to collect various Icon Fonts and propertize them within Emacs.
-#+begin_src emacs-lisp
-(use-package all-the-icons
-  :disabled t
-  :ensure t)
-#+end_src
 *** [[https://github.com/larstvei/Focus][focus]]
 Dim the font color of text in surrounding paragraphs
 #+begin_src emacs-lisp
@@ -2006,8 +2000,6 @@ I was looking for something with the nice look and simplicity of
 [[https://github.com/itchyny/lightline.vim][this]]. Spaceline does ok.
 #+begin_src emacs-lisp
 (use-package spaceline
-  ;; Similar to vim's powerline, this one looks clean
-  ;; and 'just works', to an extent
   :ensure t
   :demand t
   :config
@@ -2588,7 +2580,6 @@ imenu on steroids.
 (use-package nlinum-relative
   :defer 5
   :ensure t
-  :disabled t
   :config
   (nlinum-relative-setup-evil)
   (setq nlinum-relative-redisplay-delay 0))
