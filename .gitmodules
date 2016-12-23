@@ -1,0 +1,3 @@
+[submodule "config/emacs.d/lisp/emacs-theme-darktooth"]
+	path = config/emacs.d/lisp/emacs-theme-darktooth
+	url = https://github.com/therockmandolinist/emacs-theme-darktooth
