@@ -2255,18 +2255,6 @@ An Emacs package for displaying the forecast from OpenWeatherMap.
   :config
   (setq sunshine-location "02139,USA"))
 #+end_src
-*** [[https://github.com/hayamiz/twittering-mode][twittering-mode]]
-An Emacs major mode for Twitter
-#+begin_src emacs-lisp
-(use-package twittering-mode
-  :ensure t
-  :commands twit
-  :config
-  (setq twittering-icon-mode t
-        twittering-convert-fix-size 24
-        twittering-use-master-password t)
-  (add-hook 'twittering-mode-hook #'emojify-mode))
-#+end_src
 *** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
 Kind of makes undo's like git. Or Vim, apparently, if you're into that.
 #+begin_src emacs-lisp
@@ -2582,6 +2570,7 @@ imenu on steroids.
 (use-package nlinum-relative
   :defer 5
   :ensure t
+  :disabled t
   :config
   (nlinum-relative-setup-evil)
   (setq nlinum-relative-redisplay-delay 0))
