@@ -751,17 +751,19 @@ or that enhance emacs at a deeper level than any regular mode.
 #+begin_src emacs-lisp
 (use-package no-littering
   :demand t
-  :load-path "lisp/"
+  :ensure t
   :config
-  (desktop-save-mode 1)
-  (setq desktop-buffers-not-to-save
-        (concat "\\(^todo\\.org\\|"
-                "^notes\\.org\\|"
-                "^archive\\.org\\)$"))
-  (dolist (mode minor-mode-list)
-    (add-to-list 'desktop-minor-mode-table (list mode nil)))
-  (add-to-list 'desktop-globals-to-save 'ivy-views)
-  (add-to-list 'desktop-globals-to-save '(kill-ring . 100)))
+  ;; (desktop-save-mode 1)
+  ;; (setq desktop-files-not-to-save (rx string-start
+  ;;                                     (or "todo.org"
+  ;;                                         "notes.org"
+  ;;                                         "archive.org")
+  ;;                                     string-end))
+  ;; (dolist (mode minor-mode-list)
+  ;;   (add-to-list 'desktop-minor-mode-table (list mode nil)))
+  ;; (add-to-list 'desktop-globals-to-save 'ivy-views)
+  ;; (add-to-list 'desktop-globals-to-save '(kill-ring . 100))
+  )
 #+end_src
 ** [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]]
 #+begin_src emacs-lisp
