@@ -1754,11 +1754,11 @@ _p_rev     match and _P_rev
   (setq flycheck-mode nil)
   (defhydra hydra-toggle (:color pink)
     "
-_f_ fci-mode:                 %-3s`fci-mode   _p_ smartparens-mode:   %-3s`smartparens-mode
-_l_ nlinum-mode:              %-3s`nlinum-mode   _S_ flyspell-mode:      %-3s`flyspell-mode
-_r_ nlinum-relative:          %-3s`nlinum-relative-mode   _a_ abbrev-mode:        %-3s`abbrev-mode
-_s_ flycheck-mode:            %-3s`flycheck-mode   _c_ linum-fci
-_w_ global-whitespace-mode:   %-3s`global-whitespace-mode
+_a_ abbrev-mode:     %-3s`abbrev-mode   _l_ nlinum-mode:              %-3s`nlinum-mode
+_f_ fci-mode:        %-3s`fci-mode   _r_ nlinum-relative:          %-3s`nlinum-relative-mode
+_s_ flycheck-mode:   %-3s`flycheck-mode   _p_ smartparens-mode:         %-3s`smartparens-mode
+_S_ flyspell-mode:   %-3s`flyspell-mode   _w_ global-whitespace-mode:   %-3s`global-whitespace-mode
+_c_ linum-fci
 "
     ("f" fci-mode nil)
     ("l" nlinum-mode nil)
