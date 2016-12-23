@@ -1,6 +1,3 @@
 [submodule "config/emacs.d/lisp/emacs-theme-darktooth"]
 	path = config/emacs.d/lisp/emacs-theme-darktooth
 	url = https://github.com/therockmandolinist/emacs-theme-darktooth
-[submodule "config/emacs.d/lisp/no-littering"]
-	path = config/emacs.d/lisp/no-littering
-	url = https://github.com/therockmandolinist/no-littering
