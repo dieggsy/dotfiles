@@ -2355,18 +2355,19 @@ Minor mode for Emacs that deals with parens pairs and tries to be smart about it
     (sp-local-pair mode "'" nil :actions nil)
     (sp-local-pair mode "`" nil :actions nil))
 
-  (defmacro diego|sp-wrap-with (char-name char)
-    "Make function for setting the emphasis in org mode"
-    (let ((fname (intern (concat "diego/sp-wrap-with" char-name))))
-      `(defun ,fname (&optional arg)
-         (interactive "P")
-         (sp-wrap-with-pair ,char))))
+  (eval-and-compile
+    (defmacro diego|sp-wrap-with (char-name char)
+      "Make function for wrapping with character using `sp-wrap-with-pair'"
+      (let ((fname (intern (concat "diego/sp-wrap-with-" char-name))))
+        `(defun ,fname (&optional arg)
+           (interactive "P")
+           (sp-wrap-with-pair ,char)))))
 
-  (macroexpand '(diego|sp-wrap-with "paren"   "("))
-  (macroexpand '(diego|sp-wrap-with "bracket" "["))
-  (macroexpand '(diego|sp-wrap-with "curly"   "{"))
-  (macroexpand '(diego|sp-wrap-with "quote2"  "\""))
-  (macroexpand '(diego|sp-wrap-with "quote"   "'")))
+  (diego|sp-wrap-with "paren"   "(")
+  (diego|sp-wrap-with "bracket" "[")
+  (diego|sp-wrap-with "curly"   "{")
+  (diego|sp-wrap-with "quote2" "\"")
+  (diego|sp-wrap-with "quote"   "'"))
 
 (use-package evil-smartparens
   :ensure t
