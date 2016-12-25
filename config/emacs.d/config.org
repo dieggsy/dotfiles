@@ -951,6 +951,7 @@ based on or copied from spacemacs, so definitely check them out!
     "xir" 'indent-region
     "xib" 'indent-buffer
     "xii" 'indent-rigidly
+    "xj" 'hydra-justify/body
     "xls" 'sort-lines
     "xq"  'diego/fill-or-unfill
     "xt" 'hydra-transpose/body
