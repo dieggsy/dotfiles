@@ -2455,7 +2455,7 @@ I like a line length limit indicator in Python
 (use-package fill-column-indicator
   :ensure t
   :init
-  (setq-default fci-rule-column 79)
+  (setq-default fci-rule-column 80)
 
   (defun sanityinc/fci-enabled-p ()
     (and (boundp 'fci-mode) fci-mode))
