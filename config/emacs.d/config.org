@@ -2899,8 +2899,6 @@ Properties that apply to all programming modes.
 ** Python
 #+begin_src emacs-lisp
 (defun diego/setup-python-mode ()
-  (yas-minor-mode)
-  (setq-local tab-width 4)
   (set (make-local-variable 'comment-inline-offset) 2)
   (anaconda-mode)
   (anaconda-eldoc-mode)
