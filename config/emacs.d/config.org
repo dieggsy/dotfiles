@@ -1995,6 +1995,7 @@ Display battery in Emacs Mode line
 (use-package fancy-battery
   ;; Something something battery
   :ensure t
+  :defer 10
   :config
   (fancy-battery-mode)
   (setq fancy-battery-show-percentage t)
@@ -2012,7 +2013,6 @@ I was looking for something with the nice look and simplicity of
   :config
   (require 'spaceline-config)
   (spaceline-spacemacs-theme)
-  (spaceline-helm-mode)
   (spaceline-toggle-minor-modes-off)
   (spaceline-toggle-battery-on)
   (spaceline-toggle-hud-off)
