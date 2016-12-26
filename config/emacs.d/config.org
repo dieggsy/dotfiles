@@ -2982,6 +2982,12 @@ Mostly set up hs-minor-mode for emacs-lisp.
 (defvar var-c '299792458
   "Speed of light in a vaccum.")
 #+end_src
+** C mode
+#+begin_src emacs-lisp
+(defun diego/setup-c-mode ()
+  (aggressive-indent-mode))
+(add-hook 'c-mode-hook 'diego/setup-c-mode)
+#+end_src
 * Local vars!
 I'll probably remove that exclamation point at some point, but right now I'm
 excited about file local vars.
