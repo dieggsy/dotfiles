@@ -74,8 +74,11 @@ Get rid of menu bars, scroll bars, startup screens, etc.
 
 (setq  display-time-24hr-format t
        display-time-default-load-average nil
-       display-time-format "%a %d %b  %H:%M ")
+       display-time-format "│ %a %d %b %H:%M │"
+       ;; display-time-format "%H:%M"
+       )
 
+(display-time-mode)
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
