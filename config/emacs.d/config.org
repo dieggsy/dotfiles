@@ -746,6 +746,14 @@ I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard.
 (with-eval-after-load "undo-tree"
   (define-key undo-tree-map (kbd "C-/") nil))
 
+(dolist (map (list minibuffer-local-map
+                   minibuffer-local-ns-map
+                   minibuffer-local-completion-map
+                   minibuffer-local-must-match-map
+                   minibuffer-local-isearch-map))
+  (dolist (key '([?\C-/] [escape]))
+    (define-key map key #'minibuffer-keyboard-quit)))
+
 (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
 
 (define-key indent-rigidly-map "h" 'indent-rigidly-left)
@@ -1150,22 +1158,8 @@ based on or copied from spacemacs, so definitely check them out!
   (define-key evil-normal-state-map [?\C-/] #'keyboard-quit)
 
   (define-key evil-visual-state-map [escape] #'keyboard-quit)
-  (define-key evil-visual-state-map [?\C-/] #'keyboard-quit)
+  (define-key evil-visual-state-map [?\C-/] #'keyboard-quit))
 
-  (define-key minibuffer-local-map [escape] #'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-map [?\C-/] #'minibuffer-keyboard-quit)
-
-  (define-key minibuffer-local-ns-map [escape] #'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-ns-map [?\C-/] #'minibuffer-keyboard-quit)
-
-  (define-key minibuffer-local-completion-map [escape] #'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-completion-map [?\C-/] #'minibuffer-keyboard-quit)
-
-  (define-key minibuffer-local-must-match-map [escape] #'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-must-match-map [?\C-/] #'minibuffer-keyboard-quit)
-
-  (define-key minibuffer-local-isearch-map [escape] #'minibuffer-keyboard-quit)
-  (define-key minibuffer-local-isearch-map [?\C-/] #'minibuffer-keyboard-quit))
 #+end_src
 *** Final Setup
 **** evil
