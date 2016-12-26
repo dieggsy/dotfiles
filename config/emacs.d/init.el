@@ -290,13 +290,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(epe-dir-face ((t (:inherit eshell-ls-directory :weight normal))))
  '(erc-prompt-face ((t (:foreground "lightBlue2" :weight bold))))
  '(notmuch-search-unread-face ((t (:foreground "#83a598"))))
  '(table-cell ((t nil)))
  '(term ((t (:inherit default))))
- '(twittering-uri-face ((t (:foreground "#528b8b" :underline t))))
- '(twittering-username-face ((t (:foreground "#FE8019" :underline t))))
  '(variable-pitch ((t (:family "Open Sans")))))
 
 (put 'downcase-region 'disabled nil)

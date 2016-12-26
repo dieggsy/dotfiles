@@ -15,7 +15,6 @@ file itself, hence the [[Local vars!][file local variables]]. Also, the optional
 argument of ~org-babel-load-file~ wasn't working for me, so there's that.
 :END:
 
-
 * Personal Info
 
 #+begin_src emacs-lisp
@@ -2892,8 +2891,6 @@ Properties that apply to all programming modes.
   (highlight-parentheses-mode 1)
   (rainbow-delimiters-mode)
   (goto-address-prog-mode)
-  ;; (make-local-variable 'show-paren-mode)
-  ;; (setq show-paren-mode t)
   (fci-mode)
   (highlight-numbers-mode)
   (nlinum-relative-mode 1)
