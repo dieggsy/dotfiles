@@ -299,9 +299,12 @@
  '(twittering-username-face ((t (:foreground "#FE8019" :underline t))))
  '(variable-pitch ((t (:family "Open Sans")))))
 
-(put 'erase-buffer 'disabled nil)
-(put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
+(put 'erase-buffer 'disabled nil)
+(put 'narrow-to-page 'disabled nil)
+(put 'narrow-to-region 'disabled nil)
+(put 'set-goal-column 'disabled nil)
+(put 'upcase-region 'disabled nil)
 
 (when window-system
   (let ((elapsed (float-time (time-subtract (current-time)
