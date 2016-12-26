@@ -13,7 +13,6 @@ fi
 
 # Undo some prezto defaults
 unalias rm
-unalias gs
 
 # ------------------------------------
 # zsh opts
@@ -190,7 +189,7 @@ ham(){
 }
 
 pdftif() {
-	gs -dNOPAUSE -q -r500 \
+	\gs -dNOPAUSE -q -r500 \
 	   -sDEVICE=tiffg4 \
 	   -dBATCH \
 	   -dFirstPage=$2 \
@@ -201,7 +200,7 @@ pdftif() {
 
 ocrpdf(){
 	echo "Converting pdf to png..."
-	gs -dNOPAUSE -q -r500 \
+	\gs -dNOPAUSE -q -r500 \
 	   -sDEVICE=tiffg4 \
 	   -dBATCH \
 	   -sOutputFile=$TMPDIR/tempocr.tif \
