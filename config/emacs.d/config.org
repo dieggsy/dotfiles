@@ -2,10 +2,19 @@
 
 * Intro
 
-This is my emacs init file. [[./init.el][init.el]] loads the elisp code from here. It's pretty
-cool that I can write it in org mode, because easy organization and
-rearrangement are pretty sweet. Check out [[https://github.com/aaronbieber/dotfiles/tree/master/configs/emacs.d][@aaronbieber]], [[https://github.com/hrs/dotfiles/tree/master/emacs.d][@hrs]], and [[https://github.com/syl20bnr/spacemacs][spacemacs]] - a
-lot of the inspiration (and erm, code) for this is taken from them.
+This is the bulk of my emacs configuration loaded by [[./init.el][init.el]]. It's pretty cool
+that I can write it in org mode, because easy organization and rearrangement
+are pretty sweet. Check out [[https://github.com/aaronbieber/dotfiles/tree/master/configs/emacs.d][@aaronbieber]], [[https://github.com/hrs/dotfiles/tree/master/emacs.d][@hrs]], and [[https://github.com/syl20bnr/spacemacs][spacemacs]] - a lot of the
+inspiration (and erm, code) for this is taken from them.
+
+:NOTE:
+*Note:* The usual way to do this is to call ~(org-babel-load-file
+"config.org")~, and I did that for a while, but for whatever reason I decided I
+wanted =config.el= (and its compiled verison) to be produced as I changed the
+file itself, hence the [[Local vars!][file local variables]]. Also, the optional ~COMPILE~
+argument of ~org-babel-load-file~ wasn't working for me, so there's that.
+:END:
+
 
 * Personal Info
 
