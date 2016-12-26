@@ -37,14 +37,12 @@ Setup up cool stuff like use-package, and stuff.
 ** Package setup
 Set package archives/repos and setup use-package and all that.
 #+begin_src emacs-lisp
-;;; Standard package repositories
 (add-to-list 'package-archives '("org"          . "http://orgmode.org/elpa/") t)
 (add-to-list 'package-archives '("melpa"        . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
 (add-to-list 'package-archives '("marmalade"    . "http://marmalade-repo.org/packages/"))
 (add-to-list 'package-archives '("elpy"         . "https://jorgenschaefer.github.io/packages/"))
 
-;;; Fire up package.el
 (package-initialize)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -149,6 +147,8 @@ consistent with other fonts. Last updated 2011, last successfully tested
       resize-mini-windows t)
 #+end_src
 ** Scratch buffer
+This was nice for a while, but currently isn't tangled since it led to org-mode
+being loaded every time emacs started, meaning longer startup time.
 #+begin_src emacs-lisp :tangle no
 (setq initial-major-mode 'org-mode
       initial-scratch-message
