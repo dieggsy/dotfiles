@@ -2,6 +2,7 @@
 alabaster
 appnope
 arrow
+asciimatics
 astroid
 autopep8
 Babel
@@ -178,3 +179,4 @@ xls2db
 XlsxWriter
 xmltodict
 yapf
+YuleLog
