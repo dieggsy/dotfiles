@@ -41,21 +41,10 @@
  '(cua-read-only-cursor-color "#859900")
  '(custom-safe-themes
    (quote
-    ("67b10c9473d9f1cfe8d1f5943ccfeea823250d1ea547641600e65ff5a8e0a5b3"
-     "8b26f75ff4c58aa2ab84eefcaee8ea34b35498f87aa998ba5bc3a705700eb945"
-     "9f3181dc1fabe5d58bbbda8c48ef7ece59b01bed606cfb868dd147e8b36af97c"
-     "06dbcfac3705aaaa79e1a3264c6fd44ef0cf86ef5ed67930e4007e63a8c1e8ee"
-     "1d77d43f4f40a5a986c4420a3eabe43d828e20cc068b37e7cbf05079cc94a7b3"
-     "61c4345c064bc18cfaf24e1417e11eed20ded0d3aff85856b34fd99abe851b97"
-     "16241cf61a64014901a8dfb661cff9e5d9702f743f4e888c26de8c92267242d6"
-     "63fd72d437963b632631e698379662c2e43f0238e675a7821f25ff1c6a3e200a"
-     "a95356e6a494dc27d71fa7b8ecafdf5c60901aad175357a7b0da8c9878af258f"
-     "0e219d63550634bc5b0c214aced55eb9528640377daf486e13fb18a32bf39856"
-     "e3d28baa3817819c97fa8e80e388b7e72d959c3e2b11c3cc7870848329875623"
-     "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476"
-     default)))
+    ("67b10c9473d9f1cfe8d1f5943ccfeea823250d1ea547641600e65ff5a8e0a5b3" "8b26f75ff4c58aa2ab84eefcaee8ea34b35498f87aa998ba5bc3a705700eb945" "9f3181dc1fabe5d58bbbda8c48ef7ece59b01bed606cfb868dd147e8b36af97c" "06dbcfac3705aaaa79e1a3264c6fd44ef0cf86ef5ed67930e4007e63a8c1e8ee" "1d77d43f4f40a5a986c4420a3eabe43d828e20cc068b37e7cbf05079cc94a7b3" "61c4345c064bc18cfaf24e1417e11eed20ded0d3aff85856b34fd99abe851b97" "16241cf61a64014901a8dfb661cff9e5d9702f743f4e888c26de8c92267242d6" "63fd72d437963b632631e698379662c2e43f0238e675a7821f25ff1c6a3e200a" "a95356e6a494dc27d71fa7b8ecafdf5c60901aad175357a7b0da8c9878af258f" "0e219d63550634bc5b0c214aced55eb9528640377daf486e13fb18a32bf39856" "e3d28baa3817819c97fa8e80e388b7e72d959c3e2b11c3cc7870848329875623" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(doc-view-resolution 300)
  '(fill-column 79)
+ '(gnus-large-newsgroup 4000)
  '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
  '(highlight-symbol-colors
    (--map
@@ -75,31 +64,13 @@
      ("#20240E" . 100))) t)
  '(hl-bg-colors
    (quote
-    ("#7B6000"
-     "#8B2C02"
-     "#990A1B"
-     "#93115C"
-     "#3F4D91"
-     "#00629D"
-     "#00736F"
-     "#546E00")))
+    ("#7B6000" "#8B2C02" "#990A1B" "#93115C" "#3F4D91" "#00629D" "#00736F" "#546E00")))
  '(hl-fg-colors
    (quote
-    ("#002b36"
-     "#002b36"
-     "#002b36"
-     "#002b36"
-     "#002b36"
-     "#002b36"
-     "#002b36"
-     "#002b36")))
+    ("#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36")))
  '(notmuch-hello-sections
    (quote
-    (notmuch-hello-insert-saved-searches
-     notmuch-hello-insert-search
-     notmuch-hello-insert-recent-searches
-     notmuch-hello-insert-alltags
-     notmuch-hello-insert-footer)))
+    (notmuch-hello-insert-saved-searches notmuch-hello-insert-search notmuch-hello-insert-recent-searches notmuch-hello-insert-alltags notmuch-hello-insert-footer)))
  '(notmuch-saved-searches
    (quote
     ((:name "inbox" :query "folder:Inbox" :key "i")
@@ -110,14 +81,7 @@
      (:name "all mail" :query "*" :key "a"))))
  '(nrepl-message-colors
    (quote
-    ("#CC9393"
-     "#DFAF8F"
-     "#F0DFAF"
-     "#7F9F7F"
-     "#BFEBBF"
-     "#93E0E3"
-     "#94BFF3"
-     "#DC8CC3")))
+    ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(org-babel-load-languages
    (quote
     ((python . t)
@@ -151,15 +115,7 @@
       ("\\subsection{%s}" . "\\subsection*{%s}")))))
  '(org-modules
    (quote
-    (org-bbdb
-     org-bibtex
-     org-docview
-     org-gnus
-     org-info
-     org-irc
-     org-mhe
-     org-rmail
-     org-w3m)))
+    (org-bbdb org-bibtex org-docview org-gnus org-info org-irc org-mhe org-rmail org-w3m)))
  '(org-pandoc-options (quote ((standalone . t))))
  '(org-src-lang-modes
    (quote
@@ -186,9 +142,7 @@
  '(python-shell-interpreter "python")
  '(recentf-exclude
    (quote
-    ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'"
-     "/elpa/"
-     "/xkcd/")))
+    ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" "/elpa/" "/xkcd/")))
  '(safe-local-eval-forms
    (quote
     ((add-hook
@@ -218,10 +172,9 @@
                       (org-beamer-export-to-pdf t))
      (after-save-hook git-gutter diego/async-tangle-init))))
  '(send-mail-function (quote smtpmail-send-it))
- '(smartrep-mode-line-active-bg
-   (solarized-color-blend "#859900" "#073642" 0.2))
+ '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
  '(smtpmail-smtp-server "smtp.gmail.com")
- '(smtpmail-smtp-service 25)
+ '(smtpmail-smtp-service 25 t)
  '(term-default-bg-color "#002b36")
  '(term-default-fg-color "#839496")
  '(vc-annotate-background nil)
@@ -249,41 +202,11 @@
  '(vc-annotate-very-old-color nil)
  '(vc-follow-symlinks t)
  '(weechat-color-list
-   (unspecified
-    "#272822"
-    "#20240E"
-    "#F70057"
-    "#F92672"
-    "#86C30D"
-    "#A6E22E"
-    "#BEB244"
-    "#E6DB74"
-    "#40CAE4"
-    "#66D9EF"
-    "#FB35EA"
-    "#FD5FF0"
-    "#74DBCD"
-    "#A1EFE4"
-    "#F8F8F2"
-    "#F8F8F0"))
+   (unspecified "#272822" "#20240E" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0"))
  '(xterm-color-names
-   ["#073642"
-    "#dc322f"
-    "#859900"
-    "#b58900"
-    "#268bd2"
-    "#d33682"
-    "#2aa198"
-    "#eee8d5"])
+   ["#073642" "#dc322f" "#859900" "#b58900" "#268bd2" "#d33682" "#2aa198" "#eee8d5"])
  '(xterm-color-names-bright
-   ["#002b36"
-    "#cb4b16"
-    "#586e75"
-    "#657b83"
-    "#839496"
-    "#6c71c4"
-    "#93a1a1"
-    "#fdf6e3"]))
+   ["#002b36" "#cb4b16" "#586e75" "#657b83" "#839496" "#6c71c4" "#93a1a1" "#fdf6e3"]))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
