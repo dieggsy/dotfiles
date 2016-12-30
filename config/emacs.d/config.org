@@ -24,33 +24,34 @@ argument of ~org-babel-load-file~ wasn't working for me, so there's that.
 #+end_src
 
 * Initial Setup
-Setup up cool stuff like use-package, and stuff.
-
-** Start Server
+** Server
+Start server if not already running (emacsclient).
 #+begin_src emacs-lisp
 (require 'server)
 (unless (server-running-p)
   (server-start))
 #+end_src
 ** Load Path
+Add [[./lisp][lisp]] directory and subdirectories to ~load-path~ and ~custom-theme-load-path~.
 #+begin_src emacs-lisp
-(add-to-list 'load-path
-             (expand-file-name "lisp" user-emacs-directory))
-
+(add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 (let ((default-directory  "~/.emacs.d/lisp/"))
   (normal-top-level-add-subdirs-to-load-path))
-(add-to-list 'exec-path "/usr/local/bin")
+
 (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/")
-#+end_src
+#+END_SRC
 ** Package setup
-Set package archives/repos and setup use-package and all that.
+Set package archives/repos.
 #+begin_src emacs-lisp
 (add-to-list 'package-archives '("org"          . "http://orgmode.org/elpa/") t)
 (add-to-list 'package-archives '("melpa"        . "http://melpa.org/packages/"))
-(add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
-(add-to-list 'package-archives '("marmalade"    . "http://marmalade-repo.org/packages/"))
-(add-to-list 'package-archives '("elpy"         . "https://jorgenschaefer.github.io/packages/"))
+;; (add-to-list 'package-archives '("melpa-stable" . "http://stable.melpa.org/packages/"))
+;; (add-to-list 'package-archives '("marmalade"    . "http://marmalade-repo.org/packages/"))
+;; (add-to-list 'package-archives '("elpy"         . "https://jorgenschaefer.github.io/packages/"))
+#+END_SRC
 
+Set up [[https://github.com/jwiegley/use-package][use-package]].
+#+BEGIN_SRC emacs-lisp
 (package-initialize)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -63,7 +64,10 @@ Set package archives/repos and setup use-package and all that.
 
 (eval-when-compile
   (require 'use-package))
+#+END_SRC
 
+Byte compile installed packages asynchronously.
+#+BEGIN_SRC emacs-lisp
 (async-bytecomp-package-mode 1)
 #+end_src
 * Global settings
