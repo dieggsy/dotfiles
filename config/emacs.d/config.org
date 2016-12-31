@@ -1012,8 +1012,14 @@ based on or copied from spacemacs, so definitely check them out!
     "hdm" 'describe-mode
     "hdp" 'describe-package
     "hdv" 'counsel-describe-variable
+    "hdV" 'apropos-value
     "hdt" 'describe-theme
     "hds" 'describe-symbol
+    "hcf" 'customize-face-other-window
+    "hca" 'customize-apropos
+    "hcv" 'customize-variable-other-window
+    "hcm" 'customize-mode
+    "hcg" 'customize-group-other-window
     "hk"  'which-key-show-top-level
     "hm"  'man
     "hn"  'view-emacs-news))
@@ -1801,6 +1807,7 @@ Emacs package that displays available keybindings in popup
     "SPC g"   "magit"
     "SPC h"   "help"
     "SPC hd"  "describe"
+    "SPC hc"  "customize"
     "SPC i"   "insert"
     "SPC j"   "jump"
     "SPC m"   "major-mode-cmd"
