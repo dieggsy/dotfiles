@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+if [ $switchmacs = "spacemacs" ]; then
+    ln -sf ~/dotfiles/config/emacs.d/ ~/.emacs.d > /dev/null 2>&1
+    switchmacs="emacs"
+    echo "Switched to emacs."
+else
+    ln -sf ~/Documents/spacemacs/ ~/.emacs.d > /dev/null 2>&1
+    switchmacs="spacemacs"
+    echo "Switched to spacemacs."
+fi

@@ -65,6 +65,9 @@ export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31'
 kwm="koekeishiya/kwm/kwm"
 khd="koekeishiya/khd/khd"
 
+# Emacs
+export switchmacs="emacs"
+
 # Python
 export python3version=3.6.0
 export python2version=2.7.13
