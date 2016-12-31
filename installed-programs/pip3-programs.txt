@@ -81,6 +81,7 @@ mpmath
 nbconvert
 nbformat
 networkx
+nltk
 nose
 notebook
 notmuch
