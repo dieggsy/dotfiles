@@ -1,7 +1,7 @@
 #!/usr/local/bin/bash
 
 globalpython=$(echo $(pyenv version) | cut -d' ' -f1)
-pyenv global $python2version 
+pyenv global $python2version
 IFS=$'\n'
 echo  $'Getting outdated pip packages...'
 res=$(pip list -o --format=legacy)
@@ -19,7 +19,7 @@ else
 fi
 
 pip freeze > ~/dotfiles/installed-programs/pip2-programs.txt
-sed -i '' -e 's/=.*//' pip2-programs.txt 
+sed -i '' -e 's/=.*//' pip2-programs.txt
 
 pyenv global $globalpython
 echo $'\nDone'

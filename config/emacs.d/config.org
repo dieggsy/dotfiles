@@ -2401,7 +2401,6 @@ Edit text area on Chrome with Emacs using Atomic Chrome
     (atomic-chrome-start-server))
   (setq atomic-chrome-buffer-open-style 'frame))
 #+end_src
-
 *** [[https://github.com/joaotavora/yasnippet][yasnippet]]
 Freakin yasnippet. It's the best.
 #+begin_src emacs-lisp
