@@ -84,9 +84,7 @@ Get rid of menu bars, scroll bars, startup screens, etc.
 
 (setq  display-time-24hr-format t
        display-time-default-load-average nil
-       display-time-format "│ %a %d %b %H:%M │"
-       ;; display-time-format "%H:%M"
-       )
+       display-time-format "│ %a %d %b %H:%M │")
 
 (display-time-mode)
 (menu-bar-mode 0)
@@ -1453,8 +1451,10 @@ so I went with it.
     "mtto" 'org-table-toggle-coordinate-overlays
     "mtw"  'org-table-wrap-region)
 
- (add-hook 'org-src-mode-hook '(lambda ()
-    (evil-leader/set-key "m'" 'org-edit-src-exit)))
+  (add-hook 'org-src-mode-hook
+            '(lambda ()
+               (evil-leader/set-key "m'" 'org-edit-src-exit)
+               (evil-leader/set-key "fs" 'org-edit-src-save)))
 
   (evil-define-key 'normal org-mode-map
     (kbd "RET") 'org-open-at-point
