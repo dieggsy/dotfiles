@@ -1,4 +1,5 @@
 #+TITLE: Emacs Init File!
+#+PROPERTY: header-args    :results silent
 
 * Intro
 
