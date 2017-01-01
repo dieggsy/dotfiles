@@ -177,6 +177,7 @@ openjpeg
 openssl
 ossp-uuid
 oysttyer
+p11-kit
 pandoc
 pango
 pcre
@@ -202,7 +203,7 @@ pyqt5
 python
 python3
 qscintilla2
-qt
+qt5
 qt5
 readline
 reattach-to-user-namespace
