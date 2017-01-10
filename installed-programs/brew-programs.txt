@@ -204,13 +204,13 @@ python
 python3
 qscintilla2
 qt5
-qt5
 readline
 reattach-to-user-namespace
 ripgrep
 rpm
 ruby
 rust
+s-lang
 sdl
 sdl2
 sdl2_image

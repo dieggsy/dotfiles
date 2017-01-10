@@ -89,6 +89,7 @@ numpy
 oauth2
 oauth2client
 oauthlib
+olefile
 ordereddict
 pandas
 pandocfilters

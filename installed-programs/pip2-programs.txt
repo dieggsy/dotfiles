@@ -43,6 +43,7 @@ notmuch
 numpy
 oauth2
 oauth2client
+olefile
 parsedatetime
 path.py
 pathlib2
@@ -78,6 +79,7 @@ requests
 rope
 rsa
 rtv
+scandir
 scipy
 sexpdata
 simplegeneric
