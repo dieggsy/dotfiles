@@ -6,13 +6,3 @@ set noautofocus
 let defaultengine = "duckduckgo"
 let hintcharacters = "aoeuidhtns"
 let homedirectory = "/Users/diego"
-
-let mapleader="\<Space>"
-map <Leader><Leader> :
-map <Leader>bb :buffer<Space>
-map <Leader>bk closeTab
-map <Leader>hh :history<Space>
-
-map <Leader>qq :quitChrome<CR>
-map <Leader>qr: :chrome://restart<CR>
-map <C-_> <ESC>
