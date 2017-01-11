@@ -13,8 +13,7 @@ homebrew/science
 homebrew/services
 homebrew/versions
 homebrew/x11
-koekeishiya/khd
-koekeishiya/kwm
+koekeishiya/formulae
 mopidy/mopidy
 neovim/neovim
 sgeb/mutt

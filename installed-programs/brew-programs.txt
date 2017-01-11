@@ -310,7 +310,6 @@ homebrew/science/veclibfort
 homebrew/versions/bash-completion2
 homebrew/versions/gst-plugins-base010
 homebrew/versions/gstreamer010
-koekeishiya/khd/khd
-koekeishiya/kwm/kwm
+koekeishiya/formulae/khd
 neovim/neovim/neovim
 shaunplee/rhyme/rhyme
