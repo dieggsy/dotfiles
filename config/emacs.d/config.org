@@ -1271,6 +1271,7 @@ A really nice search/completion system for emacs.
   (define-key ivy-minibuffer-map [escape] #'keyboard-escape-quit)
   (define-key ivy-minibuffer-map (kbd "C-/") #'keyboard-escape-quit)
 
+  (setq ivy-re-builders-alist '((t . ivy--regex-ignore-order)))
   (setq ivy-format-function 'ivy-format-function-arrow ; DAT NICE ARROW THOUGH aosenuth
         projectile-completion-system 'ivy
         ivy-use-virtual-buffers t ; Show recent files
@@ -1469,10 +1470,9 @@ so I went with it.
     "mtto" 'org-table-toggle-coordinate-overlays
     "mtw"  'org-table-wrap-region)
 
-  (add-hook 'org-src-mode-hook
-            '(lambda ()
-               (evil-leader/set-key "m'" 'org-edit-src-exit)
-               (evil-leader/set-key "fs" 'org-edit-src-save)))
+  (evil-define-minor-mode-key 'normal 'org-src-mode
+    " m'" 'org-edit-src-exit
+    " fs" 'org-edit-src-save)
 
   (evil-define-key 'normal org-mode-map
     (kbd "RET") 'org-open-at-point
