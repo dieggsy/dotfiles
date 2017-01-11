@@ -2124,6 +2124,14 @@ Configure the Elfeed RSS reader with an Orgmode file
   (elfeed-goodies/setup)
   (setq elfeed-goodies/entry-pane-position 'bottom))
 #+end_src
+*** [[https://github.com/Silex/elmacro][elmacro]]
+#+begin_src emacs-lisp
+(use-package elmacro
+  :diminish elmacro-mode
+  :defer 10
+  :config
+  (elmacro-mode))
+#+end_src
 *** [[https://github.com/lewang/flx][flx]]
 Fuzzy matching for Emacs ... a la Sublime Text.
 #+begin_src emacs-lisp
