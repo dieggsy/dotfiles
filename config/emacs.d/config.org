@@ -763,14 +763,16 @@ drag it up past ARG other lines (down if ARG negative)."
 I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard.
 #+begin_src emacs-lisp
 (with-eval-after-load "undo-tree"
-  (define-key undo-tree-map (kbd "C-/") nil))
+  (global-unset-key [?\C-/])
+  (define-key undo-tree-map (kbd "C-/") nil)
+  (define-key undo-tree-map (kbd "C-_") nil))
 
 (dolist (map (list minibuffer-local-map
                    minibuffer-local-ns-map
                    minibuffer-local-completion-map
                    minibuffer-local-must-match-map
                    minibuffer-local-isearch-map))
-  (dolist (key '([?\C-/] [escape]))
+  (dolist (key '([?\C-/] [?\C-_] [escape]))
     (define-key map key #'minibuffer-keyboard-quit)))
 
 (global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
@@ -829,13 +831,13 @@ based on or copied from spacemacs, so definitely check them out!
 (defun diego/leader-search ()
   (evil-leader/set-key
     "sa" 'counsel-ag
-    "ss" 'swiper-all
+    "sS" 'swiper-all
     "sm" 'swiper-multi
     "sw" 'diego/define-word
     "sg" 'google-this-search
     "sd" 'ddg-this-search
     "sr" 'counsel-rg
-    "/"  'swiper))
+    "ss"  'swiper))
 #+end_src
 **** Projects
 #+begin_src emacs-lisp
@@ -1177,12 +1179,17 @@ based on or copied from spacemacs, so definitely check them out!
 
   ;; Make escape and C-/ quit everything, whenever possible.
   (define-key evil-insert-state-map [?\C-/] #'evil-normal-state)
+  (define-key evil-insert-state-map [?\C-_] #'evil-normal-state)
+
+  (define-key evil-replace-state-map [?\C-_] #'evil-normal-state)
   (define-key evil-replace-state-map [?\C-/] #'evil-normal-state)
 
   (define-key evil-normal-state-map [escape] #'keyboard-quit)
+  (define-key evil-normal-state-map [?\C-_] #'keyboard-quit)
   (define-key evil-normal-state-map [?\C-/] #'keyboard-quit)
 
   (define-key evil-visual-state-map [escape] #'keyboard-quit)
+  (define-key evil-visual-state-map [?\C-_] #'keyboard-quit)
   (define-key evil-visual-state-map [?\C-/] #'keyboard-quit))
 
 #+end_src
