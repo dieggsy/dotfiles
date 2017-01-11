@@ -748,6 +748,9 @@ drag it up past ARG other lines (down if ARG negative)."
     (redisplay)
     (zone)))
 
+(defun silence ()
+  "Dummy function that does nothing."
+  (interactive))
 #+end_src
 ** Keyboard Macros
 #+begin_src emacs-lisp
@@ -1162,7 +1165,6 @@ based on or copied from spacemacs, so definitely check them out!
   (define-key evil-normal-state-map (kbd "<down-mouse-1>")  nil)
   (define-key evil-normal-state-map (kbd "<mouse-1>")  nil)
 
-
   (evil-define-key 'normal custom-mode-map
     "q" 'Custom-buffer-done)
 
@@ -1190,7 +1192,23 @@ based on or copied from spacemacs, so definitely check them out!
 
   (define-key evil-visual-state-map [escape] #'keyboard-quit)
   (define-key evil-visual-state-map [?\C-_] #'keyboard-quit)
-  (define-key evil-visual-state-map [?\C-/] #'keyboard-quit))
+  (define-key evil-visual-state-map [?\C-/] #'keyboard-quit)
+
+  (dolist (key '([mouse-1]
+                 [down-mouse-1]
+                 [wheel-right]
+                 [double-wheel-right]
+                 [triple-wheel-right]
+                 [wheel-left]
+                 [double-wheel-left]
+                 [triple-wheel-left]
+                 [wheel-down]
+                 [double-wheel-down]
+                 [triple-wheel-down]
+                 [wheel-up]
+                 [double-wheel-up]
+                 [triple-wheel-up]))
+    (define-key evil-motion-state-map key 'silence)))
 
 #+end_src
 *** Final Setup
@@ -2042,6 +2060,7 @@ I was looking for something with the nice look and simplicity of
 *** [[https://github.com/purcell/disable-mouse][disable-mouse]]
 #+begin_src emacs-lisp
 (use-package disable-mouse
+  :defer 5
   :config
   (global-disable-mouse-mode))
 #+end_src
