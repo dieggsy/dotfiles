@@ -378,6 +378,9 @@ being loaded every time emacs started, meaning longer startup time.
 *** Move text
 #+begin_src emacs-lisp
 (defun diego/transpose-chars (arg)
+  "Move character at point forward one character.
+With prefix arg ARG, effect is to take character at point
+and drag it forward past ARG other characters (backward if ARG negative)."
   (interactive "P")
   (forward-char)
   (if arg
@@ -386,6 +389,9 @@ being loaded every time emacs started, meaning longer startup time.
   (backward-char))
 
 (defun diego/backward-transpose-chars (arg)
+  "Move character at point backward one character.
+With prefix arg ARG, effect is to take character at point
+and drag it backward past ARG other characters (backward if ARG negative)."
   (interactive "P")
   (forward-char)
   (if arg
@@ -394,12 +400,20 @@ being loaded every time emacs started, meaning longer startup time.
   (backward-char))
 
 (defun diego/backward-transpose-words (arg)
+  "Interchange words around point, leaving point at end of them.
+With prefix arg ARG, effect is to take word before or around point
+and drag it forward past ARG other words (backward if ARG negative).
+If ARG is zero, the words around or after point and around or after mark
+are interchanged. "
   (interactive "P")
   (if arg
       (transpose-words (- arg))
     (transpose-words -1)))
 
 (defun diego/move-line-or-region (arg)
+"Move line down one one line.
+With prefix arg ARG, effect is to take line at point and
+drag it down past ARG other lines (up if ARG negative)."
   (interactive "P")
   (if (or (not arg) (>= arg 0))
       (let ((reg-or-lin (if (region-active-p) "'>" "."))
@@ -410,6 +424,9 @@ being loaded every time emacs started, meaning longer startup time.
     (diego/backward-move-line-or-region (- arg))))
 
 (defun diego/backward-move-line-or-region (arg)
+"Move line up one one line.
+With prefix arg ARG, effect is to take line at point and
+drag it up past ARG other lines (down if ARG negative)."
   (interactive "P")
   (if (or (not arg) (>= arg 0))
       (let ((reg-or-lin (if (region-active-p) "'<" "."))
