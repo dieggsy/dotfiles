@@ -98,6 +98,7 @@ Get rid of menu bars, scroll bars, startup screens, etc.
 (blink-cursor-mode 0)
 (setq whitespace-style '(face trailing tabs))
 (global-whitespace-mode)
+(diminish 'global-whitespace-mode)
 #+end_src
 ** Messages
 #+begin_src emacs-lisp
@@ -1244,6 +1245,7 @@ A really nice search/completion system for emacs.
 *** ivy
 #+begin_src emacs-lisp
 (use-package ivy
+  :diminish ivy-mode
   :bind (("<f6>" . ivy-resume))
   :commands (ivy-switch-buffer
              ivy-switch-buffer-other-window
@@ -1307,6 +1309,7 @@ A really nice search/completion system for emacs.
 *** counsel
 #+BEGIN_SRC emacs-lisp
 (use-package counsel
+  :diminish counsel-mode
   :commands (counsel-M-x counsel-find-file)
   :bind (("M-x" . counsel-M-x)
          ("C-x C-f" . counsel-find-file))
@@ -1795,6 +1798,7 @@ _S_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 Emacs package that displays available keybindings in popup
 #+begin_src emacs-lisp
 (use-package which-key
+  :diminish which-key-mode
   :defer 10
   :config
   (which-key-mode)
@@ -2240,6 +2244,7 @@ An Emacs package for displaying the forecast from OpenWeatherMap.
 Kind of makes undo's like git. Or Vim, apparently, if you're into that.
 #+begin_src emacs-lisp
 (use-package undo-tree
+  :diminish undo-tree-mode
   :commands undo-tree-visualize
   :config
   (setq undo-tree-visualizer-timestamps t))
@@ -2356,6 +2361,7 @@ Edit text area on Chrome with Emacs using Atomic Chrome
 Freakin yasnippet. It's the best.
 #+begin_src emacs-lisp
 (use-package yasnippet
+  :diminish yas-minor-mode
   :defer 5
   :config
   (yas-global-mode 1))
@@ -2577,6 +2583,7 @@ Jump to things in Emacs tree-style
 Project Interaction Library for Emacs
 #+begin_src emacs-lisp
 (use-package projectile
+  :diminish projectile-mode
   :commands (projectile-find-file
              projectile-switch-project
              projectile-switch-to-buffer)
