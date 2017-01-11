@@ -1,5 +1,5 @@
 #+TITLE: Emacs Init File!
-#+PROPERTY: header-args    :results silent
+#+PROPERTY: header-args :results silent
 
 * Intro
 
@@ -525,7 +525,9 @@ drag it up past ARG other lines (down if ARG negative)."
 
 (defun diego/paragraphize ()
   (interactive)
-  (flush-lines "^$" (region-beginning) (region-end)))
+  (if (region-active-p)
+      (flush-lines "^$" (region-beginning) (region-end))
+    (message "No region active.")))
 #+end_src
 ** Org-mode
 #+begin_src emacs-lisp
@@ -808,7 +810,7 @@ or that enhance emacs at a deeper level than any regular mode.
   :defer 5
   :config
   (setq exec-path-from-shell-check-startup-files nil)
-  (when (memq window-system '(mac ns))
+  (when (eq system-type 'darwin)
     (exec-path-from-shell-initialize)))
 #+end_src
 ** [[https://bitbucket.org/lyro/evil/wiki/Home][evil]]
@@ -1985,8 +1987,7 @@ An Emacs 24 theme remixed from gruvbox (my fork).
 #+begin_src emacs-lisp
 (use-package darktooth-theme
   :demand t
-  :ensure nil
-  :load-path "lisp/")
+  :ensure nil)
 #+end_src
 *** [[https://github.com/iqbalansari/emacs-emojify][emacs-emojify]]
 Display emojis in emacs. Sweet!
@@ -2052,7 +2053,8 @@ I was looking for something with the nice look and simplicity of
   :config
   (crux-with-region-or-line eval-region)
   (crux-with-region-or-buffer indent-region)
-  (crux-with-region-or-buffer untabify))
+  (crux-with-region-or-buffer untabify)
+  (crux-with-region-or-buffer fill-region))
 #+end_src
 *** [[http://savannah.nongnu.org/projects/bbdb/][bbdb]]
 #+begin_src emacs-lisp
