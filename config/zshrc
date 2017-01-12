@@ -23,8 +23,6 @@ setopt histignoredups
 setopt autonamedirs
 setopt clobber
 unsetopt correct
-setopt complete_aliases
-
 
 # ------------------------------------
 # Initalize and source some more stuff
@@ -91,6 +89,15 @@ fi
 # Aliases
 # ------------------------------------
 alias apps="cd /Applications"
+alias bcl="brew cleanup"
+alias bdr="brew doctor"
+alias bin="brew install"
+alias binf="brew info"
+alias bls="brew list"
+alias brin="brew reinstall"
+alias brm="brew uninstall"
+alias bsr="brew search"
+alias bup="brew update && brew upgrade"
 alias cask="brew cask"
 alias config="$EDITOR ~/dotfiles/config/emacs.d/config.org"
 alias def='dict -d gcide'
