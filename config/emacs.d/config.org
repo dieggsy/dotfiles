@@ -1517,7 +1517,7 @@ so I went with it.
 (defun diego/org-file-vars ()
   ;; files
   (setq org-agenda-text-search-extra-files '(agenda-archives)
-        org-agenda-files '("~/Dropbox (MIT)/org/todo.org")
+        org-agenda-files '("~/Dropbox (MIT)/org/todo.org" "~/Dropbox (MIT)/org/gcal.org")
         org-default-notes-file "~/Dropbox (MIT)/org/todo.org"
         diego/todo-file "~/Dropbox (MIT)/org/todo.org"
         diego/notes-file "~Dropbox (MIT)/org/notes.org"
@@ -1562,7 +1562,9 @@ so I went with it.
           ("te" "Todo: Emacs" entry
            (file+olp diego/todo-file "Emacs")
            "* ❯ TODO %?")
-          ("n" "Note"))))
+          ("n" "Note")
+          ("g" "Google calendar" entry
+           (file "~/Dropbox (MIT)/org/gcal.org") "* %?\n\n%^T"))))
 #+end_src
 
 **** Behavior/appearance
@@ -1649,7 +1651,8 @@ so I went with it.
                             ("◼ WAITING"     . (?◼ (Br . Bl) ?◼ (Br . Bl) ?◼))
                             ("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
                             ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
-              (prettify-symbols-mode)))
+              (prettify-symbols-mode)
+              (org-gcal-sync)))
 
   (add-hook 'org-capture-mode-hook
             (lambda ()
@@ -2720,6 +2723,13 @@ Export org to twitter bootstrap compatible HTML.
   :after org
   :config
   (add-hook 'org-mode-hook 'toc-org-enable))
+#+end_src
+*** [[https://github.com/myuhe/org-gcal.el][org-gcal]]
+#+begin_src emacs-lisp
+(use-package org-gcal
+  :after org-agenda
+  :config
+  (setq  org-gcal-file-alist '(("diegoamundo@gmail.com" . "~/Dropbox (MIT)/org/gcal.org"))))
 #+end_src
 ** Reference/search
 *** [[https://github.com/abo-abo/define-word][define-word]]
