@@ -108,7 +108,7 @@ module.exports = {
 			startAlone: false,
 			startup: false,
 			size: 0.4,
-			tray: true,
+			tray: false,
 			unique: false
 		},
 	},
