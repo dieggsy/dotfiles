@@ -140,6 +140,7 @@ libtasn1
 libtermkey
 libtiff
 libtool
+libunistring
 libusb
 libusb-compat
 libuv

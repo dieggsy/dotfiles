@@ -5,6 +5,7 @@ cantata
 cuda
 dash
 discord
+easysimbl
 evernote
 firefox
 firefox-beta

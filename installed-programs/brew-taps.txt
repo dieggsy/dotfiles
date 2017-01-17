@@ -1,6 +1,7 @@
 caskroom/cask
 caskroom/fonts
 caskroom/versions
+homebrew/aliases
 homebrew/binary
 homebrew/boneyard
 homebrew/completions
