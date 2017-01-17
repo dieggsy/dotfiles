@@ -11,7 +11,6 @@
 /config/emacs.d/helm-doc.org
 /config/emacs.d/history
 /config/emacs.d/init.elc
-/config/emacs.d/lisp/nothing-to-see-here.el
 /config/emacs.d/lisp/paradox-vars.el
 /config/emacs.d/lisp/pianobar-vars.el
 /config/emacs.d/lisp/sensitive-vars.el
@@ -47,3 +46,5 @@
 /config/gnus.el
 /config/mutt/cache
 /config/mutt/certificates
+/config/emacs.d/lisp/trouble-with-the-trees.el
+/config/emacs.d/var/org
