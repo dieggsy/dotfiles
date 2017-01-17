@@ -1907,6 +1907,7 @@ Like git, for emacs. But cooler.
 
 (use-package magithub
   :after magit
+  :disabled t
   :if (not noninteractive))
 #+end_src
 
