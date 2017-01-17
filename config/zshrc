@@ -60,8 +60,8 @@ zstyle ':completion:*' list-colors 'di=0;36:ex=0;35:ln=1;31'
 export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31'
 
 # kwm/khd
-kwm="koekeishiya/kwm/kwm"
-khd="koekeishiya/khd/khd"
+kwm="koekeishiya/formulae/kwm"
+khd="koekeishiya/formulae/khd"
 
 # Emacs
 export switchmacs="emacs"
@@ -96,9 +96,17 @@ alias binf="brew info"
 alias bls="brew list"
 alias brin="brew reinstall"
 alias brm="brew uninstall"
-alias bsr="brew search"
+alias bsS="brew services stop"
+alias bsh="brew search"
+alias bsr="brew services restart"
+alias bss="brew services start"
 alias bup="brew update && brew upgrade"
 alias cask="brew cask"
+alias cin="brew cask install"
+alias cinf="brew cask info"
+alias cls="brew cask list"
+alias crin="brew cask reinstall"
+alias crm="brew cask uninstall"
 alias config="$EDITOR ~/dotfiles/config/emacs.d/config.org"
 alias def='dict -d gcide'
 alias desk="cd /Users/diego/Desktop"
