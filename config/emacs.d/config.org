@@ -215,9 +215,9 @@ being loaded every time emacs started, meaning longer startup time.
 (setq linum-delay t
       column-number-mode t)
 #+end_src
-** What?
+** There is unrest in the forest
 #+begin_src emacs-lisp
-(load-file "~/.emacs.d/lisp/nothing-to-see-here.el")
+(load-file "~/.emacs.d/lisp/trouble-with-the-trees.el")
 #+end_src
 * Functions
 ** Files/buffers
@@ -679,6 +679,7 @@ drag it up past ARG other lines (down if ARG negative)."
           (t (org-cycle-list-bullet (char-to-string char))))))
 
 (defun diego/async-tangle-init ()
+  (interactive)
   (async-start
    (lambda ()
      ;; make async emacs aware of packages (for byte-compilation)
@@ -767,6 +768,7 @@ I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard.
 #+begin_src emacs-lisp
 (with-eval-after-load "undo-tree"
   (global-unset-key [?\C-/])
+  (global-unset-key [?\C-_])
   (define-key undo-tree-map (kbd "C-/") nil)
   (define-key undo-tree-map (kbd "C-_") nil))
 
@@ -1165,6 +1167,9 @@ based on or copied from spacemacs, so definitely check them out!
   (define-key evil-normal-state-map (kbd "<down-mouse-1>")  nil)
   (define-key evil-normal-state-map (kbd "<mouse-1>")  nil)
 
+  (define-key evil-normal-state-map "-" 'negative-argument)
+  (define-key evil-normal-state-map (kbd "\\") 'ace-window)
+
   (evil-define-key 'normal custom-mode-map
     "q" 'Custom-buffer-done)
 
@@ -1284,12 +1289,11 @@ A really nice search/completion system for emacs.
               ivy-immediate-done)
   :config
   (ivy-mode 1)
-  (define-key ivy-minibuffer-map [escape] #'minibuffer-keyboard-quit)
-  (define-key ivy-minibuffer-map [?\C-/] #'minibuffer-keyboard-quit)
   (define-key ivy-minibuffer-map [escape] #'keyboard-escape-quit)
   (define-key ivy-minibuffer-map (kbd "C-/") #'keyboard-escape-quit)
 
-  (setq ivy-re-builders-alist '((t . ivy--regex-ignore-order)))
+  (setq ivy-re-builders-alist '((swiper . ivy--regex-plus)
+                                (t . ivy--regex-ignore-order)))
   (setq ivy-format-function 'ivy-format-function-arrow ; DAT NICE ARROW THOUGH aosenuth
         projectile-completion-system 'ivy
         ivy-use-virtual-buffers t ; Show recent files
@@ -1555,10 +1559,10 @@ so I went with it.
           ("ts" "Todo: School")
           ("tse" "Ethics" entry
            (file+olp diego/todo-file "School" "School" "Ethics")
-           "* ❯ TODO %?\nDEADLINE: %t")
-          ("ts6" "621" entry
-           (file+olp diego/todo-file "School" "School" "621")
-           "* ❯ TODO %?\nDEADLINE: %t")
+           "* ❯ TODO %?\nDEADLINE: %^t")
+          ("ts6" "622" entry
+           (file+olp diego/todo-file "School" "School" "622")
+           "* ❯ TODO %?\nDEADLINE: %^t")
           ("te" "Todo: Emacs" entry
            (file+olp diego/todo-file "Emacs")
            "* ❯ TODO %?")
