@@ -69,82 +69,35 @@
 # TODO(koekeishiya): possibly allow combined syntax such as
 # [switcher,ytd] + ctrl - f : khd -e "mode activate default"
 
-
-
-# vi-mode for non-terminal applications
-
-# remap left-control h/j/k/l -> arrow keys
-# lctrl - h         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "- left"
-# lctrl - j         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "- down"
-# lctrl - k         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "- up"
-# lctrl - l         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "- right"
-#lctrl - /                                               : khd -p "- escape"
-
-# shift + lctrl - h ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift - left"
-# shift + lctrl - j ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift - down"
-# shift + lctrl - k ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift - up"
-# shift + lctrl - l ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift - right"
-
-# remap left-control 0 / 4   -> start / end of line
-# lctrl - 0         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "cmd - left"
-# lctrl - 4         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "cmd - right"
-
-# remap left-control g / G   -> start / end of text(erase-buffer)
-# lctrl - g         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "cmd - up"
-# lctrl + shift - g ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "cmd - down"
-
-# shift + lctrl - 0 ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift + cmd - left"
-# shift + lctrl - 4 ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift + cmd - right"
-
-# remap left-control b / e   -> start / end of word
-# lctrl - b         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "alt - left"
-# lctrl - e         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "alt - right"
-
-# shift + lctrl - b ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift + alt - left"
-# shift + lctrl - e ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "shift + alt - right"
-
-# remap left-control x       -> forward delete
-# lctrl - x         ![Hyper,Terminal,iTerm2,Emacs]      :   khd -p "- delete"
-
-
-
 # enable kwm compatibility mode
 khd kwm on
-
-
 
 # set border color for different modes
 # khd mode default color 0xddd5c4a1
 khd mode default color 0x00d5c4a1
 khd mode switcher color 0xddbdd322
-khd mode ytd color 0xddd75f5f
 khd mode swap color 0xdd458588
 khd mode tree color 0xddfabd2f
 khd mode space color 0xddb16286
 khd mode info color 0xddcd950c
 
-
-
 # toggle between modes
 cmd + alt - f         :   khd -e "mode activate switcher"
 switcher - escape     :   khd -e "mode activate default"
-# ytd - escape          :   khd -e "mode activate default"
 swap - escape         :   khd -e "mode activate default"
 space - escape        :   khd -e "mode activate default"
 tree - escape         :   khd -e "mode activate default"
+info - escape          :   khd -e "mode activate default"
 
-# switcher - w            :   khd -e "mode activate ytd"
-switcher - a            :   khd -e "mode activate swap"
+switcher - m            :   khd -e "mode activate swap"
 switcher - s            :   khd -e "mode activate space"
-switcher - d            :   khd -e "mode activate tree"
+switcher - t            :   khd -e "mode activate tree"
 switcher - q            :   khd -e "mode activate info"
-
-
 
 # switcher mode
 switcher - r            :   khd -e "reload" # reload config
 
-switcher - return       :   open -na /Applications/HyperTerm.app;\
+switcher - return       :   open -na /Applications/Hyper.app;\
                             khd -e "mode activate default"
 
 switcher - h            :   kwmc window -f west
@@ -175,8 +128,6 @@ switcher + shift - 1    :   kwmc display -f 0
 switcher + shift - 2    :   kwmc display -f 1
 switcher + shift - 3    :   kwmc display -f 2
 
-
-
 # swap mode
 swap - h                :   kwmc window -s west
 swap - j                :   kwmc window -s south
@@ -203,12 +154,10 @@ swap + shift - 1        :   kwmc window -m display 0
 swap + shift - 2        :   kwmc window -m display 1
 swap + shift - 3        :   kwmc window -m display 2
 
-
-
 # space mode
-space - a               :   kwmc space -t bsp
-space - s               :   kwmc space -t monocle
-space - d               :   kwmc space -t float
+space - b               :   kwmc space -t bsp
+space - m               :   kwmc space -t monocle
+space - f               :   kwmc space -t float
 
 space - x               :   kwmc space -g increase horizontal
 space - y               :   kwmc space -g increase vertical
@@ -227,8 +176,6 @@ space + shift - right   :   kwmc space -p decrease right
 space + shift - up      :   kwmc space -p decrease top
 space + shift - down    :   kwmc space -p decrease bottom
 space + shift - p       :   kwmc space -p decrease all
-
-
 
 # tree mode
 tree - f                :   kwmc window -z fullscreen
@@ -256,8 +203,6 @@ tree + shift - p        :   kwmc tree -pseudo destroy
 
 tree - o                :   kwmc window -s prev
 tree + shift - o        :   kwmc window -s next
-
-
 
 # default
 cmd + alt + ctrl - m    :   kwmc window -mk focused
