@@ -1,9 +1,8 @@
-#+PROPERTY: header-args :comments link
-#+PROPERTY: header-args :padline no
+#+PROPERTY: header-args :comments both
 
 * bashrc
 :PROPERTIES:
-:header-args: :tangle ~/.bash_profile
+:header-args+: :tangle ~/.bash_profile
 :END:
 
 ** Initial setup
@@ -230,7 +229,7 @@ export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 #+end_src
 * cookiecutterrc
 :PROPERTIES:
-:header-args: :tangle ~/.cookiecutterrc
+:header-args+: :tangle ~/.cookiecutterrc
 :END:
 
 #+begin_src conf
@@ -244,7 +243,7 @@ cookiecutters_dir: "~/.cookiecutters/"
 #+end_src
 * cvimrc
 :PROPERTIES:
-:header-args: :tangle ~/.cvimrc
+:header-args+: :tangle ~/.cvimrc :comments no
 :END:
 
 #+begin_src vimrc
@@ -259,10 +258,11 @@ let homedirectory = "/Users/diego"
 #+end_src
 * gitconfig
 :PROPERTIES:
-:header-args: :tangle ~/.gitconfig
+:header-args+: :tangle ~/.gitconfig
+:ID:       F8936EA2-A12B-4F0B-BA7B-8339EB853574
 :END:
 
-#+begin_src conf :comments link
+#+begin_src conf
 [filter "media"]
 	required = true
 	clean = git media clean %f
@@ -305,10 +305,10 @@ git clone https://github.mit.edu/dmundo/16.410_$(basename $1) $(basename $1);  }
 #+end_src
 * gitignore
 :PROPERTIES:
-:header-args: :tangle ~/.gitignore
+:header-args+: :tangle ~/.gitignore
 :END:
 
-#+begin_src text
+#+begin_src conf
 .DS\_Store
 *.pyc
 __pychache__
@@ -316,7 +316,7 @@ __pychache__
 #+end_src
 * hyper.js
 :PROPERTIES:
-:header-args: :tangle ~/.hyper.js
+:header-args+: :tangle ~/.hyper.js
 :END:
 
 ** Font
@@ -489,7 +489,7 @@ module.exports = {
 #+end_src
 * khdrc
 :PROPERTIES:
-:header-args: :tangle ~/.khdrc
+:header-args+: :tangle ~/.khdrc
 :END:
 
 ** Notes
@@ -733,7 +733,7 @@ cmd - 9                 :   khd -w "}"
 #+end_src
 * kwmrc
 :PROPERTIES:
-:header-args: :tangle ~/.kwm/kwmrc
+:header-args+: :tangle ~/.kwm/kwmrc
 :END:
 
 ** Notes
@@ -875,7 +875,7 @@ kwmc config border marked radius 6
 #+end_src
 * nanorc
 :PROPERTIES:
-:header-args: :tangle ~/.nanorc
+:header-args+: :tangle ~/.nanorc
 :END:
 
 #+begin_src conf
@@ -883,7 +883,7 @@ include /usr/local/share/nano/*
 #+end_src
 * pythonrc.py
 :PROPERTIES:
-:header-args: :tangle ~/.pythonrc.py
+:header-args+: :tangle ~/.pythonrc.py
 :END:
 
 #+begin_src python
@@ -911,12 +911,134 @@ except:
 #+end_src
 * tmux.conf
 :PROPERTIES:
-:header-args: :tangle ~/.tmux.conf
+:header-args+: :tangle ~/.tmux.conf
 :END:
+
+#+begin_src conf
+# source-file ~/.tmux-osx.conf
+
+set-option -g default-command "reattach-to-user-namespace -l zsh"
+
+set-option -g prefix C-a
+set -s escape-time 0
+
+set-window-option -g xterm-keys on
+set -g update-environment -r
+set -g default-terminal "screen-256color"
+# set -g default-terminal "xterm-256color-italic"
+
+# Tmux normally uses C-b, which is weird. I'm already used to C-a from GNU
+# Screen, so that's what we're going to use.
+unbind-key C-b
+bind-key C-a last-window
+bind-key a send-prefix
+
+set-option -g mouse on
+
+# It makes much more sense to me to start numbering windows at 1.
+set -g base-index 1
+
+# Use vi-like keys in the command line.
+set-option -g status-keys vi
+set-option -g bell-action any
+set-option -g set-titles on
+set-option -g set-titles-string '#H:#S.#I.#P #W #T'
+set-option -g visual-bell off
+
+# Use vi-like keys for modes.
+setw -g mode-keys vi
+setw -g monitor-activity on
+
+# Use vi-like keys to do selection and copying. Ctrl-A Escape starts copy mode,
+# 'v' starts text selection and 'y' copies (yanks).
+bind-key Escape copy-mode
+bind-key [ copy-mode
+bind-key -t vi-copy v begin-selection
+bind-key -t vi-copy y copy-selection
+bind-key -t vi-copy Enter copy-selection
+bind-key C-y run "tmux save-buffer - | xclip -i -selection clipboard"
+bind-key C-p run "tmux set-buffer \"$(xclip -o -selection clipboard)\"; tmux paste-buffer"
+
+# Smart pane switching with awareness of vim splits
+# See this blog post for additional detail:
+# http://robots.thoughtbot.com/post/53022241323/seamlessly-navigate-vim-and-tmux-splits
+# bind-key -n C-h run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-h) || tmux select-pane -L"
+# bind-key -n C-j run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-j) || tmux select-pane -D"
+# bind-key -n C-k run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-k) || tmux select-pane -U"
+# bind-key -n C-l run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-l) || tmux select-pane -R"
+# bind-key -n C-\ run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys 'C-\\') || tmux select-pane -l"
+
+# These symbols are more... Symbolic.
+bind-key _ split-window -v
+bind-key | split-window -h
+
+# For now I want to use non-magical bindings for pane swapping so that I can get C-{h,j,k,l} in emacs.
+bind-key j select-pane -D
+bind-key k select-pane -U
+bind-key h select-pane -L
+bind-key l select-pane -R
+bind-key C-j select-pane -D
+bind-key C-k select-pane -U
+bind-key C-h select-pane -L
+bind-key C-l select-pane -R
+
+# Move windows
+bind-key { swap-window -t -1
+bind-key } swap-window -t +1
+
+# Restore access to the readline "clear screen" key, since I re-bound it above.
+#bind-key C-l send-keys 'C-l'
+
+# I like to hold Ctrl between A and D like I used to do in GNU Screen. Pity me.
+bind-key C-d detach-client
+
+bind-key -n C-S-Up resize-pane -U 5
+bind-key -n C-S-Right resize-pane -R 10
+bind-key -n C-S-Down resize-pane -D 5
+bind-key -n C-S-Left resize-pane -L 10
+
+# Move to the next or previous window.
+bind-key n next-window
+bind-key p previous-window
+
+# Status line options.
+# set-option -g status-utf8 on
+set-option -g status-justify left
+set-option -g status-bg colour234
+set-option -g status-left-length 40
+
+# Pane color options.
+set-option -g pane-active-border-fg green
+set-option -g pane-active-border-bg black
+set-option -g pane-border-fg white
+set-option -g pane-border-bg black
+
+# Windows with an activity alert.
+setw -g window-status-activity-attr bold
+setw -g window-status-activity-bg colour214
+
+set -g status-left '#[fg=colour235,bg=colour252,bold] ❐ #H #[bg=colour237,fg=colour15,nobold] #(whoami) #[bg=black]'
+set -g window-status-format '#[bg=colour237,fg=white] #I #[fg=colour240]∞#[fg=white] #W #[bg=black]'
+set -g window-status-current-format '#[bg=colour39,fg=black] #I:#P ∞ #W #[bg=black]'
+set -g status-right '#[bg=colour252,fg=colour235,bold] ⌚ %Y-%m-%d %H:%M #[default]'
+
+# Scrollback buffer size.
+set -g history-limit 4096
+
+# Reload the environment with a keystroke.
+bind-key r source-file ~/.tmux.conf
+
+# Break and merge windows and panes. ^ pulls a window into a horizontal pane,
+# < pulls a window into a vertical pane, and > breaks it back out into its own
+# window.
+bind-key < split-window -h \; choose-window 'kill-pane ; join-pane -hs %%'
+bind-key > break-pane -d
+bind-key ^ split-window -v \; choose-window 'kill-pane ; join-pane -vs %%'
+#+end_src
 
 * zshrc
 :PROPERTIES:
-:header-args: :tangle ~/.zshrc
+:header-args+: :tangle ~/.zshrc
 :END:
 
 ** Initial setup
