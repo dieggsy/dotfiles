@@ -1,16 +1,17 @@
-#+PROPERTY: header-args :comments both
+#+PROPERTY: header-args :comments link :mkdirp yes :results silent
 
-* bashrc
+* Config
+** bashrc
 :PROPERTIES:
 :header-args+: :tangle ~/.bash_profile
 :END:
 
-** Initial setup
+*** Initial setup
 Export hostname. Terminal.app used to get confused about this and show a folder
 icon with a question mark. I don't use Terminal.app anymore, but oh well.
 #+begin_src sh
 #!/usr/bin/env bash
-aexport HOSTNAME=`hostname`
+export HOSTNAME=`hostname`
 #+END_SRC
 
 Set up the prompt in the "sorin" style from zprezto
@@ -33,13 +34,13 @@ export PS1='\[\e[1;91m\]$(
 )\[\e[92m\] ❯\[\033[00m\] '
 #+end_src
 
-** Bash options
+*** Bash options
 #+begin_src sh
 shopt -s nocaseglob
 bind 'set completion-ignore-case on'
 #+end_src
 
-** Initialize and source some stuff
+*** Initialize and source some stuff
 [[https://github.com/rupa/z][z]]
 #+begin_src sh
 source `brew --prefix`/etc/profile.d/z.sh
@@ -55,7 +56,7 @@ if which thefuck > /dev/null; then eval $(thefuck --alias); fi
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 #+end_src
 
-** Vars
+*** Vars
 #+begin_src sh
 export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31'
 export CLICOLOR=1
@@ -81,7 +82,7 @@ else
 fi
 #+end_src
 
-** Aliases
+*** Aliases
 #+begin_src sh
 alias apps="cd /Applications"
 alias cask="brew cask"
@@ -121,7 +122,7 @@ alias zshrc="$EDITOR ~/dotfiles/config/zshrc"
 alias vimrc="$ALTERNATE_EDITOR ~/dotfiles/config/vimrc"
 #+end_src
 
-** Functions
+*** Functions
 #+begin_src sh
 pip-fromfile() {
     <$1 xargs pip install
@@ -222,12 +223,12 @@ calc(){
 }
 #+end_src
 
-** Path Stuff
+*** Path Stuff
 #+begin_src sh
 export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
 export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 #+end_src
-* cookiecutterrc
+** cookiecutterrc
 :PROPERTIES:
 :header-args+: :tangle ~/.cookiecutterrc
 :END:
@@ -241,7 +242,7 @@ default_context:
     bundle_id_root: "com.therockmandolinist"
 cookiecutters_dir: "~/.cookiecutters/"
 #+end_src
-* cvimrc
+** cvimrc
 :PROPERTIES:
 :header-args+: :tangle ~/.cvimrc :comments no
 :END:
@@ -256,10 +257,9 @@ let defaultengine = "duckduckgo"
 let hintcharacters = "aoeuidhtns"
 let homedirectory = "/Users/diego"
 #+end_src
-* gitconfig
+** gitconfig
 :PROPERTIES:
 :header-args+: :tangle ~/.gitconfig
-:ID:       F8936EA2-A12B-4F0B-BA7B-8339EB853574
 :END:
 
 #+begin_src conf
@@ -303,7 +303,7 @@ git clone https://github.mit.edu/dmundo/16.410_$(basename $1) $(basename $1);  }
 [status]
 	showUntrackedFiles = all
 #+end_src
-* gitignore
+** gitignore
 :PROPERTIES:
 :header-args+: :tangle ~/.gitignore
 :END:
@@ -314,12 +314,12 @@ git clone https://github.mit.edu/dmundo/16.410_$(basename $1) $(basename $1);  }
 __pychache__
 *.alfredworkflow
 #+end_src
-* hyper.js
+** hyper.js
 :PROPERTIES:
 :header-args+: :tangle ~/.hyper.js
 :END:
 
-** Font
+*** Font
 #+BEGIN_SRC js
 module.exports = {
     config: {
@@ -330,7 +330,7 @@ module.exports = {
         fontFamily: 'Input, Menlo, "DejaVu Sans Mono", "Lucida Console", monospace',
 #+END_SRC
 
-** Cursor
+*** Cursor
 #+BEGIN_SRC js
         // terminal cursor background color and opacity (hex, rgb, hsl, hsv, hwb or cmyk)
         cursorColor: '#e6e5e5',
@@ -340,7 +340,7 @@ module.exports = {
 
 #+END_SRC
 
-** Basic colors
+*** Basic colors
 #+BEGIN_SRC js
         // color of the text
         foregroundColor: '#fdf4c1',
@@ -352,7 +352,7 @@ module.exports = {
         borderColor: '#282828',
 #+END_SRC
 
-** CSS
+*** CSS
 #+BEGIN_SRC js
         // custom css to embed in the main window
         css: `
@@ -377,13 +377,13 @@ module.exports = {
 
 #+END_SRC
 
-** Padding
+*** Padding
 #+BEGIN_SRC js
         // custom padding (css format, i.e.: `top right bottom left`)
         padding: '5px 10px 0px 10px',
 #+END_SRC
 
-** Color list
+*** Color list
 #+BEGIN_SRC js
         // the full list. if you're going to provide the full color palette,
         // including the 6 x 6 color cubes and the grayscale map, just provide
@@ -416,7 +416,7 @@ module.exports = {
         },
 #+END_SRC
 
-** Options
+*** Options
 #+BEGIN_SRC js
         // the shell to run when spawning a new session (i.e. /usr/local/bin/fish)
         // if left empty, your system's login shell will be used by default
@@ -439,7 +439,7 @@ module.exports = {
         // bellSoundURL: 'http://example.com/bell.mp3',
 #+END_SRC
 
-** [[https://github.com/rickgbw/hyperterm-overlay][overlay]]
+*** [[https://github.com/rickgbw/hyperterm-overlay][overlay]]
 #+BEGIN_SRC js
         // for advanced config flags please refer to https://hyper.is/#cfg
         overlay: {
@@ -462,7 +462,7 @@ module.exports = {
 
 #+END_SRC
 
-** Plugins
+*** Plugins
 #+BEGIN_SRC js
     // a list of plugins to fetch and install from npm
     // format: [@org/]project[#version]
@@ -479,7 +479,7 @@ module.exports = {
 
 #+END_SRC
 
-** Local Plugins
+*** Local Plugins
 #+BEGIN_SRC js
     // in development, you can create a directory under
     // `~/.hyper_plugins/local/` and include it here
@@ -487,12 +487,12 @@ module.exports = {
     localPlugins: []
 };
 #+end_src
-* khdrc
+** khdrc
 :PROPERTIES:
 :header-args+: :tangle ~/.khdrc
 :END:
 
-** Notes
+*** Notes
 #+begin_src conf
 # -*- mode: conf -*-
 # sample config for khd
@@ -566,12 +566,12 @@ module.exports = {
 # [switcher,ytd] + ctrl - f : khd -e "mode activate default"
 #+end_src
 
-** Kwm
+*** Kwm
 #+begin_src conf
 # enable kwm compatibility mode
 khd kwm on
 #+end_src
-*** Borders
+**** Borders
 #+begin_src conf
 # set border color for different modes
 # khd mode default color 0xddd5c4a1
@@ -583,7 +583,7 @@ khd mode space color 0xddb16286
 khd mode info color 0xddcd950c
 #+end_src
 
-*** Toggle modes
+**** Toggle modes
 #+begin_src conf
 # toggle between modes
 cmd + alt - f         :   khd -e "mode activate switcher"
@@ -598,7 +598,7 @@ switcher - s            :   khd -e "mode activate space"
 switcher - t            :   khd -e "mode activate tree"
 switcher - q            :   khd -e "mode activate info"
 #+end_src
-*** Switcher mode
+**** Switcher mode
 #+begin_src conf
 # switcher mode
 switcher - r            :   khd -e "reload" # reload config
@@ -634,7 +634,7 @@ switcher + shift - 1    :   kwmc display -f 0
 switcher + shift - 2    :   kwmc display -f 1
 switcher + shift - 3    :   kwmc display -f 2
 #+end_src
-*** Swap mode
+**** Swap mode
 #+begin_src conf
 # swap mode
 swap - h                :   kwmc window -s west
@@ -663,7 +663,7 @@ swap + shift - 2        :   kwmc window -m display 1
 swap + shift - 3        :   kwmc window -m display 2
 
 #+end_src
-*** Space mode
+**** Space mode
 #+begin_src conf
 # space mode
 space - b               :   kwmc space -t bsp
@@ -688,7 +688,7 @@ space + shift - up      :   kwmc space -p decrease top
 space + shift - down    :   kwmc space -p decrease bottom
 space + shift - p       :   kwmc space -p decrease all
 #+end_src
-*** Tree mode
+**** Tree mode
 #+begin_src conf
 # tree mode
 tree - f                :   kwmc window -z fullscreen
@@ -717,7 +717,7 @@ tree + shift - p        :   kwmc tree -pseudo destroy
 tree - o                :   kwmc window -s prev
 tree + shift - o        :   kwmc window -s next
 #+end_src
-*** Default
+**** Default
 #+begin_src conf
 # default
 cmd + alt + ctrl - m    :   kwmc window -mk focused
@@ -731,12 +731,12 @@ cmd - 7                 :   khd -w "\\"
 cmd - 8                 :   khd -w "{"
 cmd - 9                 :   khd -w "}"
 #+end_src
-* kwmrc
+** kwmrc
 :PROPERTIES:
 :header-args+: :tangle ~/.kwm/kwmrc
 :END:
 
-** Notes
+*** Notes
 #+begin_src conf
 # -*- mode: conf -*-
 # This is a sample config for Kwm
@@ -772,7 +772,7 @@ cmd - 9                 :   khd -w "}"
 # e.g: window-rules in a separate file called 'rules'
 #     include rules
 #+end_src
-** Behavior
+*** Behavior
 #+begin_src conf
 # Default tiling mode for Kwm (bsp | monocle | float)
 kwmc config tiling bsp
@@ -807,7 +807,7 @@ kwmc config split-ratio 0.5
 # New splits become the left leaf-node
 kwmc config spawn left
 #+end_src
-** Mouse
+*** Mouse
 #+begin_src conf
 # Set focus-follows-mouse-mode to autoraise
 kwmc config focus-follows-mouse on
@@ -830,7 +830,7 @@ kwmc config mouse-drag on
 # The modifier keys to be held down to initiate mouse-drag
 kwmc config mouse-drag mod shift+ctrl
 #+end_src
-** Rules
+*** Rules
 #+begin_src conf
 # Add custom tiling rules for applications that does not get tiled by Kwm by
 # default.  This is because some applications do not have the AXWindowRole and
@@ -850,7 +850,7 @@ kwmc rule owner="LICEcap" properties={float="true"}
 
 #    kwmc rule owner="iTunes" properties={display="1"}
 #+end_src
-** Appearance
+*** Appearance
 #+begin_src conf
 # Set default values for screen padding
 kwmc config padding 40 20 20 20
@@ -873,7 +873,7 @@ kwmc config border marked size 2
 kwmc config border marked color 0xFFCC5577
 kwmc config border marked radius 6
 #+end_src
-* nanorc
+** nanorc
 :PROPERTIES:
 :header-args+: :tangle ~/.nanorc
 :END:
@@ -881,13 +881,15 @@ kwmc config border marked radius 6
 #+begin_src conf
 include /usr/local/share/nano/*
 #+end_src
-* pythonrc.py
+** pythonrc.py
 :PROPERTIES:
-:header-args+: :tangle ~/.pythonrc.py
+:header-args+: :tangle ~/.pythonrc.py :padline no
 :END:
 
 #+begin_src python
-# encoding: utf-8
+# -*- coding: utf-8 -*-
+
+from __future__ import print_function, unicode_literals
 
 try:
     def progBar(i, total, length=50, kind=None):
@@ -909,7 +911,7 @@ except:
 #         writer = csv.writer(f)
 #         writer.writerows(rows)
 #+end_src
-* rainbow_config.json
+** rainbow_config.json
 :PROPERTIES:
 :header-args+: :tangle ~/rainbow_config.json
 :END:
@@ -957,7 +959,7 @@ except:
     }
 }
 #+end_src
-* tmux.conf
+** tmux.conf
 :PROPERTIES:
 :header-args+: :tangle ~/.tmux.conf
 :END:
@@ -1084,13 +1086,13 @@ bind-key > break-pane -d
 bind-key ^ split-window -v \; choose-window 'kill-pane ; join-pane -vs %%'
 #+end_src
 
-* zshrc
+** zshrc
 :PROPERTIES:
 :header-args+: :tangle ~/.zshrc
 :END:
 
-** Initial setup
-*** Export hostname.
+*** Initial setup
+**** Export hostname.
 
 Terminal.app used to get confused about this and show a folder icon with a
 question mark. I don't use Terminal.app anymore, but oh well.
@@ -1099,7 +1101,7 @@ question mark. I don't use Terminal.app anymore, but oh well.
 export HOSTNAME=`hostname`
 #+end_src
 
-*** Source Prezto
+**** Source Prezto
 #+begin_src sh
 if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
@@ -1108,7 +1110,7 @@ fi
 unalias rm
 #+end_src
 
-** Zsh options
+*** Zsh options
 #+begin_src sh
 setopt GLOB_COMPLETE
 setopt auto_cd
@@ -1117,7 +1119,7 @@ setopt autonamedirs
 setopt clobber
 unsetopt correct
 #+end_src
-** Initialize and source some things
+*** Initialize and source some things
 [[https://github.com/rupa/z][z]]
 #+begin_src sh
 source `brew --prefix`/etc/profile.d/z.sh
@@ -1149,7 +1151,7 @@ source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 zstyle ':completion:*' list-colors 'di=0;36:ex=0;35:ln=1;31'
 #+end_src
-** Vars
+*** Vars
 #+begin_src sh
 # some ls colors i've gotten used to
 export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31'
@@ -1178,7 +1180,7 @@ else
     export ALTERNATE_EDITOR="vim"
 fi
 #+end_src
-** Aliases
+*** Aliases
 #+begin_src sh
 alias apps="cd /Applications"
 alias bcl="brew cleanup"
@@ -1234,7 +1236,7 @@ alias sz="du -hs"                              # get folder/file size
 alias zshrc="$EDITOR ~/dotfiles/config/zshrc"
 alias vimrc="$ALTERNATE_EDITOR ~/dotfiles/config/vimrc"
 #+end_src
-** Functions
+*** Functions
 #+begin_src sh
 ff(){
     find . -type f -iname *"$1"*
@@ -1353,7 +1355,7 @@ spectrum_ls() {
 }
 
 #+end_src
-** Path Stuff
+*** Path Stuff
 #+begin_src sh
 fpath=(/usr/local/share/zsh-completions $fpath)
 
@@ -1362,9 +1364,185 @@ export PATH="$HOME/bin:/usr/local/sbin:"\
 typeset -U path
 export MANPATH="$(brew --prefix coreutils)/libexec/gnuman:$MANPATH"
 #+end_src
+* Scripts
+** masterinstall
+:PROPERTIES:
+:header-args+: :tangle ~/bin/masterinstall :shebang "#!/usr/bin/env bash"
+:END:
+*** Xcode
+#+begin_src sh
+xcode-select --install
+#+end_src
+*** homebrew
+#+begin_src sh
+echo Installing homebrew...
+ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+# Set up taps
+echo '\nTapping taps...'
+<~/dotfiles/installed-programs/brew-taps.txt xargs brew tap
+
+# Install brew programs (terminal)
+echo '\nInstalling brew programs...'
+<~/dotfiles/installed-programs/brew-programs.txt xargs brew install
+
+# Install brew cask programs (apps)
+echo '\nInstalling brew cask programs...'
+<~/dotfiles/installed-programs/brew-casks.txt xargs brew cask install
+#+end_src
+*** Pyenv
+#+begin_src sh
+# Pyenv setup
+pyenv install $python3version
+pyenv rehash
+pyenv install $python2version
+pyenv rehash
+pyenv global $python3version
+#+end_src
+*** Pip
+#+begin_src sh
+# Install pip programs (python)
+echo '\nInstalling pip3 programs...'
+<~/dotfiles/installed-programs/pip2-programs.txt xargs pip install
+echo Done
+
+pyenv global $python2version
+echo '\nInstalling pip2 programs...'
+<~/dotfiles/installed-programs/pip3-programs.txt xargs pip install
+echo Done
+
+pyenv global $python3version
+#+end_src
+*** Symlink dirs
+#+begin_src sh
+
+#+end_src
+*** Install workflow utils
+#+begin_src sh
+curl https://gist.githubusercontent.com/deanishe/b16f018119ef3fe951af/raw/ > ~/bin/workflow-build.py
+curl https://gist.githubusercontent.com/deanishe/35faae3e7f89f629a94e/raw/ > ~/bin/workflow-install.py
+chmod a+x ~/bin/workflow-build.py
+chmod a+x ~/bin/workflow-install.py
+#+end_src
+
+#+RESULTS:
+
+** switchmacs
+:PROPERTIES:
+:header-args+: :tangle ~/bin/switchmacs :shebang "#!/usr/bin/env bash"
+:END:
+
+#+begin_src sh
+rm ~/.emacs.d
+if [ $switchmacs = "spacemacs" ]; then
+    ln -s ~/dotfiles/config/emacs.d/ ~/.emacs.d > /dev/null 2>&1
+    switchmacs="emacs"
+    echo "Switched to emacs."
+else
+    ln -s ~/Documents/spacemacs/ ~/.emacs.d > /dev/null 2>&1
+    switchmacs="spacemacs"
+    echo "Switched to spacemacs."
+fi
+#+end_src
+** updates
+:PROPERTIES:
+:header-args+: :tangle ~/bin/updates :shebang "#!/usr/bin/env bash"
+:END:
+
+*** Initialize
+Make sure not in a virtualenv and track pyenv python version.
+#+begin_src sh
+VE=`echo $VIRTUAL_ENV`
+if [ -z $VE ]; then
+	# Track global python version
+	globalpython=$(echo $(pyenv version) | cut -d' ' -f1)
+#+end_src
+*** Python 2 pip
+#+begin_src sh
+    # Update pip for python 2
+    pyenv global $python2version
+    echo -e "\e[1;34mUpdating: \e[91mpip2\e[0;97m"
+    IFS=$'\n'
+    echo  $'Getting outdated pip2 packages...'
+    res=$(pip list -o --format=legacy)
+
+    if [ -z "$res" ]; then
+        echo $'All packages up to date.'
+    else
+        echo ""
+        echo "$res"
+        echo ""
+        echo $'Updating packages...\n'
+        for prog in $res;do
+            pip install --upgrade ${prog%\(*}
+        done
+    fi
+    pip freeze > ~/dotfiles/installed-programs/pip2-programs.txt
+    sed -i -e 's/=.*//' ~/dotfiles/installed-programs/pip2-programs.txt
+#+end_src
+*** Python 3 pip
+#+begin_src sh
+    # Update pip for python 3
+    pyenv global $python3version
+    echo -e "\n\e[1;34mUpdating: \e[91mpip3\e[0;97m"
+    IFS=$'\n'
+    echo  $'Getting outdated pip3 packages...'
+    res=$(pip list -o --format=legacy)
+
+    if [ -z "$res" ]; then
+        echo $'All packages up to date.'
+    else
+        echo ""
+        echo "$res"
+        echo ""
+        echo $'Updating packages...\n'
+        for prog in $res;do
+            pip install --upgrade ${prog%\(*}
+        done
+    fi
+    pip freeze > ~/dotfiles/installed-programs/pip3-programs.txt
+    sed -i -e 's/=.*//' ~/dotfiles/installed-programs/pip3-programs.txt
+#+end_src
+*** homebrew
+#+begin_src sh
+    pyenv global system
+    echo -e "\n\e[1;34mUpdating: \e[91mHomebrew\e[0;97m"
+    brew update
+    brew upgrade
+    brew cleanup
+    brew prune
+    brew doctor
+
+    brew tap > ~/dotfiles/installed-programs/brew-taps.txt
+    brew list --full-name > ~/dotfiles/installed-programs/brew-programs.txt
+    brew cask list > ~/dotfiles/installed-programs/brew-casks.txt
+#+end_src
+*** Finalize
+#+begin_src sh
+    echo " "
+    echo -e "\e[1;34mDone"
+
+    pyenv global $globalpython # Set python version back to original
+else
+    echo 'Exit virtualenv first'
+fi
+#+end_src
+** wfname
+:PROPERTIES:
+:header-args+: :tangle ~/bin/wfname :shebang "#!/usr/bin/env python"
+:END:
+#+begin_src python
+from __future__ import print_function
+import plistlib,sys
+
+try:
+    print('\nWorkflow: '+plistlib.readPlist('info.plist')['name'])
+except IOError:
+    print('No \'info. plist\' file. ')
+#+end_src
 * Local vars
 
 # Local Variables:
-# after-save-hook: (git-gutter diego/async-tangle-rc)
+# after-save-hook: (git-gutter diego/async-babel-tangle)
 # org-pretty-entities: nil
 # End:
