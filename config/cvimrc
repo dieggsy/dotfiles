@@ -1,8 +1,0 @@
-let configpath='/Users/diego/dotfiles/config/cvimrc'
-set localconfig
-set smoothscroll
-set noautofocus
-
-let defaultengine = "duckduckgo"
-let hintcharacters = "aoeuidhtns"
-let homedirectory = "/Users/diego"

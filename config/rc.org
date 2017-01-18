@@ -1,0 +1,1199 @@
+#+PROPERTY: header-args :comments link
+#+PROPERTY: header-args :padline no
+
+* bashrc
+:PROPERTIES:
+:header-args: :tangle ~/.bash_profile
+:END:
+
+** Initial setup
+Export hostname. Terminal.app used to get confused about this and show a folder
+icon with a question mark. I don't use Terminal.app anymore, but oh well.
+#+begin_src sh
+#!/usr/bin/env bash
+aexport HOSTNAME=`hostname`
+#+END_SRC
+
+Set up the prompt in the "sorin" style from zprezto
+#+BEGIN_SRC sh
+_dir_chomp () {
+    local IFS=/ c=1 n d
+    local p=(${1/#$HOME/\~}) r=${p[*]}
+    local s=${#r}
+    while ((s>$2&&c<${#p[*]}-1))
+    do
+        d=${p[c]}
+        n=1;[[ $d = .* ]]&&n=2
+        ((s-=${#d}-n))
+        p[c++]=${d:0:n}
+    done
+    echo "${p[*]}"
+}
+export PS1='\[\e[1;91m\]$(
+  _dir_chomp "$(pwd)" 1
+)\[\e[92m\] ❯\[\033[00m\] '
+#+end_src
+
+** Bash options
+#+begin_src sh
+shopt -s nocaseglob
+bind 'set completion-ignore-case on'
+#+end_src
+
+** Initialize and source some stuff
+[[https://github.com/rupa/z][z]]
+#+begin_src sh
+source `brew --prefix`/etc/profile.d/z.sh
+#+END_SRC
+
+[[https://github.com/nvbn/thefuck][thefuck]]
+#+BEGIN_SRC sh
+if which thefuck > /dev/null; then eval $(thefuck --alias); fi
+#+END_SRC
+
+[[https://github.com/yyuu/pyenv/][pyenv]]
+#+BEGIN_SRC sh
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+#+end_src
+
+** Vars
+#+begin_src sh
+export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31'
+export CLICOLOR=1
+export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
+
+kwm="koekeishiya/kwm/kwm"
+khd="koekeishiya/khd/khd"
+
+export python3version=3.5.2
+export python2version=2.7.12
+export PYTHONSTARTUP=$HOME/.pythonrc.py
+
+export WWW_HOME='http://google.com'
+export RTV_EDITOR='vim'
+export RTV_URLVIEWER='urlview'
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+    export EDITOR='vim'
+else
+    export EDITOR="emacsclient -n" # Set emacs as default editor
+    export ALTERNATE_EDITOR="vim"
+fi
+#+end_src
+
+** Aliases
+#+begin_src sh
+alias apps="cd /Applications"
+alias cask="brew cask"
+alias config="$EDITOR ~/dotfiles/config/emacs.d/config.org"
+alias def='dict -d gcide'
+alias desk="cd /Users/diego/Desktop"
+alias docs="cd /Users/diego/Documents/"
+alias down="cd /Users/diego/Downloads/"
+alias drive="cd /Users/diego/Google\ Drive"
+alias drop="cd /Users/diego/Dropbox\ \(MIT\)"
+alias edit="emacsclient -n"
+alias editv="emacsclient -t"
+alias f='find . -iname'
+alias fd='find . -type d -iname'
+alias ff='find . -type f -iname'
+alias filecount="ls -1 | wc -l"
+alias git=hub
+alias startkwm="brew services start $kwm"
+alias stopkwm="brew services stop $kwm"
+alias restartkwm="brew services restart $kwm"
+alias startkhd="brew services start $khd"
+alias stopkhd="brew services stop $khd"
+alias restartkhd="brew services restart $khd"
+alias ls='ls -NX --group-directories-first --color=always'
+alias lst="ls -t"
+alias math='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
+alias pep8="pep8 --first --ignore=E129,W503,E226"
+alias piphere="pip install --target=./"
+alias printers="lpstat -p | awk '{print $2}'"
+alias resetb="source ~/.zshrc"
+alias resetwifi="networksetup -setairportpower en0 off; sleep 2;"\
+"networksetup -setairportpower en0 on"
+alias starwars="telnet towel.blinkenlights.nl" # heh
+alias sudo='sudo '                             # recognize aliases
+alias sz="du -hs"                              # get folder/file size
+alias zshrc="$EDITOR ~/dotfiles/config/zshrc"
+alias vimrc="$ALTERNATE_EDITOR ~/dotfiles/config/vimrc"
+#+end_src
+
+** Functions
+#+begin_src sh
+pip-fromfile() {
+    <$1 xargs pip install
+}
+
+athena(){
+    echo -n "Username: "
+    read username
+    ssh -Y "$username@athena.dialup.mit.edu"
+}
+
+mkexec(){
+    chmod a+x "$@"
+}
+
+pythonexec(){
+    touch "$*"
+    echo '#!/usr/local/bin/python3' | cat - "$*" > temp && mv temp "$*"
+    sudo chmod a+x "$*"
+    emacsclient -n "$*"
+}
+
+# Create/edit python script
+pythonscript(){
+    touch "$*"
+    echo '#!/usr/local/bin/python3' | cat - "$*" > temp && mv temp "$*"
+    emacsclient -n "$*"
+}
+
+# View only mode in emacs
+ev() {
+    emacsclient -n --eval "(find-file-read-only \"$1\")"
+}
+
+# Edit Python 3 files
+bam(){
+    emacsclient -n "$1" \
+                --eval '(and (split-window-right) (windmove-right))' \
+                -f ipython \
+                --eval '(windmove-left)'
+}
+
+# Edit Python 2 files
+ham(){
+    emacsclient -n "$1" \
+                --eval '(and (split-window-right) (windmove-right))' \
+                -f ipython2 \
+                --eval '(windmove-left)'
+}
+
+pdftif() {
+    gs -dNOPAUSE -q -r500 \
+       -sDEVICE=tiffg4 \
+       -dBATCH \
+       -dFirstPage=$2 \
+       -dLastPage=$3 \
+       -sOutputFile=$4 \
+       $1
+}
+
+ocrpdf(){
+    echo "Converting pdf to png..."
+    gs -dNOPAUSE -q -r500 \
+       -sDEVICE=tiffg4 \
+       -dBATCH \
+       -sOutputFile=$TMPDIR/tempocr.tif \
+       $1
+    echo "Running tesseract on pngs..."
+    tesseract $TMPDIR/tempocr.tif $2 >/dev/null 2>&1
+}
+
+ocrpdf2(){
+    echo "Converting pdf to png..."
+    convert -density 500 $1 $TMPDIR/tempocr.png
+    count=0
+    echo "Running tesseract on pngs..."
+    while [ -f $TMPDIR/tempocr-$count.png ]; do
+        echo "    Page $count"
+        tesseract $TMPDIR/tempocr-$count.png $TMPDIR/tempocr >/dev/null 2>&1
+        cat $TMPDIR/tempocr.txt >> $2
+        let count=count+1
+    done
+    echo "Created output file $2"
+}
+
+psetzip (){
+    zip -r "$1".zip $1\
+        -x '*.git*' \
+        -x '*.ipynb_checkpoints*' \
+        -x '*.pyc*' \
+        -x '*.DS_Store*' \
+        -x '*~*' \
+        -x "*__pycache__*"
+}
+
+calc(){
+    emacs --batch --eval "(message (calc-eval \"$1\"))"
+}
+#+end_src
+
+** Path Stuff
+#+begin_src sh
+export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
+export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+#+end_src
+* cookiecutterrc
+:PROPERTIES:
+:header-args: :tangle ~/.cookiecutterrc
+:END:
+
+#+begin_src conf
+# -*- mode: conf -*-
+default_context:
+    full_name: "Diego A. Mundo"
+    email: "diegoamundo@gmail.com"
+    github_username: "therockmandolinist"
+    bundle_id_root: "com.therockmandolinist"
+cookiecutters_dir: "~/.cookiecutters/"
+#+end_src
+* cvimrc
+:PROPERTIES:
+:header-args: :tangle ~/.cvimrc
+:END:
+
+#+begin_src vimrc
+let configpath='/Users/diego/.cvimrc'
+set localconfig
+set smoothscroll
+set noautofocus
+
+let defaultengine = "duckduckgo"
+let hintcharacters = "aoeuidhtns"
+let homedirectory = "/Users/diego"
+#+end_src
+* gitconfig
+:PROPERTIES:
+:header-args: :tangle ~/.gitconfig
+:END:
+
+#+begin_src conf :comments link
+[filter "media"]
+	required = true
+	clean = git media clean %f
+	smudge = git media smudge %f
+[user]
+	name = therockmandolinist
+	email = diegoamundo@gmail.com
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[core]
+	editor = emacsclient -t
+	excludesfile = ~/.gitignore
+	pager = more
+[credential]
+	helper = osxkeychain
+[alias]
+	add-commit = !git add -A && git commit
+	eclipse = !git fetch upstream && git rebase -s recursive -X theirs upstream/master
+	gconfig = config --global
+	lconfig = config --local
+	mypull = pull -s recursive -X ours
+	myrebase = rebase -s recursive -X theirs
+	psetize = "!f() { git clone --bare $1 temp_clone && \
+cd temp_clone && \
+git push --mirror https://github.mit.edu/dmundo/16.410_$(basename $1) && \
+cd .. && \
+rm -rf temp_clone && \
+git clone https://github.mit.edu/dmundo/16.410_$(basename $1) $(basename $1);  }; f"
+	update-from-upstream = pull --rebase -s recursive -X theirs upstream/master
+[http]
+	postBuffer = 524288000
+[color]
+	ui = auto
+[push]
+	followTags = true
+[status]
+	showUntrackedFiles = all
+#+end_src
+* gitignore
+:PROPERTIES:
+:header-args: :tangle ~/.gitignore
+:END:
+
+#+begin_src text
+.DS\_Store
+*.pyc
+__pychache__
+*.alfredworkflow
+#+end_src
+* hyper.js
+:PROPERTIES:
+:header-args: :tangle ~/.hyper.js
+:END:
+
+** Font
+#+BEGIN_SRC js
+module.exports = {
+    config: {
+        // default font size in pixels for all tabs
+        fontSize: 10,
+
+        // font family with optional fallbacks
+        fontFamily: 'Input, Menlo, "DejaVu Sans Mono", "Lucida Console", monospace',
+#+END_SRC
+
+** Cursor
+#+BEGIN_SRC js
+        // terminal cursor background color and opacity (hex, rgb, hsl, hsv, hwb or cmyk)
+        cursorColor: '#e6e5e5',
+
+        // `BEAM` for |, `UNDERLINE` for _, `BLOCK` for █
+        cursorShape: 'BEAM',
+
+#+END_SRC
+
+** Basic colors
+#+BEGIN_SRC js
+        // color of the text
+        foregroundColor: '#fdf4c1',
+
+        // terminal background color
+        backgroundColor: '#282828',
+
+        // border color (window, tabs)
+        borderColor: '#282828',
+#+END_SRC
+
+** CSS
+#+BEGIN_SRC js
+        // custom css to embed in the main window
+        css: `
+        .tab_active {
+            color: #fdf4c1 !important;
+            // border-bottom: 1px solid #b8bb26 !important;
+            border-bottom: 1px solid #d3869b !important;
+        }
+
+        .tab_tab{
+            color: #fdf4c1 !important;
+        }
+        `,
+
+        // custom css to embed in the terminal window
+        termCSS: `
+        .cursor-node{
+            border: none !important;
+            border-left: 1px solid #fdf4c1 !important;
+        }
+        `,
+
+#+END_SRC
+
+** Padding
+#+BEGIN_SRC js
+        // custom padding (css format, i.e.: `top right bottom left`)
+        padding: '5px 10px 0px 10px',
+#+END_SRC
+
+** Color list
+#+BEGIN_SRC js
+        // the full list. if you're going to provide the full color palette,
+        // including the 6 x 6 color cubes and the grayscale map, just provide
+        // an array here instead of a color map object
+        colors: {
+            black: '#1a1a1a',
+            red: '#9d0006',
+            green: '#79740e',
+            yellow: '#b57614',
+            blue: '#076678',
+            magenta: '#8f3f71',
+            cyan: '#00a7af',
+            white: '#bdae93',
+            // black: '#686868',
+            // red: '#fb4933',
+            // green: '#b8bb26',
+            // yellow: '#fabd2f',
+            // blue: '#83a598',
+            // magenta: '#d3869b',
+            // cyan: '#3fd7e5',
+            // white: '#fdf4c1',
+            lightBlack: '#686868',
+            lightRed: '#fb4933',
+            lightGreen: '#b8bb26',
+            lightYellow: '#fabd2f',
+            lightBlue: '#83a598',
+            lightMagenta: '#d3869b',
+            lightCyan: '#3fd7e5',
+            lightWhite: '#fdf4c1'
+        },
+#+END_SRC
+
+** Options
+#+BEGIN_SRC js
+        // the shell to run when spawning a new session (i.e. /usr/local/bin/fish)
+        // if left empty, your system's login shell will be used by default
+        shell: '',
+
+        // for setting shell arguments (i.e. for using interactive shellArgs: ['-i'])
+        // by default ['--login'] will be used
+        shellArgs: ['--login'],
+
+        // for environment variables
+        env: {},
+
+        // set to false for no bell
+        bell: false,
+
+        // if true, selected text will automatically be copied to the clipboard
+        copyOnSelect: false,
+
+        // URL to custom bell
+        // bellSoundURL: 'http://example.com/bell.mp3',
+#+END_SRC
+
+** [[https://github.com/rickgbw/hyperterm-overlay][overlay]]
+#+BEGIN_SRC js
+        // for advanced config flags please refer to https://hyper.is/#cfg
+        overlay: {
+            alwaysOnTop: true,
+            animate: true,
+            hasShadow: true,
+            hideDock: false,
+            hideOnBlur: true,
+            hotkeys: ['Command+Space'],
+            position: 'top',
+            primaryDisplay: false,
+            resizable: false,
+            startAlone: false,
+            startup: false,
+            size: 0.4,
+            tray: false,
+            unique: false
+        },
+        },
+
+#+END_SRC
+
+** Plugins
+#+BEGIN_SRC js
+    // a list of plugins to fetch and install from npm
+    // format: [@org/]project[#version]
+    // examples:
+    //   `hyperpower`
+    //   `@company/project`
+    //   `project#1.0.1`
+    plugins: [
+        'hypercwd',
+        'hyperterm-blink',
+        'hyperterm-lastpass',
+        'hyperterm-overlay'
+    ],
+
+#+END_SRC
+
+** Local Plugins
+#+BEGIN_SRC js
+    // in development, you can create a directory under
+    // `~/.hyper_plugins/local/` and include it here
+    // to load it and avoid it being `npm install`ed
+    localPlugins: []
+};
+#+end_src
+* khdrc
+:PROPERTIES:
+:header-args: :tangle ~/.khdrc
+:END:
+
+** Notes
+#+begin_src conf
+# -*- mode: conf -*-
+# sample config for khd
+
+# NOTE(koekeishiya): A bind is written in the form:
+#                   <keysym> [!] [<app list>] [->] : <command>
+#                   where
+#                       <keysym>   = mode + mod + ... + mod - literal
+#                       <keysym>   = mode + mod + ... + mod - keycode (must have 0x prefix)
+#                       <keysym>   = mode + mod + ... + mod (modifier only binding)
+#
+#                       [<app,
+#                         app,     = optional list '[app1, ..., appN]' of applications
+#                         app>]      that this bind will be activated for. if the
+#                                    focused application is not contained in this list,
+#                                    the associated command will not be triggered, and
+#                                    the keypress will be passed through as normal.
+#
+#                       [!]        = optional operator '!' negates the behaviour when a
+#                                    list of applications is given. this marks the bind
+#                                    as 'Hotkey_Exclude', causing the bind to not work
+#                                    when the focused application is in the given list.
+#
+#                       [->]       = optional operator '->' that marks this bind as
+#                                    'passthrough'. this causes the key to be passed
+#                                    through to the system, instead of being consumed.
+#
+#                       <command>  = command is executed through '$SHELL -c' and
+#                                    follows valid shell syntax. if the $SHELL environment
+#                                    variable is not set, it will default to '/bin/bash'.
+#                                    when bash is used, the ';' delimeter can be specified
+#                                    to chain commands.
+#
+#                                    to allow a command to extend into multiple lines,
+#                                    prepend '\' at the end of the previous line.
+#
+#                                    an EOL character signifies the end of the bind.
+
+# NOTE(koekeishiya) Example of passthrough
+# cmd - m -> : echo "alert and minimize window" | alerter -title Test passthrough -timeout 2
+
+# NOTE(koekeishiya) Example of app list
+# alt - e [
+#           iTerm2,
+#           Terminal,
+#           HyperTerm
+#         ]
+#         : echo "so this is how deep the rabbit hole goes.." |\
+#           alerter -title Test passthrough -timeout 2
+
+# NOTE(koekeishiya) Example of negated app list
+# alt - e [
+#           iTerm2,
+#           Terminal,
+#           HyperTerm
+#         ] !
+#         : echo "blue pill, i choose you!" |\
+#           alerter -title Test passthrough -timeout 2
+
+# NOTE(koekeishiya) Modifier only binding
+# left shift    -> (    right shift   -> )
+# left cmd      -> {    right cmd     -> }
+
+# khd mod_trigger_timeout 0.1
+# lshift : khd -p "shift - 8"
+# rshift : khd -p "shift - 9"
+# lcmd   : khd -p "shift + alt - 8"
+# rcmd   : khd -p "shift + alt - 9"
+
+# TODO(koekeishiya): possibly allow combined syntax such as
+# [switcher,ytd] + ctrl - f : khd -e "mode activate default"
+#+end_src
+
+** Kwm
+#+begin_src conf
+# enable kwm compatibility mode
+khd kwm on
+#+end_src
+*** Borders
+#+begin_src conf
+# set border color for different modes
+# khd mode default color 0xddd5c4a1
+khd mode default color 0x00d5c4a1
+khd mode switcher color 0xddbdd322
+khd mode swap color 0xdd458588
+khd mode tree color 0xddfabd2f
+khd mode space color 0xddb16286
+khd mode info color 0xddcd950c
+#+end_src
+
+*** Toggle modes
+#+begin_src conf
+# toggle between modes
+cmd + alt - f         :   khd -e "mode activate switcher"
+switcher - escape     :   khd -e "mode activate default"
+swap - escape         :   khd -e "mode activate default"
+space - escape        :   khd -e "mode activate default"
+tree - escape         :   khd -e "mode activate default"
+info - escape          :   khd -e "mode activate default"
+
+switcher - m            :   khd -e "mode activate swap"
+switcher - s            :   khd -e "mode activate space"
+switcher - t            :   khd -e "mode activate tree"
+switcher - q            :   khd -e "mode activate info"
+#+end_src
+*** Switcher mode
+#+begin_src conf
+# switcher mode
+switcher - r            :   khd -e "reload" # reload config
+
+switcher - return       :   open -na /Applications/Hyper.app;\
+                            khd -e "mode activate default"
+
+switcher - h            :   kwmc window -f west
+switcher - l            :   kwmc window -f east
+switcher - j            :   kwmc window -f south
+switcher - k            :   kwmc window -f north
+switcher - n            :   kwmc window -fm prev
+switcher - m            :   kwmc window -fm next
+
+switcher - 1            :   kwmc space -fExperimental 1
+switcher - 2            :   kwmc space -fExperimental 2
+switcher - 3            :   kwmc space -fExperimental 3
+switcher - 4            :   kwmc space -fExperimental 4
+switcher - 5            :   kwmc space -fExperimental 5
+switcher - 6            :   kwmc space -fExperimental 6
+
+switcher - z            :   kwmc space -fExperimental left
+switcher - c            :   kwmc space -fExperimental right
+switcher - f            :   kwmc space -fExperimental previous
+
+switcher + shift - z    :   kwmc window -m space left;\
+                            kwmc space -fExperimental left
+
+switcher + shift - c    :   kwmc window -m space right;\
+                            kwmc space -fExperimental right
+
+switcher + shift - 1    :   kwmc display -f 0
+switcher + shift - 2    :   kwmc display -f 1
+switcher + shift - 3    :   kwmc display -f 2
+#+end_src
+*** Swap mode
+#+begin_src conf
+# swap mode
+swap - h                :   kwmc window -s west
+swap - j                :   kwmc window -s south
+swap - k                :   kwmc window -s north
+swap - l                :   kwmc window -s east
+swap - m                :   kwmc window -s mark
+
+swap + shift - k        :   kwmc window -m north
+swap + shift - l        :   kwmc window -m east
+swap + shift - j        :   kwmc window -m south
+swap + shift - h        :   kwmc window -m west
+swap + shift - m        :   kwmc window -m mark
+
+swap - 1                :   kwmc window -m space 1
+swap - 2                :   kwmc window -m space 2
+swap - 3                :   kwmc window -m space 3
+swap - 4                :   kwmc window -m space 4
+swap - 5                :   kwmc window -m space 5
+
+swap - z                :   kwmc window -m space left
+swap - c                :   kwmc window -m space right
+
+swap + shift - 1        :   kwmc window -m display 0
+swap + shift - 2        :   kwmc window -m display 1
+swap + shift - 3        :   kwmc window -m display 2
+
+#+end_src
+*** Space mode
+#+begin_src conf
+# space mode
+space - b               :   kwmc space -t bsp
+space - m               :   kwmc space -t monocle
+space - f               :   kwmc space -t float
+
+space - x               :   kwmc space -g increase horizontal
+space - y               :   kwmc space -g increase vertical
+
+space + shift - x       :   kwmc space -g decrease horizontal
+space + shift - y       :   kwmc space -g decrease vertical
+
+space - left            :   kwmc space -p increase left
+space - right           :   kwmc space -p increase right
+space - up              :   kwmc space -p increase top
+space - down            :   kwmc space -p increase bottom
+space - p               :   kwmc space -p increase all
+
+space + shift - left    :   kwmc space -p decrease left
+space + shift - right   :   kwmc space -p decrease right
+space + shift - up      :   kwmc space -p decrease top
+space + shift - down    :   kwmc space -p decrease bottom
+space + shift - p       :   kwmc space -p decrease all
+#+end_src
+*** Tree mode
+#+begin_src conf
+# tree mode
+tree - f                :   kwmc window -z fullscreen
+tree - d                :   kwmc window -z parent
+tree - w                :   kwmc window -t focused
+tree - r         	    :   kwmc tree rotate 90
+
+tree - s                :   kwmc window -c split - mode toggle;\
+                            khd -e "mode activate default"
+
+tree - c                :   kwmc window -c type toggle;\
+                            khd -e "mode activate default"
+
+tree - h                :   kwmc window -c expand 0.05 west
+tree - j                :   kwmc window -c expand 0.05 south
+tree - k                :   kwmc window -c expand 0.05 north
+tree - l                :   kwmc window -c expand 0.05 east
+tree + shift - h        :   kwmc window -c reduce 0.05 west
+tree + shift - j        :   kwmc window -c reduce 0.05 south
+tree + shift - k        :   kwmc window -c reduce 0.05 north
+tree + shift - l        :   kwmc window -c reduce 0.05 east
+
+tree - p                :   kwmc tree -pseudo create
+tree + shift - p        :   kwmc tree -pseudo destroy
+
+tree - o                :   kwmc window -s prev
+tree + shift - o        :   kwmc window -s next
+#+end_src
+*** Default
+#+begin_src conf
+# default
+cmd + alt + ctrl - m    :   kwmc window -mk focused
+cmd + alt + ctrl - h    :   kwmc window -mk west wrap
+cmd + alt + ctrl - l    :   kwmc window -mk east wrap
+cmd + alt + ctrl - j    :   kwmc window -mk south wrap
+cmd + alt + ctrl - k    :   kwmc window -mk north wrap
+
+cmd - 0x2A              :   khd -w "aasvi93@hotmail.com"
+cmd - 7                 :   khd -w "\\"
+cmd - 8                 :   khd -w "{"
+cmd - 9                 :   khd -w "}"
+#+end_src
+* kwmrc
+:PROPERTIES:
+:header-args: :tangle ~/.kwm/kwmrc
+:END:
+
+** Notes
+#+begin_src conf
+# -*- mode: conf -*-
+# This is a sample config for Kwm
+
+# The following statements can be used to set Kwms internal directory structure.
+
+#     This is the root folder for Kwms files, the only thing this actually
+#     specifies is the location of the 'init' script which Kwm runs upon startup.
+#     Defaults to $HOME/.kwm
+
+#         kwm_home /path/to/.kwm
+
+#     This is the root folder in which all files included using 'include' must reside.
+#     Defaults to $HOME/.kwm
+
+#         kwm_include /path/to/.kwm/include
+
+#     This is the folder in which all bsp-layouts managed by 'tree load' and 'tree save'
+#     is loaded from / saved to. Defaults to $HOME/.kwm/layouts
+
+#         kwm_layouts /path/to/.kwm/layouts
+
+# Commands prefixed with 'kwmc' will call local functions corresponding to the
+# kwmc syntax.
+
+# To run an external program or command, use the prefix 'exec' followed by
+# command.  e.g 'exec mvim' would open macvim
+
+# Read file and execute commands as if they were written inside kwmrc.
+
+# include filename
+
+# e.g: window-rules in a separate file called 'rules'
+#     include rules
+#+end_src
+** Behavior
+#+begin_src conf
+# Default tiling mode for Kwm (bsp | monocle | float)
+kwmc config tiling bsp
+
+# Automatically float windows that fail to resize
+kwmc config float-non-resizable on
+
+# Automatically resize the window to its container
+kwmc config lock-to-container on
+
+# Center window when made floating
+kwmc config center-on-float on
+
+# Allow window focus to wrap-around
+kwmc config cycle-focus on
+
+# Override default settings for space 1 on screen 0
+
+#    kwmc config space 0 1 mode monocle
+#    kwmc config space 0 1 padding 100 100 100 100
+#    kwmc config space 0 1 gap 40 40
+
+# Override default settings for screen 1
+
+#    kwmc config display 1 mode bsp
+#    kwmc config display 1 padding 100 100 100 100
+#    kwmc config display 1 gap 40 40
+
+# Set default container split-ratio
+kwmc config split-ratio 0.5
+
+# New splits become the left leaf-node
+kwmc config spawn left
+#+end_src
+** Mouse
+#+begin_src conf
+# Set focus-follows-mouse-mode to autoraise
+kwmc config focus-follows-mouse on
+
+# Focus-follows-mouse is temporarily disabled when
+# a floating window has focus
+kwmc config standby-on-float on
+
+# The mouse will automatically move to the center
+# of the focused window
+kwmc config mouse-follows-focus on
+
+# Allows a window to be moved by dragging, when a modifier key and left-click
+# is held down.
+
+# Allows a window to be resized by dragging when a modifier key and right-click
+# is held down.
+kwmc config mouse-drag on
+
+# The modifier keys to be held down to initiate mouse-drag
+kwmc config mouse-drag mod shift+ctrl
+#+end_src
+** Rules
+#+begin_src conf
+# Add custom tiling rules for applications that does not get tiled by Kwm by
+# default.  This is because some applications do not have the AXWindowRole and
+# AXStandardWindowSubRole
+kwmc rule owner="iTerm2" properties={role="AXDialog"}
+kwmc rule owner="Emacs" properties={role="AXStandardWindow"}
+
+# The following commands create rules that blacklists an application from Kwms
+# tiling
+
+#     kwmc rule owner="Steam" properties={float="true"}
+#     kwmc rule owner="Photoshop" properties={float="true"}
+kwmc rule owner="LICEcap" properties={float="true"}
+
+# The following command creates a rule that captures an application to the
+# given screen, if the screen exists.
+
+#    kwmc rule owner="iTunes" properties={display="1"}
+#+end_src
+** Appearance
+#+begin_src conf
+# Set default values for screen padding
+kwmc config padding 40 20 20 20
+
+# Set default values for container gaps
+kwmc config gap 15 15
+
+# Enable border for focused window
+kwmc config border focused on
+kwmc config border focused size 2
+
+# kwmc config border focused color 0xFFBDAE93
+kwmc config border focused color 0xFFBDAE93
+kwmc config border focused radius 6
+
+# Enable border for marked window
+kwmc config border marked on
+kwmc config border marked size 2
+# kwmc config border marked color 0xFFCC5577
+kwmc config border marked color 0xFFCC5577
+kwmc config border marked radius 6
+#+end_src
+* nanorc
+:PROPERTIES:
+:header-args: :tangle ~/.nanorc
+:END:
+
+#+begin_src conf
+include /usr/local/share/nano/*
+#+end_src
+* pythonrc.py
+:PROPERTIES:
+:header-args: :tangle ~/.pythonrc.py
+:END:
+
+#+begin_src python
+# encoding: utf-8
+
+try:
+    def progBar(i, total, length=50, kind=None):
+        """A nice progress bar to use with for loops."""
+        i += 1
+        n = int(i*length/total)
+        percent = i/total*100
+        frame = ("{0:6.2f}% |{1}{2}|".format(percent, '█'*n, ' '*(length-n))
+                if kind is None else
+                "{0:6.2f}% [{1}{2}]".format(percent, str(kind)*n, ' '*(length-n)))
+        endchar = ('\r' if i < total else ' Done!\n')
+        print(frame, end=endchar)
+except:
+    pass
+
+# def write_csv(path, rows):
+#     "Write a list of iterables to a CSV, I think"
+#     with open(path, 'w') as f:
+#         writer = csv.writer(f)
+#         writer.writerows(rows)
+#+end_src
+* tmux.conf
+:PROPERTIES:
+:header-args: :tangle ~/.tmux.conf
+:END:
+
+* zshrc
+:PROPERTIES:
+:header-args: :tangle ~/.zshrc
+:END:
+
+** Initial setup
+*** Export hostname.
+
+Terminal.app used to get confused about this and show a folder icon with a
+question mark. I don't use Terminal.app anymore, but oh well.
+#+begin_src sh
+#!/usr/bin/env zsh
+export HOSTNAME=`hostname`
+#+end_src
+
+*** Source Prezto
+#+begin_src sh
+if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
+  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
+fi
+
+unalias rm
+#+end_src
+
+** Zsh options
+#+begin_src sh
+setopt GLOB_COMPLETE
+setopt auto_cd
+setopt histignoredups
+setopt autonamedirs
+setopt clobber
+unsetopt correct
+#+end_src
+** Initialize and source some things
+[[https://github.com/rupa/z][z]]
+#+begin_src sh
+source `brew --prefix`/etc/profile.d/z.sh
+#+END_SRC
+
+[[https://github.com/nvbn/thefuck][thefuck]]
+#+BEGIN_SRC sh
+if which thefuck > /dev/null; then eval $(thefuck --alias); fi
+#+END_SRC
+
+[[https://github.com/yyuu/pyenv/][pyenv]]
+#+BEGIN_SRC sh
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+#+end_src
+
+Syntax highlighting
+#+begin_src sh
+source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+ZSH_HIGHLIGHT_STYLES[globbing]='fg=208'
+ZSH_HIGHLIGHT_STYLES[command]='fg=010'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=010'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=010'
+ZSH_HIGHLIGHT_STYLES[function]='fg=010'
+#+end_src
+
+Autosuggestions
+#+begin_src sh
+source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+zstyle ':completion:*' list-colors 'di=0;36:ex=0;35:ln=1;31'
+#+end_src
+** Vars
+#+begin_src sh
+# some ls colors i've gotten used to
+export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31'
+
+# kwm/khd
+kwm="koekeishiya/formulae/kwm"
+khd="koekeishiya/formulae/khd"
+
+# Emacs
+export switchmacs="emacs"
+
+# Python
+export python3version=3.6.0
+export python2version=2.7.13
+export PYTHONSTARTUP=$HOME/.pythonrc.py
+
+export WWW_HOME='http://google.com'
+export RTV_EDITOR='vim'
+export RTV_URLVIEWER='urlview'
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+    export EDITOR='vim'
+else
+    export EDITOR="emacsclient -n" # Set emacs as default editor
+    export ALTERNATE_EDITOR="vim"
+fi
+#+end_src
+** Aliases
+#+begin_src sh
+alias apps="cd /Applications"
+alias bcl="brew cleanup"
+alias bdr="brew doctor"
+alias bin="brew install"
+alias binf="brew info"
+alias bls="brew list"
+alias brin="brew reinstall"
+alias brm="brew uninstall"
+alias bsS="brew services stop"
+alias bsh="brew search"
+alias bsr="brew services restart"
+alias bss="brew services start"
+alias bup="brew update && brew upgrade"
+alias cask="brew cask"
+alias cin="brew cask install"
+alias cinf="brew cask info"
+alias cls="brew cask list"
+alias crin="brew cask reinstall"
+alias crm="brew cask uninstall"
+alias config="$EDITOR ~/dotfiles/config/emacs.d/config.org"
+alias def='dict -d gcide'
+alias desk="cd /Users/diego/Desktop"
+alias docs="cd /Users/diego/Documents/"
+alias down="cd /Users/diego/Downloads/"
+alias drive="cd /Users/diego/Google\ Drive"
+alias drop="cd /Users/diego/Dropbox\ \(MIT\)"
+alias ed="ed -p:"
+alias edit="emacsclient -n"
+alias editv="emacsclient -t"
+alias filecount="ls -1 | wc -l"
+if which hub > /dev/null; then alias git=hub; fi
+alias startkwm="brew services start $kwm"
+alias stopkwm="brew services stop $kwm"
+alias restartkwm="brew services restart $kwm"
+alias startkhd="brew services start $khd"
+alias stopkhd="brew services stop $khd"
+alias restartkhd="brew services restart $khd"
+alias ls='ls -NX --group-directories-first --color=always'
+alias lst="ls -t"
+alias math='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
+alias pep8="pep8 --first --ignore=E129,W503,E226"
+alias piphere="pip install --target=./"
+alias printers="lpstat -p | awk '{print $2}'"
+alias resetb="source ~/.zshrc"
+alias resetwifi="networksetup -setairportpower en0 off; sleep 2;"\
+"networksetup -setairportpower en0 on"
+alias rg="rg -i"
+alias sm=". ~/dotfiles/bin/switchmacs"
+alias starwars="telnet towel.blinkenlights.nl" # heh
+alias sudo='sudo '                             # recognize aliases
+alias sz="du -hs"                              # get folder/file size
+alias zshrc="$EDITOR ~/dotfiles/config/zshrc"
+alias vimrc="$ALTERNATE_EDITOR ~/dotfiles/config/vimrc"
+#+end_src
+** Functions
+#+begin_src sh
+ff(){
+    find . -type f -iname *"$1"*
+}
+
+fd(){
+    find . -type d -iname *"$1"*
+}
+
+f(){
+    find . -iname *"$1"*
+}
+
+pip-fromfile() {
+    <$1 xargs pip install
+}
+
+athena(){
+    echo -n "Username: "
+    read username
+    ssh -Y "$username@athena.dialup.mit.edu"
+}
+
+mkexec(){
+    chmod a+x "$@"
+}
+
+pythonexec(){
+    touch "$*"
+    echo '#!/usr/local/bin/python3' | cat - "$*" > temp && mv temp "$*"
+    sudo chmod a+x "$*"
+    emacsclient -n "$*"
+}
+
+# Create/edit python script
+pythonscript(){
+    touch "$*"
+    echo '#!/usr/local/bin/python3' | cat - "$*" > temp && mv temp "$*"
+    emacsclient -n "$*"
+}
+
+# View only mode in emacs
+ev() {
+    emacsclient -n --eval "(find-file-read-only \"$1\")"
+}
+
+# Edit Python 3 files
+bam(){
+    emacsclient -n "$1" \
+                --eval '(and (split-window-right) (windmove-right))' \
+                -f ipython \
+                --eval '(windmove-left)'
+}
+
+# Edit Python 2 files
+ham(){
+    emacsclient -n "$1" \
+                --eval '(and (split-window-right) (windmove-right))' \
+                -f ipython2 \
+                --eval '(windmove-left)'
+}
+
+pdftif() {
+    \gs -dNOPAUSE -q -r500 \
+       -sDEVICE=tiffg4 \
+       -dBATCH \
+       -dFirstPage=$2 \
+       -dLastPage=$3 \
+       -sOutputFile=$4 \
+       $1
+}
+
+ocrpdf(){
+    echo "Converting pdf to png..."
+    \gs -dNOPAUSE -q -r500 \
+       -sDEVICE=tiffg4 \
+       -dBATCH \
+       -sOutputFile=$TMPDIR/tempocr.tif \
+       $1
+    echo "Running tesseract on pngs..."
+    tesseract $TMPDIR/tempocr.tif $2 >/dev/null 2>&1
+}
+
+ocrpdf2(){
+    echo "Converting pdf to png..."
+    convert -density 500 $1 $TMPDIR/tempocr.png
+    count=0
+    echo "Running tesseract on pngs..."
+    while [ -f $TMPDIR/tempocr-$count.png ]; do
+        echo "    Page $count"
+        tesseract $TMPDIR/tempocr-$count.png $TMPDIR/tempocr >/dev/null 2>&1
+        cat $TMPDIR/tempocr.txt >> $2
+        let count=count+1
+    done
+    echo "Created output file $2"
+}
+
+psetzip (){
+    zip -r "$1".zip $1\
+        -x '*.git*' \
+        -x '*.ipynb_checkpoints*' \
+        -x '*.pyc*' \
+        -x '*.DS_Store*' \
+        -x '*~*' \
+        -x "*__pycache__*"
+}
+
+calc(){
+    emacs --batch --eval "(message (calc-eval \"$1\"))"
+}
+
+spectrum_ls() {
+  for code in {000..255}; do
+    print -P -- "$code: %F{$code}Test%f"
+  done
+}
+
+#+end_src
+** Path Stuff
+#+begin_src sh
+fpath=(/usr/local/share/zsh-completions $fpath)
+
+export PATH="$HOME/bin:/usr/local/sbin:"\
+"$(brew --prefix coreutils)/libexec/gnubin:$PATH"
+typeset -U path
+export MANPATH="$(brew --prefix coreutils)/libexec/gnuman:$MANPATH"
+#+end_src
+* Local vars
+
+# Local Variables:
+# after-save-hook: (git-gutter diego/async-tangle-rc)
+# End:
