@@ -1,7 +1,0 @@
-# -*- mode: snippet -*-
-# name: unnumbered
-# key: unnumbered
-# --
-:PROPERTIES:
-:UNNUMBERED: t
-:END:

@@ -1,8 +1,0 @@
-* blogs                                                              :elfeed:
-** emacs                                                             :emacs:
-*** http://www.reddit.com/r/emacs/.rss                             :reddit:
-*** http://planet.emacsen.org/atom.xml                               :blog:
-
-*** devel                                                           :devel:
-**** http://rss.gmane.org/messages/complete/gmane.emacs.orgmode      :org:
-**** http://rss.gmane.org/messages/complete/gmane.emacs.devel

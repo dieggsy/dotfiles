@@ -1,0 +1,14 @@
+* emacs.d
+
+Ah, emacs. Home. The /real/ reason for this repo. I don't have much to say here
+other than expressing how much I love emacs and that you should definitely try
+it if you haven't—but no pressure, do you.
+
+You should have a look at my [[./config.org][config.org]] — it's where my emacs configuration is
+kept ([[./init.el][init.el]] loads this file). It's nothing special, but I try to keep it
+fairly well organized/documented (/try/ being the key word). Mostly for my
+sake. I'm not (yet) great at emacs-lisp, but I borrow from others what I like
+and learn on the way. (See ~config.org~ intro for credits.)
+
+My setup is largely based on [[https://bitbucket.org/lyro/evil/wiki/Home][evil]] and [[https://github.com/abo-abo/swiper][ivy]], with bindings largely inspired by
+[[https://github.com/syl20bnr/spacemacs/][spacemacs.]]

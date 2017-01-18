@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: org-link
+# key: ;link
+# --
+[[$1][$2]]

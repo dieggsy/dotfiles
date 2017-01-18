@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: write CSV 
+# key: wcsv
+# --
+with open(${1:path},'w') as f:
+	 writer = csv.writer(f)
+	 writer.writerows(${2:rows})

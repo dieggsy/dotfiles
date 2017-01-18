@@ -1,1 +1,0 @@
-/Users/diego/dotfiles/config/vim/vimrc

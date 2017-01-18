@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: sqlite UPDATE
-# key: sqlupdate
-# --
-${1:cur}.execute("UPDATE ${2:table} SET ${3:vars}${4: WHERE ${5:conds}}")
