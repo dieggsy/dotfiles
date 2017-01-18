@@ -2335,6 +2335,11 @@ The emacs major mode for editing files in the YAML data serialization format.
 (use-package clojure-mode)
 #+end_src
 
+*** [[https://github.com/joshwnj/json-mode][json-mode]]
+#+begin_src emacs-lisp
+(use-package json-mode
+  :mode "\\.json\\'")
+#+end_src
 *** [[https://github.com/defunkt/coffee-mode][coffee-mode]]
 #+begin_src emacs-lisp
 (use-package coffee-mode
