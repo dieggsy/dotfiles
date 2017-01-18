@@ -1,7 +1,0 @@
-#!/usr/local/bin/bash
-out=$(find ~/ -iname "$*"; find /Applications/ -maxdepth 1 -iname "$*")
-if ! [ -z "$out" ]; then
-    echo "$out" | sed s#//*#/#g
-elif [ -z "$out" ]; then
-    echo "Nowhere"
-fi
