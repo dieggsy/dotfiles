@@ -35,6 +35,7 @@ export PS1='\[\e[1;91m\]$(
 #+end_src
 
 *** Bash options
+Use case insensitive file matching and tab completion.
 #+begin_src sh
 shopt -s nocaseglob
 bind 'set completion-ignore-case on'
@@ -65,8 +66,8 @@ export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
 kwm="koekeishiya/kwm/kwm"
 khd="koekeishiya/khd/khd"
 
-export python3version=3.5.2
-export python2version=2.7.12
+export python3version=3.6.0
+export python2version=2.7.13
 export PYTHONSTARTUP=$HOME/.pythonrc.py
 
 export WWW_HOME='http://google.com'

@@ -1,5 +1,14 @@
 * dotfiles
 
-Just my dotfiles. Mostly my [[./config/emacs.d][emacs.d]]. Some of this is my own, some (a lot?) is
-inspired by or taken from others' config/scripts and adapted to my needs.
-Probably kind of a mess at the moment.
+Just my dotfiles. Mostly my [[./emacs.d][emacs.d]]. Some of this is my own, a lot is inspired
+by or taken from others' config/scripts and adapted to my needs. Probably kind
+of a mess at the moment.
+
+This is a largely org-mode (and therefore emacs) based dotfiles configuration.
+Most short or one-off configuration files and scripts are directly tangled to
+the apropriate location from [[./rc.org][rc.org]] using an asynchronous call to
+~org-babel-tangle-file~ on save.
+
+Since my [[./emacs.d/config.org][emacs configuration]] is much more complex, it is kept in its own org
+file and the =emacs.d= directory is symlinked. The vim directory is also
+symlinked.
