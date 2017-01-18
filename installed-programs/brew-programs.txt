@@ -67,6 +67,7 @@ gmime
 gmp
 gnome-icon-theme
 gnu-barcode
+gnu-getopt
 gnu-sed
 gnu-tar
 gnu-which
@@ -181,6 +182,7 @@ oysttyer
 p11-kit
 pandoc
 pango
+pass
 pcre
 perl
 pinentry
@@ -195,6 +197,7 @@ potrace
 protobuf
 pstoedit
 pth
+pwgen
 py2cairo
 py3cairo
 pyenv
@@ -243,6 +246,7 @@ tmux
 todo-txt
 tokyo-cabinet
 trash
+tree
 unar
 unibilium
 unrar

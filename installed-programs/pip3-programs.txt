@@ -103,6 +103,7 @@ pexpect
 pickleshare
 Pillow
 plac
+pocket
 powerline-status
 praw
 prawcore
@@ -133,6 +134,7 @@ pytz
 PyYAML
 pyzmq
 qtconsole
+rainbowstream
 readline
 requests
 requests-cache
