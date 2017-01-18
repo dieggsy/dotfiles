@@ -87,7 +87,8 @@
     ((python . t)
      (emacs-lisp . t)
      (calc . t)
-     (ipython . t))))
+     (ipython . t)
+     (shell . t))))
  '(org-babel-python-command "python3")
  '(org-confirm-babel-evaluate nil)
  '(org-latex-classes
@@ -171,7 +172,7 @@
      (after-save-hook lambda nil
                       (org-beamer-export-to-pdf t))
      (after-save-hook git-gutter diego/async-tangle-init)
-     (after-save-hook git-gutter diego/async-tangle-rc)
+     (after-save-hook git-gutter diego/async-babel-tangle)
      (org-pretty-entities))))
  '(send-mail-function (quote smtpmail-send-it))
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
