@@ -678,16 +678,17 @@ drag it up past ARG other lines (down if ARG negative)."
            (org-cycle-list-bullet 8))
           (t (org-cycle-list-bullet (char-to-string char))))))
 
-(defun diego/async-tangle-rc ()
+(defun diego/async-babel-tangle ()
   (interactive)
-  (async-start
-   (lambda ()
-     (require 'org)
-     (org-babel-tangle-file "~/dotfiles/config/rc.org"))
-   (lambda (result)
-     (if result
-         (message "SUCCESS: successfully tangled file.")
-       (message "ERROR: tangle file failed.")))))
+  (let ((file (buffer-file-name)))
+    (async-start
+     `(lambda ()
+        (require 'org)
+        (org-babel-tangle-file ,file))
+     (lambda (result)
+       (if result
+           (message "SUCCESS: successfully tangled file.")
+         (message "ERROR: tangle file failed."))))))
 
 (defun diego/async-tangle-init ()
   (interactive)
