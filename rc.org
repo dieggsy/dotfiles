@@ -890,7 +890,7 @@ include /usr/local/share/nano/*
 #+begin_src python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function, unicode_literals
+from __future__ import print_function, unicode_literals, division
 
 try:
     def progBar(i, total, length=50, kind=None):
