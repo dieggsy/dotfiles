@@ -40,16 +40,16 @@ Add [[./lisp][lisp]] directory and subdirectories to ~load-path~ and ~custom-the
   (normal-top-level-add-subdirs-to-load-path))
 
 (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/")
-#+END_SRC
+#+end_src
 ** Package setup
 Set package archives/repos.
 #+begin_src emacs-lisp
 (add-to-list 'package-archives '("org"          . "http://orgmode.org/elpa/") t)
 (add-to-list 'package-archives '("melpa"        . "http://melpa.org/packages/"))
-#+END_SRC
+#+end_src
 
 Set up [[https://github.com/jwiegley/use-package][use-package]].
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (package-initialize)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -63,10 +63,10 @@ Set up [[https://github.com/jwiegley/use-package][use-package]].
 
 (eval-when-compile
   (require 'use-package))
-#+END_SRC
+#+end_src
 
 Byte compile installed packages asynchronously.
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (async-bytecomp-package-mode 1)
 #+end_src
 * Global settings
@@ -245,9 +245,9 @@ being loaded every time emacs started, meaning longer startup time.
         (erase-buffer)
         (message "Buffer erased."))
     (message "erase-buffer cancelled")))
-#+END_SRC
+#+end_src
 *** Switching
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (defun diego/switch-to-previous-buffer ()
   "Switch to previously open buffer.
     Repeated invocations toggle between the two most recently open buffers."
@@ -437,9 +437,9 @@ drag it up past ARG other lines (down if ARG negative)."
          (concat ":m" reg-or-lin "-" (number-to-string num) (kbd "RET") reactivate-region)))
     (diego/move-line-or-region (- arg))))
 
-#+END_SRC
+#+end_src
 *** Align
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 ;; Copy of spacemacs/align-repeat
 (defun diego/align-repeat (start end regexp &optional justify-right after)
   "Repeat alignment with respect to the given regular expression.
@@ -491,9 +491,9 @@ drag it up past ARG other lines (down if ARG negative)."
                 nil))
 
 
-#+END_SRC
+#+end_src
 *** Justify
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (defmacro diego|justify (type)
   (let ((func-name (intern (concat "diego/justify-" type))))
     `(defun ,func-name ()
@@ -509,10 +509,10 @@ drag it up past ARG other lines (down if ARG negative)."
 (diego|justify "full")
 (diego|justify "center")
 (diego|justify "none")
-#+END_SRC
+#+end_src
 
 *** Paragraph
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (defun diego/fill-or-unfill ()
   "Like `fill-paragraph', but unfill if used twice."
   (interactive)
@@ -1246,22 +1246,22 @@ based on or copied from spacemacs, so definitely check them out!
   (add-hook 'evil-mode-hook 'diego/evil-modes)
   (add-hook 'evil-mode-hook 'diego/evil-appearance)
   (add-hook 'evil-mode-hook 'diego/evil-bindings))
-#+END_SRC
+#+end_src
 **** evil-leader
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package evil-leader
   :after evil
   :config
   (global-evil-leader-mode)
   (diego/config-evil-leader))
-#+END_SRC
+#+end_src
 **** evil-indent-text-object
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package evil-indent-textobject
   :after evil)
-#+END_SRC
+#+end_src
 **** evil-numbers
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package evil-numbers
   :after evil)
 #+end_src
@@ -1344,14 +1344,14 @@ A really nice search/completion system for emacs.
   (define-key ivy-minibuffer-map [C-return] #'ivy-immediate-done)
   (define-key ivy-minibuffer-map (kbd "<S-up>") #'ivy-previous-history-element)
   (define-key ivy-minibuffer-map (kbd "<S-down>") #'ivy-next-history-element))
-#+END_SRC
+#+end_src
 *** swiper
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package swiper
   :commands (swiper swiper-all swiper-multi))
-#+END_SRC
+#+end_src
 *** counsel
-#+BEGIN_SRC emacs-lisp
+#+begin_src emacs-lisp
 (use-package counsel
   :diminish counsel-mode
   :commands (counsel-M-x counsel-find-file)
@@ -3084,8 +3084,8 @@ Mostly set up hs-minor-mode for emacs-lisp.
 I'll probably remove that exclamation point at some point, but right now I'm
 excited about file local vars.
 
-#+BEGIN_SRC
+#+begin_example
 # Local Variables:
 # after-save-hook: (git-gutter diego/async-tangle-init)
 # End:
-#+END_SRC
+#+end_example
