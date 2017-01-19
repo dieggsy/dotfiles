@@ -2,6 +2,6 @@
 # name: split-src-block
 # --
 
-#+END_SRC
+#+end_src
 
-#+BEGIN_SRC ${1:emacs-lisp}
+#+begin_src ${1:emacs-lisp}
