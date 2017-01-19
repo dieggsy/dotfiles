@@ -1,5 +1,5 @@
 #+TITLE: Emacs Init File!
-#+PROPERTY: header-args :results silent
+#+PROPERTY: header-args :results silent :comments link :tangle ~/dotfiles/emacs.d/config.el
 
 * Intro
 
@@ -157,27 +157,6 @@ consistent with other fonts. Last updated 2011, last successfully tested
           (lambda () (setq-local cursor-type '(bar . 1))))
 (setq enable-recursive-minibuffers t
       resize-mini-windows t)
-#+end_src
-** Scratch buffer
-This was nice for a while, but currently isn't tangled since it led to org-mode
-being loaded every time emacs started, meaning longer startup time.
-#+begin_src emacs-lisp :tangle no
-(setq initial-major-mode 'org-mode
-      initial-scratch-message
-      "# This buffer is for text that is not saved, and for Lisp/Python evaluation.
-# To create a file, visit it with SPC f f and enter text in its buffer.
-
-,* Lisp
-,#+begin_src emacs-lisp
-
-,#+end_src
-
-,* Python
-,#+begin_src python
-
-,#+end_src
-
-,* Other")
 #+end_src
 ** File and session handling
 #+begin_src emacs-lisp
@@ -1330,6 +1309,7 @@ A really nice search/completion system for emacs.
           "\\`\\*scratch"
           "\\`\\*Messages"
           "\\`todo.org"
+          "\\`gcal.org"
           "\\`notes.org"
           "\\`archive.org"
           "\\`elfeed.org"
