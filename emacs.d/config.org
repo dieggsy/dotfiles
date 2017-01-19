@@ -1242,7 +1242,7 @@ based on or copied from spacemacs, so definitely check them out!
         evil-ex-search-persistent-highlight nil
         evil-lookup-func (lambda () (man (thing-at-point 'word))))
   :config
-  (add-hook 'evil-normal-state-entry-hook 'whitespace-cleanup)
+  ;; (add-hook 'evil-normal-state-entry-hook 'whitespace-cleanup)
   (add-hook 'evil-mode-hook 'diego/evil-modes)
   (add-hook 'evil-mode-hook 'diego/evil-appearance)
   (add-hook 'evil-mode-hook 'diego/evil-bindings))
