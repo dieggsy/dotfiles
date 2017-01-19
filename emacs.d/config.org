@@ -2124,6 +2124,10 @@ Cursor stays vertically centered. I use this for reading, mostly.
 (use-package centered-cursor-mode
   :commands centered-cursor-mode)
 #+end_src
+*** [[https://www.emacswiki.org/emacs/eimp.el][eimp]]
+#+begin_src emacs-lisp
+(use-package eimp)
+#+end_src
 *** [[https://github.com/skeeto/elfeed][elfeed]]
 Configure the Elfeed RSS reader with an Orgmode file
 #+begin_src emacs-lisp
