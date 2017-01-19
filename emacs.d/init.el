@@ -228,6 +228,7 @@
 (put 'narrow-to-region 'disabled nil)
 (put 'set-goal-column 'disabled nil)
 (put 'upcase-region 'disabled nil)
+(put 'timer-list 'disabled nil)
 
 (when window-system
   (let ((elapsed (float-time (time-subtract (current-time)
