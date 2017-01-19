@@ -671,26 +671,29 @@ drag it up past ARG other lines (down if ARG negative)."
 
 (defun diego/async-tangle-init ()
   (interactive)
-  (async-start
-   (lambda ()
-     ;; make async emacs aware of packages (for byte-compilation)
-     (load-file (locate-user-emacs-file "init.el"))
-     (require 'org)
+  ;; (defconst init-tangle-start-time (current-time))
+  (let ((init-tangle-start-time (current-time)))
+    (async-start
+     (lambda ()
+       ;; make async emacs aware of packages (for byte-compilation)
+       (package-initialize)
+       (require 'org)
+       (require 'fringe-helper)
 
-     ;; tangle
-     (org-babel-tangle-file
-      (expand-file-name (locate-user-emacs-file "config.org"))
-      (expand-file-name (locate-user-emacs-file "config.el"))
-      "emacs-lisp")
+       ;; tangle
+       (org-babel-tangle-file
+        (expand-file-name (locate-user-emacs-file "config.org")))
 
-     ;; byte-compile
-     (byte-compile-file
-      (expand-file-name  (locate-user-emacs-file "config.el"))))
-   ;; 'ignore
-   (lambda (result)
-     (if result
-         (message "SUCCESS: config.org successfully tangled and compiled.")
-       (message "ERROR: config.org tangle/compilation failed.")))))
+       ;; byte-compile
+       (byte-compile-file
+        (expand-file-name  (locate-user-emacs-file "config.el"))))
+     ;; 'ignore
+     `(lambda (result)
+        (if result
+            (message "SUCCESS: config.org successfully tangled and compiled. (%.3fs)"
+                     (float-time (time-subtract (current-time)
+                                                ',init-tangle-start-time)))
+          (message "ERROR: config.org tangle/compilation failed."))))))
 #+end_src
 
 ** Misc.
