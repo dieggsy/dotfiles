@@ -878,7 +878,7 @@ kwmc config border marked radius 6
 :PROPERTIES:
 :header-args+: :tangle ~/.nanorc
 :END:
-
+Lol
 #+begin_src conf
 include /usr/local/share/nano/*
 #+end_src
@@ -1388,36 +1388,31 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 
 # Install brew bundle
 echo "\n\e[1;34mInstalling: \e[91mhomebrew programs\e[0;97m"
-brew tap Homebrew/bundle
-brew bundle --file=~/dotfiles/installed-programs/brew-programs.rb
+/usr/local/bin/brew tap Homebrew/bundle
+/usr/local/bin/brew bundle --file=~/dotfiles/installed-programs/brew-programs.rb
 #+end_src
 *** Pyenv
 #+begin_src sh
+python2version=2.7.13
+python3version=3.6.0
 echo "\n\e[1;34mInstalling: \e[91mpython\e[0;97m"
 # Pyenv setup
-pyenv install $python3version
-pyenv rehash
-pyenv install $python2version
-pyenv rehash
+usr/local/bin/pyenv install $python3version
+usr/local/bin/pyenv rehash
+usr/local/bin/pyenv install $python2version
+usr/local/bin/pyenv rehash
 #+end_src
 *** Pip
 #+begin_src sh
-pyenv global $python3version
+/usr/local/bin/pyenv global $python3version
 echo "\n\e[1;34mInstalling: \e[91mpip3 programs\e[0;97m"
 <~/dotfiles/installed-programs/pip3-programs.txt xargs pip install
-echo Done
 
-pyenv global $python2version
+/usr/local/bin/pyenv global $python2version
 echo "\n\e[1;34mInstalling: \e[91mpip2 programs\e[0;97m"
 <~/dotfiles/installed-programs/pip2-programs.txt xargs pip install
-echo Done
 
-pyenv global $python3version
-#+end_src
-*** Symlink dirs
-#+begin_src sh
-ln -s ~/dotfiles/emacs.d ~/.emacs.d
-ln -s ~/dotfiles/vim ~/.vim
+/usr/local/bin/pyenv global $python3version
 #+end_src
 *** Install alfred workflow utils
 #+begin_src sh
@@ -1428,7 +1423,22 @@ chmod a+x ~/bin/workflow-build.py
 chmod a+x ~/bin/workflow-install.py
 echo -e "\e[1;34mDone"
 #+end_src
-
+*** Symlink dirs
+#+begin_src sh
+echo "\n\e[1;34mSymlinking: \e[91m.emacs.d, .vim\e[0;97m"
+ln -s ~/dotfiles/emacs.d ~/.emacs.d
+ln -s ~/dotfiles/vim ~/.vim
+#+end_src
+*** Tangle rc.org
+#+begin_src sh
+echo "\n\e[1;34mTangling: \e[91mrc.org\e[0;97m"
+/usr/local/bin/emacs --batch --eval "(progn (require 'org) (org-babel-tangle-file \"~/dotfiles/rc.org\"))" 2>&1 | grep --color=never "^Tangled"
+#+end_src
+*** Tangle config.org
+#+begin_src sh
+echo "\n\e[1;34mTangling: \e[91mconfig.org\e[0;97m"
+/usr/local/bin/emacs --batch --eval "(progn (require 'org) (org-babel-tangle-file \"~/dotfiles/emacs.d/config.org\"))" 2>&1 | grep --color=never "^Tangled"
+#+end_src
 ** switchmacs
 :PROPERTIES:
 :header-args+: :tangle ~/bin/switchmacs :shebang "#!/usr/bin/env bash"
@@ -1542,7 +1552,9 @@ except IOError:
 #+end_src
 * Local vars
 
+#+begin_example
 # Local Variables:
 # after-save-hook: (git-gutter diego/async-babel-tangle)
 # org-pretty-entities: nil
 # End:
+#+end_example
