@@ -158,7 +158,7 @@ consistent with other fonts. Last updated 2011, last successfully tested
 (setq enable-recursive-minibuffers t
       resize-mini-windows t)
 #+end_src
-** File and session handling
+** File/buffer/session handling
 #+begin_src emacs-lisp
 (global-auto-revert-mode t)
 (setq save-interprogram-paste-before-kill t)
@@ -171,6 +171,8 @@ consistent with other fonts. Last updated 2011, last successfully tested
 
 (autoload 'dired-async-mode "dired-async.el" nil t)
 (dired-async-mode 1)
+
+(setq help-window-select t)
 #+end_src
 ** Smooth scroll
 #+begin_src emacs-lisp
@@ -202,6 +204,13 @@ consistent with other fonts. Last updated 2011, last successfully tested
 ** Files/buffers
 *** File Manipulation
 #+begin_src emacs-lisp
+(defun diego/save-buffer ()
+  (interactive)
+  "Save current buffer, or original buffer if in org-src-mode"
+  (if (and (boundp org-src-mode) org-src-mode)
+      (org-edit-src-save)
+    (save-buffer)))
+
 (defun diego/delete-this-file ()
   "Delete the current file, and kill the buffer."
   (interactive)
@@ -960,7 +969,7 @@ based on or copied from spacemacs, so definitely check them out!
     "ff"  'counsel-find-file
     "fb"  'counsel-bookmark
     "fc"  'diego/copy-file
-    "fs"  'save-buffer
+    "fs"  'diego/save-buffer
     "fl"  'counsel-locate
     "fr"  'crux-rename-file-and-buffer
     "fot" 'diego/pop-to-org-todo
