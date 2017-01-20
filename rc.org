@@ -1230,7 +1230,7 @@ alias resetb="source ~/.zshrc"
 alias resetwifi="networksetup -setairportpower en0 off; sleep 2;"\
 "networksetup -setairportpower en0 on"
 alias rg="rg -i"
-alias sm=". ~/dotfiles/bin/switchmacs"
+alias sm=". ~/bin/switchmacs"
 alias starwars="telnet towel.blinkenlights.nl" # heh
 alias sudo='sudo '                             # recognize aliases
 alias sz="du -hs"                              # get folder/file size
@@ -1447,7 +1447,7 @@ echo "\n\e[1;34mTangling: \e[91mconfig.org\e[0;97m"
 #+begin_src sh
 rm ~/.emacs.d
 if [ $switchmacs = "spacemacs" ]; then
-    ln -s ~/dotfiles/config/emacs.d/ ~/.emacs.d > /dev/null 2>&1
+    ln -s ~/dotfiles/emacs.d/ ~/.emacs.d > /dev/null 2>&1
     switchmacs="emacs"
     echo "Switched to emacs."
 else
