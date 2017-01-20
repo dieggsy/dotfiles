@@ -1124,8 +1124,8 @@ based on or copied from spacemacs, so definitely check them out!
     "fs"  'diego/save-buffer
     "fl"  'counsel-locate
     "fr"  'crux-rename-file-and-buffer
-    "fot" 'diego/pop-to-org-todo
-    "fon" 'diego/pop-to-org-notes
+    "fpt" 'diego/pop-to-org-todo
+    "fpn" 'diego/pop-to-org-notes
     "fD"  'move-file-to-trash))
 #+end_src
 **** Editing
@@ -1946,46 +1946,69 @@ Emacs package that displays available keybindings in popup
   :config
   (which-key-mode)
   (setq which-key-show-operator-state-maps t)
-  (which-key-add-key-based-replacements
-    "SPC a"   "applications"
-    "SPC ao"  "org"
-    "SPC ag"  "games"
-    "SPC b"   "buffer"
-    "SPC c"   "comment"
-    "SPC f"   "file"
-    "SPC g"   "magit"
-    "SPC h"   "help"
-    "SPC hd"  "describe"
-    "SPC hc"  "customize"
-    "SPC i"   "insert"
-    "SPC j"   "jump"
-    "SPC m"   "major-mode-cmd"
-    "SPC n"   "narrow/numbers"
-    "SPC p"   "project"
-    "SPC q"   "quit"
-    "SPC s"   "search"
-    "SPC t"   "toggle"
-    "SPC w"   "window"
-    "SPC x"   "text"
-    "SPC xi"  "indent"
-    "SPC xa"  "align"
-    "SPC xd"  "delete"
-    "SPC xl"  "lines"
-    "SPC xm"  "multiedit"
-    "SPC xt"  "transpose"
-    "SPC xp"  "parentheses"
-    "SPC xw"  "words"
-    "SPC S"   "spelling"
+
+  (defun diego/declare-prefix (prefix name &rest more)
+    "Declare a prefix PREFIX. PREFIX is a string describing a key
+sequence. NAME is a string used as the prefix command.
+LONG-NAME if given is stored in `spacemacs/prefix-titles'."
+    (while prefix
+      (which-key-add-key-based-replacements
+        (concat diego-evil-leader-key " " prefix) name)
+      (setq prefix (pop more) name (pop more))))
+  (put 'diego/declare-prefix 'lisp-indent-function 'defun)
+
+  (defun diego/declare-prefix-for-major-mode (mode prefix name &rest more)
+    "Declare a prefix PREFIX. PREFIX is a string describing a key
+sequence. NAME is a string used as the prefix command.
+LONG-NAME if given is stored in `spacemacs/prefix-titles'."
+    (while prefix
+      (which-key-add-major-mode-key-based-replacements mode
+        (concat diego-evil-leader-key " m" prefix) name
+        (concat diego-major-mode-leader-key prefix) name)
+      (setq prefix (pop more) name (pop more))))
+  (put 'diego/declare-prefix-for-major-mode 'lisp-indent-function 'defun)
+
+  (diego/declare-prefix
+    "a"   "applications"
+    "ao"  "org"
+    "ag"  "games"
+    "b"   "buffer"
+    "c"   "comment"
+    "f"   "file"
+    "fp"  "pop-to-file"
+    "g"   "magit"
+    "h"   "help"
+    "hd"  "describe"
+    "hc"  "customize"
+    "i"   "insert"
+    "j"   "jump"
+    "m"   "major-mode-cmd"
+    "n"   "narrow/numbers"
+    "p"   "project"
+    "q"   "quit"
+    "s"   "search"
+    "t"   "toggle"
+    "w"   "window"
+    "x"   "text"
+    "xi"  "indent"
+    "xa"  "align"
+    "xd"  "delete"
+    "xl"  "lines"
+    "xm"  "multiedit"
+    "xt"  "transpose"
+    "xp"  "parentheses"
+    "xw"  "words"
+    "S"   "spelling"
     "SPC"     "root")
 
-  (which-key-add-major-mode-key-based-replacements 'org-mode
-    "SPC mi" "insert"
-    "SPC mx" "text"
-    "SPC mt" "table"
-    "SPC me" "eval-export")
+  (diego/declare-prefix-for-major-mode 'org-mode
+    "i" "insert"
+    "x" "text"
+    "t" "table"
+    "e" "eval-export")
 
   (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
-    (which-key-add-major-mode-key-based-replacements mode
+    (diego/declare-prefix-for-major-mode mode
       "SPC me" "eval"))
 
   (setq which-key-sort-order 'which-key-key-order-alpha)
