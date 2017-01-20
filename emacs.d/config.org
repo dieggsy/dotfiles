@@ -857,17 +857,150 @@ or that enhance emacs at a deeper level than any regular mode.
   (when (eq system-type 'darwin)
     (exec-path-from-shell-initialize)))
 #+end_src
-** [[https://bitbucket.org/lyro/evil/wiki/Home][evil]]
+** evil
 Evil is an extensible vi layer for Emacs. It emulates the main features of Vim,
 and provides facilities for writing custom extensions.
 
 I really like Vim bindings. I originally learned Emacs bindings but there was
 something really appealing about the simplicity and power of Vim bindings/modal
 editing. So I went for it. Now I'll never go back.
-*** Leader config
+*** [[https://github.com/emacs-evil/evil][evil]]
+**** Modes
+#+begin_src emacs-lisp
+(defun diego/evil-modes ()
+  "Configure evil mode."
+
+  ;; Use Emacs state in these additional modes.
+  (dolist (mode '(ag-mode
+                  flycheck-error-list-mode
+                  git-rebase-mode
+                  eshell-mode
+                  calc-mode
+                  calc-trail-mode
+                  sunshine-mode
+                  term-mode))
+    (add-to-list 'evil-emacs-state-modes mode))
+
+  (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
+  (setq evil-emacs-state-modes (delq 'Custom-mode evil-emacs-state-modes))
+  (setq evil-insert-state-modes (delq 'term-mode evil-insert-state-modes))
+
+  ;; Use insert state in these additional modes.
+  (dolist (mode '(magit-log-edit-mode))
+    (add-to-list 'evil-insert-state-modes mode))
+
+  (add-to-list 'evil-buffer-regexps '("\\*Flycheck"))
+
+
+  (defun evil-visual-line--mark-org-element-when-heading (&rest args)
+    "When marking a visual line in Org, mark the current element.
+     This function is used as a `:before-while' advice on
+     `evil-visual-line'; if the current mode is derived from Org Mode and
+     point is resting on an Org heading, mark the whole element instead of
+     the line. ARGS are passed to `evil-visual-line' when text objects are
+     used, but this function ignores them."
+    (interactive)
+    (if (and (derived-mode-p 'org-mode)
+             (org-at-heading-p))
+        (not (org-mark-element))
+      t))
+
+  (advice-add 'evil-visual-line :before-while #'evil-visual-line--mark-org-element-when-heading))
+#+end_src
+**** Appearance
+#+begin_src emacs-lisp
+(defun diego/evil-appearance ()
+  (setq evil-insert-state-cursor '(bar . 1)
+        evil-emacs-state-cursor '(bar . 1)
+        evil-normal-state-tag  " NORMAL "
+        evil-insert-state-tag  " INSERT "
+        evil-motion-state-tag  " MOTION "
+        evil-visual-state-tag  " VISUAL "
+        evil-emacs-state-tag   " EMACS "
+        evil-replace-state-tag " REPLACE "))
+#+end_src
+**** Bindings
+#+begin_src emacs-lisp
+;; Global bindings.
+(defun diego/evil-bindings ()
+
+  (define-key evil-normal-state-map "gc"           'evilnc-comment-operator)
+  (define-key evil-normal-state-map "gy"           'evilnc-copy-and-comment-lines)
+  (define-key evil-insert-state-map (kbd "C-e")    'end-of-line)
+  (define-key evil-normal-state-map (kbd "S-SPC")  'org-agenda-list)
+  (define-key evil-normal-state-map (kbd "<down-mouse-1>")  nil)
+  (define-key evil-normal-state-map (kbd "<mouse-1>")  nil)
+
+  (define-key evil-normal-state-map "-" 'negative-argument)
+  (define-key evil-normal-state-map (kbd "\\") 'ace-window)
+
+  (evil-define-key 'normal custom-mode-map
+    "q" 'Custom-buffer-done)
+
+  (evil-define-key 'normal message-mode-map
+    "q" 'diego/switch-to-previous-buffer)
+
+  (evil-add-hjkl-bindings occur-mode-map 'emacs
+    (kbd "/")       'evil-search-forward
+    (kbd "n")       'evil-search-next
+    (kbd "N")       'evil-search-previous
+    (kbd "C-d")     'evil-scroll-down
+    (kbd "C-u")     'evil-scroll-up
+    (kbd "C-w C-w") 'other-window)
+
+  ;; Make escape and C-/ quit everything, whenever possible.
+  (define-key evil-insert-state-map [?\C-/] #'evil-normal-state)
+  (define-key evil-insert-state-map [?\C-_] #'evil-normal-state)
+
+  (define-key evil-replace-state-map [?\C-_] #'evil-normal-state)
+  (define-key evil-replace-state-map [?\C-/] #'evil-normal-state)
+
+  (define-key evil-normal-state-map [escape] #'keyboard-quit)
+  (define-key evil-normal-state-map [?\C-_] #'keyboard-quit)
+  (define-key evil-normal-state-map [?\C-/] #'keyboard-quit)
+
+  (define-key evil-visual-state-map [escape] #'keyboard-quit)
+  (define-key evil-visual-state-map [?\C-_] #'keyboard-quit)
+  (define-key evil-visual-state-map [?\C-/] #'keyboard-quit)
+
+  (dolist (key '([mouse-1]
+                 [down-mouse-1]
+                 [wheel-right]
+                 [double-wheel-right]
+                 [triple-wheel-right]
+                 [wheel-left]
+                 [double-wheel-left]
+                 [triple-wheel-left]
+                 [wheel-down]
+                 [double-wheel-down]
+                 [triple-wheel-down]
+                 [wheel-up]
+                 [double-wheel-up]
+                 [triple-wheel-up]))
+    (define-key evil-motion-state-map key 'silence)))
+
+#+end_src
+**** Setup
+#+begin_src emacs-lisp
+(use-package evil
+  :demand t
+  :if (not noninteractive)
+  :functions (evil-visual-line--mark-org-element-when-heading)
+  :init
+  (setq evil-want-C-u-scroll t
+        evil-want-fine-undo t
+        evil-search-module 'evil-search
+        evil-ex-search-persistent-highlight nil
+        evil-lookup-func (lambda () (man (thing-at-point 'word))))
+  :config
+  (diego/evil-modes)
+  (diego/evil-appearance)
+  (diego/evil-bindings)
+  (evil-mode 1))
+#+end_src
+*** [[https://github.com/justbur/emacs-bind-map][evil-leader (emacs-bind-map)]]
 A good chunk if not all of the bindings/functions in this section are either
 based on or copied from spacemacs, so definitely check them out!
-
 **** Search
 #+begin_src emacs-lisp
 (defun diego/leader-search ()
@@ -1120,155 +1253,11 @@ based on or copied from spacemacs, so definitely check them out!
   (diego/leader-window)
   (define-key universal-argument-map (kbd "SPC u") 'universal-argument-more))
 #+end_src
-*** Modes
-#+begin_src emacs-lisp
-(defun diego/evil-modes ()
-  "Configure evil mode."
-
-  ;; Use Emacs state in these additional modes.
-  (dolist (mode '(ag-mode
-                  flycheck-error-list-mode
-                  git-rebase-mode
-                  eshell-mode
-                  calc-mode
-                  calc-trail-mode
-                  sunshine-mode
-                  term-mode))
-    (add-to-list 'evil-emacs-state-modes mode))
-
-  (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
-  (setq evil-emacs-state-modes (delq 'Custom-mode evil-emacs-state-modes))
-  (setq evil-insert-state-modes (delq 'term-mode evil-insert-state-modes))
-
-  ;; Use insert state in these additional modes.
-  (dolist (mode '(magit-log-edit-mode))
-    (add-to-list 'evil-insert-state-modes mode))
-
-  (add-to-list 'evil-buffer-regexps '("\\*Flycheck"))
-
-
-  (defun evil-visual-line--mark-org-element-when-heading (&rest args)
-    "When marking a visual line in Org, mark the current element.
-     This function is used as a `:before-while' advice on
-     `evil-visual-line'; if the current mode is derived from Org Mode and
-     point is resting on an Org heading, mark the whole element instead of
-     the line. ARGS are passed to `evil-visual-line' when text objects are
-     used, but this function ignores them."
-    (interactive)
-    (if (and (derived-mode-p 'org-mode)
-             (org-at-heading-p))
-        (not (org-mark-element))
-      t))
-
-  (advice-add 'evil-visual-line :before-while #'evil-visual-line--mark-org-element-when-heading))
-#+end_src
-*** Appearance
-#+begin_src emacs-lisp
-(defun diego/evil-appearance ()
-  (setq evil-insert-state-cursor '(bar . 1)
-        evil-emacs-state-cursor '(bar . 1)
-        evil-normal-state-tag  " NORMAL "
-        evil-insert-state-tag  " INSERT "
-        evil-motion-state-tag  " MOTION "
-        evil-visual-state-tag  " VISUAL "
-        evil-emacs-state-tag   " EMACS "
-        evil-replace-state-tag " REPLACE "))
-#+end_src
-*** Bindings
-#+begin_src emacs-lisp
-;; Global bindings.
-(defun diego/evil-bindings ()
-
-  (define-key evil-normal-state-map "gc"           'evilnc-comment-operator)
-  (define-key evil-normal-state-map "gy"           'evilnc-copy-and-comment-lines)
-  (define-key evil-insert-state-map (kbd "C-e")    'end-of-line)
-  (define-key evil-normal-state-map (kbd "S-SPC")  'org-agenda-list)
-  (define-key evil-normal-state-map (kbd "<down-mouse-1>")  nil)
-  (define-key evil-normal-state-map (kbd "<mouse-1>")  nil)
-
-  (define-key evil-normal-state-map "-" 'negative-argument)
-  (define-key evil-normal-state-map (kbd "\\") 'ace-window)
-
-  (evil-define-key 'normal custom-mode-map
-    "q" 'Custom-buffer-done)
-
-  (evil-define-key 'normal message-mode-map
-    "q" 'diego/switch-to-previous-buffer)
-
-  (evil-add-hjkl-bindings occur-mode-map 'emacs
-    (kbd "/")       'evil-search-forward
-    (kbd "n")       'evil-search-next
-    (kbd "N")       'evil-search-previous
-    (kbd "C-d")     'evil-scroll-down
-    (kbd "C-u")     'evil-scroll-up
-    (kbd "C-w C-w") 'other-window)
-
-  ;; Make escape and C-/ quit everything, whenever possible.
-  (define-key evil-insert-state-map [?\C-/] #'evil-normal-state)
-  (define-key evil-insert-state-map [?\C-_] #'evil-normal-state)
-
-  (define-key evil-replace-state-map [?\C-_] #'evil-normal-state)
-  (define-key evil-replace-state-map [?\C-/] #'evil-normal-state)
-
-  (define-key evil-normal-state-map [escape] #'keyboard-quit)
-  (define-key evil-normal-state-map [?\C-_] #'keyboard-quit)
-  (define-key evil-normal-state-map [?\C-/] #'keyboard-quit)
-
-  (define-key evil-visual-state-map [escape] #'keyboard-quit)
-  (define-key evil-visual-state-map [?\C-_] #'keyboard-quit)
-  (define-key evil-visual-state-map [?\C-/] #'keyboard-quit)
-
-  (dolist (key '([mouse-1]
-                 [down-mouse-1]
-                 [wheel-right]
-                 [double-wheel-right]
-                 [triple-wheel-right]
-                 [wheel-left]
-                 [double-wheel-left]
-                 [triple-wheel-left]
-                 [wheel-down]
-                 [double-wheel-down]
-                 [triple-wheel-down]
-                 [wheel-up]
-                 [double-wheel-up]
-                 [triple-wheel-up]))
-    (define-key evil-motion-state-map key 'silence)))
-
-#+end_src
-*** Final Setup
-**** evil
-#+begin_src emacs-lisp
-(use-package evil
-  :demand t
-  :if (not noninteractive)
-  :functions (evil-visual-line--mark-org-element-when-heading)
-  :init
-  (setq evil-want-C-u-scroll t
-        evil-want-fine-undo t
-        evil-search-module 'evil-search
-        evil-ex-search-persistent-highlight nil
-        evil-lookup-func (lambda () (man (thing-at-point 'word))))
-  :config
-  ;; (add-hook 'evil-normal-state-entry-hook 'whitespace-cleanup)
-  (add-hook 'evil-mode-hook 'diego/evil-modes)
-  (add-hook 'evil-mode-hook 'diego/evil-appearance)
-  (add-hook 'evil-mode-hook 'diego/evil-bindings))
-#+end_src
-**** evil-leader
+**** Setup
 #+begin_src emacs-lisp
 (use-package bind-map
   :after evil
   :config
-  (bind-map diego-default-map
-    ;; :keys ("M-m")
-    :evil-keys (diego-evil-leader-key)
-    :evil-states (normal motion visual))
-
-  (bind-map diego-default-map
-    ;; :keys ("M-m")
-    :evil-keys ((concat "C-" diego-evil-leader-key))
-    :evil-states (insert emacs))
-
   (defvar diego-evil-leader-key "SPC"
     "Evil leader key.")
 
@@ -1278,9 +1267,15 @@ based on or copied from spacemacs, so definitely check them out!
   (defvar diego-major-mode-leader-key ","
     "Major mode leader key.")
 
-  (bind-map spacemacs-default-map
+  (bind-map diego-default-map
+    ;; :keys ("M-m")
     :evil-keys (diego-evil-leader-key)
     :evil-states (normal motion visual))
+
+  (bind-map diego-default-map
+    ;; :keys ("M-m")
+    :evil-keys ((concat "C-" diego-evil-leader-key))
+    :evil-states (insert emacs))
 
   (defun diego/set-leader-keys (key def &rest bindings)
     "Add KEY and DEF as key bindings under
@@ -1352,12 +1347,12 @@ they are in `spacemacs/set-leader-keys'."
 
   (diego/config-evil-leader))
 #+end_src
-**** evil-indent-text-object
+*** [[https://github.com/TheBB/evil-indent-plus][evil-indent-plus]]
 #+begin_src emacs-lisp
 (use-package evil-indent-plus
   :after evil)
 #+end_src
-**** evil-numbers
+*** [[https://github.com/therockmandolinist/evil-numbers][evil-numbers]]
 #+begin_src emacs-lisp
 (use-package evil-numbers
   :after evil
@@ -1367,7 +1362,7 @@ they are in `spacemacs/set-leader-keys'."
             :fetcher github
             :repo "therockmandolinist/evil-numbers")))
 #+end_src
-**** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
+*** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
 #+begin_src emacs-lisp
 (use-package evil-nerd-commenter
   :commands (evilnc-comment-operator
@@ -1381,10 +1376,6 @@ they are in `spacemacs/set-leader-keys'."
     (interactive "p")
     (let ((evilnc-invert-comment-line-by-line t))
       (evilnc-comment-or-uncomment-lines arg))))
-#+end_src
-**** Er, call evil mode
-#+begin_src emacs-lisp
-(evil-mode 1)
 #+end_src
 ** [[https://github.com/abo-abo/swiper][ivy]]
 A really nice search/completion system for emacs.
