@@ -65,6 +65,25 @@ Set up [[https://github.com/jwiegley/use-package][use-package]].
   (require 'use-package))
 #+end_src
 
+Set up quelpa
+#+begin_src emacs-lisp
+(unless (require 'quelpa nil t)
+  (with-temp-buffer
+    (url-insert-file-contents "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
+    (eval-buffer)))
+#+end_src
+
+Set up quelpa use-package
+
+#+begin_src emacs-lisp
+(quelpa
+ '(quelpa-use-package
+   :fetcher github
+   :repo "quelpa/quelpa-use-package"))
+(require 'quelpa-use-package)
+(quelpa-use-package-activate-advice)
+#+end_src
+
 Byte compile installed packages asynchronously.
 #+begin_src emacs-lisp
 (async-bytecomp-package-mode 1)
@@ -1335,13 +1354,18 @@ they are in `spacemacs/set-leader-keys'."
 #+end_src
 **** evil-indent-text-object
 #+begin_src emacs-lisp
-(use-package evil-indent-textobject
+(use-package evil-indent-plus
   :after evil)
 #+end_src
 **** evil-numbers
 #+begin_src emacs-lisp
 (use-package evil-numbers
-  :after evil)
+  :after evil
+  :commands (evil-numbers/inc-at-pt
+             evil-numbers/dec-at-pt)
+  :quelpa ((evil-numbers
+            :fetcher github
+            :repo "therockmandolinist/evil-numbers")))
 #+end_src
 **** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
 #+begin_src emacs-lisp
@@ -2114,7 +2138,10 @@ An Emacs 24 theme remixed from gruvbox (my fork).
 #+begin_src emacs-lisp
 (use-package darktooth-theme
   :demand t
-  :ensure nil)
+  ;; :ensure nil
+  :quelpa ((darktooth-theme
+            :fetcher github
+            :repo "therockmandolinist/emacs-theme-darktooth")))
 #+end_src
 *** [[https://github.com/iqbalansari/emacs-emojify][emacs-emojify]]
 Display emojis in emacs. Sweet!
