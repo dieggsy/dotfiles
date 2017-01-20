@@ -843,7 +843,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** Search
 #+begin_src emacs-lisp
 (defun diego/leader-search ()
-  (evil-leader/set-key
+  (diego/set-leader-keys
     "sa" 'counsel-ag
     "sS" 'swiper-all
     "sm" 'swiper-multi
@@ -856,7 +856,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** Projects
 #+begin_src emacs-lisp
 (defun diego/leader-projects ()
-  (evil-leader/set-key
+  (diego/set-leader-keys
     "pp" 'counsel-projectile
     "ps" 'counsel-projectile-switch-project
     "pf" 'diego/project-find-file
@@ -876,7 +876,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** Window
 #+begin_src emacs-lisp
 (defun diego/leader-window ()
-  (evil-leader/set-key
+  (diego/set-leader-keys
     "wa" 'ace-window
     "wv" 'diego/split-vert-focus
     "wh" 'diego/split-horz-focus
@@ -892,7 +892,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** Jumping
 #+begin_src emacs-lisp
 (defun diego/leader-jumping ()
-  (evil-leader/set-key
+  (diego/set-leader-keys
     "jc" 'avy-goto-char-2
     "jw" 'avy-goto-word-1
     "jl" 'avy-goto-line
@@ -904,7 +904,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** Applications
 #+begin_src emacs-lisp
 (defun diego/leader-applications ()
-  (evil-leader/set-key
+  (diego/set-leader-keys
     "aW"  'sunshine-quick-forecast
     "ac"  'calc-dispatch
     "ad"  'diego/deer
@@ -938,7 +938,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** Buffers & Files
 #+begin_src emacs-lisp
 (defun diego/leader-buffers-files ()
-  (evil-leader/set-key
+  (diego/set-leader-keys
     "TAB" 'diego/switch-to-previous-buffer
     "bb"  'ivy-switch-buffer
     "bk"  'kill-this-buffer
@@ -970,7 +970,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** Editing
 #+begin_src emacs-lisp
 (defun diego/leader-editing ()
-  (evil-leader/set-key
+  (diego/set-leader-keys
     ";"   'evilnc-comment-operator
     "cl"  'evilnc-comment-or-uncomment-lines
     "ci"  'diego/comment-or-uncomment-lines-inverse
@@ -1022,7 +1022,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** magit
 #+begin_src emacs-lisp
 (defun diego/leader-magit ()
-  (evil-leader/set-key
+  (diego/set-leader-keys
     "gs" 'magit-status
     "gl" 'magit-log-all
     "gB" 'magit-blame-toggle
@@ -1033,7 +1033,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** Help
 #+begin_src emacs-lisp
 (defun diego/leader-help ()
-  (evil-leader/set-key
+  (diego/set-leader-keys
     "hdb" 'counsel-descbinds
     "hdc" 'describe-char
     "hdd" 'devdocs-search
@@ -1058,34 +1058,26 @@ based on or copied from spacemacs, so definitely check them out!
 **** Quit
 #+begin_src emacs-lisp
 (defun diego/leader-quit ()
-  (evil-leader/set-key
+  (diego/set-leader-keys
     "qq" 'save-buffers-kill-emacs
     "qr" 'restart-emacs
     "qf" 'delete-frame))
-#+end_src
-**** Modes
-#+begin_src emacs-lisp
-(defun diego/leader-modes ()
-  (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
-    (evil-leader/set-key-for-mode mode
-      "meb" 'eval-buffer
-      "mef" 'eval-defun
-      "mer" 'eval-region
-      "mes" 'eval-last-sexp))
-
-  (evil-leader/set-key-for-mode 'org-mode
-    "meb" 'eval-buffer
-    "mef" 'eval-defun
-    "mer" 'eval-region
-    "mes" 'eval-last-sexp))
 #+end_src
 **** Global/non-prefix
 #+begin_src emacs-lisp
 (defun diego/config-evil-leader ()
   "Configure evil leader mode."
-  (evil-leader/set-leader "SPC")
-  (setq evil-leader/in-all-states 1)
-  (evil-leader/set-key
+  (bind-map diego-default-map
+    ;; :keys ("M-m")
+    :evil-keys (diego-evil-leader-key)
+    :evil-states (normal motion visual))
+
+  (bind-map diego-default-map
+    ;; :keys ("M-m")
+    :evil-keys ((concat "C-" diego-evil-leader-key))
+    :evil-states (insert emacs))
+
+  (diego/set-leader-keys
     "SPC" 'counsel-M-x
     "C"   'org-capture
     "u"   'universal-argument
@@ -1103,7 +1095,6 @@ based on or copied from spacemacs, so definitely check them out!
   (diego/leader-help)
   (diego/leader-jumping)
   (diego/leader-magit)
-  (diego/leader-modes)
   (diego/leader-projects)
   (diego/leader-quit)
   (diego/leader-search)
@@ -1246,10 +1237,90 @@ based on or copied from spacemacs, so definitely check them out!
 #+end_src
 **** evil-leader
 #+begin_src emacs-lisp
-(use-package evil-leader
+(use-package bind-map
   :after evil
   :config
-  (global-evil-leader-mode)
+  (defvar diego-evil-leader-key "SPC"
+    "Evil leader key.")
+
+  (defvar diego-default-map (make-sparse-keymap)
+    "Base keymap for all spacemacs leader key commands.")
+
+  (defvar diego-major-mode-leader-key ","
+    "Major mode leader key.")
+
+  (bind-map spacemacs-default-map
+    :evil-keys (diego-evil-leader-key)
+    :evil-states (normal motion visual))
+
+  (defun diego/set-leader-keys (key def &rest bindings)
+    "Add KEY and DEF as key bindings under
+`diego-evil-leader-key'.
+
+KEY should be a string suitable for passing to `kbd', and it
+should not include the leaders. DEF is most likely a quoted
+command. See `define-key' for more information about the possible
+choices for DEF. This function simply uses `define-key' to add
+the bindings.
+
+For convenience, this function will accept additional KEY DEF
+pairs. For example,
+
+\(spacemacs/set-leader-keys
+   \"a\" 'command1
+   \"C-c\" 'command2
+   \"bb\" 'command3\)"
+    (while key
+      (define-key diego-default-map (kbd key) def)
+      (setq key (pop bindings) def (pop bindings))))
+  (put 'diego/set-leader-keys 'lisp-indent-function 'defun)
+
+  (defun diego//init-leader-mode-map (mode map &optional minor)
+    "Check for MAP-prefix. If it doesn't exist yet, use `bind-map'
+to create it and bind it to `diego-major-mode-leader-key'.
+If MODE is a minor-mode, the third argument should be non nil."
+    (let* ((prefix (intern (format "%s-prefix" map)))
+           (leader1 diego-major-mode-leader-key)
+           (leader2 (concat diego-evil-leader-key " m"))
+           (leaders (delq nil (list leader1 leader2))))
+      (or (boundp prefix)
+          (progn
+            (eval
+             `(bind-map ,map
+                :prefix-cmd ,prefix
+                ,(if minor :minor-modes :major-modes) (,mode)
+                :evil-keys ,leaders
+                :evil-states (normal motion visual)))
+            (boundp prefix)))))
+
+  (defun diego/set-leader-keys-for-major-mode (mode key def &rest bindings)
+    "Add KEY and DEF as key bindings under
+`diego-major-mode-leader-key' and
+`diego-major-mode-emacs-leader-key' for the major-mode
+MODE. MODE should be a quoted symbol corresponding to a valid
+major mode. The rest of the arguments are treated exactly like
+they are in `diego/set-leader-keys'."
+    (let* ((map (intern (format "diego-%s-map" mode))))
+      (when (diego//init-leader-mode-map mode map)
+        (while key
+          (define-key (symbol-value map) (kbd key) def)
+          (setq key (pop bindings) def (pop bindings))))))
+  (put 'diego/set-leader-keys-for-major-mode 'lisp-indent-function 'defun)
+
+  (defun diego/set-leader-keys-for-minor-mode (mode key def &rest bindings)
+    "Add KEY and DEF as key bindings under
+`dotspacemacs-major-mode-leader-key' and
+`dotspacemacs-major-mode-emacs-leader-key' for the minor-mode
+MODE. MODE should be a quoted symbol corresponding to a valid
+minor mode. The rest of the arguments are treated exactly like
+they are in `spacemacs/set-leader-keys'."
+    (let* ((map (intern (format "diego-%s-map" mode))))
+      (when (diego//init-leader-mode-map mode map t)
+        (while key
+          (define-key (symbol-value map) (kbd key) def)
+          (setq key (pop bindings) def (pop bindings))))))
+  (put 'diego/set-leader-keys-for-minor-mode 'lisp-indent-function 'defun)
+
   (diego/config-evil-leader))
 #+end_src
 **** evil-indent-text-object
@@ -1439,72 +1510,75 @@ so I went with it.
     `(defun ,fname () (interactive)
             (org-emphasize ,char)))
 
-  (evil-leader/set-key-for-mode 'org-mode
-    "m$"  'org-archive-subtree
-    "m'"  'org-edit-special
-    "m/"  'org-sparse-tree
-    "m^"  'org-sort
-    "ma"  'org-agenda
-    "mA"  'org-archive-subtree
-    "mc"  'org-capture
-    "md"  'org-deadline
-    "m."  'org-time-stamp
-    "ml"  'diego/org-choose-bullet-type
-    "mn"  'org-narrow-to-subtree
-    "mN"  'widen
-    "mP"  'org-set-property
-    "mR"  'org-refile
-    "ms"  'org-schedule
-    "m:"  'diego/org-set-tags
+  (diego/set-leader-keys-for-major-mode 'org-mode
+    "$"  'org-archive-subtree
+    "'"  'org-edit-special
+    "/"  'org-sparse-tree
+    "^"  'org-sort
+    "a"  'org-agenda
+    "A"  'org-archive-subtree
+    "c"  'org-capture
+    "d"  'org-deadline
+    "."  'org-time-stamp
+    "l"  'diego/org-choose-bullet-type
+    "n"  'org-narrow-to-subtree
+    "N"  'widen
+    "P"  'org-set-property
+    "R"  'org-refile
+    "s"  'org-schedule
+    ":"  'diego/org-set-tags
 
-    "mic" 'org-table-insert-column
-    "mir" 'org-table-insert-row
-    "mil" 'org-insert-link
-    "mif" 'org-footnote-new
-    "mid" 'org-insert-drawer
+    "ic" 'org-table-insert-column
+    "ir" 'org-table-insert-row
+    "il" 'org-insert-link
+    "if" 'org-footnote-new
+    "id" 'org-insert-drawer
 
-    "mee" 'org-export-dispatch
-    "mb"  'org-babel-tangle
-    "mxb" (diego|org-emphasize diego/org-bold ?*)
-    "mxi" (diego|org-emphasize diego/org-italic ?/)
-    "mxc" (diego|org-emphasize diego/org-code ?~)
-    "mxu" (diego|org-emphasize diego/org-underline ?_)
-    "mxv" (diego|org-emphasize diego/org-verbatim ?=)
-    "mxs" (diego|org-emphasize diego/org-strike-through ?+)
-    "mxr" (diego|org-emphasize diego/org-clear ? )
-    "mxq" 'diego/org-wrap-with-quote
+    "ed" 'org-export-dispatch
+    "eb" 'eval-buffer
+    "ef" 'eval-defun
+    "es" 'veal-last-sexp
+
+    "b"  'org-babel-tangle
+    "xb" (diego|org-emphasize diego/org-bold ?*)
+    "xi" (diego|org-emphasize diego/org-italic ?/)
+    "xc" (diego|org-emphasize diego/org-code ?~)
+    "xu" (diego|org-emphasize diego/org-underline ?_)
+    "xv" (diego|org-emphasize diego/org-verbatim ?=)
+    "xs" (diego|org-emphasize diego/org-strike-through ?+)
+    "xr" (diego|org-emphasize diego/org-clear ? )
+    "xq" 'diego/org-wrap-with-quote
 
     ;; tables
-    "mta"  'org-table-align
-    "mtb"  'org-table-blank-field
-    "mtc"  'org-table-convert
-    "mtdc" 'org-table-delete-column
-    "mtdr" 'org-table-kill-row
-    "mte"  'org-table-eval-formula
-    "mtE"  'org-table-export
-    "mth"  'org-table-previous-field
-    "mtH"  'org-table-move-column-left
-    "mtic" 'org-table-insert-column
-    "mtih" 'org-table-insert-hline
-    "mtiH" 'org-table-hline-and-move
-    "mtir" 'org-table-insert-row
-    "mtI"  'org-table-import
-    "mtj"  'org-table-next-row
-    "mtJ"  'org-table-move-row-down
-    "mtK"  'org-table-move-row-up
-    "mtl"  'org-table-next-field
-    "mtL"  'org-table-move-column-right
-    "mtn"  'org-table-create
-    "mtN"  'org-table-create-with-table.el
-    "mtr"  'org-table-recalculate
-    "mts"  'org-table-sort-lines
-    "mttf" 'org-table-toggle-formula-debugger
-    "mtto" 'org-table-toggle-coordinate-overlays
-    "mtw"  'org-table-wrap-region)
+    "ta"  'org-table-align
+    "tb"  'org-table-blank-field
+    "tc"  'org-table-convert
+    "tdc" 'org-table-delete-column
+    "tdr" 'org-table-kill-row
+    "te"  'org-table-eval-formula
+    "tE"  'org-table-export
+    "th"  'org-table-previous-field
+    "tH"  'org-table-move-column-left
+    "tic" 'org-table-insert-column
+    "tih" 'org-table-insert-hline
+    "tiH" 'org-table-hline-and-move
+    "tir" 'org-table-insert-row
+    "tI"  'org-table-import
+    "tj"  'org-table-next-row
+    "tJ"  'org-table-move-row-down
+    "tK"  'org-table-move-row-up
+    "tl"  'org-table-next-field
+    "tL"  'org-table-move-column-right
+    "tn"  'org-table-create
+    "tN"  'org-table-create-with-table.el
+    "tr"  'org-table-recalculate
+    "ts"  'org-table-sort-lines
+    "ttf" 'org-table-toggle-formula-debugger
+    "tto" 'org-table-toggle-coordinate-overlays
+    "tw"  'org-table-wrap-region)
 
-  (evil-define-minor-mode-key 'normal 'org-src-mode
-    " m'" 'org-edit-src-exit
-    " fs" 'org-edit-src-save)
+  (diego/set-leader-keys-for-minor-mode 'org-src-mode
+    "'" 'org-edit-src-exit)
 
   (evil-define-key 'normal org-mode-map
     (kbd "RET") 'org-open-at-point
@@ -2939,7 +3013,13 @@ Mostly set up hs-minor-mode for emacs-lisp.
   (local-set-key (kbd "C-c <left>") 'hs-hide-block)
   (local-set-key (kbd "C-c <right>") 'hs-show-block)
   ;; (highlight-defined-mode)
-  )
+
+  (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
+    (diego/set-leader-keys-for-major-mode mode
+      "eb" 'eval-buffer
+      "ef" 'eval-defun
+      "er" 'eval-region
+      "es" 'eval-last-sexp)))
 
 (add-hook 'emacs-lisp-mode-hook 'diego/setup-lisp-mode)
 (add-hook 'lisp-interaction-mode-hook 'diego/setup-lisp-mode)
