@@ -1113,7 +1113,7 @@ unalias rm
 
 *** Zsh options
 #+begin_src sh
-setopt GLOB_COMPLETE
+setopt glob_complete
 setopt auto_cd
 setopt histignoredups
 setopt autonamedirs
@@ -1348,6 +1348,7 @@ psetzip (){
 calc(){
     emacs --batch --eval "(message (calc-eval \"$1\"))"
 }
+alias calc="noglob calc"
 
 spectrum_ls() {
   for code in {000..255}; do

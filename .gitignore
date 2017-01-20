@@ -46,3 +46,4 @@ emacs.d/var/trash
 emacs.d/var/url
 emacs.d/var/xkcd
 vim/bundle/
+emacs.d/quelpa/
