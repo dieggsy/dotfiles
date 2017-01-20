@@ -257,6 +257,12 @@ set noautofocus
 let defaultengine = "duckduckgo"
 let hintcharacters = "aoeuidhtns"
 let homedirectory = "/Users/diego"
+let searchlimit = 9
+
+let blacklists = ['*://inbox.google.com/*']
+
+map J nextTab
+map K previousTab
 #+end_src
 ** gitconfig
 :PROPERTIES:
