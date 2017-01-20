@@ -1076,15 +1076,6 @@ based on or copied from spacemacs, so definitely check them out!
 #+begin_src emacs-lisp
 (defun diego/config-evil-leader ()
   "Configure evil leader mode."
-  (bind-map diego-default-map
-    ;; :keys ("M-m")
-    :evil-keys (diego-evil-leader-key)
-    :evil-states (normal motion visual))
-
-  (bind-map diego-default-map
-    ;; :keys ("M-m")
-    :evil-keys ((concat "C-" diego-evil-leader-key))
-    :evil-states (insert emacs))
 
   (diego/set-leader-keys
     "SPC" 'counsel-M-x
@@ -1249,6 +1240,16 @@ based on or copied from spacemacs, so definitely check them out!
 (use-package bind-map
   :after evil
   :config
+  (bind-map diego-default-map
+    ;; :keys ("M-m")
+    :evil-keys (diego-evil-leader-key)
+    :evil-states (normal motion visual))
+
+  (bind-map diego-default-map
+    ;; :keys ("M-m")
+    :evil-keys ((concat "C-" diego-evil-leader-key))
+    :evil-states (insert emacs))
+
   (defvar diego-evil-leader-key "SPC"
     "Evil leader key.")
 
