@@ -226,7 +226,7 @@ consistent with other fonts. Last updated 2011, last successfully tested
 (defun diego/save-buffer ()
   (interactive)
   "Save current buffer, or original buffer if in org-src-mode"
-  (if (and (boundp org-src-mode) org-src-mode)
+  (if (and (boundp 'org-src-mode) org-src-mode)
       (org-edit-src-save)
     (save-buffer)))
 
@@ -2150,9 +2150,9 @@ An Emacs 24 theme remixed from gruvbox (my fork).
 (use-package darktooth-theme
   :demand t
   ;; :ensure nil
-  :quelpa ((darktooth-theme
-            :fetcher github
-            :repo "therockmandolinist/emacs-theme-darktooth")))
+  :quelpa (darktooth-theme
+             :fetcher github
+             :repo "therockmandolinist/emacs-theme-darktooth"))
 #+end_src
 *** [[https://github.com/iqbalansari/emacs-emojify][emacs-emojify]]
 Display emojis in emacs. Sweet!
