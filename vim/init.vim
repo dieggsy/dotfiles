@@ -1,1 +1,1 @@
-/Users/diego/dotfiles/config/vim/vimrc
+/Users/diego/dotfiles/vim/vimrc
