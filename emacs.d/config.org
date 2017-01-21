@@ -774,21 +774,6 @@ drag it up past ARG other lines (down if ARG negative)."
 (defun silence ()
   "Dummy function that does nothing."
   (interactive))
-
-(defun hackerman ()
-  (interactive)
-  (let ((hacker-file (concat temporary-file-directory "hackerman.png"))
-        (inhibit-message t))
-    (unless (file-exists-p hacker-file)
-      (url-copy-file "http://i2.kym-cdn.com/entries/icons/original/000/021/807/4d7.png" hacker-file t))
-    (with-output-to-temp-buffer "*hackerman*"
-      (princ (concat "file://" hacker-file)))
-    ;; (find-file hacker-file)
-    ;; (eimp-fit-image-to-window nil)
-    (with-current-buffer "*hackerman*"
-      (iimage-mode))
-    ;; (delete-window)
-    ))
 #+end_src
 ** Keyboard Macros
 #+begin_src emacs-lisp
@@ -2055,6 +2040,18 @@ A cozy fireplace for emacs. For the cold winters.
 #+begin_src emacs-lisp
 (use-package fireplace
   :commands fireplace)
+#+end_src
+*** [[https://github.com/therockmandolinist/emacs-hacker-typer][hacker-typer]]
+#+begin_src emacs-lisp
+(use-package hacker-typer
+  :commands (hacker-typer-hackerman hacker-typer)
+  :quelpa (hacker-typer
+           :fetcher github
+           :repo "therockmandolinist/emacs-hacker-typer")
+  :config
+  (setq hacker-typer-show-hackerman t)
+  (setq hacker-typer-remove-comments t)
+  (defalias 'hackerman 'hacker-typer-hackerman))
 #+end_src
 *** [[https://melpa.org/#/highlight-tail][highlight-tail]]
 Draw a colourful "tail" while you write (A.k.a. pure awesome)
