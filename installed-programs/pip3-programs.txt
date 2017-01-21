@@ -141,7 +141,6 @@ requests-cache
 requests-oauthlib
 rope
 rsa
-rtv
 scipy
 seaborn
 sexpdata

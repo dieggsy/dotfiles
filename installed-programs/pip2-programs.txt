@@ -79,7 +79,6 @@ readline
 requests
 rope
 rsa
-rtv
 scandir
 scipy
 sexpdata
