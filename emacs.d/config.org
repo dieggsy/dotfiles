@@ -2159,7 +2159,6 @@ An Emacs 24 theme remixed from gruvbox (my fork).
 #+begin_src emacs-lisp
 (use-package darktooth-theme
   :demand t
-  ;; :ensure nil
   :quelpa (darktooth-theme
              :fetcher github
              :repo "therockmandolinist/emacs-theme-darktooth"))
@@ -2218,6 +2217,7 @@ I was looking for something with the nice look and simplicity of
 #+begin_src emacs-lisp
 (use-package persistent-scratch
   :defer 10
+  :disabled t
   :config
   (persistent-scratch-setup-default))
 #+end_src
