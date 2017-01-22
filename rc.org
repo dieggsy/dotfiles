@@ -1114,9 +1114,19 @@ if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
   source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
 fi
 
-unalias rm
+if [ "alias" = $(whence -w rm | sed 's/rm: //') ]; then
+    unalias rm
+fi
 #+end_src
 
+**** Setup help
+#+begin_src sh
+autoload -Uz run-help
+if [ "alias" = $(whence -w run-help | sed 's/run-help: //') ]; then
+    unalias run-help
+fi
+alias help=run-help
+#+end_src
 *** Zsh options
 #+begin_src sh
 setopt glob_complete
@@ -1257,6 +1267,10 @@ f(){
     find . -iname *"$1"*
 }
 
+fsz(){
+    find ./ -iname $1 -exec du {} + | sort
+}
+
 pip-fromfile() {
     <$1 xargs pip install
 }
@@ -1358,10 +1372,9 @@ alias calc="noglob calc"
 
 spectrum_ls() {
   for code in {000..255}; do
-    print -P -- "$code: %F{$code}Test%f"
+    print -P -- "%$code: F{$code}$code%f"
   done
 }
-
 #+end_src
 *** Path Stuff
 #+begin_src sh
