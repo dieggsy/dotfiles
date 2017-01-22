@@ -253,6 +253,14 @@ consistent with other fonts. Last updated 2011, last successfully tested
         (erase-buffer)
         (message "Buffer erased."))
     (message "erase-buffer cancelled")))
+
+(defun download-file ()
+  "Download a file from url to specified path."
+  (interactive)
+  (let* ((file-url (read-from-minibuffer "URL: "))
+         (file-name (read-from-minibuffer "File : " (concat default-directory
+                                                            (file-name-nondirectory file-url)))))
+    (url-copy-file file-url file-name)))
 #+end_src
 *** Switching
 #+begin_src emacs-lisp
@@ -2046,7 +2054,7 @@ A cozy fireplace for emacs. For the cold winters.
 *** [[https://github.com/therockmandolinist/emacs-hacker-typer][hacker-typer]]
 #+begin_src emacs-lisp
 (use-package hacker-typer
-  :commands (hacker-typer-hackerman hacker-typer)
+  :commands (hacker-typer-hackerman hacker-typer hackerman)
   :quelpa (hacker-typer
            :fetcher github
            :repo "therockmandolinist/emacs-hacker-typer")
