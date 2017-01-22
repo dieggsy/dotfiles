@@ -3,7 +3,7 @@ filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
-"Plugin 'joshdick/onedark.vim'
+Plugin 'joshdick/onedark.vim'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Shougo/neocomplcache.vim'
@@ -39,7 +39,7 @@ let g:vim_markdown_folding_disabled = 1
 "set foldmethod=indent
 "set foldlevel=99
 set backspace=2 " make backspace work like most other apps
-colorscheme darktooth
+colorscheme onedark
 highlight Comment cterm=italic
 let mapleader = "\<Space>"
 " nnoremap <leader><leader> :CommandTCommand<CR>
