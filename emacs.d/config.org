@@ -67,6 +67,7 @@ Set up [[https://github.com/jwiegley/use-package][use-package]].
 
 Set up quelpa
 #+begin_src emacs-lisp
+(setq quelpa-update-melpa-p nil)
 (unless (require 'quelpa nil t)
   (with-temp-buffer
     (url-insert-file-contents "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
@@ -1199,7 +1200,8 @@ based on or copied from spacemacs, so definitely check them out!
     "hcg" 'customize-group-other-window
     "hk"  'which-key-show-top-level
     "hm"  'man
-    "hn"  'view-emacs-news))
+    "hn"  'view-emacs-news
+    "hv"  'version))
 #+end_src
 **** Quit
 #+begin_src emacs-lisp
