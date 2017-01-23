@@ -49,3 +49,5 @@ vim/bundle/
 emacs.d/quelpa/
 emacs.d/var/hacker-typer/
 /vim/.netrwhist
+\#*\#
+*~
