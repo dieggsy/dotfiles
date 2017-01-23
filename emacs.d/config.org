@@ -16,12 +16,69 @@ file itself, hence the [[Local vars!][file local variables]]. Also, the optional
 argument of ~org-babel-load-file~ wasn't working for me, so there's that.
 :END:
 
+* Table of contents                                                     :toc:
+ - [[#intro][Intro]]
+ - [[#personal-info][Personal Info]]
+ - [[#initial-setup][Initial Setup]]
+   - [[#server][Server]]
+   - [[#load-path][Load Path]]
+   - [[#package-setup][Package setup]]
+ - [[#global-settings][Global settings]]
+   - [[#visual-things][Visual things]]
+   - [[#messages][Messages]]
+   - [[#font][Font]]
+   - [[#text][Text]]
+   - [[#minibuffer][Minibuffer]]
+   - [[#filebuffersession-handling][File/buffer/session handling]]
+   - [[#smooth-scroll][Smooth scroll]]
+   - [[#tabscompletion][Tabs/completion?]]
+   - [[#line-positionhighlighting][Line position/highlighting]]
+   - [[#there-is-unrest-in-the-forest][There is unrest in the forest]]
+ - [[#functions][Functions]]
+   - [[#filesbuffers][Files/buffers]]
+   - [[#window][Window]]
+   - [[#editing][Editing]]
+   - [[#org-mode][Org-mode]]
+   - [[#misc][Misc.]]
+   - [[#keyboard-macros][Keyboard Macros]]
+ - [[#bindings][Bindings]]
+ - [[#major-configs][Major configs]]
+   - [[#no-littering][no-littering]]
+   - [[#exec-path-from-shell][exec-path-from-shell]]
+   - [[#evil][evil]]
+   - [[#ivy][ivy]]
+   - [[#org-mode][org-mode]]
+   - [[#hydra][hydra]]
+   - [[#emacs-which-key][emacs-which-key]]
+   - [[#magit][magit]]
+ - [[#packages][Packages]]
+   - [[#amusements][Amusements]]
+   - [[#appearance][Appearance]]
+   - [[#misc-utilities][Misc utilities]]
+   - [[#editing-major-modes][Editing Major Modes]]
+   - [[#editing-utilities][Editing utilities]]
+   - [[#programming-utilites][Programming utilites]]
+   - [[#navigation][Navigation]]
+   - [[#org-mode][Org mode]]
+   - [[#referencesearch][Reference/search]]
+   - [[#shell-utilities][Shell utilities]]
+ - [[#mode-specific-configuration][Mode Specific Configuration]]
+   - [[#prog-mode][Prog-mode]]
+   - [[#python][Python]]
+   - [[#matlab][Matlab]]
+   - [[#emacs-lisp][Emacs-Lisp]]
+   - [[#term-mode][Term mode]]
+   - [[#eshell][Eshell]]
+   - [[#calc-mode][Calc mode]]
+   - [[#c-mode][C mode]]
+   - [[#gnus][Gnus]]
+ - [[#local-vars][Local vars!]]
+
 * Personal Info
 
 #+begin_src emacs-lisp
 (setq user-full-name "Diego A. Mundo"
-      user-mail-address "diegoamundo@gmail.com"
-      calendar-location-name "Cambridge, MA")
+      user-mail-address "diegoamundo@gmail.com")
 #+end_src
 
 * Initial Setup
@@ -124,7 +181,7 @@ Get rid of menu bars, scroll bars, startup screens, etc.
 #+begin_src emacs-lisp
 (setq message-log-max 10000)
 #+end_src
-** Font/Text
+** Font
 :NOTES:
 *Current:* Currently I'm using the wonderful [[http://input.fontbureau.com/][Input]] font. If, like me, you're
 coming from something more like SauceCodePro, Consolas, or even just Menlo,
@@ -165,7 +222,9 @@ consistent with other fonts. Last updated 2011, last successfully tested
   (when (font-exists-p "Input")
     (add-to-list 'default-frame-alist '(font . "Input-10"))
     (set-face-attribute 'default t :font "Input-10")))
-
+#+end_src
+** Text
+#+begin_src emacs-lisp
 (setq default-input-method "TeX")
 
 (setq sentence-end-double-space nil)
@@ -182,12 +241,14 @@ consistent with other fonts. Last updated 2011, last successfully tested
 #+begin_src emacs-lisp
 (global-auto-revert-mode t)
 (setq save-interprogram-paste-before-kill t)
+(setq ns-pop-up-frames nil)
+(setq vc-follow-symlinks t)
 
 (add-hook 'before-save-hook 'whitespace-cleanup)
 
 ;; ssh
-(setq tramp-default-method "ssh")
-(setq password-cache-expiry nil)
+(setq tramp-default-method "ssh"
+      password-cache-expiry nil)
 
 (autoload 'dired-async-mode "dired-async.el" nil t)
 (dired-async-mode 1)
@@ -200,9 +261,9 @@ consistent with other fonts. Last updated 2011, last successfully tested
 (setq scroll-step 1
       scroll-conservatively 10000)
 
-;; Mouse scroll
-(setq mouse-wheel-scroll-amount '(2 ((shift) . 1) ((control) . nil))
-      mouse-wheel-progressive-speed nil)
+;; Mouse scroll (obsolete)
+;; (setq mouse-wheel-scroll-amount '(2 ((shift) . 1) ((control) . nil))
+;;       mouse-wheel-progressive-speed nil)
 #+end_src
 ** Tabs/completion?
 #+begin_src emacs-lisp
@@ -716,6 +777,7 @@ drag it up past ARG other lines (down if ARG negative)."
        (package-initialize)
        (require 'org)
        (require 'fringe-helper)
+       (require 'crux)
 
        ;; tangle
        (org-babel-tangle-file
@@ -753,7 +815,7 @@ drag it up past ARG other lines (down if ARG negative)."
                           "Ethics")
               :action (lambda (x)
                         (find-file
-                         (concat "~/MIT 2016-2017/" x "/notes/"
+                         (concat "~/MIT 2017-2017/Spring/" x "/notes/"
                                  (format-time-string "%Y-%m-%d_")
                                  rec-or-lec ".org" )))
               :caller 'diego/class-notes)))
@@ -783,6 +845,12 @@ drag it up past ARG other lines (down if ARG negative)."
 (defun silence ()
   "Dummy function that does nothing."
   (interactive))
+
+(defun updates ()
+  "Run `paradox-upgrade-packages' and  `quelpa-upgrade'."
+  (interactive)
+  (paradox-upgrade-packages)
+  (quelpa-upgrade))
 #+end_src
 ** Keyboard Macros
 #+begin_src emacs-lisp
@@ -2196,7 +2264,6 @@ I was looking for something with the nice look and simplicity of
 *** [[https://github.com/bbatsov/crux][crux]]
 #+begin_src emacs-lisp
 (use-package crux
-  :commands (crux-with-region-or-buffer crux-with-region-or-line)
   :defer 5
   :config
   (crux-with-region-or-line eval-region)
@@ -2764,33 +2831,7 @@ Bringing the goodness of ranger to dired!
     (interactive "P")
     (if arg
         (deer)
-      (deer-jump-other-window)))
-  ;; (advice-add
-  ;;  'deer-jump-other-window
-  ;;  :before
-  ;;  (lambda ()
-  ;;    (when (> (length (window-list)) 1)
-  ;;      (setq diego/temp-buff-name (window-buffer (next-window))))))
-
-  ;; (advice-add
-  ;;  'ranger-close
-  ;;  :after
-  ;;  (lambda ()
-  ;;    (if (boundp 'diego/temp-buff-name)
-  ;;        (progn
-  ;;          (switch-to-buffer-other-window diego/temp-buff-name)
-  ;;          (makunbound 'diego/temp-buff-name))
-  ;;      (condition-case nil
-  ;;          (delete-window)
-  ;;        (error nil)))))
-  ;; (advice-add
-  ;;  'ranger-close
-  ;;  :after
-  ;;  (lambda ()
-  ;;    (condition-case nil
-  ;;        (delete-window)
-  ;;      (error nil))))
-  )
+      (deer-jump-other-window))))
 #+end_src
 
 ** Org mode
@@ -2817,7 +2858,7 @@ Export org to twitter bootstrap compatible HTML.
   :after org)
 #+end_src
 *** [[https://github.com/snosov1/toc-org][toc-org]]
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package toc-org
   :after org
   :config
@@ -2946,6 +2987,7 @@ Properties that apply to all programming modes.
 #+begin_src emacs-lisp
 (defun diego/setup-prog-mode ()
   (company-mode)
+  (subword-mode)
   (highlight-parentheses-mode 1)
   (rainbow-delimiters-mode)
   (goto-address-prog-mode)
@@ -3142,16 +3184,7 @@ Mostly set up hs-minor-mode for emacs-lisp.
 
   ;; store email in ~/gmail directory
   (setq nnml-directory "~/gmail")
-  (setq message-directory "~/gmail")
-  ;; (evilified-state-evilify gnus-group-mode gnus-group-mode-map)
-  ;; (evilified-state-evilify gnus-server-mode gnus-server-mode-map)
-  ;; (evilified-state-evilify gnus-browse-mode gnus-browse-mode-map)
-  ;; (evilified-state-evilify gnus-article-mode gnus-article-mode-map)
-  ;; (evilified-state-evilify gnus-summary-mode gnus-summary-mode-map
-  ;;                          (kbd "J") 'gnus-summary-next-article
-  ;;                          (kbd "K") 'gnus-summary-prev-article
-  ;;                          (kbd "<RET>") 'spacemacs/browse-nnrss-url))
-  )
+  (setq message-directory "~/gmail"))
 #+end_src
 * Local vars!
 I'll probably remove that exclamation point at some point, but right now I'm
