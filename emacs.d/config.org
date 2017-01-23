@@ -47,7 +47,7 @@ argument of ~org-babel-load-file~ wasn't working for me, so there's that.
    - [[#exec-path-from-shell][exec-path-from-shell]]
    - [[#evil][evil]]
    - [[#ivy][ivy]]
-   - [[#org-mode][org-mode]]
+   - [[#org-mode-1][org-mode]]
    - [[#hydra][hydra]]
    - [[#emacs-which-key][emacs-which-key]]
    - [[#magit][magit]]
@@ -59,7 +59,7 @@ argument of ~org-babel-load-file~ wasn't working for me, so there's that.
    - [[#editing-utilities][Editing utilities]]
    - [[#programming-utilites][Programming utilites]]
    - [[#navigation][Navigation]]
-   - [[#org-mode][Org mode]]
+   - [[#org-mode-2][Org mode]]
    - [[#referencesearch][Reference/search]]
    - [[#shell-utilities][Shell utilities]]
  - [[#mode-specific-configuration][Mode Specific Configuration]]
@@ -99,13 +99,13 @@ Add [[./lisp][lisp]] directory and subdirectories to ~load-path~ and ~custom-the
 (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/")
 #+end_src
 ** Package setup
-Set package archives/repos.
+*** Package-archives
 #+begin_src emacs-lisp
 (add-to-list 'package-archives '("org"          . "http://orgmode.org/elpa/") t)
 (add-to-list 'package-archives '("melpa"        . "http://melpa.org/packages/"))
 #+end_src
 
-Set up [[https://github.com/jwiegley/use-package][use-package]].
+*** [[https://github.com/jwiegley/use-package][use-package]].
 #+begin_src emacs-lisp
 (package-initialize)
 (unless (package-installed-p 'use-package)
@@ -122,7 +122,7 @@ Set up [[https://github.com/jwiegley/use-package][use-package]].
   (require 'use-package))
 #+end_src
 
-Set up quelpa
+*** [[https://github.com/quelpa/quelpa/][quelpa]]
 #+begin_src emacs-lisp
 (setq quelpa-update-melpa-p nil)
 (unless (require 'quelpa nil t)
@@ -131,8 +131,7 @@ Set up quelpa
     (eval-buffer)))
 #+end_src
 
-Set up quelpa use-package
-
+*** [[https://github.com/quelpa/quelpa-use-package][quelpa-use-package]]
 #+begin_src emacs-lisp
 (quelpa
  '(quelpa-use-package
@@ -897,18 +896,8 @@ or that enhance emacs at a deeper level than any regular mode.
   :demand t
   :config
   (savehist-mode 1)
-  (save-place-mode 1)
-  ;; (desktop-save-mode 1)
-  ;; (setq desktop-files-not-to-save (rx string-start
-  ;;                                     (or "todo.org"
-  ;;                                         "notes.org"
-  ;;                                         "archive.org")
-  ;;                                     string-end))
-  ;; (dolist (mode minor-mode-list)
-  ;;   (add-to-list 'desktop-minor-mode-table (list mode nil)))
-  ;; (add-to-list 'desktop-globals-to-save 'ivy-views)
-  ;; (add-to-list 'desktop-globals-to-save '(kill-ring . 100))
-  )
+  (add-to-list 'savehist-additional-variables 'kill-ring)
+  (save-place-mode 1))
 #+end_src
 ** [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]]
 #+begin_src emacs-lisp
