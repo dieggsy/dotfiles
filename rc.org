@@ -866,7 +866,7 @@ kwmc config padding 40 20 20 20
 kwmc config gap 15 15
 
 # Enable border for focused window
-kwmc config border focused on
+kwmc config border focused off
 kwmc config border focused size 2
 
 # kwmc config border focused color 0xFFBDAE93
@@ -920,7 +920,7 @@ except:
 #+end_src
 ** rainbow_config.json
 :PROPERTIES:
-:header-args+: :tangle ~/rainbow_config.json
+:header-args+: :tangle ~/.rainbow_config.json
 :END:
 
 #+begin_src json :comments no
