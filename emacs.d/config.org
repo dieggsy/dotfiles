@@ -12,7 +12,7 @@ inspiration (and erm, code) for this is taken from them.
 *Note:* The usual way to do this is to call ~(org-babel-load-file
 "config.org")~, and I did that for a while, but for whatever reason I decided I
 wanted =config.el= (and its compiled verison) to be produced as I changed the
-file itself, hence the [[Local vars!][file local variables]]. Also, the optional ~COMPILE~
+file itself, hence the [[#local-vars][file local variables]]. Also, the optional ~COMPILE~
 argument of ~org-babel-load-file~ wasn't working for me, so there's that.
 :END:
 
@@ -24,21 +24,21 @@ argument of ~org-babel-load-file~ wasn't working for me, so there's that.
    - [[#load-path][Load Path]]
    - [[#package-setup][Package setup]]
  - [[#global-settings][Global settings]]
-   - [[#visual-things][Visual things]]
+   - [[#appearance][Appearance]]
    - [[#messages][Messages]]
    - [[#font][Font]]
    - [[#text][Text]]
    - [[#minibuffer][Minibuffer]]
    - [[#filebuffersession-handling][File/buffer/session handling]]
    - [[#smooth-scroll][Smooth scroll]]
-   - [[#tabscompletion][Tabs/completion?]]
+   - [[#tabscompletion][Tabs/completion]]
    - [[#line-positionhighlighting][Line position/highlighting]]
    - [[#there-is-unrest-in-the-forest][There is unrest in the forest]]
  - [[#functions][Functions]]
    - [[#filesbuffers][Files/buffers]]
    - [[#window][Window]]
    - [[#editing][Editing]]
-   - [[#org-mode][Org-mode]]
+   - [[#org-mode-helpers][Org-mode helpers]]
    - [[#misc][Misc.]]
    - [[#keyboard-macros][Keyboard Macros]]
  - [[#bindings][Bindings]]
@@ -47,19 +47,19 @@ argument of ~org-babel-load-file~ wasn't working for me, so there's that.
    - [[#exec-path-from-shell][exec-path-from-shell]]
    - [[#evil][evil]]
    - [[#ivy][ivy]]
-   - [[#org-mode-1][org-mode]]
+   - [[#org-mode][org-mode]]
    - [[#hydra][hydra]]
    - [[#emacs-which-key][emacs-which-key]]
    - [[#magit][magit]]
  - [[#packages][Packages]]
    - [[#amusements][Amusements]]
-   - [[#appearance][Appearance]]
+   - [[#appearance-1][Appearance]]
    - [[#misc-utilities][Misc utilities]]
    - [[#editing-major-modes][Editing Major Modes]]
    - [[#editing-utilities][Editing utilities]]
    - [[#programming-utilites][Programming utilites]]
    - [[#navigation][Navigation]]
-   - [[#org-mode-2][Org mode]]
+   - [[#org-mode-1][Org mode]]
    - [[#referencesearch][Reference/search]]
    - [[#shell-utilities][Shell utilities]]
  - [[#mode-specific-configuration][Mode Specific Configuration]]
@@ -105,7 +105,10 @@ Add [[./lisp][lisp]] directory and subdirectories to ~load-path~ and ~custom-the
 (add-to-list 'package-archives '("melpa"        . "http://melpa.org/packages/"))
 #+end_src
 
-*** [[https://github.com/jwiegley/use-package][use-package]].
+*** [[https://github.com/jwiegley/use-package][use-package]]
+#+begin_quote
+  A use-package declaration for simplifying your .emacs
+#+end_quote
 #+begin_src emacs-lisp
 (package-initialize)
 (unless (package-installed-p 'use-package)
@@ -123,6 +126,9 @@ Add [[./lisp][lisp]] directory and subdirectories to ~load-path~ and ~custom-the
 #+end_src
 
 *** [[https://github.com/quelpa/quelpa/][quelpa]]
+#+begin_quote
+  Build and install your Emacs Lisp packages on-the-fly directly from source
+#+end_quote
 #+begin_src emacs-lisp
 (setq quelpa-update-melpa-p nil)
 (unless (require 'quelpa nil t)
@@ -130,8 +136,10 @@ Add [[./lisp][lisp]] directory and subdirectories to ~load-path~ and ~custom-the
     (url-insert-file-contents "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
     (eval-buffer)))
 #+end_src
-
 *** [[https://github.com/quelpa/quelpa-use-package][quelpa-use-package]]
+#+begin_quote
+  Emacs quelpa handler for use-package
+#+end_quote
 #+begin_src emacs-lisp
 (quelpa
  '(quelpa-use-package
@@ -150,28 +158,36 @@ Some nice global settings to have. Does away with most uneccessary visuals to
 make emacs behave more like terminal (ish), sets up smooth scrolling, other
 such goodies.
 
-Also, stolen and original functions, and macros.
-
-** Visual things
+** Appearance
 Get rid of menu bars, scroll bars, startup screens, etc.
 #+begin_src emacs-lisp
 (setq inhibit-splash-screen t
       inhibit-startup-message t
       inhibit-startup-echo-area-message t)
+#+end_src
 
+Time display
+#+begin_src emacs-lisp
 (setq  display-time-24hr-format t
        display-time-default-load-average nil
-       display-time-format "│ %a %d %b %H:%M │")
+       display-time-format "│ %a %d %b %H:%M │"
+       display-time-load-average nil)
 
 (display-time-mode)
+#+end_src
+
+Gui elements
+#+begin_src emacs-lisp
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
 (setq custom-raised-buttons nil)
-(setq display-time-load-average nil)
-
-(set-default 'truncate-lines t)
 (blink-cursor-mode 0)
+#+end_src
+
+Buffer display
+#+begin_src emacs-lisp
+(set-default 'truncate-lines t)
 (setq whitespace-style '(face trailing tabs))
 (global-whitespace-mode)
 (diminish 'global-whitespace-mode)
@@ -203,24 +219,21 @@ on os x. This helps with the modeline text vertical alignments and makes it
 consistent with other fonts. Last updated 2011, last successfully tested
 09/2016 (by myself).
 :END:
+
+Choose a font if available, in order of preference.
 #+begin_src emacs-lisp
-;; (add-to-list 'default-frame-alist '(font . "Consolas-11"))
-;; (set-face-attribute 'default t :font "Consolas-11")
-
-;; (add-to-list 'default-frame-alist '(font . "SauceCodePro Nerd Font-11"))
-;; (set-face-attribute 'default t :font "SauceCodePro Nerd Font-11")
-(eval-when-compile
-  (declare-function font-exists-p "config"))
-
-(when (eq window-system 'ns)
-  (defun font-exists-p (font)
-    "check if font exists"
-    (if (null (x-list-fonts font))
-        nil
-      t))
-  (when (font-exists-p "Input")
-    (add-to-list 'default-frame-alist '(font . "Input-10"))
-    (set-face-attribute 'default t :font "Input-10")))
+(cond ((x-list-fonts "Input")
+       (add-to-list 'default-frame-alist '(font . "Input-10"))
+       (set-face-attribute 'default t :font "Input-10"))
+      ((x-list-fonts "SauceCodePro Nerd Font")
+       (add-to-list 'default-frame-alist '(font . "SauceCodePro Nerd Font-11"))
+       (set-face-attribute 'default t :font "SauceCodePro Nerd Font-11"))
+      ((x-list-fonts "Consolas")
+       (add-to-list 'default-frame-alist '(font . "Consolas-11"))
+       (set-face-attribute 'default t :font "Consolas-11"))
+      ((x-list-fonts "Menlo")
+       (add-to-list 'default-frame-alist '(font . "Menlo-11"))
+       (set-face-attribute 'default t :font "Menlo-11")))
 #+end_src
 ** Text
 #+begin_src emacs-lisp
@@ -264,7 +277,7 @@ consistent with other fonts. Last updated 2011, last successfully tested
 ;; (setq mouse-wheel-scroll-amount '(2 ((shift) . 1) ((control) . nil))
 ;;       mouse-wheel-progressive-speed nil)
 #+end_src
-** Tabs/completion?
+** Tabs/completion
 #+begin_src emacs-lisp
 (setq-default tab-width 4)
 (setq tab-stop-list (number-sequence 4 200 4)
@@ -281,6 +294,8 @@ consistent with other fonts. Last updated 2011, last successfully tested
 (load-file "~/.emacs.d/lisp/trouble-with-the-trees.el")
 #+end_src
 * Functions
+Stolen and original functions and macros.
+
 ** Files/buffers
 *** File Manipulation
 #+begin_src emacs-lisp
@@ -605,7 +620,7 @@ drag it up past ARG other lines (down if ARG negative)."
       (flush-lines "^$" (region-beginning) (region-end))
     (message "No region active.")))
 #+end_src
-** Org-mode
+** Org-mode helpers
 #+begin_src emacs-lisp
 (defmacro diego|create-block-wrap (blocktype)
   (let ((newfunc (intern
@@ -890,7 +905,10 @@ I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard.
 * Major configs
 These are packages that I consider /absolutely essential/ to my emacs workflow,
 or that enhance emacs at a deeper level than any regular mode.
-** [[https://github.com/tarsius/no-littering/blob/master/no-littering.el][no-littering]]
+** [[https://github.com/tarsius/no-littering/][no-littering]]
+#+begin_quote
+  Help keeping ~/.emacs.d clean
+#+end_quote
 #+begin_src emacs-lisp
 (use-package no-littering
   :demand t
@@ -900,6 +918,9 @@ or that enhance emacs at a deeper level than any regular mode.
   (save-place-mode 1))
 #+end_src
 ** [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]]
+#+begin_quote
+  Make Emacs use the $PATH set up by the user's shell
+#+end_quote
 #+begin_src emacs-lisp
 (use-package exec-path-from-shell
   :defer 5
@@ -909,13 +930,14 @@ or that enhance emacs at a deeper level than any regular mode.
     (exec-path-from-shell-initialize)))
 #+end_src
 ** evil
-Evil is an extensible vi layer for Emacs. It emulates the main features of Vim,
-and provides facilities for writing custom extensions.
-
 I really like Vim bindings. I originally learned Emacs bindings but there was
 something really appealing about the simplicity and power of Vim bindings/modal
 editing. So I went for it. Now I'll never go back.
 *** [[https://github.com/emacs-evil/evil][evil]]
+#+begin_quote
+  The extensible vi layer for Emacs.
+#+end_quote
+
 **** Modes
 #+begin_src emacs-lisp
 (defun diego/evil-modes ()
@@ -1050,6 +1072,9 @@ editing. So I went for it. Now I'll never go back.
   (evil-mode 1))
 #+end_src
 *** [[https://github.com/justbur/emacs-bind-map][evil-leader (emacs-bind-map)]]
+#+begin_quote
+  Bind personal keymaps in multiple locations
+#+end_quote
 A good chunk if not all of the bindings/functions in this section are either
 based on or copied from spacemacs, so definitely check them out!
 **** Search
@@ -1400,11 +1425,17 @@ they are in `spacemacs/set-leader-keys'."
   (diego/config-evil-leader))
 #+end_src
 *** [[https://github.com/TheBB/evil-indent-plus][evil-indent-plus]]
+#+begin_quote
+  Better indent textobjects for evil
+#+end_quote
 #+begin_src emacs-lisp
 (use-package evil-indent-plus
   :after evil)
 #+end_src
 *** [[https://github.com/therockmandolinist/evil-numbers][evil-numbers]]
+#+begin_quote
+  Increment and decrement numbers in Emacs
+#+end_quote
 #+begin_src emacs-lisp
 (use-package evil-numbers
   :after evil
@@ -1413,6 +1444,9 @@ they are in `spacemacs/set-leader-keys'."
             :repo "therockmandolinist/evil-numbers")))
 #+end_src
 *** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
+#+begin_quote
+  Comment/uncomment lines efficiently. Like Nerd Commenter in Vim
+#+end_quote
 #+begin_src emacs-lisp
 (use-package evil-nerd-commenter
   :after evil
@@ -1424,6 +1458,10 @@ they are in `spacemacs/set-leader-keys'."
       (evilnc-comment-or-uncomment-lines arg))))
 #+end_src
 ** [[https://github.com/abo-abo/swiper][ivy]]
+#+begin_quote
+  Ivy - a generic completion frontend for Emacs, Swiper - isearch with an
+  overview, and more. Oh, man!
+#+end_quote
 A really nice search/completion system for emacs.
 *** ivy
 #+begin_src emacs-lisp
@@ -1530,9 +1568,10 @@ A really nice search/completion system for emacs.
 (use-package counsel-osx-app)
 #+end_src
 ** [[http://orgmode.org/][org-mode]]
-Org mode is for keeping notes, maintaining TODO lists, planning projects, and
-authoring documents with a fast and effective plain-text system.
-
+#+begin_quote
+  Org mode is for keeping notes, maintaining TODO lists, planning projects, and
+  authoring documents with a fast and effective plain-text system.
+#+end_quote
 But really, it's life.
 
 :NOTES:
@@ -1838,6 +1877,9 @@ so I went with it.
               (org-indent-mode))))
 #+end_src
 ** [[https://github.com/abo-abo/hydra][hydra]]
+#+begin_quote
+  make Emacs bindings that stick around
+#+end_quote
 #+begin_src emacs-lisp
 (use-package hydra
   :defer 5
@@ -1972,7 +2014,9 @@ _S_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
     ("q" nil "quit")))
 #+end_src
 ** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
-Emacs package that displays available keybindings in popup
+#+begin_quote
+  Emacs package that displays available keybindings in popup
+#+end_quote
 #+begin_src emacs-lisp
 (use-package which-key
   :diminish which-key-mode
@@ -2049,6 +2093,9 @@ LONG-NAME if given is stored in `spacemacs/prefix-titles'."
   (setq which-key-sort-uppercase-first nil))
 #+end_src
 ** [[https://github.com/magit/magit][magit]]
+#+begin_quote
+  It's Magit! A Git Porcelain inside Emacs.
+#+end_quote
 Like git, for emacs. But cooler.
 #+begin_src emacs-lisp
 (use-package magit
@@ -2079,16 +2126,25 @@ Like git, for emacs. But cooler.
 * Packages
 ** Amusements
 *** [[https://github.com/josuah/drawille][drawille]]
-Drawille library implementation in elisp. Draws images/stuff in ascii.
+#+begin_quote
+  Drawille library implementation in elisp.
+#+end_quote
+Draws stuff in ascii.
 #+begin_src emacs-lisp
 (use-package drawille)
 #+end_src
 *** [[https://github.com/johanvts/emacs-fireplace/][fireplace]]
-A cozy fireplace for emacs. For the cold winters.
+#+begin_quote
+  A cozy fireplace for emacs.
+#+end_quote
+For the cold winters.
 #+begin_src emacs-lisp
 (use-package fireplace)
 #+end_src
 *** [[https://github.com/therockmandolinist/emacs-hacker-typer][hacker-typer]]
+#+begin_quote
+  A customizable implementation of http://hackertyper.com in emacs.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package hacker-typer
   :quelpa (hacker-typer
@@ -2100,25 +2156,35 @@ A cozy fireplace for emacs. For the cold winters.
   (setq hacker-typer-show-hackerman t)
   (setq hacker-typer-remove-comments t))
 #+end_src
-*** [[https://melpa.org/#/highlight-tail][highlight-tail]]
-Draw a colourful "tail" while you write (A.k.a. pure awesome)
+*** [[https://www.emacswiki.org/emacs/highlight-tail.el][highlight-tail]]
+#+begin_quote
+  Draw a colourful "tail" while you write
+#+end_quote
+(pure awesome)
 #+begin_src emacs-lisp
 (use-package highlight-tail)
 #+end_src
 *** [[https://github.com/TeMPOraL/nyan-mode][nyan-mode]]
-Nyan Cat for Emacs! Nyanyanyanyanyanyanyanyanyan!
-#+begin_src emacs-lisp :tangle no
+#+begin_quote
+  Nyan Cat for Emacs! Nyanyanyanyanyanyanyanyanyan!
+#+end_quote
+For show.
+#+begin_src emacs-lisp
 (use-package nyan-mode
   :config
   (nyan-mode))
 #+end_src
 *** [[https://github.com/rbanffy/selectric-mode][selectric-mode]]
-Make your Emacs sound like a proper typewriter.
+#+begin_quote
+  Make your Emacs sound like a proper typewriter.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package selectric-mode)
 #+end_src
-*** [[https://github.com/hagleitn/speed-type][speed-type]]
-Practice touch/speed typing in emacs.
+*** [[https://github.com/parkouss/speed-type][speed-type]]
+#+begin_quote
+  Practice touch/speed typing in emacs.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package speed-type
   :config
@@ -2126,12 +2192,16 @@ Practice touch/speed typing in emacs.
         "http://www.gutenberg.org/cache/epub/%d/pg%d.txt"))
 #+end_src
 *** [[https://gitlab.com/iankelling/spray][spray]]
+#+begin_quote
 A speed reading mode for Emacs.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package spray)
 #+end_src
 *** [[https://github.com/vibhavp/emacs-xkcd][xkcd]]
-Read xkcd from Emacs.
+#+begin_quote
+  Read xkcd from Emacs.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package xkcd
   :config
@@ -2162,7 +2232,9 @@ Eh, why not.
 #+end_src
 
 *** [[https://github.com/wasamasa/zone-nyan][zone-nyan]]
-Nyanyanyanyanyanyanyanyan (but actually).
+#+begin_quote
+  Nyanyanyanyanyanyanyanyan
+#+end_quote
 #+begin_src emacs-lisp
 (use-package zone-nyan
   :config
@@ -2173,18 +2245,26 @@ Nyanyanyanyanyanyanyanyan (but actually).
 #+end_src
 ** Appearance
 *** [[https://github.com/larstvei/Focus][focus]]
-Dim the font color of text in surrounding paragraphs
+#+begin_quote
+  Dim the font color of text in surrounding paragraphs
+#+end_quote
 #+begin_src emacs-lisp
 (use-package focus)
 #+end_src
 *** [[http://git.savannah.gnu.org/cgit/emacs/elpa.git/tree/packages/rainbow-mode/rainbow-mode.el][rainbow-mode]]
+#+begin_quote
+  Colorize color names in buffers
+#+end_quote
 #+begin_src emacs-lisp
 (use-package rainbow-mode
   :config
   (setq rainbow-x-colors-major-mode-list '(c-mode c++-mode java-mode)))
 #+end_src
 *** [[https://github.com/therockmandolinist/emacs-theme-darktooth][darktooth-theme]]
-An Emacs 24 theme remixed from gruvbox (my fork).
+#+begin_quote
+An Emacs 24 theme remixed from gruvbox
+#+end_quote
+(my fork)
 #+begin_src emacs-lisp
 (use-package darktooth-theme
   :demand t
@@ -2193,12 +2273,16 @@ An Emacs 24 theme remixed from gruvbox (my fork).
              :repo "therockmandolinist/emacs-theme-darktooth"))
 #+end_src
 *** [[https://github.com/iqbalansari/emacs-emojify][emacs-emojify]]
-Display emojis in emacs. Sweet!
+#+begin_quote
+  Display emojis in emacs.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package emojify)
 #+end_src
 *** [[https://github.com/lunaryorn/fancy-battery.el][fancy-battery]]
+#+begin_quote
 Display battery in Emacs Mode line
+#+end_quote
 #+begin_src emacs-lisp
 (use-package fancy-battery
   ;; Something something battery
@@ -2209,10 +2293,11 @@ Display battery in Emacs Mode line
   (fancy-battery-update))
 #+end_src
 *** [[https://github.com/TheBB/spaceline][spaceline]]
-Powerline theme from Spacemacs
-
+#+begin_quote
+  Powerline theme from Spacemacs
+#+end_quote
 I was looking for something with the nice look and simplicity of
-[[https://github.com/itchyny/lightline.vim][this]]. Spaceline does ok.
+[[https://github.com/itchyny/lightline.vim][this]].
 #+begin_src emacs-lisp
 (use-package spaceline
   :demand t
@@ -2236,6 +2321,9 @@ I was looking for something with the nice look and simplicity of
 #+end_src
 ** Misc utilities
 *** [[https://github.com/purcell/disable-mouse][disable-mouse]]
+#+begin_quote
+  Disable the mouse in Emacs
+#+end_quote
 #+begin_src emacs-lisp
 (use-package disable-mouse
   :defer 5
@@ -2243,6 +2331,9 @@ I was looking for something with the nice look and simplicity of
   (global-disable-mouse-mode))
 #+end_src
 *** [[https://github.com/Fanael/persistent-scratch][persistent-scratch]]
+#+begin_quote
+  Preserve the scratch buffer across Emacs sessions
+#+end_quote
 #+begin_src emacs-lisp
 (use-package persistent-scratch
   :defer 10
@@ -2251,6 +2342,9 @@ I was looking for something with the nice look and simplicity of
   (persistent-scratch-setup-default))
 #+end_src
 *** [[https://github.com/bbatsov/crux][crux]]
+#+begin_quote
+  A Collection of Ridiculously Useful eXtensions for Emacs
+#+end_quote
 #+begin_src emacs-lisp
 (use-package crux
   :defer 5
@@ -2260,31 +2354,25 @@ I was looking for something with the nice look and simplicity of
   (crux-with-region-or-buffer untabify)
   (crux-with-region-or-buffer fill-region))
 #+end_src
-*** [[http://savannah.nongnu.org/projects/bbdb/][bbdb]]
-#+begin_src emacs-lisp
-(use-package bbdb
-  :config
-  (bbdb-initialize))
-
-(use-package bbdb-vcard
-  :after bbdb)
-
-(use-package bbdb-ext
-  :after bbdb)
-
-(use-package counsel-bbdb
-  :after bbdb)
-#+end_src
 *** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
-Cursor stays vertically centered. I use this for reading, mostly.
+#+begin_quote
+  Cursor stays vertically centered.
+#+end_quote
+I use this for reading, mostly.
 #+begin_src emacs-lisp
 (use-package centered-cursor-mode)
 #+end_src
 *** [[https://www.emacswiki.org/emacs/eimp.el][eimp]]
+#+begin_quote
+  Emacs Image Manipulation Package
+#+end_quote
 #+begin_src emacs-lisp
 (use-package eimp)
 #+end_src
 *** [[https://github.com/skeeto/elfeed][elfeed]]
+#+begin_quote
+  An Emacs web feeds client
+#+end_quote
 Configure the Elfeed RSS reader with an Orgmode file
 #+begin_src emacs-lisp
 (use-package elfeed
@@ -2319,12 +2407,24 @@ Configure the Elfeed RSS reader with an Orgmode file
     "s" 'elfeed-show-new-live-search
     "y" 'elfeed-show-yank))
 
+#+end_src
+**** [[https://github.com/remyhonig/elfeed-org][elfeed-org]]
+#+begin_quote
+  Configure the Elfeed RSS reader with an Orgmode file
+#+end_quote
+#+begin_src emacs-lisp
 (use-package elfeed-org
   :after elfeed
   :if (not noninteractive)
   :config
   (elfeed-org))
 
+#+end_src
+**** [[https://github.com/algernon/elfeed-goodies][elfeed-goodies]]
+#+begin_quote
+  Various goodies for Elfeed
+#+end_quote
+#+begin_src emacs-lisp
 (use-package elfeed-goodies
   :after elfeed
   :config
@@ -2332,6 +2432,9 @@ Configure the Elfeed RSS reader with an Orgmode file
   (setq elfeed-goodies/entry-pane-position 'bottom))
 #+end_src
 *** [[https://github.com/Silex/elmacro][elmacro]]
+#+begin_quote
+  Package to display keyboard macros or latest interactive commands as emacs lisp.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package elmacro
   :diminish elmacro-mode
@@ -2340,7 +2443,9 @@ Configure the Elfeed RSS reader with an Orgmode file
   (elmacro-mode))
 #+end_src
 *** [[https://github.com/lewang/flx][flx]]
-Fuzzy matching for Emacs ... a la Sublime Text.
+#+begin_quote
+  Fuzzy matching for Emacs ... a la Sublime Text.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package flx)
 #+end_src
@@ -2377,13 +2482,17 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 #+end_src
 
 *** [[https://github.com/ancane/markdown-preview-mode][markdown-preview-mode]]
-Minor mode to preview markdown output as you save
+#+begin_quote
+  Minor mode to preview markdown output as you save
+#+end_quote
 #+begin_src emacs-lisp
 (use-package markdown-preview-mode
   :after markdown-mode)
 #+end_src
 *** [[https://github.com/tjim/nevermore][nevermore]]
-Emacs mail reader based on Notmuch
+#+begin_quote
+  Emacs mail reader based on Notmuch
+#+end_quote
 #+begin_src emacs-lisp
 (use-package nm)
 #+end_src
@@ -2395,7 +2504,9 @@ Email!
   (setq notmuch-search-oldest-first nil))
 #+end_src
 *** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
-Make Emacs' delete-by-moving-to-trash do what you expect it to do on OS X.
+#+begin_quote
+  Make Emacs' delete-by-moving-to-trash do what you expect it to do on OS X.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package osx-trash
   :defer 5
@@ -2405,8 +2516,10 @@ Make Emacs' delete-by-moving-to-trash do what you expect it to do on OS X.
   (setq delete-by-moving-to-trash t))
 #+end_src
 *** [[https://github.com/Malabarba/paradox][paradox]]
-Project for modernizing Emacs' Package Menu. With package ratings, usage
-statistics, customizability, and more.
+#+begin_quote
+  Project for modernizing Emacs' Package Menu. With package ratings, usage
+  statistics, customizability, and more.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package paradox
   :config
@@ -2418,17 +2531,10 @@ statistics, customizability, and more.
   (evil-define-key 'normal paradox-menu-mode-map "fs" 'paradox-filter-stars)
   (evil-define-key 'normal paradox-menu-mode-map "x" 'paradox-menu-execute))
 #+end_src
-*** [[https://github.com/emacsfodder/pbcopy.el][pbcopy]]
-Allow yanking and pasting with osx clipboard in terminal Emacs. Might want to
-look into [[https://melpa.org/#/osx-clipboard][osx-clipboard]] instead.
-#+begin_src emacs-lisp :tangle no
-(use-package pbcopy
-  :config
-  (turn-on-pbcopy))
-#+end_src
 *** [[https://github.com/iqbalansari/restart-emacs][restart-emacs]]
-A simple emacs package to restart emacs from within emacs.
-
+#+begin_quote
+  A simple emacs package to restart emacs from within emacs.
+#+end_quote
 SUPER nifty.
 #+begin_src emacs-lisp
 (use-package restart-emacs
@@ -2436,15 +2542,17 @@ SUPER nifty.
 #+end_src
 
 *** [[https://github.com/nonsequitur/smex][smex]]
-A smart M-x enhancement for Emacs.
-
-In terms of ivy, sorts by most recently used, I think.
+#+begin_quote
+  A smart M-x enhancement for Emacs.
+#+end_quote
+Sorts ivy by most recently used, I think.
 #+begin_src emacs-lisp
 (use-package smex)
 #+end_src
-
 *** [[https://github.com/aaronbieber/sunshine.el][sunshine]]
-An Emacs package for displaying the forecast from OpenWeatherMap.
+#+begin_quote
+  An Emacs package for displaying the forecast from OpenWeatherMap.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package sunshine
   :config
@@ -2460,16 +2568,17 @@ Kind of makes undo's like git. Or Vim, apparently, if you're into that.
 #+end_src
 ** Editing Major Modes
 *** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
+#+begin_quote
+  Major mode for editing comma/char separated values
+#+end_quote
 Eh, wanted to try a simpler way of editing csv files. (Excel and Numbers both
 kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
 #+begin_src emacs-lisp
 (use-package csv-mode
-  ;; I'll give this a shot
   :mode "\\.csv\\'"
   :config
   (add-hook 'csv-mode-hook 'csv-align-fields))
 #+end_src
-
 *** [[https://github.com/defunkt/markdown-mode][markdown-mode]]
 Syntax highlighting for markdown files.
 #+begin_src emacs-lisp
@@ -2478,40 +2587,53 @@ Syntax highlighting for markdown files.
   :config)
 #+end_src
 *** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
-The emacs major mode for editing files in the YAML data serialization format.
+#+begin_quote
+  The emacs major mode for editing files in the YAML data serialization format.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package yaml-mode
   :mode "\\.yml\\'")
 #+end_src
-
 *** [[https://github.com/clojure-emacs/clojure-mode][clojure-mode]]
+#+begin_quote
+  Emacs support for the Clojure(Script) programming language
+#+end_quote
 #+begin_src emacs-lisp
 (use-package clojure-mode)
 #+end_src
-
 *** [[https://github.com/joshwnj/json-mode][json-mode]]
+#+begin_quote
+  Major mode for editing JSON files with emacs
+#+end_quote
 #+begin_src emacs-lisp
 (use-package json-mode
   :mode "\\.json\\'")
 #+end_src
 *** [[https://github.com/defunkt/coffee-mode][coffee-mode]]
+#+begin_quote
+  Emacs Major Mode for CoffeeScript
+#+end_quote
 #+begin_src emacs-lisp
 (use-package coffee-mode
   :mode "\\.coffee\\'")
 #+end_src
-
 *** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
-Edit jupyter notebooks in emacs
+#+begin_quote
+  Jupyter and IPython 2.x/3.x notebook client in Emacs
+#+end_quote
 #+begin_src emacs-lisp
 (use-package ein
   :mode "\\.ipynb\\'")
 #+end_src
-
 *** [[https://github.com/immerrr/lua-mode][lua-mode]]
+#+begin_quote
+  Emacs major mode for editing Lua
+#+end_quote
 #+begin_src emacs-lisp
 (use-package lua-mode)
 #+end_src
 *** matlab-mode
+Syntax highlighting for matlab scripts.
 #+begin_src emacs-lisp
 (use-package matlab
   :if (not noninteractive)
@@ -2521,13 +2643,18 @@ Edit jupyter notebooks in emacs
   (load-library "matlab-load"))
 #+end_src
 *** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]]
+#+begin_quote
+Enables syntax highlighting for .vimrc/_vimrc files
+#+end_quote
 #+begin_src emacs-lisp
 (use-package vimrc-mode)
 #+end_src
-
 ** Editing utilities
 *** [[https://github.com/Fuco1/smartparens][smartparens]]
-Minor mode for Emacs that deals with parens pairs and tries to be smart about it.
+#+begin_quote
+  Minor mode for Emacs that deals with parens pairs and tries to be smart about
+  it.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package smartparens
   :defer 5
@@ -2561,7 +2688,9 @@ Minor mode for Emacs that deals with parens pairs and tries to be smart about it
   (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
 #+end_src
 *** [[https://github.com/alpha22jp/atomic-chrome][atomic-chrome]]
-Edit text area on Chrome with Emacs using Atomic Chrome
+#+begin_quote
+  Edit text area on Chrome with Emacs using Atomic Chrome
+#+end_quote
 #+begin_src emacs-lisp
 (use-package atomic-chrome
   :defer 10
@@ -2571,6 +2700,9 @@ Edit text area on Chrome with Emacs using Atomic Chrome
   (setq atomic-chrome-buffer-open-style 'frame))
 #+end_src
 *** [[https://github.com/joaotavora/yasnippet][yasnippet]]
+#+begin_quote
+  A template system for Emacs
+#+end_quote
 Freakin yasnippet. It's the best.
 #+begin_src emacs-lisp
 (use-package yasnippet
@@ -2579,51 +2711,46 @@ Freakin yasnippet. It's the best.
   :config
   (yas-global-mode 1))
 #+end_src
-
 *** [[https://github.com/hlissner/evil-multiedit][evil-multiedit]]
+#+begin_quote
+  Multiple cursors for evil-mode, based on iedit
+#+end_quote
 #+begin_src emacs-lisp
 (use-package evil-multiedit
   :if (not noninteractive)
   :config
   (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match))
 #+end_src
-
 ** Programming utilites
 *** [[https://github.com/Malabarba/aggressive-indent-mode/][aggressive-indent]]
+#+begin_quote
+  Emacs minor mode that keeps your code always indented. More reliable than electric-indent-mode.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package aggressive-indent)
 #+end_src
 *** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]
+#+begin_quote
+  Code navigation, documentation lookup and completion for Python.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package anaconda-mode)
 #+end_src
 *** [[https://github.com/company-mode/company-mode][company-mode]]
-Supposedly better than autocomplete... Also using [[https://github.com/syohex/emacs-company-jedi][company-jedi]]
+#+begin_quote
+  Modular in-buffer completion framework for Emacs
+#+end_quote
+Supposedly better than autocomplete.
 #+begin_src emacs-lisp
 (use-package company)
 
 (use-package company-anaconda
   :after company)
 #+end_src
-
-*** [[https://github.com/jorgenschaefer/elpy][elpy]]
-Sets up a python editing environment. I'm not sure yet.
-#+begin_src emacs-lisp :tangle no
-(use-package elpy
-  ;; Eh, I don't know...
-  :config
-  (elpy-enable)
-  (elpy-use-ipython)
-  (setq elpy-modules
-        '(elpy-module-company
-          elpy-module-eldoc
-          elpy-module-pyvenv
-          elpy-module-yasnippet
-          elpy-module-sane-defaults)))
-#+end_src
-
 *** [[https://github.com/alpaker/Fill-Column-Indicator][fill-column-indicator]]
-I like a line length limit indicator in Python
+#+begin_quote
+  An Emacs minor mode that graphically indicates the fill column.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package fill-column-indicator
   :init
@@ -2648,13 +2775,18 @@ I like a line length limit indicator in Python
 #+end_src
 
 *** [[https://github.com/flycheck/flycheck][flycheck]]
-Syntax check for python. Pretty good.
+#+begin_quote
+  On the fly syntax checking for GNU Emacs
+#+end_quote
 #+begin_src emacs-lisp
 (use-package flycheck
   :config
   (setq flycheck-completing-read-function 'ivy-completing-read))
 #+end_src
 *** [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]]
+#+begin_quote
+  Fringe version of git-gutter.el
+#+end_quote
 #+begin_src emacs-lisp
 (use-package git-gutter-fringe
   :demand t
@@ -2708,28 +2840,40 @@ Syntax check for python. Pretty good.
     ".....X.."))
 #+end_src
 *** [[https://github.com/Fanael/highlight-defined][highlight-defined]]
+#+begin_quote
+  Highlight known Emacs Lisp symbols
+#+end_quote
 #+begin_src emacs-lisp
 (use-package highlight-defined)
 #+end_src
 *** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]
+#+begin_quote
+  Highlight numbers in source code
+#+end_quote
 Neat-o
 #+begin_src emacs-lisp
 (use-package highlight-numbers)
 #+end_src
-
 *** [[https://github.com/tsdh/highlight-parentheses.el][highlight-parentheses]]
-Makes the parentheses my cursor is between stand out more.
+#+begin_quote
+  Emacs: highlight surrounding parentheses
+#+end_quote
 #+begin_src emacs-lisp
 (use-package highlight-parentheses)
 #+end_src
-
 *** [[https://github.com/vspinu/imenu-anywhere][imenu-anywhere]]
+#+begin_quote
+  ido/ivy/helm imenu tag selection across buffers with the same mode/project
+  etc
+#+end_quote
 imenu on steroids.
 #+begin_src emacs-lisp
 (use-package imenu-anywhere)
 #+end_src
-
 *** [[https://github.com/CodeFalling/nlinum-relative][nlinum-relative]]
+#+begin_quote
+  Emacs relative line number besed on nlinum-mode
+#+end_quote
 #+begin_src emacs-lisp
 (use-package nlinum-relative
   :defer 5
@@ -2739,11 +2883,16 @@ imenu on steroids.
   (setq nlinum-relative-redisplay-delay 0))
 #+end_src
 *** [[https://github.com/proofit404/pyenv-mode][pyenv-mode]]
+#+begin_quote
+  Integrate pyenv with python-mode.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package pyenv-mode
   :config
   (pyenv-mode))
-
+#+end_src
+**** [[https://github.com/ssbb/pyenv-mode-auto][pyenv-mode-auto]]
+#+begin_src emacs-lisp
 (use-package pyenv-mode-auto
   :after pyenv-mode)
 #+end_src
@@ -2752,22 +2901,26 @@ Better parentheses coloring
 #+begin_src emacs-lisp
 (use-package rainbow-delimiters)
 #+end_src
-
 *** [[https://github.com/naiquevin/sphinx-doc.el][sphinx-doc]]
-Sphinx doc python integration. Pretty neat, though not entirely
-complete, IMO.
+#+begin_quote
+   Generate Sphinx friendly docstrings for Python functions in Emacs
+#+end_quote
+Pretty neat, though not entirely complete, IMO.
 #+begin_src emacs-lisp
 (use-package sphinx-doc)
 #+end_src
-
 *** [[https://github.com/JorisE/yapfify][yapfify]]
+#+begin_quote
+  Yapf for Emacs
+#+end_quote
 #+begin_src emacs-lisp
 (use-package yapfify)
 #+end_src
-
 ** Navigation
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
-Quickly switch windows in Emacs
+#+begin_quote
+  Quickly switch windows in Emacs
+#+end_quote
 #+begin_src emacs-lisp
 (use-package ace-window
   :bind ("M-p" . ace-window)
@@ -2775,12 +2928,16 @@ Quickly switch windows in Emacs
   (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
 #+end_src
 *** [[https://github.com/abo-abo/avy][avy]]
-Jump to things in Emacs tree-style
+#+begin_quote
+  Jump to things in Emacs tree-style
+#+end_quote
 #+begin_src emacs-lisp
 (use-package avy)
 #+end_src
 *** [[https://github.com/bbatsov/projectile][projectile]]
-Project Interaction Library for Emacs
+#+begin_quote
+  Project Interaction Library for Emacs
+#+end_quote
 #+begin_src emacs-lisp
 (use-package projectile
   :diminish projectile-mode
@@ -2795,7 +2952,9 @@ Project Interaction Library for Emacs
   (projectile-mode))
 #+end_src
 *** [[https://github.com/ralesi/ranger.el][ranger]]
-Bringing the goodness of ranger to dired!
+#+begin_quote
+  Bringing the goodness of ranger to dired!
+#+end_quote
 #+begin_src emacs-lisp
 (use-package ranger
   :commands diego/deer
@@ -2822,14 +2981,19 @@ Bringing the goodness of ranger to dired!
         (deer)
       (deer-jump-other-window))))
 #+end_src
-
 ** Org mode
 *** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
+#+begin_quote
+  org-babel integration with Jupyter for evaluation of (Python by default) code blocks
+#+end_quote
 #+begin_src emacs-lisp
 (use-package ob-ipython
   :after org)
 #+end_src
 *** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
+#+begin_quote
+  Another org-mode exporter via pandoc.
+#+end_quote
 Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 #+begin_src emacs-lisp
 (use-package ox-pandoc
@@ -2841,12 +3005,18 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
   (setq org-pandoc-options-for-docx '((standalone . nil))))
 #+end_src
 *** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
-Export org to twitter bootstrap compatible HTML.
+#+begin_quote
+  Export org-mode docs as HTML compatible with Twitter Bootstrap.
+#+end_quote
 #+begin_src emacs-lisp :tangle no
 (use-package ox-twbs
   :after org)
 #+end_src
 *** [[https://github.com/snosov1/toc-org][toc-org]]
+#+begin_quote
+  toc-org is an Emacs utility to have an up-to-date table of contents in the
+  org files without exporting (useful primarily for readme files on GitHub)
+#+end_quote
 #+begin_src emacs-lisp
 (use-package toc-org
   :after org
@@ -2854,6 +3024,9 @@ Export org to twitter bootstrap compatible HTML.
   (add-hook 'org-mode-hook 'toc-org-enable))
 #+end_src
 *** [[https://github.com/myuhe/org-gcal.el][org-gcal]]
+#+begin_quote
+  Org sync with Google Calendar
+#+end_quote
 #+begin_src emacs-lisp
 (use-package org-gcal
   :after org-agenda
@@ -2862,6 +3035,9 @@ Export org to twitter bootstrap compatible HTML.
 #+end_src
 ** Reference/search
 *** [[https://github.com/abo-abo/define-word][define-word]]
+#+begin_quote
+  Display the definition of word at point in Emacs
+#+end_quote
 #+begin_src emacs-lisp
 (use-package define-word
   :commands diego/define-word
@@ -2878,12 +3054,16 @@ Export org to twitter bootstrap compatible HTML.
       (define-word word))))
 #+end_src
 *** [[https://github.com/xuchunyang/devdocs.el][devdocs]]
+#+begin_quote
+  Emacs package allowing you to easily search the DevDocs documentation
+#+end_quote
 #+begin_src emacs-lisp
 (use-package devdocs)
 #+end_src
-
 *** [[https://github.com/Malabarba/emacs-google-this][emacs-google-this]]
-Google stuff from emacs.
+#+begin_quote
+  A set of emacs functions and bindings to google under point.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package google-this
   :functions (google-this--maybe-wrap-in-quotes)
@@ -2927,29 +3107,41 @@ Non-interactively SEARCH-STRING is the string to search."
           (ddg-this-parse-and-search-string term prefix search-string)
         (message "[google-this-string] Empty query.")))))
 #+end_src
-
 *** [[https://github.com/atykhonov/google-translate][google-translate]]
+#+begin_quote
+  Emacs interface to Google Translate
+#+end_quote
 #+begin_src emacs-lisp
 (use-package google-translate)
 #+end_src
-
 *** [[https://www.emacswiki.org/emacs/info+.el][info+]]
+#+begin_quote
+  Extensions to info.el.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package info+)
 #+end_src
 *** [[https://github.com/laynor/melpa-upstream-visit][melpa-upstream-visit]]
+#+begin_quote
+  A set of kludges to visit the homepage of a package hosted on elpa.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package melpa-upstream-visit
   :config
   (setq muv:completing-read-function 'ivy-completing-read))
 #+end_src
 *** [[https://github.com/vermiculus/sx.el/][sx]]
-Stack exchange on emacs.
+#+begin_quote
+  Stack Exchange for Emacs
+#+end_quote
 #+begin_src emacs-lisp
 (use-package sx)
 #+end_src
 ** Shell utilities
 *** [[https://github.com/hiddenlotus/eshell-prompt-extras][eshell-prompt-extras]]
+#+begin_quote
+  Display extra information and color for your eshell prompt.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package eshell-prompt-extras
   :after eshell
@@ -2959,20 +3151,24 @@ Stack exchange on emacs.
         eshell-prompt-function 'epe-theme-dakrone))
 #+end_src
 *** [[https://github.com/xuchunyang/eshell-z][eshell-z]]
+#+begin_quote
+  cd to frequent directory in eshell, an Emacs port of https://github.com/rupa/z
+#+end_quote
 #+begin_src emacs-lisp
 (use-package eshell-z
   :after eshell)
 #+end_src
-
 *** [[https://github.com/adamrt/sane-term][sane-term]]
+#+begin_quote
+  Cycle through terms in emacs
+#+end_quote
 I wanted a slightly better terminal in emacs. This seems to do the trick.
 #+begin_src emacs-lisp
 (use-package sane-term)
 #+end_src
-
 * Mode Specific Configuration
 ** Prog-mode
-Properties that apply to all programming modes.
+Configuration that applies to all programming modes.
 #+begin_src emacs-lisp
 (defun diego/setup-prog-mode ()
   (company-mode)
@@ -3026,7 +3222,6 @@ Properties that apply to all programming modes.
 (add-hook 'matlab-mode-hook 'diego/setup-matlab-mode)
 #+end_src
 ** Emacs-Lisp
-Mostly set up hs-minor-mode for emacs-lisp.
 #+begin_src emacs-lisp
 (defun diego/setup-lisp-mode ()
   (hs-minor-mode)
@@ -3055,7 +3250,6 @@ Mostly set up hs-minor-mode for emacs-lisp.
   (local-set-key (kbd "<C-tab>") 'multi-term-next))
 (add-hook 'term-mode-hook 'diego/setup-term-mode)
 #+end_src
-
 ** Eshell
 #+begin_src emacs-lisp
 (with-eval-after-load "eshell"
