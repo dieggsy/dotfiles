@@ -1,5 +1,6 @@
 3to2
 alabaster
+appdirs
 appnope
 arrow
 asciimatics
@@ -91,6 +92,7 @@ oauth2client
 oauthlib
 olefile
 ordereddict
+packaging
 pandas
 pandocfilters
 parsedatetime

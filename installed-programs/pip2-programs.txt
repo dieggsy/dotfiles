@@ -1,3 +1,4 @@
+appdirs
 appnope
 arrow
 autopep8
@@ -45,6 +46,7 @@ numpy
 oauth2
 oauth2client
 olefile
+packaging
 parsedatetime
 path.py
 pathlib2
