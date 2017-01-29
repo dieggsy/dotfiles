@@ -4,25 +4,6 @@
 (setq package-enable-at-startup nil)
 
 (load-file "~/.emacs.d/config.el")
-;; (setq-default mode-line-format
-;;               '(" "
-;;                 (:eval (substring-no-properties evil-mode-line-tag 0 nil))
-;;                 "%*"
-;;                 " %[" mode-line-buffer-identification "%]  "
-;;                 (:eval (powerline-raw
-;;                         (s-trim (concat vc-mode
-;;                                         (when (buffer-file-name)
-;;                                           (pcase (vc-state (buffer-file-name))
-;;                                             (`up-to-date " ")
-;;                                             (`edited " Mod")
-;;                                             (`added " Add")
-;;                                             (`unregistered " ??")
-;;                                             (`removed " Del")
-;;                                             (`needs-merge " Con")
-;;                                             (`needs-update " Upd")
-;;                                             (`ignored " Ign")
-;;                                             (_ " Unk")))))))
-;;                 "  %l | %c"))
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -135,7 +116,7 @@
      ("html" . html))))
  '(package-selected-packages
    (quote
-    (nyan-mode toc-org hacker-typer package-lint diminish bind-key bind-map weechat-alert weechat eimp visual-fill-column json-mode org-gcal lib-requires elmacro darktooth-theme dash quelpa-use-package quelpa package-build no-littering autothemer bookmark+ headlong nlinum-relative zone-nyan zone-matrix yasnippet yapfify yaml-mode xkcd which-key vimrc-mode use-package twittering-mode sx sunshine spray sphinx-doc speed-type spaceline smex selectric-mode sane-term restart-emacs ranger rainbow-mode rainbow-delimiters pyenv-mode-auto persistent-scratch paradox ox-pandoc osx-trash org-plus-contrib ob-ipython nm melpa-upstream-visit matlab-mode markdown-preview-mode magithub lua-mode info+ imenu-anywhere highlight-tail highlight-parentheses highlight-numbers highlight-defined google-translate google-this git-gutter-fringe focus flyspell-correct-ivy flycheck flx fireplace fill-column-indicator fancy-battery exec-path-from-shell evil-smartparens evil-numbers evil-nerd-commenter evil-multiedit evil-magit evil-leader evil-indent-textobject eshell-z eshell-prompt-extras emojify elfeed-org elfeed-goodies ein drawille disable-mouse devdocs define-word csv-mode crux counsel-projectile counsel-osx-app counsel-bbdb company-anaconda coffee-mode clojure-mode centered-cursor-mode bbdb-vcard bbdb-ext atomic-chrome aggressive-indent ace-window)))
+    (async nyan-mode toc-org hacker-typer package-lint diminish bind-key bind-map weechat-alert weechat eimp visual-fill-column json-mode org-gcal lib-requires elmacro darktooth-theme dash quelpa-use-package quelpa package-build no-littering autothemer bookmark+ headlong nlinum-relative zone-nyan zone-matrix yasnippet yapfify yaml-mode xkcd which-key vimrc-mode use-package twittering-mode sx sunshine spray sphinx-doc speed-type spaceline smex selectric-mode sane-term restart-emacs ranger rainbow-mode rainbow-delimiters pyenv-mode-auto persistent-scratch paradox ox-pandoc osx-trash org-plus-contrib ob-ipython nm melpa-upstream-visit matlab-mode markdown-preview-mode magithub lua-mode info+ imenu-anywhere highlight-tail highlight-parentheses highlight-numbers highlight-defined google-translate google-this git-gutter-fringe focus flyspell-correct-ivy flycheck flx fireplace fill-column-indicator fancy-battery exec-path-from-shell evil-smartparens evil-numbers evil-nerd-commenter evil-multiedit evil-magit evil-leader evil-indent-textobject eshell-z eshell-prompt-extras emojify elfeed-org elfeed-goodies ein drawille disable-mouse devdocs define-word csv-mode crux counsel-projectile counsel-osx-app counsel-bbdb company-anaconda coffee-mode clojure-mode centered-cursor-mode bbdb-vcard bbdb-ext atomic-chrome aggressive-indent ace-window)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(pos-tip-background-color "#36473A")
  '(pos-tip-foreground-color "#FFFFC8")
@@ -203,7 +184,6 @@
      (340 . "#2790C3")
      (360 . "#66D9EF"))))
  '(vc-annotate-very-old-color nil)
- '(vc-follow-symlinks t)
  '(weechat-color-list
    (unspecified "#272822" "#20240E" "#F70057" "#F92672" "#86C30D" "#A6E22E" "#BEB244" "#E6DB74" "#40CAE4" "#66D9EF" "#FB35EA" "#FD5FF0" "#74DBCD" "#A1EFE4" "#F8F8F2" "#F8F8F0"))
  '(xterm-color-names
