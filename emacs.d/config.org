@@ -1798,6 +1798,64 @@ so I went with it.
   (add-to-list 'org-latex-packages-alist '("" "color"))
   (add-to-list 'org-latex-packages-alist '("" "tabularx")))
 #+end_src
+*** Agenda config
+#+begin_src emacs-lisp
+(defun diego/org-agenda-config ()
+  (setq org-habit-graph-column 50)
+  (define-key org-agenda-mode-map "j"          'org-agenda-next-line)
+  (define-key org-agenda-mode-map "k"          'org-agenda-previous-line)
+  (define-key org-agenda-mode-map "n"          'org-agenda-next-date-line)
+  (define-key org-agenda-mode-map "p"          'org-agenda-previous-date-line)
+  (define-key org-agenda-mode-map "c"          'diego/org-agenda-capture)
+  (define-key org-agenda-mode-map "R"          'org-revert-all-org-buffers)
+  (define-key org-agenda-mode-map (kbd "RET")  'org-agenda-switch-to)
+
+  (setq-local prettify-symbols-alist
+              '(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
+                ("❙ READ"        . (?❙ (Br . Bl) ?❙ (Br . Bl) ?❙))
+                ("○ IN-PROGRESS" . (?○ (Br . Bl) ?○ (Br . Bl) ?○))
+                ("◼ WAITING"     . (?◼ (Br . Bl) ?◼ (Br . Bl) ?◼))
+                ("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
+                ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
+
+  (prettify-symbols-mode)
+  (org-gcal-sync))
+#+end_src
+*** Copture config
+#+begin_src emacs-lisp
+(defun diego/org-capture-config ()
+  (evil-define-key 'insert org-capture-mode-map (kbd "C-d")
+    'diego/org-agenda-toggle-date)
+  (evil-define-key 'normal org-capture-mode-map (kbd "C-d")
+    'diego/org-agenda-toggle-date)
+  (evil-insert-state))
+#+end_src
+*** Org config
+#+begin_src emacs-lisp
+(defun diego/org-config ()
+  (dolist (char '("+" "-"))
+    (define-key org-mode-map (kbd char)
+      `(lambda ()
+         (interactive)
+         (diego/org-insert-list-leader-or-self ,char))))
+
+  (setq-local prettify-symbols-alist
+              '(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
+                ("❙ READ"        . (?❙ (Br . Bl) ?❙ (Br . Bl) ?❙))
+                ("○ IN-PROGRESS" . (?○ (Br . Bl) ?○ (Br . Bl) ?○))
+                ("◼ WAITING"     . (?◼ (Br . Bl) ?◼ (Br . Bl) ?◼))
+                ("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
+                ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
+  (prettify-symbols-mode)
+
+  (org-bullets-mode 1)
+  (setq org-bullets-bullet-list '("•"))
+
+  (goto-address-mode)
+  (setq fill-column 79)
+  (auto-fill-mode 1)
+  (org-indent-mode))
+#+end_src
 *** Setup
 #+begin_src emacs-lisp
 (use-package org
@@ -1810,71 +1868,11 @@ so I went with it.
   (diego/org-todo-vars)
   (diego/org-general-vars)
   (diego/org-bindings)
+  (add-hook 'org-agenda-mode-hook 'diego/org-agenda-config)
+  (add-hook 'org-capture-mode-hook 'diego/org-capture-config)
+  (add-hook 'org-mode-hook 'diego/org-config)
   (require 'ox-extra)
-  (ox-extras-activate '(ignore-headlines))
-  (add-hook 'org-agenda-mode-hook
-            (lambda ()
-              (setq org-habit-graph-column 50)
-              (define-key
-                org-agenda-mode-map "j"          'org-agenda-next-line)
-              (define-key
-                org-agenda-mode-map "k"          'org-agenda-previous-line)
-              (define-key
-                org-agenda-mode-map "n"          'org-agenda-next-date-line)
-              (define-key
-                org-agenda-mode-map "p"          'org-agenda-previous-date-line)
-              (define-key
-                org-agenda-mode-map "c"          'diego/org-agenda-capture)
-              (define-key
-                org-agenda-mode-map "R"          'org-revert-all-org-buffers)
-              (define-key
-                org-agenda-mode-map (kbd "RET")  'org-agenda-switch-to)
-
-              (setq-local prettify-symbols-alist
-                          '(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
-                            ("❙ READ"        . (?❙ (Br . Bl) ?❙ (Br . Bl) ?❙))
-                            ("○ IN-PROGRESS" . (?○ (Br . Bl) ?○ (Br . Bl) ?○))
-                            ("◼ WAITING"     . (?◼ (Br . Bl) ?◼ (Br . Bl) ?◼))
-                            ("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
-                            ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
-              (prettify-symbols-mode)
-              (org-gcal-sync)))
-
-  (add-hook 'org-capture-mode-hook
-            (lambda ()
-              (evil-define-key
-                'insert org-capture-mode-map (kbd "C-d")
-                'diego/org-agenda-toggle-date)
-              (evil-define-key
-                'normal org-capture-mode-map (kbd "C-d")
-                'diego/org-agenda-toggle-date)
-              (evil-insert-state)))
-
-  (add-hook 'org-mode-hook
-            (lambda ()
-              ;; Special plain list leader inserts
-              (dolist (char '("+" "-"))
-                (define-key org-mode-map (kbd char)
-                  `(lambda ()
-                     (interactive)
-                     (diego/org-insert-list-leader-or-self ,char))))
-
-              (setq-local prettify-symbols-alist
-                          '(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
-                            ("❙ READ"        . (?❙ (Br . Bl) ?❙ (Br . Bl) ?❙))
-                            ("○ IN-PROGRESS" . (?○ (Br . Bl) ?○ (Br . Bl) ?○))
-                            ("◼ WAITING"     . (?◼ (Br . Bl) ?◼ (Br . Bl) ?◼))
-                            ("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
-                            ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
-              (prettify-symbols-mode)
-
-              (org-bullets-mode 1)
-              (setq org-bullets-bullet-list '("•"))
-
-              (goto-address-mode)
-              (setq fill-column 79)
-              (auto-fill-mode 1)
-              (org-indent-mode))))
+  (ox-extras-activate '(ignore-headlines)))
 #+end_src
 ** [[https://github.com/abo-abo/hydra][hydra]]
 #+begin_quote
