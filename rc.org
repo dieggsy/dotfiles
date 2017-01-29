@@ -1,4 +1,26 @@
+#+TITLE: rc.org
 #+PROPERTY: header-args :comments link :mkdirp yes :results silent
+
+* Contents                                                              :toc:
+ - [[#config][Config]]
+   - [[#bashrc][bashrc]]
+   - [[#cookiecutterrc][cookiecutterrc]]
+   - [[#cvimrc][cvimrc]]
+   - [[#git][git]]
+   - [[#hyperjs][hyper.js]]
+   - [[#khdrc][khdrc]]
+   - [[#kwmrc][kwmrc]]
+   - [[#nanorc][nanorc]]
+   - [[#pythonrcpy][pythonrc.py]]
+   - [[#rainbowstream][rainbowstream]]
+   - [[#tmux][tmux]]
+   - [[#zsh][zsh]]
+ - [[#scripts][Scripts]]
+   - [[#masterinstall][masterinstall]]
+   - [[#switchmacs][switchmacs]]
+   - [[#updates][updates]]
+   - [[#wfname][wfname]]
+ - [[#local-vars][Local vars]]
 
 * Config
 ** bashrc
@@ -71,7 +93,7 @@ export python2version=2.7.13
 export PYTHONSTARTUP=$HOME/.pythonrc.py
 
 export WWW_HOME='http://google.com'
-export RTV_EDITOR='vim'
+export RTV_EDITOR='emacsclient -t'
 export RTV_URLVIEWER='urlview'
 
 # Preferred editor for local and remote sessions
@@ -264,7 +286,8 @@ let blacklists = ['*://inbox.google.com/*']
 map J nextTab
 map K previousTab
 #+end_src
-** gitconfig
+** git
+*** gitconfig
 :PROPERTIES:
 :header-args+: :tangle ~/.gitconfig
 :END:
@@ -310,7 +333,7 @@ git clone https://github.mit.edu/dmundo/16.410_$(basename $1) $(basename $1);  }
 [status]
 	showUntrackedFiles = all
 #+end_src
-** gitignore
+*** gitignore
 :PROPERTIES:
 :header-args+: :tangle ~/.gitignore
 :END:
@@ -918,7 +941,8 @@ except:
 #         writer = csv.writer(f)
 #         writer.writerows(rows)
 #+end_src
-** rainbow_config.json
+** rainbowstream
+*** rainbow_config.json
 :PROPERTIES:
 :header-args+: :tangle ~/.rainbow_config.json
 :END:
@@ -929,7 +953,7 @@ except:
     "IMAGE_ON_TERM": false,
     "IMAGE_RESIZE_TO_FIT": true,
     "THEME": "solarized",
-    "ASCII_ART": true,
+    "ASCII_ART": false,
     "HIDE_PROMPT": true,
     "PREFIX": "#owner#place#me#keyword",
     "SEARCH_TYPE": "mixed",
@@ -964,142 +988,323 @@ except:
             "DISPLAY": "\n  #sender_name #sender_nick #to #recipient_name #recipient_nick :\n  #clock message_id:#id\n  #message"
         }
     }
+
 }
 #+end_src
-** tmux.conf
+*** darktooth.json
+:PROPERTIES:
+:header-args+: :tangle ~/.pyenv/versions/3.6.0/lib/python3.6/site-packages/rainbowstream/colorset/darktooth.json
+:END:
+#+begin_src json :comments no
+{
+    /* Color config
+    There are 16 basic colors supported :
+        ,* default
+        ,* black
+        ,* red
+        ,* green
+        ,* yellow
+        ,* blue
+        ,* magenta
+        ,* cyan
+        ,* grey
+        ,* light_red
+        ,* light_green
+        ,* light_yellow
+        ,* light_blue
+        ,* light_magenta
+        ,* light_cyan
+        ,* white
+    and 256 terminal's colors from 0 to 255
+    ,*/
+
+    "DECORATED_NAME" : 64,
+    "CYCLE_COLOR" :[124,32,64,66,130,23],
+    "TWEET" : {
+        "mynick"          : 66,
+        "nick"            : 10,
+        "clock"           : 32,
+        "id"              : 130,
+        "client"          : 23,
+        "favorited"       : 64,
+        "retweet_count"   : 64,
+        "favorite_count"  : 124,
+        "rt"              : 66,
+        "link"            : 12,
+        "hashtag"         : 64,
+        "mytweet"         : 66,
+        "keyword"         : "on_light_green"
+    },
+
+    "NOTIFICATION":{
+        "source_nick"   : 64,
+        "notify"        : 66,
+        "clock"         : 32
+    },
+
+    "MESSAGE" : {
+        "partner"       : 64,
+        "me"            : 64,
+        "partner_frame" : 124,
+        "me_frame"      : 23,
+        "sender"        : 64,
+        "recipient"     : 64,
+        "to"            : 130,
+        "clock"         : 32,
+        "id"            : 124
+    },
+
+    "PROFILE" : {
+        "statuses_count"    : 124,
+        "friends_count"     : 32,
+        "followers_count"   : 130,
+        "nick"              : 64,
+        "profile_image_url" : 12,
+        "description"       : 66,
+        "location"          : 64,
+        "url"               : 12,
+        "clock"             : 32
+    },
+
+    "TREND" : {
+        "url": 12
+    },
+
+    "CAL" : {
+        "days": 64,
+        "today": "light_green"
+    },
+
+    "GROUP" : {
+        "name": 64,
+        "member": 130,
+        "subscriber": 32,
+        "mode": 164,
+        "description": 66,
+        "clock": 32
+    }
+}
+#+end_src
+** tmux
+*** tmux.conf
 :PROPERTIES:
 :header-args+: :tangle ~/.tmux.conf
 :END:
-
+**** Initialize
 #+begin_src conf
-# source-file ~/.tmux-osx.conf
-
-set-option -g default-command "reattach-to-user-namespace -l zsh"
-
-set-option -g prefix C-a
+# set-option -g default-command "reattach-to-user-namespace -l zsh"
 set -s escape-time 0
-
-set-window-option -g xterm-keys on
+set -g default-terminal "xterm-256color-italic"
 set -g update-environment -r
-set -g default-terminal "screen-256color"
-# set -g default-terminal "xterm-256color-italic"
-
-# Tmux normally uses C-b, which is weird. I'm already used to C-a from GNU
-# Screen, so that's what we're going to use.
-unbind-key C-b
-bind-key C-a last-window
-bind-key a send-prefix
-
-set-option -g mouse on
-
-# It makes much more sense to me to start numbering windows at 1.
-set -g base-index 1
-
-# Use vi-like keys in the command line.
-set-option -g status-keys vi
-set-option -g bell-action any
 set-option -g set-titles on
-set-option -g set-titles-string '#H:#S.#I.#P #W #T'
-set-option -g visual-bell off
-
-# Use vi-like keys for modes.
+set-option -g set-titles-string '#W'
+# set-option -g set-titles-string '#H:#S.#I.#P #W #T'
+#+end_src
+**** Prefix
+#+begin_src conf
+unbind C-b
+set-option -g prefix C-a
+bind-key C-a send-prefix
+#+end_src
+**** Bindings
+#+begin_src conf
+set -g mouse on
+set-window-option -g xterm-keys on
+set-option -g status-keys vi
 setw -g mode-keys vi
-setw -g monitor-activity on
-
-# Use vi-like keys to do selection and copying. Ctrl-A Escape starts copy mode,
-# 'v' starts text selection and 'y' copies (yanks).
+bind-key q detach-client
+bind-key Q detach-client
 bind-key Escape copy-mode
 bind-key [ copy-mode
 bind-key -t vi-copy v begin-selection
-bind-key -t vi-copy y copy-selection
-bind-key -t vi-copy Enter copy-selection
-bind-key C-y run "tmux save-buffer - | xclip -i -selection clipboard"
-bind-key C-p run "tmux set-buffer \"$(xclip -o -selection clipboard)\"; tmux paste-buffer"
+bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
+#+end_src
+**** Windows/Panes
+#+begin_src conf
+setw -g monitor-activity on
+set-option -g allow-rename off
+set -g history-limit 3000
+set -g base-index 1
+set -g pane-base-index 1
+set-option -g renumber-windows on
 
-# Smart pane switching with awareness of vim splits
-# See this blog post for additional detail:
-# http://robots.thoughtbot.com/post/53022241323/seamlessly-navigate-vim-and-tmux-splits
-# bind-key -n C-h run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-h) || tmux select-pane -L"
-# bind-key -n C-j run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-j) || tmux select-pane -D"
-# bind-key -n C-k run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-k) || tmux select-pane -U"
-# bind-key -n C-l run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys C-l) || tmux select-pane -R"
-# bind-key -n C-\ run "(tmux display-message -p '#{pane_current_command}' | grep -iqE '(^|\/)vim(diff)?$' && tmux send-keys 'C-\\') || tmux select-pane -l"
+bind | split-window -h
+bind - split-window -v
+unbind '"'
+unbind %
 
-# These symbols are more... Symbolic.
-bind-key _ split-window -v
-bind-key | split-window -h
+bind-key { swap-window -t -1
+bind-key } swap-window -t +1
+bind-key \ next-window
 
-# For now I want to use non-magical bindings for pane swapping so that I can get C-{h,j,k,l} in emacs.
 bind-key j select-pane -D
 bind-key k select-pane -U
 bind-key h select-pane -L
 bind-key l select-pane -R
-bind-key C-j select-pane -D
-bind-key C-k select-pane -U
-bind-key C-h select-pane -L
-bind-key C-l select-pane -R
-
-# Move windows
-bind-key { swap-window -t -1
-bind-key } swap-window -t +1
-
-# Restore access to the readline "clear screen" key, since I re-bound it above.
-#bind-key C-l send-keys 'C-l'
-
-# I like to hold Ctrl between A and D like I used to do in GNU Screen. Pity me.
-bind-key C-d detach-client
-
-bind-key -n C-S-Up resize-pane -U 5
-bind-key -n C-S-Right resize-pane -R 10
-bind-key -n C-S-Down resize-pane -D 5
-bind-key -n C-S-Left resize-pane -L 10
-
-# Move to the next or previous window.
-bind-key n next-window
-bind-key p previous-window
-
-# Status line options.
-# set-option -g status-utf8 on
-set-option -g status-justify left
-set-option -g status-bg colour234
-set-option -g status-left-length 40
-
-# Pane color options.
-set-option -g pane-active-border-fg green
-set-option -g pane-active-border-bg black
-set-option -g pane-border-fg white
-set-option -g pane-border-bg black
-
-# Windows with an activity alert.
-setw -g window-status-activity-attr bold
-setw -g window-status-activity-bg colour214
-
-set -g status-left '#[fg=colour235,bg=colour252,bold] ❐ #H #[bg=colour237,fg=colour15,nobold] #(whoami) #[bg=black]'
-set -g window-status-format '#[bg=colour237,fg=white] #I #[fg=colour240]∞#[fg=white] #W #[bg=black]'
-set -g window-status-current-format '#[bg=colour39,fg=black] #I:#P ∞ #W #[bg=black]'
-set -g status-right '#[bg=colour252,fg=colour235,bold] ⌚ %Y-%m-%d %H:%M #[default]'
-
-# Scrollback buffer size.
-set -g history-limit 4096
-
-# Reload the environment with a keystroke.
-bind-key r source-file ~/.tmux.conf
-
-# Break and merge windows and panes. ^ pulls a window into a horizontal pane,
-# < pulls a window into a vertical pane, and > breaks it back out into its own
-# window.
 bind-key < split-window -h \; choose-window 'kill-pane ; join-pane -hs %%'
 bind-key > break-pane -d
 bind-key ^ split-window -v \; choose-window 'kill-pane ; join-pane -vs %%'
+bind-key = select-layout even-horizontal
+bind-key + select-layout even-vertical
 #+end_src
+**** Bell
+#+begin_src conf
+set-option -g bell-action any
+set-option -g visual-bell off
+#+end_src
+**** Reload config
+#+begin_src conf
+bind r source-file ~/.tmux.conf
+#+end_src
+**** Theming
+#+begin_src conf
+# panes
+set -g pane-border-fg black
+set -g pane-active-border-fg brightred
 
-** zshrc
+## Status bar design
+# status line
+set -g status-justify left
+set -g status-bg default
+set -g status-fg colour12
+set -g status-interval 2
+
+# messaging
+set -g message-fg black
+set -g message-bg yellow
+set -g message-command-fg blue
+set -g message-command-bg black
+
+#window mode
+setw -g mode-bg colour6
+setw -g mode-fg colour0
+
+# window status
+setw -g window-status-format " #F#I:#W#F "
+setw -g window-status-current-format " #F#I:#W#F "
+setw -g window-status-format "#[fg=magenta]#[bg=black] #I #[bg=cyan]#[fg=colour8] #W "
+setw -g window-status-current-format "#[bg=brightmagenta]#[fg=colour8] #I #[fg=colour8]#[bg=colour14] #W "
+setw -g window-status-current-bg colour0
+setw -g window-status-current-fg colour11
+setw -g window-status-current-attr dim
+setw -g window-status-bg green
+setw -g window-status-fg black
+setw -g window-status-attr reverse
+
+# Info on left (I don't have a session display for now)
+set -g status-left ''
+
+# loud or quiet?
+set-option -g visual-activity off
+set-option -g visual-bell off
+set-option -g visual-silence off
+set-window-option -g monitor-activity off
+set-option -g bell-action none
+
+set -g default-terminal "screen-256color"
+
+# The modes {
+setw -g clock-mode-colour colour135
+setw -g mode-attr bold
+setw -g mode-fg colour196
+setw -g mode-bg colour238
+
+# }
+# The panes {
+
+set -g pane-border-bg colour235
+set -g pane-border-fg colour238
+set -g pane-active-border-bg colour236
+set -g pane-active-border-fg colour51
+
+# }
+# The statusbar {
+
+set -g status-position bottom
+set -g status-bg colour234
+set -g status-fg colour137
+set -g status-attr dim
+set -g status-left ''
+set -g status-right '#[fg=colour233,bg=colour241,bold] %Y-%d-%m #[fg=colour233,bg=colour245,bold] %H:%M '
+set -g status-right-length 50
+set -g status-left-length 20
+
+setw -g window-status-current-fg colour81
+setw -g window-status-current-bg colour238
+setw -g window-status-current-attr bold
+setw -g window-status-current-format ' #I#[fg=colour250]:#[fg=colour255]#W#[fg=colour50]#F '
+
+setw -g window-status-fg colour138
+setw -g window-status-bg colour235
+setw -g window-status-attr none
+setw -g window-status-format ' #I#[fg=colour237]:#[fg=colour250]#W#[fg=colour244]#F '
+
+setw -g window-status-bell-attr bold
+setw -g window-status-bell-fg colour255
+setw -g window-status-bell-bg colour1
+
+# }
+# The messages {
+
+set -g message-attr bold
+set -g message-fg colour232
+set -g message-bg colour166
+
+# }
+#+end_src
+*** tmuxinator-hud
+:PROPERTIES:
+:header-args+: :tangle ~/.tmuxinator/hud.yml
+:END:
+#+begin_src yaml :comments no
+# ~/.tmuxinator/hud.yml
+
+name: hud
+root: ~/
+
+windows:
+  - shell:
+  - social:
+      layout: even-horizontal
+      panes:
+        - rtv
+        - rainbowstream
+  - social:
+      layout: even-horizontal
+      -panes:
+        - weechat
+        - cmus
+  - ipython: ipython
+#+end_src
+*** tmuxinator-awesome
+:PROPERTIES:
+:header-args+: :tangle ~/.tmuxinator/awesome.yml
+:END:
+
+#+begin_src yaml :comments no
+# ~/.tmuxinator/awesome.yml
+
+name: awesome
+root: ~/
+
+windows:
+  - shell:
+  - social:
+      layout: tiled
+      panes:
+        - rtv
+        - rainbowstream
+        - weechat
+        - cmus
+  - ipython: ipython
+#+end_src
+** zsh
+*** zshrc
 :PROPERTIES:
 :header-args+: :tangle ~/.zshrc
 :END:
-
-*** Initial setup
-**** Export hostname.
+**** Initial setup
+***** Export hostname.
 
 Terminal.app used to get confused about this and show a folder icon with a
 question mark. I don't use Terminal.app anymore, but oh well.
@@ -1108,18 +1313,34 @@ question mark. I don't use Terminal.app anymore, but oh well.
 export HOSTNAME=`hostname`
 #+end_src
 
-**** Source Prezto
+***** Prompt
 #+begin_src sh
-if [[ -s "${ZDOTDIR:-$HOME}/.zprezto/init.zsh" ]]; then
-  source "${ZDOTDIR:-$HOME}/.zprezto/init.zsh"
-fi
+source "$HOME/Code/zsh-git-prompt/zshrc.sh"
+setopt prompt_subst
+GIT_PROMPT_EXECUTABLE="haskell"
+ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[green]%}"
+ZSH_THEME_GIT_PROMPT_CHANGED="%{%F{009}✚%G%}"
+ZSH_THEME_GIT_PROMPT_AHEAD="%{%F{013}↑%G%}"
+ZSH_THEME_GIT_PROMPT_BEHIND="%{%F{013}↓%G%}"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{%F{010}✓%G%}"
+ZSH_THEME_GIT_PROMPT_STAGED="%{%F{012}●%G%}"
+function prompt_sorin_pwd {
+  local pwd="${PWD/#$HOME/~}"
 
-if [ "alias" = $(whence -w rm | sed 's/rm: //') ]; then
-    unalias rm
-fi
+  if [[ "$pwd" == (#m)[/~] ]]; then
+    _prompt_sorin_pwd="$MATCH"
+    unset MATCH
+  else
+    _prompt_sorin_pwd="${${${${(@j:/:M)${(@s:/:)pwd}##.#?}:h}%/}//\%/%%}/${${pwd:t}//\%/%%}"
+  fi
+  echo $_prompt_sorin_pwd
+}
+
+PROMPT='%B%F{9}$(prompt_sorin_pwd) %B%F{2}❯%f%b '
+RPROMPT='$(git_super_status)'
 #+end_src
 
-**** Setup help
+***** Setup help
 #+begin_src sh
 autoload -Uz run-help
 if [ "alias" = $(whence -w run-help | sed 's/run-help: //') ]; then
@@ -1127,7 +1348,21 @@ if [ "alias" = $(whence -w run-help | sed 's/run-help: //') ]; then
 fi
 alias help=run-help
 #+end_src
-*** Zsh options
+**** Modules
+#+begin_src sh
+for file ($HOME/.zmodules/*.zsh(N)); do
+    source $file
+done
+#+end_src
+**** Functions
+#+begin_src sh
+for file ($HOME/bin/zfuncs/*(N)); do
+    if [[ -a "$file" ]]; then
+        autoload -Uz "${file:t}"
+    fi
+done
+#+end_src
+**** Zsh options
 #+begin_src sh
 setopt glob_complete
 setopt auto_cd
@@ -1135,21 +1370,38 @@ setopt histignoredups
 setopt autonamedirs
 setopt clobber
 unsetopt correct
+autoload -Uz compinit && compinit -i
 #+end_src
-*** Initialize and source some things
+**** Initialize and source some things
 [[https://github.com/rupa/z][z]]
 #+begin_src sh
-source `brew --prefix`/etc/profile.d/z.sh
-#+END_SRC
+source $(brew --prefix)/etc/profile.d/z.sh
+#+end_src
 
 [[https://github.com/nvbn/thefuck][thefuck]]
-#+BEGIN_SRC sh
+#+begin_src sh
 if which thefuck > /dev/null; then eval $(thefuck --alias); fi
-#+END_SRC
+#+end_src
 
 [[https://github.com/yyuu/pyenv/][pyenv]]
-#+BEGIN_SRC sh
+#+begin_src sh
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+#+end_src
+
+History substring search
+#+begin_src sh
+source /usr/local/opt/zsh-history-substring-search/zsh-history-substring-search.zsh
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=''
+HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=''
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+#+end_src
+
+Autosuggestions
+#+begin_src sh
+# source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# zstyle ':completion:*' list-colors 'di=0;36:ex=0;35:ln=1;31'
 #+end_src
 
 Syntax highlighting
@@ -1161,14 +1413,7 @@ ZSH_HIGHLIGHT_STYLES[alias]='fg=010'
 ZSH_HIGHLIGHT_STYLES[builtin]='fg=010'
 ZSH_HIGHLIGHT_STYLES[function]='fg=010'
 #+end_src
-
-Autosuggestions
-#+begin_src sh
-source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-zstyle ':completion:*' list-colors 'di=0;36:ex=0;35:ln=1;31'
-#+end_src
-*** Vars
+**** Vars
 #+begin_src sh
 # some ls colors i've gotten used to
 export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31'
@@ -1183,52 +1428,20 @@ export switchmacs="emacs"
 # Python
 export python3version=3.6.0
 export python2version=2.7.13
-export PYTHONSTARTUP=$HOME/.pythonrc.py
 
-export WWW_HOME='http://google.com'
-export RTV_EDITOR='vim'
-export RTV_URLVIEWER='urlview'
-
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-    export EDITOR='vim'
-else
-    export EDITOR="emacsclient -n" # Set emacs as default editor
-    export ALTERNATE_EDITOR="vim"
-fi
+export KEYTIMEOUT=1
 #+end_src
-*** Aliases
+**** Aliases
+***** Simple aliases
 #+begin_src sh
-alias apps="cd /Applications"
-alias bcl="brew cleanup"
-alias bdr="brew doctor"
-alias bin="brew install"
-alias binf="brew info"
-alias bls="brew list"
-alias brin="brew reinstall"
-alias brm="brew uninstall"
-alias bsS="brew services stop"
-alias bsh="brew search"
-alias bsr="brew services restart"
-alias bss="brew services start"
-alias bup="brew update && brew upgrade"
 alias cask="brew cask"
-alias cin="brew cask install"
-alias cinf="brew cask info"
-alias cls="brew cask list"
-alias crin="brew cask reinstall"
-alias crm="brew cask uninstall"
-alias config="$EDITOR ~/dotfiles/config/emacs.d/config.org"
+alias cpwd="pwd | tr -d '\n' | pbcopy"
 alias def='dict -d gcide'
-alias desk="cd /Users/diego/Desktop"
-alias docs="cd /Users/diego/Documents/"
-alias down="cd /Users/diego/Downloads/"
-alias drive="cd /Users/diego/Google\ Drive"
-alias drop="cd /Users/diego/Dropbox\ \(MIT\)"
 alias ed="ed -p:"
 alias edit="emacsclient -n"
 alias editv="emacsclient -t"
 alias filecount="ls -1 | wc -l"
+alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
 if which hub > /dev/null; then alias git=hub; fi
 alias startkwm="brew services start $kwm"
 alias stopkwm="brew services stop $kwm"
@@ -1238,7 +1451,8 @@ alias stopkhd="brew services stop $khd"
 alias restartkhd="brew services restart $khd"
 alias ls='ls -NX --group-directories-first --color=always'
 alias lst="ls -t"
-alias math='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
+alias mathematica='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
+alias mux='tmuxinator'
 alias pep8="pep8 --first --ignore=E129,W503,E226"
 alias piphere="pip install --target=./"
 alias printers="lpstat -p | awk '{print $2}'"
@@ -1250,140 +1464,346 @@ alias sm=". ~/bin/switchmacs"
 alias starwars="telnet towel.blinkenlights.nl" # heh
 alias sudo='sudo '                             # recognize aliases
 alias sz="du -hs"                              # get folder/file size
-alias zshrc="$EDITOR ~/dotfiles/config/zshrc"
-alias vimrc="$ALTERNATE_EDITOR ~/dotfiles/config/vimrc"
+alias wiki="wiki -w 80"
 #+end_src
-*** Functions
+***** Function "aliases"
 #+begin_src sh
-ff(){
-    find . -type f -iname *"$1"*
-}
+ff() { find . -type f -iname *"$1"* }
 
-fd(){
-    find . -type d -iname *"$1"*
-}
+fd() { find . -type d -iname *"$1"* }
 
-f(){
-    find . -iname *"$1"*
-}
+f() { find . -iname *"$1"* }
 
-fsz(){
-    find ./ -iname $1 -exec du {} + | sort
-}
-
-pip-fromfile() {
-    <$1 xargs pip install
-}
-
-athena(){
-    echo -n "Username: "
-    read username
-    ssh -Y "$username@athena.dialup.mit.edu"
-}
-
-mkexec(){
-    chmod a+x "$@"
-}
-
-pythonexec(){
-    touch "$*"
-    echo '#!/usr/local/bin/python3' | cat - "$*" > temp && mv temp "$*"
-    sudo chmod a+x "$*"
-    emacsclient -n "$*"
-}
-
-# Create/edit python script
-pythonscript(){
-    touch "$*"
-    echo '#!/usr/local/bin/python3' | cat - "$*" > temp && mv temp "$*"
-    emacsclient -n "$*"
-}
+fsz() { find ./ -iname $1 -exec du {} + | sort }
 
 # View only mode in emacs
-ev() {
-    emacsclient -n --eval "(find-file-read-only \"$1\")"
-}
+ev() { emacsclient -n --eval "(find-file-read-only \"$1\")" }
 
-# Edit Python 3 files
-bam(){
-    emacsclient -n "$1" \
-                --eval '(and (split-window-right) (windmove-right))' \
-                -f ipython \
-                --eval '(windmove-left)'
-}
-
-# Edit Python 2 files
-ham(){
-    emacsclient -n "$1" \
-                --eval '(and (split-window-right) (windmove-right))' \
-                -f ipython2 \
-                --eval '(windmove-left)'
-}
-
-pdftif() {
-    \gs -dNOPAUSE -q -r500 \
-       -sDEVICE=tiffg4 \
-       -dBATCH \
-       -dFirstPage=$2 \
-       -dLastPage=$3 \
-       -sOutputFile=$4 \
-       $1
-}
-
-ocrpdf(){
-    echo "Converting pdf to png..."
-    \gs -dNOPAUSE -q -r500 \
-       -sDEVICE=tiffg4 \
-       -dBATCH \
-       -sOutputFile=$TMPDIR/tempocr.tif \
-       $1
-    echo "Running tesseract on pngs..."
-    tesseract $TMPDIR/tempocr.tif $2 >/dev/null 2>&1
-}
-
-ocrpdf2(){
-    echo "Converting pdf to png..."
-    convert -density 500 $1 $TMPDIR/tempocr.png
-    count=0
-    echo "Running tesseract on pngs..."
-    while [ -f $TMPDIR/tempocr-$count.png ]; do
-        echo "    Page $count"
-        tesseract $TMPDIR/tempocr-$count.png $TMPDIR/tempocr >/dev/null 2>&1
-        cat $TMPDIR/tempocr.txt >> $2
-        let count=count+1
-    done
-    echo "Created output file $2"
-}
-
-psetzip (){
-    zip -r "$1".zip $1\
-        -x '*.git*' \
-        -x '*.ipynb_checkpoints*' \
-        -x '*.pyc*' \
-        -x '*.DS_Store*' \
-        -x '*~*' \
-        -x "*__pycache__*"
-}
-
-calc(){
-    emacs --batch --eval "(message (calc-eval \"$1\"))"
-}
+calc() { emacs --batch --eval "(message (calc-eval \"$1\"))" }
 alias calc="noglob calc"
+#+end_src
+**** Use gnu coreutils
+#+begin_src sh
+path=(
+    /usr/local/opt/coreutils/libexec/gnubin
+    $path
+)
+#+end_src
+*** zshenv
+:PROPERTIES:
+:header-args+: :tangle ~/.zshenv
+:END:
 
-spectrum_ls() {
-  for code in {000..255}; do
-    print -P -- "%$code: F{$code}$code%f"
-  done
+#+begin_src sh
+# Ensure that a non-login, non-interactive shell has a defined environment.
+if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
+    source "${ZDOTDIR:-$HOME}/.zprofile"
+fi
+#+end_src
+**** Path
+#+begin_src sh
+path=(
+    $HOME/bin
+    $HOME/.local/bin
+    /usr/local/{bin,sbin}
+    $path
+)
+
+manpath=(
+    /usr/local/opt/coreutils/libexec/gnuman
+    $manpath
+)
+
+cdpath=($HOME $HOME/Code)
+
+fpath=(~/bin/zfuncs /usr/local/share/zsh-completions $fpath)
+typeset -gU path manpath cdpath fpath
+
+#+end_src
+**** Variables
+#+begin_src sh
+export PYTHONSTARTUP=$HOME/.pythonrc.py
+
+export WWW_HOME='http://google.com'
+export RTV_EDITOR='emacsclient -t'
+export RTV_URLVIEWER='urlview'
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+    export EDITOR='vim'
+else
+    export EDITOR="emacsclient -n" # Set emacs as default editor
+    export ALTERNATE_EDITOR="vim"
+fi
+
+export PAGER="less"
+export LESS='-g -i -M -R -S -w -z-4'
+if (( $#commands[(i)lesspipe(|.sh)] )); then
+  export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
+fi
+
+if [[ "$OSTYPE" == darwin* ]]; then
+  export BROWSER='open'
+fi
+
+
+if [[ -z "$LANG" ]]; then
+  export LANG='en_US.UTF-8'
+fi
+#+end_src
+*** Modules
+**** environment
+:PROPERTIES:
+:header-args+: :tangle ~/.zmodules/environment.zsh
+:END:
+#+begin_src sh
+# Smart URLs
+autoload -Uz url-quote-magic
+zle -N self-insert url-quote-magic
+
+# General
+setopt BRACE_CCL          # Allow brace character class list expansion.
+setopt COMBINING_CHARS    # Combine zero-length punctuation characters (accents)
+                          # with the base character.
+setopt RC_QUOTES          # Allow 'Henry''s Garage' instead of 'Henry'\''s Garage'.
+unsetopt MAIL_WARNING     # Don't print a warning message if a mail file has been accessed.
+
+# Jobs
+setopt LONG_LIST_JOBS     # List jobs in the long format by default.
+setopt AUTO_RESUME        # Attempt to resume existing job before creating a new process.
+setopt NOTIFY             # Report status of background jobs immediately.
+unsetopt BG_NICE          # Don't run all background jobs at a lower priority.
+unsetopt HUP              # Don't kill jobs on shell exit.
+unsetopt CHECK_JOBS       # Don't report on jobs when shell exit.
+
+# Termcap
+if zstyle -t ':prezto:environment:termcap' color; then
+  export LESS_TERMCAP_mb=$'\E[01;31m'      # Begins blinking.
+  export LESS_TERMCAP_md=$'\E[01;31m'      # Begins bold.
+  export LESS_TERMCAP_me=$'\E[0m'          # Ends mode.
+  export LESS_TERMCAP_se=$'\E[0m'          # Ends standout-mode.
+  export LESS_TERMCAP_so=$'\E[00;47;30m'   # Begins standout-mode.
+  export LESS_TERMCAP_ue=$'\E[0m'          # Ends underline.
+  export LESS_TERMCAP_us=$'\E[01;32m'      # Begins underline.
+fi
+#+end_src
+**** history
+:PROPERTIES:
+:header-args+: :tangle ~/.zmodules/history.zsh
+:END:
+#+begin_src sh
+# Variables
+HISTFILE="${ZDOTDIR:-$HOME}/.zhistory"       # The path to the history file.
+HISTSIZE=10000                   # The maximum number of events to save in the internal history.
+SAVEHIST=10000                   # The maximum number of events to save in the history file.
+
+# Options
+setopt BANG_HIST                 # Treat the '!' character specially during expansion.
+setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
+setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
+setopt SHARE_HISTORY             # Share history between all sessions.
+setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
+setopt HIST_IGNORE_DUPS          # Do not record an event that was just recorded again.
+setopt HIST_IGNORE_ALL_DUPS      # Delete an old recorded event if a new event is a duplicate.
+setopt HIST_FIND_NO_DUPS         # Do not display a previously found event.
+setopt HIST_IGNORE_SPACE         # Do not record an event starting with a space.
+setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history file.
+setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
+setopt HIST_BEEP                 # Beep when accessing non-existent history.
+
+# Aliases
+# Lists the ten most used commands.
+alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
+#+end_src
+**** directory
+:PROPERTIES:
+:header-args+: :tangle ~/.zmodules/directory.zsh
+:END:
+#+begin_src sh
+# Options
+setopt AUTO_CD              # Auto changes to a directory without typing cd.
+setopt AUTO_PUSHD           # Push the old directory onto the stack on cd.
+setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
+setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
+setopt PUSHD_TO_HOME        # Push to home directory when no argument is given.
+setopt CDABLE_VARS          # Change directory to a path stored in a variable.
+setopt AUTO_NAME_DIRS       # Auto add variable-stored paths to ~ list.
+setopt MULTIOS              # Write to multiple descriptors.
+setopt EXTENDED_GLOB        # Use extended globbing syntax.
+unsetopt CLOBBER            # Do not overwrite existing files with > and >>.
+                            # Use >! and >>! to bypass.
+
+# Aliases
+alias d='dirs -v'
+for index ({1..9}) alias "$index"="cd +${index}"; unset index
+#+end_src
+**** spectrum
+:PROPERTIES:
+:header-args+: :tangle ~/.zmodules/spectrum.zsh
+:END:
+#+begin_src sh
+# Return if requirements are not found.
+if [[ "$TERM" == 'dumb' ]]; then
+  return 1
+fi
+
+typeset -gA FX FG BG
+
+FX=(
+                                        none                         "\e[00m"
+                                        normal                       "\e[22m"
+  bold                      "\e[01m"    no-bold                      "\e[22m"
+  faint                     "\e[02m"    no-faint                     "\e[22m"
+  standout                  "\e[03m"    no-standout                  "\e[23m"
+  underline                 "\e[04m"    no-underline                 "\e[24m"
+  blink                     "\e[05m"    no-blink                     "\e[25m"
+  fast-blink                "\e[06m"    no-fast-blink                "\e[25m"
+  reverse                   "\e[07m"    no-reverse                   "\e[27m"
+  conceal                   "\e[08m"    no-conceal                   "\e[28m"
+  strikethrough             "\e[09m"    no-strikethrough             "\e[29m"
+  gothic                    "\e[20m"    no-gothic                    "\e[22m"
+  double-underline          "\e[21m"    no-double-underline          "\e[22m"
+  proportional              "\e[26m"    no-proportional              "\e[50m"
+  overline                  "\e[53m"    no-overline                  "\e[55m"
+
+                                        no-border                    "\e[54m"
+  border-rectangle          "\e[51m"    no-border-rectangle          "\e[54m"
+  border-circle             "\e[52m"    no-border-circle             "\e[54m"
+
+                                        no-ideogram-marking          "\e[65m"
+  underline-or-right        "\e[60m"    no-underline-or-right        "\e[65m"
+  double-underline-or-right "\e[61m"    no-double-underline-or-right "\e[65m"
+  overline-or-left          "\e[62m"    no-overline-or-left          "\e[65m"
+  double-overline-or-left   "\e[63m"    no-double-overline-or-left   "\e[65m"
+  stress                    "\e[64m"    no-stress                    "\e[65m"
+
+                                        font-default                 "\e[10m"
+  font-first                "\e[11m"    no-font-first                "\e[10m"
+  font-second               "\e[12m"    no-font-second               "\e[10m"
+  font-third                "\e[13m"    no-font-third                "\e[10m"
+  font-fourth               "\e[14m"    no-font-fourth               "\e[10m"
+  font-fifth                "\e[15m"    no-font-fifth                "\e[10m"
+  font-sixth                "\e[16m"    no-font-sixth                "\e[10m"
+  font-seventh              "\e[17m"    no-font-seventh              "\e[10m"
+  font-eigth                "\e[18m"    no-font-eigth                "\e[10m"
+  font-ninth                "\e[19m"    no-font-ninth                "\e[10m"
+)
+
+FG[none]="$FX[none]"
+BG[none]="$FX[none]"
+colors=(black red green yellow blue magenta cyan white)
+for color in {0..255}; do
+  if (( $color >= 0 )) && (( $color < $#colors )); then
+    index=$(( $color + 1 ))
+    FG[$colors[$index]]="\e[38;5;${color}m"
+    BG[$colors[$index]]="\e[48;5;${color}m"
+  fi
+
+  FG[$color]="\e[38;5;${color}m"
+  BG[$color]="\e[48;5;${color}m"
+done
+unset color{s,} index
+#+end_src
+**** colored-man
+:PROPERTIES:
+:header-args+: :tangle ~/.zmodules/colored-man.zsh
+:END:
+#+begin_src sh
+if [[ "$OSTYPE" = solaris* ]]
+then
+	if [[ ! -x "$HOME/bin/nroff" ]]
+	then
+		mkdir -p "$HOME/bin"
+		cat > "$HOME/bin/nroff" <<EOF
+#!/bin/sh
+if [ -n "\$_NROFF_U" -a "\$1,\$2,\$3" = "-u0,-Tlp,-man" ]; then
+	shift
+	exec /usr/bin/nroff -u\$_NROFF_U "\$@"
+fi
+#-- Some other invocation of nroff
+exec /usr/bin/nroff "\$@"
+EOF
+		chmod +x "$HOME/bin/nroff"
+	fi
+fi
+
+man() {
+	env \
+		LESS_TERMCAP_mb=$(printf "\e[1;31m") \
+		LESS_TERMCAP_md=$(printf "\e[1;31m") \
+		LESS_TERMCAP_me=$(printf "\e[0m") \
+		LESS_TERMCAP_se=$(printf "\e[0m") \
+		LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
+		LESS_TERMCAP_ue=$(printf "\e[0m") \
+		LESS_TERMCAP_us=$(printf "\e[1;32m") \
+		PAGER="${commands[less]:-$PAGER}" \
+		_NROFF_U=1 \
+		PATH="$HOME/bin:$PATH" \
+			man "$@"
 }
 #+end_src
-*** Path Stuff
+*** Functions
+**** pdftif
+:PROPERTIES:
+:header-args+: :tangle ~/bin/zfuncs/pdftif
+:END:
 #+begin_src sh
-fpath=(/usr/local/share/zsh-completions $fpath)
-
-export PATH="$HOME/bin:/usr/local/sbin:"\
-"$(brew --prefix coreutils)/libexec/gnubin:$PATH"
-typeset -U path
-export MANPATH="$(brew --prefix coreutils)/libexec/gnuman:$MANPATH"
+\gs -dNOPAUSE -q -r500 \
+    -sDEVICE=tiffg4 \
+    -dBATCH \
+    -dFirstPage=$2 \
+    -dLastPage=$3 \
+    -sOutputFile=$4 \
+    $1
+#+end_src
+**** ocrpdf
+:PROPERTIES:
+:header-args+: :tangle ~/bin/zfuncs/ocrpdf
+:END:
+#+begin_src sh
+echo "Converting pdf to png..."
+\gs -dNOPAUSE -q -r500 \
+    -sDEVICE=tiffg4 \
+    -dBATCH \
+    -sOutputFile=$TMPDIR/tempocr.tif \
+    $1
+echo "Running tesseract on pngs..."
+tesseract $TMPDIR/tempocr.tif $2 >/dev/null 2>&1
+#+end_src
+**** ocrpdf2
+:PROPERTIES:
+:header-args+: :tangle ~/bin/zfuncs/ocrpdf2
+:END:
+#+begin_src sh
+echo "Converting pdf to png..."
+convert -density 500 $1 $TMPDIR/tempocr.png
+count=0
+echo "Running tesseract on pngs..."
+while [ -f $TMPDIR/tempocr-$count.png ]; do
+    echo "    Page $count"
+    tesseract $TMPDIR/tempocr-$count.png $TMPDIR/tempocr >/dev/null 2>&1
+    cat $TMPDIR/tempocr.txt >> $2
+    let count=count+1
+done
+echo "Created output file $2"
+#+end_src
+**** athena
+:PROPERTIES:
+:header-args+: :tangle ~/bin/zfuncs/athena
+:END:
+#+begin_src sh
+echo -n "Username: "
+read username
+ssh -Y "$username@athena.dialup.mit.edu"
+#+end_src
+**** spectrum_ls
+:PROPERTIES:
+:header-args+: :tangle ~/bin/zfuncs/spectrum_ls
+:END:
+#+begin_src sh
+for code in {000..255}; do
+  print -P -- "$code: %F{$code}$code%f"
+done
 #+end_src
 * Scripts
 ** masterinstall
@@ -1501,13 +1921,7 @@ if [ -z $VE ]; then
     if [ -z "$res" ]; then
         echo $'All packages up to date.'
     else
-        echo ""
-        echo "$res"
-        echo ""
-        echo $'Updating packages...\n'
-        for prog in $res;do
-            pip install --upgrade ${prog%\(*}
-        done
+        echo $res | sed 's/ .*//' | xargs pip install --upgrade
     fi
     pip freeze > ~/dotfiles/installed-programs/pip2-programs.txt
     sed -i -e 's/=.*//' ~/dotfiles/installed-programs/pip2-programs.txt
@@ -1524,13 +1938,7 @@ if [ -z $VE ]; then
     if [ -z "$res" ]; then
         echo $'All packages up to date.'
     else
-        echo ""
-        echo "$res"
-        echo ""
-        echo $'Updating packages...\n'
-        for prog in $res;do
-            pip install --upgrade ${prog%\(*}
-        done
+        echo $res | sed 's/ .*//' | xargs pip install --upgrade
     fi
     pip freeze > ~/dotfiles/installed-programs/pip3-programs.txt
     sed -i -e 's/=.*//' ~/dotfiles/installed-programs/pip3-programs.txt
