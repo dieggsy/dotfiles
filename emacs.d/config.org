@@ -16,20 +16,23 @@ file itself, hence the [[#local-vars][file local variables]]. Also, the optional
 argument of ~org-babel-load-file~ wasn't working for me, so there's that.
 :END:
 
-* Table of contents                                                     :toc:
+* Contents                                                              :toc:
  - [[#intro][Intro]]
  - [[#personal-info][Personal Info]]
  - [[#initial-setup][Initial Setup]]
    - [[#server][Server]]
    - [[#load-path][Load Path]]
    - [[#package-setup][Package setup]]
- - [[#global-settings][Global settings]]
+ - [[#defaults][Defaults]]
    - [[#appearance][Appearance]]
    - [[#messages][Messages]]
    - [[#font][Font]]
    - [[#text][Text]]
    - [[#minibuffer][Minibuffer]]
+   - [[#clipboard][Clipboard]]
    - [[#filebuffersession-handling][File/buffer/session handling]]
+   - [[#tramp][Tramp]]
+   - [[#dired][Dired]]
    - [[#smooth-scroll][Smooth scroll]]
    - [[#tabscompletion][Tabs/completion]]
    - [[#line-positionhighlighting][Line position/highlighting]]
@@ -153,10 +156,9 @@ Byte compile installed packages asynchronously.
 #+begin_src emacs-lisp
 (async-bytecomp-package-mode 1)
 #+end_src
-* Global settings
-Some nice global settings to have. Does away with most uneccessary visuals to
-make emacs behave more like terminal (ish), sets up smooth scrolling, other
-such goodies.
+* Defaults
+Some nice defaults. Does away with most uneccessary visuals, sets up smooth
+scrolling, other such goodies.
 
 ** Appearance
 Get rid of menu bars, scroll bars, startup screens, etc.
@@ -181,7 +183,8 @@ Gui elements
 (menu-bar-mode 0)
 (tool-bar-mode 0)
 (scroll-bar-mode 0)
-(setq custom-raised-buttons nil)
+(setq custom-raised-buttons nil
+      use-dialog-box nil)
 (blink-cursor-mode 0)
 #+end_src
 
@@ -237,6 +240,7 @@ Choose a font if available, in order of preference.
 #+end_src
 ** Text
 #+begin_src emacs-lisp
+(setq-default major-mode 'text-mode)
 (setq default-input-method "TeX")
 
 (setq sentence-end-double-space nil)
@@ -249,23 +253,28 @@ Choose a font if available, in order of preference.
 (setq enable-recursive-minibuffers t
       resize-mini-windows t)
 #+end_src
+** Clipboard
+#+begin_src emacs-lisp
+(setq save-interprogram-paste-before-kill t)
+#+end_src
 ** File/buffer/session handling
 #+begin_src emacs-lisp
 (global-auto-revert-mode t)
-(setq save-interprogram-paste-before-kill t)
 (setq ns-pop-up-frames nil)
 (setq vc-follow-symlinks t)
 
+(setq help-window-select t)
 (add-hook 'before-save-hook 'whitespace-cleanup)
-
-;; ssh
+#+end_src
+** Tramp
+#+begin_src emacs-lisp
 (setq tramp-default-method "ssh"
       password-cache-expiry nil)
-
+#+end_src
+** Dired
+#+begin_src emacs-lisp
 (autoload 'dired-async-mode "dired-async.el" nil t)
 (dired-async-mode 1)
-
-(setq help-window-select t)
 #+end_src
 ** Smooth scroll
 #+begin_src emacs-lisp
@@ -1291,6 +1300,7 @@ based on or copied from spacemacs, so definitely check them out!
     "hk"  'which-key-show-top-level
     "hm"  'man
     "hn"  'view-emacs-news
+    "hs"  'system-name
     "hv"  'version))
 #+end_src
 **** Quit
@@ -2101,6 +2111,7 @@ Like git, for emacs. But cooler.
   :functions (magit-blame-quit)
   :defines (magit-diff-use-overlays)
   :config
+  (define-key magit-mode-map (kbd "SPC") nil)
   (setq magit-diff-use-overlays nil
         auto-revert-check-vc-info t)
 
@@ -2148,8 +2159,6 @@ For the cold winters.
   :quelpa (hacker-typer
            :fetcher github
            :repo "therockmandolinist/emacs-hacker-typer")
-  :init
-  (defalias 'hackerman 'hacker-typer-hackerman)
   :config
   (setq hacker-typer-show-hackerman t)
   (setq hacker-typer-remove-comments t))
