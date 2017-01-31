@@ -286,7 +286,7 @@ brew 'theora'
 brew 'tmux'
 brew 'tmuxinator-completion'
 brew 'todo-txt'
-brew 'tor'
+brew 'tor', restart_service: true
 brew 'trash'
 brew 'unar'
 brew 'unibilium'
