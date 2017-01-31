@@ -1092,7 +1092,7 @@ except:
 :END:
 **** Initialize
 #+begin_src conf
-# set-option -g default-command "reattach-to-user-namespace -l zsh"
+set-option -g default-command "reattach-to-user-namespace -l zsh"
 set -s escape-time 0
 set -g default-terminal "xterm-256color-italic"
 set -g update-environment -r
@@ -1205,9 +1205,9 @@ set -g default-terminal "screen-256color"
 
 # The modes {
 setw -g clock-mode-colour colour135
-setw -g mode-attr bold
-setw -g mode-fg colour196
-setw -g mode-bg colour238
+setw -g mode-attr none
+setw -g mode-fg colour9
+setw -g mode-bg colour237
 
 # }
 # The panes {
@@ -1232,12 +1232,12 @@ set -g status-left-length 20
 setw -g window-status-current-fg colour81
 setw -g window-status-current-bg colour238
 setw -g window-status-current-attr bold
-setw -g window-status-current-format ' #I#[fg=colour250]:#[fg=colour255]#W#[fg=colour50]#F '
+setw -g window-status-current-format ' #I#[fg=colour250]:#[fg=colour015]#W#[fg=colour6]#F '
 
-setw -g window-status-fg colour138
+setw -g window-status-fg colour13
 setw -g window-status-bg colour235
 setw -g window-status-attr none
-setw -g window-status-format ' #I#[fg=colour237]:#[fg=colour250]#W#[fg=colour244]#F '
+setw -g window-status-format ' #I#[fg=colour237]:#[fg=colour007]#W#[fg=colour244]#F '
 
 setw -g window-status-bell-attr bold
 setw -g window-status-bell-fg colour255
@@ -1251,6 +1251,20 @@ set -g message-fg colour232
 set -g message-bg colour166
 
 # }
+#+end_src
+**** Plugins
+#+begin_src conf
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-urlview'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-continuum'
+set -g @continuum-restore 'on'
+
+set -g @plugin 'tmux-plugins/tmux-copycat'
+set -g @plugin 'tmux-plugins/tmux-sidebar'
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'
 #+end_src
 *** tmuxinator-hud
 :PROPERTIES:
@@ -1371,6 +1385,7 @@ setopt autonamedirs
 setopt clobber
 unsetopt correct
 autoload -Uz compinit && compinit -i
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 #+end_src
 **** Initialize and source some things
 [[https://github.com/rupa/z][z]]
@@ -1399,7 +1414,7 @@ bindkey '^[[B' history-substring-search-down
 
 Autosuggestions
 #+begin_src sh
-# source /usr/local/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+# source $HOME/Code/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 # zstyle ':completion:*' list-colors 'di=0;36:ex=0;35:ln=1;31'
 #+end_src
@@ -1430,16 +1445,20 @@ export python3version=3.6.0
 export python2version=2.7.13
 
 export KEYTIMEOUT=1
+export SURFRAW_text_browser=/usr/local/bin/lynx
+# export SURFRAW_graphical=no
 #+end_src
 **** Aliases
 ***** Simple aliases
 #+begin_src sh
 alias cask="brew cask"
 alias cpwd="pwd | tr -d '\n' | pbcopy"
+alias ddg='surfraw duckduckgo -j'
 alias def='dict -d gcide'
 alias ed="ed -p:"
 alias edit="emacsclient -n"
 alias editv="emacsclient -t"
+alias fcolor="spectrum_ls | rg --color=never -N"
 alias filecount="ls -1 | wc -l"
 alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
 if which hub > /dev/null; then alias git=hub; fi
@@ -1524,7 +1543,7 @@ typeset -gU path manpath cdpath fpath
 #+begin_src sh
 export PYTHONSTARTUP=$HOME/.pythonrc.py
 
-export WWW_HOME='http://google.com'
+export WWW_HOME='https://duckduckgo.com'
 export RTV_EDITOR='emacsclient -t'
 export RTV_URLVIEWER='urlview'
 
@@ -1761,31 +1780,44 @@ man() {
 :header-args+: :tangle ~/bin/zfuncs/ocrpdf
 :END:
 #+begin_src sh
-echo "Converting pdf to png..."
-\gs -dNOPAUSE -q -r500 \
-    -sDEVICE=tiffg4 \
-    -dBATCH \
-    -sOutputFile=$TMPDIR/tempocr.tif \
-    $1
-echo "Running tesseract on pngs..."
-tesseract $TMPDIR/tempocr.tif $2 >/dev/null 2>&1
+if [[ -z $1 ]]; then
+    echo "No input file provided."
+elif [[ -z $2 ]]; then
+    echo "No output file provided"
+else
+    echo "Converting pdf to png..."
+    \gs -dNOPAUSE -q -r500 \
+        -sDEVICE=tiffg4 \
+        -dBATCH \
+        -sOutputFile=$TMPDIR/tempocr.tif \
+        $1
+    echo "Running tesseract on pngs..."
+    tesseract $TMPDIR/tempocr.tif $2 >/dev/null 2>&1
+    echo "Done."
+fi
 #+end_src
 **** ocrpdf2
 :PROPERTIES:
 :header-args+: :tangle ~/bin/zfuncs/ocrpdf2
 :END:
 #+begin_src sh
-echo "Converting pdf to png..."
-convert -density 500 $1 $TMPDIR/tempocr.png
-count=0
-echo "Running tesseract on pngs..."
-while [ -f $TMPDIR/tempocr-$count.png ]; do
-    echo "    Page $count"
-    tesseract $TMPDIR/tempocr-$count.png $TMPDIR/tempocr >/dev/null 2>&1
-    cat $TMPDIR/tempocr.txt >> $2
-    let count=count+1
-done
-echo "Created output file $2"
+if [[ -z $1 ]]; then
+    echo "No input file provided."
+elif [[ -z $2 ]]; then
+    echo "No output file provided"
+else
+    echo "Converting pdf to png..."
+    convert -density 500 $1 $TMPDIR/tempocr.png
+    count=0
+    echo "Running tesseract on pngs..."
+    while [ -f $TMPDIR/tempocr-$count.png ]; do
+        echo "    Page $count"
+        tesseract $TMPDIR/tempocr-$count.png $TMPDIR/tempocr >/dev/null 2>&1
+        cat $TMPDIR/tempocr.txt >> $2
+        let count=count+1
+    done
+    echo "Created output file $2"
+fi
 #+end_src
 **** athena
 :PROPERTIES:
