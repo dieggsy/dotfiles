@@ -172,7 +172,7 @@ Time display
 #+begin_src emacs-lisp
 (setq  display-time-24hr-format t
        display-time-default-load-average nil
-       display-time-format "│ %a %d %b %H:%M │"
+       display-time-format "│ %Y-%d-%m %H:%M │"
        display-time-load-average nil)
 
 (display-time-mode)
