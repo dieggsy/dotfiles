@@ -1,3 +1,4 @@
+;;; -*- lexical-binding: t; -*-
 ;;(package-initialize)
 (defconst emacs-start-time (current-time))
 (require 'package)

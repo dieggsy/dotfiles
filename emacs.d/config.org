@@ -16,6 +16,10 @@ file itself, hence the [[#local-vars][file local variables]]. Also, the optional
 argument of ~org-babel-load-file~ wasn't working for me, so there's that.
 :END:
 
+#+begin_src emacs-lisp :comments no
+;;; -*- lexical-binding: t; -*-
+#+end_src
+
 * Contents                                                              :toc:
  - [[#intro][Intro]]
  - [[#personal-info][Personal Info]]
@@ -264,7 +268,7 @@ Choose a font if available, in order of preference.
 (setq vc-follow-symlinks t)
 
 (setq help-window-select t)
-(add-hook 'before-save-hook 'whitespace-cleanup)
+(add-hook 'before-save-hook #'whitespace-cleanup)
 #+end_src
 ** Tramp
 #+begin_src emacs-lisp
@@ -327,7 +331,7 @@ Stolen and original functions and macros.
 (defun diego/copy-file ()
   "Copy file to another location."
   (interactive)
-  (call-interactively 'write-file))
+  (call-interactively #'write-file))
 
 (defun diego/safe-erase-buffer ()
   "Prompt before erasing buffer."
@@ -420,8 +424,8 @@ Stolen and original functions and macros.
              (splitter
               (if (= (car this-win-edges)
                      (car (window-edges (next-window))))
-                  'split-window-horizontally
-                'split-window-vertically)))
+                  #'split-window-horizontally
+                #'split-window-vertically)))
         (delete-other-windows)
         (let ((first-win (selected-window)))
           (funcall splitter)
@@ -860,7 +864,7 @@ drag it up past ARG other lines (down if ARG negative)."
    (list
     (completing-read
      "Program: "
-     (mapcar 'symbol-name zone-programs))))
+     (mapcar #'symbol-name zone-programs))))
   (let ((zone-programs (list (intern pgm))))
     (redisplay)
     (zone)))
@@ -902,12 +906,12 @@ I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard.
   (dolist (key '([?\C-/] [?\C-_] [escape]))
     (define-key map key #'minibuffer-keyboard-quit)))
 
-(global-set-key (kbd "<s-return>") 'toggle-frame-fullscreen)
+(global-set-key (kbd "<s-return>") #'toggle-frame-fullscreen)
 
-(define-key indent-rigidly-map "h" 'indent-rigidly-left)
-(define-key indent-rigidly-map "l" 'indent-rigidly-right)
-(define-key indent-rigidly-map "H" 'indent-rigidly-left-to-tab-stop)
-(define-key indent-rigidly-map "L" 'indent-rigidly-right-to-tab-stop)
+(define-key indent-rigidly-map "h" #'indent-rigidly-left)
+(define-key indent-rigidly-map "l" #'indent-rigidly-right)
+(define-key indent-rigidly-map "H" #'indent-rigidly-left-to-tab-stop)
+(define-key indent-rigidly-map "L" #'indent-rigidly-right-to-tab-stop)
 
 (global-set-key [remap fill-paragraph] #'diego/fill-or-unfill)
 #+end_src
@@ -1006,21 +1010,19 @@ editing. So I went for it. Now I'll never go back.
 ;; Global bindings.
 (defun diego/evil-bindings ()
 
-  (define-key evil-normal-state-map "gc"           'evilnc-comment-operator)
-  (define-key evil-normal-state-map "gy"           'evilnc-copy-and-comment-lines)
-  (define-key evil-insert-state-map (kbd "C-e")    'end-of-line)
-  (define-key evil-normal-state-map (kbd "S-SPC")  'org-agenda-list)
-  (define-key evil-normal-state-map (kbd "<down-mouse-1>")  nil)
-  (define-key evil-normal-state-map (kbd "<mouse-1>")  nil)
+  (define-key evil-normal-state-map "gc"          #'evilnc-comment-operator)
+  (define-key evil-normal-state-map "gy"          #'evilnc-copy-and-comment-lines)
+  (define-key evil-insert-state-map (kbd "C-e")   #'end-of-line)
+  (define-key evil-normal-state-map (kbd "S-SPC") #'org-agenda-list)
 
-  (define-key evil-normal-state-map "-" 'negative-argument)
-  (define-key evil-normal-state-map (kbd "\\") 'ace-window)
+  (define-key evil-normal-state-map "-" #'negative-argument)
+  (define-key evil-normal-state-map (kbd "\\") #'ace-window)
 
   (evil-define-key 'normal custom-mode-map
-    "q" 'Custom-buffer-done)
+    "q" #'Custom-buffer-done)
 
   (evil-define-key 'normal message-mode-map
-    "q" 'diego/switch-to-previous-buffer)
+    "q" #'diego/switch-to-previous-buffer)
 
   (evil-add-hjkl-bindings occur-mode-map 'emacs
     (kbd "/")       'evil-search-forward
@@ -1059,7 +1061,7 @@ editing. So I went for it. Now I'll never go back.
                  [wheel-up]
                  [double-wheel-up]
                  [triple-wheel-up]))
-    (define-key evil-motion-state-map key 'silence)))
+    (define-key evil-motion-state-map key #'silence)))
 
 #+end_src
 **** Setup
@@ -1548,11 +1550,11 @@ A really nice search/completion system for emacs.
   ─────────────────────────
 ")
   (counsel-mode 1)
-  (defalias 'ag 'counsel-ag)
-  (defalias 'locate 'counsel-locate)
+  (defalias 'ag #'counsel-ag)
+  (defalias 'locate #'counsel-locate)
 
   (advice-add
-   'counsel--yank-pop-format-function
+   #'counsel--yank-pop-format-function
    :override
    (lambda (cand-pairs)
      (ivy--format-function-generic
@@ -1812,13 +1814,13 @@ so I went with it.
 #+begin_src emacs-lisp
 (defun diego/org-agenda-config ()
   (setq org-habit-graph-column 50)
-  (define-key org-agenda-mode-map "j"          'org-agenda-next-line)
-  (define-key org-agenda-mode-map "k"          'org-agenda-previous-line)
-  (define-key org-agenda-mode-map "n"          'org-agenda-next-date-line)
-  (define-key org-agenda-mode-map "p"          'org-agenda-previous-date-line)
-  (define-key org-agenda-mode-map "c"          'diego/org-agenda-capture)
-  (define-key org-agenda-mode-map "R"          'org-revert-all-org-buffers)
-  (define-key org-agenda-mode-map (kbd "RET")  'org-agenda-switch-to)
+  (define-key org-agenda-mode-map "j"          #'org-agenda-next-line)
+  (define-key org-agenda-mode-map "k"          #'org-agenda-previous-line)
+  (define-key org-agenda-mode-map "n"          #'org-agenda-next-date-line)
+  (define-key org-agenda-mode-map "p"          #'org-agenda-previous-date-line)
+  (define-key org-agenda-mode-map "c"          #'diego/org-agenda-capture)
+  (define-key org-agenda-mode-map "R"          #'org-revert-all-org-buffers)
+  (define-key org-agenda-mode-map (kbd "RET")  #'org-agenda-switch-to)
 
   (setq-local prettify-symbols-alist
               '(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
@@ -1835,9 +1837,9 @@ so I went with it.
 #+begin_src emacs-lisp
 (defun diego/org-capture-config ()
   (evil-define-key 'insert org-capture-mode-map (kbd "C-d")
-    'diego/org-agenda-toggle-date)
+    #'diego/org-agenda-toggle-date)
   (evil-define-key 'normal org-capture-mode-map (kbd "C-d")
-    'diego/org-agenda-toggle-date)
+    #'diego/org-agenda-toggle-date)
   (evil-insert-state))
 #+end_src
 *** Org config
@@ -1878,9 +1880,9 @@ so I went with it.
   (diego/org-todo-vars)
   (diego/org-general-vars)
   (diego/org-bindings)
-  (add-hook 'org-agenda-mode-hook 'diego/org-agenda-config)
-  (add-hook 'org-capture-mode-hook 'diego/org-capture-config)
-  (add-hook 'org-mode-hook 'diego/org-config)
+  (add-hook 'org-agenda-mode-hook #'diego/org-agenda-config)
+  (add-hook 'org-capture-mode-hook #'diego/org-capture-config)
+  (add-hook 'org-mode-hook #'diego/org-config)
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines)))
 #+end_src
@@ -2532,11 +2534,12 @@ Email!
   :config
   (setq paradox-automatically-star t
         paradox-execute-asynchronously t)
-  (evil-define-key 'normal paradox-menu-mode-map "q" 'paradox-quit-and-close)
-  (evil-define-key 'normal paradox-menu-mode-map "fr" 'paradox-filter-regexp)
-  (evil-define-key 'normal paradox-menu-mode-map "fu" 'paradox-filter-upgrades)
-  (evil-define-key 'normal paradox-menu-mode-map "fs" 'paradox-filter-stars)
-  (evil-define-key 'normal paradox-menu-mode-map "x" 'paradox-menu-execute))
+  (evil-define-key 'normal paradox-menu-mode-map
+    "q" 'paradox-quit-and-close
+    "fr" 'paradox-filter-regexp
+    "fu" 'paradox-filter-upgrades
+    "fs" 'paradox-filter-stars
+    "x" 'paradox-menu-execute))
 #+end_src
 *** [[https://github.com/iqbalansari/restart-emacs][restart-emacs]]
 #+begin_quote
@@ -2584,7 +2587,7 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
 (use-package csv-mode
   :mode "\\.csv\\'"
   :config
-  (add-hook 'csv-mode-hook 'csv-align-fields))
+  (add-hook 'csv-mode-hook #'csv-align-fields))
 #+end_src
 *** [[https://github.com/defunkt/markdown-mode][markdown-mode]]
 Syntax highlighting for markdown files.
@@ -2799,7 +2802,7 @@ Supposedly better than autocomplete.
   :demand t
   :config
   (global-git-gutter-mode)
-  (add-hook 'focus-in-hook 'git-gutter:update-all-windows)
+  (add-hook 'focus-in-hook #'git-gutter:update-all-windows)
   (fringe-helper-define 'git-gutter-fr:modified nil
     ".....X.."
     ".....X.."
@@ -2973,14 +2976,14 @@ Pretty neat, though not entirely complete, IMO.
         ranger-cleanup-eagerly t
         ranger-parent-depth 0)
 
-  (fmakunbound 'ranger-travel)
+  (fmakunbound #'ranger-travel)
   (defun ranger-travel ()
     "Open a file or go to a directory in current buffer."
     (interactive)
     (cond
      ((featurep 'ivy)
       (counsel-find-file default-directory))
-     (t (call-interactively 'ido-find-file))))
+     (t (call-interactively #'ido-find-file))))
 
   (defun diego/deer (arg)
     (interactive "P")
@@ -3028,7 +3031,7 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 (use-package toc-org
   :after org
   :config
-  (add-hook 'org-mode-hook 'toc-org-enable))
+  (add-hook 'org-mode-hook #'toc-org-enable))
 #+end_src
 *** [[https://github.com/myuhe/org-gcal.el][org-gcal]]
 #+begin_quote
@@ -3192,7 +3195,7 @@ Configuration that applies to all programming modes.
   (setq-local calc-embedded-close-mode (concat comment-end "\n"))
   (hl-line-mode 1))
 
-(add-hook 'prog-mode-hook 'diego/setup-prog-mode)
+(add-hook 'prog-mode-hook #'diego/setup-prog-mode)
 #+end_src
 ** Python
 #+begin_src emacs-lisp
@@ -3219,24 +3222,24 @@ Configuration that applies to all programming modes.
   (setq-local prettify-symbols-alist
               diego/python-prettify-alist))
 
-(add-hook 'python-mode-hook 'diego/setup-python-mode)
+(add-hook 'python-mode-hook #'diego/setup-python-mode)
 #+end_src
 ** Matlab
 #+begin_src emacs-lisp
 (defun diego/setup-matlab-mode ()
   (diego/setup-prog-mode)
   (highlight-numbers-mode 0))
-(add-hook 'matlab-mode-hook 'diego/setup-matlab-mode)
+(add-hook 'matlab-mode-hook #'diego/setup-matlab-mode)
 #+end_src
 ** Emacs-Lisp
 #+begin_src emacs-lisp
 (defun diego/setup-lisp-mode ()
   (hs-minor-mode)
   (aggressive-indent-mode)
-  (local-set-key (kbd "C-c <up>") 'hs-hide-all)
-  (local-set-key (kbd "C-c <down>") 'hs-show-all)
-  (local-set-key (kbd "C-c <left>") 'hs-hide-block)
-  (local-set-key (kbd "C-c <right>") 'hs-show-block)
+  (local-set-key (kbd "C-c <up>") #'hs-hide-all)
+  (local-set-key (kbd "C-c <down>") #'hs-show-all)
+  (local-set-key (kbd "C-c <left>") #'hs-hide-block)
+  (local-set-key (kbd "C-c <right>") #'hs-show-block)
   ;; (highlight-defined-mode)
 
   (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
@@ -3246,16 +3249,16 @@ Configuration that applies to all programming modes.
       "er" 'eval-region
       "es" 'eval-last-sexp)))
 
-(add-hook 'emacs-lisp-mode-hook 'diego/setup-lisp-mode)
-(add-hook 'lisp-interaction-mode-hook 'diego/setup-lisp-mode)
+(add-hook 'emacs-lisp-mode-hook #'diego/setup-lisp-mode)
+(add-hook 'lisp-interaction-mode-hook #'diego/setup-lisp-mode)
 #+end_src
 
 ** Term mode
 #+begin_src emacs-lisp
 (defun diego/setup-term-mode ()
   (setq-local yas-dont-activate-functions t)
-  (local-set-key (kbd "<C-tab>") 'multi-term-next))
-(add-hook 'term-mode-hook 'diego/setup-term-mode)
+  (local-set-key (kbd "<C-tab>") #'multi-term-next))
+(add-hook 'term-mode-hook #'diego/setup-term-mode)
 #+end_src
 ** Eshell
 #+begin_src emacs-lisp
@@ -3274,7 +3277,7 @@ Configuration that applies to all programming modes.
   (local-set-key (kbd "x") (lambda () (interactive) (counsel-M-x "^calc-")))
   (calc-symbolic-mode 1))
 
-(add-hook 'calc-mode-hook 'diego/setup-calc-mode)
+(add-hook 'calc-mode-hook #'diego/setup-calc-mode)
 #+end_src
 *** Custom vars and funcs
 #+begin_src emacs-lisp
@@ -3288,7 +3291,7 @@ Configuration that applies to all programming modes.
 #+begin_src emacs-lisp
 (defun diego/setup-c-mode ()
   (aggressive-indent-mode))
-(add-hook 'c-mode-hook 'diego/setup-c-mode)
+(add-hook 'c-mode-hook #'diego/setup-c-mode)
 #+end_src
 ** Gnus
 #+begin_src emacs-lisp
