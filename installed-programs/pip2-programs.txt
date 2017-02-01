@@ -7,7 +7,9 @@ backports.shutil-get-terminal-size
 backports.ssl-match-hostname
 beautifulsoup4
 certifi
+cffi
 configparser
+cryptography
 cycler
 Cython
 decorator
@@ -26,7 +28,9 @@ google-api-python-client
 greenlet
 html2text
 httplib2
+idna
 importmagic
+ipaddress
 ipython
 ipython-genutils
 jedi
@@ -51,6 +55,7 @@ parsedatetime
 path.py
 pathlib2
 pbr
+pefile
 pep8
 pexpect
 pickleshare
@@ -65,11 +70,14 @@ ptyprocess
 pyasn1
 pyasn1-modules
 pycodestyle
+pycparser
 pycrest
+pycrypto
 pyfiglet
 pyflakes
 pyglet
 Pygments
+pyOpenSSL
 pyparsing
 PySocks
 pytesseract

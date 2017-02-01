@@ -3,6 +3,7 @@ alabaster
 appdirs
 appnope
 arrow
+ascii-graph
 asciimatics
 astroid
 autopep8
@@ -26,6 +27,7 @@ dict.cc.py
 docutils
 dropbox
 elasticsearch
+elpy
 entrypoints
 enum34
 epc
@@ -115,6 +117,7 @@ ptyprocess
 pyasn1
 pyasn1-modules
 pycodestyle
+pycrypto
 pyexcel
 pyexcel-io
 pyfiglet
@@ -123,6 +126,7 @@ pyglet
 Pygments
 pylint
 pync
+pyOpenSSL
 pyparsing
 pyPdf
 pyquery
@@ -161,8 +165,10 @@ terminado
 testpath
 texttable
 tornado
+tqdm
 traitlets
 translate
+tweepy
 twitter
 typing
 update-checker
