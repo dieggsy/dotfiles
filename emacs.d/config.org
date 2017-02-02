@@ -869,6 +869,26 @@ drag it up past ARG other lines (down if ARG negative)."
   (interactive)
   (paradox-upgrade-packages)
   (quelpa-upgrade))
+
+(defun diego/iterm-go-here ()
+  (interactive)
+  (call-process-shell-command
+   (concat  "tmux select-window -t hud:shell && "
+            (format "tmux send-keys -t hud:shell 'cd %s' enter && "
+                    (shell-quote-argument (or default-directory "~")))
+            "open -a iTerm") nil 0))
+
+(defun diego/wiki ()
+  (interactive)
+  (let ((input (read-from-minibuffer "Wiki search: ")))
+    (with-output-to-temp-buffer "*wiki*"
+      (princ (shell-command-to-string (format "wiki -w 80 %s" input))))
+    (with-current-buffer "*wiki*"
+      (read-only-mode 0)
+      (ansi-color-apply-on-region (point-min) (point-max))
+      (goto-address-mode)
+      (read-only-mode)))
+  (other-window))
 #+end_src
 ** Keyboard Macros
 #+begin_src emacs-lisp
