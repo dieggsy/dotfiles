@@ -1257,9 +1257,9 @@ set -g message-bg colour166
 # List of plugins
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-urlview'
-set -g @plugin 'tmux-plugins/tmux-resurrect'
-set -g @plugin 'tmux-plugins/tmux-continuum'
-set -g @continuum-restore 'on'
+# set -g @plugin 'tmux-plugins/tmux-resurrect'
+# set -g @plugin 'tmux-plugins/tmux-continuum'
+# set -g @continuum-restore 'on'
 
 set -g @plugin 'tmux-plugins/tmux-copycat'
 set -g @plugin 'tmux-plugins/tmux-sidebar'
@@ -1274,7 +1274,6 @@ run '~/.tmux/plugins/tpm/tpm'
 # ~/.tmuxinator/hud.yml
 
 name: hud
-root: ~/
 
 windows:
   - shell:
@@ -1285,7 +1284,7 @@ windows:
         - rainbowstream
   - social:
       layout: even-horizontal
-      -panes:
+      panes:
         - weechat
         - cmus
   - ipython: ipython
@@ -1299,7 +1298,6 @@ windows:
 # ~/.tmuxinator/awesome.yml
 
 name: awesome
-root: ~/
 
 windows:
   - shell:
@@ -1837,6 +1835,20 @@ for code in {000..255}; do
   print -P -- "$code: %F{$code}$code%f"
 done
 #+end_src
+**** pixelate
+:PROPERTIES:
+:header-args+: :tangle ~/bin/zfuncs/pixelate
+:END:
+#+begin_src sh
+AMOUNT=$(echo "1.001 - $1" | bc -l)
+INFILE=$2
+OUFILE=$3
+
+COEFF1=$(echo "100 * $AMOUNT" | bc -l)
+COEFF2=$(echo "100 / $AMOUNT" | bc -l)
+
+convert -scale $COEFF1% -scale $COEFF2% $INFILE $OUFILE
+#+end_src
 * Scripts
 ** masterinstall
 :PROPERTIES:
@@ -1948,12 +1960,12 @@ if [ -z $VE ]; then
     echo -e "\e[1;34mUpdating: \e[91mpip2\e[0;97m"
     IFS=$'\n'
     echo  $'Getting outdated pip2 packages...'
-    res=$(pip list -o --format=legacy)
+    res=$(pip list -o --format=legacy | sed 's/ .*//')
 
     if [ -z "$res" ]; then
         echo $'All packages up to date.'
     else
-        echo $res | sed 's/ .*//' | xargs pip install --upgrade
+        echo $res | xargs pip install --upgrade
     fi
     pip freeze > ~/dotfiles/installed-programs/pip2-programs.txt
     sed -i -e 's/=.*//' ~/dotfiles/installed-programs/pip2-programs.txt
@@ -1965,12 +1977,12 @@ if [ -z $VE ]; then
     echo -e "\n\e[1;34mUpdating: \e[91mpip3\e[0;97m"
     IFS=$'\n'
     echo  $'Getting outdated pip3 packages...'
-    res=$(pip list -o --format=legacy)
+    res=$(pip list -o --format=legacy | sed 's/ .*//')
 
     if [ -z "$res" ]; then
         echo $'All packages up to date.'
     else
-        echo $res | sed 's/ .*//' | xargs pip install --upgrade
+        echo $res | sed 's/requests//' | xargs pip install --upgrade
     fi
     pip freeze > ~/dotfiles/installed-programs/pip3-programs.txt
     sed -i -e 's/=.*//' ~/dotfiles/installed-programs/pip3-programs.txt
