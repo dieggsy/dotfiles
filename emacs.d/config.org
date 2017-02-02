@@ -878,17 +878,27 @@ drag it up past ARG other lines (down if ARG negative)."
                     (shell-quote-argument (or default-directory "~")))
             "open -a iTerm") nil 0))
 
-(defun diego/wiki ()
-  (interactive)
-  (let ((input (read-from-minibuffer "Wiki search: ")))
+(defun diego/wiki (arg)
+  (interactive "P")
+  (let ((input (shell-quote-argument
+                (read-string
+                 (concat "Search wiki ["
+                         (if (region-active-p)
+                             (buffer-substring (region-beginning) (region-end))
+                           (thing-at-point 'word)) "]: ")
+
+                 nil nil
+                 (thing-at-point 'word)))))
     (with-output-to-temp-buffer "*wiki*"
-      (princ (shell-command-to-string (format "wiki -w 80 %s" input))))
+      (princ (shell-command-to-string (concat "wiki -w 80 "
+                                              (if arg "-short " "")
+                                              (format "%s" input)))))
     (with-current-buffer "*wiki*"
       (read-only-mode 0)
       (ansi-color-apply-on-region (point-min) (point-max))
       (goto-address-mode)
-      (read-only-mode)))
-  (other-window))
+      (read-only-mode))
+    (other-window 1)))
 #+end_src
 ** Keyboard Macros
 #+begin_src emacs-lisp
@@ -1103,14 +1113,14 @@ based on or copied from spacemacs, so definitely check them out!
 #+begin_src emacs-lisp
 (defun diego/leader-search ()
   (diego/set-leader-keys
-    "sa" 'counsel-ag
     "sS" 'swiper-all
     "sm" 'swiper-multi
     "sw" 'diego/define-word
     "sg" 'google-this-search
     "sd" 'ddg-this-search
+    "sk" 'diego/wiki
     "sr" 'counsel-rg
-    "ss"  'swiper))
+    "ss" 'swiper))
 #+end_src
 **** Projects
 #+begin_src emacs-lisp
@@ -3105,6 +3115,7 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 #+begin_src emacs-lisp
 (use-package google-this
   :functions (google-this--maybe-wrap-in-quotes)
+  :commands ddg-this-search
   :config
   (defun ddg-this-parse-and-search-string (text prefix &optional search-url)
     "Convert illegal characters in TEXT to their %XX versions, and then duckduckgo.
