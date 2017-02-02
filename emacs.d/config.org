@@ -899,6 +899,12 @@ drag it up past ARG other lines (down if ARG negative)."
       (goto-address-mode)
       (read-only-mode))
     (other-window 1)))
+
+(defun diego/ret ()
+  (interactive)
+  (cond ((thing-at-point 'url) (goto-address-at-point))
+        ((eq major-mode 'org-mode) (org-open-at-point))
+        (t (evil-ret))))
 #+end_src
 ** Keyboard Macros
 #+begin_src emacs-lisp
@@ -1033,6 +1039,7 @@ editing. So I went for it. Now I'll never go back.
 
   (define-key evil-normal-state-map "gc"          #'evilnc-comment-operator)
   (define-key evil-normal-state-map "gy"          #'evilnc-copy-and-comment-lines)
+  (define-key evil-normal-state-map (kbd "RET")   #'diego/ret)
   (define-key evil-insert-state-map (kbd "C-e")   #'end-of-line)
   (define-key evil-normal-state-map (kbd "S-SPC") #'org-agenda-list)
 
