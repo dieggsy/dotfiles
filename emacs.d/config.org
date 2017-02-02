@@ -1361,11 +1361,17 @@ based on or copied from spacemacs, so definitely check them out!
   (defvar diego-evil-leader-key "SPC"
     "Evil leader key.")
 
-  (defvar diego-default-map (make-sparse-keymap)
-    "Base keymap for all spacemacs leader key commands.")
+  (defvar diego-alt-evil-leader-key (concat "C-" diego-evil-leader-key)
+    "Evil leader key for insert and emacs modes.")
 
   (defvar diego-major-mode-leader-key ","
     "Major mode leader key.")
+
+  (defvar diego-alt-major-mode-leader-key (concat "C-" diego-major-mode-leader-key)
+    "Major mode leader key.")
+
+  (defvar diego-default-map (make-sparse-keymap)
+    "Base keymap for all spacemacs leader key commands.")
 
   (bind-map diego-default-map
     ;; :keys ("M-m")
@@ -1374,7 +1380,7 @@ based on or copied from spacemacs, so definitely check them out!
 
   (bind-map diego-default-map
     ;; :keys ("M-m")
-    :evil-keys ((concat "C-" diego-evil-leader-key))
+    :evil-keys (diego-alt-evil-leader-key)
     :evil-states (insert emacs))
 
   (defun diego/set-leader-keys (key def &rest bindings)
@@ -1406,7 +1412,10 @@ If MODE is a minor-mode, the third argument should be non nil."
     (let* ((prefix (intern (format "%s-prefix" map)))
            (leader1 diego-major-mode-leader-key)
            (leader2 (concat diego-evil-leader-key " m"))
-           (leaders (delq nil (list leader1 leader2))))
+           (leaders (delq nil (list leader1 leader2)))
+           (alt-leader1 diego-alt-major-mode-leader-key)
+           (alt-leader2 (concat diego-alt-evil-leader-key " m"))
+           (alt-leaders (delq nil (list alt-leader1 alt-leader2))))
       (or (boundp prefix)
           (progn
             (eval
@@ -1415,6 +1424,12 @@ If MODE is a minor-mode, the third argument should be non nil."
                 ,(if minor :minor-modes :major-modes) (,mode)
                 :evil-keys ,leaders
                 :evil-states (normal motion visual)))
+            (eval
+             `(bind-map ,map
+                :prefix-cmd ,prefix
+                ,(if minor :minor-modes :major-modes) (,mode)
+                :evil-keys ,alt-leaders
+                :evil-states (insert emacs)))
             (boundp prefix)))))
 
   (defun diego/set-leader-keys-for-major-mode (mode key def &rest bindings)
@@ -2051,7 +2066,8 @@ sequence. NAME is a string used as the prefix command.
 LONG-NAME if given is stored in `spacemacs/prefix-titles'."
     (while prefix
       (which-key-add-key-based-replacements
-        (concat diego-evil-leader-key " " prefix) name)
+        (concat diego-evil-leader-key " " prefix) name
+        (concat diego-alt-evil-leader-key " " prefix) name)
       (setq prefix (pop more) name (pop more))))
   (put 'diego/declare-prefix 'lisp-indent-function 'defun)
 
@@ -2062,7 +2078,9 @@ LONG-NAME if given is stored in `spacemacs/prefix-titles'."
     (while prefix
       (which-key-add-major-mode-key-based-replacements mode
         (concat diego-evil-leader-key " m" prefix) name
-        (concat diego-major-mode-leader-key prefix) name)
+        (concat diego-major-mode-leader-key " " prefix) name
+        (concat diego-alt-evil-leader-key " m" prefix) name
+        (concat diego-alt-major-mode-leader-key " " prefix) name)
       (setq prefix (pop more) name (pop more))))
   (put 'diego/declare-prefix-for-major-mode 'lisp-indent-function 'defun)
 
@@ -2107,7 +2125,7 @@ LONG-NAME if given is stored in `spacemacs/prefix-titles'."
 
   (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
     (diego/declare-prefix-for-major-mode mode
-      "SPC me" "eval"))
+      "e" "eval"))
 
   (setq which-key-sort-order 'which-key-key-order-alpha)
   (setq which-key-sort-uppercase-first nil))
