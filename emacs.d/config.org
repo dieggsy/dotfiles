@@ -847,15 +847,6 @@ drag it up past ARG other lines (down if ARG negative)."
                                  rec-or-lec ".org" )))
               :caller 'diego/class-notes)))
 
-(defun diego/toggle-linum-fci ()
-  (interactive)
-  (cond ((and (eq nlinum-mode t) (eq fci-mode t))
-         (nlinum-mode -1)
-         (fci-mode -1))
-        ((and (eq nlinum-mode nil) (eq fci-mode nil))
-         (nlinum-mode 1)
-         (fci-mode 1))))
-
 (eval-when-compile
   (defvar zone-programs))
 (defun diego/zone-choose (pgm)
@@ -2005,7 +1996,7 @@ _p_rev     match and _P_rev
   (setq flycheck-mode nil)
   (defhydra hydra-toggle (:color pink)
     "
-_a_ abbrev:              %-3s`abbrev-mode   _c_ linum-fci
+_a_ abbrev:              %-3s`abbrev-mode
 _i_ aggressive-indent:   %-3s`aggressive-indent-mode   _l_ nlinum:              %-3s`nlinum-mode
 _f_ fci:                 %-3s`fci-mode   _r_ nlinum-relative:     %-3s`nlinum-relative-mode
 _s_ flycheck:            %-3s`flycheck-mode   _p_ smartparens:         %-3s`smartparens-mode
@@ -2013,7 +2004,6 @@ _S_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 "
     ("a" abbrev-mode nil)
     ("i" aggressive-indent-mode nil)
-    ("c" diego/toggle-linum-fci nil)
     ("f" fci-mode nil)
     ("l" nlinum-mode nil)
     ("p" smartparens-mode nil)
