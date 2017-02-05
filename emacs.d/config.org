@@ -1510,6 +1510,8 @@ A really nice search/completion system for emacs.
               ivy-previous-history-element
               ivy-next-history-element
               ivy-immediate-done)
+  :init
+  (setq ivy-do-completion-in-region nil)
   :config
   (ivy-mode 1)
   (define-key ivy-minibuffer-map [escape] #'keyboard-escape-quit)
@@ -2781,7 +2783,21 @@ Freakin yasnippet. It's the best.
 #+end_quote
 Supposedly better than autocomplete.
 #+begin_src emacs-lisp
-(use-package company)
+(use-package company
+  :defer 10
+  :init
+  (setq company-minimum-prefix-length 2
+        company-selection-wrap-around t
+        company-dabbrev-char-regexp "\\sw\\|\\s_\\|[-_]")
+  :config
+  (define-key company-active-map [tab] 'company-complete-common-or-cycle)
+  (defun company-mode/backend-with-yas (backend)
+    (if (and (listp backend) (member 'company-yasnippet backend))
+        backend
+      (append (if (consp backend) backend (list backend))
+              '(:with company-yasnippet))))
+  (setq company-backends (mapcar #'company-mode/backend-with-yas company-backends))
+  (global-company-mode t))
 
 (use-package company-anaconda
   :after company)
@@ -3211,7 +3227,6 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 Configuration that applies to all programming modes.
 #+begin_src emacs-lisp
 (defun diego/setup-prog-mode ()
-  (company-mode)
   (subword-mode)
   (highlight-parentheses-mode 1)
   (rainbow-delimiters-mode)
@@ -3233,7 +3248,8 @@ Configuration that applies to all programming modes.
   (set (make-local-variable 'comment-inline-offset) 2)
   (anaconda-mode)
   (anaconda-eldoc-mode)
-  (add-to-list 'company-backends 'company-anaconda)
+  (add-to-list 'company-backends
+               (company-mode/backend-with-yas 'company-anaconda))
   (defvar diego/python-prettify-alist
     '(("<=" . "≤")
       (">=" . "≥")
