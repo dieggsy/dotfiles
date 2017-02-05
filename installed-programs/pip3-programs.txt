@@ -24,6 +24,7 @@ daft
 data
 decorator
 dict.cc.py
+docopt
 docutils
 dropbox
 elasticsearch
@@ -127,6 +128,7 @@ Pygments
 pylint
 pync
 pyOpenSSL
+pypandoc
 pyparsing
 pyPdf
 pyquery
