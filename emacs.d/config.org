@@ -880,6 +880,18 @@ Otherwise, executes `evil-ret'."
          (unless (ignore-errors (or (org-open-at-point) t))
            (evil-ret)))
         (t (evil-ret))))
+
+(defun eval-surrounding-sexp (levels)
+  (interactive "p")
+  (save-excursion
+    (up-list (abs levels))
+    (eval-last-sexp nil)))
+
+(defun eval-next-sexp ()
+  (interactive)
+  (save-excursion
+    (forward-sexp)
+    (eval-last-sexp nil)))
 #+end_src
 ** Keyboard Macros
 #+begin_src emacs-lisp
@@ -3287,7 +3299,8 @@ Configuration that applies to all programming modes.
       "eb" 'eval-buffer
       "ef" 'eval-defun
       "er" 'eval-region
-      "es" 'eval-last-sexp)))
+      "es" 'eval-surrounding-sexp
+      "el" 'eval-last-sexp)))
 
 (add-hook 'emacs-lisp-mode-hook #'diego/setup-lisp-mode)
 (add-hook 'lisp-interaction-mode-hook #'diego/setup-lisp-mode)
