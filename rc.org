@@ -1476,7 +1476,7 @@ alias printers="lpstat -p | awk '{print $2}'"
 alias resetb="source ~/.zshrc"
 alias resetwifi="networksetup -setairportpower en0 off; sleep 2;"\
 "networksetup -setairportpower en0 on"
-alias rg="rg -i"
+alias rg="rg -i -g '!archive-contents'"
 alias sm=". ~/bin/switchmacs"
 alias starwars="telnet towel.blinkenlights.nl" # heh
 alias sudo='sudo '                             # recognize aliases
@@ -1485,13 +1485,13 @@ alias wiki="wiki -w 80"
 #+end_src
 ***** Function "aliases"
 #+begin_src sh
-ff() { find . -type f -iname *"$1"* }
+ff() { find . -type f -iname "*$1*" }
 
-fd() { find . -type d -iname *"$1"* }
+fd() { find . -type d -iname "*$1*" }
 
-f() { find . -iname *"$1"* }
+f() { find . -iname "*$1*" }
 
-fsz() { find ./ -iname $1 -exec du {} + | sort }
+fsz() { find ./ -iname "*$1*" -exec du {} + | sort }
 
 # View only mode in emacs
 ev() { emacsclient -n --eval "(find-file-read-only \"$1\")" }
