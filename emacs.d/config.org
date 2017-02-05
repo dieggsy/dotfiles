@@ -158,7 +158,8 @@ Add [[./lisp][lisp]] directory and subdirectories to ~load-path~ and ~custom-the
 
 Byte compile installed packages asynchronously.
 #+begin_src emacs-lisp
-(async-bytecomp-package-mode 1)
+(with-eval-after-load 'async-bytecomp
+  (async-bytecomp-package-mode 1))
 #+end_src
 * Defaults
 Some nice defaults. Does away with most uneccessary visuals, sets up smooth
@@ -277,8 +278,9 @@ Choose a font if available, in order of preference.
 #+end_src
 ** Dired
 #+begin_src emacs-lisp
-(autoload 'dired-async-mode "dired-async.el" nil t)
-(dired-async-mode 1)
+(with-eval-after-load 'dired-async
+  (autoload 'dired-async-mode "dired-async.el" nil t)
+  (dired-async-mode 1))
 #+end_src
 ** Smooth scroll
 #+begin_src emacs-lisp
@@ -1091,7 +1093,6 @@ editing. So I went for it. Now I'll never go back.
   (setq evil-want-C-u-scroll t
         evil-want-fine-undo t
         evil-search-module 'evil-search
-        evil-ex-search-persistent-highlight nil
         evil-lookup-func (lambda () (man (thing-at-point 'word))))
   :config
   (diego/evil-modes)
