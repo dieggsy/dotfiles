@@ -860,10 +860,6 @@ drag it up past ARG other lines (down if ARG negative)."
     (redisplay)
     (zone)))
 
-(defun silence ()
-  "Dummy function that does nothing."
-  (interactive))
-
 (defun updates ()
   "Run `paradox-upgrade-packages' and  `quelpa-upgrade'."
   (interactive)
@@ -878,32 +874,17 @@ drag it up past ARG other lines (down if ARG negative)."
                     (shell-quote-argument (or default-directory "~")))
             "open -a iTerm") nil 0))
 
-(defun diego/wiki (arg)
-  (interactive "P")
-  (let ((input (shell-quote-argument
-                (read-string
-                 (concat "Search wiki ["
-                         (if (region-active-p)
-                             (buffer-substring (region-beginning) (region-end))
-                           (thing-at-point 'word)) "]: ")
-
-                 nil nil
-                 (thing-at-point 'word)))))
-    (with-output-to-temp-buffer "*wiki*"
-      (princ (shell-command-to-string (concat "wiki -w 80 "
-                                              (if arg "-short " "")
-                                              (format "%s" input)))))
-    (with-current-buffer "*wiki*"
-      (read-only-mode 0)
-      (ansi-color-apply-on-region (point-min) (point-max))
-      (goto-address-mode)
-      (read-only-mode))
-    (other-window 1)))
-
 (defun diego/ret ()
+  "Dwim return key binding.
+
+If url at point, opens url with `goto-address-at-point'.
+If in org-mode, calls `org-open-at-point'.
+Otherwise, executes `evil-ret'."
   (interactive)
   (cond ((thing-at-point 'url) (goto-address-at-point))
-        ((eq major-mode 'org-mode) (org-open-at-point))
+        ((eq major-mode 'org-mode)
+         (unless (ignore-errors (or (org-open-at-point) t))
+           (evil-ret)))
         (t (evil-ret))))
 #+end_src
 ** Keyboard Macros
@@ -1036,10 +1017,10 @@ editing. So I went for it. Now I'll never go back.
 #+begin_src emacs-lisp
 ;; Global bindings.
 (defun diego/evil-bindings ()
-
   (define-key evil-normal-state-map "gc"          #'evilnc-comment-operator)
   (define-key evil-normal-state-map "gy"          #'evilnc-copy-and-comment-lines)
   (define-key evil-normal-state-map (kbd "RET")   #'diego/ret)
+  (define-key evil-motion-state-map (kbd "RET")   #'diego/ret)
   (define-key evil-insert-state-map (kbd "C-e")   #'end-of-line)
   (define-key evil-normal-state-map (kbd "S-SPC") #'org-agenda-list)
 
@@ -1077,6 +1058,7 @@ editing. So I went for it. Now I'll never go back.
 
   (dolist (key '([mouse-1]
                  [down-mouse-1]
+                 [drag-mouse-1]
                  [wheel-right]
                  [double-wheel-right]
                  [triple-wheel-right]
@@ -1089,7 +1071,7 @@ editing. So I went for it. Now I'll never go back.
                  [wheel-up]
                  [double-wheel-up]
                  [triple-wheel-up]))
-    (define-key evil-motion-state-map key #'silence)))
+    (define-key evil-motion-state-map key #'ignore)))
 
 #+end_src
 **** Setup
@@ -1735,7 +1717,7 @@ so I went with it.
     "'" 'org-edit-src-exit)
 
   (evil-define-key 'normal org-mode-map
-    (kbd "RET") 'org-open-at-point
+    (kbd "RET") 'diego/ret
     "<"         'org-metaleft
     ">"         'org-metaright
     "gh"        'outline-up-heading
@@ -1822,7 +1804,9 @@ so I went with it.
         org-M-RET-may-split-line nil
         org-list-use-circular-motion t
         org-log-into-drawer t
-        org-link-search-must-match-exact-headline nil)
+        org-link-search-must-match-exact-headline nil
+        org-confirm-elisp-link-function 'y-or-n-p
+        org-confirm-elisp-link-not-regexp "(wiki-search.*?)")
 
   ;; appearance
   (setq org-src-fontify-natively t
