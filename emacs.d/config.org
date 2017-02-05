@@ -319,15 +319,6 @@ Stolen and original functions and macros.
       (org-edit-src-save)
     (save-buffer)))
 
-(defun diego/delete-this-file ()
-  "Delete the current file, and kill the buffer."
-  (interactive)
-  (or (buffer-file-name) (error "No file is currently being edited"))
-  (when (yes-or-no-p (format "Really delete '%s'?"
-                             (file-name-nondirectory buffer-file-name)))
-    (delete-file (buffer-file-name))
-    (kill-this-buffer)))
-
 (defun diego/copy-file ()
   "Copy file to another location."
   (interactive)
@@ -1046,8 +1037,8 @@ editing. So I went for it. Now I'll never go back.
     (kbd "C-w C-w") 'other-window)
 
   ;; Make escape and C-/ quit everything, whenever possible.
-  (define-key evil-insert-state-map [?\C-/] #'evil-normal-state)
   (define-key evil-insert-state-map [?\C-_] #'evil-normal-state)
+  (define-key evil-insert-state-map [?\C-/] #'evil-normal-state)
 
   (define-key evil-replace-state-map [?\C-_] #'evil-normal-state)
   (define-key evil-replace-state-map [?\C-/] #'evil-normal-state)
@@ -1227,7 +1218,7 @@ based on or copied from spacemacs, so definitely check them out!
     "fr"  'crux-rename-file-and-buffer
     "fpt" 'diego/pop-to-org-todo
     "fpn" 'diego/pop-to-org-notes
-    "fD"  'move-file-to-trash))
+    "fd"  'crux-delete-file-and-buffer))
 #+end_src
 **** Editing
 #+begin_src emacs-lisp
@@ -2790,7 +2781,8 @@ Supposedly better than autocomplete.
 (use-package company
   :defer 10
   :init
-  (setq company-minimum-prefix-length 2
+  (setq company-idle-delay 0.3
+        company-minimum-prefix-length 1
         company-selection-wrap-around t
         company-dabbrev-char-regexp "\\sw\\|\\s_\\|[-_]")
   :config
@@ -3005,9 +2997,7 @@ Pretty neat, though not entirely complete, IMO.
         '("TAGS"
           ".DS_Store"))
   (setq projectile-ignored-projects
-        '("/usr/local"
-          "~/dotfiles/config/emacs.d/lisp/Gnugol"
-          "~/dotfiles/config/emacs.d/lisp/matlab-emacs"))
+        '("/usr/local"))
   (projectile-mode))
 #+end_src
 *** [[https://github.com/ralesi/ranger.el][ranger]]
