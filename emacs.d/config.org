@@ -2043,16 +2043,16 @@ _p_rev     match and _P_rev
     "
 _a_ abbrev:              %-3s`abbrev-mode
 _i_ aggressive-indent:   %-3s`aggressive-indent-mode   _l_ nlinum:              %-3s`nlinum-mode
-_f_ fci:                 %-3s`fci-mode   _r_ nlinum-relative:     %-3s`nlinum-relative-mode
+_f_ fci:                 %-3s`fci-mode
 _s_ flycheck:            %-3s`flycheck-mode   _p_ smartparens:         %-3s`smartparens-mode
 _S_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`global-whitespace-mode
 "
     ("a" abbrev-mode nil)
     ("i" aggressive-indent-mode nil)
     ("f" fci-mode nil)
-    ("l" nlinum-mode nil)
+    ("l" linum-mode nil)
     ("p" smartparens-mode nil)
-    ("r" nlinum-relative-mode nil)
+    ;; ("r" nlinum-relative-mode nil)
     ("s" flycheck-mode nil)
     ("S" flyspell-mode nil)
     ("w" global-whitespace-mode nil)
@@ -2269,7 +2269,7 @@ A speed reading mode for Emacs.
 
 *** zone-matrix
 Eh, why not.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package zone-matrix
   :config
   (with-eval-after-load 'zone
@@ -2941,12 +2941,10 @@ imenu on steroids.
 #+begin_quote
   Emacs relative line number besed on nlinum-mode
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package nlinum-relative
-  :defer 5
   :disabled t
   :config
-  (nlinum-relative-setup-evil)
   (setq nlinum-relative-redisplay-delay 0))
 #+end_src
 *** [[https://github.com/proofit404/pyenv-mode][pyenv-mode]]
@@ -3243,7 +3241,7 @@ Configuration that applies to all programming modes.
   (goto-address-prog-mode)
   (fci-mode)
   (highlight-numbers-mode)
-  (nlinum-relative-mode 1)
+  (linum-mode 1)
   (auto-fill-mode 1)
   (setq-local comment-auto-fill-only-comments t)
   (setq-local calc-embedded-open-mode (concat comment-start " "))
