@@ -2377,6 +2377,10 @@ I was looking for something with the nice look and simplicity of
   :config
   (global-disable-mouse-mode))
 #+end_src
+*** [[https://github.com/jschaf/esup][esup]]
+#+begin_src emacs-lisp
+(use-package esup)
+#+end_src
 *** [[https://github.com/Fanael/persistent-scratch][persistent-scratch]]
 #+begin_quote
   Preserve the scratch buffer across Emacs sessions
