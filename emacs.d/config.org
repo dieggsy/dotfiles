@@ -2199,7 +2199,8 @@ For the cold winters.
 (use-package hacker-typer
   :quelpa (hacker-typer
            :fetcher github
-           :repo "therockmandolinist/emacs-hacker-typer")
+           :repo "therockmandolinist/emacs-hacker-typer"
+           :files (:defaults "hackerman.png"))
   :config
   (setq hacker-typer-show-hackerman t)
   (setq hacker-typer-remove-comments t))
