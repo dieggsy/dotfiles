@@ -264,7 +264,6 @@ Choose a font if available, in order of preference.
 #+end_src
 ** File/buffer/session handling
 #+begin_src emacs-lisp
-(global-auto-revert-mode t)
 (setq ns-pop-up-frames nil)
 (setq vc-follow-symlinks t)
 
@@ -981,7 +980,8 @@ editing. So I went for it. Now I'll never go back.
                   calc-mode
                   calc-trail-mode
                   sunshine-mode
-                  term-mode))
+                  term-mode
+                  profiler-report-mode))
     (add-to-list 'evil-emacs-state-modes mode))
 
   (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
@@ -1210,7 +1210,8 @@ based on or copied from spacemacs, so definitely check them out!
     "bk"  'kill-this-buffer
     "bK"  'kill-buffer
     "bm"  'kill-matching-buffers
-    "br"  'view-mode
+    "br"  'read-only-mode
+    "bR"  'revert-buffer
     "bn"  'next-buffer
     "bo"  'org-iswitchb
     "bp"  'previous-buffer
@@ -1558,7 +1559,8 @@ A really nice search/completion system for emacs.
           "\\`\\*elfeed-log\\*"
           "\\`\\*Man"
           "\\`\\*Quail"
-          "\\`\\*Paradox Report\\*"))
+          "\\`\\*Paradox Report\\*"
+          "\\`\\*Backtrace\\*"))
 
   ;; RET enters folder rather than opening dired
   (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
@@ -1681,9 +1683,8 @@ so I went with it.
     "id" 'org-insert-drawer
 
     "ed" 'org-export-dispatch
-    "eb" 'eval-buffer
-    "ef" 'eval-defun
-    "es" 'veal-last-sexp
+    "es" 'eval-surrounding-sexp
+    "er" 'eval-region
 
     "b"  'org-babel-tangle
     "xb" (diego|org-emphasize diego/org-bold ?*)
@@ -1816,7 +1817,7 @@ so I went with it.
         org-log-into-drawer t
         org-link-search-must-match-exact-headline nil
         org-confirm-elisp-link-function 'y-or-n-p
-        org-confirm-elisp-link-not-regexp "(wiki-search.*?)")
+        org-confirm-elisp-link-not-regexp "(\\(wiki-search\\|describe-function\\).*?)")
 
   ;; appearance
   (setq org-src-fontify-natively t
@@ -2944,10 +2945,7 @@ imenu on steroids.
   Emacs relative line number besed on nlinum-mode
 #+end_quote
 #+begin_src emacs-lisp :tangle no
-(use-package nlinum-relative
-  :disabled t
-  :config
-  (setq nlinum-relative-redisplay-delay 0))
+(use-package nlinum-relative)
 #+end_src
 *** [[https://github.com/proofit404/pyenv-mode][pyenv-mode]]
 #+begin_quote
@@ -3243,7 +3241,7 @@ Configuration that applies to all programming modes.
   (goto-address-prog-mode)
   (fci-mode)
   (highlight-numbers-mode)
-  (linum-mode 1)
+  (nlinum-relative-mode 1)
   (auto-fill-mode 1)
   (setq-local comment-auto-fill-only-comments t)
   (setq-local calc-embedded-open-mode (concat comment-start " "))
