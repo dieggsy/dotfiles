@@ -3044,6 +3044,10 @@ Pretty neat, though not entirely complete, IMO.
         (deer)
       (deer-jump-other-window))))
 #+end_src
+*** [[https://github.com/wasamasa/eyebrowse][eyebrowse]]
+#+begin_src emacs-lisp
+(use-package eyebrowse)
+#+end_src
 ** Org mode
 *** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
 #+begin_quote
