@@ -103,10 +103,7 @@
 
 (define-abbrev-table 'gfm-mode-abbrev-table '())
 
-(define-abbrev-table 'global-abbrev-table
-  '(
-    ("thedate" "" diego/date 18)
-   ))
+(define-abbrev-table 'global-abbrev-table '())
 
 (define-abbrev-table 'google-maps-static-mode-abbrev-table '())
 
