@@ -1501,6 +1501,18 @@ they are in `spacemacs/set-leader-keys'."
     (let ((evilnc-invert-comment-line-by-line t))
       (evilnc-comment-or-uncomment-lines arg))))
 #+end_src
+*** [[https://github.com/redguardtoo/evil-matchit][evil-matchit]]
+#+begin_src emacs-lisp
+(use-package evil-matchit
+  :after evil
+  :config (global-evil-matchit-mode 1))
+#+end_src
+*** [[https://github.com/syohex/emacs-evil-anzu][evil-anzu]]
+#+begin_src emacs-lisp
+(use-package evil-anzu
+  :after evil
+  :config)
+#+end_src
 ** [[https://github.com/abo-abo/swiper][ivy]]
 #+begin_quote
   Ivy - a generic completion frontend for Emacs, Swiper - isearch with an
@@ -2593,6 +2605,16 @@ Syntax highlighting for markdown files.
   :mode "\\.md\\'"
   :config)
 #+end_src
+*** [[https://github.com/haskell/haskell-mode][haskell-mode]]
+#+begin_src emacs-lisp
+(use-package haskell-mode
+  :mode "\\.hs\\'"
+  :config
+  (setq haskell-indentation-layout-offset 4
+        haskell-indentation-left-offset 4
+        haskell-indentation-ifte-offset 4))
+
+#+end_src
 *** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
 #+begin_quote
   The emacs major mode for editing files in the YAML data serialization format.
@@ -2717,6 +2739,10 @@ Freakin yasnippet. It's the best.
   :defer 5
   :config
   (yas-global-mode 1))
+#+end_src
+*** [[https://github.com/abo-abo/auto-yasnippet][auto-yasnippet]]
+#+begin_src emacs-lisp
+(use-package auto-yasnippet)
 #+end_src
 *** [[https://github.com/hlissner/evil-multiedit][evil-multiedit]]
 #+begin_quote
