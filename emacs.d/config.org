@@ -2189,7 +2189,14 @@ Draws stuff in ascii.
 #+end_quote
 For the cold winters.
 #+begin_src emacs-lisp
-(use-package fireplace)
+(use-package fireplace
+  :config
+  (evil-define-key 'normal fireplace-mode-map
+    "q" 'fireplace-off
+    "Q" 'fireplace-off
+    "-" 'fireplace-down
+    "=" 'fireplace-up
+    "*" 'fireplace-toggle-smoke))
 #+end_src
 *** [[https://github.com/therockmandolinist/emacs-hacker-typer][hacker-typer]]
 #+begin_quote
