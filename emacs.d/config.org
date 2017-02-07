@@ -842,17 +842,16 @@ drag it up past ARG other lines (down if ARG negative)."
 (eval-when-compile
   (defvar zone-programs))
 
-(with-eval-after-load 'zone
-  (defun diego/zone-choose (pgm)
-    "Choose a PGM to run for `zone'."
-    (interactive
-     (list
-      (completing-read
-       "Program: "
-       (mapcar #'symbol-name zone-programs))))
-    (let ((zone-programs (list (intern pgm))))
-      (redisplay)
-      (zone))))
+(defun diego/zone-choose ()
+  "Choose a PGM to run for `zone'."
+  (interactive)
+  (require 'zone nil t)
+  (let* ((pgm (completing-read
+               "Program: "
+               (mapcar #'symbol-name zone-programs)))
+         (zone-programs (list (intern pgm))))
+    (redisplay)
+    (zone)))
 
 (defun updates ()
   "Run `paradox-upgrade-packages' and  `quelpa-upgrade'."
