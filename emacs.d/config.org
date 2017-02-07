@@ -45,7 +45,6 @@ argument of ~org-babel-load-file~ wasn't working for me, so there's that.
    - [[#filesbuffers][Files/buffers]]
    - [[#window][Window]]
    - [[#editing][Editing]]
-   - [[#org-mode-helpers][Org-mode helpers]]
    - [[#misc][Misc.]]
    - [[#keyboard-macros][Keyboard Macros]]
  - [[#bindings][Bindings]]
@@ -624,196 +623,6 @@ drag it up past ARG other lines (down if ARG negative)."
       (flush-lines "^$" (region-beginning) (region-end))
     (message "No region active.")))
 #+end_src
-** Org-mode helpers
-#+begin_src emacs-lisp
-(with-eval-after-load 'org
-  (defmacro diego|create-block-wrap (blocktype)
-    (let ((newfunc (intern
-                    (concat "diego/org-wrap-with-block-"
-                            (replace-regexp-in-string " " "-" blocktype)))))
-      `(fset (quote ,newfunc)
-             (vconcat [?\{ ?i return ?# ?+ ?b ?e ?g ?i ?n ?_]
-                      (vconcat ,blocktype)
-                      [?\C-/ ?\} ?i return up ?# ?+ ?e ?n ?d ?_]
-                      (vconcat (car (split-string ,blocktype)))
-                      [?\C-/ ?\{ ?j]))))
-
-  (diego|create-block-wrap "src")
-  (diego|create-block-wrap "src python")
-  (diego|create-block-wrap "src emacs-lisp")
-  (diego|create-block-wrap "export latex")
-
-  (defun diego/org-set-category-property (value)
-    "Set the category property of the current item to VALUE."
-    (interactive (list (org-read-property-value "CATEGORY")))
-    (org-set-property "CATEGORY" value))
-
-  (defun diego/org-insert-heading (&optional subheading)
-    "Insert a heading or a subheading.
-    If the optional SUBHEADING is t, insert a subheading.  Inserting
-    headings always respects content."
-    (interactive "P")
-    (if subheading
-        (org-insert-subheading t)
-      (org-insert-heading t)))
-
-  (defun diego/org-insert-scheduled-heading (&optional subheading)
-    "Insert a new org heading scheduled for today.
-    Insert the new heading at the end of the current subtree if
-    FORCE-HEADING is non-nil."
-    (interactive "P")
-    (if subheading
-        (org-insert-subheading t)
-      (org-insert-todo-heading t t))
-    (org-schedule nil (format-time-string "%Y-%m-%d")))
-
-  (defun diego/org-task-capture ()
-    "Capture a task with my default template."
-    (interactive)
-    (org-capture nil "a"))
-
-  (defun diego/org-agenda-capture ()
-    "Capture a task in agenda mode, using the date at point."
-    (interactive)
-    (let ((org-overriding-default-time (org-get-cursor-date)))
-      (org-capture nil "a")))
-
-  (defun diego/org-agenda-toggle-date (current-line)
-    "Toggle `SCHEDULED' and `DEADLINE' tag in the capture buffer."
-    (interactive "P")
-    (save-excursion
-      (let ((search-limit (if current-line
-                              (line-end-position)
-                            (point-max))))
-
-        (if current-line (beginning-of-line)
-          (goto-char (point-min)))
-        (if (search-forward "DEADLINE:" search-limit t)
-            (replace-match "SCHEDULED:")
-          (and (search-forward "SCHEDULED:" search-limit t)
-               (replace-match "DEADLINE:"))))))
-
-  (defun diego/pop-to-org-todo (split)
-    "Visit todo list, in the current window or a split."
-    (interactive "P")
-    (if split
-        (find-file "~/Dropbox (MIT)/org/todo.org")
-      (find-file-other-window "~/Dropbox (MIT)/org/todo.org")))
-
-  (defun diego/pop-to-org-notes (split)
-    "Visit my main notes list, in the current window or a split."
-    (interactive "P")
-    (if split
-        (find-file "~/Dropbox (MIT)/org/notes.org")
-      (find-file-other-window "~/Dropbox (MIT)/org/notes.org")))
-
-  (defun diego/org-insert-list-leader-or-self (char)
-    "If on column 0, insert space-padded CHAR; otherwise insert CHAR.
-    This has the effect of automatically creating a properly indented list
-    leader; like hyphen, asterisk, or plus sign; without having to use
-    list-specific key maps."
-    (if (= (current-column) 0)
-        (insert (concat " " char " "))
-      (insert char)))
-
-  (defun diego/org-swap-tags (tags)
-    "Replace any tags on the current headline with TAGS.
-    The assumption is that TAGS will be a string conforming to Org Mode's
-    tag format specifications, or nil to remove all tags."
-    (let ((old-tags (org-get-tags-string))
-          (tags (if tags
-                    (concat " " tags)
-                  "")))
-      (save-excursion
-        (beginning-of-line)
-        (re-search-forward
-         (concat "[ \t]*" (regexp-quote old-tags) "[ \t]*$")
-         (line-end-position) t)
-        (replace-match tags)
-        (org-set-tags t))))
-
-  (defun diego/org-set-tags (tag)
-    "Add TAG if it is not in the list of tags, remove it otherwise.
-    TAG is chosen interactively from the global tags completion table."
-    (interactive
-     (list (let ((org-last-tags-completion-table
-                  (if (derived-mode-p 'org-mode)
-                      (org-uniquify
-                       (delq nil (append (org-get-buffer-tags)
-                                         (org-global-tags-completion-table))))
-                    (org-global-tags-completion-table))))
-             (completing-read
-              "Tag: " 'org-tags-completion-function nil nil nil
-              'org-tags-history))))
-    (let* ((cur-list (org-get-tags))
-           (new-tags (mapconcat 'identity
-                                (if (member tag cur-list)
-                                    (delete tag cur-list)
-                                  (append cur-list (list tag)))
-                                ":"))
-           (new (if (> (length new-tags) 1) (concat " :" new-tags ":")
-                  nil)))
-      (diego/org-swap-tags new)))
-
-  (defun diego/org-choose-bullet-type ()
-    (interactive)
-    (let ((char (read-char-choice
-                 "enter bullet type (-|*|+|1|2|a|b|A|B): "
-                 '(?* ?- ?+ ?1 ?2 ?a ?b ?A ?B))))
-      (cond ((eq char ?1)
-             (org-cycle-list-bullet 3))
-            ((eq char ?2)
-             (org-cycle-list-bullet 4))
-            ((eq char ?a)
-             (org-cycle-list-bullet 5))
-            ((eq char ?b)
-             (org-cycle-list-bullet 7))
-            ((eq char ?A)
-             (org-cycle-list-bullet 6))
-            ((eq char ?B)
-             (org-cycle-list-bullet 8))
-            (t (org-cycle-list-bullet (char-to-string char))))))
-
-  (defun diego/async-babel-tangle ()
-    (interactive)
-    (let ((file (buffer-file-name)))
-      (async-start
-       `(lambda ()
-          (require 'org)
-          (org-babel-tangle-file ,file))
-       (lambda (result)
-         (if result
-             (message "SUCCESS: successfully tangled file.")
-           (message "ERROR: tangle file failed."))))))
-
-  (defun diego/async-tangle-init ()
-    (interactive)
-    ;; (defconst init-tangle-start-time (current-time))
-    (let ((init-tangle-start-time (current-time)))
-      (async-start
-       (lambda ()
-         ;; make async emacs aware of packages (for byte-compilation)
-         (package-initialize)
-         (require 'org)
-         (require 'fringe-helper)
-         (require 'crux)
-
-         ;; tangle
-         (org-babel-tangle-file
-          (expand-file-name (locate-user-emacs-file "config.org")))
-
-         ;; byte-compile
-         (byte-compile-file
-          (expand-file-name  (locate-user-emacs-file "config.el"))))
-       ;; 'ignore
-       `(lambda (result)
-          (if result
-              (message "SUCCESS: config.org successfully tangled and compiled. (%.3fs)"
-                       (float-time (time-subtract (current-time)
-                                                  ',init-tangle-start-time)))
-            (message "ERROR: config.org tangle/compilation failed.")))))))
-#+end_src
-
 ** Misc.
 #+begin_src emacs-lisp
 (defun diego/ipython-shell ()
@@ -965,6 +774,23 @@ editing. So I went for it. Now I'll never go back.
   The extensible vi layer for Emacs.
 #+end_quote
 
+**** Setup
+#+begin_src emacs-lisp
+(use-package evil
+  :demand t
+  :if (not noninteractive)
+  :functions (evil-visual-line--mark-org-element-when-heading)
+  :init
+  (setq evil-want-C-u-scroll t
+        evil-want-fine-undo t
+        evil-search-module 'evil-search
+        evil-lookup-func (lambda () (man (thing-at-point 'word))))
+  :config
+  (diego/evil-modes)
+  (diego/evil-appearance)
+  (diego/evil-bindings)
+  (evil-mode 1))
+#+end_src
 **** Modes
 #+begin_src emacs-lisp
 (defun diego/evil-modes ()
@@ -1081,29 +907,121 @@ editing. So I went for it. Now I'll never go back.
     (define-key evil-motion-state-map key #'ignore)))
 
 #+end_src
-**** Setup
-#+begin_src emacs-lisp
-(use-package evil
-  :demand t
-  :if (not noninteractive)
-  :functions (evil-visual-line--mark-org-element-when-heading)
-  :init
-  (setq evil-want-C-u-scroll t
-        evil-want-fine-undo t
-        evil-search-module 'evil-search
-        evil-lookup-func (lambda () (man (thing-at-point 'word))))
-  :config
-  (diego/evil-modes)
-  (diego/evil-appearance)
-  (diego/evil-bindings)
-  (evil-mode 1))
-#+end_src
 *** [[https://github.com/justbur/emacs-bind-map][evil-leader (emacs-bind-map)]]
 #+begin_quote
   Bind personal keymaps in multiple locations
 #+end_quote
 A good chunk if not all of the bindings/functions in this section are either
 based on or copied from spacemacs, so definitely check them out!
+**** Setup
+#+begin_src emacs-lisp
+(use-package bind-map
+  :after evil
+  :config
+  (defvar diego-evil-leader-key "SPC"
+    "Evil leader key.")
+
+  (defvar diego-alt-evil-leader-key (concat "C-" diego-evil-leader-key)
+    "Evil leader key for insert and emacs modes.")
+
+  (defvar diego-major-mode-leader-key ","
+    "Major mode leader key.")
+
+  (defvar diego-alt-major-mode-leader-key (concat "C-" diego-major-mode-leader-key)
+    "Major mode leader key.")
+
+  (defvar diego-default-map (make-sparse-keymap)
+    "Base keymap for all spacemacs leader key commands.")
+
+  (bind-map diego-default-map
+    ;; :keys ("M-m")
+    :evil-keys (diego-evil-leader-key)
+    :evil-states (normal motion visual))
+
+  (bind-map diego-default-map
+    ;; :keys ("M-m")
+    :evil-keys (diego-alt-evil-leader-key)
+    :evil-states (insert emacs))
+
+  (defun diego/set-leader-keys (key def &rest bindings)
+    "Add KEY and DEF as key bindings under
+`diego-evil-leader-key'.
+
+KEY should be a string suitable for passing to `kbd', and it
+should not include the leaders. DEF is most likely a quoted
+command. See `define-key' for more information about the possible
+choices for DEF. This function simply uses `define-key' to add
+the bindings.
+
+For convenience, this function will accept additional KEY DEF
+pairs. For example,
+
+\(spacemacs/set-leader-keys
+   \"a\" 'command1
+   \"C-c\" 'command2
+   \"bb\" 'command3\)"
+    (while key
+      (define-key diego-default-map (kbd key) def)
+      (setq key (pop bindings) def (pop bindings))))
+  (put 'diego/set-leader-keys 'lisp-indent-function 'defun)
+
+  (defun diego//init-leader-mode-map (mode map &optional minor)
+    "Check for MAP-prefix. If it doesn't exist yet, use `bind-map'
+to create it and bind it to `diego-major-mode-leader-key'.
+If MODE is a minor-mode, the third argument should be non nil."
+    (let* ((prefix (intern (format "%s-prefix" map)))
+           (leader1 diego-major-mode-leader-key)
+           (leader2 (concat diego-evil-leader-key " m"))
+           (leaders (delq nil (list leader1 leader2)))
+           (alt-leader1 diego-alt-major-mode-leader-key)
+           (alt-leader2 (concat diego-alt-evil-leader-key " m"))
+           (alt-leaders (delq nil (list alt-leader1 alt-leader2))))
+      (or (boundp prefix)
+          (progn
+            (eval
+             `(bind-map ,map
+                :prefix-cmd ,prefix
+                ,(if minor :minor-modes :major-modes) (,mode)
+                :evil-keys ,leaders
+                :evil-states (normal motion visual)))
+            (eval
+             `(bind-map ,map
+                :prefix-cmd ,prefix
+                ,(if minor :minor-modes :major-modes) (,mode)
+                :evil-keys ,alt-leaders
+                :evil-states (insert emacs)))
+            (boundp prefix)))))
+
+  (defun diego/set-leader-keys-for-major-mode (mode key def &rest bindings)
+    "Add KEY and DEF as key bindings under
+`diego-major-mode-leader-key' and
+`diego-major-mode-emacs-leader-key' for the major-mode
+MODE. MODE should be a quoted symbol corresponding to a valid
+major mode. The rest of the arguments are treated exactly like
+they are in `diego/set-leader-keys'."
+    (let* ((map (intern (format "diego-%s-map" mode))))
+      (when (diego//init-leader-mode-map mode map)
+        (while key
+          (define-key (symbol-value map) (kbd key) def)
+          (setq key (pop bindings) def (pop bindings))))))
+  (put 'diego/set-leader-keys-for-major-mode 'lisp-indent-function 'defun)
+
+  (defun diego/set-leader-keys-for-minor-mode (mode key def &rest bindings)
+    "Add KEY and DEF as key bindings under
+`dotspacemacs-major-mode-leader-key' and
+`dotspacemacs-major-mode-emacs-leader-key' for the minor-mode
+MODE. MODE should be a quoted symbol corresponding to a valid
+minor mode. The rest of the arguments are treated exactly like
+they are in `spacemacs/set-leader-keys'."
+    (let* ((map (intern (format "diego-%s-map" mode))))
+      (when (diego//init-leader-mode-map mode map t)
+        (while key
+          (define-key (symbol-value map) (kbd key) def)
+          (setq key (pop bindings) def (pop bindings))))))
+  (put 'diego/set-leader-keys-for-minor-mode 'lisp-indent-function 'defun)
+
+  (diego/config-evil-leader))
+#+end_src
 **** Search
 #+begin_src emacs-lisp
 (defun diego/leader-search ()
@@ -1359,115 +1277,6 @@ based on or copied from spacemacs, so definitely check them out!
   (diego/leader-window)
   (define-key universal-argument-map (kbd "SPC u") 'universal-argument-more))
 #+end_src
-**** Setup
-#+begin_src emacs-lisp
-(use-package bind-map
-  :after evil
-  :config
-  (defvar diego-evil-leader-key "SPC"
-    "Evil leader key.")
-
-  (defvar diego-alt-evil-leader-key (concat "C-" diego-evil-leader-key)
-    "Evil leader key for insert and emacs modes.")
-
-  (defvar diego-major-mode-leader-key ","
-    "Major mode leader key.")
-
-  (defvar diego-alt-major-mode-leader-key (concat "C-" diego-major-mode-leader-key)
-    "Major mode leader key.")
-
-  (defvar diego-default-map (make-sparse-keymap)
-    "Base keymap for all spacemacs leader key commands.")
-
-  (bind-map diego-default-map
-    ;; :keys ("M-m")
-    :evil-keys (diego-evil-leader-key)
-    :evil-states (normal motion visual))
-
-  (bind-map diego-default-map
-    ;; :keys ("M-m")
-    :evil-keys (diego-alt-evil-leader-key)
-    :evil-states (insert emacs))
-
-  (defun diego/set-leader-keys (key def &rest bindings)
-    "Add KEY and DEF as key bindings under
-`diego-evil-leader-key'.
-
-KEY should be a string suitable for passing to `kbd', and it
-should not include the leaders. DEF is most likely a quoted
-command. See `define-key' for more information about the possible
-choices for DEF. This function simply uses `define-key' to add
-the bindings.
-
-For convenience, this function will accept additional KEY DEF
-pairs. For example,
-
-\(spacemacs/set-leader-keys
-   \"a\" 'command1
-   \"C-c\" 'command2
-   \"bb\" 'command3\)"
-    (while key
-      (define-key diego-default-map (kbd key) def)
-      (setq key (pop bindings) def (pop bindings))))
-  (put 'diego/set-leader-keys 'lisp-indent-function 'defun)
-
-  (defun diego//init-leader-mode-map (mode map &optional minor)
-    "Check for MAP-prefix. If it doesn't exist yet, use `bind-map'
-to create it and bind it to `diego-major-mode-leader-key'.
-If MODE is a minor-mode, the third argument should be non nil."
-    (let* ((prefix (intern (format "%s-prefix" map)))
-           (leader1 diego-major-mode-leader-key)
-           (leader2 (concat diego-evil-leader-key " m"))
-           (leaders (delq nil (list leader1 leader2)))
-           (alt-leader1 diego-alt-major-mode-leader-key)
-           (alt-leader2 (concat diego-alt-evil-leader-key " m"))
-           (alt-leaders (delq nil (list alt-leader1 alt-leader2))))
-      (or (boundp prefix)
-          (progn
-            (eval
-             `(bind-map ,map
-                :prefix-cmd ,prefix
-                ,(if minor :minor-modes :major-modes) (,mode)
-                :evil-keys ,leaders
-                :evil-states (normal motion visual)))
-            (eval
-             `(bind-map ,map
-                :prefix-cmd ,prefix
-                ,(if minor :minor-modes :major-modes) (,mode)
-                :evil-keys ,alt-leaders
-                :evil-states (insert emacs)))
-            (boundp prefix)))))
-
-  (defun diego/set-leader-keys-for-major-mode (mode key def &rest bindings)
-    "Add KEY and DEF as key bindings under
-`diego-major-mode-leader-key' and
-`diego-major-mode-emacs-leader-key' for the major-mode
-MODE. MODE should be a quoted symbol corresponding to a valid
-major mode. The rest of the arguments are treated exactly like
-they are in `diego/set-leader-keys'."
-    (let* ((map (intern (format "diego-%s-map" mode))))
-      (when (diego//init-leader-mode-map mode map)
-        (while key
-          (define-key (symbol-value map) (kbd key) def)
-          (setq key (pop bindings) def (pop bindings))))))
-  (put 'diego/set-leader-keys-for-major-mode 'lisp-indent-function 'defun)
-
-  (defun diego/set-leader-keys-for-minor-mode (mode key def &rest bindings)
-    "Add KEY and DEF as key bindings under
-`dotspacemacs-major-mode-leader-key' and
-`dotspacemacs-major-mode-emacs-leader-key' for the minor-mode
-MODE. MODE should be a quoted symbol corresponding to a valid
-minor mode. The rest of the arguments are treated exactly like
-they are in `spacemacs/set-leader-keys'."
-    (let* ((map (intern (format "diego-%s-map" mode))))
-      (when (diego//init-leader-mode-map mode map t)
-        (while key
-          (define-key (symbol-value map) (kbd key) def)
-          (setq key (pop bindings) def (pop bindings))))))
-  (put 'diego/set-leader-keys-for-minor-mode 'lisp-indent-function 'defun)
-
-  (diego/config-evil-leader))
-#+end_src
 *** [[https://github.com/TheBB/evil-indent-plus][evil-indent-plus]]
 #+begin_quote
   Better indent textobjects for evil
@@ -1659,6 +1468,24 @@ I actually don't think I tried the former option, but the latter simply worked
 so I went with it.
 :END:
 
+*** Setup
+#+begin_src emacs-lisp
+(use-package org
+  :ensure org-plus-contrib
+  :defines (org-habit-graph-column)
+  :init
+  (setq org-list-allow-alphabetical t)
+  :config
+  (diego/org-bindings)
+  (diego/org-file-vars)
+  (diego/org-todo-vars)
+  (diego/org-general-vars)
+  (add-hook 'org-agenda-mode-hook #'diego/setup-org-agenda)
+  (add-hook 'org-capture-mode-hook #'diego/setup-org-capture)
+  (add-hook 'org-mode-hook #'diego/setup-org-mode)
+  (require 'ox-extra)
+  (ox-extras-activate '(ignore-headlines)))
+#+end_src
 *** Bindings
 #+begin_src emacs-lisp
 (defun diego/org-bindings ()
@@ -1860,7 +1687,7 @@ so I went with it.
 #+end_src
 *** Agenda config
 #+begin_src emacs-lisp
-(defun diego/org-agenda-config ()
+(defun diego/setup-org-agenda ()
   (setq org-habit-graph-column 50)
   (define-key org-agenda-mode-map "j"          #'org-agenda-next-line)
   (define-key org-agenda-mode-map "k"          #'org-agenda-previous-line)
@@ -1883,7 +1710,7 @@ so I went with it.
 #+end_src
 *** Copture config
 #+begin_src emacs-lisp
-(defun diego/org-capture-config ()
+(defun diego/setup-org-capture ()
   (evil-define-key 'insert org-capture-mode-map (kbd "C-d")
     #'diego/org-agenda-toggle-date)
   (evil-define-key 'normal org-capture-mode-map (kbd "C-d")
@@ -1892,7 +1719,7 @@ so I went with it.
 #+end_src
 *** Org config
 #+begin_src emacs-lisp
-(defun diego/org-config ()
+(defun diego/setup-org-mode ()
   (dolist (char '("+" "-"))
     (define-key org-mode-map (kbd char)
       `(lambda ()
@@ -1916,28 +1743,201 @@ so I went with it.
   (auto-fill-mode 1)
   (org-indent-mode))
 #+end_src
-*** Setup
+*** Helper functions
 #+begin_src emacs-lisp
-(use-package org
-  :ensure org-plus-contrib
-  :defines (org-habit-graph-column)
-  :init
-  (setq org-list-allow-alphabetical t)
-  :config
-  (diego/org-file-vars)
-  (diego/org-todo-vars)
-  (diego/org-general-vars)
-  (diego/org-bindings)
-  (add-hook 'org-agenda-mode-hook #'diego/org-agenda-config)
-  (add-hook 'org-capture-mode-hook #'diego/org-capture-config)
-  (add-hook 'org-mode-hook #'diego/org-config)
-  (require 'ox-extra)
-  (ox-extras-activate '(ignore-headlines)))
+(with-eval-after-load 'org
+  (defmacro diego|create-block-wrap (blocktype)
+    (let ((newfunc (intern
+                    (concat "diego/org-wrap-with-block-"
+                            (replace-regexp-in-string " " "-" blocktype)))))
+      `(fset (quote ,newfunc)
+             (vconcat [?\{ ?i return ?# ?+ ?b ?e ?g ?i ?n ?_]
+                      (vconcat ,blocktype)
+                      [?\C-/ ?\} ?i return up ?# ?+ ?e ?n ?d ?_]
+                      (vconcat (car (split-string ,blocktype)))
+                      [?\C-/ ?\{ ?j]))))
+
+  (diego|create-block-wrap "src")
+  (diego|create-block-wrap "src python")
+  (diego|create-block-wrap "src emacs-lisp")
+  (diego|create-block-wrap "export latex")
+
+  (defun diego/org-set-category-property (value)
+    "Set the category property of the current item to VALUE."
+    (interactive (list (org-read-property-value "CATEGORY")))
+    (org-set-property "CATEGORY" value))
+
+  (defun diego/org-insert-heading (&optional subheading)
+    "Insert a heading or a subheading.
+    If the optional SUBHEADING is t, insert a subheading.  Inserting
+    headings always respects content."
+    (interactive "P")
+    (if subheading
+        (org-insert-subheading t)
+      (org-insert-heading t)))
+
+  (defun diego/org-insert-scheduled-heading (&optional subheading)
+    "Insert a new org heading scheduled for today.
+    Insert the new heading at the end of the current subtree if
+    FORCE-HEADING is non-nil."
+    (interactive "P")
+    (if subheading
+        (org-insert-subheading t)
+      (org-insert-todo-heading t t))
+    (org-schedule nil (format-time-string "%Y-%m-%d")))
+
+  (defun diego/org-task-capture ()
+    "Capture a task with my default template."
+    (interactive)
+    (org-capture nil "a"))
+
+  (defun diego/org-agenda-capture ()
+    "Capture a task in agenda mode, using the date at point."
+    (interactive)
+    (let ((org-overriding-default-time (org-get-cursor-date)))
+      (org-capture nil "a")))
+
+  (defun diego/org-agenda-toggle-date (current-line)
+    "Toggle `SCHEDULED' and `DEADLINE' tag in the capture buffer."
+    (interactive "P")
+    (save-excursion
+      (let ((search-limit (if current-line
+                              (line-end-position)
+                            (point-max))))
+
+        (if current-line (beginning-of-line)
+          (goto-char (point-min)))
+        (if (search-forward "DEADLINE:" search-limit t)
+            (replace-match "SCHEDULED:")
+          (and (search-forward "SCHEDULED:" search-limit t)
+               (replace-match "DEADLINE:"))))))
+
+  (defun diego/pop-to-org-todo (split)
+    "Visit todo list, in the current window or a split."
+    (interactive "P")
+    (if split
+        (find-file "~/Dropbox (MIT)/org/todo.org")
+      (find-file-other-window "~/Dropbox (MIT)/org/todo.org")))
+
+  (defun diego/pop-to-org-notes (split)
+    "Visit my main notes list, in the current window or a split."
+    (interactive "P")
+    (if split
+        (find-file "~/Dropbox (MIT)/org/notes.org")
+      (find-file-other-window "~/Dropbox (MIT)/org/notes.org")))
+
+  (defun diego/org-insert-list-leader-or-self (char)
+    "If on column 0, insert space-padded CHAR; otherwise insert CHAR.
+    This has the effect of automatically creating a properly indented list
+    leader; like hyphen, asterisk, or plus sign; without having to use
+    list-specific key maps."
+    (if (= (current-column) 0)
+        (insert (concat " " char " "))
+      (insert char)))
+
+  (defun diego/org-swap-tags (tags)
+    "Replace any tags on the current headline with TAGS.
+    The assumption is that TAGS will be a string conforming to Org Mode's
+    tag format specifications, or nil to remove all tags."
+    (let ((old-tags (org-get-tags-string))
+          (tags (if tags
+                    (concat " " tags)
+                  "")))
+      (save-excursion
+        (beginning-of-line)
+        (re-search-forward
+         (concat "[ \t]*" (regexp-quote old-tags) "[ \t]*$")
+         (line-end-position) t)
+        (replace-match tags)
+        (org-set-tags t))))
+
+  (defun diego/org-set-tags (tag)
+    "Add TAG if it is not in the list of tags, remove it otherwise.
+    TAG is chosen interactively from the global tags completion table."
+    (interactive
+     (list (let ((org-last-tags-completion-table
+                  (if (derived-mode-p 'org-mode)
+                      (org-uniquify
+                       (delq nil (append (org-get-buffer-tags)
+                                         (org-global-tags-completion-table))))
+                    (org-global-tags-completion-table))))
+             (completing-read
+              "Tag: " 'org-tags-completion-function nil nil nil
+              'org-tags-history))))
+    (let* ((cur-list (org-get-tags))
+           (new-tags (mapconcat 'identity
+                                (if (member tag cur-list)
+                                    (delete tag cur-list)
+                                  (append cur-list (list tag)))
+                                ":"))
+           (new (if (> (length new-tags) 1) (concat " :" new-tags ":")
+                  nil)))
+      (diego/org-swap-tags new)))
+
+  (defun diego/org-choose-bullet-type ()
+    (interactive)
+    (let ((char (read-char-choice
+                 "enter bullet type (-|*|+|1|2|a|b|A|B): "
+                 '(?* ?- ?+ ?1 ?2 ?a ?b ?A ?B))))
+      (cond ((eq char ?1)
+             (org-cycle-list-bullet 3))
+            ((eq char ?2)
+             (org-cycle-list-bullet 4))
+            ((eq char ?a)
+             (org-cycle-list-bullet 5))
+            ((eq char ?b)
+             (org-cycle-list-bullet 7))
+            ((eq char ?A)
+             (org-cycle-list-bullet 6))
+            ((eq char ?B)
+             (org-cycle-list-bullet 8))
+            (t (org-cycle-list-bullet (char-to-string char))))))
+
+  (defun diego/async-babel-tangle ()
+    (interactive)
+    (let ((file (buffer-file-name)))
+      (async-start
+       `(lambda ()
+          (require 'org)
+          (org-babel-tangle-file ,file))
+       (lambda (result)
+         (if result
+             (message "SUCCESS: successfully tangled file.")
+           (message "ERROR: tangle file failed."))))))
+
+  (defun diego/async-tangle-init ()
+    (interactive)
+    ;; (defconst init-tangle-start-time (current-time))
+    (let ((init-tangle-start-time (current-time)))
+      (async-start
+       (lambda ()
+         ;; make async emacs aware of packages (for byte-compilation)
+         (package-initialize)
+         (require 'org)
+         (require 'fringe-helper)
+         (require 'crux)
+
+         ;; tangle
+         (org-babel-tangle-file
+          (expand-file-name (locate-user-emacs-file "config.org")))
+
+         ;; byte-compile
+         (byte-compile-file
+          (expand-file-name  (locate-user-emacs-file "config.el"))))
+       ;; 'ignore
+       `(lambda (result)
+          (if result
+              (message "SUCCESS: config.org successfully tangled and compiled. (%.3fs)"
+                       (float-time (time-subtract (current-time)
+                                                  ',init-tangle-start-time)))
+            (message "ERROR: config.org tangle/compilation failed.")))))))
 #+end_src
+
 ** [[https://github.com/abo-abo/hydra][hydra]]
 #+begin_quote
   make Emacs bindings that stick around
 #+end_quote
+*** Setup
 #+begin_src emacs-lisp
 (use-package hydra
   :defer 5
@@ -1957,30 +1957,41 @@ so I went with it.
               diego/sp-wrap-with-curly
               diego/sp-wrap-with-quote2
               diego/sp-wrap-with-quote)
-  :config
-  ;; window
+  :config)
+
+#+end_src
+*** Hydras
+**** window
+#+begin_src emacs-lisp
+(with-eval-after-load 'hydra
   (defhydra hydra-splitter ()
     "splitter"
     ("h" diego/move-splitter-left "←")
     ("j" diego/move-splitter-down "↓")
     ("k" diego/move-splitter-up "↑")
     ("l" diego/move-splitter-right "→" )
-    ("=" balance-windows "balance"))
-
-  ;; evil-numbers
+    ("=" balance-windows "balance")))
+#+end_src
+**** evil-numbers
+#+begin_src emacs-lisp
+(with-eval-after-load 'hydra
   (defhydra hydra-numbers ()
     "evil-numbers"
     ("="  evil-numbers/inc-at-pt "inc")
-    ("-" evil-numbers/dec-at-pt "dec"))
-
-  ;; zoom
+    ("-" evil-numbers/dec-at-pt "dec")))
+#+end_src
+**** zoom
+#+begin_src emacs-lisp
+(with-eval-after-load 'hydra
   (defhydra hydra-zoom ()
     "zoom"
     ("=" text-scale-increase "in")
     ("-" text-scale-decrease "out")
-    ("0" (text-scale-adjust 0) "reset"))
-
-  ;; smartparens
+    ("0" (text-scale-adjust 0) "reset")))
+#+end_src
+**** smartparens
+#+begin_src emacs-lisp
+(with-eval-after-load 'hydra
   (defhydra hydra-smartparens (:hint nil)
     "
 smartparens:
@@ -1999,9 +2010,11 @@ _u_nwrap  _S_lurp (back)   _[_ wrap _{_
     ("["  diego/sp-wrap-with-bracket)
     ("{"  diego/sp-wrap-with-curly)
     ("\"" diego/sp-wrap-with-quote2)
-    ("'"  diego/sp-wrap-with-quote))
-
-  ;; multiedit
+    ("'"  diego/sp-wrap-with-quote)))
+#+end_src
+**** evil-multiedit
+#+begin_src emacs-lisp
+(with-eval-after-load 'hydra
   (defhydra hydra-multiedit (:hint nil)
     "
 multiedit:
@@ -2016,9 +2029,11 @@ _p_rev     match and _P_rev
     ("t"   evil-multiedit-toggle-or-restrict-region)
     ("N"   evil-multiedit-match-and-next)
     ("P"   evil-multiedit-match-and-prev)
-    ("q"   evil-multiedit-abort :exit t))
-
-  ;; transpose
+    ("q"   evil-multiedit-abort :exit t)))
+#+end_src
+**** transpose
+#+begin_src emacs-lisp
+(with-eval-after-load 'hydra
   (defhydra hydra-transpose ()
     "transpose"
     ("c" diego/transpose-chars "char")
@@ -2027,9 +2042,11 @@ _p_rev     match and _P_rev
     ("k" diego/backward-move-line-or-region "backward line/region")
     ("w" transpose-words "word")
     ("W" diego/backward-transpose-words "backward word")
-    ("s" transpose-sexps "sexp" :exit t))
-
-  ;; spelling
+    ("s" transpose-sexps "sexp" :exit t)))
+#+end_src
+**** spelling
+#+begin_src emacs-lisp
+(with-eval-after-load 'hydra
   (defhydra hydra-spelling ()
     "flyspell"
     ("b" flyspell-buffer "buffer")
@@ -2038,19 +2055,22 @@ _p_rev     match and _P_rev
     ("n" flyspell-correct-next-word-generic "correct next generic")
     ("p" flyspell-correct-previous-word-generic "correct prev generic")
     ("N" diego/flyspell-correct-next "correct next")
-    ("P" flyspell-auto-correct-previous-word "correct pref"))
-
-  ;; justification
+    ("P" flyspell-auto-correct-previous-word "correct pref")))
+#+end_src
+**** justify
+#+begin_src emacs-lisp
+(with-eval-after-load 'hydra
   (defhydra hydra-justify ()
     "justify"
     ("r" diego/justify-right "right" :exit t)
     ("l" diego/justify-left "left" :exit t)
     ("c" diego/justify-center "center" :exit t)
     ("f" diego/justify-full "full" :exit t)
-    ("n" diego/justify-none "none" :exit t))
-
-  ;; toggle
-  (setq flycheck-mode nil)
+    ("n" diego/justify-none "none" :exit t)))
+#+end_src
+**** toggle
+#+begin_src emacs-lisp
+(with-eval-after-load 'hydra
   (defhydra hydra-toggle (:color pink)
     "
 _a_ abbrev:              %-3s`abbrev-mode
@@ -2379,7 +2399,9 @@ I was looking for something with the nice look and simplicity of
   ESUP - Emacs Start Up Profiler
 #+end_quote
 #+begin_src emacs-lisp
-(use-package esup)
+(use-package esup
+  :config
+  (setq esup-insignificant-time 0.001))
 #+end_src
 *** [[https://github.com/Fanael/persistent-scratch][persistent-scratch]]
 #+begin_quote
