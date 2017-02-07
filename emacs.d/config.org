@@ -2270,29 +2270,6 @@ A speed reading mode for Emacs.
     "G" 'xkcd-get-latest))
 #+end_src
 
-*** zone-matrix
-Eh, why not.
-#+begin_src emacs-lisp :tangle no
-(use-package zone-matrix
-  :config
-  (with-eval-after-load 'zone
-    (unless (memq 'zone-matrix (append zone-programs nil))
-      (setq zone-programs
-            (vconcat zone-programs [zone-matrix])))))
-#+end_src
-
-*** [[https://github.com/wasamasa/zone-nyan][zone-nyan]]
-#+begin_quote
-  Nyanyanyanyanyanyanyanyan
-#+end_quote
-#+begin_src emacs-lisp
-(use-package zone-nyan
-  :config
-  (with-eval-after-load 'zone
-    (unless (memq 'zone-nyan (append zone-programs nil))
-      (setq zone-programs
-            (vconcat zone-programs [zone-nyan])))))
-#+end_src
 ** Appearance
 *** [[https://github.com/larstvei/Focus][focus]]
 #+begin_quote
@@ -2535,28 +2512,6 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
   :after flyspell)
 #+end_src
 
-*** [[https://github.com/ancane/markdown-preview-mode][markdown-preview-mode]]
-#+begin_quote
-  Minor mode to preview markdown output as you save
-#+end_quote
-#+begin_src emacs-lisp
-(use-package markdown-preview-mode
-  :after markdown-mode)
-#+end_src
-*** [[https://github.com/tjim/nevermore][nevermore]]
-#+begin_quote
-  Emacs mail reader based on Notmuch
-#+end_quote
-#+begin_src emacs-lisp
-(use-package nm)
-#+end_src
-*** [[https://www.emacswiki.org/emacs/NotMuch][NotMuch]]
-Email!
-#+begin_src emacs-lisp
-(use-package notmuch
-  :config
-  (setq notmuch-search-oldest-first nil))
-#+end_src
 *** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
 #+begin_quote
   Make Emacs' delete-by-moving-to-trash do what you expect it to do on OS X.
@@ -2908,13 +2863,6 @@ Supposedly better than autocomplete.
     ".....X.."
     ".....x.."
     ".....X.."))
-#+end_src
-*** [[https://github.com/Fanael/highlight-defined][highlight-defined]]
-#+begin_quote
-  Highlight known Emacs Lisp symbols
-#+end_quote
-#+begin_src emacs-lisp
-(use-package highlight-defined)
 #+end_src
 *** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]
 #+begin_quote
