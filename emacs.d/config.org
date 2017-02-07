@@ -110,6 +110,7 @@ Add [[./lisp][lisp]] directory and subdirectories to ~load-path~ and ~custom-the
 #+begin_src emacs-lisp
 (add-to-list 'package-archives '("org"          . "http://orgmode.org/elpa/") t)
 (add-to-list 'package-archives '("melpa"        . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 #+end_src
 
 *** [[https://github.com/jwiegley/use-package][use-package]]
@@ -179,8 +180,6 @@ Time display
        display-time-default-load-average nil
        display-time-format "│ %Y-%d-%m %H:%M │"
        display-time-load-average nil)
-
-(display-time-mode)
 #+end_src
 
 Gui elements
@@ -2358,6 +2357,9 @@ I was looking for something with the nice look and simplicity of
   (global-disable-mouse-mode))
 #+end_src
 *** [[https://github.com/jschaf/esup][esup]]
+#+begin_quote
+  ESUP - Emacs Start Up Profiler
+#+end_quote
 #+begin_src emacs-lisp
 (use-package esup)
 #+end_src
@@ -2462,17 +2464,6 @@ Configure the Elfeed RSS reader with an Orgmode file
   (elfeed-goodies/setup)
   (setq elfeed-goodies/entry-pane-position 'bottom))
 #+end_src
-*** [[https://github.com/Silex/elmacro][elmacro]]
-#+begin_quote
-  Package to display keyboard macros or latest interactive commands as emacs lisp.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package elmacro
-  :diminish elmacro-mode
-  :defer 10
-  :config
-  (elmacro-mode))
-#+end_src
 *** [[https://github.com/lewang/flx][flx]]
 #+begin_quote
   Fuzzy matching for Emacs ... a la Sublime Text.
@@ -2548,7 +2539,7 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 SUPER nifty.
 #+begin_src emacs-lisp
 (use-package restart-emacs
-  :defer 5)
+  :defer 10)
 #+end_src
 
 *** [[https://github.com/nonsequitur/smex][smex]]
@@ -2589,7 +2580,7 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
   :config
   (add-hook 'csv-mode-hook #'csv-align-fields))
 #+end_src
-*** [[https://github.com/defunkt/markdown-mode][markdown-mode]]
+*** [[http://jblevins.org/projects/markdown-mode/][markdown-mode]]
 Syntax highlighting for markdown files.
 #+begin_src emacs-lisp
 (use-package markdown-mode
@@ -2654,7 +2645,7 @@ Syntax highlighting for matlab scripts.
 #+end_src
 *** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]]
 #+begin_quote
-Enables syntax highlighting for .vimrc/_vimrc files
+  Enables syntax highlighting for .vimrc/_vimrc files
 #+end_quote
 #+begin_src emacs-lisp
 (use-package vimrc-mode)
@@ -2753,7 +2744,7 @@ Freakin yasnippet. It's the best.
 Supposedly better than autocomplete.
 #+begin_src emacs-lisp
 (use-package company
-  :defer 10
+  :defer 5
   :init
   (setq company-idle-delay 0.3
         company-minimum-prefix-length 1
@@ -2771,6 +2762,17 @@ Supposedly better than autocomplete.
 
 (use-package company-anaconda
   :after company)
+#+end_src
+*** [[https://github.com/Silex/elmacro][elmacro]]
+#+begin_quote
+  Package to display keyboard macros or latest interactive commands as emacs lisp.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package elmacro
+  :diminish elmacro-mode
+  :defer 10
+  :config
+  (elmacro-mode))
 #+end_src
 *** [[https://github.com/alpaker/Fill-Column-Indicator][fill-column-indicator]]
 #+begin_quote
@@ -3245,16 +3247,15 @@ Configuration that applies to all programming modes.
   (local-set-key (kbd "C-c <up>") #'hs-hide-all)
   (local-set-key (kbd "C-c <down>") #'hs-show-all)
   (local-set-key (kbd "C-c <left>") #'hs-hide-block)
-  (local-set-key (kbd "C-c <right>") #'hs-show-block)
-  ;; (highlight-defined-mode)
+  (local-set-key (kbd "C-c <right>") #'hs-show-block))
 
-  (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
-    (diego/set-leader-keys-for-major-mode mode
-      "eb" 'eval-buffer
-      "ef" 'eval-defun
-      "er" 'eval-region
-      "es" 'eval-surrounding-sexp
-      "el" 'eval-last-sexp)))
+(dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
+  (diego/set-leader-keys-for-major-mode mode
+    "eb" 'eval-buffer
+    "ef" 'eval-defun
+    "er" 'eval-region
+    "es" 'eval-surrounding-sexp
+    "el" 'eval-last-sexp))
 
 (add-hook 'emacs-lisp-mode-hook #'diego/setup-lisp-mode)
 (add-hook 'lisp-interaction-mode-hook #'diego/setup-lisp-mode)
