@@ -3,5 +3,4 @@
 # key: usep
 # --
 (use-package ${1:package-name}
-  :ensure t
   ${2:defer: ${3:t}})

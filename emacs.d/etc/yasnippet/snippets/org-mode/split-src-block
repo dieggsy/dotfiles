@@ -1,7 +1,7 @@
 # key: <ss
 # name: split-src-block
+# expand-env: ((yas-indent-line 'fixed))
 # --
-
 #+end_src
 
 #+begin_src ${1:emacs-lisp}

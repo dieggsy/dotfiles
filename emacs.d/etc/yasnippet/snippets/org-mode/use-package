@@ -1,0 +1,10 @@
+# key: usep
+# name: use-package
+# expand-env: ((yas-indent-line (quote fixed)))
+# --
+
+`(make-string (or (org-current-level) 1) ?*)` [[$1][$2]]
+#+begin_src emacs-lisp
+(use-package ${3:package-name}
+  ${4:defer: ${5:t}})
+#+end_src
