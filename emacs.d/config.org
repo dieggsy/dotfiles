@@ -3091,7 +3091,9 @@ Pretty neat, though not entirely complete, IMO.
   Jump to things in Emacs tree-style
 #+end_quote
 #+begin_src emacs-lisp
-(use-package avy)
+(use-package avy
+  :config
+  (setq avy-keys (string-to-list "aoeuidhtns")))
 #+end_src
 *** [[https://github.com/bbatsov/projectile][projectile]]
 #+begin_quote
