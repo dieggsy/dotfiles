@@ -16,6 +16,7 @@ file itself, hence the [[#local-vars][file local variables]]. Also, the optional
 argument of ~org-babel-load-file~ wasn't working for me, so there's that.
 :END:
 
+First off, let's set lexical binding, in accordance with the [[https://github.com/bbatsov/emacs-lisp-style-guide#source-code-layout--organization][emacs-lisp-style-guide]].
 #+begin_src emacs-lisp :comments no
 ;;; -*- lexical-binding: t; -*-
 #+end_src
@@ -40,13 +41,12 @@ argument of ~org-babel-load-file~ wasn't working for me, so there's that.
    - [[#smooth-scroll][Smooth scroll]]
    - [[#tabscompletion][Tabs/completion]]
    - [[#line-positionhighlighting][Line position/highlighting]]
-   - [[#there-is-unrest-in-the-forest][There is unrest in the forest]]
+   - [[#there-is-unrest-in-the-forest][There is unrest in the forest...]]
  - [[#functions][Functions]]
    - [[#filesbuffers][Files/buffers]]
    - [[#window][Window]]
    - [[#editing][Editing]]
    - [[#misc][Misc.]]
-   - [[#keyboard-macros][Keyboard Macros]]
  - [[#bindings][Bindings]]
  - [[#major-configs][Major configs]]
    - [[#no-littering][no-littering]]
@@ -89,7 +89,11 @@ argument of ~org-babel-load-file~ wasn't working for me, so there's that.
 
 * Initial Setup
 ** Server
-Start server if not already running (emacsclient).
+Start server if not already running. You can do this with ~emacs --daemon~ or
+even automate it with ~brew services start emacs~ on osx, but I usually just open
+Emacs.app on login anyway, so this suffices.
+
+See [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html#Emacs-Server][Using Emacs as a Server]].
 #+begin_src emacs-lisp
 (require 'server)
 (unless (server-running-p)
@@ -97,6 +101,10 @@ Start server if not already running (emacsclient).
 #+end_src
 ** Load Path
 Add [[./lisp][lisp]] directory and subdirectories to ~load-path~ and ~custom-theme-load-path~.
+
+This is where I put lisp that isn't necessarily central to my config or needs
+to be in a standalone file such as a some auth settings, lisp practice,
+really bad self-made themes, ~org-export-async-init-file~, etc.
 #+begin_src emacs-lisp
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 (let ((default-directory  "~/.emacs.d/lisp/"))
@@ -106,36 +114,59 @@ Add [[./lisp][lisp]] directory and subdirectories to ~load-path~ and ~custom-the
 #+end_src
 ** Package setup
 *** Package-archives
+This is adds places to fetch external packages from using ~package-install~ or
+even [[#use-package][use-package]]. [[https://melpa.org/#/][Melpa]] is probably the best of these, having the biggest
+variety and most active development. It builds packages around every 4 hours or
+so directly from source.
 #+begin_src emacs-lisp
-(add-to-list 'package-archives '("org"          . "http://orgmode.org/elpa/") t)
-(add-to-list 'package-archives '("melpa"        . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("org"       . "http://orgmode.org/elpa/") t)
+(add-to-list 'package-archives '("melpa"     . "http://melpa.org/packages/"))
 (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 #+end_src
+*** package-initialize
+Load and activate packages. I /think/ this tells Emacs about what features are
+available and where to find them.
 
+Note that this is usually in init.el, but I put it down here because it helped
+install the latest org-version without much fuss (otherwise there was a
+conflict where the built-in version was always loaded). See [[#org-mode][org-mode]] for a bit
+more info.
+#+begin_src emacs-lisp
+(package-initialize)
+#+end_src
 *** [[https://github.com/jwiegley/use-package][use-package]]
 #+begin_quote
   A use-package declaration for simplifying your .emacs
 #+end_quote
+An excellent utility for managing packages and package configuration in a neat
+and organized way, with advanced support for deferring, pre/post-loading
+configuration, time reporting, and more.
+
+Using use-package, you can use the same init file across computers without
+keeping track of what's installed or not and it will ensure that any missing
+packages are installed. It's pretty neat.
 #+begin_src emacs-lisp
-(package-initialize)
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 
-(when (not noninteractive)
-  (setq use-package-minimum-reported-time .001
-        use-package-verbose t
-        use-package-always-defer t
-        use-package-always-ensure t))
+(setq use-package-minimum-reported-time .001
+      use-package-verbose t
+      use-package-always-defer t
+      use-package-always-ensure t)
 
 (eval-when-compile
   (require 'use-package))
 #+end_src
-
 *** [[https://github.com/quelpa/quelpa/][quelpa]]
 #+begin_quote
   Build and install your Emacs Lisp packages on-the-fly directly from source
 #+end_quote
+Quelpa allows you to install packages from /anywhere/, provided the right [[https://github.com/melpa/melpa#recipe-format][melpa
+format recipe]]. It's a great way to keep up with the bleeding edge of a package
+(if melpa just isn't enough for you), install packages that aren't on melpa,
+try out a different development branch, install your fork as a package... you
+get the point.
 #+begin_src emacs-lisp
 (setq quelpa-update-melpa-p nil)
 (unless (require 'quelpa nil t)
@@ -147,6 +178,7 @@ Add [[./lisp][lisp]] directory and subdirectories to ~load-path~ and ~custom-the
 #+begin_quote
   Emacs quelpa handler for use-package
 #+end_quote
+Integrates use-package and quelpa for maximum fun.
 #+begin_src emacs-lisp
 (quelpa
  '(quelpa-use-package
@@ -155,33 +187,37 @@ Add [[./lisp][lisp]] directory and subdirectories to ~load-path~ and ~custom-the
 (require 'quelpa-use-package)
 (quelpa-use-package-activate-advice)
 #+end_src
-
-Byte compile installed packages asynchronously.
+*** async-bytecomp-mode
+Byte compile installed packages asynchronously, which remedies errors on
+upgrading loaded packages.
 #+begin_src emacs-lisp
 (with-eval-after-load 'async-bytecomp
-  (async-bytecomp-package-mode 1))
+  (async-bytecomp-package-mode 1)
+  ;; (setq async-bytecomp-allowed-packages 'all)
+)
 #+end_src
 * Defaults
 Some nice defaults. Does away with most uneccessary visuals, sets up smooth
 scrolling, other such goodies.
 
 ** Appearance
-Get rid of menu bars, scroll bars, startup screens, etc.
+*** Startup
+Get right to your files or the scratch buffer. No B.S.
 #+begin_src emacs-lisp
 (setq inhibit-splash-screen t
       inhibit-startup-message t
       inhibit-startup-echo-area-message t)
 #+end_src
-
-Time display
+*** Time display
 #+begin_src emacs-lisp
 (setq  display-time-24hr-format t
        display-time-default-load-average nil
        display-time-format "│ %Y-%d-%m %H:%M │"
        display-time-load-average nil)
 #+end_src
-
-Gui elements
+*** Gui elements
+Turn off gui elements that I never use. Gui emacs is great, but I still prefer
+text-based interaction thank you very much.
 #+begin_src emacs-lisp
 (menu-bar-mode 0)
 (tool-bar-mode 0)
@@ -190,15 +226,17 @@ Gui elements
       use-dialog-box nil)
 (blink-cursor-mode 0)
 #+end_src
-
-Buffer display
+*** Buffer display
+I don't want line-wrapping madness, just tell me there's more to see and I'll
+have a look. Additionally, show whitespace.
 #+begin_src emacs-lisp
-(set-default 'truncate-lines t)
+(setq-default truncate-lines t)
 (setq whitespace-style '(face trailing tabs))
 (global-whitespace-mode)
-(diminish 'global-whitespace-mode)
 #+end_src
 ** Messages
+Allow more messages in ~*Messages*~ buffer so you can look at what happened waaay
+back if you need to.
 #+begin_src emacs-lisp
 (setq message-log-max 10000)
 #+end_src
@@ -207,23 +245,21 @@ Buffer display
 *Current:* Currently I'm using the wonderful [[http://input.fontbureau.com/][Input]] font. If, like me, you're
 coming from something more like SauceCodePro, Consolas, or even just Menlo,
 this font may at first seem a little "blocky," but it's so wonderfully
-customizable (~Customize your Download~ section under ~Download~ in the above link)
-that you should really give it a try. My current settings are:
- - Download a custom four-style family
+[[http://input.fontbureau.com/download/#customize][customizable]] that you should really give it a try. My current settings are:
 
+ - Download a custom four-style family
 | Regular     | Input Mono Light         |
 | Italic      | Input Mono Light Italic  |
 | Bold        | Input Mono Medium        |
 | Bold Italic | Input Mono Medium Italic |
-
  - ~Source Code Pro style~
    * second option for ~a~ and ~g~
  - 1.4x Line spacing
 
-*Note:* Check out [[http://mbauman.net/geek/2009/03/15/minor-truetype-font-editing-on-a-mac/][this post]] for advice on fixing the Consolas font
-on os x. This helps with the modeline text vertical alignments and makes it
-consistent with other fonts. Last updated 2011, last successfully tested
-09/2016 (by myself).
+*Note:* Check out [[http://mbauman.net/geek/2009/03/15/minor-truetype-font-editing-on-a-mac/][this post]] for advice on fixing the Consolas font on os x. This
+helps with the modeline text vertical alignments and makes it consistent with
+other fonts. Post last updated in 2011, last successfully tested in 09/2016 (by
+myself).
 :END:
 
 Choose a font if available, in order of preference.
@@ -242,71 +278,111 @@ Choose a font if available, in order of preference.
        (set-face-attribute 'default t :font "Menlo-11")))
 #+end_src
 ** Text
+Text-mode is nicer than fundamental-mode.
 #+begin_src emacs-lisp
 (setq-default major-mode 'text-mode)
-(setq default-input-method "TeX")
+#+end_src
+TeX input is /really/ useful for inputing special characters. Setting it as
+default makes it quickly available with ~C-\~, or ~toggle-input-method~.
 
+This way, when you need to input a greek letter or an em-dash or something,
+type ~C-\~, use latex input, and see the automagic replacement happen in all its
+glory.
+#+begin_src emacs-lisp
+(setq default-input-method "TeX")
+#+end_src
+Who uses double spaces between sentences?
+#+begin_src emacs-lisp
 (setq sentence-end-double-space nil)
-(setq-default indent-tabs-mode nil)
 #+end_src
 ** Minibuffer
+Make the cursor not-blocky in minibuffer.
 #+begin_src emacs-lisp
 (add-hook 'minibuffer-setup-hook
           (lambda () (setq-local cursor-type '(bar . 1))))
+#+end_src
+Allow editing in the minibuffer... /with/ the minibuffer. Also resize minibuffer
+windows to fit text.
+#+begin_src emacs-lisp
 (setq enable-recursive-minibuffers t
       resize-mini-windows t)
 #+end_src
 ** Clipboard
+Save stuff you've copied in other applications to the emacs kill-ring.
 #+begin_src emacs-lisp
 (setq save-interprogram-paste-before-kill t)
 #+end_src
 ** File/buffer/session handling
+If a frame is already open, use it to open files.
 #+begin_src emacs-lisp
 (setq ns-pop-up-frames nil)
+#+end_src
+Follow symlinks to files under version control because why would I not.
+#+begin_src emacs-lisp
 (setq vc-follow-symlinks t)
-
+#+end_src
+Select the help window when opening it (I like this so I can quickly ~q~ out).
+#+begin_src emacs-lisp
 (setq help-window-select t)
+#+end_src
+Clean up whitespace before saving files.
+#+begin_src emacs-lisp
 (add-hook 'before-save-hook #'whitespace-cleanup)
 #+end_src
 ** Tramp
+Use ssh and remember passwords for [[https://www.gnu.org/software/tramp/][tramp]].
 #+begin_src emacs-lisp
 (setq tramp-default-method "ssh"
       password-cache-expiry nil)
 #+end_src
 ** Dired
+Do dired actions (meaning file copying/deleting and the like) asynchronously.
+Which means it's less likely to block up emacs. Or something.
 #+begin_src emacs-lisp
 (with-eval-after-load 'dired-async
   (autoload 'dired-async-mode "dired-async.el" nil t)
   (dired-async-mode 1))
 #+end_src
 ** Smooth scroll
+Scroll one line at a time.
 #+begin_src emacs-lisp
-;; Arrow key/jk scroll
 (setq scroll-step 1
       scroll-conservatively 10000)
-
-;; Mouse scroll (obsolete)
-;; (setq mouse-wheel-scroll-amount '(2 ((shift) . 1) ((control) . nil))
-;;       mouse-wheel-progressive-speed nil)
+#+end_src
+Smoother mouse scrolling, which is now irrelevant to me since I've disabled the
+mouse in emacs.
+#+begin_src emacs-lisp :tangle no
+(setq mouse-wheel-scroll-amount '(2 ((shift) . 1) ((control) . nil))
+      mouse-wheel-progressive-speed nil)
 #+end_src
 ** Tabs/completion
+Dear god I hate tabs, also, four spaces is a good indentation default.
 #+begin_src emacs-lisp
-(setq-default tab-width 4)
+(setq-default indent-tabs-mode nil
+              tab-width 4)
+#+end_src
+Use tab for completion and cycling candidates (relevant for the minibuffer?).
+#+begin_src emacs-lisp
 (setq tab-stop-list (number-sequence 4 200 4)
       completion-cycle-threshold t
       tab-always-indent 'complete)
 #+end_src
 ** Line position/highlighting
+Show the column number in the modeline, because I'm not a savage.
 #+begin_src emacs-lisp
-(setq linum-delay t
-      column-number-mode t)
+(setq column-number-mode t)
 #+end_src
-** There is unrest in the forest
+** [[https://www.youtube.com/watch?v=UWHEcIbhDiw][There is unrest in the forest...]]
 #+begin_src emacs-lisp
-(load-file "~/.emacs.d/lisp/trouble-with-the-trees.el")
+(load-file "~/.emacs.d/lisp/there-is-trouble-with-the-trees.el")
 #+end_src
+#+begin_quote
+For the Maples want more sunlight
+And the Oaks ignore their pleas
+#+end_quote
 * Functions
-Stolen and original functions and macros.
+Stolen and original functions and macros. Should be explained well enough in
+the docstrings.
 
 ** Files/buffers
 *** File Manipulation
@@ -336,15 +412,17 @@ Stolen and original functions and macros.
   "Download a file from url to specified path."
   (interactive)
   (let* ((file-url (read-from-minibuffer "URL: "))
-         (file-name (read-from-minibuffer "File : " (concat default-directory
-                                                            (file-name-nondirectory file-url)))))
+         (file-name
+          (read-from-minibuffer "File : "
+                                (concat default-directory
+                                        (file-name-nondirectory file-url)))))
     (url-copy-file file-url file-name)))
 #+end_src
 *** Switching
 #+begin_src emacs-lisp
 (defun diego/switch-to-previous-buffer ()
   "Switch to previously open buffer.
-    Repeated invocations toggle between the two most recently open buffers."
+Repeated invocations toggle between the two most recently open buffers."
   (interactive)
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
@@ -608,7 +686,8 @@ drag it up past ARG other lines (down if ARG negative)."
 *** Paragraph
 #+begin_src emacs-lisp
 (defun diego/fill-or-unfill ()
-  "Like `fill-paragraph', but unfill if used twice."
+  "Toggle paragraph filling.
+Like `fill-paragraph', but unfill if used twice."
   (interactive)
   (let ((fill-column
          (if (eq last-command 'diego/fill-or-unfill)
@@ -618,6 +697,7 @@ drag it up past ARG other lines (down if ARG negative)."
     (call-interactively #'fill-paragraph)))
 
 (defun diego/paragraphize ()
+"Remove newlines from region, I think."
   (interactive)
   (if (region-active-p)
       (flush-lines "^$" (region-beginning) (region-end))
@@ -669,6 +749,9 @@ drag it up past ARG other lines (down if ARG negative)."
   (quelpa-upgrade))
 
 (defun diego/iterm-go-here ()
+"Go to default-directory in iTerm.
+
+If default-directory is nil, go to home directory."
   (interactive)
   (call-process-shell-command
    (concat  "tmux select-window -t hud:shell && "
@@ -690,37 +773,31 @@ Otherwise, executes `evil-ret'."
         (t (evil-ret))))
 
 (defun eval-surrounding-sexp (levels)
+"Eval sexp around point, specifying depth with LEVELS."
   (interactive "p")
   (save-excursion
     (up-list (abs levels))
     (eval-last-sexp nil)))
 
 (defun eval-next-sexp ()
+"Eval next sexp (after point)."
   (interactive)
   (save-excursion
     (forward-sexp)
     (eval-last-sexp nil)))
 #+end_src
-** Keyboard Macros
-#+begin_src emacs-lisp
-(with-eval-after-load 'org
-  (fset 'diego/insert-footnote
-        [?/ ?\{ ?\[ ?0 ?- ?9 ?\] ?+ ?\} return ?a ?f ?n ?: escape ?  ?x ?p ?r ?\[])
-
-  (fset 'diego/org-wrap-with-quote
-        [?\{ ?i return ?# ?+ ?b ?e ?g ?i ?n ?_ ?q ?u ?o ?t ?e ?\C-/ ?\} ?i return
-             up ?# ?+ ?e ?n ?d ?_ ?q ?u ?o ?t ?e ?\C-/ ?\{ ?j ?i ?  ?  ?\M-q
-             ?\M-q ?\M-q ?\C-/]))
-#+end_src
 * Bindings
-I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard.
+I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard, so I unbind
+these. See more [[#bindings-1][here]].
 #+begin_src emacs-lisp
 (with-eval-after-load 'undo-tree
   (global-unset-key [?\C-/])
   (global-unset-key [?\C-_])
   (define-key undo-tree-map (kbd "C-/") nil)
   (define-key undo-tree-map (kbd "C-_") nil))
-
+#+end_src
+Likewise, use these keys to quite out of the minibuffer.
+#+begin_src emacs-lisp
 (dolist (map (list minibuffer-local-map
                    minibuffer-local-ns-map
                    minibuffer-local-completion-map
@@ -728,14 +805,20 @@ I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard.
                    minibuffer-local-isearch-map))
   (dolist (key '([?\C-/] [?\C-_] [escape]))
     (define-key map key #'minibuffer-keyboard-quit)))
-
+#+end_src
+A convenient full-screen binding I'm used to from iTerm.
+#+begin_src emacs-lisp
 (global-set-key (kbd "<s-return>") #'toggle-frame-fullscreen)
-
+#+end_src
+Make indent-rigidly more vimmy.
+#+begin_src emacs-lisp
 (define-key indent-rigidly-map "h" #'indent-rigidly-left)
 (define-key indent-rigidly-map "l" #'indent-rigidly-right)
 (define-key indent-rigidly-map "H" #'indent-rigidly-left-to-tab-stop)
 (define-key indent-rigidly-map "L" #'indent-rigidly-right-to-tab-stop)
-
+#+end_src
+Remap fill-paragraph binding to ~diego/fill-or-unfill~, which toggles paragraph filling.
+#+begin_src emacs-lisp
 (global-set-key [remap fill-paragraph] #'diego/fill-or-unfill)
 #+end_src
 * Major configs
@@ -1331,7 +1414,6 @@ A really nice search/completion system for emacs.
 *** ivy
 #+begin_src emacs-lisp
 (use-package ivy
-  :diminish ivy-mode
   :bind (("<f6>" . ivy-resume))
   :functions (ivy-alt-done
               ivy-dispatching-done
@@ -1395,7 +1477,6 @@ A really nice search/completion system for emacs.
 *** counsel
 #+begin_src emacs-lisp
 (use-package counsel
-  :diminish counsel-mode
   :bind (("M-x" . counsel-M-x)
          ("C-x C-f" . counsel-find-file))
   :functions (ivy--format-function-generic
@@ -1456,7 +1537,8 @@ have something like:
 at the beginning of your init.el/emacs.d, or as in my case something like:
 
 #+begin_src emacs-lisp :tangle no
-(package-initialize nil)
+;; (package-initialize)
+(require 'package)
 (setq package-enable-at-startup nil)
 ;; ---------------------------
 ;; my load-path settings here
@@ -1914,6 +1996,17 @@ so I went with it.
                                                   ',init-tangle-start-time)))
             (message "ERROR: config.org tangle/compilation failed.")))))))
 #+end_src
+*** Keyboard Macros
+#+begin_src emacs-lisp
+(with-eval-after-load 'org
+  (fset 'diego/insert-footnote
+        [?/ ?\{ ?\[ ?0 ?- ?9 ?\] ?+ ?\} return ?a ?f ?n ?: escape ?  ?x ?p ?r ?\[])
+
+  (fset 'diego/org-wrap-with-quote
+        [?\{ ?i return ?# ?+ ?b ?e ?g ?i ?n ?_ ?q ?u ?o ?t ?e ?\C-/ ?\} ?i return
+             up ?# ?+ ?e ?n ?d ?_ ?q ?u ?o ?t ?e ?\C-/ ?\{ ?j ?i ?  ?  ?\M-q
+             ?\M-q ?\M-q ?\C-/]))
+#+end_src
 *** Setup
 #+begin_src emacs-lisp
 (use-package org
@@ -2096,7 +2189,6 @@ _S_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 #+end_quote
 #+begin_src emacs-lisp
 (use-package which-key
-  :diminish which-key-mode
   :defer 10
   :config
   (which-key-mode)
@@ -2603,7 +2695,6 @@ Sorts ivy by most recently used, I think.
 Kind of makes undo's like git. Or Vim, apparently, if you're into that.
 #+begin_src emacs-lisp
 (use-package undo-tree
-  :diminish undo-tree-mode
   :config
   (setq undo-tree-visualizer-timestamps t))
 #+end_src
@@ -2757,10 +2848,13 @@ Syntax highlighting for matlab scripts.
 Freakin yasnippet. It's the best.
 #+begin_src emacs-lisp
 (use-package yasnippet
-  :diminish yas-minor-mode
   :defer 5
   :config
   (yas-global-mode 1))
+#+end_src
+**** [[https://github.com/haskell/haskell-snippets][haskell-snippets]]
+#+begin_src emacs-lisp
+(use-package haskell-snippets)
 #+end_src
 *** [[https://github.com/abo-abo/auto-yasnippet][auto-yasnippet]]
 #+begin_src emacs-lisp
@@ -2823,7 +2917,6 @@ Supposedly better than autocomplete.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package elmacro
-  :diminish elmacro-mode
   :defer 10
   :config
   (elmacro-mode))
@@ -3005,7 +3098,6 @@ Pretty neat, though not entirely complete, IMO.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package projectile
-  :diminish projectile-mode
   :config
   (setq projectile-globally-ignored-files
         '("TAGS"
