@@ -952,7 +952,7 @@ except:
     "HEARTBEAT_TIMEOUT": 300,
     "IMAGE_ON_TERM": false,
     "IMAGE_RESIZE_TO_FIT": true,
-    "THEME": "solarized",
+    "THEME": "darktooth",
     "ASCII_ART": false,
     "HIDE_PROMPT": true,
     "PREFIX": "#owner#place#me#keyword",

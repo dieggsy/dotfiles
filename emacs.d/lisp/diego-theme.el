@@ -30,8 +30,8 @@
    ;; Fonts
    `(fixed-pitch ((t (:family "Consolas"))))
    `(variable-pitch ((t (:family "Helvetica Neue Light"))))
-   
-   
+
+
    ;; Company
    `(company-preview ((t (:inherit default :underline t))))
    `(company-preview-common ((t (:inherit company-preview))))
@@ -53,7 +53,7 @@
    `(ivy-modified-buffer ((t (:inherit helm-buffer-not-saved))))
    `(swiper-line-face ((t (:inherit hl-line))))
 
-   ;;Email 
+   ;;Email
    `(message-header-subject ((t (:foreground "OliveDrab1" :height 1.2))))
    `(message-mml ((t (:inherit font-lock-comment-face :slant normal))))
    `(notmuch-search-unread-face ((t (:inherit font-lock-function-name-face))))
@@ -62,7 +62,7 @@
    `(sml/battery ((t nil)) t)
    `(sml/col-number ((t (:inherit sml/global))))
    `(sml/time ((t (:foreground "#af5f00"))))
-   
+
    ;; Other
    `(column-marker-1 ((t (:background "#7f7f7f"))))
    `(comint-highlight-prompt ((t nil)))
