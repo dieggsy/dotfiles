@@ -378,6 +378,7 @@ Show the column number in the modeline, because I'm not a savage.
 #+end_src
 #+begin_quote
 For the Maples want more sunlight
+
 And the Oaks ignore their pleas
 #+end_quote
 * Functions
