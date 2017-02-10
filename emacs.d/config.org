@@ -3140,7 +3140,7 @@ Pretty neat, though not entirely complete, IMO.
 (use-package ace-window
   :bind ("M-p" . ace-window)
   :config
-  (setq aw-keys '(?a ?o ?e ?u ?h ?t ?n ?s)))
+  (setq aw-keys (string-to-list "aoeuidhtns")))
 #+end_src
 *** [[https://github.com/abo-abo/avy][avy]]
 #+begin_quote
