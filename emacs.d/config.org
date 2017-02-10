@@ -2820,9 +2820,13 @@ Syntax highlighting for matlab scripts.
   (show-smartparens-global-mode)
   (add-hook 'eval-expression-minibuffer-setup-hook #'smartparens-strict-mode)
   (add-hook 'eval-expression-minibuffer-setup-hook #'show-smartparens-mode)
-  (sp-local-pair 'org-mode "'" nil :actions nil)
-  (sp-local-pair 'minibuffer-inactive-mode "'" nil :actions nil)
-  (sp-local-pair 'minibuffer-inactive-mode "`" nil :actions nil)
+  (let ((modes '(text-mode
+                 org-mode
+                 markdown-mode
+                 minibuffer-inactive-mode
+                 html-mode)))
+    (sp-local-pair modes "'" nil :actions nil)
+    (sp-local-pair modes "`" nil :actions nil))
 
   (defmacro diego|sp-wrap-with (char-name char)
     "Make function for wrapping with character using `sp-wrap-with-pair'"
