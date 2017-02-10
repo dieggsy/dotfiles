@@ -282,6 +282,12 @@ Text-mode is nicer than fundamental-mode.
 #+begin_src emacs-lisp
 (setq-default major-mode 'text-mode)
 #+end_src
+Fill column default, and use auto-fill for text-mode (and derived modes, such
+as org-mode, markdown, etc.).
+#+begin_src emacs-lisp
+(setq-default fill-column 79)
+(add-hook 'text-mode-hook 'auto-fill-mode)
+#+end_src
 TeX input is /really/ useful for inputing special characters. Setting it as
 default makes it quickly available with ~C-\~, or ~toggle-input-method~.
 
@@ -797,7 +803,7 @@ these. See more [[#bindings-1][here]].
   (define-key undo-tree-map (kbd "C-/") nil)
   (define-key undo-tree-map (kbd "C-_") nil))
 #+end_src
-Likewise, use these keys to quite out of the minibuffer.
+Likewise, use these keys to quit out of the minibuffer.
 #+begin_src emacs-lisp
 (dolist (map (list minibuffer-local-map
                    minibuffer-local-ns-map
@@ -841,6 +847,8 @@ or that enhance emacs at a deeper level than any regular mode.
 #+begin_quote
   Make Emacs use the $PATH set up by the user's shell
 #+end_quote
+If you've ever had issues where emacs doesn't find your executables, this
+package should fix them nicely.
 #+begin_src emacs-lisp
 (use-package exec-path-from-shell
   :defer 5
@@ -1713,13 +1721,19 @@ so I went with it.
         org-list-demote-modify-bullet '(("-" . "*")
                                         ("*" . "+"))
         org-export-in-background t
+        org-confirm-babel-evaluate nil
         org-src-tab-acts-natively t
         org-M-RET-may-split-line nil
         org-list-use-circular-motion t
         org-log-into-drawer t
         org-link-search-must-match-exact-headline nil
         org-confirm-elisp-link-function 'y-or-n-p
-        org-confirm-elisp-link-not-regexp "(\\(wiki-search\\|describe-function\\).*?)")
+        org-confirm-elisp-link-not-regexp "(\\(wiki-search\\|describe-function\\).*?)"
+        org-babel-load-languages '((python . t)
+                                   (emacs-lisp . t)
+                                   (calc . t)
+                                   (ipython . t)
+                                   (shell . t)))
 
   ;; appearance
   (setq org-src-fontify-natively t
@@ -1785,12 +1799,12 @@ so I went with it.
 *** Org config
 #+begin_src emacs-lisp
 (defun diego/setup-org-mode ()
+  (require 'ox-md)
   (dolist (char '("+" "-"))
     (define-key org-mode-map (kbd char)
       `(lambda ()
          (interactive)
          (diego/org-insert-list-leader-or-self ,char))))
-
   (setq-local prettify-symbols-alist
               '(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
                 ("❙ READ"        . (?❙ (Br . Bl) ?❙ (Br . Bl) ?❙))
@@ -1799,13 +1813,9 @@ so I went with it.
                 ("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
                 ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
   (prettify-symbols-mode)
-
   (org-bullets-mode 1)
   (setq org-bullets-bullet-list '("•"))
-
   (goto-address-mode)
-  (setq fill-column 79)
-  (auto-fill-mode 1)
   (org-indent-mode))
 #+end_src
 *** Helper functions
@@ -1940,6 +1950,7 @@ so I went with it.
       (diego/org-swap-tags new)))
 
   (defun diego/org-choose-bullet-type ()
+    "Change the bullet type for org lists with a prompt."
     (interactive)
     (let ((char (read-char-choice
                  "enter bullet type (-|*|+|1|2|a|b|A|B): "
@@ -1959,6 +1970,7 @@ so I went with it.
             (t (org-cycle-list-bullet (char-to-string char))))))
 
   (defun diego/async-babel-tangle ()
+    "Tangle file asynchronously"
     (interactive)
     (let ((file (buffer-file-name)))
       (async-start
@@ -1971,6 +1983,7 @@ so I went with it.
            (message "ERROR: tangle file failed."))))))
 
   (defun diego/async-tangle-init ()
+    "Asynchronously tangle config.org and and byte-compile."
     (interactive)
     ;; (defconst init-tangle-start-time (current-time))
     (let ((init-tangle-start-time (current-time)))
@@ -2026,7 +2039,6 @@ so I went with it.
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines)))
 #+end_src
-
 ** [[https://github.com/abo-abo/hydra][hydra]]
 #+begin_quote
   make Emacs bindings that stick around
