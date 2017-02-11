@@ -1384,6 +1384,8 @@ setopt clobber
 unsetopt correct
 autoload -Uz compinit && compinit -i
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' menu select
 #+end_src
 **** Initialize and source some things
 [[https://github.com/rupa/z][z]]
