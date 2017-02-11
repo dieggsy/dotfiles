@@ -1243,6 +1243,7 @@ based on or copied from spacemacs, so definitely check them out!
     "u"   'universal-argument
     "&"   'async-shell-command
     ":"   'eval-expression
+    "-"   'ivy-resume
     "y"   'counsel-yank-pop
     "r"   'repeat
     "S"   'hydra-spelling/body
@@ -1424,7 +1425,6 @@ A really nice search/completion system for emacs.
 *** ivy
 #+begin_src emacs-lisp
 (use-package ivy
-  :bind (("<f6>" . ivy-resume))
   :functions (ivy-alt-done
               ivy-dispatching-done
               ivy-previous-history-element
