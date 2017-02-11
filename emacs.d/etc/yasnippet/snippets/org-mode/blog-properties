@@ -1,0 +1,10 @@
+# key: bprops
+# name: blog-properties
+# --
+:PROPERTIES:
+:EXPORT_FILE_NAME: ~/blog/content/posts/`(replace-regexp-in-string " " "-" (replace-regexp-in-string "[^a-zA-Z0-9 ]" "" (downcase (cdr (assoc "ITEM" (org-entry-properties))))))`.md
+:SLUG:     `(replace-regexp-in-string " " "-" (replace-regexp-in-string "[^a-zA-Z0-9 ]" "" (downcase (cdr (assoc "ITEM" (org-entry-properties))))))`
+:DATE:     `(format-time-string "%Y-%m-%d")`
+:END:
+
+$0

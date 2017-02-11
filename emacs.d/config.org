@@ -2014,7 +2014,8 @@ so I went with it.
     "Export current subheading to markdown using pandoc."
     (interactive)
     (save-excursion
-      (outline-up-heading 10)
+      (unless (eq (org-current-level) 1)
+        (outline-up-heading 10))
       (let* ((org-pandoc-format 'markdown)
              (org-pandoc-options-for-markdown '((standalone . t)
                                                 (atx-headers . t)
