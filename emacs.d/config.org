@@ -1124,7 +1124,8 @@ based on or copied from spacemacs, so definitely check them out!
     "bC"  'diego/switch-to-customize
 
     "ff"  'counsel-find-file
-    "fb"  'counsel-bookmark
+    "fb"  'headlong-bookmark-jump
+    "fB"  'headlong-bookmark-jump-other
     "fc"  'diego/copy-file
     "fs"  'diego/save-buffer
     "fl"  'counsel-locate
@@ -3199,6 +3200,10 @@ Pretty neat, though not entirely complete, IMO.
 *** [[https://github.com/wasamasa/eyebrowse][eyebrowse]]
 #+begin_src emacs-lisp
 (use-package eyebrowse)
+#+end_src
+*** [[https://github.com/abo-abo/headlong][headlong]]
+#+begin_src emacs-lisp
+(use-package headlong)
 #+end_src
 ** Org mode
 *** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
