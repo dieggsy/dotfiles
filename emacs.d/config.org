@@ -978,7 +978,11 @@ editing. So I went for it. Now I'll never go back.
                  [triple-wheel-down]
                  [wheel-up]
                  [double-wheel-up]
-                 [triple-wheel-up]))
+                 [triple-wheel-up]
+                 [up]
+                 [down]
+                 [right]
+                 [left]))
     (define-key evil-motion-state-map key #'ignore)))
 
 #+end_src
@@ -1413,6 +1417,7 @@ they are in `spacemacs/set-leader-keys'."
 *** [[https://github.com/syohex/emacs-evil-anzu][evil-anzu]]
 #+begin_src emacs-lisp
 (use-package evil-anzu
+  :disabled t
   :after evil
   :config)
 #+end_src
@@ -1477,12 +1482,17 @@ A really nice search/completion system for emacs.
   (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
   (define-key ivy-minibuffer-map [S-return] #'ivy-dispatching-done)
   (define-key ivy-minibuffer-map [C-return] #'ivy-immediate-done)
+  (define-key ivy-minibuffer-map (kbd "C-j") #'ivy-next-line)
+  (define-key ivy-minibuffer-map (kbd "C-k") #'ivy-previous-line)
   (define-key ivy-minibuffer-map (kbd "<S-up>") #'ivy-previous-history-element)
   (define-key ivy-minibuffer-map (kbd "<S-down>") #'ivy-next-history-element))
+
+(use-package ivy-hydra)
 #+end_src
 *** swiper
 #+begin_src emacs-lisp
-(use-package swiper)
+(use-package swiper
+  :config)
 #+end_src
 *** counsel
 #+begin_src emacs-lisp
@@ -1500,27 +1510,45 @@ A really nice search/completion system for emacs.
   (defalias 'ag #'counsel-ag)
   (defalias 'locate #'counsel-locate)
 
-  (advice-add
-   #'counsel--yank-pop-format-function
-   :override
-   (lambda (cand-pairs)
-     (ivy--format-function-generic
-      (lambda (str)
-        (let ((temp-list (split-string (counsel--yank-pop-truncate str) "\n" t)))
-          (mapconcat
-           'identity
-           (append (list (concat "> " (car temp-list)))
-                   (mapcar (lambda (s) (concat "  " s)) (cdr temp-list)))
-           "\n")))
-      (lambda (str)
-        (mapconcat
-         (lambda (s)
-           (concat "  " s))
-         (split-string
-          (counsel--yank-pop-truncate str) "\n" t)
-         "\n"))
-      cand-pairs
-      counsel-yank-pop-separator))))
+  (defun diego/counsel-yank-pop-action ()
+    "Make consistent with evil-paste-after."
+    (save-excursion
+      (undo-boundary)
+      (forward-char)
+      (with-ivy-window
+        (delete-region ivy-completion-beg
+                       ivy-completion-end)
+        (insert (substring-no-properties s))
+        (setq ivy-completion-end (point))))
+    (forward-char (length s)))
+
+  (advice-add #'counsel-yank-pop-action
+              :override #'diego/counsel-yank-pop-action)
+
+  (defun diego/counsel-yank-pop-format-function ()
+    "Make counsel-yank-pop look a little more like the rest of ivy."
+    (ivy--format-function-generic
+     (lambda (str)
+       (let ((temp-list
+              (split-string (counsel--yank-pop-truncate str) "\n" t)))
+         (mapconcat
+          'identity
+          (append (list (concat "> " (car temp-list)))
+                  (mapcar (lambda (s) (concat "  " s)) (cdr temp-list)))
+          "\n")))
+     (lambda (str)
+       (mapconcat
+        (lambda (s)
+          (concat "  " s))
+        (split-string
+         (counsel--yank-pop-truncate str) "\n" t)
+        "\n"))
+     cand-pairs
+     counsel-yank-pop-separator))
+
+  (advice-add #'counsel--yank-pop-format-function
+              :override
+              #'diego/counsel-yank-pop-format-function))
 
 (use-package counsel-projectile)
 
@@ -1888,17 +1916,17 @@ so I went with it.
           (and (search-forward "SCHEDULED:" search-limit t)
                (replace-match "DEADLINE:"))))))
 
-  (defun diego/pop-to-org-todo (split)
+  (defun diego/pop-to-org-todo (full)
     "Visit todo list, in the current window or a split."
     (interactive "P")
-    (if split
+    (if full
         (find-file "~/Dropbox (MIT)/org/todo.org")
       (find-file-other-window "~/Dropbox (MIT)/org/todo.org")))
 
-  (defun diego/pop-to-org-notes (split)
-    "Visit my main notes list, in the current window or a split."
+  (defun diego/pop-to-org-notes (full)
+    "Visit my main notes list, in other window or current."
     (interactive "P")
-    (if split
+    (if full
         (find-file "~/Dropbox (MIT)/org/notes.org")
       (find-file-other-window "~/Dropbox (MIT)/org/notes.org")))
 
@@ -2469,7 +2497,8 @@ A speed reading mode for Emacs.
 #+begin_src emacs-lisp
 (use-package rainbow-mode
   :config
-  (setq rainbow-x-colors-major-mode-list '(c-mode c++-mode java-mode)))
+  (setq rainbow-x-colors-major-mode-list '(c-mode c++-mode java-mode))
+  (add-hook 'help-mode-hook #'rainbow-mode))
 #+end_src
 *** [[https://github.com/therockmandolinist/emacs-theme-darktooth][darktooth-theme]]
 #+begin_quote
