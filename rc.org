@@ -51,9 +51,7 @@ _dir_chomp () {
     done
     echo "${p[*]}"
 }
-export PS1='\[\e[1;91m\]$(
-  _dir_chomp "$(pwd)" 1
-)\[\e[92m\] ❯\[\033[00m\] '
+export PS1='\[\e[1;91m\]$(_dir_chomp "$(pwd)" 1)\[\e[92m\] ❯\[\033[00m\] '
 #+end_src
 
 *** Bash options
@@ -1327,7 +1325,7 @@ export HOSTNAME=`hostname`
 
 ***** Prompt
 #+begin_src sh
-source "$HOME/Code/zsh-git-prompt/zshrc.sh"
+source $HOME/Code/zsh-git-prompt/zshrc.sh
 setopt prompt_subst
 GIT_PROMPT_EXECUTABLE="haskell"
 ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[green]%}"
@@ -1415,8 +1413,6 @@ bindkey '^[[B' history-substring-search-down
 Autosuggestions
 #+begin_src sh
 # source $HOME/Code/zsh-autosuggestions/zsh-autosuggestions.zsh
-
-# zstyle ':completion:*' list-colors 'di=0;36:ex=0;35:ln=1;31'
 #+end_src
 
 Syntax highlighting
@@ -1507,6 +1503,8 @@ path=(
     /usr/local/opt/coreutils/libexec/gnubin
     $path
 )
+
+export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 #+end_src
 *** zshenv
 :PROPERTIES:
@@ -1528,16 +1526,10 @@ path=(
     $path
 )
 
-manpath=(
-    /usr/local/opt/coreutils/libexec/gnuman
-    $manpath
-)
-
 cdpath=($HOME $HOME/Code)
 
 fpath=(~/bin/zfuncs /usr/local/share/zsh-completions $fpath)
 typeset -gU path manpath cdpath fpath
-
 #+end_src
 **** Variables
 #+begin_src sh
