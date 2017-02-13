@@ -1,11 +1,19 @@
 #+TITLE: rc.org
 #+PROPERTY: header-args :comments link :mkdirp yes :results silent
 
+* Intro
+
+This is where I keep the bulk of my dotfiles (that aren't emacs). If it seems
+like a bit of a mess to keep it all in one place, note that this is /much/ more
+readable in org format than in rendered markdown.
+
 * Contents                                                              :toc:
+ - [[#intro][Intro]]
  - [[#config][Config]]
    - [[#bashrc][bashrc]]
    - [[#cookiecutterrc][cookiecutterrc]]
    - [[#cvimrc][cvimrc]]
+   - [[#darktooththeme-cmus][darktooth.theme (cmus)]]
    - [[#git][git]]
    - [[#hyperjs][hyper.js]]
    - [[#khdrc][khdrc]]
@@ -283,6 +291,64 @@ let blacklists = ['*://inbox.google.com/*']
 
 map J nextTab
 map K previousTab
+#+end_src
+** darktooth.theme (cmus)
+:PROPERTIES:
+:header-args+: :tangle ~/.config/cmus/darktooth.theme
+:END:
+#+begin_src conf
+# Directory colors
+set color_win_dir=108
+
+# Normal text
+set color_win_fg=default
+
+# Window background color.
+set color_win_bg=0
+
+# Command line color.
+set color_cmdline_bg=0
+set color_cmdline_fg=6
+
+# Color of error messages displayed on the command line.
+set color_error=lightred
+
+# Color of informational messages displayed on the command line.
+set color_info=lightgreen
+
+# Color of the separator line between windows in view (1).
+set color_separator=246
+
+# Color of window titles (topmost line of the screen).
+set color_win_title_bg=234
+set color_win_title_fg=12
+
+# Status line color (shows remaining time and playback options).
+set color_statusline_bg=0
+set color_statusline_fg=10
+
+# Color of currently playing track.
+set color_win_cur=009
+
+# Color of the line displaying currently playing track.
+set color_titleline_bg=234
+set color_titleline_fg=12
+
+# Color of the selected row which is also the currently playing track in active window.
+set color_win_cur_sel_bg=237
+set color_win_cur_sel_fg=9
+
+# Color of the selected row which is also the currently playing track in inactive window.
+set color_win_inactive_cur_sel_bg=236
+set color_win_inactive_cur_sel_fg=9
+
+# Color of selected row in active window.
+set color_win_sel_bg=237
+set color_win_sel_fg=default
+
+# Color of selected row in inactive window.
+set color_win_inactive_sel_bg=236
+set color_win_inactive_sel_fg=default
 #+end_src
 ** git
 *** gitconfig
@@ -986,7 +1052,6 @@ except:
             "DISPLAY": "\n  #sender_name #sender_nick #to #recipient_name #recipient_nick :\n  #clock message_id:#id\n  #message"
         }
     }
-
 }
 #+end_src
 *** darktooth.json
@@ -1384,24 +1449,24 @@ autoload -Uz compinit && compinit -i
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' menu select
+zstyle ':completion:*' list-dirs-first true
+zstyle ':completion:*' squeeze-slashes true
 #+end_src
 **** Initialize and source some things
-[[https://github.com/rupa/z][z]]
+***** [[https://github.com/rupa/z][z]]
 #+begin_src sh
 source $(brew --prefix)/etc/profile.d/z.sh
 #+end_src
 
-[[https://github.com/nvbn/thefuck][thefuck]]
+***** [[https://github.com/nvbn/thefuck][thefuck]]
 #+begin_src sh
 if which thefuck > /dev/null; then eval $(thefuck --alias); fi
 #+end_src
-
-[[https://github.com/yyuu/pyenv/][pyenv]]
+***** [[https://github.com/yyuu/pyenv/][pyenv]]
 #+begin_src sh
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 #+end_src
-
-History substring search
+***** [[https://github.com/zsh-users/zsh-history-substring-search][zsh-history-substring-search]]
 #+begin_src sh
 source /usr/local/opt/zsh-history-substring-search/zsh-history-substring-search.zsh
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=''
@@ -1409,13 +1474,11 @@ HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=''
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 #+end_src
-
-Autosuggestions
+***** [[https://github.com/zsh-users/zsh-autosuggestions][zsh-autosuggestions]]
 #+begin_src sh
 # source $HOME/Code/zsh-autosuggestions/zsh-autosuggestions.zsh
 #+end_src
-
-Syntax highlighting
+***** [[https://github.com/zsh-users/zsh-syntax-highlighting/][zsh-syntax-highlightiing]]
 #+begin_src sh
 source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ZSH_HIGHLIGHT_STYLES[globbing]='fg=208'
