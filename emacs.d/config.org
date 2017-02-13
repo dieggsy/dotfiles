@@ -933,7 +933,7 @@ editing. So I went for it. Now I'll never go back.
   (define-key evil-normal-state-map (kbd "S-SPC") #'org-agenda-list)
 
   (define-key evil-normal-state-map "-" #'negative-argument)
-  (define-key evil-normal-state-map (kbd "\\") #'ace-window)
+  (define-key evil-normal-state-map (kbd "\\") #'evil-window-next)
 
   (evil-define-key 'normal custom-mode-map
     "q" #'Custom-buffer-done)
@@ -1448,7 +1448,7 @@ A really nice search/completion system for emacs.
         projectile-completion-system 'ivy
         ivy-use-virtual-buffers t ; Show recent files
         ivy-count-format ""
-        ivy-extra-directories '("../") ; ignore current folder... maybe shouldn't
+        ivy-extra-directories nil; '("../") ; ignore current folder and parent dir
         ivy-initial-inputs-alist '((man . "^"))
         ivy-switch-buffer-faces-alist '((dired-mode . ivy-subdir))
         ivy-ignore-buffers
@@ -1510,11 +1510,12 @@ A really nice search/completion system for emacs.
   (defalias 'ag #'counsel-ag)
   (defalias 'locate #'counsel-locate)
 
-  (defun diego/counsel-yank-pop-action ()
+  (defun diego/counsel-yank-pop-action (s)
     "Make consistent with evil-paste-after."
     (save-excursion
       (undo-boundary)
-      (forward-char)
+      (unless (eq (point) (point-max))
+        (forward-char))
       (with-ivy-window
         (delete-region ivy-completion-beg
                        ivy-completion-end)
@@ -1525,24 +1526,20 @@ A really nice search/completion system for emacs.
   (advice-add #'counsel-yank-pop-action
               :override #'diego/counsel-yank-pop-action)
 
-  (defun diego/counsel-yank-pop-format-function ()
+  (defun diego/counsel-yank-pop-format-function (cand-pairs)
     "Make counsel-yank-pop look a little more like the rest of ivy."
     (ivy--format-function-generic
      (lambda (str)
-       (let ((temp-list
-              (split-string (counsel--yank-pop-truncate str) "\n" t)))
-         (mapconcat
-          'identity
-          (append (list (concat "> " (car temp-list)))
-                  (mapcar (lambda (s) (concat "  " s)) (cdr temp-list)))
-          "\n")))
+       (let ((temp-list (split-string (counsel--yank-pop-truncate str) "\n" t)))
+         (mapconcat 'identity
+                    (append (list (concat "> " (car temp-list)))
+                            (mapcar (lambda (s) (concat "  " s))
+                                    (cdr temp-list)))
+                    "\n")))
      (lambda (str)
-       (mapconcat
-        (lambda (s)
-          (concat "  " s))
-        (split-string
-         (counsel--yank-pop-truncate str) "\n" t)
-        "\n"))
+       (mapconcat (lambda (s) (concat "  " s))
+                  (split-string (counsel--yank-pop-truncate str) "\n" t)
+                  "\n"))
      cand-pairs
      counsel-yank-pop-separator))
 
