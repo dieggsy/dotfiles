@@ -2718,7 +2718,10 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 (use-package flyspell-correct-ivy
   :after flyspell)
 #+end_src
-
+*** [[https://www.emacswiki.org/emacs/info+.el][info+]]
+#+begin_src emacs-lisp
+(use-package info+)
+#+end_src
 *** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
 #+begin_quote
   Make Emacs' delete-by-moving-to-trash do what you expect it to do on OS X.
