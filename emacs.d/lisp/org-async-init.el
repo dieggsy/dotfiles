@@ -5,6 +5,7 @@
 (require 'org)
 (require 'ox)
 (require 'ox-md)
+(require 'ox-gfm)
 (require 'ox-beamer)
 (require 'ox-latex)
 (require 'cl)

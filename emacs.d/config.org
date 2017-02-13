@@ -3286,6 +3286,11 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
   :config
   (setq  org-gcal-file-alist '(("diegoamundo@gmail.com" . "~/Dropbox (MIT)/org/gcal.org"))))
 #+end_src
+*** [[https://github.com/larstvei/ox-gfm][ox-gfm]]
+#+begin_src emacs-lisp
+(use-package ox-gfm
+  :after org)
+#+end_src
 ** Reference/search
 *** [[https://github.com/abo-abo/define-word][define-word]]
 #+begin_quote
