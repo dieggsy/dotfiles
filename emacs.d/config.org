@@ -787,11 +787,25 @@ Otherwise, executes `evil-ret'."
     (eval-last-sexp nil)))
 
 (defun eval-next-sexp ()
-"Eval next sexp (after point)."
+  "Eval next sexp (after point)."
   (interactive)
   (save-excursion
     (forward-sexp)
     (eval-last-sexp nil)))
+
+(defun diego/pop-to-org-todo (full)
+  "Visit todo list, in the current window or a split."
+  (interactive "P")
+  (if full
+      (find-file "~/Dropbox (MIT)/org/todo.org")
+    (find-file-other-window "~/Dropbox (MIT)/org/todo.org")))
+
+(defun diego/pop-to-org-notes (full)
+  "Visit my main notes list, in other window or current."
+  (interactive "P")
+  (if full
+      (find-file "~/Dropbox (MIT)/org/notes.org")
+    (find-file-other-window "~/Dropbox (MIT)/org/notes.org")))
 #+end_src
 * Bindings
 I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard, so I unbind
@@ -1912,20 +1926,6 @@ so I went with it.
             (replace-match "SCHEDULED:")
           (and (search-forward "SCHEDULED:" search-limit t)
                (replace-match "DEADLINE:"))))))
-
-  (defun diego/pop-to-org-todo (full)
-    "Visit todo list, in the current window or a split."
-    (interactive "P")
-    (if full
-        (find-file "~/Dropbox (MIT)/org/todo.org")
-      (find-file-other-window "~/Dropbox (MIT)/org/todo.org")))
-
-  (defun diego/pop-to-org-notes (full)
-    "Visit my main notes list, in other window or current."
-    (interactive "P")
-    (if full
-        (find-file "~/Dropbox (MIT)/org/notes.org")
-      (find-file-other-window "~/Dropbox (MIT)/org/notes.org")))
 
   (defun diego/org-insert-list-leader-or-self (char)
     "If on column 0, insert space-padded CHAR; otherwise insert CHAR.
