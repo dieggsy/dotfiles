@@ -14,6 +14,7 @@ beautifulsoup4
 bleach
 blinker
 bs4
+catkin-pkg
 certifi
 click
 configobj
@@ -29,6 +30,7 @@ docutils
 dropbox
 elasticsearch
 elpy
+empy
 entrypoints
 enum34
 epc
@@ -81,9 +83,11 @@ matplotlib
 mccabe
 mechanize
 mistune
+mock
 mpmath
 nbconvert
 nbformat
+netifaces
 networkx
 nltk
 nose
@@ -148,6 +152,11 @@ requests
 requests-cache
 requests-oauthlib
 rope
+rosdep
+rosdistro
+rosinstall
+rosinstall-generator
+rospkg
 rsa
 scipy
 seaborn
@@ -178,6 +187,7 @@ uritemplate
 urlfetch
 urllib3
 urwid
+vcstools
 virtualenv
 virtualenv-clone
 wcwidth
@@ -187,6 +197,7 @@ widgetsnbextension
 workflow
 wrapt
 ws4py
+wstool
 xlrd
 xls2db
 XlsxWriter
