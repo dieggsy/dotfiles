@@ -2053,20 +2053,14 @@ so I went with it.
              (org-pandoc-options-for-markdown '((standalone . t)
                                                 (atx-headers . t)
                                                 (columns . 79)))
-             (properties (org-entry-properties))
-             (filename (cdr (assoc "EXPORT_FILE_NAME" properties)))
-             (title (concat "\"" (cdr (assoc "ITEM" properties)) "\""))
-             (slug (concat "\"" (cdr (assoc "SLUG" properties)) "\""))
-             (date (concat "\"" (cdr (assoc "DATE" properties)) "\""))
+             (hl (org-element-at-point))
+             (filename (org-element-property :EXPORT_FILE_NAME hl))
+             (title (format "\"%s\"" (org-element-property :title hl)))
+             (slug (format "\"%s\"" (org-element-property :SLUG hl)))
+             (date (format "\"%s\"" (org-element-property :DATE hl)))
              (categories
-              (concat "[\""
-                      (mapconcat
-                       'identity
-                       (remove ""
-                               (split-string
-                                (cdr (assoc "TAGS" properties)) ":"))
-                       "\",\"")
-                      "\"]")))
+              (format "[\"%s\"]"
+                      (mapconcat 'identity (org-get-tags) "\",\""))))
         ;; Make the export
         (org-export-to-file
             'pandoc
