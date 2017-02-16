@@ -1191,8 +1191,8 @@ set -g base-index 1
 set -g pane-base-index 1
 set-option -g renumber-windows on
 
-bind | split-window -h
-bind - split-window -v
+bind | split-window -h -c '#{pane_current_path}'
+bind - split-window -v -c '#{pane_current_path}'
 unbind '"'
 unbind %
 
@@ -1390,7 +1390,7 @@ export HOSTNAME=`hostname`
 
 ***** Prompt
 #+begin_src sh
-source $HOME/Code/zsh-git-prompt/zshrc.sh
+source $HOME/Code/zsh/zsh-git-prompt/zshrc.sh
 setopt prompt_subst
 GIT_PROMPT_EXECUTABLE="haskell"
 ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[green]%}"

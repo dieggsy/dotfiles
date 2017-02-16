@@ -264,7 +264,10 @@ myself).
 
 Choose a font if available, in order of preference.
 #+begin_src emacs-lisp
-(cond ((x-list-fonts "Input")
+(cond ((x-list-fonts "Iosevka")
+       (add-to-list 'default-frame-alist '(font . "Iosevka-12"))
+       (set-face-attribute 'default t :font "Iosevka-12"))
+      ((x-list-fonts "Input")
        (add-to-list 'default-frame-alist '(font . "Input-10"))
        (set-face-attribute 'default t :font "Input-10"))
       ((x-list-fonts "Office Code Pro D")
@@ -1485,6 +1488,7 @@ A really nice search/completion system for emacs.
           "\\`gcal.org"
           "\\`notes.org"
           "\\`archive.org"
+          "\\`\\.org-gcal-token"
           "\\`elfeed.org"
           "\\`\\*elfeed-log\\*"
           "\\`\\*Man"
@@ -1824,8 +1828,7 @@ so I went with it.
                 ("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
                 ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
 
-  (prettify-symbols-mode)
-  (org-gcal-sync))
+  (prettify-symbols-mode))
 #+end_src
 *** Copture config
 #+begin_src emacs-lisp
@@ -3224,6 +3227,7 @@ Pretty neat, though not entirely complete, IMO.
 (use-package ranger
   :commands diego/deer
   :init
+  (require 'bookmark)
   :config
   (ranger-override-dired-mode t)
   (setq ranger-show-literal nil
@@ -3231,14 +3235,16 @@ Pretty neat, though not entirely complete, IMO.
         ranger-cleanup-eagerly t
         ranger-parent-depth 0)
 
-  (fmakunbound #'ranger-travel)
-  (defun ranger-travel ()
-    "Open a file or go to a directory in current buffer."
+  (defun diego/ranger-travel ()
+    "Use ivy for ranger-travel instead."
     (interactive)
     (cond
      ((featurep 'ivy)
       (counsel-find-file default-directory))
      (t (call-interactively #'ido-find-file))))
+
+  (advice-add #'ranger-travel
+              :override #'diego/ranger-travel)
 
   (defun diego/deer (arg)
     (interactive "P")
