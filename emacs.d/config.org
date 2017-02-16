@@ -383,7 +383,8 @@ Show the column number in the modeline, because I'm not a savage.
 #+end_src
 ** [[https://www.youtube.com/watch?v=UWHEcIbhDiw][There is unrest in the forest...]]
 #+begin_src emacs-lisp
-(load-file "~/.emacs.d/lisp/there-is-trouble-with-the-trees.el")
+(when (file-exists-p  "~/.emacs.d/lisp/there-is-trouble-with-the-trees.el")
+    (load-file "~/.emacs.d/lisp/there-is-trouble-with-the-trees.el"))
 #+end_src
 #+begin_quote
 For the Maples want more sunlight
