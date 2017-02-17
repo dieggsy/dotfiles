@@ -356,25 +356,40 @@ set color_win_inactive_sel_fg=default
 :PROPERTIES:
 :header-args+: :tangle ~/.gitconfig
 :END:
-
+**** media
 #+begin_src conf
 [filter "media"]
 	required = true
 	clean = git media clean %f
 	smudge = git media smudge %f
+#+end_src
+**** user
+#+begin_src conf
 [user]
 	name = therockmandolinist
 	email = diegoamundo@gmail.com
+#+end_src
+**** filter
+#+begin_src conf
 [filter "lfs"]
 	clean = git-lfs clean %f
 	smudge = git-lfs smudge %f
 	required = true
+#+end_src
+**** core
+#+begin_src conf
 [core]
 	editor = emacsclient -t
 	excludesfile = ~/.gitignore
 	pager = more
+#+end_src
+**** credential
+#+begin_src conf
 [credential]
 	helper = osxkeychain
+#+end_src
+**** alias
+#+begin_src conf
 [alias]
 	add-commit = !git add -A && git commit
 	eclipse = !git fetch upstream && git rebase -s recursive -X theirs upstream/master
@@ -389,12 +404,25 @@ cd .. && \
 rm -rf temp_clone && \
 git clone https://github.mit.edu/dmundo/16.410_$(basename $1) $(basename $1);  }; f"
 	update-from-upstream = pull --rebase -s recursive -X theirs upstream/master
+	aliases = config --get-regexp '^alias\\.'
+#+end_src
+**** http
+#+begin_src conf
 [http]
 	postBuffer = 524288000
+#+end_src
+**** color
+#+begin_src conf
 [color]
 	ui = auto
+#+end_src
+**** http
+#+begin_src conf
 [push]
 	followTags = true
+#+end_src
+**** status
+#+begin_src conf
 [status]
 	showUntrackedFiles = all
 #+end_src
