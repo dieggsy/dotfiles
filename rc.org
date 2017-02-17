@@ -1488,7 +1488,7 @@ ZSH_HIGHLIGHT_STYLES[function]='fg=010'
 if which brew > /dev/null; then
     source $(brew --prefix)opt/zsh-history-substring-search/zsh-history-substring-search.zsh
 else
-    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    source $HOME/Code/zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
 fi
 
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=''
