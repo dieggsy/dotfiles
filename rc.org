@@ -1469,6 +1469,20 @@ if which thefuck > /dev/null; then eval $(thefuck --alias); fi
 #+begin_src sh
 if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 #+end_src
+***** [[https://github.com/zsh-users/zsh-syntax-highlighting/][zsh-syntax-highlighting]]
+#+begin_src sh
+if which brew > /dev/null; then
+    source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+else
+    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
+ZSH_HIGHLIGHT_STYLES[globbing]='fg=208'
+ZSH_HIGHLIGHT_STYLES[command]='fg=010'
+ZSH_HIGHLIGHT_STYLES[alias]='fg=010'
+ZSH_HIGHLIGHT_STYLES[builtin]='fg=010'
+ZSH_HIGHLIGHT_STYLES[function]='fg=010'
+#+end_src
 ***** [[https://github.com/zsh-users/zsh-history-substring-search][zsh-history-substring-search]]
 #+begin_src sh
 if which brew > /dev/null; then
@@ -1485,20 +1499,6 @@ bindkey '^[[B' history-substring-search-down
 ***** [[https://github.com/zsh-users/zsh-autosuggestions][zsh-autosuggestions]]
 #+begin_src sh
 # source $HOME/Code/zsh-autosuggestions/zsh-autosuggestions.zsh
-#+end_src
-***** [[https://github.com/zsh-users/zsh-syntax-highlighting/][zsh-syntax-highlighting]]
-#+begin_src sh
-if which brew > /dev/null; then
-    source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-else
-    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-fi
-
-ZSH_HIGHLIGHT_STYLES[globbing]='fg=208'
-ZSH_HIGHLIGHT_STYLES[command]='fg=010'
-ZSH_HIGHLIGHT_STYLES[alias]='fg=010'
-ZSH_HIGHLIGHT_STYLES[builtin]='fg=010'
-ZSH_HIGHLIGHT_STYLES[function]='fg=010'
 #+end_src
 **** Vars
 #+begin_src sh
