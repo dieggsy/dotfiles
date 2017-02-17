@@ -1455,9 +1455,12 @@ zstyle ':completion:*' squeeze-slashes true
 **** Initialize and source some things
 ***** [[https://github.com/rupa/z][z]]
 #+begin_src sh
-source $(brew --prefix)/etc/profile.d/z.sh
+if which brew > /dev/null; then
+    source $(brew --prefix)/etc/profile.d/z.sh
+else
+    source $HOME/Code/zsh/z/z.sh
+fi
 #+end_src
-
 ***** [[https://github.com/nvbn/thefuck][thefuck]]
 #+begin_src sh
 if which thefuck > /dev/null; then eval $(thefuck --alias); fi
@@ -1468,7 +1471,12 @@ if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 #+end_src
 ***** [[https://github.com/zsh-users/zsh-history-substring-search][zsh-history-substring-search]]
 #+begin_src sh
-source /usr/local/opt/zsh-history-substring-search/zsh-history-substring-search.zsh
+if which brew > /dev/null; then
+    source $(brew --prefix)opt/zsh-history-substring-search/zsh-history-substring-search.zsh
+else
+    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=''
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=''
 bindkey '^[[A' history-substring-search-up
@@ -1478,9 +1486,14 @@ bindkey '^[[B' history-substring-search-down
 #+begin_src sh
 # source $HOME/Code/zsh-autosuggestions/zsh-autosuggestions.zsh
 #+end_src
-***** [[https://github.com/zsh-users/zsh-syntax-highlighting/][zsh-syntax-highlightiing]]
+***** [[https://github.com/zsh-users/zsh-syntax-highlighting/][zsh-syntax-highlighting]]
 #+begin_src sh
-source /usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+if which brew > /dev/null; then
+    source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+else
+    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+fi
+
 ZSH_HIGHLIGHT_STYLES[globbing]='fg=208'
 ZSH_HIGHLIGHT_STYLES[command]='fg=010'
 ZSH_HIGHLIGHT_STYLES[alias]='fg=010'
@@ -1510,7 +1523,6 @@ export SURFRAW_text_browser=/usr/local/bin/lynx
 **** Aliases
 ***** Simple aliases
 #+begin_src sh
-alias cask="brew cask"
 alias cpwd="pwd | tr -d '\n' | pbcopy"
 alias ddg='surfraw duckduckgo -j'
 alias def='dict -d gcide'
@@ -1520,16 +1532,21 @@ alias editv="emacsclient -t"
 alias fcolor="spectrum_ls | rg --color=never -N"
 alias filecount="ls -1 | wc -l"
 alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
-if which hub > /dev/null; then alias git=hub; fi
-alias startkwm="brew services start $kwm"
-alias stopkwm="brew services stop $kwm"
-alias restartkwm="brew services restart $kwm"
-alias startkhd="brew services start $khd"
-alias stopkhd="brew services stop $khd"
-alias restartkhd="brew services restart $khd"
+which hub > /dev/null && alias git=hub
+if brew > /dev/null; then
+    alias startkwm="brew services start $kwm"
+    alias stopkwm="brew services stop $kwm"
+    alias restartkwm="brew services restart $kwm"
+    alias startkhd="brew services start $khd"
+    alias stopkhd="brew services stop $khd"
+    alias restartkhd="brew services restart $khd"
+    alias cask="brew cask"
+fi
 alias ls='ls -NX --group-directories-first --color=always'
 alias lst="ls -t"
-alias mathematica='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
+if [ -d /Applications/Mathematica.app ]; then
+    alias mathematica='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
+fi
 alias mux='tmuxinator'
 alias pep8="pep8 --first --ignore=E129,W503,E226"
 alias piphere="pip install --target=./"
@@ -1552,7 +1569,7 @@ fd() { find . -type d -iname "*$1*" }
 
 f() { find . -iname "*$1*" }
 
-fsz() { find ./ -iname "*$1*" -exec du {} + | sort }
+fsz() { find ./ -iname "*$1*" -exec du -sh {} + | sed 's/\/\//\//' }
 
 # View only mode in emacs
 ev() { emacsclient -n --eval "(find-file-read-only \"$1\")" }
@@ -1562,12 +1579,18 @@ alias calc="noglob calc"
 #+end_src
 **** Use gnu coreutils
 #+begin_src sh
-path=(
-    /usr/local/opt/coreutils/libexec/gnubin
-    $path
-)
+if [ "$(uname)" = "Darwin" ]; then
+    path=(
+        /usr/local/opt/coreutils/libexec/gnubin
+        $path
+    )
 
-export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+    export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+fi
+#+end_src
+**** VM
+#+begin_src sh
+[ "$(hostname)" = "racecar-vm" ] && source ~/diego_racecarsetup.sh
 #+end_src
 *** zshenv
 :PROPERTIES:
@@ -1591,7 +1614,10 @@ path=(
 
 cdpath=($HOME $HOME/Code)
 
-fpath=(~/bin/zfuncs /usr/local/share/zsh-completions $fpath)
+fpath=(~/bin/zfuncs
+       /usr/local/share/zsh-completions
+       $HOME/Code/zsh/zsh-completions/src
+       $fpath)
 typeset -gU path manpath cdpath fpath
 #+end_src
 **** Variables
