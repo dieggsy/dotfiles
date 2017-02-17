@@ -2109,7 +2109,7 @@ except IOError:
 #+end_src
 ** org-tangle
 :PROPERTIES:
-:header-args+: :tangle ~/bin/org-tangle :shebang "#!/usr/local/bin/emacs --script"
+:header-args+: :tangle ~/bin/org-tangle :shebang "#!/usr/bin/env emacs --script"
 :END:
 #+begin_src emacs-lisp
 (if (> (length command-line-args) 4)
