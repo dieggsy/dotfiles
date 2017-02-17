@@ -1215,7 +1215,9 @@ based on or copied from spacemacs, so definitely check them out!
     "gs" 'magit-status
     "gl" 'magit-log-all
     "gB" 'magit-blame-toggle
-    "gc" 'magit-clone
+    "gc" 'magit-checkout
+    "gr" 'vc-revision-other-window
+    "gC" 'magit-clone
     "ga" 'magit-submodule-add
     "gb" 'magit-branch))
 #+end_src
@@ -1638,6 +1640,7 @@ so I went with it.
     "id" 'org-insert-drawer
 
     "ed" 'org-export-dispatch
+    "eh" 'diego/org-hugo-export
     "es" 'eval-surrounding-sexp
     "er" 'eval-region
 
@@ -2330,7 +2333,7 @@ LONG-NAME if given is stored in `spacemacs/prefix-titles'."
     "hc"  "customize"
     "i"   "insert"
     "j"   "jump"
-    "m"   "major-mode-cmd"
+    "m"   "major-mode"
     "n"   "narrow/numbers"
     "p"   "project"
     "q"   "quit"
@@ -2360,7 +2363,21 @@ LONG-NAME if given is stored in `spacemacs/prefix-titles'."
       "e" "eval"))
 
   (setq which-key-sort-order 'which-key-key-order-alpha)
-  (setq which-key-sort-uppercase-first nil))
+  (setq which-key-sort-uppercase-first nil)
+
+  (dolist (pref '("ivy-\\(.+\\)"
+                  "counsel-\\(.+\\)"
+                  "projectile-\\(.+\\)"
+                  "counsel-projectile-\\(.+\\)"
+                  "crux-\\(.+\\)"
+                  "headlong-\\(.+\\)"
+                  "diego/\\(.+\\)"
+                  "evilnc-\\(.+\\)"
+                  "magit-\\(.+\\)"
+                  "avy-\\(.+\\)"
+                  ;; "hydra-[^/]+/\\(.+\\)"
+                  ))
+    (push `((nil . ,pref) . (nil . "\\1")) which-key-replacement-alist)))
 #+end_src
 ** [[https://github.com/magit/magit][magit]]
 #+begin_quote
