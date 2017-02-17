@@ -419,10 +419,10 @@ __pychache__
 module.exports = {
     config: {
         // default font size in pixels for all tabs
-        fontSize: 10,
+        fontSize: 12,
 
         // font family with optional fallbacks
-        fontFamily: 'Input, Menlo, "DejaVu Sans Mono", "Lucida Console", monospace',
+        fontFamily: 'Iosevka,Input, Menlo, "DejaVu Sans Mono", "Lucida Console", monospace',
 #+END_SRC
 
 *** Cursor
