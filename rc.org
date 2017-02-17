@@ -1533,7 +1533,7 @@ alias fcolor="spectrum_ls | rg --color=never -N"
 alias filecount="ls -1 | wc -l"
 alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
 which hub > /dev/null && alias git=hub
-if brew > /dev/null; then
+if which brew > /dev/null; then
     alias startkwm="brew services start $kwm"
     alias stopkwm="brew services stop $kwm"
     alias restartkwm="brew services restart $kwm"
