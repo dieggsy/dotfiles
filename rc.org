@@ -381,7 +381,7 @@ set color_win_inactive_sel_fg=default
 [core]
 	editor = emacsclient -t
 	excludesfile = ~/.gitignore
-	pager = more
+	pager = "less"
 #+end_src
 **** credential
 #+begin_src conf
@@ -1549,6 +1549,10 @@ export python2version=2.7.13
 export KEYTIMEOUT=1
 export SURFRAW_text_browser=/usr/local/bin/lynx
 # export SURFRAW_graphical=no
+
+# GPG
+GPG_TTY=$(tty)
+export GPG_TTY
 #+end_src
 **** Aliases
 ***** Simple aliases
@@ -1667,7 +1671,7 @@ else
 fi
 
 export PAGER="less"
-export LESS='-g -i -M -R -S -w -z-4'
+export LESS='-g-i-M-R-S-w-z-4'
 if (( $#commands[(i)lesspipe(|.sh)] )); then
   export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
 fi
