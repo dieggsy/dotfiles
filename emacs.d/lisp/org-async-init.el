@@ -8,5 +8,6 @@
 (require 'ox-gfm)
 (require 'ox-beamer)
 (require 'ox-latex)
+(require 'ox-pandoc)
 (require 'cl)
 (setq org-export-async-debug t)

@@ -2071,8 +2071,8 @@ so I went with it.
              (concat (make-temp-name ".tmp") ".org") t)
           nil t nil nil nil
           (lambda (f) (org-pandoc-run-to-buffer-or-file f 'markdown t nil)))
-        ;; Use add-function to add advice to existing process sentinel
-        ;; to modifyfile /after/ the export process has finished.
+        ;; Use advice-add to add advice to existing process sentinel
+        ;; to modify file /after/ the export process has finished.
         (advice-add
          #'org-pandoc-sentinel
          :after
@@ -2096,6 +2096,7 @@ so I went with it.
                 (while (re-search-forward (car reps) nil t)
                   (replace-match (cdr reps))))))
          '((name . "hugo-advice")))
+        ;; We don't want our advice to stick around afterwards
         (advice-remove #'org-pandoc-sentinel 'hugo-advice)))))
 #+end_src
 *** Keyboard Macros
@@ -2592,35 +2593,13 @@ I was looking for something with the nice look and simplicity of
   (spaceline-compile))
 #+end_src
 ** Misc utilities
-*** [[https://github.com/purcell/disable-mouse][disable-mouse]]
+*** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
 #+begin_quote
-  Disable the mouse in Emacs
+  Cursor stays vertically centered.
 #+end_quote
+I use this for reading, mostly.
 #+begin_src emacs-lisp
-(use-package disable-mouse
-  :defer 5
-  :config
-  (global-disable-mouse-mode))
-#+end_src
-*** [[https://github.com/jschaf/esup][esup]]
-#+begin_quote
-  ESUP - Emacs Start Up Profiler
-#+end_quote
-#+begin_src emacs-lisp
-(use-package esup
-  :config
-  (setq esup-insignificant-time 0.001))
-#+end_src
-*** [[https://github.com/Fanael/persistent-scratch][persistent-scratch]]
-#+begin_quote
-  Preserve the scratch buffer across Emacs sessions
-#+end_quote
-#+begin_src emacs-lisp
-(use-package persistent-scratch
-  :defer 10
-  :disabled t
-  :config
-  (persistent-scratch-setup-default))
+(use-package centered-cursor-mode)
 #+end_src
 *** [[https://github.com/bbatsov/crux][crux]]
 #+begin_quote
@@ -2635,13 +2614,15 @@ I was looking for something with the nice look and simplicity of
   (crux-with-region-or-buffer untabify)
   (crux-with-region-or-buffer fill-region))
 #+end_src
-*** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
+*** [[https://github.com/purcell/disable-mouse][disable-mouse]]
 #+begin_quote
-  Cursor stays vertically centered.
+  Disable the mouse in Emacs
 #+end_quote
-I use this for reading, mostly.
 #+begin_src emacs-lisp
-(use-package centered-cursor-mode)
+(use-package disable-mouse
+  :defer 5
+  :config
+  (global-disable-mouse-mode))
 #+end_src
 *** [[https://www.emacswiki.org/emacs/eimp.el][eimp]]
 #+begin_quote
@@ -2711,6 +2692,15 @@ Configure the Elfeed RSS reader with an Orgmode file
   :config
   (elfeed-goodies/setup)
   (setq elfeed-goodies/entry-pane-position 'bottom))
+#+end_src
+*** [[https://github.com/jschaf/esup][esup]]
+#+begin_quote
+  ESUP - Emacs Start Up Profiler
+#+end_quote
+#+begin_src emacs-lisp
+(use-package esup
+  :config
+  (setq esup-insignificant-time 0.001))
 #+end_src
 *** [[https://github.com/lewang/flx][flx]]
 #+begin_quote
@@ -2782,6 +2772,21 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
     "fu" 'paradox-filter-upgrades
     "fs" 'paradox-filter-stars
     "x" 'paradox-menu-execute))
+#+end_src
+*** [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store]]
+#+begin_src emacs-lisp
+(use-package password-store)
+#+end_src
+*** [[https://github.com/Fanael/persistent-scratch][persistent-scratch]]
+#+begin_quote
+  Preserve the scratch buffer across Emacs sessions
+#+end_quote
+#+begin_src emacs-lisp
+(use-package persistent-scratch
+  :defer 10
+  :disabled t
+  :config
+  (persistent-scratch-setup-default))
 #+end_src
 *** [[https://github.com/iqbalansari/restart-emacs][restart-emacs]]
 #+begin_quote
@@ -3291,7 +3296,10 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
   :after org
   :config
   ;; default options for all output formats
-  (setq org-pandoc-options '((standalone . t)))
+  (setq org-pandoc-options '((standalone . t)
+                             (latex-engine . xelatex)
+                             (mathjax . t)
+                             (parse-raw . t)))
   ;; cancel above settings only for 'docx' format
   (setq org-pandoc-options-for-docx '((standalone . nil))))
 #+end_src
