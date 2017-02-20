@@ -1,0 +1,10 @@
+#!/usr/bin/env emacs --script
+
+;; [[file:~/dotfiles/rc.org::*org-tangle][org-tangle:1]]
+
+(if (> (length command-line-args) 4)
+    (message "too many args!")
+  (require 'org)
+  (org-babel-tangle-file (expand-file-name (nth 3 command-line-args))))
+
+;; org-tangle:1 ends here

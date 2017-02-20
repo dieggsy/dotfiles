@@ -1291,6 +1291,7 @@ set-option -g visual-activity off
 set-option -g visual-bell off
 set-option -g visual-silence off
 set-window-option -g monitor-activity off
+set-window-option -g aggressive-resize on
 set-option -g bell-action none
 
 set -g default-terminal "screen-256color"
@@ -1557,6 +1558,15 @@ export GPG_TTY
 **** Aliases
 ***** Simple aliases
 #+begin_src sh
+if which brew > /dev/null; then
+    alias startkwm="brew services start $kwm"
+    alias stopkwm="brew services stop $kwm"
+    alias restartkwm="brew services restart $kwm"
+    alias startkhd="brew services start $khd"
+    alias stopkhd="brew services stop $khd"
+    alias restartkhd="brew services restart $khd"
+    alias cask="brew cask"
+fi
 alias cpwd="pwd | tr -d '\n' | pbcopy"
 alias ddg='surfraw duckduckgo -j'
 alias def='dict -d gcide'
@@ -1567,15 +1577,6 @@ alias fcolor="spectrum_ls | rg --color=never -N"
 alias filecount="ls -1 | wc -l"
 alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
 which hub > /dev/null && alias git=hub
-if which brew > /dev/null; then
-    alias startkwm="brew services start $kwm"
-    alias stopkwm="brew services stop $kwm"
-    alias restartkwm="brew services restart $kwm"
-    alias startkhd="brew services start $khd"
-    alias stopkhd="brew services stop $khd"
-    alias restartkhd="brew services restart $khd"
-    alias cask="brew cask"
-fi
 alias ls='ls -NX --group-directories-first --color=always'
 alias lst="ls -t"
 if [ -d /Applications/Mathematica.app ]; then
@@ -1593,6 +1594,7 @@ alias sm=". ~/bin/switchmacs"
 alias starwars="telnet towel.blinkenlights.nl" # heh
 alias sudo='sudo '                             # recognize aliases
 alias sz="du -hs"                              # get folder/file size
+alias toshredsyousay='shred -svun 10'
 alias wiki="wiki -w 80"
 #+end_src
 ***** Function "aliases"
@@ -2141,7 +2143,7 @@ except IOError:
 #+end_src
 ** org-tangle
 :PROPERTIES:
-:header-args+: :tangle ~/bin/org-tangle :shebang "#!/usr/bin/env emacs --script"
+:header-args+: :tangle ~/dotfiles/org-tangle :shebang "#!/usr/bin/env emacs --script"
 :END:
 #+begin_src emacs-lisp
 (if (> (length command-line-args) 4)
