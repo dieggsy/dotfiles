@@ -1776,7 +1776,7 @@ so I went with it.
         org-log-into-drawer t
         org-link-search-must-match-exact-headline nil
         org-confirm-elisp-link-function 'y-or-n-p
-        org-confirm-elisp-link-not-regexp "(\\(wiki-search\\|describe-function\\).*?)"
+        org-confirm-elisp-link-not-regexp "(\\(wiki-search\\|describe-function\\|describe-variable\\).*?)"
         org-babel-load-languages '((python . t)
                                    (emacs-lisp . t)
                                    (calc . t)
