@@ -1210,6 +1210,7 @@ bind-key Escape copy-mode
 bind-key [ copy-mode
 bind-key -t vi-copy v begin-selection
 bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
+bind -n C-k clear-history
 #+end_src
 **** Windows/Panes
 #+begin_src conf
@@ -1594,7 +1595,7 @@ alias sm=". ~/bin/switchmacs"
 alias starwars="telnet towel.blinkenlights.nl" # heh
 alias sudo='sudo '                             # recognize aliases
 alias sz="du -hs"                              # get folder/file size
-alias toshredsyousay='shred -svun 10'
+alias toshredsyousay='shred -zvun 10'
 alias wiki="wiki -w 80"
 #+end_src
 ***** Function "aliases"
@@ -1612,6 +1613,8 @@ ev() { emacsclient -n --eval "(find-file-read-only \"$1\")" }
 
 calc() { emacs --batch --eval "(message (calc-eval \"$1\"))" }
 alias calc="noglob calc"
+
+passcount() { expr $(pass ls $1 | wc -l) - 1 }
 #+end_src
 **** Use gnu coreutils
 #+begin_src sh
