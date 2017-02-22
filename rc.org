@@ -403,6 +403,7 @@ git push --mirror https://github.mit.edu/dmundo/16.410_$(basename $1) && \
 cd .. && \
 rm -rf temp_clone && \
 git clone https://github.mit.edu/dmundo/16.410_$(basename $1) $(basename $1);  }; f"
+    optimize = "!f() { git reflog expire --all --expire=now && git gc --prune=now --aggressive; }; f"
 	update-from-upstream = pull --rebase -s recursive -X theirs upstream/master
 	aliases = config --get-regexp '^alias\\.'
 #+end_src
