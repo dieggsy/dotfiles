@@ -19,6 +19,7 @@ readable in org format than in rendered markdown.
    - [[#khdrc][khdrc]]
    - [[#kwmrc][kwmrc]]
    - [[#nanorc][nanorc]]
+   - [[#peco][peco]]
    - [[#pythonrcpy][pythonrc.py]]
    - [[#rainbowstream][rainbowstream]]
    - [[#tmux][tmux]]
@@ -1005,6 +1006,23 @@ Lol
 #+begin_src conf
 include /usr/local/share/nano/*
 #+end_src
+** peco
+:PROPERTIES:
+:header-args+: :tangle ~/.config/peco/config.json :comments no
+:END:
+#+begin_src json
+{
+    "Prompt": "[peco]",
+    "InitialFilter":"Regexp",
+    "Style": {
+        "Basic": ["on_default", "default"],
+        "SavedSelection": ["bold", "on_yellow", "white"],
+        "Selected": ["on_white","black"],
+        "Query": ["cyan", "bold"],
+        "Matched": ["bold", "blue", "on_black"]
+    }
+}
+#+end_src
 ** pythonrc.py
 :PROPERTIES:
 :header-args+: :tangle ~/.pythonrc.py :padline no
@@ -1483,6 +1501,7 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' menu select
 zstyle ':completion:*' list-dirs-first true
 zstyle ':completion:*' squeeze-slashes true
+zstyle ':completion:*' _expand_alias
 #+end_src
 **** Initialize and source some things
 ***** [[https://github.com/rupa/z][z]]
@@ -1492,6 +1511,12 @@ if which brew > /dev/null; then
 else
     source $HOME/Code/zsh/z/z.sh
 fi
+#+end_src
+***** [[https://github.com/b4b4r07/enhancd][enhancd]]
+#+begin_src sh
+source ~/Code/zsh/enhancd/init.sh
+# export ENHANCD_DISABLE_HOME=1
+export ENHANCD_FILTER=peco
 #+end_src
 ***** [[https://github.com/nvbn/thefuck][thefuck]]
 #+begin_src sh
@@ -1553,9 +1578,14 @@ export KEYTIMEOUT=1
 export SURFRAW_text_browser=/usr/local/bin/lynx
 # export SURFRAW_graphical=no
 
+
 # GPG
 GPG_TTY=$(tty)
 export GPG_TTY
+
+# Named dirs
+hash -d config=~/.config
+hash -d emacs=~/dotfiles/emacs.d
 #+end_src
 **** Aliases
 ***** Simple aliases
@@ -1569,6 +1599,11 @@ if which brew > /dev/null; then
     alias restartkhd="brew services restart $khd"
     alias cask="brew cask"
 fi
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+alias -g ......='../../../../..'
+alias -- -='cd -'
 alias cpwd="pwd | tr -d '\n' | pbcopy"
 alias ddg='surfraw duckduckgo -j'
 alias def='dict -d gcide'
@@ -1580,12 +1615,14 @@ alias lock="gpg -c --armor"
 alias encryptdir="gpg-zip --armor --encrypt -r"
 alias lockdir="gpg-zip -c --armor"
 alias decrypt="gpg -d"
+alias decryptdir="gpg-zip -d"
 alias fcolor="spectrum_ls | rg --color=never -N"
 alias filecount="ls -1 | wc -l"
 alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
 which hub > /dev/null && alias git=hub
-alias ls='ls -NX --group-directories-first --color=always'
-alias lst="ls -t"
+alias gls='gls -X --group-directories-first --color=always'
+alias ls='exa --group-directories-first --sort=extension'
+alias glst="gls -t"
 if [ -d /Applications/Mathematica.app ]; then
     alias mathematica='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
 fi
@@ -1614,6 +1651,7 @@ f() { find . -iname "*$1*" }
 
 fsz() { find ./ -iname "*$1*" -exec du -sh {} + | sed 's/\/\//\//' }
 
+e () { emacsclient -n  $(find  "$1" -type f | peco --query  "$2") > /dev/null 2>&1 }
 # View only mode in emacs
 ev() { emacsclient -n --eval "(find-file-read-only \"$1\")" }
 
@@ -1694,6 +1732,19 @@ fi
 
 if [[ -z "$LANG" ]]; then
   export LANG='en_US.UTF-8'
+fi
+#+end_src
+*** zprofile
+:PROPERTIES:
+:header-args+: :tangle ~/.zprofile
+:END:
+#+begin_src sh
+export PATH="$HOME/.cargo/bin:$PATH"
+[ -f ~/.gpg-agent-info ] && source ~/.gpg-agent-info
+if [ -S "${GPG_AGENT_INFO%%:*}" ]; then
+  export GPG_AGENT_INFO
+else
+  eval $( gpg-agent --daemon --write-env-file ~/.gpg-agent-info )
 fi
 #+end_src
 *** Modules
@@ -1886,6 +1937,29 @@ man() {
 		PATH="$HOME/bin:$PATH" \
 			man "$@"
 }
+#+end_src
+**** sudo
+:PROPERTIES:
+:header-args+: :tangle ~/.zmodules/sudo.zsh
+:END:
+#+begin_src sh
+sudo-command-line() {
+    [[ -z $BUFFER ]] && zle up-history
+    if [[ $BUFFER == sudo\ * ]]; then
+        LBUFFER="${LBUFFER#sudo }"
+    elif [[ $BUFFER == $EDITOR\ * ]]; then
+        LBUFFER="${LBUFFER#$EDITOR }"
+        LBUFFER="sudoedit $LBUFFER"
+    elif [[ $BUFFER == sudoedit\ * ]]; then
+        LBUFFER="${LBUFFER#sudoedit }"
+        LBUFFER="$EDITOR $LBUFFER"
+    else
+        LBUFFER="sudo $LBUFFER"
+    fi
+}
+zle -N sudo-command-line
+# Defined shortcut keys: [Esc] [Esc]
+bindkey "\e\e" sudo-command-line
 #+end_src
 *** Functions
 **** pdftif
