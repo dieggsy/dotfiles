@@ -22,6 +22,7 @@ readable in org format than in rendered markdown.
    - [[#peco][peco]]
    - [[#pythonrcpy][pythonrc.py]]
    - [[#rainbowstream][rainbowstream]]
+   - [[#ssh][ssh]]
    - [[#tmux][tmux]]
    - [[#zsh][zsh]]
  - [[#scripts][Scripts]]
@@ -1013,7 +1014,8 @@ include /usr/local/share/nano/*
 #+begin_src json
 {
     "Prompt": "[peco]",
-    "InitialFilter":"Regexp",
+    "InitialFilter":"SmartCase",
+    "SelectionPrefix":">",
     "Style": {
         "Basic": ["on_default", "default"],
         "SavedSelection": ["bold", "on_yellow", "white"],
@@ -1195,6 +1197,27 @@ except:
         "clock": 32
     }
 }
+#+end_src
+** ssh
+:PROPERTIES:
+:header-args+: :tangle ~/.ssh/config
+:END:
+#+begin_src conf
+Host athena
+     HostName athena.dialup.mit.edu
+     User dmundo
+     Forward11 yes
+
+#Default GitHub
+Host github.com
+     HostName github.com
+     User git
+     IdentityFile ~/.ssh/id_rsa
+
+Host github-MIT
+     HostName github.com
+     User git
+     IdentityFile ~/.ssh/id_rsa_MIT
 #+end_src
 ** tmux
 *** tmux.conf
@@ -1462,6 +1485,37 @@ function prompt_sorin_pwd {
 }
 
 PROMPT='%B%F{9}$(prompt_sorin_pwd) %B%F{2}❯%f%b '
+## Option 1
+
+function zle-line-init zle-keymap-select {
+    VIM_NORMAL_PROMPT="%{$fg_bold[green]%} [% NORMAL]% %{$reset_color%}"
+    RPS1="${${KEYMAP/vicmd/$VIM_NORMAL_PROMPT}/(main|viins)/} $(git_super_status) $EPS1"
+    zle reset-prompt
+}
+## Option 2
+
+# function zle-keymap-select zle-line-init
+# {
+#     # change cursor shape in iTerm2
+#     case $KEYMAP in
+#         vicmd)      print -n -- "\E]50;CursorShape=0\C-G";;  # block cursor
+#         viins|main) print -n -- "\E]50;CursorShape=1\C-G";;  # line cursor
+#     esac
+
+#     zle reset-prompt
+#     zle -R
+# }
+
+# function zle-line-finish
+# {
+#     print -n -- "\E]50;CursorShape=0\C-G"  # block cursor
+# }
+
+zle -N zle-line-init
+# zle -N zle-line-finish
+zle -N zle-keymap-select
+
+## Option 3
 RPROMPT='$(git_super_status)'
 #+end_src
 
@@ -1496,12 +1550,25 @@ setopt autonamedirs
 setopt clobber
 unsetopt correct
 autoload -Uz compinit && compinit -i
+autoload -Uz cool-peco
+cool-peco
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' menu select
 zstyle ':completion:*' list-dirs-first true
 zstyle ':completion:*' squeeze-slashes true
 zstyle ':completion:*' _expand_alias
+#+end_src
+**** Keys
+#+begin_src sh
+bindkey -v
+export KEYTIMEOUT=1
+bindkey '^?' backward-delete-char
+bindkey '^h' backward-delete-char
+bindkey '^r' cool-peco-history
+bindkey -M vicmd '/' cool-peco-history
+bindkey '^h' cool-peco-ssh
+bindkey '^p' cool-peco-ps
 #+end_src
 **** Initialize and source some things
 ***** [[https://github.com/rupa/z][z]]
@@ -1560,6 +1627,7 @@ bindkey '^[[B' history-substring-search-down
 **** Vars
 #+begin_src sh
 [ "$(hostname)" = "racecar-vm" ] && export TERM=xterm-256color
+
 # some ls colors i've gotten used to
 export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31'
 
@@ -1574,7 +1642,6 @@ export switchmacs="emacs"
 export python3version=3.6.0
 export python2version=2.7.13
 
-export KEYTIMEOUT=1
 export SURFRAW_text_browser=/usr/local/bin/lynx
 # export SURFRAW_graphical=no
 
@@ -1651,7 +1718,11 @@ f() { find . -iname "*$1*" }
 
 fsz() { find ./ -iname "*$1*" -exec du -sh {} + | sed 's/\/\//\//' }
 
-e () { emacsclient -n  $(find  "$1" -type f | peco --query  "$2") > /dev/null 2>&1 }
+e () { emacsclient -n  $(find "$1" -type f ! -path "$1/.git/*" |\
+                             sed 's/^\/Users\/diego/~/' |\
+                             sed 's/\/\//\//' |\
+                             peco --query  "$2" --prompt="[edit]") > /dev/null 2>&1 }
+
 # View only mode in emacs
 ev() { emacsclient -n --eval "(find-file-read-only \"$1\")" }
 
@@ -1659,6 +1730,19 @@ calc() { emacs --batch --eval "(message (calc-eval \"$1\"))" }
 alias calc="noglob calc"
 
 passcount() { expr $(pass ls $1 | wc -l) - 1 }
+
+ghq () {
+    if [ "$1" = look -a -n "$2" ]; then
+        cd $(command ghq list -p $2)
+        return
+    fi
+
+    command ghq "$@"
+}
+
+ghqe () { e $(ghq list -p | peco) }
+
+peco-ps () { ps aux | tail -n+2 | peco | awk '{print $2}' }
 #+end_src
 **** Use gnu coreutils
 #+begin_src sh
@@ -1697,10 +1781,13 @@ path=(
 
 cdpath=($HOME $HOME/Code)
 
-fpath=(~/bin/zfuncs
-       /usr/local/share/zsh-completions
-       $HOME/Code/zsh/zsh-completions/src
-       $fpath)
+fpath=(
+    ~/bin/zfuncs
+    /usr/local/share/zsh-completions
+    $HOME/Code/zsh/zsh-completions/src
+    $HOME/Code/zsh/cool-peco
+    $fpath
+)
 typeset -gU path manpath cdpath fpath
 #+end_src
 **** Variables
@@ -1746,6 +1833,10 @@ if [ -S "${GPG_AGENT_INFO%%:*}" ]; then
 else
   eval $( gpg-agent --daemon --write-env-file ~/.gpg-agent-info )
 fi
+
+export GOROOT=/usr/local/Cellar/go/1.8/libexec
+export GOPATH="$HOME/go"
+export PATH="$PATH:$GOPATH/bin"
 #+end_src
 *** Modules
 **** environment
