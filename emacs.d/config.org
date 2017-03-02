@@ -9,11 +9,11 @@ are pretty sweet. Check out [[https://github.com/aaronbieber/dotfiles/tree/maste
 inspiration (and erm, code) for this is taken from them.
 
 :NOTE:
-*Note:* The usual way to do this is to call ~(org-babel-load-file
-"config.org")~, and I did that for a while, but for whatever reason I decided I
-wanted =config.el= (and its compiled verison) to be produced as I changed the
-file itself, hence the [[#local-vars][file local variables]]. Also, the optional ~COMPILE~
-argument of ~org-babel-load-file~ wasn't working for me, so there's that.
+*Note:* The usual way to do this is to call ~(org-babel-load-file "config.org")~,
+ and I did that for a while, but for whatever reason I decided I wanted
+ =config.el= (and its compiled verison) to be produced as I changed the file
+ itself, hence the [[#local-vars][file local variables]]. Also, the optional ~COMPILE~ argument of
+ ~org-babel-load-file~ wasn't working for me, so there's that.
 :END:
 
 First off, let's set lexical binding, in accordance with the [[https://github.com/bbatsov/emacs-lisp-style-guide#source-code-layout--organization][emacs-lisp-style-guide]].
@@ -1437,9 +1437,9 @@ they are in `spacemacs/set-leader-keys'."
 *** [[https://github.com/syohex/emacs-evil-anzu][evil-anzu]]
 #+begin_src emacs-lisp
 (use-package evil-anzu
-  :disabled t
   :after evil
-  :config)
+  :config
+  (setq anzu-cons-mode-line-p nil))
 #+end_src
 ** [[https://github.com/abo-abo/swiper][ivy]]
 #+begin_quote
