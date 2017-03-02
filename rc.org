@@ -1017,6 +1017,9 @@ include /usr/local/share/nano/*
     "Prompt": "[peco]",
     "InitialFilter":"SmartCase",
     "SelectionPrefix":">",
+    "Keymap": {
+        "C-_": "peco.ToggleRangeMode"
+    },
     "Style": {
         "Basic": ["on_default", "default"],
         "SavedSelection": ["bold", "on_yellow", "white"],
