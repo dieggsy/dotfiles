@@ -31,6 +31,7 @@ readable in org format than in rendered markdown.
    - [[#updates][updates]]
    - [[#wfname][wfname]]
    - [[#org-tangle][org-tangle]]
+   - [[#pass][pass]]
  - [[#local-vars][Local vars]]
 
 * Config
@@ -1650,6 +1651,9 @@ export SURFRAW_text_browser=/usr/local/bin/lynx
 GPG_TTY=$(tty)
 export GPG_TTY
 
+# pass
+export PASSWORD_STORE_ENABLE_EXTENSIONS=true
+
 # Named dirs
 hash -d config=~/.config
 hash -d emacs=~/dotfiles/emacs.d
@@ -2324,6 +2328,18 @@ except IOError:
     (message "too many args!")
   (require 'org)
   (org-babel-tangle-file (expand-file-name (nth 3 command-line-args))))
+#+end_src
+** pass
+*** peco
+:PROPERTIES:
+:header-args+: :tangle ~/.password-store/.extensions/peco.bash :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
+           | sed 's@'"$HOME"'/\.password-store/\(.\+\?\)\.gpg@\1@' \
+           | peco --prompt="[pass]")
+
+[[ -n "$name" ]] && pass -c $name
 #+end_src
 * Local vars
 
