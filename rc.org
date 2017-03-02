@@ -1205,20 +1205,24 @@ except:
 :END:
 #+begin_src conf
 Host athena
-     HostName athena.dialup.mit.edu
-     User dmundo
-     Forward11 yes
+    HostName athena.dialup.mit.edu
+    User dmundo
+    ForwardX11Trusted yes
 
+Host racecar
+     HostName 192.168.0.34
+     User racecar
+     ForwardX11 yes
 #Default GitHub
 Host github.com
-     HostName github.com
-     User git
-     IdentityFile ~/.ssh/id_rsa
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_rsa
 
 Host github-MIT
-     HostName github.com
-     User git
-     IdentityFile ~/.ssh/id_rsa_MIT
+    HostName github.com
+    User git
+    IdentityFile ~/.ssh/id_rsa_MIT
 #+end_src
 ** tmux
 *** tmux.conf
@@ -2113,15 +2117,6 @@ else
     done
     echo "Created output file $2"
 fi
-#+end_src
-**** athena
-:PROPERTIES:
-:header-args+: :tangle ~/bin/zfuncs/athena
-:END:
-#+begin_src sh
-echo -n "Username: "
-read username
-ssh -Y "$username@athena.dialup.mit.edu"
 #+end_src
 **** spectrum_ls
 :PROPERTIES:
