@@ -1773,8 +1773,6 @@ path=(
     $path
 )
 
-cdpath=($HOME $HOME/Code)
-
 fpath=(
     ~/bin/zfuncs
     /usr/local/share/zsh-completions
