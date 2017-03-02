@@ -1720,37 +1720,14 @@ alias wiki="wiki -w 80"
 #+begin_src sh
 ff() { find . -type f -iname "*$1*" }
 
-fd() { find . -type d -iname "*$1*" }
+fd() { find . -type d -iname "*$1*" | peco --prompt="[find-dir]"}
 
-f() { find . -iname "*$1*" }
+f() { find . -iname "*$1*" | peco --prompt="[find]"}
 
-fsz() { find ./ -iname "*$1*" -exec du -sh {} + | sed 's/\/\//\//' }
-
-e () { emacsclient -n  $(find "$1" -type f ! -path "$1/.git/*" |\
-                             sed 's/^\/Users\/diego/~/' |\
-                             sed 's/\/\//\//' |\
-                             peco --query  "$2" --prompt="[edit]") > /dev/null 2>&1 }
-
-# View only mode in emacs
-ev() { emacsclient -n --eval "(find-file-read-only \"$1\")" }
+fsz() { find ./ -type f -iname "*$1*" -exec du -sh {} + | sort -rh | peco --prompt="[find-sizes]"}
 
 calc() { emacs --batch --eval "(message (calc-eval \"$1\"))" }
 alias calc="noglob calc"
-
-passcount() { expr $(pass ls $1 | wc -l) - 1 }
-
-ghq () {
-    if [ "$1" = look -a -n "$2" ]; then
-        cd $(command ghq list -p $2)
-        return
-    fi
-
-    command ghq "$@"
-}
-
-ghqe () { e $(ghq list -p | peco) }
-
-peco-ps () { ps aux | tail -n+2 | peco | awk '{print $2}' }
 #+end_src
 **** Use gnu coreutils
 #+begin_src sh
@@ -2061,6 +2038,49 @@ zle -N sudo-command-line
 bindkey "\e\e" sudo-command-line
 #+end_src
 *** Functions
+**** apps
+:PROPERTIES:
+:header-args+: :tangle ~/bin/zfuncs/apps
+:END:
+#+begin_src sh
+open -a "$(find /Applications -maxdepth 2 -type d -name '*.app' \
+                        | sed -r 's@/Applications/(Utilities/)?(.+?).app?@\2@' \
+                        | peco)" > /dev/null 2>&1
+#+end_src
+**** e
+:PROPERTIES:
+:header-args+: :tangle ~/bin/zfuncs/e
+:END:
+#+begin_src sh
+emacsclient -n $(rg -g '!Applications' -g '!Movies' -g '!Music' \
+                    -g '!Library' -g '!Pictures' -g '!*.png' \
+                    -g '!*.jpg' "$1" --files \
+                     | peco --prompt '[edit]') > /dev/null 2>&1
+#+end_src
+**** ev
+:PROPERTIES:
+:header-args+: :tangle ~/bin/zfuncs/ev
+:END:
+#+begin_src sh
+files=$(rg -g '!Applications' \
+           -g '!Movies' -g '!Music' -g '!Library' \
+           -g '!Pictures' -g '!*.png' -g '!*.jpg' \
+           "$1" --files \
+            | peco --prompt '[edit]')
+emacsclient -n --eval "(let ((inhibit-message t)) (dolist (file (split-string \"$files\")) (find-file-read-only file)))" > /dev/null 2>&1
+#+end_src
+**** ghq
+:PROPERTIES:
+:header-args+: :tangle ~/bin/zfuncs/ghq
+:END:
+#+begin_src sh
+if [ "$1" = look -a -n "$2" ]; then
+    cd $(command ghq list -p $2)
+    return
+fi
+
+command ghq "$@"
+#+end_src
 **** pdftif
 :PROPERTIES:
 :header-args+: :tangle ~/bin/zfuncs/pdftif
