@@ -1468,15 +1468,6 @@ export HOSTNAME=`hostname`
 
 ***** Prompt
 #+begin_src sh
-source $HOME/Code/zsh/zsh-git-prompt/zshrc.sh
-setopt prompt_subst
-GIT_PROMPT_EXECUTABLE="haskell"
-ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[green]%}"
-ZSH_THEME_GIT_PROMPT_CHANGED="%{%F{009}✚%G%}"
-ZSH_THEME_GIT_PROMPT_AHEAD="%{%F{013}↑%G%}"
-ZSH_THEME_GIT_PROMPT_BEHIND="%{%F{013}↓%G%}"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{%F{010}✓%G%}"
-ZSH_THEME_GIT_PROMPT_STAGED="%{%F{012}●%G%}"
 function prompt_sorin_pwd {
   local pwd="${PWD/#$HOME/~}"
 
@@ -1490,40 +1481,49 @@ function prompt_sorin_pwd {
 }
 
 PROMPT='%B%F{9}$(prompt_sorin_pwd) %B%F{2}❯%f%b '
-## Option 1
-
-function zle-line-init zle-keymap-select {
-    VIM_NORMAL_PROMPT="%{$fg_bold[green]%} [% NORMAL]% %{$reset_color%}"
-    RPS1="${${KEYMAP/vicmd/$VIM_NORMAL_PROMPT}/(main|viins)/} $(git_super_status) $EPS1"
-    zle reset-prompt
-}
-## Option 2
-
-# function zle-keymap-select zle-line-init
-# {
-#     # change cursor shape in iTerm2
-#     case $KEYMAP in
-#         vicmd)      print -n -- "\E]50;CursorShape=0\C-G";;  # block cursor
-#         viins|main) print -n -- "\E]50;CursorShape=1\C-G";;  # line cursor
-#     esac
-
-#     zle reset-prompt
-#     zle -R
-# }
-
-# function zle-line-finish
-# {
-#     print -n -- "\E]50;CursorShape=0\C-G"  # block cursor
-# }
-
-zle -N zle-line-init
-# zle -N zle-line-finish
-zle -N zle-keymap-select
-
-## Option 3
+#+end_src
+***** Rprompt
+#+begin_src sh
+source $HOME/Code/zsh/zsh-git-prompt/zshrc.sh
+setopt prompt_subst
+GIT_PROMPT_EXECUTABLE="haskell"
+ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[green]%}"
+ZSH_THEME_GIT_PROMPT_CHANGED="%{%F{009}✚%G%}"
+ZSH_THEME_GIT_PROMPT_AHEAD="%{%F{013}↑%G%}"
+ZSH_THEME_GIT_PROMPT_BEHIND="%{%F{013}↓%G%}"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{%F{010}✓%G%}"
+ZSH_THEME_GIT_PROMPT_STAGED="%{%F{012}●%G%}"
 RPROMPT='$(git_super_status)'
 #+end_src
-
+***** Cursor
+#+begin_src sh
+zle-line-init () {
+  zle -K viins
+  echo -ne "\033]12;Gray\007"
+  echo -ne "\033[\x35 q"
+}
+zle -N zle-line-init
+zle-keymap-select () {
+  if [[ $KEYMAP == vicmd ]]; then
+    if [[ -z $TMUX ]]; then
+      printf "\033]12;Green\007"
+      printf "\033[1 q"
+    else
+      printf "\033Ptmux;\033\033]12;red\007\033\\"
+      printf "\033Ptmux;\033\033[1 q\033\\"
+    fi
+  else
+    if [[ -z $TMUX ]]; then
+      printf "\033]12;Grey\007"
+      printf "\033[\x35 q"
+    else
+      printf "\033Ptmux;\033\033]12;grey\007\033\\"
+      printf "\033Ptmux;\033\033[\x35 q\033\\"
+    fi
+  fi
+}
+zle -N zle-keymap-select
+#+end_src
 ***** Setup help
 #+begin_src sh
 autoload -Uz run-help
