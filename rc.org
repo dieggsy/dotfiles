@@ -1578,6 +1578,24 @@ bindkey '^h' cool-peco-ssh
 bindkey '^p' cool-peco-ps
 #+end_src
 **** Initialize and source some things
+***** [[https://github.com/b4b4r07/enhancd][enhancd]]
+#+begin_src sh
+source ~/Code/zsh/enhancd/init.sh
+# export ENHANCD_DISABLE_HOME=1
+export ENHANCD_FILTER=peco
+#+end_src
+***** [[https://github.com/junegunn/fzf][fzf]]
+#+begin_src sh :tangle no
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+#+end_src
+***** [[https://github.com/yyuu/pyenv/][pyenv]]
+#+begin_src sh
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+#+end_src
+***** [[https://github.com/nvbn/thefuck][thefuck]]
+#+begin_src sh
+if which thefuck > /dev/null; then eval $(thefuck --alias); fi
+#+end_src
 ***** [[https://github.com/rupa/z][z]]
 #+begin_src sh
 if which brew > /dev/null; then
@@ -1585,20 +1603,6 @@ if which brew > /dev/null; then
 else
     source $HOME/Code/zsh/z/z.sh
 fi
-#+end_src
-***** [[https://github.com/b4b4r07/enhancd][enhancd]]
-#+begin_src sh
-source ~/Code/zsh/enhancd/init.sh
-# export ENHANCD_DISABLE_HOME=1
-export ENHANCD_FILTER=peco
-#+end_src
-***** [[https://github.com/nvbn/thefuck][thefuck]]
-#+begin_src sh
-if which thefuck > /dev/null; then eval $(thefuck --alias); fi
-#+end_src
-***** [[https://github.com/yyuu/pyenv/][pyenv]]
-#+begin_src sh
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 #+end_src
 ***** [[https://github.com/zsh-users/zsh-syntax-highlighting/][zsh-syntax-highlighting]]
 #+begin_src sh
