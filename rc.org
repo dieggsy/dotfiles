@@ -1281,6 +1281,7 @@ bind-key j select-pane -D
 bind-key k select-pane -U
 bind-key h select-pane -L
 bind-key l select-pane -R
+bind-key o swap-pane -D
 bind-key < split-window -h \; choose-window 'kill-pane ; join-pane -hs %%'
 bind-key > break-pane -d
 bind-key ^ split-window -v \; choose-window 'kill-pane ; join-pane -vs %%'
@@ -1404,6 +1405,7 @@ set -g @plugin 'tmux-plugins/tmux-urlview'
 
 set -g @plugin 'tmux-plugins/tmux-copycat'
 set -g @plugin 'tmux-plugins/tmux-sidebar'
+set -g @sidebar-tree-command 'exa -TL2 --color=always'
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 run '~/.tmux/plugins/tpm/tpm'
 #+end_src
