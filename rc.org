@@ -1569,17 +1569,6 @@ zstyle ':completion:*' list-dirs-first true
 zstyle ':completion:*' squeeze-slashes true
 zstyle ':completion:*' _expand_alias
 #+end_src
-**** Keys
-#+begin_src sh
-bindkey -v
-export KEYTIMEOUT=1
-bindkey '^?' backward-delete-char
-bindkey '^h' backward-delete-char
-bindkey '^r' cool-peco-history
-bindkey -M vicmd '/' cool-peco-history
-bindkey '^h' cool-peco-ssh
-bindkey '^p' cool-peco-ps
-#+end_src
 **** Initialize and source some things
 ***** [[https://github.com/b4b4r07/enhancd][enhancd]]
 #+begin_src sh
@@ -1637,6 +1626,20 @@ bindkey '^[[B' history-substring-search-down
 ***** [[https://github.com/zsh-users/zsh-autosuggestions][zsh-autosuggestions]]
 #+begin_src sh
 # source $HOME/Code/zsh-autosuggestions/zsh-autosuggestions.zsh
+#+end_src
+**** Keys
+#+begin_src sh
+bindkey -v
+export KEYTIMEOUT=1
+bindkey '^?' backward-delete-char
+bindkey '^h' backward-delete-char
+bindkey '^r' cool-peco-history
+bindkey '^t' cool-peco-filename-search
+zle -N e
+bindkey '^e' e
+bindkey -M vicmd '/' cool-peco-history
+bindkey '^h' cool-peco-ssh
+bindkey '^p' cool-peco-ps
 #+end_src
 **** Vars
 #+begin_src sh
