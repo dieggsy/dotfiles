@@ -1615,8 +1615,6 @@ fi
 
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=''
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=''
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
 #+end_src
 ***** [[https://github.com/zsh-users/zsh-autosuggestions][zsh-autosuggestions]]
 #+begin_src sh
@@ -1625,6 +1623,10 @@ bindkey '^[[B' history-substring-search-down
 **** Keys
 #+begin_src sh
 bindkey -v
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
 export KEYTIMEOUT=1
 bindkey '^?' backward-delete-char
 bindkey '^h' backward-delete-char
@@ -1635,6 +1637,7 @@ bindkey '^e' e
 bindkey -M vicmd '/' cool-peco-history
 bindkey '^h' cool-peco-ssh
 bindkey '^p' cool-peco-ps
+bindkey '^F' cool-peco-all-funcs
 #+end_src
 **** Vars
 #+begin_src sh
