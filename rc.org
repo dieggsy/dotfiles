@@ -2042,10 +2042,11 @@ sudo-command-line() {
     else
         LBUFFER="sudo $LBUFFER"
     fi
+    zle && zle vi-add-next
 }
 zle -N sudo-command-line
 # Defined shortcut keys: [Esc] [Esc]
-bindkey "\e\e" sudo-command-line
+bindkey -M vicmd "\e" sudo-command-line
 #+end_src
 *** Functions
 **** apps
