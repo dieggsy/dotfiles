@@ -10,10 +10,10 @@ inspiration (and erm, code) for this is taken from them.
 
 :NOTE:
 *Note:* The usual way to do this is to call ~(org-babel-load-file "config.org")~,
- and I did that for a while, but for whatever reason I decided I wanted
- =config.el= (and its compiled verison) to be produced as I changed the file
- itself, hence the [[#local-vars][file local variables]]. Also, the optional ~COMPILE~ argument of
- ~org-babel-load-file~ wasn't working for me, so there's that.
+and I did that for a while, but for whatever reason I decided I wanted
+=config.el= (and its compiled verison) to be produced as I changed the file
+itself, hence the [[#local-vars][file local variables]]. Also, the optional ~COMPILE~ argument of
+~org-babel-load-file~ wasn't working for me, so there's that.
 :END:
 
 First off, let's set lexical binding, in accordance with the [[https://github.com/bbatsov/emacs-lisp-style-guide#source-code-layout--organization][emacs-lisp-style-guide]].
@@ -2393,7 +2393,8 @@ Like git, for emacs. But cooler.
   :config
   (define-key magit-mode-map (kbd "SPC") nil)
   (setq magit-diff-use-overlays nil
-        auto-revert-check-vc-info t)
+        auto-revert-check-vc-info t
+        git-commit-summary-max-length 50)
 
   (defun magit-blame-toggle ()
     "Toggle magit-blame-mode on and off interactively."
