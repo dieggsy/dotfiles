@@ -2394,7 +2394,8 @@ Like git, for emacs. But cooler.
   (define-key magit-mode-map (kbd "SPC") nil)
   (setq magit-diff-use-overlays nil
         auto-revert-check-vc-info t
-        git-commit-summary-max-length 50)
+        git-commit-summary-max-length 50
+        git-commit-fill-column 72)
 
   (defun magit-blame-toggle ()
     "Toggle magit-blame-mode on and off interactively."

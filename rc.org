@@ -407,6 +407,7 @@ cd .. && \
 rm -rf temp_clone && \
 git clone https://github.mit.edu/dmundo/16.410_$(basename $1) $(basename $1);  }; f"
     optimize = "!f() { git reflog expire --all --expire=now && git gc --prune=now --aggressive; }; f"
+	plog = log --graph --pretty=format:'%C(bold black)%h%Creset - %<(50,trunc)%C(bold normal)%s%Creset %<(20)%C(bold green)%an%Creset %<(15)%C(bold red)%cr%Creset%C(bold yellow)%d%Creset ' --abbrev-commit
 	update-from-upstream = pull --rebase -s recursive -X theirs upstream/master
 	aliases = config --get-regexp '^alias\\.'
 #+end_src
