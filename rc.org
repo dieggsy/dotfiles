@@ -1730,16 +1730,22 @@ alias wiki="wiki -w 80"
 #+end_src
 ***** Function "aliases"
 #+begin_src sh
-ff() { find . -type f -iname "*$1*" }
+ff() { find . -type f -iname "*$1*" | peco --prompt "[find-file]" }
 
 fd() { find . -type d -iname "*$1*" | peco --prompt="[find-dir]"}
 
 f() { find . -iname "*$1*" | peco --prompt="[find]"}
 
-fsz() { find ./ -type f -iname "*$1*" -exec du -sh {} + | sort -rh | peco --prompt="[find-sizes]"}
+fsz() { find ./ -type f -iname "*$1*" -exec du -sh {} + |
+            sort -rh |
+            peco --prompt="[find-sizes]"}
 
 calc() { emacs --batch --eval "(message (calc-eval \"$1\"))" }
 alias calc="noglob calc"
+
+erg () { emacsclient -n $(rg -n $1 |
+                              peco --prompt="[erg]" |
+                              awk -F\: '{print "+"$2,$1}') > /dev/null 2>&1}
 #+end_src
 **** Use gnu coreutils
 #+begin_src sh
@@ -2063,9 +2069,14 @@ open -a "$(find /Applications -maxdepth 2 -type d -name '*.app' \
 :header-args+: :tangle ~/bin/zfuncs/e
 :END:
 #+begin_src sh
+if [ -z "$1" ]; then
+    dir="."
+else
+    dir="$1"
+fi
 emacsclient -n $(rg -g '!Applications' -g '!Movies' -g '!Music' \
                     -g '!Library' -g '!Pictures' -g '!*.png' \
-                    -g '!*.jpg' "$1" --files \
+                    -g '!*.jpg' "$dir" --files \
                      | peco --prompt '[edit]') > /dev/null 2>&1
 #+end_src
 **** ev
