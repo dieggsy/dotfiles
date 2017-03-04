@@ -898,6 +898,7 @@ editing. So I went for it. Now I'll never go back.
                   calc-trail-mode
                   sunshine-mode
                   term-mode
+                  notmuch-tree-mode
                   profiler-report-mode))
     (add-to-list 'evil-emacs-state-modes mode))
 
@@ -2745,6 +2746,29 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 *** [[https://www.emacswiki.org/emacs/info+.el][info+]]
 #+begin_src emacs-lisp
 (use-package info+)
+#+end_src
+*** [[https://notmuchmail.org/notmuch-emacs/][notmuch]]
+#+begin_src emacs-lisp
+(use-package notmuch
+  :config
+  (setq notmuch-search-oldest-first nil)
+
+  (setq notmuch-saved-searches
+        '((:key "i" :name "Inbox" :query "folder:Inbox" :search-type 'tree :count-query "folder:Inbox +tag:unread")
+          (:key "s" :name "16.83" :query "folder:16.83" :search-type 'tree)
+          (:key "r" :name "16.405" :query "folder:16.405" :search-type 'tree)
+          (:key "p" :name "Paradox and Infinity" :query "folder:\"Paradox and Infinity\"" :search-type 'tree)
+          (:key "f" :name "Papi y Mami" :query "folder:\"Papi y Mami\"" :search-type 'tree)
+          (:key "S" :name "Sent" :query "folder:sent" :search-type 'tree)
+          (:key "u" :name "unread" :query "tag:unread" :search-type 'tree)))
+
+  (setq notmuch-tree-result-format '(("date" . "%12s  ")
+                                     ("authors" . "%-20s")
+                                     ((("tree" . "%s")
+                                       ("subject" . "%.50s"))
+                                      . " %-54s ")
+                                     ("tags" . "(%s)")))
+  (setq notmuch-hello-thousands-separator ","))
 #+end_src
 *** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
 #+begin_quote
