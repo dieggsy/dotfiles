@@ -1498,32 +1498,34 @@ RPROMPT='$(git_super_status)'
 #+end_src
 ***** Cursor
 #+begin_src sh
-zle-line-init () {
-  zle -K viins
-  echo -ne "\033]12;Gray\007"
-  echo -ne "\033[\x35 q"
-}
-zle -N zle-line-init
-zle-keymap-select () {
-  if [[ $KEYMAP == vicmd ]]; then
-    if [[ -z $TMUX ]]; then
-      printf "\033]12;Green\007"
-      printf "\033[1 q"
-    else
-      printf "\033Ptmux;\033\033]12;red\007\033\\"
-      printf "\033Ptmux;\033\033[1 q\033\\"
-    fi
-  else
-    if [[ -z $TMUX ]]; then
-      printf "\033]12;Grey\007"
-      printf "\033[\x35 q"
-    else
-      printf "\033Ptmux;\033\033]12;grey\007\033\\"
-      printf "\033Ptmux;\033\033[\x35 q\033\\"
-    fi
-  fi
-}
-zle -N zle-keymap-select
+if [ "$uname" = "Darwin" ]; then
+    zle-line-init () {
+        zle -K viins
+        echo -ne "\033]12;Gray\007"
+        echo -ne "\033[\x35 q"
+    }
+    zle -N zle-line-init
+    zle-keymap-select () {
+        if [[ $KEYMAP == vicmd ]]; then
+            if [[ -z $TMUX ]]; then
+                printf "\033]12;Green\007"
+                printf "\033[1 q"
+            else
+                printf "\033Ptmux;\033\033]12;red\007\033\\"
+                printf "\033Ptmux;\033\033[1 q\033\\"
+            fi
+        else
+            if [[ -z $TMUX ]]; then
+                printf "\033]12;Grey\007"
+                printf "\033[\x35 q"
+            else
+                printf "\033Ptmux;\033\033]12;grey\007\033\\"
+                printf "\033Ptmux;\033\033[\x35 q\033\\"
+            fi
+        fi
+    }
+    zle -N zle-keymap-select
+fi
 #+end_src
 ***** Setup help
 #+begin_src sh
