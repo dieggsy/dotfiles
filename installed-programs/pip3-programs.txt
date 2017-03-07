@@ -70,8 +70,6 @@ jupyter-contrib-core
 jupyter-core
 jupyter-nbextensions-configurator
 kitchen
-Kivy
-Kivy-Garden
 latex
 lazy-object-proxy
 loopfield
@@ -93,7 +91,6 @@ networkx
 nltk
 nose
 notebook
-notmuch
 numpy
 oauth2
 oauth2client
