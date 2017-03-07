@@ -1834,7 +1834,11 @@ function prompt_sorin_pwd {
   echo $_prompt_sorin_pwd
 }
 
-PROMPT='%B%F{9}$(prompt_sorin_pwd) %B%F{2}❯%f%b '
+if [ "$(uname)" = "Linux" ]; then
+    PROMPT='%B%F{9}$(prompt_sorin_pwd) %B%F{2}❮%f%b '
+else
+    PROMPT='%B%F{9}$(prompt_sorin_pwd) %B%F{2}❯%f%b '
+fi
 #+end_src
 ***** Rprompt
 #+begin_src sh
