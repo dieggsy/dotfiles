@@ -10,12 +10,14 @@ readable in org format than in rendered markdown.
 * Contents                                                              :toc:
  - [[#intro][Intro]]
  - [[#config][Config]]
+   - [[#profile][.profile]]
    - [[#bashrc][bashrc]]
    - [[#cookiecutterrc][cookiecutterrc]]
    - [[#cvimrc][cvimrc]]
    - [[#darktooththeme-cmus][darktooth.theme (cmus)]]
    - [[#git][git]]
    - [[#hyperjs][hyper.js]]
+   - [[#i3][i3]]
    - [[#khdrc][khdrc]]
    - [[#kwmrc][kwmrc]]
    - [[#nanorc][nanorc]]
@@ -23,6 +25,7 @@ readable in org format than in rendered markdown.
    - [[#pythonrcpy][pythonrc.py]]
    - [[#rainbowstream][rainbowstream]]
    - [[#ssh][ssh]]
+   - [[#termite][termite]]
    - [[#tmux][tmux]]
    - [[#zsh][zsh]]
  - [[#scripts][Scripts]]
@@ -32,6 +35,7 @@ readable in org format than in rendered markdown.
    - [[#wfname][wfname]]
    - [[#org-tangle][org-tangle]]
    - [[#pass][pass]]
+   - [[#i3statuscustom][i3statuscustom]]
  - [[#local-vars][Local vars]]
 
 * Config
@@ -635,6 +639,7 @@ module.exports = {
 };
 #+end_src
 ** i3
+*** i3
 :PROPERTIES:
 :header-args+: :tangle ~/.config/i3/config
 :END:
@@ -671,7 +676,7 @@ font pango:monospace 8
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+# bindsym $mod+Return exec 'termite'
 
 # kill focused window
 bindsym $mod+Shift+apostrophe kill
@@ -687,11 +692,20 @@ bindsym Mod1+space exec rofi -show run -font "Iosevka 30"
 bindsym $mod+minus move scratchpad
 bindsym $mod+shift+minus scratchpad show
 
-for_window [title="^emacs@Mothership$"], mark "EDITOR", move scratchpad
-bindsym $mod+space [con_mark="^EDITOR$"] scratchpad show
+for_window [title="^emacs-26.0.50@mothership$"] floating enable;
+for_window [title="^emacs-26.0.50@Mothership$"] move scratchpad; [title="^emacs-26.0.50@Mothership$"] scratchpad show; move scratchpad
+bindsym $mod+space [title="^emacs-26.0.50@Mothership$"] scratchpad show
 
-for_window [title="^emacs@Mothership$"], mark "EDITOR", move scratchpad
-bindsym $mod+space [con_mark="^EDITOR$"] scratchpad show
+exec --no-startup-id termite --name=metask
+for_window [instance="metask"] floating enable;
+for_window [instance="metask"] move scratchpad; [instance="metask"] scratchpad show; move scratchpad
+bindsym $mod+Return [instance="metask"] scratchpad show
+# for_window [title="^termite@Mothership$"], mark "TERMINAL", move scratchpad
+# bindsym $mod+Return [con_mark="^TERMINAL$"] scratchpad show
+# exec --no-startup-id termite
+# for_window [instance="termite" title="Life"] floating enable, move scratchpad, scratchpad show;
+# for_window [instance="termite" title="Life"] resize grow left 300, resize grow right 300, resize grow down 150, resize grow up 100, move scratchpad;
+# bindsym $mod+Return  [instance="termite" title="Life"] scratchpad show
 
 # change focus
 bindsym $mod+h focus left
@@ -769,6 +783,8 @@ bindsym $mod+Shift+0 move container to workspace 10
 
 # reload the configuration file
 bindsym $mod+Shift+j reload
+# reload X11
+bindsym $mod+Shift+x exec xrdb ~/.Xresources
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+p restart
 # exit i3 (logs you out of your X session)
@@ -804,8 +820,11 @@ bindsym $mod+p mode "resize"
 # finds out, if available)
 bar {
     status_command i3status
+    position top
+    font pango:Iosevka 8
     colors {
         background #282828
+        statusline #fdf4c1
         focused_workspace #4c7899 #285577 #FDF4c1
         active_workspace   #333333 #5f676a #FDF4c1
         inactive_workspace #333333 #222222 #888888
@@ -814,7 +833,7 @@ bar {
     }
 }
 
-client.focused #2e9ef4 #EBDBD2 #2D2D2D #2e9ef4
+client.focused #3fd7e5 #EBDBD2 #2D2D2D #3fd7e5
 client.focused_inactive #2d2d2d #282828 #dcdcdc #484e50
 client.unfocused        #2D2D2D #2d2d2d #dcdcdc #292d2e
 client.urgent #2D2D2D #2D2D2D #dcdcdc #900000
@@ -822,6 +841,87 @@ client.urgent #2D2D2D #2D2D2D #dcdcdc #900000
 gaps inner 30
 gaps outer 0
 new_window 1pixel
+exec ~/.dropbox-dist/dropboxd&
+exec emacs-26.0.50&
+# exec termite&
+exec sh ~/.fehbg
+
+# some controls
+bindsym XF86KbdBrightnessDown exec kb-light -
+bindsym XF86KbdBrightnessUp exec kb-light +
+
+bindsym XF86MonBrightnessUp exec xbacklight +1
+bindsym XF86MonBrightnessDown exec xbacklight -1
+
+bindsym XF86AudioMute exec amixer -D pulse sset Master toggle
+bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 2%-
+bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 2%+
+#+end_src
+*** i3status
+:PROPERTIES:
+:header-args+: :tangle ~/.config/i3status/config
+:END:
+#+begin_src conf
+# i3status configuration file.
+# see "man i3status" for documentation.
+
+# It is important that this file is edited as UTF-8.
+# The following line should contain a sharp s:
+# ß
+# If the above line is not correctly displayed, fix your editor first!
+
+general {
+        colors = true
+        interval = 5
+        color_good='#b8bb26'
+        color_bad='#fb4933'
+        color_degraded='#fabd2f'
+}
+
+# order += "ipv6"
+order += "disk /"
+# order += "run_watch DHCP"
+# order += "run_watch VPN"
+order += "wireless _first_"
+# order += "ethernet _first_"
+order += "battery 0"
+order += "load"
+order += "tztime local"
+
+wireless _first_ {
+format_up = "wifi: %essid %ip"
+        format_down = "W: down"
+}
+
+ethernet _first_ {
+        # if you use %speed, i3status requires root privileges
+        format_up = "E: %ip (%speed)"
+        format_down = "E: down"
+}
+
+battery 0 {
+        format = "%status %percentage %remaining"
+}
+
+run_watch DHCP {
+        pidfile = "/var/run/dhclient*.pid"
+}
+
+run_watch VPN {
+        pidfile = "/var/run/vpnc/pid"
+}
+
+tztime local {
+        format = "%Y-%m-%d %H:%M:%S"
+}
+
+load {
+        format = "%1min"
+}
+
+disk "/" {
+        format = "%avail"
+}
 #+end_src
 ** khdrc
 :PROPERTIES:
@@ -1436,6 +1536,35 @@ Host github-MIT
     User git
     IdentityFile ~/.ssh/id_rsa_MIT
 #+end_src
+** termite
+:PROPERTIES:
+:header-args+: :tangle ~/.config/termite/config
+:END:
+#+begin_src conf
+[options]
+font = iosevka term 9.5
+allow_bold=0
+cursor_shape=ibeam
+[colors]
+background=#282828
+foreground=#FDf4c1
+color0=#282828
+color1=#9d1306
+color2=#79740e
+color3=#b57614
+color4=#076678
+color5=#8f3f71
+color6=#00a7af
+color7=#bdae93
+color8=#686868
+color9=#fb4933
+color10=#b8bb26
+color11=#fabd2f
+color12=#83a598
+color13=#d3869b
+color14=#3fd7e5
+color15=#fdf4c1
+#+end_src
 ** tmux
 *** tmux.conf
 :PROPERTIES:
@@ -1443,7 +1572,6 @@ Host github-MIT
 :END:
 **** Initialize
 #+begin_src conf
-set-option -g default-command "reattach-to-user-namespace -l zsh"
 set -s escape-time 0
 set -g default-terminal "xterm-256color-italic"
 set -g update-environment -r
@@ -1468,7 +1596,7 @@ bind-key Q detach-client
 bind-key Escape copy-mode
 bind-key [ copy-mode
 bind-key -t vi-copy v begin-selection
-bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
+bind-key -t vi-copy y copy-pipe "xclip -in -selection clipboard"
 bind -n C-k clear-history
 #+end_src
 **** Windows/Panes
@@ -1606,6 +1734,10 @@ set -g message-bg colour166
 
 # }
 #+end_src
+**** osx-specific
+#+begin_src conf
+if-shell 'test "$(uname)" = "Darwin"' 'source ~/.tmux-osx.conf'
+#+end_src
 **** Plugins
 #+begin_src conf
 # List of plugins
@@ -1620,6 +1752,14 @@ set -g @plugin 'tmux-plugins/tmux-sidebar'
 set -g @sidebar-tree-command 'exa -TL2 --color=always'
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 run '~/.tmux/plugins/tpm/tpm'
+#+end_src
+*** tmux-osx.conf
+:PROPERTIES:
+:header-args+: :tangle ~/.tmux-osx.conf
+:END:
+#+begin_src sh
+set-option -g default-command "reattach-to-user-namespace -l zsh"
+bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
 #+end_src
 *** tmuxinator-hud
 :PROPERTIES:
@@ -1711,7 +1851,7 @@ RPROMPT='$(git_super_status)'
 #+end_src
 ***** Cursor
 #+begin_src sh
-if [ "$uname" = "Darwin" ]; then
+if [ "$(uname)" = "Darwin" ]; then
     zle-line-init () {
         zle -K viins
         echo -ne "\033]12;Gray\007"
@@ -1857,7 +1997,7 @@ bindkey '^F' cool-peco-all-funcs
 #+end_src
 **** Vars
 #+begin_src sh
-[ "$(hostname)" = "racecar-vm" ] && export TERM=xterm-256color
+[ "$(uname)" = "Linux" ] && export TERM=xterm-256color
 
 # some ls colors i've gotten used to
 export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31'
@@ -1936,6 +2076,7 @@ alias resetwifi="networksetup -setairportpower en0 off; sleep 2;"\
 "networksetup -setairportpower en0 on"
 alias rg="rg -i -g '!archive-contents' --colors 'line:style:bold' --colors 'path:style:bold'"
 alias sm=". ~/bin/switchmacs"
+[ "$(uname)" = "Linux" ] && alias spotify="spotify --force-device-scale-factor=2 &"
 alias starwars="telnet towel.blinkenlights.nl" # heh
 alias sudo='sudo '                             # recognize aliases
 alias sz="du -hs"                              # get folder/file size
@@ -2049,9 +2190,17 @@ export PATH="$HOME/.cargo/bin:$PATH"
 #   eval $( gpg-agent --daemon --write-env-file ~/.gpg-agent-info )
 # fi
 
-export GOROOT=/usr/local/Cellar/go/1.8/libexec
+if [ "$(uname)" = "Darwin" ]; then
+    export GOROOT=/usr/local/Cellar/go/1.8/libexec
+else
+    export GOROOT=/usr/lib/go-1.6
+fi
 export GOPATH="$HOME/go"
 export PATH="$PATH:$GOPATH/bin"
+if [ "$(uname)" = "Linux" ]; then
+    export PYENV_ROOT="$HOME/.pyenv"
+    export PATH="$PYENV_ROOT/bin:$PATH"
+fi
 #+end_src
 *** Modules
 **** environment
@@ -2591,6 +2740,20 @@ name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
            | peco --prompt="[pass]")
 
 [[ -n "$name" ]] && pass -c $name
+#+end_src
+** i3statuscustom
+:PROPERTIES:
+:header-args+: :tangle ~/bin/i3statuscustom :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh :tangle no
+#!/bin/bash
+i3status | while :
+do
+    read line
+    id=$(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}')
+    name=$(xprop -id $id | awk '/_NET_WM_NAME/{$1=$2="";print}' | cut -d'"' -f2)
+    echo "$name | $line" || exit 1
+done
 #+end_src
 * Local vars
 

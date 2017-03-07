@@ -41,6 +41,7 @@ First off, let's set lexical binding, in accordance with the [[https://github.co
    - [[#smooth-scroll][Smooth scroll]]
    - [[#tabscompletion][Tabs/completion]]
    - [[#line-positionhighlighting][Line position/highlighting]]
+   - [[#linux-browser][Linux browser]]
    - [[#there-is-unrest-in-the-forest][There is unrest in the forest...]]
  - [[#functions][Functions]]
    - [[#filesbuffers][Files/buffers]]
@@ -264,21 +265,22 @@ myself).
 
 Choose a font if available, in order of preference.
 #+begin_src emacs-lisp
-(cond ((x-list-fonts "Iosevka")
-       (add-to-list 'default-frame-alist '(font . "Iosevka-12"))
-       (set-face-attribute 'default t :font "Iosevka-12"))
-      ((x-list-fonts "Input")
-       (add-to-list 'default-frame-alist '(font . "Input-10"))
-       (set-face-attribute 'default t :font "Input-10"))
-      ((x-list-fonts "Office Code Pro D")
-       (add-to-list 'default-frame-alist '(font . "Office Code Pro D-11"))
-       (set-face-attribute 'default t :font "Office Code Pro D-11"))
-      ((x-list-fonts "Consolas")
-       (add-to-list 'default-frame-alist '(font . "Consolas-11"))
-       (set-face-attribute 'default t :font "Consolas-11"))
-      ((x-list-fonts "Menlo")
-       (add-to-list 'default-frame-alist '(font . "Menlo-11"))
-       (set-face-attribute 'default t :font "Menlo-11")))
+(when window-system
+  (cond ((x-list-fonts "Iosevka")
+         (add-to-list 'default-frame-alist '(font . "Iosevka-9.5"))
+         (set-face-attribute 'default t :font "Iosevka-9.5"))
+        ((x-list-fonts "Input")
+         (add-to-list 'default-frame-alist '(font . "Input-10"))
+         (set-face-attribute 'default t :font "Input-10"))
+        ((x-list-fonts "Office Code Pro D")
+         (add-to-list 'default-frame-alist '(font . "Office Code Pro D-11"))
+         (set-face-attribute 'default t :font "Office Code Pro D-11"))
+        ((x-list-fonts "Consolas")
+         (add-to-list 'default-frame-alist '(font . "Consolas-11"))
+         (set-face-attribute 'default t :font "Consolas-11"))
+        ((x-list-fonts "Menlo")
+         (add-to-list 'default-frame-alist '(font . "Menlo-11"))
+         (set-face-attribute 'default t :font "Menlo-11"))))
 #+end_src
 ** Text
 Text-mode is nicer than fundamental-mode.
@@ -380,6 +382,13 @@ Use tab for completion and cycling candidates (relevant for the minibuffer?).
 Show the column number in the modeline, because I'm not a savage.
 #+begin_src emacs-lisp
 (setq column-number-mode t)
+#+end_src
+** Linux browser
+#+begin_src emacs-lisp
+(when (eq system-type 'gnu/linux)
+  (setq browse-url-generic-program
+        (executable-find "firefox-developer")
+        browse-url-browser-function 'browse-url-generic))
 #+end_src
 ** [[https://www.youtube.com/watch?v=UWHEcIbhDiw][There is unrest in the forest...]]
 #+begin_src emacs-lisp
