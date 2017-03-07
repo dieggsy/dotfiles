@@ -1533,8 +1533,9 @@ A really nice search/completion system for emacs.
   :functions (ivy--format-function-generic
               counsel--yank-pop-truncate)
   :config
-  (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind
-        counsel-yank-pop-separator "
+  (when (eq system-type 'darwin)
+    (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind))
+  (setq counsel-yank-pop-separator "
   ─────────────────────────
 ")
   (counsel-mode 1)
@@ -1784,6 +1785,7 @@ so I went with it.
         org-M-RET-may-split-line nil
         org-list-use-circular-motion t
         org-log-into-drawer t
+        org-imenu-depth 5
         org-link-search-must-match-exact-headline nil
         org-confirm-elisp-link-function 'y-or-n-p
         org-confirm-elisp-link-not-regexp "(\\(wiki-search\\|describe-function\\|describe-variable\\).*?)"
