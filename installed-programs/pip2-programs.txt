@@ -45,7 +45,6 @@ mpmath
 msgpack-python
 neovim
 nose
-notmuch
 numpy
 oauth2
 oauth2client

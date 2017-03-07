@@ -2116,7 +2116,7 @@ alias resetwifi="networksetup -setairportpower en0 off; sleep 2;"\
 "networksetup -setairportpower en0 on"
 alias rg="rg -i -g '!archive-contents' --colors 'line:style:bold' --colors 'path:style:bold'"
 alias sm=". ~/bin/switchmacs"
-[ "$(uname)" = "Linux" ] && alias spotify="spotify --force-device-scale-factor=2 &"
+[ "$(uname)" = "Linux" ] && alias spotify="spotify --force-device-scale-factor=2 > /dev/null 2>&1 &"
 alias starwars="telnet towel.blinkenlights.nl" # heh
 alias sudo='sudo '                             # recognize aliases
 alias sz="du -hs"                              # get folder/file size
