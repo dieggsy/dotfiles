@@ -698,7 +698,7 @@ bindsym $mod+space [title="^emacs-26.0.50@Mothership$"] scratchpad show
 
 exec --no-startup-id termite --name=metask
 for_window [instance="metask"] floating enable;
-for_window [instance="metask"] move scratchpad; [instance="metask"] scratchpad show; move scratchpad
+for_window [instance="metask"] move scratchpad; [instance="metask"] scratchpad show; resize shrink height 100px; resize grow width 1400px; move position center; move up 420px; move scratchpad
 bindsym $mod+Return [instance="metask"] scratchpad show
 # for_window [title="^termite@Mothership$"], mark "TERMINAL", move scratchpad
 # bindsym $mod+Return [con_mark="^TERMINAL$"] scratchpad show
@@ -1573,7 +1573,7 @@ color15=#fdf4c1
 **** Initialize
 #+begin_src conf
 set -s escape-time 0
-set -g default-terminal "xterm-256color-italic"
+set -g default-terminal "xterm-256color"
 set -g update-environment -r
 set-option -g set-titles on
 set-option -g set-titles-string '#W'
@@ -1882,6 +1882,41 @@ if [ "$(uname)" = "Darwin" ]; then
         fi
     }
     zle -N zle-keymap-select
+else
+    # Modal cursor color for vi's insert/normal modes.
+    # http://stackoverflow.com/questions/30985436/
+    # https://bbs.archlinux.org/viewtopic.php?id=95078
+    # http://unix.stackexchange.com/questions/115009/
+    zle-line-init () {
+        zle -K viins
+        #echo -ne "\033]12;Grey\007"
+        #echo -n 'grayline1'
+        echo -ne "\033]12;white\007"
+        echo -ne "\033[5 q"
+        #print 'did init' >/dev/pts/16
+    }
+    zle -N zle-line-init
+    zle-keymap-select () {
+        if [[ $KEYMAP == vicmd ]]; then
+            if [[ -z $TMUX ]]; then
+                printf "\033]12;white\007"
+                printf "\033[2 q"
+            else
+                printf "\033Ptmux;\033\033]12;white\007\033\\"
+                printf "\033Ptmux;\033\033[2 q\033\\"
+            fi
+        else
+            if [[ -z $TMUX ]]; then
+                printf "\033]12;white\007"
+                printf "\033[5 q"
+            else
+                printf "\033Ptmux;\033\033]12;white\007\033\\"
+                printf "\033Ptmux;\033\033[5 q\033\\"
+            fi
+        fi
+        #print 'did select' >/dev/pts/16
+    }
+    zle -N zle-keymap-select
 fi
 #+end_src
 ***** Setup help
@@ -2065,6 +2100,7 @@ alias fcolor="spectrum_ls | rg --color=never -N"
 alias filecount="ls -1 | wc -l"
 alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
 which hub > /dev/null && alias git=hub
+[ "$(uname)" = "Linux" ] && compdef hub=git
 alias gls='gls -X --group-directories-first --color=always'
 alias ls='exa --group-directories-first --sort=extension'
 alias glst="gls -t"
@@ -2119,7 +2155,7 @@ fi
 #+end_src
 **** VM
 #+begin_src sh
-[ "$(uname)" = "Linx" ] && source /opt/ros/kinetic/setup.zsh
+[ "$(uname)" = "Linux" ] && source /opt/ros/kinetic/setup.zsh
 [ "$(hostname)" = "racecar-vm" ] && source ~/diego_racecarsetup.sh
 #+end_src
 *** zshenv
@@ -2144,6 +2180,7 @@ path=(
 
 fpath=(
     ~/bin/zfuncs
+    /usr/share/zsh/site-functions/
     /usr/local/share/zsh-completions
     $HOME/Code/zsh/zsh-completions/src
     $HOME/Code/zsh/cool-peco
