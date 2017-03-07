@@ -7,6 +7,7 @@ Plugin 'joshdick/onedark.vim'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'scrooloose/nerdtree'
 Plugin 'Shougo/neocomplcache.vim'
+Plugin 'mswift42/vim-themes'
 " Plugin 'wincent/command-t'
 " Plugin 'kien/ctrlp.vim'
 Plugin 'ctrlpvim/ctrlp.vim'
@@ -15,6 +16,7 @@ Plugin 'davidhalter/jedi-vim'
 Plugin 'itchyny/lightline.vim'
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
+Plugin 'scrooloose/nerdcommenter'
 "Plugin 'tmhedberg/SimpylFold'
 call vundle#end()
 filetype plugin indent on
@@ -22,16 +24,36 @@ set laststatus=2
 let g:neocomplcache_enable_at_startup=1
 let g:ctrlp_working_path_mode = 0
 let g:ctrlp_user_command = ['.git', 'cd %s && git ls-files . -co --exclude-standard', 'find %s -type f']
-if (empty($TMUX))
-  if (has("nvim"))
-    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-  endif
-  if (has("termguicolors"))
-  	set termguicolors
-  endif
-endif
+"if (empty($TMUX))
+  "if (has("nvim"))
+    "let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  "endif
+  "if (has("termguicolors"))
+          "set termguicolors
+  "endif
+"endif
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 syntax on
-set cursorline
+" set cursorline
+" http://vim.wikia.com/wiki/Configuring_the_cursor
+" Tmux details: http://reza.jelveh.me/2011/09/18/zsh-tmux-vi-mode-cursor
+if &term =~ "xterm\\|rxvt"
+  " Insert
+  let &t_SI  = "\<Esc>]12;white\x7"
+  let &t_SI .= "\<Esc>[5 q"
+  " Normal
+  let &t_EI  = "\<Esc>]12;white\x7"
+  let &t_EI .= "\<Esc>[2 q"
+  autocmd VimLeave * silent !echo -ne "\033]112\007"
+elseif &term =~ "screen-it"
+  " Insert
+  let &t_SI  = "\<Esc>Ptmux;\<Esc>\<Esc>]12;white\x7\<Esc>\\"
+  let &t_SI .= "\<Esc>Ptmux;\<Esc>\<Esc>[3 q\<Esc>\\"
+  " Normal
+  let &t_EI  = "\<Esc>Ptmux;\<Esc>\<Esc>]12;white\x7\<Esc>\\"
+  let &t_EI .= "\<Esc>Ptmux;\<Esc>\<Esc>[2 q\<Esc>\\"
+  autocmd VimLeave * silent !printf "\033Ptmux;\033\033]12;grey\007\033\\"
+endif
 set number
 set hlsearch
 let g:vim_markdown_folding_disabled = 1
@@ -39,7 +61,7 @@ let g:vim_markdown_folding_disabled = 1
 "set foldmethod=indent
 "set foldlevel=99
 set backspace=2 " make backspace work like most other apps
-colorscheme onedark
+colorscheme darktooth
 highlight Comment cterm=italic
 let mapleader = "\<Space>"
 " nnoremap <leader><leader> :CommandTCommand<CR>
