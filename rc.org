@@ -2119,6 +2119,7 @@ fi
 #+end_src
 **** VM
 #+begin_src sh
+[ "$(uname)" = "Linx" ] && source /opt/ros/kinetic/setup.zsh
 [ "$(hostname)" = "racecar-vm" ] && source ~/diego_racecarsetup.sh
 #+end_src
 *** zshenv
