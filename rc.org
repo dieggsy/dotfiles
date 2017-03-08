@@ -29,13 +29,14 @@ readable in org format than in rendered markdown.
    - [[#tmux][tmux]]
    - [[#zsh][zsh]]
  - [[#scripts][Scripts]]
+   - [[#dropmite][dropmite]]
+   - [[#rangermite][rangermite]]
    - [[#masterinstall][masterinstall]]
    - [[#switchmacs][switchmacs]]
    - [[#updates][updates]]
    - [[#wfname][wfname]]
    - [[#org-tangle][org-tangle]]
    - [[#pass][pass]]
-   - [[#i3statuscustom][i3statuscustom]]
  - [[#local-vars][Local vars]]
 
 * Config
@@ -2589,6 +2590,20 @@ COEFF2=$(echo "100 / $AMOUNT" | bc -l)
 convert -scale $COEFF1% -scale $COEFF2% $INFILE $OUFILE
 #+end_src
 * Scripts
+** dropmite
+:PROPERTIES:
+:header-args+: :tangle ~/bin/dropmite :shebang "!/usr/bin/env bash"
+:END:
+#+begin_src sh
+termite --name=metask
+#+end_src
+** rangermite
+:PROPERTIES:
+:header-args+: :tangle ~/bin/explorer :shebang "!/usr/bin/env bash"
+:END:
+#+begin_src sh
+termite -t ranger -e ranger --name=explorer
+#+end_src
 ** masterinstall
 :PROPERTIES:
 :header-args+: :tangle ~/bin/masterinstall :shebang "#!/usr/bin/env bash"
@@ -2783,32 +2798,6 @@ name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
 
 [[ -n "$name" ]] && pass -c $name
 #+end_src
-** i3statuscustom
-:PROPERTIES:
-:header-args+: :tangle ~/bin/i3statuscustom :shebang "#!/usr/bin/env bash"
-:END:
-#+begin_src sh :tangle no
-#!/bin/bash
-i3status | while :
-do
-    read line
-    id=$(xprop -root | awk '/_NET_ACTIVE_WINDOW\(WINDOW\)/{print $NF}')
-    name=$(xprop -id $id | awk '/_NET_WM_NAME/{$1=$2="";print}' | cut -d'"' -f2)
-    echo "$name | $line" || exit 1
-done
-#+end_src
-*** rofi
-:PROPERTIES:
-:header-args+: :tangle ~/.password-store/.extensions/rofi.bash :shebang "#!/usr/bin/env bash"
-:END:
-#+begin_src sh
-name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
-           | sed 's@'"$HOME"'/\.password-store/\(.\+\?\)\.gpg@\1@' \
-           | rofi -dmenu -p "[pass] " -font "Iosevka 25")
-
-[[ -n "$name" ]] && pass -c $name
-#+end_src
-
 * Local vars
 
 #+begin_example
