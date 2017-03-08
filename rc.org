@@ -683,7 +683,7 @@ bindsym $mod+Shift+apostrophe kill
 
 # start dmenu (a program launcher)
 bindsym $mod+e exec rofi -show run -font "Iosevka 25"
-bindsym Mod1+space exec "rofi -combi-modi window,drun -show combi -modi combi -font 'Iosevka 25'"
+bindsym Mod1+space exec "rofi -combi-modi window,drun,run -show combi -modi combi -font 'Iosevka 25'"
 bindsym $mod+p exec "~/.password-store/.extensions/rofi.bash"
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
