@@ -2801,6 +2801,21 @@ name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
 
 [[ -n "$name" ]] && pass -c $name
 #+end_src
+*** rofi
+:PROPERTIES:
+:header-args+: :tangle ~/.password-store/.extensions/rofi.bash :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
+           | sed 's@'"$HOME"'/\.password-store/\(.\+\?\)\.gpg@\1@' \
+           | rofi -dmenu -p "[pass] " -font "Iosevka 25")
+
+ps axf | grep 'greenclip daemon' | grep -v grep | awk '{print $1}' | xargs kill -20
+[[ -n "$name" ]] && pass -c $name
+sleep 45
+greenclip print ' '
+ps axf | grep 'greenclip daemon' | grep -v grep | awk '{print $1}' | xargs kill -18
+#+end_src
 * Local vars
 
 #+begin_example
