@@ -30,7 +30,8 @@ readable in org format than in rendered markdown.
    - [[#zsh][zsh]]
  - [[#scripts][Scripts]]
    - [[#dropmite][dropmite]]
-   - [[#rangermite][rangermite]]
+   - [[#explorer][explorer]]
+   - [[#spotify-desktop][spotify-desktop]]
    - [[#masterinstall][masterinstall]]
    - [[#switchmacs][switchmacs]]
    - [[#updates][updates]]
@@ -2090,7 +2091,7 @@ alias -g ......='../../../../..'
 alias -- -='cd -'
 alias cpwd="pwd | tr -d '\n' | pbcopy"
 alias ddg='surfraw duckduckgo -j'
-alias def='dict -d gcide'
+alias def='dict -d wn'
 alias ed="ed -p:"
 alias edit="emacsclient -n"
 alias editv="emacsclient -t"
@@ -2160,7 +2161,7 @@ fi
 **** VM
 #+begin_src sh
 [ "$(uname)" = "Linux" ] && source /opt/ros/kinetic/setup.zsh
-[ "$(hostname)" = "racecar-vm" ] && source ~/diego_racecarsetup.sh
+# [ "$(uname)" = "Linux" ] && source ~/diego_racecarsetup.sh
 #+end_src
 *** zshenv
 :PROPERTIES:
@@ -2600,12 +2601,19 @@ convert -scale $COEFF1% -scale $COEFF2% $INFILE $OUFILE
 #+begin_src sh
 termite --name=metask
 #+end_src
-** rangermite
+** explorer
 :PROPERTIES:
 :header-args+: :tangle ~/bin/explorer :shebang "!/usr/bin/env bash"
 :END:
 #+begin_src sh
 termite -t ranger -e ranger --name=explorer
+#+end_src
+** spotify-desktop
+:PROPERTIES:
+:header-args+: :tangle ~/bin/spotify-desktop :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+spotify --force-device-scale-factor=2 > /dev/null 2>&1 &
 #+end_src
 ** masterinstall
 :PROPERTIES:
