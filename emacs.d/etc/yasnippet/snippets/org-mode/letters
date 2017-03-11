@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: letters
+# key: letters
+# --
+#+LaTeX: {\renewcommand{\theenumi}{\alph{enumi}}
+$1
+#+LaTeX: }
