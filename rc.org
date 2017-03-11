@@ -728,6 +728,7 @@ bindsym $mod+Shift+h move left
 bindsym $mod+Shift+t move down
 bindsym $mod+Shift+n move up
 bindsym $mod+Shift+s move right
+bindsym $mod+Shift+c move position center
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -825,22 +826,22 @@ bindsym $mod+r mode "resize"
 bar {
     status_command i3status
     position top
-    font pango:Iosevka 8
+    font pango:Iosevka, FontAwesome 8.5
     colors {
         background #282828
         statusline #fdf4c1
-        focused_workspace #4c7899 #285577 #FDF4c1
+        focused_workspace #076678 #076678 #FDF4c1
         active_workspace   #333333 #5f676a #FDF4c1
-        inactive_workspace #333333 #222222 #888888
-        urgent_workspace   #2f343a #900000 #FDF4c1
-        binding_mode       #2f343a #900000 #FDF4c1
+        inactive_workspace #222222 #222222 #888888
+        urgent_workspace   #2f343a #901A1E #FDF4c1
+        binding_mode       #2f343a #901A1E #FDF4c1
     }
 }
 
 client.focused #EBDBD2 #EBDBD2 #2D2D2D #3fd7e5
 client.focused_inactive #2d2d2d #282828 #dcdcdc #484e50
 client.unfocused        #2D2D2D #2d2d2d #dcdcdc #292d2e
-client.urgent #2D2D2D #2D2D2D #dcdcdc #900000
+client.urgent #2D2D2D #2D2D2D #dcdcdc #901A1E
 
 gaps inner 30
 gaps outer 0
@@ -861,6 +862,14 @@ bindsym XF86MonBrightnessDown exec xbacklight -1
 bindsym XF86AudioMute exec amixer -D pulse sset Master toggle
 bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 2%-
 bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 2%+
+
+bindsym XF86AudioPrev exec playerctl-cmus previous
+bindsym XF86AudioNext exec playerctl-cmus next
+bindsym XF86AudioPlay exec playerctl-cmus play-pause
+
+bindsym --release XF86LaunchB exec "scrot -s ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
+bindsym Shift+XF86LaunchB exec "scrot -ub ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
+bindsym XF86LaunchA exec "scrot ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
 #+end_src
 *** i3status
 :PROPERTIES:
@@ -889,12 +898,12 @@ order += "disk /"
 # order += "run_watch VPN"
 order += "wireless _first_"
 # order += "ethernet _first_"
+order+= "volume master"
 order += "battery 0"
-order += "load"
+# order += "load"
 order += "tztime local"
-
 wireless _first_ {
-format_up = "wifi: %essid %ip"
+format_up = "  %essid %ip"
         format_down = "W: down"
 }
 
@@ -905,7 +914,16 @@ ethernet _first_ {
 }
 
 battery 0 {
-        format = "%status %percentage %remaining"
+        format = "%status  %percentage %remaining"
+        status_chr = ""
+        status_bat = ""
+        status_full = ""
+        integer_battery_capacity=true
+        last_full_capacity = true
+        threshold_type = time
+        low_threshold = 10
+        hide_seconds = true
+        # format = " %status %percentage %remaining"
 }
 
 run_watch DHCP {
@@ -917,7 +935,7 @@ run_watch VPN {
 }
 
 tztime local {
-        format = "%Y-%m-%d %H:%M:%S"
+        format = "  %Y-%m-%d   %H:%M:%S"
 }
 
 load {
@@ -925,7 +943,13 @@ load {
 }
 
 disk "/" {
-        format = "%avail"
+        format = "  %avail"
+}
+
+volume master {
+        format = " %volume"
+        format_muted = "  %volume"
+        device = "pulse:1"
 }
 #+end_src
 ** khdrc
