@@ -2604,6 +2604,13 @@ I was looking for something with the nice look and simplicity of
   (set-face-background 'spaceline-evil-emacs "#83A598")
 
   (setq powerline-default-separator nil)
+
+  ;; some tweaks
+  (defadvice vc-mode-line (after strip-backend () activate)
+    (when (stringp vc-mode)
+      (let ((gitlogo (replace-regexp-in-string "^ Git." "  " vc-mode)))
+        (setq vc-mode gitlogo))))
+
   (spaceline-compile))
 #+end_src
 ** Misc utilities
@@ -2753,6 +2760,10 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 
 (use-package flyspell-correct-ivy
   :after flyspell)
+#+end_src
+*** [[https://github.com/syohex/emacs-fontawesome][fontawesome]]
+#+begin_src emacs-lisp
+(use-package fontawesome)
 #+end_src
 *** [[https://www.emacswiki.org/emacs/info+.el][info+]]
 #+begin_src emacs-lisp
