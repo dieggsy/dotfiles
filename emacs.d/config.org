@@ -993,6 +993,8 @@ editing. So I went for it. Now I'll never go back.
   (define-key evil-visual-state-map [?\C-/] #'keyboard-quit)
 
   (dolist (key '([mouse-1]
+                 [mouse-4]
+                 [mouse-5]
                  [down-mouse-1]
                  [drag-mouse-1]
                  [wheel-right]
@@ -1006,11 +1008,7 @@ editing. So I went for it. Now I'll never go back.
                  [triple-wheel-down]
                  [wheel-up]
                  [double-wheel-up]
-                 [triple-wheel-up]
-                 [up]
-                 [down]
-                 [right]
-                 [left]))
+                 [triple-wheel-up]))
     (define-key evil-motion-state-map key #'ignore)))
 
 #+end_src
