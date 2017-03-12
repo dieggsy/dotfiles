@@ -1808,14 +1808,18 @@ windows:
   - social:
       layout: even-horizontal
       panes:
+        - weechat
         - rtv
-        - rainbowstream
-  - social:
+  - music:
       layout: even-horizontal
       panes:
-        - weechat
         - cmus
-  - ipython: ipython
+        - cava
+  - monitor:
+      layout: even-horizontal
+      panes:
+        - htop
+        - wicd-curses
 #+end_src
 *** tmuxinator-awesome
 :PROPERTIES:
