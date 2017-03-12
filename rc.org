@@ -2842,11 +2842,13 @@ name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
            | sed 's@'"$HOME"'/\.password-store/\(.\+\?\)\.gpg@\1@' \
            | rofi -dmenu -p "[pass] " -font "Iosevka 25")
 
-ps axf | grep 'greenclip daemon' | grep -v grep | awk '{print $1}' | xargs kill -20
-[[ -n "$name" ]] && pass -c $name
-sleep 45
-greenclip print ' '
-ps axf | grep 'greenclip daemon' | grep -v grep | awk '{print $1}' | xargs kill -18
+if [[ -n "$name" ]]; then
+    ps axf | grep 'greenclip daemon' | grep -v grep | awk '{print $1}' | xargs kill -20
+    pass -c $name
+    sleep 45
+    greenclip print ' '
+    ps axf | grep 'greenclip daemon' | grep -v grep | awk '{print $1}' | xargs kill -18
+fi
 #+end_src
 * Local vars
 
