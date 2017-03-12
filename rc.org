@@ -27,17 +27,18 @@ readable in org format than in rendered markdown.
    - [[#ssh][ssh]]
    - [[#termite][termite]]
    - [[#tmux][tmux]]
+   - [[#zathura][zathura]]
    - [[#zsh][zsh]]
  - [[#scripts][Scripts]]
    - [[#dropmite][dropmite]]
    - [[#explorer][explorer]]
    - [[#spotify-desktop][spotify-desktop]]
    - [[#masterinstall][masterinstall]]
-   - [[#switchmacs][switchmacs]]
    - [[#updates][updates]]
    - [[#wfname][wfname]]
    - [[#org-tangle][org-tangle]]
    - [[#pass][pass]]
+   - [[#playerctl-cmus][playerctl-cmus]]
  - [[#local-vars][Local vars]]
 
 * Config
@@ -419,7 +420,7 @@ set color_win_inactive_sel_fg=default
 **** credential
 #+begin_src conf
 [credential]
-	helper = osxkeychain
+	helper = cache --timeout=7200
 #+end_src
 **** alias
 #+begin_src conf
@@ -1603,9 +1604,12 @@ color15=#fdf4c1
 #+begin_src conf
 set -s escape-time 0
 # set -g default-terminal "xterm-256color"
+# set -ga terminal-overrides ",screen-256color:Tc"
+# set -g lock-after-time 300
+# set -g lock-command "/usr/bin/cmatrix -B"
 set -g update-environment -r
-set-option -g set-titles on
-set-option -g set-titles-string '#W'
+set -g set-titles on
+set -g set-titles-string '#W'
 # set-option -g set-titles-string '#H:#S.#I.#P #W #T'
 #+end_src
 **** Prefix
@@ -1849,15 +1853,6 @@ set first-page-column 1
 :header-args+: :tangle ~/.zshrc
 :END:
 **** Initial setup
-***** Export hostname.
-
-Terminal.app used to get confused about this and show a folder icon with a
-question mark. I don't use Terminal.app anymore, but oh well.
-#+begin_src sh
-#!/usr/bin/env zsh
-export HOSTNAME=`hostname`
-#+end_src
-
 ***** Prompt
 #+begin_src sh
 function prompt_sorin_pwd {
@@ -2153,7 +2148,7 @@ alias resetb="source ~/.zshrc"
 alias resetwifi="networksetup -setairportpower en0 off; sleep 2;"\
 "networksetup -setairportpower en0 on"
 alias rg="rg -i -g '!archive-contents' --colors 'line:style:bold' --colors 'path:style:bold'"
-alias sm=". ~/bin/switchmacs"
+alias rtv='LESS="-g-i-M-R-w-z-4" rtv --enable-media'
 [ "$(uname)" = "Linux" ] && alias spotify="spotify --force-device-scale-factor=2 > /dev/null 2>&1 &"
 alias starwars="telnet towel.blinkenlights.nl" # heh
 alias sudo='sudo '                             # recognize aliases
@@ -2192,9 +2187,8 @@ if [ "$(uname)" = "Darwin" ]; then
 fi
 #+end_src
 **** VM
-#+begin_src sh
-[ "$(uname)" = "Linux" ] && source /opt/ros/kinetic/setup.zsh
-# [ "$(uname)" = "Linux" ] && source ~/diego_racecarsetup.sh
+#+begin_src sh :tangle no
+[ "$(uname)" = "Linux" ] && source ~/diego_racecarsetup.sh
 #+end_src
 *** zshenv
 :PROPERTIES:
@@ -2654,14 +2648,15 @@ spotify --force-device-scale-factor=2 > /dev/null 2>&1 &
 :END:
 *** Xcode
 #+begin_src sh
-if [ ! -d /Applications/Xcode.app ]; then
-    echo "Please install Xcode and try again."
-    exit 1
-else
-    echo "\e[1;34mInstalling: \e[91mXcode command line tools\e[0;97m"
+if [ "$(uname)" = "Darwin" ];then
+    if  [ ! -d /Applications/Xcode.app ]; then
+        echo "Please install Xcode and try again."
+        exit 1
+    else
+        echo "\e[1;34mInstalling: \e[91mXcode command line tools\e[0;97m"
+        xcode-select --install
+    fi
 fi
-
-xcode-select --install
 #+end_src
 *** homebrew
 #+begin_src sh
@@ -2721,72 +2716,58 @@ echo "\n\e[1;34mTangling: \e[91mrc.org\e[0;97m"
 echo "\n\e[1;34mTangling: \e[91mconfig.org\e[0;97m"
 /usr/local/bin/emacs --batch --eval "(progn (require 'org) (org-babel-tangle-file \"~/dotfiles/emacs.d/config.org\"))" 2>&1 | grep --color=never "^Tangled"
 #+end_src
-** switchmacs
-:PROPERTIES:
-:header-args+: :tangle ~/bin/switchmacs :shebang "#!/usr/bin/env bash"
-:END:
-
-#+begin_src sh
-rm ~/.emacs.d
-if [ $switchmacs = "spacemacs" ]; then
-    ln -s ~/dotfiles/emacs.d/ ~/.emacs.d > /dev/null 2>&1
-    switchmacs="emacs"
-    echo "Switched to emacs."
-else
-    ln -s ~/Documents/spacemacs/ ~/.emacs.d > /dev/null 2>&1
-    switchmacs="spacemacs"
-    echo "Switched to spacemacs."
-fi
-#+end_src
 ** updates
 :PROPERTIES:
 :header-args+: :tangle ~/bin/updates :shebang "#!/usr/bin/env bash"
 :END:
-
 *** Initialize
 Make sure not in a virtualenv and track pyenv python version.
 #+begin_src sh
-VE=`echo $VIRTUAL_ENV`
-if [ -z $VE ]; then
+if [ -n "$VIRTUAL_ENV" ]; then
+  echo 'Exit virtualenv first'
+elif [ -n "$PYTHONPATH" ]; then
+  echo 'Not updating, PYTHONPATH is set.'
+else
 	# Track global python version
 	globalpython=$(echo $(pyenv version) | cut -d' ' -f1)
 #+end_src
 *** Python 2 pip
 #+begin_src sh
-    # Update pip for python 2
-    pyenv global $python2version
-    echo -e "\e[1;34mUpdating: \e[91mpip2\e[0;97m"
-    IFS=$'\n'
-    echo  $'Getting outdated pip2 packages...'
-    res=$(pip list -o --format=legacy | sed 's/ .*//')
+# Update pip for python 2
+pyenv global $python2version
+echo -e "\e[1;34mUpdating: \e[91mpip2\e[0;97m"
+IFS=$'\n'
+echo  $'Getting outdated pip2 packages...'
+res=$(pip list -o --format=legacy | sed 's/ .*//')
 
-    if [ -z "$res" ]; then
-        echo $'All packages up to date.'
-    else
-        echo $res | xargs pip install --upgrade
-    fi
-    pip freeze > ~/dotfiles/installed-programs/pip2-programs.txt
-    sed -i -e 's/=.*//' ~/dotfiles/installed-programs/pip2-programs.txt
+if [ -z "$res" ]; then
+    echo $'All packages up to date.'
+else
+    echo $res | xargs pip install --upgrade
+fi
+pip freeze > ~/dotfiles/installed-programs/pip2-programs.txt
+sed -i -e 's/=.*//' ~/dotfiles/installed-programs/pip2-programs.txt
 #+end_src
 *** Python 3 pip
 #+begin_src sh
-    # Update pip for python 3
-    pyenv global $python3version
-    echo -e "\n\e[1;34mUpdating: \e[91mpip3\e[0;97m"
-    IFS=$'\n'
-    echo  $'Getting outdated pip3 packages...'
-    res=$(pip list -o --format=legacy | sed 's/ .*//')
+# Update pip for python 3
+pyenv global $python3version
+echo -e "\n\e[1;34mUpdating: \e[91mpip3\e[0;97m"
+IFS=$'\n'
+echo  $'Getting outdated pip3 packages...'
+res=$(pip list -o --format=legacy | sed 's/ .*//' | sed '/\(^$\|requests\)/d')
 
-    if [ -z "$res" ]; then
-        echo $'All packages up to date.'
-    else
-        echo $res | sed 's/requests//' | xargs pip install --upgrade
-    fi
-    pip freeze > ~/dotfiles/installed-programs/pip3-programs.txt
-    sed -i -e 's/=.*//' ~/dotfiles/installed-programs/pip3-programs.txt
+if [ -z "$res" ]; then
+    echo $'All packages up to date.'
+else
+    echo $res | xargs pip install --upgrade
+fi
+pip freeze > ~/dotfiles/installed-programs/pip3-programs.txt
+sed -i -e 's/=.*//' ~/dotfiles/installed-programs/pip3-programs.txt
 #+end_src
-*** homebrew
+*** Package manager
 #+begin_src sh
+if [ "$(uname)" = "Darwin" ]; then
     pyenv global system
     echo -e "\n\e[1;34mUpdating: \e[91mHomebrew\e[0;97m"
     brew update
@@ -2796,15 +2777,20 @@ if [ -z $VE ]; then
     brew doctor
 
     brew bundle dump --force --file=~/dotfiles/installed-programs/brew-programs.rb
+else
+    echo -e "\n\e[1;34mUpdating: \e[91mapt-get\e[0;97m"
+    sudo apt-get update
+    sudo apt-get upgrade
+
+    apt list --installed | sed 's@/.*@@' | tail -n+2 > ~/dotfiles/installed-programs/apt-get-programs.txt
+fi
 #+end_src
 *** Finalize
 #+begin_src sh
-    echo " "
-    echo -e "\e[1;34mDone"
+echo " "
+echo -e "\e[1;34mDone"
 
-    pyenv global $globalpython # Set python version back to original
-else
-    echo 'Exit virtualenv first'
+pyenv global $globalpython # Set python version back to original
 fi
 #+end_src
 ** wfname
