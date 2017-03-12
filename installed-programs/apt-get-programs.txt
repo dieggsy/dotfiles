@@ -67,6 +67,7 @@ bzr
 ca-certificates
 ca-certificates-java
 ca-certificates-mono
+cabal-install
 cava
 cerbere
 cheese-common
@@ -128,6 +129,7 @@ default-jre-headless
 desktop-file-utils
 dh-python
 dh-strip-nondeterminism
+dhcpcd5
 dict
 dict-devil
 dict-gcide
@@ -142,8 +144,6 @@ dirmngr
 distro-info-data
 dkms
 dmidecode
-dns-root-data
-dnsmasq-base
 dnsutils
 doc-base
 docbook
@@ -184,6 +184,8 @@ evince-common
 evolution-data-server
 evolution-data-server-common
 evolution-data-server-pantheon-online-accounts
+exfat-fuse
+exfat-utils
 exuberant-ctags
 fakeroot
 feh
@@ -333,28 +335,19 @@ gimp-data
 gir1.2-appindicator3-0.1
 gir1.2-atk-1.0
 gir1.2-atspi-2.0
-gir1.2-clutter-1.0
-gir1.2-clutter-gst-3.0
-gir1.2-cogl-1.0
-gir1.2-coglpango-1.0
-gir1.2-evince-3.0
 gir1.2-freedesktop
 gir1.2-gconf-2.0
 gir1.2-gdkpixbuf-2.0
 gir1.2-glib-2.0
 gir1.2-gmenu-3.0
 gir1.2-gnomekeyring-1.0
-gir1.2-gst-plugins-base-1.0
 gir1.2-gstreamer-1.0
 gir1.2-gtk-2.0
 gir1.2-gtk-3.0
-gir1.2-gtkclutter-1.0
-gir1.2-gtksource-3.0
 gir1.2-gudev-1.0
 gir1.2-ibus-1.0
 gir1.2-javascriptcoregtk-3.0
 gir1.2-javascriptcoregtk-4.0
-gir1.2-json-1.0
 gir1.2-notify-0.7
 gir1.2-packagekitglib-1.0
 gir1.2-pango-1.0
@@ -502,7 +495,6 @@ intltool-debian
 ippusbxd
 iproute2
 iptables
-iputils-arping
 iputils-ping
 iputils-tracepath
 irqbalance
@@ -1073,7 +1065,6 @@ libgimp2.0
 libgirara-gtk3-2
 libgirepository-1.0-1
 libgirepository1.0-dev
-libgjs0e
 libgksu2-0
 libgl1-mesa-dev
 libgl1-mesa-dev-lts-utopic
@@ -1369,8 +1360,6 @@ libmagickwand-6.q16-dev
 libmail-sendmail-perl
 libmailtools-perl
 libmaya-calendar0
-libmbim-glib4
-libmbim-proxy
 libmediaart-2.0-0
 libmhash2
 libmikmod3
@@ -1384,7 +1373,6 @@ libmircookie-dev
 libmircookie2
 libmirprotobuf3
 libmjpegutils-2.1-0
-libmm-glib0
 libmms0
 libmng2
 libmnl0
@@ -1401,7 +1389,6 @@ libmono-system-security4.0-cil
 libmono-system-xml4.0-cil
 libmono-system4.0-cil
 libmount1
-libmozjs-24-0v5
 libmp3lame0
 libmpc3
 libmpcdec6
@@ -1418,8 +1405,6 @@ libmtp-common
 libmtp-runtime
 libmtp9
 libmuparser2v5
-libmusicbrainz5-2
-libmusicbrainz5cc2v5
 libmutter0g
 libmysqlclient-dev
 libmysqlclient20
@@ -1428,7 +1413,6 @@ libnautilus-extension1a
 libncurses5
 libncurses5-dev
 libncursesw5
-libndp0
 libneon27-gnutls
 libnet-dbus-perl
 libnet-dns-perl
@@ -1441,7 +1425,6 @@ libnetcdf-c++4
 libnetcdf-cxx-legacy-dev
 libnetcdf-dev
 libnetcdf11
-libnetfilter-conntrack3
 libnetpbm10
 libnettle6
 libnewt0.52
@@ -1652,8 +1635,6 @@ libpython3.5-stdlib
 libqgsttools-p1
 libqhull-dev
 libqhull7
-libqmi-glib1
-libqmi-proxy
 libqpdf17
 libqrencode3
 libqt4-dbus
@@ -1680,6 +1661,7 @@ libqt5core5a
 libqt5dbus5
 libqt5designer5
 libqt5designercomponents5
+libqt5feedback5
 libqt5gui5
 libqt5help5
 libqt5location5
@@ -1689,6 +1671,7 @@ libqt5multimediawidgets5
 libqt5network5
 libqt5opengl5
 libqt5opengl5-dev
+libqt5organizer5
 libqt5positioning5
 libqt5printsupport5
 libqt5qml5
@@ -2198,23 +2181,18 @@ lintian
 linux-base
 linux-firmware
 linux-generic
-linux-headers-4.4.0-38
-linux-headers-4.4.0-38-generic
 linux-headers-4.4.0-64
 linux-headers-4.4.0-64-generic
 linux-headers-4.4.0-66
 linux-headers-4.4.0-66-generic
 linux-headers-generic
-linux-image-4.4.0-38-generic
 linux-image-4.4.0-64-generic
 linux-image-4.4.0-66-generic
-linux-image-extra-4.4.0-38-generic
 linux-image-extra-4.4.0-64-generic
 linux-image-extra-4.4.0-66-generic
 linux-image-generic
 linux-libc-dev
 linux-signed-generic
-linux-signed-image-4.4.0-38-generic
 linux-signed-image-4.4.0-64-generic
 linux-signed-image-4.4.0-66-generic
 linux-signed-image-generic
@@ -2249,8 +2227,6 @@ mesa-vdpau-drivers
 mime-support
 mir-client-platform-mesa-dev
 mlocate
-mobile-broadband-provider-info
-modemmanager
 mono-4.0-gac
 mono-gac
 mono-runtime
@@ -2290,6 +2266,7 @@ ninvaders
 nodejs
 noise
 notification-daemon
+notify-osd-icons
 nsnake
 ntfs-3g
 numlockx
@@ -2677,6 +2654,7 @@ qrencode
 qt-at-spi
 qt4-linguist-tools
 qt4-qmake
+qt5-default
 qt5-qmake
 qtbase5-dev
 qtbase5-dev-tools
@@ -2981,6 +2959,7 @@ software-center-aptdaemon-plugins
 software-properties-common
 software-properties-gtk
 sound-theme-freedesktop
+soundnode
 source-highlight
 sp
 speech-dispatcher
@@ -3112,8 +3091,6 @@ upstart
 ure
 ureadahead
 urlview
-usb-modeswitch
-usb-modeswitch-data
 usbmuxd
 usbutils
 user-specific-alternatives

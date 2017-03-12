@@ -1,6 +1,7 @@
 appdirs
 appnope
 arrow
+asn1crypto
 autopep8
 backports-abc
 backports.shutil-get-terminal-size
@@ -23,6 +24,7 @@ funcsigs
 functools32
 future
 futures
+genpy
 gnureadline
 google-api-python-client
 greenlet
@@ -82,6 +84,7 @@ PySocks
 pytesseract
 python-dateutil
 python-gflags
+pytools
 pytz
 PyYAML
 readline
