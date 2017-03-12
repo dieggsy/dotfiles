@@ -1834,6 +1834,15 @@ windows:
         - cmus
   - ipython: ipython
 #+end_src
+** zathura
+:PROPERTIES:
+:header-args+: :tangle ~/.config/zathura/zathurarc
+:END:
+#+begin_src conf
+set font "Iosevka 9"
+set default-bg "#282828"
+set first-page-column 1
+#+end_src
 ** zsh
 *** zshrc
 :PROPERTIES:
