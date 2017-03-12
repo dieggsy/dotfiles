@@ -2265,13 +2265,13 @@ _p_rev     match and _P_rev
 **** justify
 #+begin_src emacs-lisp
 (with-eval-after-load 'hydra
-  (defhydra hydra-justify ()
+  (defhydra hydra-justify (:exit t)
     "justify"
-    ("r" diego/justify-right "right" :exit t)
-    ("l" diego/justify-left "left" :exit t)
-    ("c" diego/justify-center "center" :exit t)
-    ("f" diego/justify-full "full" :exit t)
-    ("n" diego/justify-none "none" :exit t)))
+    ("r" diego/justify-right "right")
+    ("l" diego/justify-left "left")
+    ("c" diego/justify-center "center")
+    ("f" diego/justify-full "full")
+    ("n" diego/justify-none "none")))
 #+end_src
 **** toggle
 #+begin_src emacs-lisp
