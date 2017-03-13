@@ -2146,6 +2146,7 @@ if [ -d /Applications/Mathematica.app ]; then
     alias mathematica='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
 fi
 alias mux='tmuxinator'
+alias pass="EDITOR='emacsclient -nw' pass"
 alias pep8="pep8 --first --ignore=E129,W503,E226"
 alias piphere="pip install --target=./"
 alias printers="lpstat -p | awk '{print $2}'"
