@@ -2651,7 +2651,8 @@ spotify --force-device-scale-factor=2 > /dev/null 2>&1 &
 :PROPERTIES:
 :header-args+: :tangle ~/bin/masterinstall :shebang "#!/usr/bin/env bash"
 :END:
-*** Xcode
+*** macOS
+**** Xcode
 #+begin_src sh
 if [ "$(uname)" = "Darwin" ];then
     if  [ ! -d /Applications/Xcode.app ]; then
@@ -2661,9 +2662,8 @@ if [ "$(uname)" = "Darwin" ];then
         echo "\e[1;34mInstalling: \e[91mXcode command line tools\e[0;97m"
         xcode-select --install
     fi
-fi
 #+end_src
-*** homebrew
+**** homebrew
 #+begin_src sh
 echo "\n\e[1;34mInstalling: \e[91mhomebrew\e[0;97m"
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -2673,10 +2673,53 @@ echo "\n\e[1;34mInstalling: \e[91mhomebrew programs\e[0;97m"
 /usr/local/bin/brew tap Homebrew/bundle
 /usr/local/bin/brew bundle --file=~/dotfiles/installed-programs/brew-programs.rb
 #+end_src
-*** Pyenv
+**** Install alfred workflow utils
 #+begin_src sh
-python2version=2.7.13
-python3version=3.6.0
+echo "\n\e[1;34mInstalling: \e[91mAlfred workflow utils\e[0;97m"
+curl -o  ~/bin/workflow-build.py https://gist.githubusercontent.com/deanishe/b16f018119ef3fe951af/raw/
+curl -o  ~/bin/workflow-install.py https://gist.githubusercontent.com/deanishe/35faae3e7f89f629a94e/raw/
+chmod a+x ~/bin/workflow-build.py
+chmod a+x ~/bin/workflow-install.py
+echo -e "\e[1;34mDone"
+#+end_src
+*** Linux
+**** apt-get packages
+#+begin_src sh
+elif [ "$(uname)" = "Linux" ]; then
+    <~/dotfiles/installed-programs/apt-get-programs.txt xargs sudo apt-get install
+#+end_src
+**** golang
+#+begin_src sh
+sudo add-apt-repository ppa:ubuntu-lxc/lxd-stable
+sudo apt-get update
+sudo apt-get install golang
+go get github.com/motemen/ghq
+#+end_src
+**** hub
+#+begin_src sh
+ghq get github/hub
+cd .ghq/github.com/github/hub
+sudo make install prefix=/usr/local
+cd ~
+#+end_src
+**** stack
+#+begin_src sh
+curl -sSL https://get.haskellstack.org/ | sh
+#+end_src
+**** rust
+#+begin_src sh
+curl https://sh.rustup.rs -sSf | sh
+cargo install ripgrep
+cargo install --git https://github.com/ogham/exa
+#+end_src
+**** pyenv
+#+begin_src sh
+curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
+pyenv update
+fi
+#+end_src
+*** Python versions
+#+begin_src sh
 echo "\n\e[1;34mInstalling: \e[91mpython\e[0;97m"
 # Pyenv setup
 usr/local/bin/pyenv install $python3version
@@ -2696,15 +2739,6 @@ echo "\n\e[1;34mInstalling: \e[91mpip2 programs\e[0;97m"
 
 /usr/local/bin/pyenv global $python3version
 #+end_src
-*** Install alfred workflow utils
-#+begin_src sh
-echo "\n\e[1;34mInstalling: \e[91mAlfred workflow utils\e[0;97m"
-curl https://gist.githubusercontent.com/deanishe/b16f018119ef3fe951af/raw/ > ~/bin/workflow-build.py
-curl https://gist.githubusercontent.com/deanishe/35faae3e7f89f629a94e/raw/ > ~/bin/workflow-install.py
-chmod a+x ~/bin/workflow-build.py
-chmod a+x ~/bin/workflow-install.py
-echo -e "\e[1;34mDone"
-#+end_src
 *** Symlink dirs
 #+begin_src sh
 echo "\n\e[1;34mSymlinking: \e[91m.emacs.d, .vim\e[0;97m"
@@ -2714,12 +2748,12 @@ ln -s ~/dotfiles/vim ~/.vim
 *** Tangle rc.org
 #+begin_src sh
 echo "\n\e[1;34mTangling: \e[91mrc.org\e[0;97m"
-/usr/local/bin/emacs --batch --eval "(progn (require 'org) (org-babel-tangle-file \"~/dotfiles/rc.org\"))" 2>&1 | grep --color=never "^Tangled"
+~/dotfiles/org-tangle ~/dotfiles/rc.org > /dev/null 2>&1
 #+end_src
 *** Tangle config.org
 #+begin_src sh
 echo "\n\e[1;34mTangling: \e[91mconfig.org\e[0;97m"
-/usr/local/bin/emacs --batch --eval "(progn (require 'org) (org-babel-tangle-file \"~/dotfiles/emacs.d/config.org\"))" 2>&1 | grep --color=never "^Tangled"
+~/dotfiles/org-tangle ~/dotfiles/emacs.d/config.org > /dev/null 2>&1
 #+end_src
 ** updates
 :PROPERTIES:
