@@ -37,6 +37,7 @@ readable in org format than in rendered markdown.
    - [[#updates][updates]]
    - [[#wfname][wfname]]
    - [[#org-tangle][org-tangle]]
+   - [[#text-pager][text-pager]]
    - [[#pass][pass]]
    - [[#playerctl-cmus][playerctl-cmus]]
  - [[#local-vars][Local vars]]
@@ -2152,7 +2153,7 @@ alias resetb="source ~/.zshrc"
 alias resetwifi="networksetup -setairportpower en0 off; sleep 2;"\
 "networksetup -setairportpower en0 on"
 alias rg="rg -i -g '!archive-contents' --colors 'line:style:bold' --colors 'path:style:bold'"
-alias rtv='LESS="-g-i-M-R-w-z-4" rtv --enable-media'
+alias rtv='PAGER=text-pager rtv --enable-media'
 [ "$(uname)" = "Linux" ] && alias spotify="spotify --force-device-scale-factor=2 > /dev/null 2>&1 &"
 alias starwars="telnet towel.blinkenlights.nl" # heh
 alias sudo='sudo '                             # recognize aliases
@@ -2819,6 +2820,14 @@ except IOError:
     (message "too many args!")
   (require 'org)
   (org-babel-tangle-file (expand-file-name (nth 3 command-line-args))))
+#+end_src
+** text-pager
+:PROPERTIES:
+:header-args+: :tangle ~/bin/text-pager :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+[ $# -ge 1 -a -f "$1" ] && input="$1" || input="-"
+cat $input | fold -w 80 -s | less
 #+end_src
 ** pass
 *** peco
