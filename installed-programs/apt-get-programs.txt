@@ -2679,6 +2679,7 @@ recode
 rename
 resolvconf
 rfkill
+rofi
 ros-kinetic-ackermann-msgs
 ros-kinetic-actionlib
 ros-kinetic-actionlib-msgs
