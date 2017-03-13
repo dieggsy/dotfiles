@@ -916,7 +916,8 @@ ethernet _first_ {
 }
 
 battery 0 {
-        format = "%status  %percentage %remaining"
+        # format = "%status  %percentage %remaining"
+        format = "%status  %percentage"
         status_chr = ""
         status_bat = ""
         status_full = ""
