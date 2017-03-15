@@ -86,7 +86,6 @@ markdown2
 MarkupSafe
 matplotlib
 mccabe
-mechanize
 mistune
 mock
 mpmath
