@@ -15,6 +15,7 @@ cycler
 Cython
 decorator
 docopt
+drawille
 elpy
 enum34
 epc
@@ -24,7 +25,6 @@ funcsigs
 functools32
 future
 futures
-genpy
 gnureadline
 google-api-python-client
 greenlet
@@ -47,6 +47,7 @@ mpmath
 msgpack-python
 neovim
 nose
+notmuch
 numpy
 oauth2
 oauth2client
@@ -62,6 +63,7 @@ pexpect
 pickleshare
 Pillow
 plac
+pocket
 powerline-status
 praw
 prawcore
@@ -78,15 +80,18 @@ pyfiglet
 pyflakes
 pyglet
 Pygments
+pygobject
 pyOpenSSL
+pypandoc
 pyparsing
 PySocks
 pytesseract
 python-dateutil
 python-gflags
-pytools
+python-xlib
 pytz
 PyYAML
+rainbowstream
 readline
 requests
 rope
@@ -101,6 +106,7 @@ six
 stevedore
 subprocess32
 sympy
+TBB
 thrift
 tornado
 traitlets
@@ -112,8 +118,11 @@ uritemplate
 urllib3
 virtualenv
 virtualenv-clone
+virtualenvwrapper
 vobject
 wcwidth
+wxPython
+wxPython-common
 xlrd
 xls2db
 yapf
