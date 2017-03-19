@@ -2823,6 +2823,12 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 #+begin_src emacs-lisp
 (use-package password-store)
 #+end_src
+*** [[https://github.com/politza/pdf-tools][pdf-tools]]
+#+begin_src emacs-lisp
+(use-package pdf-tools
+  :config
+  (pdf-tools-install))
+#+end_src
 *** [[https://github.com/Fanael/persistent-scratch][persistent-scratch]]
 #+begin_quote
   Preserve the scratch buffer across Emacs sessions
