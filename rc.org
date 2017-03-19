@@ -2212,11 +2212,18 @@ fi
 #+end_src
 **** Path
 #+begin_src sh
+export GOPATH="$HOME/go"
+export GOROOT=/usr/lib/go-1.6
+
+export PYENV_ROOT="$HOME/.pyenv"
 path=(
+    $HOME/.cargo/bin
+    $PYENV_ROOT/bin
     $HOME/bin
     $HOME/.local/bin
     /usr/local/{bin,sbin}
     $path
+    $GOPATH/bin
 )
 
 fpath=(
@@ -2265,8 +2272,6 @@ fi
 :header-args+: :tangle ~/.zprofile
 :END:
 #+begin_src sh
-export PATH="$HOME/.cargo/bin:$PATH"
-
 if [ "$(uname)" = "Darwin" ]; then
     if [ -f ~/.gnupg/.gpg-agent-info ] && [ -n "$(pgrep gpg-agent)" ]; then
         source ~/.gnupg/.gpg-agent-info
@@ -2275,14 +2280,6 @@ if [ "$(uname)" = "Darwin" ]; then
         eval $(gpg-agent --daemon --write-env-file ~/.gnupg/.gpg-agent-info)
     fi
     export GOROOT=/usr/local/Cellar/go/1.8/libexec
-else
-    export GOROOT=/usr/lib/go-1.6
-fi
-export GOPATH="$HOME/go"
-export PATH="$PATH:$GOPATH/bin"
-if [ "$(uname)" = "Linux" ]; then
-    export PYENV_ROOT="$HOME/.pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH"
 fi
 #+end_src
 *** Modules
