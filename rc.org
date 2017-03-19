@@ -702,9 +702,9 @@ bindsym $mod+c exec "rofi -modi 'clipboard:greenclip print' -show clipboard -fon
 bindsym $mod+minus move scratchpad
 bindsym $mod+shift+minus scratchpad show
 
-for_window [title="^emacs-26.0.50@Mothership$"] floating enable;
-for_window [title="^emacs-26.0.50@Mothership$"] move scratchpad; [title="^emacs-26.0.50@Mothership$"] scratchpad show; move scratchpad
-bindsym $mod+space [title="^emacs-26.0.50@Mothership$"] scratchpad show
+for_window [title="^emacs@Ragnarok$"] floating enable;
+for_window [title="^emacs@Ragnarok$"] move scratchpad; [title="^emacs@Ragnarok$"] scratchpad show; move scratchpad
+bindsym $mod+space [title="^emacs@Ragnarok$"] scratchpad show
 
 exec --no-startup-id termite --name=metask
 for_window [instance="metask"] floating enable;
@@ -852,11 +852,12 @@ client.urgent #2D2D2D #2D2D2D #dcdcdc #901A1E
 gaps inner 30
 gaps outer 0
 new_window 1pixel
-exec ~/.dropbox-dist/dropboxd &
-exec emacs-26.0.50 &
+exec dropbox start &
+exec emacs &
 # exec termite&
 exec sh ~/.fehbg
-exec greenclip daemon &
+# exec greenclip daemon &
+exec nm-applet
 
 # some controls
 bindsym XF86KbdBrightnessDown exec kb-light -
