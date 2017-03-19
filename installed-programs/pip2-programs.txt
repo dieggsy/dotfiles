@@ -47,7 +47,6 @@ mpmath
 msgpack-python
 neovim
 nose
-notmuch
 numpy
 oauth2
 oauth2client
@@ -80,7 +79,6 @@ pyfiglet
 pyflakes
 pyglet
 Pygments
-pygobject
 pyOpenSSL
 pypandoc
 pyparsing
@@ -106,7 +104,6 @@ six
 stevedore
 subprocess32
 sympy
-TBB
 thrift
 tornado
 traitlets
@@ -121,8 +118,6 @@ virtualenv-clone
 virtualenvwrapper
 vobject
 wcwidth
-wxPython
-wxPython-common
 xlrd
 xls2db
 yapf
