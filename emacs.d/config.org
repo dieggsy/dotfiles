@@ -280,7 +280,9 @@ Choose a font if available, in order of preference.
          (set-face-attribute 'default t :font "Consolas-11"))
         ((x-list-fonts "Menlo")
          (add-to-list 'default-frame-alist '(font . "Menlo-11"))
-         (set-face-attribute 'default t :font "Menlo-11"))))
+         (set-face-attribute 'default t :font "Menlo-11")))
+  (when (x-list-fonts "FontAwesome")
+    (set-fontset-font t 'unicode "FontAwesome" nil 'prepend)))
 #+end_src
 ** Text
 Text-mode is nicer than fundamental-mode.
