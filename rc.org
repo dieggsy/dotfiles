@@ -447,6 +447,10 @@ set color_win_inactive_sel_fg=default
 #+begin_src conf
 [color]
 	ui = auto
+[color "status"]
+    added = green bold
+    changed = red bold
+    untracked = red bold
 #+end_src
 **** http
 #+begin_src conf
@@ -1881,11 +1885,7 @@ function prompt_sorin_pwd {
   echo $_prompt_sorin_pwd
 }
 
-if [ "$(uname)" = "Linux" ]; then
-    PROMPT='%B%F{9}$(prompt_sorin_pwd) %B%F{2}❮%f%b '
-else
-    PROMPT='%B%F{9}$(prompt_sorin_pwd) %B%F{2}❯%f%b '
-fi
+PROMPT='%B%F{9}$(prompt_sorin_pwd) %B%F{2}❯%f%b '
 #+end_src
 ***** Rprompt
 #+begin_src sh
@@ -2131,6 +2131,7 @@ alias -g ....='../../..'
 alias -g .....='../../../..'
 alias -g ......='../../../../..'
 alias -- -='cd -'
+alias cpg="cool-peco-ghq"
 alias cpwd="pwd | tr -d '\n' | pbcopy"
 alias ddg='surfraw duckduckgo -j'
 alias def='dict -d wn'
