@@ -30,6 +30,7 @@ google-api-python-client
 greenlet
 html2text
 httplib2
+i3-py
 idna
 importmagic
 ipaddress

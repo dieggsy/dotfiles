@@ -5,6 +5,7 @@ appnope
 arrow
 ascii-graph
 asciimatics
+asn1crypto
 astroid
 autopep8
 Babel
@@ -16,8 +17,11 @@ blinker
 bs4
 catkin-pkg
 certifi
+cffi
 click
+colorama
 configobj
+cryptography
 cssselect
 cycler
 Cython
@@ -47,11 +51,13 @@ GephiStreamer
 git-remote-dropbox
 gnureadline
 google-api-python-client
-howdoi
+haxor-news
 html2text
 html5lib
 htmlPy
 httplib2
+i3-py
+idna
 imagesize
 importmagic
 ipykernel
@@ -119,6 +125,7 @@ ptyprocess
 pyasn1
 pyasn1-modules
 pycodestyle
+pycparser
 pycrypto
 pyexcel
 pyexcel-io

@@ -53,3 +53,4 @@ emacs.d/var/hacker-typer/
 *~
 /emacs.d/var/speed-type/
 /emacs.d/network-security.data
+/emacs.d/var/nsm-settings.el
