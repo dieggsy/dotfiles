@@ -15,6 +15,7 @@ readable in org format than in rendered markdown.
    - [[#cookiecutterrc][cookiecutterrc]]
    - [[#cvimrc][cvimrc]]
    - [[#darktooththeme-cmus][darktooth.theme (cmus)]]
+   - [[#emacsclientdesktop][emacsclient.desktop]]
    - [[#git][git]]
    - [[#hyperjs][hyper.js]]
    - [[#i3][i3]]
@@ -385,6 +386,18 @@ set color_win_sel_fg=default
 # Color of selected row in inactive window.
 set color_win_inactive_sel_bg=236
 set color_win_inactive_sel_fg=default
+#+end_src
+** emacsclient.desktop
+:PROPERTIES:
+:header-args+: :tangle ~/.local/share/applications/emacsclient.desktop
+:END:
+#+begin_src conf
+[Desktop Entry]
+Name=Emacs Client
+Exec=emacsclient -n %u
+Icon=emacs-icon
+Type=Application
+Terminal=false
 #+end_src
 ** git
 *** gitconfig
