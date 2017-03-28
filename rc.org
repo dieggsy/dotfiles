@@ -417,6 +417,7 @@ Terminal=false
 [user]
 	name = therockmandolinist
 	email = diegoamundo@gmail.com
+	signingkey = 4AC0074360FE0C80
 #+end_src
 **** filter
 #+begin_src conf
@@ -475,6 +476,11 @@ Terminal=false
 #+begin_src conf
 [status]
 	showUntrackedFiles = all
+#+end_src
+**** commit
+#+begin_src conf
+[commit]
+	gpgsign = true
 #+end_src
 *** gitignore
 :PROPERTIES:
