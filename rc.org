@@ -704,9 +704,10 @@ bindsym $mod+Shift+apostrophe kill
 
 # start dmenu (a program launcher)
 bindsym $mod+e exec rofi -show run -font "Iosevka 25"
-bindsym Mod1+space exec "rofi -combi-modi window,drun,run -show combi -modi combi -font 'Iosevka 25'"
+bindsym Mod1+space exec "rofi -combi-modi window,run -show combi -modi combi -font 'Iosevka 25'"
 bindsym $mod+p exec "~/.password-store/.extensions/rofi.bash"
 bindsym $mod+c exec "rofi -modi 'clipboard:greenclip print' -show clipboard -font 'Iosevka 25'"
+# bindsym $mod+c exec "rofi -switchers 'file:rofi-file-browser.sh' -show file -font 'Iosevka 25'"
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
@@ -865,12 +866,6 @@ client.urgent #2D2D2D #2D2D2D #dcdcdc #901A1E
 gaps inner 30
 gaps outer 0
 new_window 1pixel
-exec dropbox start &
-exec emacs &
-# exec termite&
-exec sh ~/.fehbg
-# exec greenclip daemon &
-exec nm-applet
 
 # some controls
 bindsym XF86KbdBrightnessDown exec kb-light -
@@ -890,6 +885,14 @@ bindsym XF86AudioPlay exec playerctl-cmus play-pause
 bindsym --release XF86LaunchB exec "scrot -s ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
 bindsym Shift+XF86LaunchB exec "scrot -ub ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
 bindsym XF86LaunchA exec "scrot ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
+
+exec dropbox start
+exec emacs
+exec sh ~/.fehbg
+exec greenclip daemon
+exec nm-applet
+exec --no-startup-id /home/diego/.ghq/github.com/olemartinorg/i3-alternating-layout/alternating_layouts.py
+exec unclutter
 #+end_src
 *** i3status
 :PROPERTIES:
@@ -926,7 +929,7 @@ order += "tztime local"
 wireless _first_ {
 # format_up = "  %essid %ip"
 format_up = "  %essid"
-format_down = "W: down"
+format_down = " None"
 }
 
 ethernet _first_ {
@@ -938,7 +941,7 @@ format_down = "E: down"
 battery 0 {
 # format = "%status  %percentage %remaining"
 format = "%status  %percentage"
-status_chr = ""
+status_chr = ""
 status_bat = ""
 status_full = ""
 integer_battery_capacity=true
@@ -958,7 +961,7 @@ pidfile = "/var/run/vpnc/pid"
 }
 
 tztime local {
-format = "  %Y-%m-%d   %H:%M:%S"
+format = "  %Y-%m-%d %H:%M"
 }
 
 load {
