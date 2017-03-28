@@ -31,6 +31,7 @@ readable in org format than in rendered markdown.
    - [[#zathurarc][zathurarc]]
    - [[#zsh][zsh]]
  - [[#scripts][Scripts]]
+   - [[#battery-notifier][battery-notifier]]
    - [[#dropmite][dropmite]]
    - [[#explorer][explorer]]
    - [[#spotify-desktop][spotify-desktop]]
@@ -1840,11 +1841,6 @@ windows:
       panes:
         - cmus
         - cava
-  - monitor:
-      layout: even-horizontal
-      panes:
-        - htop
-        - wicd-curses
 #+end_src
 *** tmuxinator-awesome
 :PROPERTIES:
@@ -2221,7 +2217,7 @@ fi
 #+end_src
 **** VM
 #+begin_src sh :tangle no
-# [ "$(uname)" = "Linux" ] && source ~/diego_racecarsetup.sh
+[ "$(uname)" = "Linux" ] && source ~/diego_racecarsetup.sh
 #+end_src
 *** zshenv
 :PROPERTIES:
@@ -2651,6 +2647,22 @@ COEFF2=$(echo "100 / $AMOUNT" | bc -l)
 convert -scale $COEFF1% -scale $COEFF2% $INFILE $OUFILE
 #+end_src
 * Scripts
+** battery-notifier
+:PROPERTIES:
+:header-args+: :tangle ~/bin/battery-notifier :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+touch /tmp/battery-status
+state=$(acpi -b | grep -P -o '(?<=: )[a-zA-Z]+(?=,)')
+level=$(acpi -b | grep -P -o '[0-9]+(?=%)')
+if [ "$level" -le 10 ] && [ "$(</tmp/battery-status)" != "critically-low" ]; then
+    espeak -vf4 "Battery critically low, consider charging."
+    echo "critically-low" > /tmp/battery-status
+elif [ "$(</tmp/battery-status)" != "$state" ]; then
+    espeak -vf4 "Battery $state"
+    echo "$state" > /tmp/battery-status
+fi
+#+end_src
 ** dropmite
 :PROPERTIES:
 :header-args+: :tangle ~/bin/dropmite :shebang "!/usr/bin/env bash"

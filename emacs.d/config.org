@@ -16,9 +16,12 @@ itself, hence the [[#local-vars][file local variables]]. Also, the optional ~COM
 ~org-babel-load-file~ wasn't working for me, so there's that.
 :END:
 
-First off, let's set lexical binding, in accordance with the [[https://github.com/bbatsov/emacs-lisp-style-guide#source-code-layout--organization][emacs-lisp-style-guide]].
+First off, let's set lexical binding, in accordance with the
+[[https://github.com/bbatsov/emacs-lisp-style-guide#source-code-layout--organization][emacs-lisp-style-guide]], and silence some byte-compile warnings. Now
+technically, there's not really any point to byte-compiling your init.el, so
+erm, don't follow my example there? Whatever.
 #+begin_src emacs-lisp :comments no
-;;; -*- lexical-binding: t; -*-
+;;; -*- lexical-binding: t; byte-compile-warnings: (not free-vars unresolved make-local); -*-
 #+end_src
 
 * Contents                                                              :toc:
@@ -69,6 +72,7 @@ First off, let's set lexical binding, in accordance with the [[https://github.co
    - [[#org-mode-1][Org mode]]
    - [[#referencesearch][Reference/search]]
    - [[#shell-utilities][Shell utilities]]
+ - [[#aliases][Aliases]]
  - [[#mode-specific-configuration][Mode Specific Configuration]]
    - [[#prog-mode][Prog-mode]]
    - [[#python][Python]]
@@ -210,11 +214,12 @@ Get right to your files or the scratch buffer. No B.S.
       inhibit-startup-echo-area-message t)
 #+end_src
 *** Time display
-#+begin_src emacs-lisp
-(setq  display-time-24hr-format t
-       display-time-default-load-average nil
-       display-time-format "│ %Y-%d-%m %H:%M │"
-       display-time-load-average nil)
+#+begin_src emacs-lisp :tangle no
+(with-eval-after-load 'time
+  (setq  display-time-24hr-format t
+         display-time-default-load-average nil
+         display-time-format "│ %Y-%d-%m %H:%M │"
+         display-time-load-average nil))
 #+end_src
 *** Gui elements
 Turn off gui elements that I never use. Gui emacs is great, but I still prefer
@@ -410,8 +415,8 @@ the docstrings.
 *** File Manipulation
 #+begin_src emacs-lisp
 (defun diego/save-buffer ()
+  "Save current buffer, or original buffer if in org-src-mode."
   (interactive)
-  "Save current buffer, or original buffer if in org-src-mode"
   (if (and (boundp 'org-src-mode) org-src-mode)
       (org-edit-src-save)
     (save-buffer)))
@@ -424,7 +429,7 @@ the docstrings.
 (defun diego/safe-erase-buffer ()
   "Prompt before erasing buffer."
   (interactive)
-  (if (y-or-n-p (format "Erase content of buffer %s ?" (current-buffer)))
+  (if (y-or-n-p (format "Erase content of buffer %s ? " (current-buffer)))
       (progn
         (erase-buffer)
         (message "Buffer erased."))
@@ -491,7 +496,7 @@ Repeated invocations toggle between the two most recently open buffers."
 
 (defun diego/narrow-dwim ()
   "Narrow to a thing or widen based on context.
-    Attempts to follow the Do What I Mean philosophy."
+Attempts to follow the Do What I Mean philosophy."
   (interactive)
   (if (buffer-narrowed-p)
       (widen)
@@ -599,7 +604,7 @@ and drag it backward past ARG other characters (backward if ARG negative)."
 With prefix arg ARG, effect is to take word before or around point
 and drag it forward past ARG other words (backward if ARG negative).
 If ARG is zero, the words around or after point and around or after mark
-are interchanged. "
+are interchanged."
   (interactive "P")
   (if arg
       (transpose-words (- arg))
@@ -637,9 +642,10 @@ drag it up past ARG other lines (down if ARG negative)."
 ;; Copy of spacemacs/align-repeat
 (defun diego/align-repeat (start end regexp &optional justify-right after)
   "Repeat alignment with respect to the given regular expression.
-  If JUSTIFY-RIGHT is non nil justify to the right instead of the
-  left. If AFTER is non-nil, add whitespace to the left instead of
-  the right."
+
+If JUSTIFY-RIGHT is non nil justify to the right instead of the
+left. If AFTER is non-nil, add whitespace to the left instead of
+the right."
   (interactive "r\nsAlign regexp: ")
   (let* ((ws-regexp (if (string-empty-p regexp)
                         "\\(\\s-+\\)"
@@ -673,7 +679,7 @@ drag it up past ARG other lines (down if ARG negative)."
 (eval-when-compile
   (declare-function align-region "align"))
 (defun diego/align-repeat-decimal (start end)
-  "Align a table of numbers on decimal points and dollar signs (both optional)"
+  "Align a table of numbers on decimal points and dollar signs (both optional)."
   (interactive "r")
   (require 'align)
   (align-region start end nil
@@ -734,15 +740,16 @@ Like `fill-paragraph', but unfill if used twice."
     (sane-term-create)))
 
 (defun diego/class-notes ()
-  "Prompt for a class and create a lecture/recitation notes file
-  matching format %Y-%m-%d_lecture.org in class/notes subdirectory."
+  "Prompt for a class and create a lecture/recitation notes file.
+
+File matches format %Y-%m-%d_lecture.org and is created in class/notes subdirectory."
   (interactive)
   (let ((rec-or-lec
          (ivy-completing-read "choose: "
                               '("lecture" "recitation"))))
-    (ivy-read "class: " '("16.410"
-                          "16.621"
-                          "Ethics")
+    (ivy-read "class: " '("16.405"
+                          "16.83"
+                          "Paradox_and_Infinity")
               :action (lambda (x)
                         (find-file
                          (concat "~/MIT 2017-2017/Spring/" x "/notes/"
@@ -767,13 +774,13 @@ Like `fill-paragraph', but unfill if used twice."
 (defun updates ()
   "Run `paradox-upgrade-packages' and  `quelpa-upgrade'."
   (interactive)
-  (paradox-upgrade-packages)
-  (quelpa-upgrade))
+  (quelpa-upgrade)
+  (paradox-upgrade-packages))
 
 (defun diego/iterm-go-here ()
-"Go to default-directory in iTerm.
+"Go to `default-directory' in iTerm.
 
-If default-directory is nil, go to home directory."
+If `default-directory' is nil, go to home directory."
   (interactive)
   (call-process-shell-command
    (concat  "tmux select-window -t hud:shell && "
@@ -785,7 +792,7 @@ If default-directory is nil, go to home directory."
   "Dwim return key binding.
 
 If url at point, opens url with `goto-address-at-point'.
-If in org-mode, calls `org-open-at-point'.
+If in `org-mode', calls `org-open-at-point'.
 Otherwise, executes `evil-ret'."
   (interactive)
   (cond ((thing-at-point 'url) (goto-address-at-point))
@@ -809,14 +816,14 @@ Otherwise, executes `evil-ret'."
     (eval-last-sexp nil)))
 
 (defun diego/pop-to-org-todo (full)
-  "Visit todo list, in the current window or a split."
+  "Visit todo file, in other window or current one if `FULL' provided."
   (interactive "P")
   (if full
       (find-file "~/Dropbox (MIT)/org/todo.org")
     (find-file-other-window "~/Dropbox (MIT)/org/todo.org")))
 
 (defun diego/pop-to-org-notes (full)
-  "Visit my main notes list, in other window or current."
+  "Visit notes file in other window or current one if `FULL' provided."
   (interactive "P")
   (if full
       (find-file "~/Dropbox (MIT)/org/notes.org")
@@ -898,7 +905,7 @@ editing. So I went for it. Now I'll never go back.
 **** Modes
 #+begin_src emacs-lisp
 (defun diego/evil-modes ()
-  "Configure evil mode."
+  "Set default evil state and mode-specific config for different modes."
 
   ;; Use Emacs state in these additional modes.
   (dolist (mode '(ag-mode
@@ -942,6 +949,7 @@ editing. So I went for it. Now I'll never go back.
 **** Appearance
 #+begin_src emacs-lisp
 (defun diego/evil-appearance ()
+  "Set variables controlling the appearance of evil-mode."
   (setq evil-insert-state-cursor '(bar . 1)
         evil-emacs-state-cursor '(bar . 1)
         evil-normal-state-tag  " NORMAL "
@@ -955,6 +963,7 @@ editing. So I went for it. Now I'll never go back.
 #+begin_src emacs-lisp
 ;; Global bindings.
 (defun diego/evil-bindings ()
+  "Set custom evil bindings."
   (define-key evil-normal-state-map "gc"          #'evilnc-comment-operator)
   (define-key evil-normal-state-map "gy"          #'evilnc-copy-and-comment-lines)
   (define-key evil-normal-state-map (kbd "RET")   #'diego/ret)
@@ -997,6 +1006,8 @@ editing. So I went for it. Now I'll never go back.
   (dolist (key '([mouse-1]
                  [mouse-4]
                  [mouse-5]
+                 [mouse-6]
+                 [mouse-7]
                  [down-mouse-1]
                  [drag-mouse-1]
                  [wheel-right]
@@ -1011,8 +1022,9 @@ editing. So I went for it. Now I'll never go back.
                  [wheel-up]
                  [double-wheel-up]
                  [triple-wheel-up]))
-    (define-key evil-motion-state-map key #'ignore)))
+    (define-key evil-motion-state-map key #'ignore))
 
+  (evil-ex-define-cmd "dtw" 'delete-trailing-whitespace))
 #+end_src
 **** Setup
 #+begin_src emacs-lisp
@@ -1040,6 +1052,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** Search
 #+begin_src emacs-lisp
 (defun diego/leader-search ()
+  "Set all leader bindings related to reference/search."
   (diego/set-leader-keys
     "sS" 'swiper-all
     "sm" 'swiper-multi
@@ -1053,6 +1066,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** Projects
 #+begin_src emacs-lisp
 (defun diego/leader-projects ()
+  "Set all leader bindings related to projectile."
   (diego/set-leader-keys
     "pp" 'counsel-projectile
     "ps" 'counsel-projectile-switch-project
@@ -1073,6 +1087,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** Window
 #+begin_src emacs-lisp
 (defun diego/leader-window ()
+  "Set all leader bindings related to window manipulation."
   (diego/set-leader-keys
     "wa" 'ace-window
     "wv" 'diego/split-vert-focus
@@ -1089,6 +1104,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** Jumping
 #+begin_src emacs-lisp
 (defun diego/leader-jumping ()
+  "Set all leader bindings related to in-buffer motion and 'jumping'."
   (diego/set-leader-keys
     "jc" 'avy-goto-char-2
     "jw" 'avy-goto-word-1
@@ -1101,6 +1117,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** Applications
 #+begin_src emacs-lisp
 (defun diego/leader-applications ()
+  "Set all leader bindings that run a standalone mode or program."
   (diego/set-leader-keys
     "aW"  'sunshine-quick-forecast
     "ac"  'calc-dispatch
@@ -1135,6 +1152,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** Buffers & Files
 #+begin_src emacs-lisp
 (defun diego/leader-buffers-files ()
+  "Set all leader bindings related to buffer and file manipulation."
   (diego/set-leader-keys
     "TAB" 'diego/switch-to-previous-buffer
     "bb"  'ivy-switch-buffer
@@ -1169,6 +1187,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** Editing
 #+begin_src emacs-lisp
 (defun diego/leader-editing ()
+  "Set all leader bindings related to text-editing."
   (diego/set-leader-keys
     ";"   'evilnc-comment-operator
     "cl"  'evilnc-comment-or-uncomment-lines
@@ -1221,6 +1240,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** magit
 #+begin_src emacs-lisp
 (defun diego/leader-magit ()
+  "Set all leader bindings related to magit and version control."
   (diego/set-leader-keys
     "gs" 'magit-status
     "gl" 'magit-log-all
@@ -1234,6 +1254,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** Help
 #+begin_src emacs-lisp
 (defun diego/leader-help ()
+  "Set all leader bindings related to help and Emacs reference."
   (diego/set-leader-keys
     "hdb" 'counsel-descbinds
     "hdc" 'describe-char
@@ -1261,6 +1282,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** Quit
 #+begin_src emacs-lisp
 (defun diego/leader-quit ()
+  "Set all leader bindings related to quitting, closing, and restarting."
   (diego/set-leader-keys
     "qq" 'save-buffers-kill-emacs
     "qr" 'restart-emacs
@@ -1269,7 +1291,7 @@ based on or copied from spacemacs, so definitely check them out!
 **** Global/non-prefix
 #+begin_src emacs-lisp
 (defun diego/config-evil-leader ()
-  "Configure evil leader mode."
+  "Set evil leader non-prefix bindings and call leader helper functions."
 
   (diego/set-leader-keys
     "SPC" 'counsel-M-x
@@ -1411,7 +1433,9 @@ they are in `spacemacs/set-leader-keys'."
 #+end_quote
 #+begin_src emacs-lisp
 (use-package evil-indent-plus
-  :after evil)
+  :after evil
+  :config
+  (evil-indent-plus-default-bindings))
 #+end_src
 *** [[https://github.com/therockmandolinist/evil-numbers][evil-numbers]]
 #+begin_quote
@@ -1419,7 +1443,6 @@ they are in `spacemacs/set-leader-keys'."
 #+end_quote
 #+begin_src emacs-lisp
 (use-package evil-numbers
-  :after evil
   :quelpa ((evil-numbers
             :fetcher github
             :repo "therockmandolinist/evil-numbers")))
@@ -1430,7 +1453,7 @@ they are in `spacemacs/set-leader-keys'."
 #+end_quote
 #+begin_src emacs-lisp
 (use-package evil-nerd-commenter
-  :after evil
+  :commands evilnc-comment-operator
   :config
   ;; Copy of spacemacs/comment-or-uncomment-lines-inverse
   (defun diego/comment-or-uncomment-lines-inverse (&optional arg)
@@ -1620,7 +1643,7 @@ so I went with it.
 *** Bindings
 #+begin_src emacs-lisp
 (defun diego/org-bindings ()
-
+  "Set custom bindings for `org-mode'."
   (defmacro diego|org-emphasize (fname char)
     "Make function for setting the emphasis in org mode"
     `(defun ,fname () (interactive)
@@ -1719,7 +1742,7 @@ so I went with it.
 **** Files
 #+begin_src emacs-lisp
 (defun diego/org-file-vars ()
-  ;; files
+  "Set all custom `org-mode' vars related to files."
   (setq org-agenda-text-search-extra-files '(agenda-archives)
         org-agenda-files '("~/Dropbox (MIT)/org/todo.org" "~/Dropbox (MIT)/org/gcal.org")
         org-default-notes-file "~/Dropbox (MIT)/org/todo.org"
@@ -1733,7 +1756,7 @@ so I went with it.
 **** Todo/agenda
 #+begin_src emacs-lisp
 (defun diego/org-todo-vars ()
-  ;; Todo/tasks/agenda
+  "Set all custom `org-mode' vars related to todo and agenda."
   (setq org-enforce-todo-dependencies t
         org-log-done (quote time)
         org-log-redeadline (quote time)
@@ -1757,8 +1780,8 @@ so I went with it.
   (setq org-capture-templates
         '(("t" "Todo")
           ("ts" "Todo: School")
-          ("tse" "Ethics" entry
-           (file+olp diego/todo-file "School" "School" "Ethics")
+          ("tsU" "UROP" entry
+           (file+olp diego/todo-file "School" "School" "UROP")
            "* ❯ TODO %?\nDEADLINE: %^t")
           ("ts6" "622" entry
            (file+olp diego/todo-file "School" "School" "622")
@@ -1774,7 +1797,7 @@ so I went with it.
 **** Behavior/appearance
 #+begin_src emacs-lisp
 (defun diego/org-general-vars ()
-  ;; Behavior
+  "Set all custom `org-mode' vars related to general appearance and behavior."
   (setq org-insert-heading-respect-content t
         org-src-window-setup 'current-window
         org-list-demote-modify-bullet '(("-" . "*")
@@ -1827,6 +1850,7 @@ so I went with it.
 *** Agenda config
 #+begin_src emacs-lisp
 (defun diego/setup-org-agenda ()
+  "Function called with `org-agenda-mode-hook'."
   (setq org-habit-graph-column 50)
   (define-key org-agenda-mode-map "j"          #'org-agenda-next-line)
   (define-key org-agenda-mode-map "k"          #'org-agenda-previous-line)
@@ -1849,6 +1873,7 @@ so I went with it.
 *** Copture config
 #+begin_src emacs-lisp
 (defun diego/setup-org-capture ()
+  "Function called with `org-capture-mode-hook'."
   (evil-define-key 'insert org-capture-mode-map (kbd "C-d")
     #'diego/org-agenda-toggle-date)
   (evil-define-key 'normal org-capture-mode-map (kbd "C-d")
@@ -1858,6 +1883,7 @@ so I went with it.
 *** Org config
 #+begin_src emacs-lisp
 (defun diego/setup-org-mode ()
+  "Fuction called with `org-mode-hook'."
   (require 'ox-md)
   (dolist (char '("+" "-"))
     (define-key org-mode-map (kbd char)
@@ -2030,15 +2056,12 @@ so I went with it.
   (defun diego/async-tangle-init ()
     "Asynchronously tangle config.org and and byte-compile."
     (interactive)
-    ;; (defconst init-tangle-start-time (current-time))
     (let ((init-tangle-start-time (current-time)))
       (async-start
        (lambda ()
          ;; make async emacs aware of packages (for byte-compilation)
          (package-initialize)
          (require 'org)
-         (require 'fringe-helper)
-         (require 'crux)
 
          ;; tangle
          (org-babel-tangle-file
@@ -2050,10 +2073,10 @@ so I went with it.
        ;; 'ignore
        `(lambda (result)
           (if result
-              (message "SUCCESS: config.org successfully tangled and compiled. (%.3fs)"
+              (message "SUCCESS: config.org successfully tangled. (%.3fs)"
                        (float-time (time-subtract (current-time)
                                                   ',init-tangle-start-time)))
-            (message "ERROR: config.org tangle/compilation failed."))))))
+            (message "ERROR: config.org tangle failed."))))))
 
   (defun diego/org-hugo-export ()
     "Export current subheading to markdown using pandoc."
@@ -2306,7 +2329,7 @@ _S_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
   :defer 10
   :config
   (which-key-mode)
-  (setq which-key-show-operator-state-maps t)
+  ;; (setq which-key-show-operator-state-maps t)
 
   (defun diego/declare-prefix (prefix name &rest more)
     "Declare a prefix PREFIX. PREFIX is a string describing a key
@@ -2570,7 +2593,7 @@ An Emacs 24 theme remixed from gruvbox
 #+begin_quote
 Display battery in Emacs Mode line
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package fancy-battery
   ;; Something something battery
   :defer 10
@@ -2629,6 +2652,7 @@ I use this for reading, mostly.
 #+begin_src emacs-lisp
 (use-package crux
   :defer 5
+  :commands (crux-with-region-or-line crux-with-region-or-buffer)
   :config
   (crux-with-region-or-line eval-region)
   (crux-with-region-or-buffer indent-region)
@@ -2739,7 +2763,7 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
               flyspell-do-correct
               flyspell-auto-correct-word)
   :config
-  (defun diego/flyspell-correct-next (&optional arg)
+  (defun diego/flyspell-correct-next ()
     (interactive "p")
     (flyspell-goto-next-error)
     (flyspell-auto-correct-word))
@@ -2799,9 +2823,9 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 #+begin_src emacs-lisp
 (use-package osx-trash
   :defer 5
+  :if (eq system-type 'darwin)
   :config
-  (when (eq system-type 'darwin)
-    (osx-trash-setup))
+  (osx-trash-setup)
   (setq delete-by-moving-to-trash t))
 #+end_src
 *** [[https://github.com/Malabarba/paradox][paradox]]
@@ -2815,11 +2839,13 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
   (setq paradox-automatically-star t
         paradox-execute-asynchronously t)
   (evil-define-key 'normal paradox-menu-mode-map
-    "q" 'paradox-quit-and-close
+    "q"  'paradox-quit-and-close
     "fr" 'paradox-filter-regexp
     "fu" 'paradox-filter-upgrades
     "fs" 'paradox-filter-stars
-    "x" 'paradox-menu-execute))
+    "x"  'paradox-menu-execute
+    "i"  'package-menu-mark-install
+    "d"  'package-menu-mark-delete))
 #+end_src
 *** [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store]]
 #+begin_src emacs-lisp
@@ -2828,6 +2854,7 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 *** [[https://github.com/politza/pdf-tools][pdf-tools]]
 #+begin_src emacs-lisp
 (use-package pdf-tools
+  :defer 10
   :config
   (pdf-tools-install))
 #+end_src
@@ -2838,7 +2865,6 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 #+begin_src emacs-lisp
 (use-package persistent-scratch
   :defer 10
-  :disabled t
   :config
   (persistent-scratch-setup-default))
 #+end_src
@@ -2849,7 +2875,8 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 SUPER nifty.
 #+begin_src emacs-lisp
 (use-package restart-emacs
-  :defer 10)
+  :init
+  (evil-ex-define-cmd "qr[estart]" 'restart-emacs))
 #+end_src
 
 *** [[https://github.com/nonsequitur/smex][smex]]
@@ -3015,7 +3042,7 @@ Syntax highlighting for matlab scripts.
 #+begin_quote
   Edit text area on Chrome with Emacs using Atomic Chrome
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package atomic-chrome
   :defer 10
   :config
@@ -3093,6 +3120,10 @@ Supposedly better than autocomplete.
 (use-package company-anaconda
   :after company)
 #+end_src
+*** [[https://github.com/jacktasia/dumb-jump][dumb-jump]]
+#+begin_src emacs-lisp :tangle no
+(use-package dumb-jump)
+#+end_src
 *** [[https://github.com/Silex/elmacro][elmacro]]
 #+begin_quote
   Package to display keyboard macros or latest interactive commands as emacs lisp.
@@ -3110,15 +3141,15 @@ Supposedly better than autocomplete.
 #+begin_src emacs-lisp
 (use-package fill-column-indicator
   :init
-  (setq-default fci-rule-column 80)
+  (setq-default fci-rule-column 79)
   (defvar-local company-fci-mode-on-p nil)
 
-  (defun company-turn-off-fci (&rest ignore)
+  (defun company-turn-off-fci (&rest _ignore)
     (when (boundp 'fci-mode)
       (setq company-fci-mode-on-p fci-mode)
       (when fci-mode (fci-mode -1))))
 
-  (defun company-maybe-turn-on-fci (&rest ignore)
+  (defun company-maybe-turn-on-fci (&rest _ignore)
     (when company-fci-mode-on-p (fci-mode 1)))
 
   (add-hook 'company-completion-started-hook 'company-turn-off-fci)
@@ -3135,6 +3166,14 @@ Supposedly better than autocomplete.
   :config
   (setq flycheck-completing-read-function 'ivy-completing-read))
 #+end_src
+
+**** [[https://github.com/purcell/flycheck-package][flycheck-package]]
+#+begin_src emacs-lisp
+(use-package flycheck-package
+  :after flycheck
+  :config
+  (flycheck-package-setup))
+#+end_src
 *** [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]]
 #+begin_quote
   Fringe version of git-gutter.el
@@ -3142,6 +3181,7 @@ Supposedly better than autocomplete.
 #+begin_src emacs-lisp
 (use-package git-gutter-fringe
   :demand t
+  :commands fringe-helper-define
   :config
   (global-git-gutter-mode)
   (add-hook 'focus-in-hook #'git-gutter:update-all-windows)
@@ -3240,6 +3280,12 @@ imenu on steroids.
 Better parentheses coloring
 #+begin_src emacs-lisp
 (use-package rainbow-delimiters)
+#+end_src
+*** [[https://github.com/tkf/emacs-request][request]]
+#+begin_src emacs-lisp
+(use-package request)
+
+(use-package request-deferred)
 #+end_src
 *** [[https://github.com/naiquevin/sphinx-doc.el][sphinx-doc]]
 #+begin_quote
@@ -3525,11 +3571,16 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 #+begin_src emacs-lisp
 (use-package sane-term)
 #+end_src
+* Aliases
+#+begin_src emacs-lisp
+(defalias 'yes-or-no-p #'y-or-n-p) ; y or n is enough
+#+end_src
 * Mode Specific Configuration
 ** Prog-mode
 Configuration that applies to all programming modes.
 #+begin_src emacs-lisp
 (defun diego/setup-prog-mode ()
+  "Custom `prog-mode' configuration."
   (subword-mode)
   (smartparens-strict-mode)
   (highlight-parentheses-mode 1)
@@ -3549,6 +3600,7 @@ Configuration that applies to all programming modes.
 ** Python
 #+begin_src emacs-lisp
 (defun diego/setup-python-mode ()
+  "Custom `python-mode' configuration."
   (set (make-local-variable 'comment-inline-offset) 2)
   (anaconda-mode)
   (anaconda-eldoc-mode)
@@ -3577,6 +3629,7 @@ Configuration that applies to all programming modes.
 ** Matlab
 #+begin_src emacs-lisp
 (defun diego/setup-matlab-mode ()
+  "Custom `matlab-mode' configuration."
   (diego/setup-prog-mode)
   (highlight-numbers-mode 0))
 (add-hook 'matlab-mode-hook #'diego/setup-matlab-mode)
@@ -3584,6 +3637,7 @@ Configuration that applies to all programming modes.
 ** Emacs-Lisp
 #+begin_src emacs-lisp
 (defun diego/setup-lisp-mode ()
+  "Custom `emacs-lisp-mode' configuration."
   (hs-minor-mode)
   (aggressive-indent-mode)
   (local-set-key (kbd "C-c <up>") #'hs-hide-all)
@@ -3606,6 +3660,7 @@ Configuration that applies to all programming modes.
 ** Term mode
 #+begin_src emacs-lisp
 (defun diego/setup-term-mode ()
+  "Custom `term-mode' configuration."
   (setq-local yas-dont-activate-functions t)
   (local-set-key (kbd "<C-tab>") #'multi-term-next))
 (add-hook 'term-mode-hook #'diego/setup-term-mode)
@@ -3614,6 +3669,7 @@ Configuration that applies to all programming modes.
 #+begin_src emacs-lisp
 (with-eval-after-load 'eshell
   (defun eshell/clear ()
+    "Custom `eshell' configuration."
     (interactive)
     (let ((inhibit-read-only t))
       (erase-buffer))
@@ -3624,6 +3680,7 @@ Configuration that applies to all programming modes.
 #+begin_src emacs-lisp
 (setq calc-multiplication-has-precedence nil)
 (defun diego/setup-calc-mode()
+  "Custom `calc-mode' configuration."
   (local-set-key (kbd "x") (lambda () (interactive) (counsel-M-x "^calc-")))
   (calc-symbolic-mode 1))
 
@@ -3640,6 +3697,7 @@ Configuration that applies to all programming modes.
 ** C mode
 #+begin_src emacs-lisp
 (defun diego/setup-c-mode ()
+  "Custom `c-mode' configuration."
   (aggressive-indent-mode))
 (add-hook 'c-mode-hook #'diego/setup-c-mode)
 #+end_src
@@ -3662,27 +3720,26 @@ Configuration that applies to all programming modes.
         '("^From:" "^Reply-To" "^Organization:" "^To:" "^Cc:" "^Newsgroups:"
           "^Subject:" "^Date:" "^Gnus"))
 
-  (setq-default
-   gnus-summary-line-format "%U%R%z %(%&user-date;  %-15,15f  %B (%c) %s%)\n"
-   gnus-user-date-format-alist '((t . "%Y-%m-%d %H:%M"))
-   gnus-group-line-format "%M%S%p%P%5y:%B %G\n";;"%B%(%g%)"
-   gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
-   gnus-thread-sort-functions '(gnus-thread-sort-by-most-recent-date)
-   gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\”]\”[#’()]"
-   gnus-sum-thread-tree-false-root ""
-   gnus-sum-thread-tree-indent " "
-   gnus-sum-thread-tree-leaf-with-other "├► "
-   gnus-sum-thread-tree-root ""
-   gnus-sum-thread-tree-single-leaf "╰► "
-   gnus-sum-thread-tree-vertical "│"
-   gnus-article-browse-delete-temp t
-   gnus-treat-strip-trailing-blank-lines 'last
-   gnus-keep-backlog 'nil
-   gnus-summary-display-arrow nil ; Don't show that annoying arrow:
-   gnus-mime-display-multipart-related-as-mixed t ; Show more MIME-stuff:
-   gnus-auto-select-first nil ; Don't get the first article automatically:
-   smiley-style 'medium
-   gnus-keep-backlog '0)
+  (setq-default gnus-summary-line-format "%U%R%z %(%&user-date;  %-15,15f  %B (%c) %s%)\n"
+                gnus-user-date-format-alist '((t . "%Y-%m-%d %H:%M"))
+                gnus-group-line-format "%M%S%p%P%5y:%B %G\n";;"%B%(%g%)"
+                gnus-summary-thread-gathering-function 'gnus-gather-threads-by-references
+                gnus-thread-sort-functions '(gnus-thread-sort-by-most-recent-date)
+                gnus-ignored-newsgroups "^to\\.\\|^[0-9. ]+\\( \\|$\\)\\|^[\”]\”[#’()]"
+                gnus-sum-thread-tree-false-root ""
+                gnus-sum-thread-tree-indent " "
+                gnus-sum-thread-tree-leaf-with-other "├► "
+                gnus-sum-thread-tree-root ""
+                gnus-sum-thread-tree-single-leaf "╰► "
+                gnus-sum-thread-tree-vertical "│"
+                gnus-article-browse-delete-temp t
+                gnus-treat-strip-trailing-blank-lines 'last
+                gnus-keep-backlog 'nil
+                gnus-summary-display-arrow nil ; Don't show that annoying arrow:
+                gnus-mime-display-multipart-related-as-mixed t ; Show more MIME-stuff:
+                gnus-auto-select-first nil ; Don't get the first article automatically:
+                smiley-style 'medium
+                gnus-keep-backlog '0)
 
   (require 'browse-url)
   (require 'nnrss)
@@ -3733,6 +3790,7 @@ Configuration that applies to all programming modes.
 I'll probably remove that exclamation point at some point, but right now I'm
 excited about file local vars.
 
+For org config.org
 #+begin_example
 # Local Variables:
 # after-save-hook: (git-gutter diego/async-tangle-init)
