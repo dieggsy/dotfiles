@@ -12,3 +12,25 @@ the apropriate location from [[./rc.org][rc.org]] using an asynchronous call to
 Since my [[./emacs.d/config.org][emacs configuration]] is much more complex, it is kept in its own org
 file and the =emacs.d= directory is symlinked. The vim directory is also
 symlinked.
+
+** Full Installation
+Make sure you have a fairly recent version of emacs. I tend to use a "bleeding
+edge" installation from source (currently v26.0.50), and I've not tested this
+with older versions, though it should work. *NOTE:* This will overwrite existing
+dotfiles/scripts, so be pretty damn sure.
+
+ - Clone the repo to =~/dotfiles= (or wherever you'd like).
+ - Use provided script to install dotfiles and scripts.
+   #+begin_src sh
+   cd ~/dotfiles
+   ./org-tangle rc.org
+   #+end_src
+ - Use provided script to install emacs config. Will overwrite as well.
+   #+begin_src sh
+   ./org-tangle ./emacs.d/config.org
+   #+end_src
+
+** Partial installation
+There's not currently a great way to do this. I'm hoping to introduce some kind
+of system with command line arguments. At some point in the future, but for
+now, you could just copy paste the snippets you like.
