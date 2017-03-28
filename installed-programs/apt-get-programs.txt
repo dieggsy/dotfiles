@@ -2881,6 +2881,7 @@ sessioninstaller
 sgml-base
 sgml-data
 shared-mime-info
+shellcheck
 shiboken2
 silversearcher-ag
 simple-scan
