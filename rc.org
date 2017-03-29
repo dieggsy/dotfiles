@@ -34,14 +34,16 @@ readable in org format than in rendered markdown.
    - [[#battery-notifier][battery-notifier]]
    - [[#dropmite][dropmite]]
    - [[#explorer][explorer]]
-   - [[#spotify-desktop][spotify-desktop]]
+   - [[#i3blocks][i3blocks]]
    - [[#masterinstall][masterinstall]]
-   - [[#updates][updates]]
-   - [[#wfname][wfname]]
    - [[#org-tangle][org-tangle]]
-   - [[#text-pager][text-pager]]
    - [[#pass][pass]]
    - [[#playerctl-cmus][playerctl-cmus]]
+   - [[#spotify-desktop][spotify-desktop]]
+   - [[#spotifypy][spotify.py]]
+   - [[#text-pager][text-pager]]
+   - [[#updates][updates]]
+   - [[#wfname][wfname]]
  - [[#local-vars][Local vars]]
 
 * Config
@@ -390,7 +392,7 @@ set color_win_inactive_sel_fg=default
 #+end_src
 ** emacsclient.desktop
 :PROPERTIES:
-:header-args+ :tangle: (when (eq system-type 'gnu/linux)  "~/.local/share/applications/emacsclient.desktop")
+:header-args+: tangle: (when (eq system-type 'gnu/linux)  "~/.local/share/applications/emacsclient.desktop")
 :END:
 #+begin_src conf
 [Desktop Entry]
@@ -729,7 +731,8 @@ bindsym $mod+space [title="^emacs@Ragnarok$"] scratchpad show
 
 exec --no-startup-id termite --name=metask
 for_window [instance="metask"] floating enable;
-for_window [instance="metask"] move scratchpad; [instance="metask"] scratchpad show; resize shrink height 95px; resize grow width 1400px; move position center; move up 420px; move scratchpad
+# for_window [instance="metask"] move scratchpad; [instance="metask"] scratchpad show; resize shrink height 95px; resize grow width 1400px; move position center; move up 420px; move scratchpad
+for_window [instance="metask"] move scratchpad; [instance="metask"] scratchpad show; resize set 2446 607; move position center; move up 420px; move scratchpad
 bindsym $mod+Return [instance="metask"] scratchpad show
 
 exec --no-startup-id termite -t ranger -e ranger --name=explorer
@@ -851,9 +854,10 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-    status_command i3status
+    status_command i3blocks
     position top
     font pango:Iosevka, FontAwesome 8.5
+    # tray_output none
     colors {
         background #282828
         statusline #fdf4c1
@@ -875,15 +879,15 @@ gaps outer 0
 new_window 1pixel
 
 # some controls
-bindsym XF86KbdBrightnessDown exec kb-light -
-bindsym XF86KbdBrightnessUp exec kb-light +
+bindsym XF86KbdBrightnessDown exec kb-light - && pkill -RTMIN+1 i3blocks
+bindsym XF86KbdBrightnessUp exec kb-light + && pkill -RTMIN+1 i3blocks
 
-bindsym XF86MonBrightnessUp exec xbacklight +1
-bindsym XF86MonBrightnessDown exec xbacklight -1
+bindsym XF86MonBrightnessUp exec xbacklight +2 && pkill -RTMIN+1 i3blocks
+bindsym XF86MonBrightnessDown exec xbacklight -2 && pkill -RTMIN+1 i3blocks
 
-bindsym XF86AudioMute exec amixer -D pulse sset Master toggle
-bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 2%-
-bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 2%+
+bindsym XF86AudioMute exec amixer -D pulse sset Master toggle && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 2%- && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 2%+ && pkill -RTMIN+1 i3blocks
 
 bindsym XF86AudioPrev exec playerctl-cmus previous
 bindsym XF86AudioNext exec playerctl-cmus next
@@ -900,6 +904,84 @@ exec greenclip daemon
 exec nm-applet
 exec --no-startup-id /home/diego/.ghq/github.com/olemartinorg/i3-alternating-layout/alternating_layouts.py
 exec unclutter
+exec xset s off
+exec setxkbmap dvorak
+#+end_src
+*** i3blocks
+:PROPERTIES:
+:header-args+: (when (eq system-type 'gnu/linux "~/.i3blocks.conf"))
+:END:
+#+begin_src conf
+[focused window]
+command=xtitle -s
+interval=persist
+
+[music]
+command=~/.config/i3blocks/scripts/music.sh
+interval=5
+color=#B8BB26
+
+[separator]
+
+[Disk]
+command=~/.config/i3blocks/scripts/disk.sh /
+interval=20
+# color=#766e6b
+
+[separator]
+
+[wifi]
+command=~/.config/i3blocks/scripts/wifi.sh
+interval=10
+
+[separator]
+
+[Bat]
+command=~/.config/i3blocks/scripts/bat.sh
+interval=30
+# color=#3d97b8
+
+[separator]
+
+[Brightness]
+command=~/.config/i3blocks/scripts/bright.sh
+interval=once
+signal=1
+
+[separator]
+
+# [Ram]
+# command=~/.config/i3blocks/scripts/mem.sh -m
+# interval=3
+# color=#c38418
+
+[separator]
+
+# [Temp]
+# command=~/.config/i3blocks/scripts/temp.sh
+# interval=1
+# color=#CC211B
+
+[separator]
+
+[Vol]
+command=~/.config/i3blocks/scripts/volume
+interval=once
+signal=1
+# color=#407ee7
+
+[separator]
+
+[layout]
+command=~/.config/i3blocks/scripts/layout.sh
+interval=once
+
+[separator]
+
+[Time]
+command=~/.config/i3blocks/scripts/date.sh
+interval=10
+# color=#f22c40
 #+end_src
 *** i3status
 :PROPERTIES:
@@ -2655,12 +2737,35 @@ termite --name=metask
 #+begin_src sh
 termite -t ranger -e ranger --name=explorer
 #+end_src
-** spotify-desktop
+** i3blocks
+*** vol
 :PROPERTIES:
-:header-args+:  :tangle (when (eq system-type 'gnu/linux) "~/bin/spotify-desktop") :shebang "#!/usr/bin/env bash"
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.config/i3blocks/scripts/volume") :shebang "#!/usr/bin/bash"
 :END:
 #+begin_src sh
-spotify --force-device-scale-factor=2 > /dev/null 2>&1 &
+if [ "$BLOCK_BUTTON" = "5" ]; then
+    amixer -D pulse sset Master 2%+ > /dev/null 2>&1
+elif [ "$BLOCK_BUTTON" = "4" ]; then
+    amixer -D pulse sset Master 2%- > /dev/null 2>&1
+fi
+
+Vol=$(amixer -D pulse get Master | grep "Left: Playback" | awk '{print $5}' | tr -d "[ %]")
+Mute=$(amixer -D pulse get Master | grep "Left: Playback" | awk '{print $6}' | tr -d "[-]")
+
+if [ "$Mute" = "off" ];then
+    echo -e "  $Vol% "
+    echo
+    echo "#FABD2F"
+else
+    if [ "$Vol" -ge "50" ];then
+        echo -ne "  $Vol% "
+    else
+        echo -ne "  $Vol% "
+    fi
+fi
+
+unset Vol
+unset Mute
 #+end_src
 ** masterinstall
 :PROPERTIES:
@@ -2767,6 +2872,100 @@ echo "\n\e[1;34mTangling: \e[91mrc.org\e[0;97m"
 echo "\n\e[1;34mTangling: \e[91mconfig.org\e[0;97m"
 ~/dotfiles/org-tangle ~/dotfiles/emacs.d/config.org > /dev/null 2>&1
 #+end_src
+** org-tangle
+:PROPERTIES:
+:header-args+: :tangle ~/dotfiles/org-tangle :shebang "#!/usr/bin/env emacs --script"
+:END:
+#+begin_src emacs-lisp
+(if (> (length command-line-args) 4)
+    (message "too many args!")
+  (require 'org)
+  (org-babel-tangle-file (expand-file-name (nth 3 command-line-args))))
+#+end_src
+** pass
+*** peco
+:PROPERTIES:
+:header-args+: :tangle ~/.password-store/.extensions/peco.bash :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
+           | sed 's@'"$HOME"'/\.password-store/\(.\+\?\)\.gpg@\1@' \
+           | peco --prompt="[pass]")
+
+[[ -n "$name" ]] && pass -c $name
+#+end_src
+*** rofi
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.password-store/.extensions/rofi.bash") :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
+           | sed 's@'"$HOME"'/\.password-store/\(.\+\?\)\.gpg@\1@' \
+           | rofi -dmenu -p "[pass] " -font "Iosevka 25")
+
+if [[ -n "$name" ]]; then
+    ps axf | grep 'greenclip daemon' | grep -v grep | awk '{print $1}' | xargs kill -20
+    pass -c $name
+    sleep 45
+    greenclip print ' '
+    ps axf | grep 'greenclip daemon' | grep -v grep | awk '{print $1}' | xargs kill -18
+fi
+#+end_src
+** playerctl-cmus
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/playerctl-cmus") :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+other=$(ps axc | grep 'spotify')
+if [ ! -z "$other" ]; then
+    playerctl $1
+else
+    if [ "$1" = "play-pause" ]; then
+        if [ "$(cmus-remote -Q | grep status)" = "status paused" ]; then
+           cmus-remote -p
+        elif [ "$(cmus-remote -Q | grep status)" = "status playing" ]; then
+            cmus-remote -u
+        fi
+    elif [ "$1" = "next" ]; then
+        cmus-remote -n
+    elif [ "$1" = "previous" ]; then
+        cmus-remote -r
+    fi
+
+fi
+#+end_src
+** spotify-desktop
+:PROPERTIES:
+:header-args+:  :tangle (when (eq system-type 'gnu/linux) "~/bin/spotify-desktop") :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+spotify --force-device-scale-factor=2 > /dev/null 2>&1 &
+#+end_src
+** spotify.py
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/spotify.py") :shebang "#!/usr/bin/python"
+:END:
+#+begin_src python
+import dbus
+try:
+	bus = dbus.SessionBus()
+	spotify = bus.get_object("org.mpris.MediaPlayer2.spotify", "/org/mpris/MediaPlayer2")
+	spotify_iface = dbus.Interface(spotify, 'org.freedesktop.DBus.Properties')
+	props = spotify_iface.Get('org.mpris.MediaPlayer2.Player', 'Metadata')
+	print(str(props['xesam:artist'][0]) + " - " + str(props['xesam:title']))
+	exit
+except dbus.exceptions.DBusException:
+	exit
+#+end_src
+
+** text-pager
+:PROPERTIES:
+:header-args+: :tangle ~/bin/text-pager :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+[ $# -ge 1 -a -f "$1" ] && input="$1" || input="-"
+cat $input | fold -w 80 -s | less
+#+end_src
 ** updates
 :PROPERTIES:
 :header-args+: :tangle ~/bin/updates :shebang "#!/usr/bin/env bash"
@@ -2858,76 +3057,6 @@ try:
     print('\nWorkflow: '+plistlib.readPlist('info.plist')['name'])
 except IOError:
     print('No \'info. plist\' file. ')
-#+end_src
-** org-tangle
-:PROPERTIES:
-:header-args+: :tangle ~/dotfiles/org-tangle :shebang "#!/usr/bin/env emacs --script"
-:END:
-#+begin_src emacs-lisp
-(if (> (length command-line-args) 4)
-    (message "too many args!")
-  (require 'org)
-  (org-babel-tangle-file (expand-file-name (nth 3 command-line-args))))
-#+end_src
-** text-pager
-:PROPERTIES:
-:header-args+: :tangle ~/bin/text-pager :shebang "#!/usr/bin/env bash"
-:END:
-#+begin_src sh
-[ $# -ge 1 -a -f "$1" ] && input="$1" || input="-"
-cat $input | fold -w 80 -s | less
-#+end_src
-** pass
-*** peco
-:PROPERTIES:
-:header-args+: :tangle ~/.password-store/.extensions/peco.bash :shebang "#!/usr/bin/env bash"
-:END:
-#+begin_src sh
-name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
-           | sed 's@'"$HOME"'/\.password-store/\(.\+\?\)\.gpg@\1@' \
-           | peco --prompt="[pass]")
-
-[[ -n "$name" ]] && pass -c $name
-#+end_src
-*** rofi
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.password-store/.extensions/rofi.bash") :shebang "#!/usr/bin/env bash"
-:END:
-#+begin_src sh
-name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
-           | sed 's@'"$HOME"'/\.password-store/\(.\+\?\)\.gpg@\1@' \
-           | rofi -dmenu -p "[pass] " -font "Iosevka 25")
-
-if [[ -n "$name" ]]; then
-    ps axf | grep 'greenclip daemon' | grep -v grep | awk '{print $1}' | xargs kill -20
-    pass -c $name
-    sleep 45
-    greenclip print ' '
-    ps axf | grep 'greenclip daemon' | grep -v grep | awk '{print $1}' | xargs kill -18
-fi
-#+end_src
-** playerctl-cmus
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/playerctl-cmus") :shebang "#!/usr/bin/env bash"
-:END:
-#+begin_src sh
-other=$(ps axc | grep 'spotify')
-if [ ! -z "$other" ]; then
-    playerctl $1
-else
-    if [ "$1" = "play-pause" ]; then
-        if [ "$(cmus-remote -Q | grep status)" = "status paused" ]; then
-           cmus-remote -p
-        elif [ "$(cmus-remote -Q | grep status)" = "status playing" ]; then
-            cmus-remote -u
-        fi
-    elif [ "$1" = "next" ]; then
-        cmus-remote -n
-    elif [ "$1" = "previous" ]; then
-        cmus-remote -r
-    fi
-
-fi
 #+end_src
 * Local vars
 
