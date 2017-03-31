@@ -729,11 +729,11 @@ for_window [title="^emacs@Ragnarok$"] floating enable;
 for_window [title="^emacs@Ragnarok$"] move scratchpad; [title="^emacs@Ragnarok$"] scratchpad show; move scratchpad
 bindsym $mod+space [title="^emacs@Ragnarok$"] scratchpad show
 
-exec --no-startup-id termite --name=metask
-for_window [instance="metask"] floating enable;
-# for_window [instance="metask"] move scratchpad; [instance="metask"] scratchpad show; resize shrink height 95px; resize grow width 1400px; move position center; move up 420px; move scratchpad
-for_window [instance="metask"] move scratchpad; [instance="metask"] scratchpad show; resize set 2446 607; move position center; move up 420px; move scratchpad
-bindsym $mod+Return [instance="metask"] scratchpad show
+exec --no-startup-id termite --name=dropmite
+for_window [instance="dropmite"] floating enable;
+# for_window [instance="dropmite"] move scratchpad; [instance="dropmite"] scratchpad show; resize shrink height 95px; resize grow width 1400px; move position center; move up 420px; move scratchpad
+for_window [instance="dropmite"] move scratchpad; [instance="dropmite"] scratchpad show; resize set 2446 607; move position center; move up 420px; move scratchpad
+bindsym $mod+Return [instance="dropmite"] scratchpad show
 
 exec --no-startup-id termite -t ranger -e ranger --name=explorer
 for_window [instance="explorer"] floating enable;
@@ -857,7 +857,7 @@ bar {
     status_command i3blocks
     position top
     font pango:Iosevka, FontAwesome 8.5
-    # tray_output none
+    tray_output none
     colors {
         background #282828
         statusline #fdf4c1
@@ -879,19 +879,19 @@ gaps outer 0
 new_window 1pixel
 
 # some controls
-bindsym XF86KbdBrightnessDown exec kb-light - && pkill -RTMIN+1 i3blocks
-bindsym XF86KbdBrightnessUp exec kb-light + && pkill -RTMIN+1 i3blocks
+bindsym XF86KbdBrightnessDown exec kb-light - && pkill -RTMIN+2 i3blocks
+bindsym XF86KbdBrightnessUp exec kb-light + && pkill -RTMIN+2 i3blocks
 
-bindsym XF86MonBrightnessUp exec xbacklight +2 && pkill -RTMIN+1 i3blocks
-bindsym XF86MonBrightnessDown exec xbacklight -2 && pkill -RTMIN+1 i3blocks
+bindsym XF86MonBrightnessUp exec xbacklight +2 && pkill -RTMIN+2 i3blocks
+bindsym XF86MonBrightnessDown exec xbacklight -2 && pkill -RTMIN+2 i3blocks
 
-bindsym XF86AudioMute exec amixer -D pulse sset Master toggle && pkill -RTMIN+1 i3blocks
-bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 2%- && pkill -RTMIN+1 i3blocks
-bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 2%+ && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioMute exec amixer -D pulse sset Master toggle && pkill -RTMIN+3 i3blocks
+bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 2%- && pkill -RTMIN+3 i3blocks
+bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 2%+ && pkill -RTMIN+3 i3blocks
 
-bindsym XF86AudioPrev exec playerctl-cmus previous
-bindsym XF86AudioNext exec playerctl-cmus next
-bindsym XF86AudioPlay exec playerctl-cmus play-pause
+bindsym XF86AudioPrev exec playerctl-cmus previous && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioNext exec playerctl-cmus next && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioPlay exec playerctl-cmus play-pause && pkill -RTMIN+1 i3blocks
 
 bindsym --release XF86LaunchB exec "scrot -s ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
 bindsym Shift+XF86LaunchB exec "scrot -ub ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
@@ -909,79 +909,76 @@ exec setxkbmap dvorak
 #+end_src
 *** i3blocks
 :PROPERTIES:
-:header-args+: (when (eq system-type 'gnu/linux "~/.i3blocks.conf"))
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.i3blocks.conf")
 :END:
 #+begin_src conf
 [focused window]
-command=xtitle -s
+command=xtitle -s -t 75 -f "  %s\n"
 interval=persist
 
 [music]
-command=~/.config/i3blocks/scripts/music.sh
+command=~/bin/i3blocks/music
 interval=5
-color=#B8BB26
+signal=1
 
 [separator]
 
 [Disk]
-command=~/.config/i3blocks/scripts/disk.sh /
+command=~/bin/i3blocks/disk /
 interval=20
 # color=#766e6b
 
 [separator]
 
+[Brightness]
+command=~/bin/i3blocks/bright
+interval=once
+signal=2
+
+[separator]
+
 [wifi]
-command=~/.config/i3blocks/scripts/wifi.sh
+command=~/bin/i3blocks/wifi
 interval=10
 
 [separator]
 
+
+# [Ram]
+# command=~/bin/i3blocks/mem.sh -m
+# interval=3
+
+[separator]
+
+# [Temp]
+# command=~/bin/i3blocks/temp.sh
+# interval=1
+
+[separator]
+
+[Vol]
+command=~/bin/i3blocks/volume
+interval=once
+signal=3
+
+[separator]
+
+[layout]
+command=~/bin/i3blocks/layout
+interval=once
+
+[separator]
+
 [Bat]
-command=~/.config/i3blocks/scripts/bat.sh
+command=~/bin/i3blocks/battery
 interval=30
 # color=#3d97b8
 
 [separator]
 
-[Brightness]
-command=~/.config/i3blocks/scripts/bright.sh
-interval=once
-signal=1
-
-[separator]
-
-# [Ram]
-# command=~/.config/i3blocks/scripts/mem.sh -m
-# interval=3
-# color=#c38418
-
-[separator]
-
-# [Temp]
-# command=~/.config/i3blocks/scripts/temp.sh
-# interval=1
-# color=#CC211B
-
-[separator]
-
-[Vol]
-command=~/.config/i3blocks/scripts/volume
-interval=once
-signal=1
-# color=#407ee7
-
-[separator]
-
-[layout]
-command=~/.config/i3blocks/scripts/layout.sh
-interval=once
-
-[separator]
-
 [Time]
-command=~/.config/i3blocks/scripts/date.sh
+command=~/bin/i3blocks/date
 interval=10
-# color=#f22c40
 #+end_src
 *** i3status
 :PROPERTIES:
@@ -2728,7 +2725,7 @@ fi
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/dropmite") :shebang "!/usr/bin/env bash"
 :END:
 #+begin_src sh
-termite --name=metask
+termite --name=dropmite
 #+end_src
 ** explorer
 :PROPERTIES:
@@ -2738,12 +2735,200 @@ termite --name=metask
 termite -t ranger -e ranger --name=explorer
 #+end_src
 ** i3blocks
-*** vol
+*** battery
 :PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.config/i3blocks/scripts/volume") :shebang "#!/usr/bin/bash"
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/battery") :shebang "#!/bin/bash"
 :END:
 #+begin_src sh
-if [ "$BLOCK_BUTTON" = "5" ]; then
+if [ "$BLOCK_BUTTON" = "1" ]; then
+    notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)"
+fi
+Bat=$(acpi | cut -d " " -f4 | tr -d "%,")
+Adapt=$(acpi -a | cut -d " " -f3)
+
+touch /tmp/battery-status
+if [ "$Bat" -lt 11 ] && [ "$(</tmp/battery-status)" != "critically-low" ]; then
+    espeak -vf4 "Battery critically low, consider charging." &
+    notify-send "Battery critically low, consider charging." &
+    echo "critically-low" > /tmp/battery-status
+else
+    echo "fine" > /tmp/battery-status
+fi
+
+if [ "$Adapt" = "on-line" ];then
+    icon0=""
+    icon1=""
+    icon2=""
+    icon3=""
+    icon4=""
+else
+    icon0=""
+    icon1=""
+    icon2=""
+    icon3=""
+    icon4=""
+fi
+
+if [ -z "$Bat" ];then
+    bat=""
+elif [ "$Bat" -gt "95" ];then
+    bat=" $icon4 Full "
+    icon="$icon4"
+    color="#B8BB26"
+elif [ "$Bat" -gt "75" ];then
+    bat=" $icon3 $Bat% "
+    icon="$icon3"
+    color="#B8BB26"
+elif [ "$Bat" -gt "50" ];then
+    bat=" $icon2 $Bat% "
+    icon="$icon2"
+    color="#B8BB26"
+elif [ "$Bat" -gt "25" ];then
+    bat=" $icon1 $Bat% "
+    icon="$icon1"
+    color="#FABD2F"
+elif [ "$Bat" -lt "25" ];then
+    bat=" $icon0 $Bat% "
+    icon="$icon0"
+    color="#FB4933"
+fi
+
+echo -e "$bat"
+echo -e "$icon"
+echo -e "$color"
+#+end_src
+*** bright
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/bright") :shebang "#!/bin/bash"
+:END:
+#+begin_src sh
+mode="$(<~/bin/i3blocks/brightness.txt)"
+
+if [ "$BLOCK_BUTTON" = "1" ] && [ "$mode" = "screen" ]; then
+    pkill -RTMIN+1 i3blocks
+    echo "backlight" > ~/bin/i3blocks/brightness.txt
+    mode="screen"
+    brightness="$(kb-light)"
+    printf "   %.0f%%" "$brightness"
+elif [ "$BLOCK_BUTTON" = "1" ] && [ "$mode" = "backlight" ]; then
+    pkill -RTMIN+1 i3blocks
+    echo "screen" > ~/bin/i3blocks/brightness.txt
+    mode="backlight"
+    brightness="$(xbacklight)"
+    printf "   %.0f%%" "$brightness"
+elif [ "$mode" = "screen" ]; then
+    if [ "$BLOCK_BUTTON" = "5" ]; then
+        xbacklight +2 > /dev/null 2>&1
+    elif [ "$BLOCK_BUTTON" = "4" ]; then
+        xbacklight -2 > /dev/null 2>&1
+    fi
+    brightness="$(xbacklight)"
+    printf "   %.0f%%" "$brightness"
+elif [ "$mode" = "backlight" ]; then
+    if [ "$BLOCK_BUTTON" = "5" ]; then
+        kb-light + > /dev/null 2>&1
+    elif [ "$BLOCK_BUTTON" = "4" ]; then
+        kb-light - > /dev/null 2>&1
+    fi
+    brightness="$(kb-light)"
+    printf "   %.0f%%" "$brightness"
+fi
+#+end_src
+*** date
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/date") :shebang "#!/bin/bash"
+:END:
+#+begin_src sh
+if [ "$BLOCK_BUTTON" = "1" ]; then
+    notify-send "$(cal -h | head -n-1 | cut -c -20)"
+fi
+echo -e "   $(date +%Y-%m-%d\ %R) "
+echo -e "   $(date +%R) "
+#+end_src
+*** disk
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/disk") :shebang "#!/bin/bash"
+:END:
+#+begin_src sh
+if [ "$BLOCK_BUTTON" = "1" ]; then
+    notify-send "$(df -h)"
+fi
+Disk=$(df -h "$1" | grep -v "^[A-Z]" | awk '{print $4-G"/"$2}')
+Short=$(df -h "$1" | grep -v "^[A-Z]" | awk '{print $4}')
+
+if [ -z "$1" ];then
+    echo -e "Enter Your Mounted Point Name Ex : \"/\" "
+else
+    echo -e "  $Disk "
+    echo -e "  $Short "
+fi
+#+end_src
+*** layout
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/layout") :shebang "#!/bin/bash"
+:END:
+#+begin_src sh
+layout="$(setxkbmap -query | grep layout | cut -d' ' -f6)"
+
+if [ "$BLOCK_BUTTON" = "1" ] && [ "$layout" = "dvorak" ]; then
+    setxkbmap us
+    layout="QW"
+    notify-send "  Qwerty"
+elif [ "$BLOCK_BUTTON" = "1" ] && [ "$layout" = "us" ]; then
+    setxkbmap dvorak
+    layout="DV"
+    notify-send "  Dvorak"
+elif [ "$layout" = "us" ]; then
+    layout="QW"
+elif [ "$layout" = "dvorak" ]; then
+    layout="DV"
+fi
+
+echo "   $layout "
+echo "  "
+#+end_src
+*** music
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/music") :shebang "#!/bin/bash"
+:END:
+#+begin_src sh
+if [ "$BLOCK_BUTTON" = "1" ]; then
+    playerctl-cmus play-pause
+elif [ "$BLOCK_BUTTON" = "5" ]; then
+    playerctl-cmus next
+elif [ "$BLOCK_BUTTON" = "4" ]; then
+    playerctl-cmus previous
+fi
+
+spotify=$(ps axc | grep 'spotify')
+cmus=$(ps axc | grep 'cmus')
+playing=$(pacmd list-sink-inputs | grep state | tail -1 | cut -d' ' -f2)
+
+if [ -n "$spotify" ]; then
+    artist="$(sp current | grep -E '^Artist' | cut -d' ' -f8-)"
+    title="$(sp current | grep Title | cut -d' ' -f9-)"
+elif [ -n "$cmus" ] && [ "$(cmus-remote -Q | grep "status" | cut -d" " -f2-)" != "stopped" ]; then
+    title="$(cmus-remote -Q | grep "tag title" | cut -d" " -f3-)"
+    artist="$(cmus-remote -Q | grep "tag artist" | cut -d" " -f3-)"
+fi
+
+echo -e "   $artist - $title "
+echo -e "   $title "
+if [ "$playing" = "RUNNING" ]; then
+    echo "#B8BB26"
+else
+    echo "#FB4933"
+fi
+#+end_src
+*** volume
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/volume") :shebang "#!/bin/bash"
+:END:
+#+begin_src sh
+
+if [ "$BLOCK_BUTTON" = "1" ]; then
+    amixer -D pulse sset Master toggle > /dev/null 2>&1
+elif [ "$BLOCK_BUTTON" = "5" ]; then
     amixer -D pulse sset Master 2%+ > /dev/null 2>&1
 elif [ "$BLOCK_BUTTON" = "4" ]; then
     amixer -D pulse sset Master 2%- > /dev/null 2>&1
@@ -2766,6 +2951,26 @@ fi
 
 unset Vol
 unset Mute
+#+end_src
+*** wifi
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/wifi") :shebang "#!/bin/bash"
+:END:
+#+begin_src sh
+if [ "$BLOCK_BUTTON" = "1" ]; then
+    networkmanager_dmenu
+fi
+name="$(iwgetid -r)"
+if [ -n "$name" ]; then
+    strength="$(nmcli device wifi list | grep '*' | tail -1 | awk '{print $8}')"
+    echo -e "   $name $strength%"
+    echo -e "   $strength%"
+    echo "#B8BB26"
+else
+    echo -e "   None "
+    echo
+    echo "#FB4933"
+fi
 #+end_src
 ** masterinstall
 :PROPERTIES:
