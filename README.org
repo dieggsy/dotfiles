@@ -32,5 +32,5 @@ dotfiles/scripts, so be pretty damn sure.
 
 ** Partial installation
 There's not currently a great way to do this. I'm hoping to introduce some kind
-of system with command line arguments. At some point in the future, but for
-now, you could just copy paste the snippets you like.
+of system with command line arguments at some point in the future, but for now,
+you could just copy paste the snippets you like.
