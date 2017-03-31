@@ -2208,17 +2208,19 @@ alias def='dict -d wn'
 alias ed="ed -p:"
 alias edit="emacsclient -n"
 alias editv="emacsclient -t"
-alias encrypt="gpg --armor --encrypt -r"
-alias lock="gpg -c --armor"
-alias encryptdir="gpg-zip --armor --encrypt -r"
+alias encrypt="gpg2 --armor --encrypt -r"
+alias lock="gpg2 -c --armor"
+alias encryptdir="gpg-zip --encrypt -r"
 alias lockdir="gpg-zip -c --armor"
-alias decrypt="gpg -d"
+alias gpg="gpg2"
+alias decrypt="gpg2 -d"
 alias decryptdir="gpg-zip -d"
 alias fcolor="spectrum_ls | rg --color=never -N"
 alias filecount="ls -1 | wc -l"
 alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
 which hub > /dev/null && alias git=hub
 [ "$(uname)" = "Linux" ] && compdef hub=git
+[ "$(uname)" = "Linux" ] && which nautilus > /dev/null && alias nautilus="nautilus > /dev/null 2>&1"
 alias gls='gls -X --group-directories-first --color=always'
 alias ls='exa --group-directories-first --sort=extension'
 alias glst="gls -t"
