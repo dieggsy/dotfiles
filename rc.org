@@ -22,6 +22,7 @@ readable in org format than in rendered markdown.
    - [[#khdrc][khdrc]]
    - [[#kwmrc][kwmrc]]
    - [[#nanorc][nanorc]]
+   - [[#networkmanager_dmenu][networkmanager_dmenu]]
    - [[#peco][peco]]
    - [[#pythonrcpy][pythonrc.py]]
    - [[#rainbowstream][rainbowstream]]
@@ -419,7 +420,7 @@ Terminal=false
 [user]
 	name = therockmandolinist
 	email = diegoamundo@gmail.com
-	signingkey = 4AC0074360FE0C80
+	signingkey = AEAC5CE8E1F933F0
 #+end_src
 **** filter
 #+begin_src conf
@@ -1456,7 +1457,34 @@ kwmc config border marked radius 6
 :END:
 Lol
 #+begin_src conf
-include /usr/local/share/nano/*
+include "~/.nano/*.nanorc"
+#+end_src
+** networkmanager_dmenu
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.config/networkmanager-dmenu/config.ini")
+:END:
+#+begin_src conf
+[dmenu]
+dmenu_command = rofi -font 'Iosevka 25'
+p = [Networks]
+# # Note that dmenu_command can contain arguments as well like `rofi -width 30`
+# # Rofi and dmenu are set to case insensitive by default `-i`
+# l = number of lines to display, defaults to number of total network options
+# fn = font string
+# nb = normal background (name, #RGB, or #RRGGBB)
+# nf = normal foreground
+# sb = selected background
+# sf = selected foreground
+# b =  (just set to empty value and menu will appear at the bottom
+# m = number of monitor to display on
+# p = Custom Prompt for the networks menu
+# pinentry = Pinentry command
+
+[editor]
+terminal = termite
+gui_if_available = True
+# terminal = <name of terminal program>
+# gui_if_available = <True or False>
 #+end_src
 ** peco
 :PROPERTIES:
