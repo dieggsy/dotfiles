@@ -1110,6 +1110,11 @@ based on or copied from spacemacs, so definitely check them out!
     "jw" 'avy-goto-word-1
     "jl" 'avy-goto-line
     "jf" 'find-function
+    "jg" 'dumb-jump-go
+    "jG" 'dumb-jump-go-other-window
+    "je" 'dumb-jump-go-prefer-external
+    "jE" 'dumb-jump-go-prefer-external-other-window
+    "jb" 'dumb-jump-back
     "ji" 'imenu
     "jI" 'imenu-anywhere
     "jv" 'find-variable))
@@ -3122,7 +3127,10 @@ Supposedly better than autocomplete.
 #+end_src
 *** [[https://github.com/jacktasia/dumb-jump][dumb-jump]]
 #+begin_src emacs-lisp :tangle no
-(use-package dumb-jump)
+(use-package dumb-jump
+  :config
+  (setq dumb-jump-selector 'ivy
+        dumb-jump-prefer-searcher 'rg))
 #+end_src
 *** [[https://github.com/Silex/elmacro][elmacro]]
 #+begin_quote
