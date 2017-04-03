@@ -2931,24 +2931,31 @@ elif [ "$BLOCK_BUTTON" = "4" ]; then
 fi
 
 spotify=$(ps axc | grep 'spotify')
+spotplaying="$([ -n "$spotify" ] && pacmd list-sink-inputs | grep -B16 'application.name = "spotify"' | head -1 | awk '{print $2}')"
 cmus=$(ps axc | grep 'cmus')
-playing=$(pacmd list-sink-inputs | grep state | tail -1 | cut -d' ' -f2)
+cmusplaying="$([ -n "$cmus" ] && cmus-remote -Q | head -1 | awk '{print $2}')"
 
-if [ -n "$spotify" ]; then
+if [ -n "$spotify" ] && [ "$spotplaying" = "RUNNING" ]; then
     artist="$(sp current | grep -E '^Artist' | cut -d' ' -f8-)"
     title="$(sp current | grep Title | cut -d' ' -f9-)"
-elif [ -n "$cmus" ] && [ "$(cmus-remote -Q | grep "status" | cut -d" " -f2-)" != "stopped" ]; then
+    color="#B8BB26"
+elif [ -n "$cmus" ] && [ "$cmusplaying" = "playing" ]; then
     title="$(cmus-remote -Q | grep "tag title" | cut -d" " -f3-)"
     artist="$(cmus-remote -Q | grep "tag artist" | cut -d" " -f3-)"
+    color="#B8BB26"
+elif [ -n "$spotify" ]; then
+    artist="$(sp current | grep -E '^Artist' | cut -d' ' -f8-)"
+    title="$(sp current | grep Title | cut -d' ' -f9-)"
+    color="#FB4922"
+elif [ -n "$cmus" ]; then
+    title="$(cmus-remote -Q | grep "tag title" | cut -d" " -f3-)"
+    artist="$(cmus-remote -Q | grep "tag artist" | cut -d" " -f3-)"
+    color="#FB4922"
 fi
 
 echo -e "   $artist - $title "
 echo -e "   $title "
-if [ "$playing" = "RUNNING" ]; then
-    echo "#B8BB26"
-else
-    echo "#FB4933"
-fi
+echo -e "$color"
 #+end_src
 *** volume
 :PROPERTIES:
@@ -2992,7 +2999,7 @@ if [ "$BLOCK_BUTTON" = "1" ]; then
 fi
 name="$(iwgetid -r)"
 if [ -n "$name" ]; then
-    strength="$(nmcli device wifi list | grep '*' | tail -1 | awk '{print $8}')"
+    strength="$(nmcli device wifi list | grep '*' | tail -1 | awk -F '[[:space:]][[:space:]]+' '{print $6}')"
     echo -e "   $name $strength%"
     echo -e "   $strength%"
     echo "#B8BB26"
