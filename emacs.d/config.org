@@ -1560,6 +1560,7 @@ A really nice search/completion system for emacs.
          ("C-x C-f" . counsel-find-file))
   :functions (ivy--format-function-generic
               counsel--yank-pop-truncate)
+  :commands counsel-describe-face
   :config
   (when (eq system-type 'darwin)
     (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind))
@@ -1777,7 +1778,7 @@ so I went with it.
           (0.0 . '(:foreground "#A89984"))))
 
   (setq org-todo-keywords
-        '((sequence "❯ TODO(t)" "○ IN-PROGRESS(p)" "◼ WAITING(w)" "|"
+        '((sequence "❯ TODO(t)" "○ IN-PROGRESS(p)" "￭ WAITING(w)" "|"
                     "✓ DONE(d)" "✗ CANCELED(c)")
           (sequence "❙ READ(r)" "|"
                     "✓ DONE(h)")))
@@ -1869,7 +1870,7 @@ so I went with it.
               '(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
                 ("❙ READ"        . (?❙ (Br . Bl) ?❙ (Br . Bl) ?❙))
                 ("○ IN-PROGRESS" . (?○ (Br . Bl) ?○ (Br . Bl) ?○))
-                ("◼ WAITING"     . (?◼ (Br . Bl) ?◼ (Br . Bl) ?◼))
+                ("￭ WAITING"     . (?￭ (Br . Bl) ?￭ (Br . Bl) ?￭))
                 ("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
                 ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
 
@@ -1899,7 +1900,7 @@ so I went with it.
               '(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
                 ("❙ READ"        . (?❙ (Br . Bl) ?❙ (Br . Bl) ?❙))
                 ("○ IN-PROGRESS" . (?○ (Br . Bl) ?○ (Br . Bl) ?○))
-                ("◼ WAITING"     . (?◼ (Br . Bl) ?◼ (Br . Bl) ?◼))
+                ("￭ WAITING"     . (?￭ (Br . Bl) ?￭ (Br . Bl) ?￭))
                 ("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
                 ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
   (prettify-symbols-mode)
