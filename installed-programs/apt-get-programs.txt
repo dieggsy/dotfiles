@@ -193,6 +193,7 @@ epiphany-browser
 epiphany-browser-data
 espeak
 espeak-data
+etcher-electron
 evemu-tools
 evince
 evince-common
@@ -410,6 +411,7 @@ gir1.2-gtksource-3.0
 gir1.2-ibus-1.0
 gir1.2-javascriptcoregtk-4.0
 gir1.2-json-1.0
+gir1.2-keybinder-3.0
 gir1.2-networkmanager-1.0
 gir1.2-notify-0.7
 gir1.2-packagekitglib-1.0
@@ -438,6 +440,7 @@ gnome-menus
 gnome-orca
 gnome-power-manager
 gnome-session-bin
+gnome-session-canberra
 gnome-settings-daemon
 gnome-settings-daemon-schemas
 gnome-sushi
@@ -485,6 +488,9 @@ gstreamer0.10-gnomevfs
 gstreamer1.0-alsa
 gstreamer1.0-clutter-3.0
 gstreamer1.0-libav
+gstreamer1.0-plugins-bad
+gstreamer1.0-plugins-bad-faad
+gstreamer1.0-plugins-bad-videoparsers
 gstreamer1.0-plugins-base
 gstreamer1.0-plugins-base-apps
 gstreamer1.0-plugins-good
@@ -565,6 +571,7 @@ jade
 java-common
 javascript-common
 joystick
+kazam
 kbd
 kerneloops-daemon
 keyboard-configuration
@@ -887,6 +894,7 @@ libchamplain-0.12-0
 libchamplain-gtk-0.12-0
 libcheese-gtk25
 libcheese8
+libchromaprint0
 libcilkrts5
 libclass-accessor-perl
 libclone-perl
@@ -944,7 +952,9 @@ libdbusmenu-glib4
 libdbusmenu-gtk3-4
 libdbusmenu-gtk4
 libdc1394-22
+libdca0
 libdconf1
+libde265-0
 libdebconfclient0
 libdee-1.0-4
 libdevmapper1.02.1
@@ -1187,6 +1197,7 @@ libgssapi-krb5-2
 libgssapi3-heimdal
 libgssdp-1.0-3
 libgssrpc4
+libgstreamer-plugins-bad1.0-0
 libgstreamer-plugins-base1.0-0
 libgstreamer-plugins-good1.0-0
 libgstreamer0.10-0
@@ -1332,7 +1343,9 @@ libjxr0
 libk5crypto3
 libkadm5clnt-mit9
 libkadm5srv-mit9
+libkate1
 libkdb5-8
+libkeybinder-3.0-0
 libkeyutils1
 libklibc
 libkmlbase1
@@ -1395,6 +1408,7 @@ libmbim-glib4
 libmbim-proxy
 libmediaart-2.0-0
 libmhash2
+libmimic0
 libminizip1
 libmirclient-dev
 libmirclient9
@@ -1403,7 +1417,9 @@ libmircommon5
 libmircookie-dev
 libmircookie2
 libmirprotobuf3
+libmjpegutils-2.1-0
 libmm-glib0
+libmms0
 libmng2
 libmnl0
 libmodplug1
@@ -1422,8 +1438,10 @@ libmpc3
 libmpcdec6
 libmpdec2
 libmpeg2-4
+libmpeg2encpp-2.1-0
 libmpfr4
 libmpg123-0
+libmplex2-2.1-0
 libmpx0
 libmspack0
 libmtdev1
@@ -1485,6 +1503,7 @@ libnuma-dev
 libnuma1
 liboauth0
 libodbc1
+libofa0
 libogdi3.2
 libogg-dev
 libogg0
@@ -1833,6 +1852,7 @@ libsnmp30
 libsocket6-perl
 libsodium18
 libsonic0
+libsoundtouch1
 libsoup-gnome2.4-1
 libsoup2.4-1
 libsox-fmt-alsa
@@ -1840,6 +1860,7 @@ libsox-fmt-base
 libsox2
 libsoxr0
 libsp1c2
+libspandsp2
 libspatialite-dev
 libspatialite7
 libspectre1
@@ -1850,6 +1871,7 @@ libspnav0
 libsqlite0
 libsqlite3-0
 libsqlite3-dev
+libsrtp0
 libss2
 libssh-gcrypt-4
 libssh2-1
@@ -1961,6 +1983,8 @@ libva1
 libvala-0.34-0
 libvdpau1
 libvisual-0.4-0
+libvo-aacenc0
+libvo-amrwbenc0
 libvorbis0a
 libvorbisenc2
 libvorbisfile3
@@ -1994,6 +2018,8 @@ libwebpdemux1
 libwebpmux1
 libwebrtc-audio-processing-0
 libwhoopsie0
+libwildmidi-config
+libwildmidi1
 libwind0-heimdal
 libwingpanel-2.0-0
 libwmf0.2-7
@@ -2139,6 +2165,7 @@ libyaml-cpp0.5v5
 libyaml-libyaml-perl
 libyaml-tiny-perl
 libyelp0
+libzbar0
 libzeitgeist-2.0-0
 libzmq5
 libzvbi-common
@@ -2150,20 +2177,20 @@ lintian
 linux-base
 linux-firmware
 linux-generic
-linux-headers-4.4.0-66
-linux-headers-4.4.0-66-generic
 linux-headers-4.4.0-70
 linux-headers-4.4.0-70-generic
+linux-headers-4.4.0-71
+linux-headers-4.4.0-71-generic
 linux-headers-generic
-linux-image-4.4.0-66-generic
 linux-image-4.4.0-70-generic
-linux-image-extra-4.4.0-66-generic
+linux-image-4.4.0-71-generic
 linux-image-extra-4.4.0-70-generic
+linux-image-extra-4.4.0-71-generic
 linux-image-generic
 linux-libc-dev
 linux-signed-generic
-linux-signed-image-4.4.0-66-generic
 linux-signed-image-4.4.0-70-generic
+linux-signed-image-4.4.0-71-generic
 linux-signed-image-generic
 linux-sound-base
 lm-sensors
@@ -2299,6 +2326,7 @@ pciutils
 pcmciautils
 pdfsandwich
 pdftk
+peek
 perl
 perl-base
 perl-modules-5.22
@@ -2591,6 +2619,7 @@ recode
 rename
 resolvconf
 rfkill
+rng-tools
 rofi
 ros-kinetic-ackermann-msgs
 ros-kinetic-actionlib
@@ -2645,6 +2674,7 @@ ros-kinetic-forward-command-controller
 ros-kinetic-gazebo-msgs
 ros-kinetic-gazebo-plugins
 ros-kinetic-gazebo-ros
+ros-kinetic-gazebo-ros-control
 ros-kinetic-gazebo-ros-pkgs
 ros-kinetic-gencpp
 ros-kinetic-geneus
@@ -2777,6 +2807,7 @@ ros-kinetic-rqt-bag
 ros-kinetic-rqt-bag-plugins
 ros-kinetic-rqt-common-plugins
 ros-kinetic-rqt-console
+ros-kinetic-rqt-controller-manager
 ros-kinetic-rqt-dep
 ros-kinetic-rqt-graph
 ros-kinetic-rqt-gui
@@ -2964,7 +2995,6 @@ tcl8.6
 tcl8.6-dev
 tcpd
 tcpdump
-telegram
 telnet
 tesseract-ocr
 tesseract-ocr-eng
@@ -3048,6 +3078,7 @@ tor
 tor-geoipdb
 torsocks
 toshset
+trash-cli
 trayer
 tree
 ttf-adf-accanthis
