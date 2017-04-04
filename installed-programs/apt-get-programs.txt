@@ -76,6 +76,7 @@ caps
 cerbere
 cheese-common
 chktex
+chromium-codecs-ffmpeg-extra
 cli-common
 cm-super
 cm-super-minimal
@@ -465,6 +466,7 @@ golang-doc
 golang-go
 golang-race-detector-runtime
 golang-src
+google-chrome-beta
 google-musicmanager-beta
 gparted
 gperf
