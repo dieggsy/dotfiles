@@ -2975,8 +2975,7 @@ Syntax highlighting for markdown files.
   Jupyter and IPython 2.x/3.x notebook client in Emacs
 #+end_quote
 #+begin_src emacs-lisp
-(use-package ein
-  :mode "\\.ipynb\\'")
+(use-package ein)
 #+end_src
 *** [[https://github.com/immerrr/lua-mode][lua-mode]]
 #+begin_quote
@@ -3001,6 +3000,13 @@ Syntax highlighting for matlab scripts.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package vimrc-mode)
+#+end_src
+*** [[https://github.com/fxbois/web-mode][web-mode]]
+#+begin_src emacs-lisp
+(use-package web-mode
+  :mode ("\\.html?\\'" "\\.xml\\'" "\\.launch\\'")
+  :config
+  (setq web-mode-markup-indent-offset 2))
 #+end_src
 ** Editing utilities
 *** [[https://github.com/Fuco1/smartparens][smartparens]]
