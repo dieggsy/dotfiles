@@ -76,7 +76,6 @@ caps
 cerbere
 cheese-common
 chktex
-chromium-codecs-ffmpeg-extra
 cli-common
 cm-super
 cm-super-minimal
@@ -133,6 +132,7 @@ debianutils
 default-jre
 default-jre-headless
 desktop-file-utils
+detox
 dh-autoreconf
 dh-python
 dh-strip-nondeterminism
@@ -225,6 +225,7 @@ ffmpeg
 file
 file-roller
 findutils
+firefox
 flashplugin-installer
 flex
 fltk1.3-doc
@@ -2179,20 +2180,20 @@ lintian
 linux-base
 linux-firmware
 linux-generic
-linux-headers-4.4.0-70
-linux-headers-4.4.0-70-generic
 linux-headers-4.4.0-71
 linux-headers-4.4.0-71-generic
+linux-headers-4.4.0-72
+linux-headers-4.4.0-72-generic
 linux-headers-generic
-linux-image-4.4.0-70-generic
 linux-image-4.4.0-71-generic
-linux-image-extra-4.4.0-70-generic
+linux-image-4.4.0-72-generic
 linux-image-extra-4.4.0-71-generic
+linux-image-extra-4.4.0-72-generic
 linux-image-generic
 linux-libc-dev
 linux-signed-generic
-linux-signed-image-4.4.0-70-generic
 linux-signed-image-4.4.0-71-generic
+linux-signed-image-4.4.0-72-generic
 linux-signed-image-generic
 linux-sound-base
 lm-sensors
@@ -2348,6 +2349,7 @@ policykit-desktop-privileges
 poppler-data
 poppler-utils
 powermgmt-base
+ppa-purge
 ppp
 pptp-linux
 prerex
@@ -2547,6 +2549,7 @@ python3-dbus
 python3-debian
 python3-defer
 python3-dev
+python3-distupgrade
 python3-docker
 python3-gdbm
 python3-gi
@@ -2586,6 +2589,7 @@ python3-systemd
 python3-tk
 python3-tz
 python3-uno
+python3-update-manager
 python3-urllib3
 python3-websocket
 python3-wheel
@@ -3103,6 +3107,7 @@ ubuntu-keyring
 ubuntu-make
 ubuntu-minimal
 ubuntu-mono
+ubuntu-release-upgrader-core
 ubuntu-system-service
 ucf
 udev
@@ -3119,6 +3124,7 @@ uno-libs3
 unpaper
 unzip
 update-inetd
+update-manager-core
 update-notifier-common
 upower
 upstart
@@ -3251,6 +3257,7 @@ xterm
 xtitle
 xtrans-dev
 xtrlock
+xul-ext-ubufox
 xutils-dev
 xz-utils
 yelp
