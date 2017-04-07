@@ -166,6 +166,7 @@ docbook2x
 docutils-common
 docutils-doc
 dosfstools
+doxygen
 dpkg
 dpkg-dev
 dropbox
@@ -463,6 +464,11 @@ golang-1.6-doc
 golang-1.6-go
 golang-1.6-race-detector-runtime
 golang-1.6-src
+golang-1.8
+golang-1.8-doc
+golang-1.8-go
+golang-1.8-race-detector-runtime
+golang-1.8-src
 golang-doc
 golang-go
 golang-race-detector-runtime
@@ -671,6 +677,7 @@ latex-cjk-thai
 latexdiff
 latexmk
 lcdf-typetools
+ledger
 ledit
 less
 liba52-0.7.4
@@ -853,6 +860,7 @@ libboost1.58-dev
 libboost1.58-tools-dev
 libbrlapi0.6
 libbs2b0
+libbsd-dev
 libbsd0
 libbsh-java
 libbulletcollision2.83.6
@@ -899,6 +907,7 @@ libcheese-gtk25
 libcheese8
 libchromaprint0
 libcilkrts5
+libclang1-3.6
 libclass-accessor-perl
 libclone-perl
 libclucene-contribs1v5
@@ -987,6 +996,7 @@ libedata-book-1.2-25
 libedata-cal-1.2-28
 libedataserver-1.2-21
 libedataserverui-1.2-1
+libedit-dev
 libedit2
 libeet1
 libegl1-mesa
@@ -1156,6 +1166,7 @@ libgme0
 libgmime-2.6-0
 libgmp-dev
 libgmp10
+libgmp3-dev
 libgmpxx4ldbl
 libgnome-2-0
 libgnome-bluetooth13
@@ -1373,6 +1384,7 @@ liblept5
 liblightdm-gobject-1-0
 liblinearmath2.83.6
 liblist-moreutils-perl
+libllvm3.6v5
 libllvm3.8
 liblocale-gettext-perl
 liblog4cxx-dev
@@ -1442,6 +1454,7 @@ libmpcdec6
 libmpdec2
 libmpeg2-4
 libmpeg2encpp-2.1-0
+libmpfr-dev
 libmpfr4
 libmpg123-0
 libmplex2-2.1-0
@@ -1505,6 +1518,8 @@ libnss3-nssdb
 libnuma-dev
 libnuma1
 liboauth0
+libobjc-5-dev
+libobjc4
 libodbc1
 libofa0
 libogdi3.2
