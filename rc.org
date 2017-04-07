@@ -2318,7 +2318,7 @@ fi
 **** Path
 #+begin_src sh
 export GOPATH="$HOME/go"
-export GOROOT=/usr/lib/go-1.6
+export GOROOT=/usr/lib/go-1.8
 
 export PYENV_ROOT="$HOME/.pyenv"
 path=(
