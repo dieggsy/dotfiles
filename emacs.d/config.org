@@ -1055,28 +1055,28 @@ based on or copied from spacemacs, so definitely check them out!
   "Set all leader bindings related to reference/search."
   (diego/set-leader-keys
     "sS" 'swiper-all
-    "sm" 'swiper-multi
-    "sw" 'diego/define-word
-    "sg" 'google-this-search
     "sd" 'ddg-this-search
+    "sg" 'google-this-search
     "sk" 'diego/wiki
+    "sm" 'swiper-multi
     "sr" 'counsel-rg
-    "ss" 'swiper))
+    "ss" 'swiper
+    "sw" 'diego/define-word))
 #+end_src
 **** Projects
 #+begin_src emacs-lisp
 (defun diego/leader-projects ()
   "Set all leader bindings related to projectile."
   (diego/set-leader-keys
-    "pp" 'counsel-projectile
-    "ps" 'counsel-projectile-switch-project
-    "pf" 'diego/project-find-file
-    "pd" 'counsel-projectile-find-dir
     "pb" 'counsel-projectile-switch-to-buffer
+    "pd" 'counsel-projectile-find-dir
+    "pf" 'diego/project-find-file
+    "pg" 'projectile-vc
     "pk" 'projectile-kill-buffers
     "po" 'projectile-multi-occur
+    "pp" 'counsel-projectile
     "pr" 'projectile-recentf
-    "pg" 'projectile-vc)
+    "ps" 'counsel-projectile-switch-project)
 
   (defun diego/project-find-file ()
     (interactive)
@@ -1089,35 +1089,35 @@ based on or copied from spacemacs, so definitely check them out!
 (defun diego/leader-window ()
   "Set all leader bindings related to window manipulation."
   (diego/set-leader-keys
-    "wa" 'ace-window
-    "wv" 'diego/split-vert-focus
-    "wh" 'diego/split-horz-focus
-    "wt" 'diego/toggle-window-split
-    "wd" 'delete-window
+    "\\" 'ace-window
     "wD" 'ace-delete-window
-    "wo" 'delete-other-windows
-    "wf" 'make-frame
     "wS" 'ace-swap-window
+    "wa" 'ace-window
+    "wd" 'delete-window
+    "wf" 'make-frame
+    "wh" 'diego/split-horz-focus
+    "wo" 'delete-other-windows
     "ws" 'hydra-splitter/body
-    "\\" 'ace-window))
+    "wt" 'diego/toggle-window-split
+    "wv" 'diego/split-vert-focus))
 #+end_src
 **** Jumping
 #+begin_src emacs-lisp
 (defun diego/leader-jumping ()
   "Set all leader bindings related to in-buffer motion and 'jumping'."
   (diego/set-leader-keys
+    "jE" 'dumb-jump-go-prefer-external-other-window
+    "jG" 'dumb-jump-go-other-window
+    "jI" 'imenu-anywhere
+    "jb" 'dumb-jump-back
     "jc" 'avy-goto-char-2
-    "jw" 'avy-goto-word-1
-    "jl" 'avy-goto-line
+    "je" 'dumb-jump-go-prefer-external
     "jf" 'find-function
     "jg" 'dumb-jump-go
-    "jG" 'dumb-jump-go-other-window
-    "je" 'dumb-jump-go-prefer-external
-    "jE" 'dumb-jump-go-prefer-external-other-window
-    "jb" 'dumb-jump-back
     "ji" 'imenu
-    "jI" 'imenu-anywhere
-    "jv" 'find-variable))
+    "jl" 'avy-goto-line
+    "jv" 'find-variable
+    "jw" 'avy-goto-word-1))
 #+end_src
 **** Applications
 #+begin_src emacs-lisp
@@ -1160,34 +1160,34 @@ based on or copied from spacemacs, so definitely check them out!
   "Set all leader bindings related to buffer and file manipulation."
   (diego/set-leader-keys
     "TAB" 'diego/switch-to-previous-buffer
-    "bb"  'ivy-switch-buffer
-    "bk"  'kill-this-buffer
+    "b*"  'diego/switch-to-star
+    "bC"  'diego/switch-to-customize
     "bK"  'kill-buffer
-    "bm"  'kill-matching-buffers
-    "br"  'read-only-mode
+    "bM"  'diego/switch-to-messages
     "bR"  'revert-buffer
+    "bS"  'diego/switch-to-scratch
+    "bb"  'ivy-switch-buffer
+    "bc"  'clone-indirect-buffer-other-window
+    "be"  'diego/safe-erase-buffer
+    "bi"  'ibuffer
+    "bk"  'kill-this-buffer
+    "bm"  'kill-matching-buffers
     "bn"  'next-buffer
     "bo"  'org-iswitchb
     "bp"  'previous-buffer
-    "be"  'diego/safe-erase-buffer
-    "bi"  'ibuffer
-    "bc"  'clone-indirect-buffer-other-window
-    "bS"  'diego/switch-to-scratch
-    "bM"  'diego/switch-to-messages
-    "b*"  'diego/switch-to-star
+    "br"  'read-only-mode
     "bs"  'ivy-switch-buffer-other-window
-    "bC"  'diego/switch-to-customize
 
-    "ff"  'counsel-find-file
-    "fb"  'headlong-bookmark-jump
     "fB"  'headlong-bookmark-jump-other
+    "fb"  'headlong-bookmark-jump
     "fc"  'diego/copy-file
-    "fs"  'diego/save-buffer
+    "fd"  'crux-delete-file-and-buffer
+    "ff"  'counsel-find-file
     "fl"  'counsel-locate
-    "fr"  'crux-rename-file-and-buffer
-    "fpt" 'diego/pop-to-org-todo
     "fpn" 'diego/pop-to-org-notes
-    "fd"  'crux-delete-file-and-buffer))
+    "fpt" 'diego/pop-to-org-todo
+    "fr"  'crux-rename-file-and-buffer
+    "fs"  'diego/save-buffer))
 #+end_src
 **** Editing
 #+begin_src emacs-lisp
@@ -1195,21 +1195,21 @@ based on or copied from spacemacs, so definitely check them out!
   "Set all leader bindings related to text-editing."
   (diego/set-leader-keys
     ";"   'evilnc-comment-operator
-    "cl"  'evilnc-comment-or-uncomment-lines
     "ci"  'diego/comment-or-uncomment-lines-inverse
+    "cl"  'evilnc-comment-or-uncomment-lines
     "cp"  'evilnc-comment-or-uncomment-paragraphs
     "ct"  'evilnc-comment-or-uncomment-to-the-line
     "cy"  'evilnc-copy-and-comment-lines
 
-    "nn"  'diego/narrow-dwim
+    "n-"  'hydra-numbers/evil-numbers/dec-at-pt
+    "n="  'hydra-numbers/evil-numbers/inc-at-pt
     "nf"  'narrow-to-defun
+    "nn"  'diego/narrow-dwim
     "np"  'narrow-to-page
     "nr"  'narrow-to-region
-    "n="  'hydra-numbers/evil-numbers/inc-at-pt
-    "n-"  'hydra-numbers/evil-numbers/dec-at-pt
 
-    "xar" 'align-regexp
     "xa&" 'diego/align-repeat-ampersand
+    "xa'" 'diego/align-repeat-single-quote
     "xa(" 'diego/align-repeat-left-paren
     "xa)" 'diego/align-repeat-right-paren
     "xa," 'diego/align-repeat-comma
@@ -1220,64 +1220,66 @@ based on or copied from spacemacs, so definitely check them out!
     "xaa" 'align
     "xac" 'align-current
     "xam" 'diego/align-repeat-math-oper
+    "xar" 'align-regexp
     "xar" 'diego/align-repeat
     "xa|" 'diego/align-repeat-bar
-    "xa'" 'diego/align-repeat-single-quote
 
     "xdw" 'delete-trailing-whitespace
-    "xir" 'indent-region
     "xib" 'indent-buffer
     "xii" 'indent-rigidly
-    "xj" 'hydra-justify/body
+    "xir" 'indent-region
+    "xj"  'hydra-justify/body
     "xls" 'sort-lines
     "xq"  'diego/fill-or-unfill
-    "xt" 'hydra-transpose/body
+    "xt"  'hydra-transpose/body
     "xwc" 'count-words
 
-    "xm" 'hydra-multiedit/body
+    "xm"  'hydra-multiedit/body
 
-    "xp" 'hydra-smartparens/body
+    "xp"  'hydra-smartparens/body
 
+    "im"  'insert-kbd-macro
     "iu"  'counsel-unicode-char
-    "iy"  'yas-insert-snippet
-    "im" 'insert-kbd-macro))
+    "iy"  'yas-insert-snippet))
 #+end_src
 **** magit
 #+begin_src emacs-lisp
 (defun diego/leader-magit ()
   "Set all leader bindings related to magit and version control."
   (diego/set-leader-keys
-    "gs" 'magit-status
-    "gl" 'magit-log-all
     "gB" 'magit-blame-toggle
-    "gc" 'magit-checkout
-    "gr" 'vc-revision-other-window
     "gC" 'magit-clone
+    "gL" 'magit-log-buffer-file
     "ga" 'magit-submodule-add
-    "gb" 'magit-branch))
+    "gb" 'magit-branch
+    "gc" 'magit-checkout
+    "gf" 'magit-find-file
+    "gl" 'magit-log-all
+    "gr" 'vc-revision-other-window
+    "gs" 'magit-status))
 #+end_src
 **** Help
 #+begin_src emacs-lisp
 (defun diego/leader-help ()
   "Set all leader bindings related to help and Emacs reference."
   (diego/set-leader-keys
+    "hca" 'customize-apropos
+    "hcf" 'customize-face-other-window
+    "hcg" 'customize-group-other-window
+    "hcm" 'customize-mode
+    "hcv" 'customize-variable-other-window
+    "hdF" 'counsel-describe-face
+    "hdV" 'apropos-value
     "hdb" 'counsel-descbinds
     "hdc" 'describe-char
     "hdd" 'devdocs-search
     "hdf" 'counsel-describe-function
-    "hdF" 'counsel-describe-face
     "hdk" 'describe-key
     "hdm" 'describe-mode
     "hdp" 'describe-package
-    "hdv" 'counsel-describe-variable
-    "hdV" 'apropos-value
-    "hdt" 'describe-theme
     "hds" 'describe-symbol
-    "hcf" 'customize-face-other-window
-    "hca" 'customize-apropos
-    "hcv" 'customize-variable-other-window
-    "hcm" 'customize-mode
-    "hcg" 'customize-group-other-window
+    "hdt" 'describe-theme
+    "hdv" 'counsel-describe-variable
     "hk"  'which-key-show-top-level
     "hm"  'man
     "hn"  'view-emacs-news
@@ -1289,9 +1291,9 @@ based on or copied from spacemacs, so definitely check them out!
 (defun diego/leader-quit ()
   "Set all leader bindings related to quitting, closing, and restarting."
   (diego/set-leader-keys
+    "qf" 'delete-frame
     "qq" 'save-buffers-kill-emacs
-    "qr" 'restart-emacs
-    "qf" 'delete-frame))
+    "qr" 'restart-emacs))
 #+end_src
 **** Global/non-prefix
 #+begin_src emacs-lisp
@@ -1299,16 +1301,16 @@ based on or copied from spacemacs, so definitely check them out!
   "Set evil leader non-prefix bindings and call leader helper functions."
 
   (diego/set-leader-keys
-    "SPC" 'counsel-M-x
-    "C"   'org-capture
-    "u"   'universal-argument
     "&"   'async-shell-command
-    ":"   'eval-expression
     "-"   'ivy-resume
-    "y"   'counsel-yank-pop
-    "r"   'repeat
+    ":"   'eval-expression
+    "C"   'org-capture
     "S"   'hydra-spelling/body
+    "SPC" 'counsel-M-x
+    "r"   'repeat
     "t"   'hydra-toggle/body
+    "u"   'universal-argument
+    "y"   'counsel-yank-pop
     "z"   'hydra-zoom/body)
 
   (diego/leader-applications)
@@ -1551,7 +1553,7 @@ A really nice search/completion system for emacs.
 *** swiper
 #+begin_src emacs-lisp
 (use-package swiper
-  :config)
+  :config (setq swiper-goto-start-of-match t))
 #+end_src
 *** counsel
 #+begin_src emacs-lisp
