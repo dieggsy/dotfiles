@@ -459,11 +459,6 @@ gnuplot5-qt
 gnutls-bin
 gobject-introspection
 golang
-golang-1.6
-golang-1.6-doc
-golang-1.6-go
-golang-1.6-race-detector-runtime
-golang-1.6-src
 golang-1.8
 golang-1.8-doc
 golang-1.8-go
