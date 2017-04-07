@@ -41,7 +41,6 @@ readable in org format than in rendered markdown.
    - [[#pass][pass]]
    - [[#playerctl-cmus][playerctl-cmus]]
    - [[#spotify-desktop][spotify-desktop]]
-   - [[#spotifypy][spotify.py]]
    - [[#text-pager][text-pager]]
    - [[#updates][updates]]
    - [[#wfname][wfname]]
@@ -2265,7 +2264,6 @@ alias resetwifi="networksetup -setairportpower en0 off; sleep 2;"\
 "networksetup -setairportpower en0 on"
 alias rg="rg -i -g '!archive-contents' --colors 'line:style:bold' --colors 'path:style:bold'"
 alias rtv='PAGER=text-pager rtv --enable-media'
-[ "$(uname)" = "Linux" ] && alias spotify="spotify --force-device-scale-factor=2 > /dev/null 2>&1 &"
 alias starwars="telnet towel.blinkenlights.nl" # heh
 alias sudo='sudo '                             # recognize aliases
 alias sz="du -hs"                              # get folder/file size
@@ -3187,28 +3185,11 @@ fi
 #+end_src
 ** spotify-desktop
 :PROPERTIES:
-:header-args+:  :tangle (when (eq system-type 'gnu/linux) "~/bin/spotify-desktop") :shebang "#!/usr/bin/env bash"
+:header-args+:  :tangle (when (eq system-type 'gnu/linux) "~/bin/spotify") :shebang "#!/usr/bin/env bash"
 :END:
 #+begin_src sh
-spotify --force-device-scale-factor=2 > /dev/null 2>&1 &
+/usr/bin/spotify --force-device-scale-factor=2 > /dev/null 2>&1 &
 #+end_src
-** spotify.py
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/spotify.py") :shebang "#!/usr/bin/python"
-:END:
-#+begin_src python
-import dbus
-try:
-	bus = dbus.SessionBus()
-	spotify = bus.get_object("org.mpris.MediaPlayer2.spotify", "/org/mpris/MediaPlayer2")
-	spotify_iface = dbus.Interface(spotify, 'org.freedesktop.DBus.Properties')
-	props = spotify_iface.Get('org.mpris.MediaPlayer2.Player', 'Metadata')
-	print(str(props['xesam:artist'][0]) + " - " + str(props['xesam:title']))
-	exit
-except dbus.exceptions.DBusException:
-	exit
-#+end_src
-
 ** text-pager
 :PROPERTIES:
 :header-args+: :tangle ~/bin/text-pager :shebang "#!/usr/bin/env bash"
