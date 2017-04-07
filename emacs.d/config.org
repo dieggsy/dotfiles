@@ -2924,6 +2924,10 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
   :config
   (add-hook 'csv-mode-hook #'csv-align-fields))
 #+end_src
+*** [[https://github.com/Kitware/CMake][cmake-mode]]
+#+begin_src emacs-lisp
+(use-package cmake-mode)
+#+end_src
 *** [[http://jblevins.org/projects/markdown-mode/][markdown-mode]]
 Syntax highlighting for markdown files.
 #+begin_src emacs-lisp
