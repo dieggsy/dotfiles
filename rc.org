@@ -2716,9 +2716,14 @@ fi
 :header-args+: :tangle ~/bin/zfuncs/spectrum_ls
 :END:
 #+begin_src sh
-for code in {000..255}; do
+if [ "$#" = 1 ]; then
+  code="$(printf "%03d\n" $1)"
   print -P -- "$code: %F{$code}$code%f"
-done
+else;
+    for code in $(seq -f "%03g" ${1:-000} ${2:-255}); do
+        print -P -- "$code: %F{$code}$code%f"
+    done
+fi
 #+end_src
 **** pixelate
 :PROPERTIES:
