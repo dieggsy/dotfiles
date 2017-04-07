@@ -3703,7 +3703,7 @@ Configuration that applies to all programming modes.
 (defun diego/setup-calc-mode()
   "Custom `calc-mode' configuration."
   (local-set-key (kbd "x") (lambda () (interactive) (counsel-M-x "^calc-")))
-  (calc-symbolic-mode 1))
+  (setq calc-symbolic-mode 1))
 
 (add-hook 'calc-mode-hook #'diego/setup-calc-mode)
 #+end_src
