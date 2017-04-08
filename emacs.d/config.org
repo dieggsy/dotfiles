@@ -2848,6 +2848,7 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
         paradox-execute-asynchronously t)
   (evil-define-key 'normal paradox-menu-mode-map
     "q"  'paradox-quit-and-close
+    "fc" 'paradox-filter-clear
     "fr" 'paradox-filter-regexp
     "fu" 'paradox-filter-upgrades
     "fs" 'paradox-filter-stars
