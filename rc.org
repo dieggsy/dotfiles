@@ -3030,7 +3030,7 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 # Install brew bundle
 echo "\n\e[1;34mInstalling: \e[91mhomebrew programs\e[0;97m"
 /usr/local/bin/brew tap Homebrew/bundle
-/usr/local/bin/brew bundle --file=~/dotfiles/installed-programs/brew-programs.rb
+/usr/local/bin/brew bundle --file=~/dotfiles/installed-programs/brew.rb
 #+end_src
 **** Install alfred workflow utils
 #+begin_src sh :tangle (when (eq system-type 'darwin) "~/bin/masterinstall")
@@ -3044,7 +3044,7 @@ echo -e "\e[1;34mDone"
 *** Linux
 **** apt-get packages
 #+begin_src sh :tangle (when (eq system-type 'gnu/linux) "~/bin/masterinstall")
-<~/dotfiles/installed-programs/apt-get-programs.txt xargs sudo apt-get install
+<~/dotfiles/installed-programs/apt.txt xargs sudo apt-get install
 #+end_src
 **** golang
 #+begin_src sh :tangle (when (eq system-type 'gnu/linux) "~/bin/masterinstall")
@@ -3088,11 +3088,11 @@ usr/local/bin/pyenv rehash
 #+begin_src sh
 pyenv global $python3version
 echo "\n\e[1;34mInstalling: \e[91mpip3 programs\e[0;97m"
-<~/dotfiles/installed-programs/pip3-programs.txt xargs pip install
+<~/dotfiles/installed-programs/pip3.txt xargs pip install
 
 pyenv global $python2version
 echo "\n\e[1;34mInstalling: \e[91mpip2 programs\e[0;97m"
-<~/dotfiles/installed-programs/pip2-programs.txt xargs pip install
+<~/dotfiles/installed-programs/pip2.txt xargs pip install
 
 pyenv global $python3version
 #+end_src
@@ -3225,8 +3225,8 @@ if [ -z "$res" ]; then
 else
     echo $res | xargs pip install --upgrade
 fi
-pip freeze > ~/dotfiles/installed-programs/pip2-programs.txt
-sed -i -e 's/=.*//' ~/dotfiles/installed-programs/pip2-programs.txt
+pip freeze > ~/dotfiles/installed-programs/pip2.txt
+sed -i -e 's/=.*//' ~/dotfiles/installed-programs/pip2.txt
 #+end_src
 *** Python 3 pip
 #+begin_src sh
@@ -3242,8 +3242,8 @@ if [ -z "$res" ]; then
 else
     echo $res | xargs pip install --upgrade
 fi
-pip freeze > ~/dotfiles/installed-programs/pip3-programs.txt
-sed -i -e 's/=.*//' ~/dotfiles/installed-programs/pip3-programs.txt
+pip freeze > ~/dotfiles/installed-programs/pip3.txt
+sed -i -e 's/=.*//' ~/dotfiles/installed-programs/pip3.txt
 #+end_src
 *** Package manager
 **** Darwin
@@ -3256,7 +3256,7 @@ brew cleanup
 brew prune
 brew doctor
 
-brew bundle dump --force --file=~/dotfiles/installed-programs/brew-programs.rb
+brew bundle dump --force --file=~/dotfiles/installed-programs/brew.rb
 #+end_src
 
 **** GNU/Linux
@@ -3265,7 +3265,7 @@ echo -e "\n\e[1;34mUpdating: \e[91mapt-get\e[0;97m"
 sudo apt-get update
 sudo apt-get upgrade
 
-apt list --installed | sed 's@/.*@@' | tail -n+2 > ~/dotfiles/installed-programs/apt-get-programs.txt
+apt list --installed | sed 's@/.*@@' | tail -n+2 > ~/dotfiles/installed-programs/apt.txt
 #+end_src
 *** Finalize
 #+begin_src sh

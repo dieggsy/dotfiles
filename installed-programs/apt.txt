@@ -5,11 +5,14 @@ acpi
 acpi-support
 acpid
 adduser
+adobe-flash-properties-gtk
+adobe-flashplugin
 adwaita-icon-theme
 aglfn
 alsa-base
 alsa-utils
 anacron
+ant
 apg
 app-install-data
 apparmor
@@ -55,6 +58,7 @@ bluez
 bluez-cups
 bluez-obexd
 bluez-tools
+brave
 brltty
 bsdgames
 bsdmainutils
@@ -125,14 +129,18 @@ dc
 dconf-cli
 dconf-gsettings-backend
 dconf-service
+dctrl-tools
 debconf
 debconf-i18n
 debhelper
 debianutils
+default-jdk
+default-jdk-headless
 default-jre
 default-jre-headless
 desktop-file-utils
 detox
+devscripts
 dh-autoreconf
 dh-python
 dh-strip-nondeterminism
@@ -227,7 +235,8 @@ file
 file-roller
 findutils
 firefox
-flashplugin-installer
+fish
+fish-common
 flex
 fltk1.3-doc
 fluid
@@ -573,6 +582,7 @@ iso-codes
 iw
 jade
 java-common
+javahelper
 javascript-common
 joystick
 kazam
@@ -959,6 +969,7 @@ libdbusmenu-glib4
 libdbusmenu-gtk3-4
 libdbusmenu-gtk4
 libdc1394-22
+libdc1394-22-dev
 libdca0
 libdconf1
 libde265-0
@@ -1221,6 +1232,7 @@ libgtk2.0-bin
 libgtk2.0-common
 libgtk2.0-dev
 libgtkglext1
+libgtkglext1-dev
 libgtkmm-2.4-1v5
 libgtksourceview-3.0-1
 libgtksourceview-3.0-common
@@ -1295,6 +1307,7 @@ libieee1284-3
 libignition-math2
 libignition-math2-dev
 libijs-0.35
+libilmbase-dev
 libilmbase12
 libimlib2
 libimlib2-dev
@@ -1340,6 +1353,7 @@ libjs-jquery-isonscreen
 libjs-jquery-metadata
 libjs-jquery-tablesorter
 libjs-jquery-ui
+libjs-modernizr
 libjs-sphinxdoc
 libjs-underscore
 libjson-c2
@@ -1538,6 +1552,7 @@ libopencv-ml2.4v5
 libopencv-objdetect2.4v5
 libopencv-photo2.4v5
 libopencv-video2.4v5
+libopenexr-dev
 libopenexr22
 libopenjp2-7
 libopenjpeg5
@@ -1571,6 +1586,7 @@ libpangocairo-1.0-0
 libpangoft2-1.0-0
 libpangomm-1.4-1v5
 libpangox-1.0-0
+libpangox-1.0-dev
 libpangoxft-1.0-0
 libpantheon-files-core0
 libpantheon-files-widgets0
@@ -1761,6 +1777,7 @@ libquadmath0
 libraptor2-0
 librasqal3
 libraw1394-11
+libraw1394-dev
 libraw15
 librdf0
 libreadline6
@@ -2294,10 +2311,14 @@ ocaml-findlib
 ocaml-interp
 ocaml-nox
 ocl-icd-libopencl1
+ocl-icd-opencl-dev
 odbcinst
 odbcinst1debian2
 onboard
 onboard-data
+opencl-headers
+openjdk-8-jdk
+openjdk-8-jdk-headless
 openjdk-8-jre
 openjdk-8-jre-headless
 openmpi-bin
@@ -2308,6 +2329,7 @@ openssh-client
 openssl
 openvpn
 os-prober
+oxideqt-codecs-extra
 p11-kit
 p11-kit-modules
 p7zip-full
@@ -2340,6 +2362,7 @@ pcmciautils
 pdfsandwich
 pdftk
 peek
+pepperflashplugin-nonfree
 perl
 perl-base
 perl-modules-5.22
@@ -2394,6 +2417,7 @@ purifyeps
 pwgen
 pyqt5-dev
 python
+python-alabaster
 python-all
 python-all-dev
 python-appindicator
@@ -2401,6 +2425,8 @@ python-apt
 python-apt-common
 python-attr
 python-autobahn
+python-babel
+python-babel-localedata
 python-bzrlib
 python-cairo
 python-catkin-pkg
@@ -2439,6 +2465,7 @@ python-httplib2
 python-idna
 python-imaging
 python-ipaddress
+python-jinja2
 python-keyring
 python-launchpadlib
 python-lazr.restfulclient
@@ -2518,6 +2545,8 @@ python-sip-dev
 python-six
 python-snappy
 python-software-properties
+python-sphinx
+python-sphinx-rtd-theme
 python-talloc
 python-tk
 python-trollius
@@ -2955,6 +2984,8 @@ sox
 sp
 speech-dispatcher
 speech-dispatcher-audio-plugins
+sphinx-common
+sphinx-rtd-theme-common
 spotify-client
 sqlite
 sqlite3
@@ -3158,6 +3189,7 @@ vim
 vim-common
 vim-runtime
 vim-tiny
+vivaldi-snapshot
 vprerex
 vtk6
 w3m
@@ -3243,6 +3275,7 @@ xmlto
 xorg
 xorg-docs-core
 xorg-sgml-doctools
+xsel
 xserver-common
 xserver-xorg
 xserver-xorg-core
