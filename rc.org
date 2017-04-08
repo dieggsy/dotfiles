@@ -475,6 +475,7 @@ Terminal=false
 #+begin_src conf
 [status]
 	showUntrackedFiles = all
+    short=true
 #+end_src
 **** commit
 #+begin_src conf
@@ -2166,7 +2167,7 @@ HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=''
 #+end_src
 ***** [[https://github.com/zsh-users/zsh-autosuggestions][zsh-autosuggestions]]
 #+begin_src sh
-# source $HOME/Code/zsh-autosuggestions/zsh-autosuggestions.zsh
+# source $HOME/Code/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 #+end_src
 **** Keys
 #+begin_src sh
@@ -2348,6 +2349,7 @@ fpath=(
     $HOME/Code/zsh/cool-peco
     $fpath
 )
+export MANPATH=":$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/man/"
 typeset -gU path manpath cdpath fpath
 #+end_src
 **** Variables
