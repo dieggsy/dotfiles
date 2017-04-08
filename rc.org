@@ -32,7 +32,6 @@ readable in org format than in rendered markdown.
    - [[#zathurarc][zathurarc]]
    - [[#zsh][zsh]]
  - [[#scripts][Scripts]]
-   - [[#battery-notifier][battery-notifier]]
    - [[#dropmite][dropmite]]
    - [[#explorer][explorer]]
    - [[#i3blocks][i3blocks]]
@@ -40,7 +39,7 @@ readable in org format than in rendered markdown.
    - [[#org-tangle][org-tangle]]
    - [[#pass][pass]]
    - [[#playerctl-cmus][playerctl-cmus]]
-   - [[#spotify-desktop][spotify-desktop]]
+   - [[#spotify][spotify]]
    - [[#text-pager][text-pager]]
    - [[#updates][updates]]
    - [[#wfname][wfname]]
@@ -62,8 +61,6 @@ fi
 
 # set PATH so it includes user's private bin directories
 PATH="$HOME/bin:$HOME/.local/bin:$PATH"
-# Ubuntu make installation of Ubuntu Make binary symlink
-PATH=/home/diego/.local/share/umake/bin:$PATH
 
 export PATH="$HOME/.cargo/bin:$PATH"
 if [ "$(uname)" == "Linux" ]; then
@@ -2740,26 +2737,12 @@ COEFF2=$(echo "100 / $AMOUNT" | bc -l)
 convert -scale $COEFF1% -scale $COEFF2% $INFILE $OUFILE
 #+end_src
 * Scripts
-** battery-notifier
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/battery-notifier") :shebang "#!/usr/bin/env bash"
-:END:
-#+begin_src sh
-touch /tmp/battery-status
-state=$(acpi -b | grep -P -o '(?<=: )[a-zA-Z]+(?=,)')
-level=$(acpi -b | grep -P -o '[0-9]+(?=%)')
-if [ "$level" -le 10 ] && [ "$(</tmp/battery-status)" != "critically-low" ]; then
-    espeak -vf4 "Battery critically low, consider charging."
-    echo "critically-low" > /tmp/battery-status
-elif [ "$(</tmp/battery-status)" != "$state" ]; then
-    espeak -vf4 "Battery $state"
-    echo "$state" > /tmp/battery-status
-fi
-#+end_src
 ** dropmite
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/dropmite") :shebang "!/usr/bin/env bash"
 :END:
+A wrapper to open termite with the name "dropmite," used by i3wm to make it my
+floating terminal.
 #+begin_src sh
 termite --name=dropmite
 #+end_src
@@ -2767,10 +2750,12 @@ termite --name=dropmite
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/explorer")  :shebang "!/usr/bin/env bash"
 :END:
+Wrapper for floating ranger window with i3wm.
 #+begin_src sh
 termite -t ranger -e ranger --name=explorer
 #+end_src
 ** i3blocks
+i3blocks scripts taken from/inspired by [[https://github.com/yeungocanh/archdot/tree/master/.config/i3blocks][yeungocanh/archdot]].
 *** battery
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/battery") :shebang "#!/bin/bash"
@@ -3025,6 +3010,7 @@ fi
 :PROPERTIES:
 :header-args+: :tangle ~/bin/masterinstall :shebang "#!/usr/bin/env bash"
 :END:
+A work in progress to reinstall programs post apocalpyse.
 *** macOS
 **** Xcode
 #+begin_src sh :tangle (when (eq system-type 'darwin) "~/bin/masterinstall")
@@ -3130,6 +3116,7 @@ echo "\n\e[1;34mTangling: \e[91mconfig.org\e[0;97m"
 :PROPERTIES:
 :header-args+: :tangle ~/dotfiles/org-tangle :shebang "#!/usr/bin/env emacs --script"
 :END:
+Standalone emacs-lisp script to tangle rc.org and config.org.
 #+begin_src emacs-lisp
 (if (> (length command-line-args) 4)
     (message "too many args!")
@@ -3137,6 +3124,7 @@ echo "\n\e[1;34mTangling: \e[91mconfig.org\e[0;97m"
   (org-babel-tangle-file (expand-file-name (nth 3 command-line-args))))
 #+end_src
 ** pass
+Extensions and utilities for [[https://www.passwordstore.org/][pass]] password manager.
 *** peco
 :PROPERTIES:
 :header-args+: :tangle ~/.password-store/.extensions/peco.bash :shebang "#!/usr/bin/env bash"
@@ -3169,6 +3157,7 @@ fi
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/playerctl-cmus") :shebang "#!/usr/bin/env bash"
 :END:
+Wrapper around playerctl to control cmus as well.
 #+begin_src sh
 other=$(ps axc | grep 'spotify')
 if [ ! -z "$other" ]; then
@@ -3188,10 +3177,12 @@ else
 
 fi
 #+end_src
-** spotify-desktop
+** spotify
 :PROPERTIES:
 :header-args+:  :tangle (when (eq system-type 'gnu/linux) "~/bin/spotify") :shebang "#!/usr/bin/env bash"
 :END:
+Wrapper script around ~/usr/bin/spotify/~, taking advantage of path precedence to
+always call spotify with command line arguments that fix odd UI scaling on i3wm.
 #+begin_src sh
 /usr/bin/spotify --force-device-scale-factor=2 > /dev/null 2>&1 &
 #+end_src
@@ -3199,6 +3190,7 @@ fi
 :PROPERTIES:
 :header-args+: :tangle ~/bin/text-pager :shebang "#!/usr/bin/env bash"
 :END:
+A pager that wraps words at the 80th column, useful for [[https://github.com/michael-lazar/rtv][michael-lazar/rtv]].
 #+begin_src sh
 [ $# -ge 1 -a -f "$1" ] && input="$1" || input="-"
 cat $input | fold -w 80 -s | less
@@ -3207,6 +3199,7 @@ cat $input | fold -w 80 -s | less
 :PROPERTIES:
 :header-args+: :tangle ~/bin/updates :shebang "#!/usr/bin/env bash"
 :END:
+A script to update pip, apt, and homebrew packages.
 *** Initialize
 Make sure not in a virtualenv and track pyenv python version.
 #+begin_src sh
@@ -3286,6 +3279,8 @@ fi
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'darwin) "~/bin/wfname") :shebang "#!/usr/bin/env python"
 :END:
+Get the name of the current Alfred workflow (since last I checked Alfred
+doesn't store workflows in directories with logical names).
 #+begin_src python
 from __future__ import print_function
 import plistlib,sys
@@ -3296,7 +3291,7 @@ except IOError:
     print('No \'info. plist\' file. ')
 #+end_src
 * Local vars
-
+Tangles the files asynchronously on save.
 #+begin_example
 # Local Variables:
 # after-save-hook: (git-gutter diego/async-babel-tangle)
