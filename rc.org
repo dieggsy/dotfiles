@@ -1979,10 +1979,22 @@ function prompt_sorin_pwd {
   echo $_prompt_sorin_pwd
 }
 
-PROMPT='%B%F{9}$(prompt_sorin_pwd) %B%F{2}❯%f%b '
+source $HOME/Code/zsh/zsh-git-prompt/zshrc.sh
+setopt prompt_subst
+GIT_PROMPT_EXECUTABLE="haskell"
+ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[green]%}"
+ZSH_THEME_GIT_PROMPT_CHANGED="%{%F{009}✚%G%}"
+ZSH_THEME_GIT_PROMPT_AHEAD="%{%F{013}↑%G%}"
+ZSH_THEME_GIT_PROMPT_BEHIND="%{%F{013}↓%G%}"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{%F{010}✓%G%}"
+ZSH_THEME_GIT_PROMPT_STAGED="%{%F{012}●%G%}"
+
+# PROMPT='%B%F{9}$(prompt_sorin_pwd) %B%F{2}❯%f%b '
+PROMPT='$(git_super_status) %F{7}$(prompt_sorin_pwd)%f%b '
+# PROMPT='%B%F{9}$(prompt_sorin_pwd) %B%F{2}λ%f%b '
 #+end_src
 ***** Rprompt
-#+begin_src sh
+#+begin_src sh :tangle no
 source $HOME/Code/zsh/zsh-git-prompt/zshrc.sh
 setopt prompt_subst
 GIT_PROMPT_EXECUTABLE="haskell"
