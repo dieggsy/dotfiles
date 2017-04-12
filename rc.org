@@ -1991,7 +1991,7 @@ ZSH_THEME_GIT_PROMPT_CLEAN="%{%F{010}✓%G%}"
 ZSH_THEME_GIT_PROMPT_STAGED="%{%F{012}●%G%}"
 
 # PROMPT='%B%F{9}$(prompt_sorin_pwd) %B%F{2}❯%f%b '
-PROMPT='$(git_super_status) %F{7}$(prompt_sorin_pwd)%f%b '
+PROMPT='${$(git_super_status)}%F{7}$(prompt_sorin_pwd)%f%b '
 # PROMPT='%B%F{9}$(prompt_sorin_pwd) %B%F{2}λ%f%b '
 #+end_src
 ***** Rprompt
@@ -2107,8 +2107,8 @@ autoload -Uz compinit && compinit -i
 autoload -Uz cool-peco
 cool-peco
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' menu select
+# zstyle ':completion:*' group-name ''
 zstyle ':completion:*' list-dirs-first true
 zstyle ':completion:*' squeeze-slashes true
 zstyle ':completion:*' _expand_alias
@@ -2193,7 +2193,8 @@ bindkey '^F' cool-peco-all-funcs
 [ "$(uname)" = "Linux" ] && [ -z $TMUX ] && export TERM=xterm-256color
 
 # some ls colors i've gotten used to
-export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31'
+export LS_COLORS='di=0;94:ex=0;92:ln=0;36'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 # kwm/khd
 kwm="koekeishiya/formulae/kwm"
