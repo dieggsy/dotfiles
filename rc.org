@@ -32,12 +32,19 @@ readable in org format than in rendered markdown.
    - [[#zathurarc][zathurarc]]
  - [[#scripts][Scripts]]
    - [[#dropmite][dropmite]]
+   - [[#e][e]]
+   - [[#ev][ev]]
    - [[#explorer][explorer]]
    - [[#i3blocks][i3blocks]]
    - [[#masterinstall][masterinstall]]
+   - [[#ocrpdf][ocrpdf]]
+   - [[#ocrpdf2][ocrpdf2]]
    - [[#org-tangle][org-tangle]]
    - [[#pass][pass]]
+   - [[#pixelate][pixelate]]
+   - [[#pdftif][pdftif]]
    - [[#playerctl-cmus][playerctl-cmus]]
+   - [[#spectrum_ls][spectrum_ls]]
    - [[#spotify][spotify]]
    - [[#text-pager][text-pager]]
    - [[#updates][updates]]
@@ -1969,6 +1976,33 @@ floating terminal.
 #+begin_src sh
 termite --name=dropmite
 #+end_src
+** e
+:PROPERTIES:
+:header-args+: :tangle ~/bin/e :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+if [ -z "$1" ]; then
+    dir="."
+else
+    dir="$1"
+fi
+emacsclient -n $(rg -g '!Applications' -g '!Movies' -g '!Music' \
+                    -g '!Library' -g '!Pictures' -g '!*.png' \
+                    -g '!*.jpg' "$dir" --files \
+                     | peco --prompt '[edit]') > /dev/null 2>&1
+#+end_src
+** ev
+:PROPERTIES:
+:header-args+: :tangle ~/bin/ev :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+files=$(rg -g '!Applications' \
+           -g '!Movies' -g '!Music' -g '!Library' \
+           -g '!Pictures' -g '!*.png' -g '!*.jpg' \
+           "$1" --files \
+            | peco --prompt '[edit]')
+emacsclient -n --eval "(let ((inhibit-message t)) (dolist (file (split-string \"$files\")) (find-file-read-only file)))" > /dev/null 2>&1
+#+end_src
 ** explorer
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/explorer")  :shebang "!/usr/bin/env bash"
@@ -2322,6 +2356,50 @@ echo "\n\e[1;34mTangling: \e[91mrc.org\e[0;97m"
 echo "\n\e[1;34mTangling: \e[91mconfig.org\e[0;97m"
 ~/dotfiles/org-tangle ~/dotfiles/emacs.d/config.org > /dev/null 2>&1
 #+end_src
+** ocrpdf
+:PROPERTIES:
+:header-args+: :tangle ~/bin/ocrpdf :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+if [[ -z $1 ]]; then
+    echo "No input file provided."
+elif [[ -z $2 ]]; then
+    echo "No output file provided"
+else
+    echo "Converting pdf to png..."
+    \gs -dNOPAUSE -q -r500 \
+        -sDEVICE=tiffg4 \
+        -dBATCH \
+        -sOutputFile=$TMPDIR/tempocr.tif \
+        $1
+    echo "Running tesseract on pngs..."
+    tesseract $TMPDIR/tempocr.tif $2 >/dev/null 2>&1
+    echo "Done."
+fi
+#+end_src
+** ocrpdf2
+:PROPERTIES:
+:header-args+: :tangle ~/bin/ocrpdf2 :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+if [[ -z $1 ]]; then
+    echo "No input file provided."
+elif [[ -z $2 ]]; then
+    echo "No output file provided"
+else
+    echo "Converting pdf to png..."
+    convert -density 500 $1 $TMPDIR/tempocr.png
+    count=0
+    echo "Running tesseract on pngs..."
+    while [ -f $TMPDIR/tempocr-$count.png ]; do
+        echo "    Page $count"
+        tesseract $TMPDIR/tempocr-$count.png $TMPDIR/tempocr >/dev/null 2>&1
+        cat $TMPDIR/tempocr.txt >> $2
+        let count=count+1
+    done
+    echo "Created output file $2"
+fi
+#+end_src
 ** org-tangle
 :PROPERTIES:
 :header-args+: :tangle ~/dotfiles/org-tangle :shebang "#!/usr/bin/env emacs --script"
@@ -2363,6 +2441,33 @@ if [[ -n "$name" ]]; then
     ps axf | grep 'greenclip daemon' | grep -v grep | awk '{print $1}' | xargs kill -18
 fi
 #+end_src
+** pixelate
+:PROPERTIES:
+:header-args+: :tangle ~/bin/pixelate :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+AMOUNT=$(echo "1.001 - $1" | bc -l)
+INFILE=$2
+OUFILE=$3
+
+COEFF1=$(echo "100 * $AMOUNT" | bc -l)
+COEFF2=$(echo "100 / $AMOUNT" | bc -l)
+
+convert -scale $COEFF1% -scale $COEFF2% $INFILE $OUFILE
+#+end_src
+** pdftif
+:PROPERTIES:
+:header-args+: :tangle ~/bin/pdftif :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+\gs -dNOPAUSE -q -r500 \
+    -sDEVICE=tiffg4 \
+    -dBATCH \
+    -dFirstPage=$2 \
+    -dLastPage=$3 \
+    -sOutputFile=$4 \
+    $1
+#+end_src
 ** playerctl-cmus
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/playerctl-cmus") :shebang "#!/usr/bin/env bash"
@@ -2385,6 +2490,20 @@ else
         cmus-remote -r
     fi
 
+fi
+#+end_src
+** spectrum_ls
+:PROPERTIES:
+:header-args+: :tangle ~/bin/spectrum_ls :shebang "#!/usr/bin/env zsh"
+:END:
+#+begin_src sh
+if [ "$#" = 1 ]; then
+  code="$(printf "%03d\n" $1)"
+  print -P -- "$code: %F{$code}$code%f"
+else;
+    for code in $(seq -f "%03g" ${1:-000} ${2:-255}); do
+        print -P -- "$code: %F{$code}$code%f"
+    done
 fi
 #+end_src
 ** spotify

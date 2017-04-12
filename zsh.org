@@ -7,7 +7,6 @@ aosnetuh
  - [[#introduction][Introduction]]
  - [[#zshrc][zshrc]]
    - [[#initial-setup][Initial setup]]
-   - [[#functions][Functions]]
    - [[#zsh-options][Zsh options]]
    - [[#pluginsexternal][Plugins/External]]
    - [[#keys][Keys]]
@@ -21,16 +20,6 @@ aosnetuh
  - [[#zprofile][zprofile]]
  - [[#modules][Modules]]
    - [[#sudo][sudo]]
- - [[#functions-1][Functions]]
-   - [[#apps][apps]]
-   - [[#e][e]]
-   - [[#ev][ev]]
-   - [[#ghq][ghq]]
-   - [[#pdftif][pdftif]]
-   - [[#ocrpdf][ocrpdf]]
-   - [[#ocrpdf2][ocrpdf2]]
-   - [[#spectrum_ls][spectrum_ls]]
-   - [[#pixelate][pixelate]]
  - [[#local-vars][Local vars]]
 
 * zshrc
@@ -130,14 +119,6 @@ if [ "alias" = $(whence -w run-help | sed 's/run-help: //') ]; then
 fi
 alias help=run-help
 #+end_src
-** Functions
-#+begin_src sh
-for file ($HOME/bin/zfuncs/*(N)); do
-    if [[ -a "$file" ]]; then
-        autoload -Uz "${file:t}"
-    fi
-done
-#+end_src
 ** Zsh options
 #+begin_src sh
 setopt glob_complete
@@ -165,7 +146,7 @@ if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
 #+begin_src sh
 if which thefuck > /dev/null; then eval $(thefuck --alias); fi
 #+end_src
-*** [[https://github.com/zplug/zplug][zplug]]
+*** [[https://github.com/zplug/zplug][zplug]] start
 #+begin_src sh
 if [[ ! -d ~/.zplug ]];then
     git clone https://github.com/zplug/zplug ~/.zplug
@@ -195,6 +176,10 @@ else
     zplug "rupa/z", use:z.sh
 fi
 #+end_src
+**** [[https://github.com/zsh-users/zsh-completions][zsh-completions]]
+#+begin_src sh :tangle no
+zplug "zsh-users/zsh-completions"
+#+end_src
 **** [[https://github.com/zsh-users/zsh-autosuggestions][zsh-autosuggestions]]
 #+begin_src sh
 zplug "zsh-users/zsh-autosuggestions", at:develop
@@ -204,8 +189,9 @@ zplug "zsh-users/zsh-autosuggestions", at:develop
 if which brew > /dev/null; then
     source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 else
-    zplug "zsh-users/zsh-syntax-highlighting"
+    zplug "zsh-users/zsh-syntax-highlighting", defer:2
 fi
+zplug "b4b4r07/zsh-vimode-visual", defer:3
 #+end_src
 **** [[https://github.com/zsh-users/zsh-history-substring-search][zsh-history-substring-search]]
 #+begin_src sh
@@ -269,7 +255,6 @@ fi
 *** zplug load
 #+begin_src sh
 zplug load
-
 if zplug check olivierverdier/zsh-git-prompt; then
     GIT_PROMPT_EXECUTABLE="haskell"
     ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[green]%}"
@@ -456,7 +441,6 @@ export GOROOT=/usr/lib/go-1.8
 
 export PYENV_ROOT="$HOME/.pyenv"
 path=(
-    $HOME/.cargo/bin
     $PYENV_ROOT/bin
     $HOME/bin
     $HOME/.local/bin
@@ -466,10 +450,7 @@ path=(
 )
 
 fpath=(
-    ~/bin/zfuncs
     /usr/share/zsh/site-functions/
-    /usr/local/share/zsh-completions
-    ~/.ghq/zsh-users/zsh-completions/src
     $HOME/Code/zsh/cool-peco
     $fpath
 )
@@ -549,140 +530,6 @@ sudo-command-line() {
 zle -N sudo-command-line
 # Defined shortcut keys: [Esc] [Esc]
 bindkey -M vicmd "\e" sudo-command-line
-#+end_src
-* Functions
-** apps
-:PROPERTIES:
-:header-args+: :tangle ~/bin/zfuncs/apps
-:END:
-#+begin_src sh
-open -a "$(find /Applications -maxdepth 2 -type d -name '*.app' \
-                        | sed -r 's@/Applications/(Utilities/)?(.+?).app?@\2@' \
-                        | peco)" > /dev/null 2>&1
-#+end_src
-** e
-:PROPERTIES:
-:header-args+: :tangle ~/bin/zfuncs/e
-:END:
-#+begin_src sh
-if [ -z "$1" ]; then
-    dir="."
-else
-    dir="$1"
-fi
-emacsclient -n $(rg -g '!Applications' -g '!Movies' -g '!Music' \
-                    -g '!Library' -g '!Pictures' -g '!*.png' \
-                    -g '!*.jpg' "$dir" --files \
-                     | peco --prompt '[edit]') > /dev/null 2>&1
-#+end_src
-** ev
-:PROPERTIES:
-:header-args+: :tangle ~/bin/zfuncs/ev
-:END:
-#+begin_src sh
-files=$(rg -g '!Applications' \
-           -g '!Movies' -g '!Music' -g '!Library' \
-           -g '!Pictures' -g '!*.png' -g '!*.jpg' \
-           "$1" --files \
-            | peco --prompt '[edit]')
-emacsclient -n --eval "(let ((inhibit-message t)) (dolist (file (split-string \"$files\")) (find-file-read-only file)))" > /dev/null 2>&1
-#+end_src
-** ghq
-:PROPERTIES:
-:header-args+: :tangle ~/bin/zfuncs/ghq
-:END:
-#+begin_src sh
-if [ "$1" = look -a -n "$2" ]; then
-    cd $(command ghq list -p $2)
-    return
-fi
-
-command ghq "$@"
-#+end_src
-** pdftif
-:PROPERTIES:
-:header-args+: :tangle ~/bin/zfuncs/pdftif
-:END:
-#+begin_src sh
-\gs -dNOPAUSE -q -r500 \
-    -sDEVICE=tiffg4 \
-    -dBATCH \
-    -dFirstPage=$2 \
-    -dLastPage=$3 \
-    -sOutputFile=$4 \
-    $1
-#+end_src
-** ocrpdf
-:PROPERTIES:
-:header-args+: :tangle ~/bin/zfuncs/ocrpdf
-:END:
-#+begin_src sh
-if [[ -z $1 ]]; then
-    echo "No input file provided."
-elif [[ -z $2 ]]; then
-    echo "No output file provided"
-else
-    echo "Converting pdf to png..."
-    \gs -dNOPAUSE -q -r500 \
-        -sDEVICE=tiffg4 \
-        -dBATCH \
-        -sOutputFile=$TMPDIR/tempocr.tif \
-        $1
-    echo "Running tesseract on pngs..."
-    tesseract $TMPDIR/tempocr.tif $2 >/dev/null 2>&1
-    echo "Done."
-fi
-#+end_src
-** ocrpdf2
-:PROPERTIES:
-:header-args+: :tangle ~/bin/zfuncs/ocrpdf2
-:END:
-#+begin_src sh
-if [[ -z $1 ]]; then
-    echo "No input file provided."
-elif [[ -z $2 ]]; then
-    echo "No output file provided"
-else
-    echo "Converting pdf to png..."
-    convert -density 500 $1 $TMPDIR/tempocr.png
-    count=0
-    echo "Running tesseract on pngs..."
-    while [ -f $TMPDIR/tempocr-$count.png ]; do
-        echo "    Page $count"
-        tesseract $TMPDIR/tempocr-$count.png $TMPDIR/tempocr >/dev/null 2>&1
-        cat $TMPDIR/tempocr.txt >> $2
-        let count=count+1
-    done
-    echo "Created output file $2"
-fi
-#+end_src
-** spectrum_ls
-:PROPERTIES:
-:header-args+: :tangle ~/bin/zfuncs/spectrum_ls
-:END:
-#+begin_src sh
-if [ "$#" = 1 ]; then
-  code="$(printf "%03d\n" $1)"
-  print -P -- "$code: %F{$code}$code%f"
-else;
-    for code in $(seq -f "%03g" ${1:-000} ${2:-255}); do
-        print -P -- "$code: %F{$code}$code%f"
-    done
-fi
-#+end_src
-** pixelate
-:PROPERTIES:
-:header-args+: :tangle ~/bin/zfuncs/pixelate
-:END:
-#+begin_src sh
-AMOUNT=$(echo "1.001 - $1" | bc -l)
-INFILE=$2
-OUFILE=$3
-
-COEFF1=$(echo "100 * $AMOUNT" | bc -l)
-COEFF2=$(echo "100 / $AMOUNT" | bc -l)
-
-convert -scale $COEFF1% -scale $COEFF2% $INFILE $OUFILE
 #+end_src
 * Local vars
 Tangles the files asynchronously on save.
