@@ -394,7 +394,7 @@ Show the column number in the modeline, because I'm not a savage.
 #+begin_src emacs-lisp
 (when (eq system-type 'gnu/linux)
   (setq browse-url-generic-program
-        (executable-find "firefox-developer")
+        (executable-find "firefox")
         browse-url-browser-function 'browse-url-generic))
 #+end_src
 ** [[https://www.youtube.com/watch?v=UWHEcIbhDiw][There is unrest in the forest...]]
