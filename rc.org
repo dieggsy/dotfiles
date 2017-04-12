@@ -1980,7 +1980,7 @@ function prompt_sorin_pwd {
   echo $_prompt_sorin_pwd
 }
 
-source $HOME/Code/zsh/zsh-git-prompt/zshrc.sh
+source ~/.ghq/github.com/olivierverdier/zsh-git-prompt/zshrc.sh
 setopt prompt_subst
 GIT_PROMPT_EXECUTABLE="haskell"
 ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[green]%}"
@@ -2116,7 +2116,7 @@ zstyle ':completion:*' _expand_alias
 **** Initialize and source some things
 ***** [[https://github.com/b4b4r07/enhancd][enhancd]]
 #+begin_src sh
-source ~/Code/zsh/enhancd/init.sh
+source ~/.ghq/github.com/b4b4r07/enhancd/init.sh
 # export ENHANCD_DISABLE_HOME=1
 export ENHANCD_FILTER=peco
 #+end_src
@@ -2137,15 +2137,19 @@ if which thefuck > /dev/null; then eval $(thefuck --alias); fi
 if which brew > /dev/null; then
     source $(brew --prefix)/etc/profile.d/z.sh
 else
-    source $HOME/Code/zsh/z/z.sh
+    source ~/.ghq/github.com/rupa/z/z.sh
 fi
+#+end_src
+***** [[https://github.com/zsh-users/zsh-autosuggestions][zsh-autosuggestions]]
+#+begin_src sh
+source ~/.ghq/github.com/zsh-users/zsh-autosuggestions/zsh-autosuggestions.zsh
 #+end_src
 ***** [[https://github.com/zsh-users/zsh-syntax-highlighting/][zsh-syntax-highlighting]]
 #+begin_src sh
 if which brew > /dev/null; then
     source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 else
-    source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    source ~/.ghq/github.com/zsh-users/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 fi
 
 ZSH_HIGHLIGHT_STYLES[globbing]='fg=208'
@@ -2159,15 +2163,11 @@ ZSH_HIGHLIGHT_STYLES[function]='fg=010'
 if which brew > /dev/null; then
     source $(brew --prefix)/opt/zsh-history-substring-search/zsh-history-substring-search.zsh
 else
-    source $HOME/Code/zsh/zsh-history-substring-search/zsh-history-substring-search.zsh
+    source ~/.ghq/github.com/zsh-users/zsh-history-substring-search/zsh-history-substring-search.zsh
 fi
 
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=''
 HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=''
-#+end_src
-***** [[https://github.com/zsh-users/zsh-autosuggestions][zsh-autosuggestions]]
-#+begin_src sh
-# source $HOME/Code/zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 #+end_src
 **** Keys
 #+begin_src sh
@@ -2345,7 +2345,7 @@ fpath=(
     ~/bin/zfuncs
     /usr/share/zsh/site-functions/
     /usr/local/share/zsh-completions
-    $HOME/Code/zsh/zsh-completions/src
+    ~/.ghq/zsh-users/zsh-completions/src
     $HOME/Code/zsh/cool-peco
     $fpath
 )
