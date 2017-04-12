@@ -1,0 +1,695 @@
+#+TITLE: zsh.org
+#+PROPERTY: header-args :comments link :mkdirp yes :results silent
+
+* Introduction
+aosnetuh
+* Contents                                                              :toc:
+ - [[#introduction][Introduction]]
+ - [[#zshrc][zshrc]]
+   - [[#initial-setup][Initial setup]]
+   - [[#functions][Functions]]
+   - [[#zsh-options][Zsh options]]
+   - [[#pluginsexternal][Plugins/External]]
+   - [[#keys][Keys]]
+   - [[#vars][Vars]]
+   - [[#aliases][Aliases]]
+   - [[#use-gnu-coreutils][Use gnu coreutils]]
+   - [[#vm][VM]]
+ - [[#zshenv][zshenv]]
+   - [[#path][Path]]
+   - [[#variables][Variables]]
+ - [[#zprofile][zprofile]]
+ - [[#modules][Modules]]
+   - [[#sudo][sudo]]
+ - [[#functions-1][Functions]]
+   - [[#apps][apps]]
+   - [[#e][e]]
+   - [[#ev][ev]]
+   - [[#ghq][ghq]]
+   - [[#pdftif][pdftif]]
+   - [[#ocrpdf][ocrpdf]]
+   - [[#ocrpdf2][ocrpdf2]]
+   - [[#spectrum_ls][spectrum_ls]]
+   - [[#pixelate][pixelate]]
+ - [[#local-vars][Local vars]]
+
+* zshrc
+:PROPERTIES:
+:header-args+: :tangle ~/.zshrc
+:END:
+** Initial setup
+*** Prompt
+#+begin_src sh
+function prompt_sorin_pwd {
+  local pwd="${PWD/#$HOME/~}"
+
+  if [[ "$pwd" == (#m)[/~] ]]; then
+    _prompt_sorin_pwd="$MATCH"
+    unset MATCH
+  else
+    _prompt_sorin_pwd="${${${${(@j:/:M)${(@s:/:)pwd}##.#?}:h}%/}//\%/%%}/${${pwd:t}//\%/%%}"
+  fi
+  echo $_prompt_sorin_pwd
+}
+
+setopt prompt_subst
+
+PROMPT='${$(git_super_status)}%F{7}$(prompt_sorin_pwd)%f%b '
+#+end_src
+*** Cursor
+#+begin_src sh
+if [ "$(uname)" = "Darwin" ]; then
+    zle-line-init () {
+        zle -K viins
+        echo -ne "\033]12;Gray\007"
+        echo -ne "\033[\x35 q"
+    }
+    zle -N zle-line-init
+    zle-keymap-select () {
+        if [[ $KEYMAP == vicmd ]]; then
+            if [[ -z $TMUX ]]; then
+                printf "\033]12;Green\007"
+                printf "\033[1 q"
+            else
+                printf "\033Ptmux;\033\033]12;red\007\033\\"
+                printf "\033Ptmux;\033\033[1 q\033\\"
+            fi
+        else
+            if [[ -z $TMUX ]]; then
+                printf "\033]12;Grey\007"
+                printf "\033[\x35 q"
+            else
+                printf "\033Ptmux;\033\033]12;grey\007\033\\"
+                printf "\033Ptmux;\033\033[\x35 q\033\\"
+            fi
+        fi
+    }
+    zle -N zle-keymap-select
+elif [ -z "$INSIDE_EMACS" ]; then
+    # Modal cursor color for vi's insert/normal modes.
+    # http://stackoverflow.com/questions/30985436/
+    # https://bbs.archlinux.org/viewtopic.php?id=95078
+    # http://unix.stackexchange.com/questions/115009/
+    zle-line-init () {
+        zle -K viins
+        #echo -ne "\033]12;Grey\007"
+        #echo -n 'grayline1'
+        echo -ne "\033]12;white\007"
+        echo -ne "\033[5 q"
+        #print 'did init' >/dev/pts/16
+    }
+    zle -N zle-line-init
+    zle-keymap-select () {
+        if [[ $KEYMAP == vicmd ]]; then
+            if [[ -z $TMUX ]]; then
+                printf "\033]12;white\007"
+                printf "\033[2 q"
+            else
+                printf "\033Ptmux;\033\033]12;white\007\033\\"
+                printf "\033Ptmux;\033\033[2 q\033\\"
+            fi
+        else
+            if [[ -z $TMUX ]]; then
+                printf "\033]12;white\007"
+                printf "\033[5 q"
+            else
+                printf "\033Ptmux;\033\033]12;white\007\033\\"
+                printf "\033Ptmux;\033\033[5 q\033\\"
+            fi
+        fi
+        #print 'did select' >/dev/pts/16
+    }
+    zle -N zle-keymap-select
+fi
+#+end_src
+*** Setup help
+#+begin_src sh
+autoload -Uz run-help
+if [ "alias" = $(whence -w run-help | sed 's/run-help: //') ]; then
+    unalias run-help
+fi
+alias help=run-help
+#+end_src
+** Functions
+#+begin_src sh
+for file ($HOME/bin/zfuncs/*(N)); do
+    if [[ -a "$file" ]]; then
+        autoload -Uz "${file:t}"
+    fi
+done
+#+end_src
+** Zsh options
+#+begin_src sh
+setopt glob_complete
+setopt auto_cd
+setopt histignoredups
+setopt autonamedirs
+setopt clobber
+unsetopt correct
+autoload -Uz compinit && compinit -i
+autoload -Uz cool-peco
+cool-peco
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' menu select
+# zstyle ':completion:*' group-name ''
+zstyle ':completion:*' list-dirs-first true
+zstyle ':completion:*' squeeze-slashes true
+zstyle ':completion:*' _expand_alias
+#+end_src
+** Plugins/External
+*** [[https://github.com/yyuu/pyenv/][pyenv]]
+#+begin_src sh
+if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+#+end_src
+*** [[https://github.com/nvbn/thefuck][thefuck]]
+#+begin_src sh
+if which thefuck > /dev/null; then eval $(thefuck --alias); fi
+#+end_src
+*** [[https://github.com/zplug/zplug][zplug]]
+#+begin_src sh
+if [[ ! -d ~/.zplug ]];then
+    git clone https://github.com/zplug/zplug ~/.zplug
+fi
+source ~/.zplug/init.zsh
+#+end_src
+**** [[https://github.com/olivierverdier/zsh-git-prompt][zsh-git-prompt]]
+#+begin_src sh
+zplug "olivierverdier/zsh-git-prompt",\
+      hook-build:"stack setup && stack build && stack install",\
+      use:zshrc.sh
+#+end_src
+**** [[https://github.com/b4b4r07/enhancd][enhancd]]
+#+begin_src sh
+zplug "b4b4r07/enhancd", use:init.sh
+export ENHANCD_FILTER=peco
+#+end_src
+**** [[https://github.com/junegunn/fzf][fzf]]
+#+begin_src sh :tangle no
+zplug 'junegunn/fzf', hook-build:'./install --all'
+#+end_src
+**** [[https://github.com/rupa/z][z]]
+#+begin_src sh
+if which brew > /dev/null; then
+    source $(brew --prefix)/etc/profile.d/z.sh
+else
+    zplug "rupa/z", use:z.sh
+fi
+#+end_src
+**** [[https://github.com/zsh-users/zsh-autosuggestions][zsh-autosuggestions]]
+#+begin_src sh
+zplug "zsh-users/zsh-autosuggestions", at:develop
+#+end_src
+**** [[https://github.com/zsh-users/zsh-syntax-highlighting/][zsh-syntax-highlighting]]
+#+begin_src sh
+if which brew > /dev/null; then
+    source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+else
+    zplug "zsh-users/zsh-syntax-highlighting"
+fi
+#+end_src
+**** [[https://github.com/zsh-users/zsh-history-substring-search][zsh-history-substring-search]]
+#+begin_src sh
+if which brew > /dev/null; then
+    source $(brew --prefix)/opt/zsh-history-substring-search/zsh-history-substring-search.zsh
+else
+    zplug "zsh-users/zsh-history-substring-search"
+fi
+#+end_src
+**** prezto
+***** environment
+#+begin_src sh
+zplug "modules/environment", from:prezto
+#+end_src
+***** history
+#+begin_src sh
+zplug "modules/history", from:prezto
+#+end_src
+***** directory
+#+begin_src sh
+zplug "modules/directory", from:prezto
+#+end_src
+***** spectrum
+#+begin_src sh
+zplug "modules/spectrum", from:prezto
+#+end_src
+**** oh-my-zsh
+***** colored-man-pages
+#+begin_src sh
+zplug "plugins/colored-man-pages", from:oh-my-zsh
+#+end_src
+**** sudo
+#+begin_src sh
+zplug "~/.zmodules", from:local
+#+end_src
+**** peco
+#+begin_src sh
+zplug "peco/peco", as:command, from:gh-r
+#+end_src
+**** rg
+#+begin_src sh
+zplug "BurntSushi/ripgrep", as:command, rename-to:rg, from:gh-r
+#+end_src
+**** exa
+#+begin_src sh
+zplug "ogham/exa", as:command, rename-to:exa, from:gh-r
+#+end_src
+**** hub
+#+begin_src sh
+zplug "github/hub", as:command, rename-to:hub, from:gh-r
+#+end_src
+*** zplug install
+#+begin_src sh
+if ! zplug check --verbose; then
+    printf "Install? [y/N]: "
+    if read -q; then
+        echo; zplug install
+    fi
+fi
+#+end_src
+*** zplug load
+#+begin_src sh
+zplug load
+
+if zplug check olivierverdier/zsh-git-prompt; then
+    GIT_PROMPT_EXECUTABLE="haskell"
+    ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[green]%}"
+    ZSH_THEME_GIT_PROMPT_CHANGED="%{%F{009}✚%G%}"
+    ZSH_THEME_GIT_PROMPT_AHEAD="%{%F{013}↑%G%}"
+    ZSH_THEME_GIT_PROMPT_BEHIND="%{%F{013}↓%G%}"
+    ZSH_THEME_GIT_PROMPT_CLEAN="%{%F{010}✓%G%}"
+    ZSH_THEME_GIT_PROMPT_STAGED="%{%F{012}●%G%}"
+fi
+if zplug check zsh-users/zsh-syntax-highlighting; then
+    ZSH_HIGHLIGHT_STYLES[globbing]='fg=208'
+    ZSH_HIGHLIGHT_STYLES[command]='fg=010'
+    ZSH_HIGHLIGHT_STYLES[alias]='fg=010'
+    ZSH_HIGHLIGHT_STYLES[builtin]='fg=010'
+    ZSH_HIGHLIGHT_STYLES[function]='fg=010'
+fi
+
+if zplug check zsh-users/zsh-history-substring-search; then
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=''
+    HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=''
+fi
+#+end_src
+** Keys
+#+begin_src sh
+bindkey -v
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
+export KEYTIMEOUT=1
+bindkey '^?' backward-delete-char
+bindkey '^h' backward-delete-char
+bindkey '^r' cool-peco-history
+bindkey '^t' cool-peco-filename-search
+zle -N e
+bindkey '^e' e
+bindkey -M vicmd '/' cool-peco-history
+bindkey '^h' cool-peco-ssh
+bindkey '^p' cool-peco-ps
+bindkey '^F' cool-peco-all-funcs
+#+end_src
+** Vars
+#+begin_src sh
+[ "$(uname)" = "Linux" ] && [ -z $TMUX ] && export TERM=xterm-256color
+
+# some ls colors i've gotten used to
+export LS_COLORS='di=0;94:ex=0;92:ln=0;36'
+zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+
+# kwm/khd
+kwm="koekeishiya/formulae/kwm"
+khd="koekeishiya/formulae/khd"
+
+# Emacs
+export switchmacs="emacs"
+
+# Python
+export python3version=3.6.0
+export python2version=2.7.13
+
+export SURFRAW_text_browser=/usr/local/bin/lynx
+# export SURFRAW_graphical=no
+
+
+# GPG
+GPG_TTY=$(tty)
+export GPG_TTY
+
+# pass
+export PASSWORD_STORE_ENABLE_EXTENSIONS=true
+
+# Named dirs
+hash -d config=~/.config
+hash -d emacs=~/dotfiles/emacs.d
+#+end_src
+** Aliases
+*** Simple aliases
+#+begin_src sh
+if which brew > /dev/null; then
+    alias startkwm="brew services start $kwm"
+    alias stopkwm="brew services stop $kwm"
+    alias restartkwm="brew services restart $kwm"
+    alias startkhd="brew services start $khd"
+    alias stopkhd="brew services stop $khd"
+    alias restartkhd="brew services restart $khd"
+    alias cask="brew cask"
+fi
+alias -g ...='../..'
+alias -g ....='../../..'
+alias -g .....='../../../..'
+alias -g ......='../../../../..'
+alias -- -='cd -'
+alias cpg="cool-peco-ghq"
+alias cpwd="pwd | tr -d '\n' | pbcopy"
+alias ddg='surfraw duckduckgo -j'
+alias def='dict -d wn'
+alias ed="ed -p:"
+alias edit="emacsclient -n"
+alias editv="emacsclient -t"
+alias encrypt="gpg2 --armor --encrypt"
+alias lock="gpg2 -c --armor"
+alias encryptdir="gpg-zip --encrypt"
+alias lockdir="gpg-zip -c"
+alias gpg="gpg2"
+alias decrypt="gpg2 -d"
+alias decryptdir="gpg-zip -d"
+alias fcolor="spectrum_ls | rg --color=never -N"
+alias filecount="ls -1 | wc -l"
+alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
+which hub > /dev/null && alias git=hub
+[ "$(uname)" = "Linux" ] && compdef hub=git
+[ "$(uname)" = "Linux" ] && which nautilus > /dev/null && alias nautilus="nautilus > /dev/null 2>&1"
+alias gls='gls -X --group-directories-first --color=always'
+alias ls='exa --group-directories-first --sort=extension'
+alias glst="gls -t"
+if [ -d /Applications/Mathematica.app ]; then
+    alias mathematica='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
+fi
+alias mux='tmuxinator'
+alias pass="EDITOR='emacsclient -nw' pass"
+alias pep8="pep8 --first --ignore=E129,W503,E226"
+alias piphere="pip install --target=./"
+alias printers="lpstat -p | awk '{print $2}'"
+alias resetb="source ~/.zshrc"
+alias resetwifi="networksetup -setairportpower en0 off; sleep 2;"\
+"networksetup -setairportpower en0 on"
+alias rg="rg -i -g '!archive-contents' --colors 'line:style:bold' --colors 'path:style:bold'"
+alias rtv='PAGER=text-pager rtv --enable-media'
+alias starwars="telnet towel.blinkenlights.nl" # heh
+alias sudo='sudo '                             # recognize aliases
+alias sz="du -hs"                              # get folder/file size
+alias toshredsyousay='shred -zvun 10'
+alias wiki="wiki -w 80"
+#+end_src
+*** Function "aliases"
+#+begin_src sh
+ff() { find . -type f -iname "*$1*" | peco --prompt "[find-file]" }
+
+fd() { find . -type d -iname "*$1*" | peco --prompt="[find-dir]"}
+
+f() { find . -iname "*$1*" | peco --prompt="[find]"}
+
+fsz() { find ./ -type f -iname "*$1*" -exec du -sh {} + |
+            sort -rh |
+            peco --prompt="[find-sizes]"}
+
+calc() { emacs --batch --eval "(message (calc-eval \"$1\"))" }
+alias calc="noglob calc"
+
+erg () { emacsclient -n $(rg -n $1 |
+                              peco --prompt="[erg]" |
+                              awk -F\: '{print "+"$2,$1}') > /dev/null 2>&1}
+#+end_src
+** Use gnu coreutils
+#+begin_src sh
+if [ "$(uname)" = "Darwin" ]; then
+    path=(
+        /usr/local/opt/coreutils/libexec/gnubin
+        $path
+    )
+
+    export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
+fi
+#+end_src
+** VM
+#+begin_src sh :tangle no
+[ "$(uname)" = "Linux" ] && source ~/diego_racecarsetup.sh
+#+end_src
+* zshenv
+:PROPERTIES:
+:header-args+: :tangle ~/.zshenv
+:END:
+
+#+begin_src sh
+# Ensure that a non-login, non-interactive shell has a defined environment.
+if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
+    source "${ZDOTDIR:-$HOME}/.zprofile"
+fi
+#+end_src
+** Path
+#+begin_src sh
+export GOPATH="$HOME/go"
+export GOROOT=/usr/lib/go-1.8
+
+export PYENV_ROOT="$HOME/.pyenv"
+path=(
+    $HOME/.cargo/bin
+    $PYENV_ROOT/bin
+    $HOME/bin
+    $HOME/.local/bin
+    /usr/local/{bin,sbin}
+    $path
+    $GOPATH/bin
+)
+
+fpath=(
+    ~/bin/zfuncs
+    /usr/share/zsh/site-functions/
+    /usr/local/share/zsh-completions
+    ~/.ghq/zsh-users/zsh-completions/src
+    $HOME/Code/zsh/cool-peco
+    $fpath
+)
+export MANPATH=":$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/man/"
+typeset -gU path manpath cdpath fpath
+#+end_src
+** Variables
+#+begin_src sh
+export PYTHONSTARTUP=$HOME/.pythonrc.py
+
+export WWW_HOME='https://duckduckgo.com'
+export RTV_EDITOR='emacsclient -t'
+export RTV_URLVIEWER='urlview'
+
+# Preferred editor for local and remote sessions
+if [[ -n $SSH_CONNECTION ]]; then
+    export EDITOR='vim'
+else
+    export EDITOR="emacsclient -n" # Set emacs as default editor
+    export ALTERNATE_EDITOR="vim"
+fi
+
+export PAGER="less"
+export LESS='-g-i-M-R-S-w-z-4'
+if (( $#commands[(i)lesspipe(|.sh)] )); then
+    export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
+fi
+
+if [[ "$OSTYPE" == darwin* ]]; then
+    export BROWSER='open'
+fi
+
+if [[ -z "$LANG" ]]; then
+    export LANG='en_US.UTF-8'
+fi
+
+if [[ -n "$GTK_MODULES" ]]; then
+    export GTK_MODULES="$GTK_MODULES:s/pantheon-filechooser-module//"
+fi
+#+end_src
+* zprofile
+:PROPERTIES:
+:header-args+: :tangle ~/.zprofile
+:END:
+#+begin_src sh
+if [ "$(uname)" = "Darwin" ]; then
+    if [ -f ~/.gnupg/.gpg-agent-info ] && [ -n "$(pgrep gpg-agent)" ]; then
+        source ~/.gnupg/.gpg-agent-info
+        export GPG_AGENT_INFO
+    else
+        eval $(gpg-agent --daemon --write-env-file ~/.gnupg/.gpg-agent-info)
+    fi
+    export GOROOT=/usr/local/Cellar/go/1.8/libexec
+fi
+#+end_src
+* Modules
+** sudo
+:PROPERTIES:
+:header-args+: :tangle ~/.zmodules/sudo.zsh
+:END:
+#+begin_src sh
+sudo-command-line() {
+    [[ -z $BUFFER ]] && zle up-history
+    if [[ $BUFFER == sudo\ * ]]; then
+        LBUFFER="${LBUFFER#sudo }"
+    elif [[ $BUFFER == $EDITOR\ * ]]; then
+        LBUFFER="${LBUFFER#$EDITOR }"
+        LBUFFER="sudoedit $LBUFFER"
+    elif [[ $BUFFER == sudoedit\ * ]]; then
+        LBUFFER="${LBUFFER#sudoedit }"
+        LBUFFER="$EDITOR $LBUFFER"
+    else
+        LBUFFER="sudo $LBUFFER"
+    fi
+    zle && zle vi-add-next
+}
+zle -N sudo-command-line
+# Defined shortcut keys: [Esc] [Esc]
+bindkey -M vicmd "\e" sudo-command-line
+#+end_src
+* Functions
+** apps
+:PROPERTIES:
+:header-args+: :tangle ~/bin/zfuncs/apps
+:END:
+#+begin_src sh
+open -a "$(find /Applications -maxdepth 2 -type d -name '*.app' \
+                        | sed -r 's@/Applications/(Utilities/)?(.+?).app?@\2@' \
+                        | peco)" > /dev/null 2>&1
+#+end_src
+** e
+:PROPERTIES:
+:header-args+: :tangle ~/bin/zfuncs/e
+:END:
+#+begin_src sh
+if [ -z "$1" ]; then
+    dir="."
+else
+    dir="$1"
+fi
+emacsclient -n $(rg -g '!Applications' -g '!Movies' -g '!Music' \
+                    -g '!Library' -g '!Pictures' -g '!*.png' \
+                    -g '!*.jpg' "$dir" --files \
+                     | peco --prompt '[edit]') > /dev/null 2>&1
+#+end_src
+** ev
+:PROPERTIES:
+:header-args+: :tangle ~/bin/zfuncs/ev
+:END:
+#+begin_src sh
+files=$(rg -g '!Applications' \
+           -g '!Movies' -g '!Music' -g '!Library' \
+           -g '!Pictures' -g '!*.png' -g '!*.jpg' \
+           "$1" --files \
+            | peco --prompt '[edit]')
+emacsclient -n --eval "(let ((inhibit-message t)) (dolist (file (split-string \"$files\")) (find-file-read-only file)))" > /dev/null 2>&1
+#+end_src
+** ghq
+:PROPERTIES:
+:header-args+: :tangle ~/bin/zfuncs/ghq
+:END:
+#+begin_src sh
+if [ "$1" = look -a -n "$2" ]; then
+    cd $(command ghq list -p $2)
+    return
+fi
+
+command ghq "$@"
+#+end_src
+** pdftif
+:PROPERTIES:
+:header-args+: :tangle ~/bin/zfuncs/pdftif
+:END:
+#+begin_src sh
+\gs -dNOPAUSE -q -r500 \
+    -sDEVICE=tiffg4 \
+    -dBATCH \
+    -dFirstPage=$2 \
+    -dLastPage=$3 \
+    -sOutputFile=$4 \
+    $1
+#+end_src
+** ocrpdf
+:PROPERTIES:
+:header-args+: :tangle ~/bin/zfuncs/ocrpdf
+:END:
+#+begin_src sh
+if [[ -z $1 ]]; then
+    echo "No input file provided."
+elif [[ -z $2 ]]; then
+    echo "No output file provided"
+else
+    echo "Converting pdf to png..."
+    \gs -dNOPAUSE -q -r500 \
+        -sDEVICE=tiffg4 \
+        -dBATCH \
+        -sOutputFile=$TMPDIR/tempocr.tif \
+        $1
+    echo "Running tesseract on pngs..."
+    tesseract $TMPDIR/tempocr.tif $2 >/dev/null 2>&1
+    echo "Done."
+fi
+#+end_src
+** ocrpdf2
+:PROPERTIES:
+:header-args+: :tangle ~/bin/zfuncs/ocrpdf2
+:END:
+#+begin_src sh
+if [[ -z $1 ]]; then
+    echo "No input file provided."
+elif [[ -z $2 ]]; then
+    echo "No output file provided"
+else
+    echo "Converting pdf to png..."
+    convert -density 500 $1 $TMPDIR/tempocr.png
+    count=0
+    echo "Running tesseract on pngs..."
+    while [ -f $TMPDIR/tempocr-$count.png ]; do
+        echo "    Page $count"
+        tesseract $TMPDIR/tempocr-$count.png $TMPDIR/tempocr >/dev/null 2>&1
+        cat $TMPDIR/tempocr.txt >> $2
+        let count=count+1
+    done
+    echo "Created output file $2"
+fi
+#+end_src
+** spectrum_ls
+:PROPERTIES:
+:header-args+: :tangle ~/bin/zfuncs/spectrum_ls
+:END:
+#+begin_src sh
+if [ "$#" = 1 ]; then
+  code="$(printf "%03d\n" $1)"
+  print -P -- "$code: %F{$code}$code%f"
+else;
+    for code in $(seq -f "%03g" ${1:-000} ${2:-255}); do
+        print -P -- "$code: %F{$code}$code%f"
+    done
+fi
+#+end_src
+** pixelate
+:PROPERTIES:
+:header-args+: :tangle ~/bin/zfuncs/pixelate
+:END:
+#+begin_src sh
+AMOUNT=$(echo "1.001 - $1" | bc -l)
+INFILE=$2
+OUFILE=$3
+
+COEFF1=$(echo "100 * $AMOUNT" | bc -l)
+COEFF2=$(echo "100 / $AMOUNT" | bc -l)
+
+convert -scale $COEFF1% -scale $COEFF2% $INFILE $OUFILE
+#+end_src
+* Local vars
+Tangles the files asynchronously on save.
+#+begin_example
+# Local Variables:
+# after-save-hook: (git-gutter diego/async-babel-tangle)
+# org-pretty-entities: nil
+# End:
+#+end_example
+
