@@ -132,9 +132,15 @@ unsetopt correct
 autoload -Uz compinit && compinit -i
 autoload -Uz cool-peco
 cool-peco
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' menu select
-# zstyle ':completion:*' group-name ''
+zstyle ':completion:*' group-name ''
+zstyle ':completion:*:corrections' format ' %F{green}-- %d (errors: %e) --%f'
+zstyle ':completion:*:descriptions' format ' %F{yellow}-- %d --%f'
+zstyle ':completion:*:messages' format ' %F{purple} -- %d --%f'
+zstyle ':completion:*:warnings' format ' %F{red}-- no matches found --%f'
+zstyle ':completion:*:default' list-prompt '%S%M matches%s'
+zstyle ':completion:*' format ' %F{yellow}-- %d --%f'
 zstyle ':completion:*' list-dirs-first true
 zstyle ':completion:*' squeeze-slashes true
 zstyle ':completion:*' _expand_alias
