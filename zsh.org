@@ -13,7 +13,7 @@ aosnetuh
    - [[#vars][Vars]]
    - [[#aliases][Aliases]]
    - [[#use-gnu-coreutils][Use gnu coreutils]]
-   - [[#vm][VM]]
+   - [[#finish-up][Finish up]]
  - [[#zshenv][zshenv]]
    - [[#path][Path]]
    - [[#variables][Variables]]
@@ -156,7 +156,7 @@ source ~/.zplug/init.zsh
 **** [[https://github.com/olivierverdier/zsh-git-prompt][zsh-git-prompt]]
 #+begin_src sh
 zplug "olivierverdier/zsh-git-prompt",\
-      hook-build:"stack setup && stack build && stack install",\
+      hook-build:"stack build && stack install",\
       use:zshrc.sh
 #+end_src
 **** [[https://github.com/b4b4r07/enhancd][enhancd]]
@@ -164,17 +164,9 @@ zplug "olivierverdier/zsh-git-prompt",\
 zplug "b4b4r07/enhancd", use:init.sh
 export ENHANCD_FILTER=peco
 #+end_src
-**** [[https://github.com/junegunn/fzf][fzf]]
-#+begin_src sh :tangle no
-zplug 'junegunn/fzf', hook-build:'./install --all'
-#+end_src
 **** [[https://github.com/rupa/z][z]]
 #+begin_src sh
-if which brew > /dev/null; then
-    source $(brew --prefix)/etc/profile.d/z.sh
-else
-    zplug "rupa/z", use:z.sh
-fi
+zplug "rupa/z", use:z.sh
 #+end_src
 **** [[https://github.com/zsh-users/zsh-completions][zsh-completions]]
 #+begin_src sh :tangle no
@@ -186,20 +178,11 @@ zplug "zsh-users/zsh-autosuggestions", at:develop
 #+end_src
 **** [[https://github.com/zsh-users/zsh-syntax-highlighting/][zsh-syntax-highlighting]]
 #+begin_src sh
-if which brew > /dev/null; then
-    source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-else
-    zplug "zsh-users/zsh-syntax-highlighting", defer:2
-fi
-zplug "b4b4r07/zsh-vimode-visual", defer:3
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
 #+end_src
 **** [[https://github.com/zsh-users/zsh-history-substring-search][zsh-history-substring-search]]
 #+begin_src sh
-if which brew > /dev/null; then
-    source $(brew --prefix)/opt/zsh-history-substring-search/zsh-history-substring-search.zsh
-else
-    zplug "zsh-users/zsh-history-substring-search"
-fi
+zplug "zsh-users/zsh-history-substring-search"
 #+end_src
 **** prezto
 ***** environment
@@ -289,8 +272,6 @@ bindkey '^?' backward-delete-char
 bindkey '^h' backward-delete-char
 bindkey '^r' cool-peco-history
 bindkey '^t' cool-peco-filename-search
-zle -N e
-bindkey '^e' e
 bindkey -M vicmd '/' cool-peco-history
 bindkey '^h' cool-peco-ssh
 bindkey '^p' cool-peco-ps
@@ -308,16 +289,12 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 kwm="koekeishiya/formulae/kwm"
 khd="koekeishiya/formulae/khd"
 
-# Emacs
-export switchmacs="emacs"
-
 # Python
 export python3version=3.6.0
 export python2version=2.7.13
 
 export SURFRAW_text_browser=/usr/local/bin/lynx
 # export SURFRAW_graphical=no
-
 
 # GPG
 GPG_TTY=$(tty)
@@ -385,7 +362,6 @@ alias rg="rg -i -g '!archive-contents' --colors 'line:style:bold' --colors 'path
 alias rtv='PAGER=text-pager rtv --enable-media'
 alias starwars="telnet towel.blinkenlights.nl" # heh
 alias sudo='sudo '                             # recognize aliases
-alias sz="du -hs"                              # get folder/file size
 alias toshredsyousay='shred -zvun 10'
 alias wiki="wiki -w 80"
 #+end_src
@@ -419,9 +395,6 @@ if [ "$(uname)" = "Darwin" ]; then
     export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 fi
 #+end_src
-** VM
-#+begin_src sh :tangle no
-[ "$(uname)" = "Linux" ] && source ~/diego_racecarsetup.sh
 #+end_src
 * zshenv
 :PROPERTIES:
