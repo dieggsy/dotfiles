@@ -12,7 +12,7 @@ aosnetuh
    - [[#keys][Keys]]
    - [[#vars][Vars]]
    - [[#aliases][Aliases]]
-   - [[#use-gnu-coreutils][Use gnu coreutils]]
+   - [[#use-gnu-coreutils-in-macos][Use gnu coreutils in macOS]]
    - [[#finish-up][Finish up]]
  - [[#zshenv][zshenv]]
    - [[#path][Path]]
@@ -392,7 +392,10 @@ erg () { emacsclient -n $(rg -n $1 |
                               peco --prompt="[erg]" |
                               awk -F\: '{print "+"$2,$1}') > /dev/null 2>&1}
 #+end_src
-** Use gnu coreutils
+** Use gnu coreutils in macOS
+:PROPERTIES:
+:header-args: :tangle (when (eq system-type 'darwin) "~/.zshrc")
+:END:
 #+begin_src sh
 if [ "$(uname)" = "Darwin" ]; then
     path=(
