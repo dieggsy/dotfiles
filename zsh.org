@@ -29,6 +29,8 @@ aosnetuh
 ** Initial setup
 *** Prompt
 #+begin_src sh
+zmodload zsh/zprof
+start_time="$(date +%s%N | cut -b1-13)"
 function prompt_sorin_pwd {
   local pwd="${PWD/#$HOME/~}"
 
@@ -395,6 +397,11 @@ if [ "$(uname)" = "Darwin" ]; then
     export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
 fi
 #+end_src
+** Finish up
+#+begin_src sh
+end_time="$(date +%s%N | cut -b1-13)"
+((startup_time=end_time-start_time))
+echo "$startup_time"
 #+end_src
 * zshenv
 :PROPERTIES:
