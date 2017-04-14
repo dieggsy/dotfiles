@@ -83,11 +83,8 @@ elif [ -z "$INSIDE_EMACS" ]; then
     # http://unix.stackexchange.com/questions/115009/
     zle-line-init () {
         zle -K viins
-        #echo -ne "\033]12;Grey\007"
-        #echo -n 'grayline1'
         echo -ne "\033]12;white\007"
         echo -ne "\033[5 q"
-        #print 'did init' >/dev/pts/16
     }
     zle -N zle-line-init
     zle-keymap-select () {
@@ -116,7 +113,7 @@ fi
 *** Setup help
 #+begin_src sh
 autoload -Uz run-help
-if [ "alias" = $(whence -w run-help | sed 's/run-help: //') ]; then
+if [ "alias" = $(whence -w run-help | cut -d ' ' -f2) ]; then
     unalias run-help
 fi
 alias help=run-help
@@ -148,11 +145,18 @@ zstyle ':completion:*' _expand_alias
 ** Plugins/External
 *** [[https://github.com/yyuu/pyenv/][pyenv]]
 #+begin_src sh
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
+pyenv() {
+    eval "$( command pyenv init -)"
+    pyenv "$@"
+}
 #+end_src
 *** [[https://github.com/nvbn/thefuck][thefuck]]
 #+begin_src sh
-if which thefuck > /dev/null; then eval $(thefuck --alias); fi
+# if which thefuck > /dev/null; then eval $(thefuck --alias); fi
+fuck() {
+    eval "$( command thefuck --alias )"
+    $(thefuck $(fc -ln -1 | tail -n 1)); fc -R "$@"
+}
 #+end_src
 *** [[https://github.com/zplug/zplug][zplug]] start
 #+begin_src sh
@@ -464,21 +468,13 @@ fi
 
 export PAGER="less"
 export LESS='-g-i-M-R-S-w-z-4'
-if (( $#commands[(i)lesspipe(|.sh)] )); then
-    export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
-fi
+(( $#commands[(i)lesspipe(|.sh)] )) && export LESSOPEN="| /usr/bin/env $commands[(i)lesspipe(|.sh)] %s 2>&-"
 
-if [[ "$OSTYPE" == darwin* ]]; then
-    export BROWSER='open'
-fi
+[[ "$OSTYPE" == darwin* ]] && export BROWSER='open'
 
-if [[ -z "$LANG" ]]; then
-    export LANG='en_US.UTF-8'
-fi
+[[ -z "$LANG" ]] && export LANG='en_US.UTF-8'
 
-if [[ -n "$GTK_MODULES" ]]; then
-    export GTK_MODULES="$GTK_MODULES:s/pantheon-filechooser-module//"
-fi
+[[ -n "$GTK_MODULES" ]] && export GTK_MODULES="$GTK_MODULES:s/pantheon-filechooser-module//"
 #+end_src
 * zprofile
 :PROPERTIES:
