@@ -1,5 +1,7 @@
 #!/usr/bin/env emacs --script
+
 ;; [[file:~/dotfiles/rc.org::*org-tangle][org-tangle:1]]
+
 (defun dotfiles-file (name)
   (expand-file-name
    (concat
@@ -91,4 +93,5 @@
           (message "Done!"))
       (message "Aborted."))))
 (setq argv nil)
+
 ;; org-tangle:1 ends here

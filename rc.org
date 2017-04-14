@@ -11,13 +11,11 @@ readable in org format than in rendered markdown.
  - [[#intro][Intro]]
  - [[#config][Config]]
    - [[#profile][.profile]]
-   - [[#bashrc][bashrc]]
    - [[#cookiecutterrc][cookiecutterrc]]
    - [[#cvimrc][cvimrc]]
    - [[#darktooththeme-cmus][darktooth.theme (cmus)]]
    - [[#emacsclientdesktop][emacsclient.desktop]]
    - [[#git][git]]
-   - [[#hyperjs][hyper.js]]
    - [[#i3][i3]]
    - [[#khdrc][khdrc]]
    - [[#kwmrc][kwmrc]]
@@ -34,7 +32,6 @@ readable in org format than in rendered markdown.
    - [[#dropmite][dropmite]]
    - [[#e][e]]
    - [[#ev][ev]]
-   - [[#explorer][explorer]]
    - [[#i3blocks][i3blocks]]
    - [[#masterinstall][masterinstall]]
    - [[#ocrpdf][ocrpdf]]
@@ -56,6 +53,7 @@ readable in org format than in rendered markdown.
 :PROPERTIES:
 :header-args+: :tangle ~/.profile
 :END:
+I'm not even sure why this bit is here, to be honest.
 #+begin_src sh
 # if running bash
 if [ -n "$BASH_VERSION" ]; then
@@ -64,252 +62,24 @@ if [ -n "$BASH_VERSION" ]; then
 	. "$HOME/.bashrc"
     fi
 fi
-
-# set PATH so it includes user's private bin directories
-PATH="$HOME/bin:$HOME/.local/bin:$PATH"
-
-export PATH="$HOME/.cargo/bin:$PATH"
+#+end_src
+Caps lock is the most useless key.
+#+begin_src sh
 if [ "$(uname)" == "Linux" ]; then
     xcape -e 'Control_L=Escape'
     setxkbmap -option caps:ctrl_modifier
 fi
 #+end_src
-** bashrc
-:PROPERTIES:
-:header-args+: :tangle ~/.bash_profile
-:END:
-
-*** Initial setup
-Export hostname. Terminal.app used to get confused about this and show a folder
-icon with a question mark. I don't use Terminal.app anymore, but oh well.
-#+begin_src sh
-#!/usr/bin/env bash
-export HOSTNAME=`hostname`
-#+END_SRC
-
-Set up the prompt in the "sorin" style from zprezto
-#+BEGIN_SRC sh
-_dir_chomp () {
-    local IFS=/ c=1 n d
-    local p=(${1/#$HOME/\~}) r=${p[*]}
-    local s=${#r}
-    while ((s>$2&&c<${#p[*]}-1))
-    do
-        d=${p[c]}
-        n=1;[[ $d = .* ]]&&n=2
-        ((s-=${#d}-n))
-        p[c++]=${d:0:n}
-    done
-    echo "${p[*]}"
-}
-export PS1='\[\e[1;91m\]$(_dir_chomp "$(pwd)" 1)\[\e[92m\] ❯\[\033[00m\] '
-#+end_src
-
-*** Bash options
-Use case insensitive file matching and tab completion.
-#+begin_src sh
-shopt -s nocaseglob
-bind 'set completion-ignore-case on'
-#+end_src
-
-*** Initialize and source some stuff
-[[https://github.com/rupa/z][z]]
-#+begin_src sh
-source `brew --prefix`/etc/profile.d/z.sh
-#+END_SRC
-
-[[https://github.com/nvbn/thefuck][thefuck]]
-#+BEGIN_SRC sh
-if which thefuck > /dev/null; then eval $(thefuck --alias); fi
-#+END_SRC
-
-[[https://github.com/yyuu/pyenv/][pyenv]]
-#+BEGIN_SRC sh
-if which pyenv > /dev/null; then eval "$(pyenv init -)"; fi
-#+end_src
-
-*** Vars
-#+begin_src sh
-export LS_COLORS=$LS_COLORS:'di=0;36:ex=0;35:ln=1;31'
-export CLICOLOR=1
-export LSCOLORS=gxBxhxDxfxhxhxhxhxcxcx
-
-kwm="koekeishiya/kwm/kwm"
-khd="koekeishiya/khd/khd"
-
-export python3version=3.6.0
-export python2version=2.7.13
-export PYTHONSTARTUP=$HOME/.pythonrc.py
-
-export WWW_HOME='http://google.com'
-export RTV_EDITOR='emacsclient -t'
-export RTV_URLVIEWER='urlview'
-
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-    export EDITOR='vim'
-else
-    export EDITOR="emacsclient -n" # Set emacs as default editor
-    export ALTERNATE_EDITOR="vim"
-fi
-#+end_src
-
-*** Aliases
-#+begin_src sh
-alias apps="cd /Applications"
-alias cask="brew cask"
-alias config="$EDITOR ~/dotfiles/config/emacs.d/config.org"
-alias def='dict -d gcide'
-alias desk="cd /Users/diego/Desktop"
-alias docs="cd /Users/diego/Documents/"
-alias down="cd /Users/diego/Downloads/"
-alias drive="cd /Users/diego/Google\ Drive"
-alias drop="cd /Users/diego/Dropbox\ \(MIT\)"
-alias edit="emacsclient -n"
-alias editv="emacsclient -t"
-alias f='find . -iname'
-alias fd='find . -type d -iname'
-alias ff='find . -type f -iname'
-alias filecount="ls -1 | wc -l"
-alias git=hub
-alias startkwm="brew services start $kwm"
-alias stopkwm="brew services stop $kwm"
-alias restartkwm="brew services restart $kwm"
-alias startkhd="brew services start $khd"
-alias stopkhd="brew services stop $khd"
-alias restartkhd="brew services restart $khd"
-alias ls='ls -NX --group-directories-first --color=always'
-alias lst="ls -t"
-alias math='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
-alias pep8="pep8 --first --ignore=E129,W503,E226"
-alias piphere="pip install --target=./"
-alias printers="lpstat -p | awk '{print $2}'"
-alias resetb="source ~/.zshrc"
-alias resetwifi="networksetup -setairportpower en0 off; sleep 2;"\
-"networksetup -setairportpower en0 on"
-alias starwars="telnet towel.blinkenlights.nl" # heh
-alias sudo='sudo '                             # recognize aliases
-alias sz="du -hs"                              # get folder/file size
-alias zshrc="$EDITOR ~/dotfiles/config/zshrc"
-alias vimrc="$ALTERNATE_EDITOR ~/dotfiles/config/vimrc"
-#+end_src
-
-*** Functions
-#+begin_src sh
-pip-fromfile() {
-    <$1 xargs pip install
-}
-
-athena(){
-    echo -n "Username: "
-    read username
-    ssh -Y "$username@athena.dialup.mit.edu"
-}
-
-mkexec(){
-    chmod a+x "$@"
-}
-
-pythonexec(){
-    touch "$*"
-    echo '#!/usr/local/bin/python3' | cat - "$*" > temp && mv temp "$*"
-    sudo chmod a+x "$*"
-    emacsclient -n "$*"
-}
-
-# Create/edit python script
-pythonscript(){
-    touch "$*"
-    echo '#!/usr/local/bin/python3' | cat - "$*" > temp && mv temp "$*"
-    emacsclient -n "$*"
-}
-
-# View only mode in emacs
-ev() {
-    emacsclient -n --eval "(find-file-read-only \"$1\")"
-}
-
-# Edit Python 3 files
-bam(){
-    emacsclient -n "$1" \
-                --eval '(and (split-window-right) (windmove-right))' \
-                -f ipython \
-                --eval '(windmove-left)'
-}
-
-# Edit Python 2 files
-ham(){
-    emacsclient -n "$1" \
-                --eval '(and (split-window-right) (windmove-right))' \
-                -f ipython2 \
-                --eval '(windmove-left)'
-}
-
-pdftif() {
-    gs -dNOPAUSE -q -r500 \
-       -sDEVICE=tiffg4 \
-       -dBATCH \
-       -dFirstPage=$2 \
-       -dLastPage=$3 \
-       -sOutputFile=$4 \
-       $1
-}
-
-ocrpdf(){
-    echo "Converting pdf to png..."
-    gs -dNOPAUSE -q -r500 \
-       -sDEVICE=tiffg4 \
-       -dBATCH \
-       -sOutputFile=$TMPDIR/tempocr.tif \
-       $1
-    echo "Running tesseract on pngs..."
-    tesseract $TMPDIR/tempocr.tif $2 >/dev/null 2>&1
-}
-
-ocrpdf2(){
-    echo "Converting pdf to png..."
-    convert -density 500 $1 $TMPDIR/tempocr.png
-    count=0
-    echo "Running tesseract on pngs..."
-    while [ -f $TMPDIR/tempocr-$count.png ]; do
-        echo "    Page $count"
-        tesseract $TMPDIR/tempocr-$count.png $TMPDIR/tempocr >/dev/null 2>&1
-        cat $TMPDIR/tempocr.txt >> $2
-        let count=count+1
-    done
-    echo "Created output file $2"
-}
-
-psetzip (){
-    zip -r "$1".zip $1\
-        -x '*.git*' \
-        -x '*.ipynb_checkpoints*' \
-        -x '*.pyc*' \
-        -x '*.DS_Store*' \
-        -x '*~*' \
-        -x "*__pycache__*"
-}
-
-calc(){
-    emacs --batch --eval "(message (calc-eval \"$1\"))"
-}
-#+end_src
-
-*** Path Stuff
-#+begin_src sh
-export PATH="/usr/local/opt/coreutils/libexec/gnubin:$PATH"
-export MANPATH="/usr/local/opt/coreutils/libexec/gnuman:$MANPATH"
-#+end_src
 ** cookiecutterrc
 :PROPERTIES:
 :header-args+: :tangle ~/.cookiecutterrc
 :END:
-
+Config for [[https://github.com/audreyr/cookiecutter][cookiecutter]].
 #+begin_src conf
 # -*- mode: conf -*-
 default_context:
     full_name: "Diego A. Mundo"
-    email: "diegoamundo@gmail.com"
+    email: "diegoamundo@protonmail.com"
     github_username: "therockmandolinist"
     bundle_id_root: "com.therockmandolinist"
 cookiecutters_dir: "~/.cookiecutters/"
@@ -318,7 +88,7 @@ cookiecutters_dir: "~/.cookiecutters/"
 :PROPERTIES:
 :header-args+: :tangle ~/.cvimrc :comments no
 :END:
-
+Config for [[https://github.com/1995eaton/chromium-vim][cvim]].
 #+begin_src vimrc
 let configpath='/Users/diego/.cvimrc'
 set localconfig
@@ -339,6 +109,7 @@ map K previousTab
 :PROPERTIES:
 :header-args+: :tangle ~/.config/cmus/darktooth.theme
 :END:
+A theme for cmus basedo on [[https://github.com/emacsfodder/emacs-theme-darktooth][darktooth]].
 #+begin_src conf
 # Directory colors
 set color_win_dir=108
@@ -397,6 +168,7 @@ set color_win_inactive_sel_fg=default
 :PROPERTIES:
 :header-args+: tangle: (when (eq system-type 'gnu/linux)  "~/.local/share/applications/emacsclient.desktop")
 :END:
+This lets you set emacscclient as the default application for things. Kinda nifty.
 #+begin_src conf
 [Desktop Entry]
 Name=Emacs Client
@@ -410,6 +182,7 @@ Terminal=false
 :PROPERTIES:
 :header-args+: :tangle ~/.gitconfig
 :END:
+I know, it probably doesn't make sense to keep my gitconfig here.
 **** media
 #+begin_src conf
 [filter "media"]
@@ -421,7 +194,7 @@ Terminal=false
 #+begin_src conf
 [user]
 	name = therockmandolinist
-	email = diegoamundo@gmail.com
+	email = diegoamundo@protonmail.com
 	signingkey = AEAC5CE8E1F933F0
 #+end_src
 **** filter
@@ -499,251 +272,51 @@ Terminal=false
 __pychache__
 *.alfredworkflow
 #+end_src
-** hyper.js
-:PROPERTIES:
-:header-args+: :tangle ~/.hyper.js
-:END:
-
-*** Font
-#+BEGIN_SRC js
-module.exports = {
-    config: {
-        // default font size in pixels for all tabs
-        fontSize: 12,
-
-        // font family with optional fallbacks
-        fontFamily: 'Iosevka,Input, Menlo, "DejaVu Sans Mono", "Lucida Console", monospace',
-#+END_SRC
-
-*** Cursor
-#+BEGIN_SRC js
-        // terminal cursor background color and opacity (hex, rgb, hsl, hsv, hwb or cmyk)
-        cursorColor: '#e6e5e5',
-
-        // `BEAM` for |, `UNDERLINE` for _, `BLOCK` for █
-        cursorShape: 'BEAM',
-
-#+END_SRC
-
-*** Basic colors
-#+BEGIN_SRC js
-        // color of the text
-        foregroundColor: '#fdf4c1',
-
-        // terminal background color
-        backgroundColor: '#282828',
-
-        // border color (window, tabs)
-        borderColor: '#282828',
-#+END_SRC
-
-*** CSS
-#+BEGIN_SRC js
-        // custom css to embed in the main window
-        css: `
-        .tab_active {
-            color: #fdf4c1 !important;
-            // border-bottom: 1px solid #b8bb26 !important;
-            border-bottom: 1px solid #d3869b !important;
-        }
-
-        .tab_tab{
-            color: #fdf4c1 !important;
-        }
-        `,
-
-        // custom css to embed in the terminal window
-        termCSS: `
-        .cursor-node{
-            border: none !important;
-            border-left: 1px solid #fdf4c1 !important;
-        }
-        `,
-
-#+END_SRC
-
-*** Padding
-#+BEGIN_SRC js
-        // custom padding (css format, i.e.: `top right bottom left`)
-        padding: '5px 10px 0px 10px',
-#+END_SRC
-
-*** Color list
-#+BEGIN_SRC js
-        // the full list. if you're going to provide the full color palette,
-        // including the 6 x 6 color cubes and the grayscale map, just provide
-        // an array here instead of a color map object
-        colors: {
-            black: '#1a1a1a',
-            red: '#9d0006',
-            green: '#79740e',
-            yellow: '#b57614',
-            blue: '#076678',
-            magenta: '#8f3f71',
-            cyan: '#00a7af',
-            white: '#bdae93',
-            // black: '#686868',
-            // red: '#fb4933',
-            // green: '#b8bb26',
-            // yellow: '#fabd2f',
-            // blue: '#83a598',
-            // magenta: '#d3869b',
-            // cyan: '#3fd7e5',
-            // white: '#fdf4c1',
-            lightBlack: '#686868',
-            lightRed: '#fb4933',
-            lightGreen: '#b8bb26',
-            lightYellow: '#fabd2f',
-            lightBlue: '#83a598',
-            lightMagenta: '#d3869b',
-            lightCyan: '#3fd7e5',
-            lightWhite: '#fdf4c1'
-        },
-#+END_SRC
-
-*** Options
-#+BEGIN_SRC js
-        // the shell to run when spawning a new session (i.e. /usr/local/bin/fish)
-        // if left empty, your system's login shell will be used by default
-        shell: '',
-
-        // for setting shell arguments (i.e. for using interactive shellArgs: ['-i'])
-        // by default ['--login'] will be used
-        shellArgs: ['--login'],
-
-        // for environment variables
-        env: {},
-
-        // set to false for no bell
-        bell: false,
-
-        // if true, selected text will automatically be copied to the clipboard
-        copyOnSelect: false,
-
-        // URL to custom bell
-        // bellSoundURL: 'http://example.com/bell.mp3',
-#+END_SRC
-
-*** [[https://github.com/rickgbw/hyperterm-overlay][overlay]]
-#+BEGIN_SRC js
-        // for advanced config flags please refer to https://hyper.is/#cfg
-        overlay: {
-            alwaysOnTop: true,
-            animate: true,
-            hasShadow: true,
-            hideDock: false,
-            hideOnBlur: true,
-            hotkeys: ['Command+Space'],
-            position: 'top',
-            primaryDisplay: false,
-            resizable: false,
-            startAlone: false,
-            startup: false,
-            size: 0.4,
-            tray: false,
-            unique: false
-        },
-        },
-
-#+END_SRC
-
-*** Plugins
-#+BEGIN_SRC js
-    // a list of plugins to fetch and install from npm
-    // format: [@org/]project[#version]
-    // examples:
-    //   `hyperpower`
-    //   `@company/project`
-    //   `project#1.0.1`
-    plugins: [
-        'hypercwd',
-        'hyperterm-blink',
-        'hyperterm-lastpass',
-        'hyperterm-overlay'
-    ],
-
-#+END_SRC
-
-*** Local Plugins
-#+BEGIN_SRC js
-    // in development, you can create a directory under
-    // `~/.hyper_plugins/local/` and include it here
-    // to load it and avoid it being `npm install`ed
-    localPlugins: []
-};
-#+end_src
 ** i3
 *** i3
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.config/i3/config")
 :END:
 #+begin_src sh
-# This file has been auto-generated by i3-config-wizard(1).
-# It will not be overwritten, so edit it as you like.
-#
-# Should you change your keyboard layout some time, delete
-# this file and re-run i3-config-wizard(1).
-#
-
-# i3 config file (v4)
-#
-# Please see http://i3wm.org/docs/userguide.html for a complete reference!
-
+# Set modifier key to command/windows key
 set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
 font pango:Iosevka 8
 
-# This font is widely installed, provides lots of unicode glyphs, right-to-left
-# text rendering and scalability on retina/hidpi displays (thanks to pango).
-#font pango:DejaVu Sans Mono 8
-
-# Before i3 v4.8, we used to recommend this one as the default:
-# font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
-# The font above is very space-efficient, that is, it looks good, sharp and
-# clear in small sizes. However, its unicode glyph coverage is limited, the old
-# X core fonts rendering does not support right-to-left and this being a bitmap
-# font, it doesn’t scale on retina/hidpi displays.
-
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
-
-# start a terminal
-# bindsym $mod+Return exec 'termite'
 
 # kill focused window
 bindsym $mod+Shift+apostrophe kill
 
-# start dmenu (a program launcher)
-bindsym $mod+e exec rofi -show run -font "Iosevka 25"
-bindsym Mod1+space exec "rofi -combi-modi window,run -show combi -modi combi -font 'Iosevka 25'"
-bindsym $mod+p exec "~/.password-store/.extensions/rofi.bash"
-bindsym $mod+c exec "rofi -modi 'clipboard:greenclip print' -show clipboard -font 'Iosevka 25'"
-# bindsym $mod+c exec "rofi -switchers 'file:rofi-file-browser.sh' -show file -font 'Iosevka 25'"
-# There also is the (new) i3-dmenu-desktop which only displays applications
-# shipping a .desktop file. It is a wrapper around dmenu, so you need that
-# installed.
-# bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+# start rofi for windows and commands
+bindsym Mod1+space exec "rofi -combi-modi window,run -show combi -modi combi -font 'Iosevka 20'"
 
+# password-store helper with rofi
+bindsym $mod+p exec "~/.password-store/.extensions/rofi.bash"
+
+# clipboard manager helper with rofi
+bindsym $mod+c exec "rofi -modi 'clipboard:greenclip print' -show clipboard -font 'Iosevka 20'"
+
+# Scratchpad
 bindsym $mod+minus move scratchpad
 bindsym $mod+shift+minus scratchpad show
 
+# Floating editor
 for_window [title="^emacs@Ragnarok$"] floating enable;
 for_window [title="^emacs@Ragnarok$"] move scratchpad; [title="^emacs@Ragnarok$"] scratchpad show; move scratchpad
 bindsym $mod+space [title="^emacs@Ragnarok$"] scratchpad show
 
+# Floating terminal
 exec --no-startup-id termite --name=dropmite
 for_window [instance="dropmite"] floating enable;
-# for_window [instance="dropmite"] move scratchpad; [instance="dropmite"] scratchpad show; resize shrink height 95px; resize grow width 1400px; move position center; move up 420px; move scratchpad
 for_window [instance="dropmite"] move scratchpad; [instance="dropmite"] scratchpad show; resize set 2446 607; move position center; move up 420px; move scratchpad
 bindsym $mod+Return [instance="dropmite"] scratchpad show
 
-exec --no-startup-id termite -t ranger -e ranger --name=explorer
-for_window [instance="explorer"] floating enable;
-for_window [instance="explorer"] move scratchpad; [instance="explorer"] scratchpad show; resize grow width 1000px; move position center; move scratchpad
-bindsym $mod+f [instance="explorer"] scratchpad show
-# bindsym $mod+f exec rofi -show fb -modi fb:~/bin/rofi-file-browser -font "Iosevka 25"
+# File finder with ripgrep and rofi
+bindsym $mod+f exec --no-startup-id "~/.zplug/bin/rg --files --no-ignore --hidden -g '!{.git,node_modules,.cache}/*'  2>/dev/null | rofi -dmenu -i -levenshtein-sort -matching regex -font 'Iosevka 20' -p '[files] ' | xargs xdg-open"
 
 # change focus
 bindsym $mod+h focus left
@@ -822,10 +395,13 @@ bindsym $mod+Shift+0 move container to workspace 10
 
 # reload the configuration file
 bindsym $mod+Shift+j reload
+
 # reload X11
-bindsym $mod+Shift+x exec xrdb ~/.Xresources
+bindsym $mod+Shift+x exec xrdb -merge ~/.Xresources
+
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+p restart
+
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+period exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
@@ -882,21 +458,25 @@ gaps inner 30
 gaps outer 0
 new_window 1pixel
 
-# some controls
+# Keyboard brightness
 bindsym XF86KbdBrightnessDown exec kb-light - && pkill -RTMIN+2 i3blocks
 bindsym XF86KbdBrightnessUp exec kb-light + && pkill -RTMIN+2 i3blocks
 
+# Screen brightness
 bindsym XF86MonBrightnessUp exec xbacklight +2 && pkill -RTMIN+2 i3blocks
 bindsym XF86MonBrightnessDown exec xbacklight -2 && pkill -RTMIN+2 i3blocks
 
+# Audio controls
 bindsym XF86AudioMute exec amixer -D pulse sset Master toggle && pkill -RTMIN+3 i3blocks
 bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 2%- && pkill -RTMIN+3 i3blocks
 bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 2%+ && pkill -RTMIN+3 i3blocks
 
+# Media controls
 bindsym XF86AudioPrev exec playerctl-cmus previous && pkill -RTMIN+1 i3blocks
 bindsym XF86AudioNext exec playerctl-cmus next && pkill -RTMIN+1 i3blocks
 bindsym XF86AudioPlay exec playerctl-cmus play-pause && pkill -RTMIN+1 i3blocks
 
+# Screenshot
 bindsym --release XF86LaunchB exec "scrot -s ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
 bindsym Shift+XF86LaunchB exec "scrot -ub ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
 bindsym XF86LaunchA exec "scrot ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
@@ -905,7 +485,6 @@ exec dropbox start
 exec emacs
 exec sh ~/.fehbg
 exec greenclip daemon
-exec nm-applet
 exec --no-startup-id /home/diego/.ghq/github.com/olemartinorg/i3-alternating-layout/alternating_layouts.py
 exec unclutter
 exec xset s off
@@ -1468,7 +1047,7 @@ include "~/.nano/*.nanorc"
 :END:
 #+begin_src conf
 [dmenu]
-dmenu_command = rofi -font 'Iosevka 25'
+dmenu_command = rofi -font 'Iosevka 20'
 p = [Networks]
 # # Note that dmenu_command can contain arguments as well like `rofi -width 30`
 # # Rofi and dmenu are set to case insensitive by default `-i`
@@ -1906,14 +1485,6 @@ files=$(rg -g '!Applications' \
            "$1" --files \
             | peco --prompt '[edit]')
 emacsclient -n --eval "(let ((inhibit-message t)) (dolist (file (split-string \"$files\")) (find-file-read-only file)))" > /dev/null 2>&1
-#+end_src
-** explorer
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/explorer")  :shebang "!/usr/bin/env bash"
-:END:
-Wrapper for floating ranger window with i3wm.
-#+begin_src sh
-termite -t ranger -e ranger --name=explorer
 #+end_src
 ** i3blocks
 i3blocks scripts taken from/inspired by [[https://github.com/yeungocanh/archdot/tree/master/.config/i3blocks][yeungocanh/archdot]].
@@ -2420,9 +1991,9 @@ name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.password-store/.extensions/rofi.bash") :shebang "#!/usr/bin/env bash"
 :END:
 #+begin_src sh
-name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
+name=$(~/.zplug/bin/rg -g "*.gpg" "$HOME/.password-store" --files \
            | sed 's@'"$HOME"'/\.password-store/\(.\+\?\)\.gpg@\1@' \
-           | rofi -dmenu -p "[pass] " -font "Iosevka 25")
+           | rofi -dmenu -i -p "[pass] " -font "Iosevka 20")
 
 if [[ -n "$name" ]]; then
     ps axf | grep 'greenclip daemon' | grep -v grep | awk '{print $1}' | xargs kill -20
