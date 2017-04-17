@@ -1,4 +1,4 @@
-#!/usr/bin/env emacs --script
+#!emacs --script
 
 ;; [[file:~/dotfiles/rc.org::*org-tangle][org-tangle:1]]
 

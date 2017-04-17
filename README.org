@@ -1,36 +1,76 @@
 * dotfiles
 
-Just my dotfiles. Mostly my [[./emacs.d][emacs.d]]. Some of this is my own, a lot is inspired
-by or taken from others' config/scripts and adapted to my needs. Probably kind
-of a mess at the moment.
+Just my dotfiles. Some of this is my own, a lot is inspired by or taken from
+others' configs and adapted to my needs. This is a largely org-mode (and
+therefore emacs) based dotfiles configuration. The configs are kept in org
+files that tangle (written) to the appropriate place on save. The tangle is /in
+theory/ OS aware (Linux or Darwin).
 
-This is a largely org-mode (and therefore emacs) based dotfiles configuration.
-Most short or one-off configuration files and scripts are directly tangled to
-the apropriate location from [[./rc.org][rc.org]] using an asynchronous call to
-~org-babel-tangle-file~ on save.
+** Contents
+*** [[./emacs.d/config.org][emacs.d/config.org]] - emacs config
+An emacs configuration based largely on [[https://github.com/jwiegley/use-package][use-package]], [[https://github.com/emacs-evil/evil][evil-mode]], and [[https://github.com/abo-abo/swiper][ivy]], with
+inspiration and code from [[https://github.com/syl20bnr/spacemacs][spacemacs]] and others' configs. The tangled file
+~config.el~ is loaded by [[./emacs.d/init.el][init.el]].
+*** [[./zsh.org][zsh.org]] - zsh config
+A zsh configuration that is partially [[https://github.com/zplug/zplug][zplug]] based, with inspiration and code
+from prezto and oh-my-zsh where not using an actual plugin.
+*** [[./rc.org][rc.org]] - dotfiles and scripts
+A bunch of less complex or one-off configuration files and scripts I like to
+keep handy, including configurations for [[https://github.com/therockmandolinist/dotfiles/blob/master/rc.org#tmux][tmux]] and [[https://github.com/therockmandolinist/dotfiles/blob/master/rc.org#i3][i3]] as well as a [[https://github.com/therockmandolinist/dotfiles/blob/master/rc.org#darktooththeme-cmus][cmus theme]],
+among others. Some are my own but a lot of these are taken from or based on
+config files from the internet. I'll pin down the sources one day.
+*** [[./org-tangle][org-tangle]] - install script
+A kind of messy script that makes use of ~emacs --script~ to run emacs-lisp code
+as a shell script for initial installation of dotfiles, with support for
+partial installation - you can choose which files or even headers from rc.org
+to install.
+*** [[./installed-programs][installed-programs]]
+A couple lists that get outomatically updated keeping track of software I have
+installed for, er. Convenience? See [[https://github.com/therockmandolinist/dotfiles/blob/master/rc.org#updates][updates]] and [[https://github.com/therockmandolinist/dotfiles/blob/master/rc.org#masterinstall][masterinstall]].
+*** [[./vim/vimrc][vim/vimrc]]
+Oh yeah, then there's vim. I would go elsewhere for this bit if I were you, but
+use at your own risk.
+** Installation
+You should /probably/ have a fairly recent version of emacs, and potentially
+org-mode. I tend to use a "bleeding edge" installation of emacs from source
+(currently v26.0.50), and I've not tested this with older versions, though it
+should work in theory.
 
-Since my [[./emacs.d/config.org][emacs configuration]] is much more complex, it is kept in its own org
-file and the =emacs.d= directory is symlinked. The vim directory is also
-symlinked.
+Clone the repo to =~/dotfiles= (or wherever you'd like, but make sure the folder
+remains named ~dotfiles~)
 
-** Full Installation
-Make sure you have a fairly recent version of emacs. I tend to use a "bleeding
-edge" installation from source (currently v26.0.50), and I've not tested this
-with older versions, though it should work. *NOTE:* This will overwrite existing
-dotfiles/scripts, so be pretty damn sure.
+*NOTE:* The following will overwrite existing dotfiles/scripts, so be pretty damn
+sure (you can also use the ~--ask~ flag).
 
- - Clone the repo to =~/dotfiles= (or wherever you'd like).
- - Use provided script to install dotfiles and scripts.
-   #+begin_src sh
-   cd ~/dotfiles
-   ./org-tangle rc.org
-   #+end_src
- - Use provided script to install emacs config. Will overwrite as well.
-   #+begin_src sh
-   ./org-tangle ./emacs.d/config.org
-   #+end_src
+*** Full
+Use provided script to install dotfiles and scripts.
+#+begin_src sh
+cd ~/dotfiles
+./org-tangle
+#+end_src
 
-** Partial installation
-There's not currently a great way to do this. I'm hoping to introduce some kind
-of system with command line arguments at some point in the future, but for now,
-you could just copy paste the snippets you like.
+Or to be prompted before each file:
+#+begin_src sh
+./org-tangle --ask
+#+end_src
+
+*** Partial
+You can call the script with the filenames you'd like to install - say you want
+just the emacs and zsh configs:
+#+begin_src sh
+./org-tangle emacs.d/config.org zsh.org
+#+end_src
+Any arguments not corresponding to a filename will search for a heading in
+rc.org and tangle the files under that heading.
+
+For example, say you want my emacs config, and /just/ my tmux and i3 configs from
+~rc.org~:
+#+begin_src sh
+./org-tangle emcas.d/config.org tmux i3
+#+end_src
+At any point you can put in the ~--ask~ flag, and you will be prompted before
+files or headings after that flag are tangled.
+
+*Note:* Ideally for all of this to work optimally, there should be no ambiguity
+between heading names in ~rc.org~. I'm working on it, but let me know if you spot
+something.
