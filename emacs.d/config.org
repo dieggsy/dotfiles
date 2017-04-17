@@ -17,9 +17,9 @@ itself, hence the [[#local-vars][file local variables]]. Also, the optional ~COM
 :END:
 
 First off, let's set lexical binding, in accordance with the
-[[https://github.com/bbatsov/emacs-lisp-style-guide#source-code-layout--organization][emacs-lisp-style-guide]], and silence some byte-compile warnings. Now
-technically, there's not really any point to byte-compiling your init.el, so
-erm, don't follow my example there? Whatever.
+[[https://github.com/bbatsov/emacs-lisp-style-guide#source-code-layout--organization][emacs-lisp-style-guide]], and silence some compiler warnings. Now technically,
+there's not really any point to byte-compiling your init.el, so erm, don't
+follow my example there? Whatever.
 #+begin_src emacs-lisp :comments no
 ;;; -*- lexical-binding: t; byte-compile-warnings: (not free-vars unresolved make-local); -*-
 #+end_src
@@ -95,8 +95,8 @@ erm, don't follow my example there? Whatever.
 * Initial Setup
 ** Server
 Start server if not already running. You can do this with ~emacs --daemon~ or
-even automate it with ~brew services start emacs~ on osx, but I usually just open
-Emacs.app on login anyway, so this suffices.
+even automate it with ~brew services start emacs~ on macOS, but I usually just
+run Emacs on login anyway, so this suffices.
 
 See [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html#Emacs-Server][Using Emacs as a Server]].
 #+begin_src emacs-lisp
@@ -119,10 +119,10 @@ really bad self-made themes, ~org-export-async-init-file~, etc.
 #+end_src
 ** Package setup
 *** Package-archives
-This is adds places to fetch external packages from using ~package-install~ or
-even [[#use-package][use-package]]. [[https://melpa.org/#/][Melpa]] is probably the best of these, having the biggest
-variety and most active development. It builds packages around every 4 hours or
-so directly from source.
+This is adds places to fetch external packages from, using ~package-install~ or
+[[#use-package][use-package]]. [[https://melpa.org/#/][Melpa]] is probably the best of these, having the biggest variety
+and most active development. It builds packages around every 4 hours or so
+directly from source.
 #+begin_src emacs-lisp
 (add-to-list 'package-archives '("org"       . "http://orgmode.org/elpa/") t)
 (add-to-list 'package-archives '("melpa"     . "http://melpa.org/packages/"))
@@ -154,7 +154,11 @@ packages are installed. It's pretty neat.
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-
+#+end_src
+I also set some variables - in particular, tell me the load time when a package
+takes more than .001 seconds, always tell me about package loading, and always
+defer and ensure packages are installed unless otherwise stated.
+#+begin_src emacs-lisp
 (setq use-package-minimum-reported-time .001
       use-package-verbose t
       use-package-always-defer t
@@ -247,28 +251,7 @@ back if you need to.
 (setq message-log-max 10000)
 #+end_src
 ** Font
-:NOTES:
-*Current:* Currently I'm using the wonderful [[http://input.fontbureau.com/][Input]] font. If, like me, you're
-coming from something more like SauceCodePro, Consolas, or even just Menlo,
-this font may at first seem a little "blocky," but it's so wonderfully
-[[http://input.fontbureau.com/download/#customize][customizable]] that you should really give it a try. My current settings are:
-
- - Download a custom four-style family
-| Regular     | Input Mono Light         |
-| Italic      | Input Mono Light Italic  |
-| Bold        | Input Mono Medium        |
-| Bold Italic | Input Mono Medium Italic |
- - ~Source Code Pro style~
-   * second option for ~a~ and ~g~
- - 1.4x Line spacing
-
-*Note:* Check out [[http://mbauman.net/geek/2009/03/15/minor-truetype-font-editing-on-a-mac/][this post]] for advice on fixing the Consolas font on os x. This
-helps with the modeline text vertical alignments and makes it consistent with
-other fonts. Post last updated in 2011, last successfully tested in 09/2016 (by
-myself).
-:END:
-
-Choose a font if available, in order of preference.
+Choose a font in order of preference, when available.
 #+begin_src emacs-lisp
 (when window-system
   (cond ((x-list-fonts "Iosevka")
@@ -289,8 +272,35 @@ Choose a font if available, in order of preference.
   (when (x-list-fonts "FontAwesome")
     (set-fontset-font t 'unicode "FontAwesome" nil 'prepend)))
 #+end_src
+
+:NOTES:
+*Current:* Now I use [[https://be5invis.github.io/Iosevka/][Iosevka]], which is really great since it has all of the
+wonderful customization abilities of Input, but is fully open source (and has
+web variants!), sees active development, and the maintainer is incredibly
+responsive. It /is/ quite narrow, but give it a chance - I wasn't able to go back
+after a few weeks.
+
+*2016-ish:* I'm using the wonderful [[http://input.fontbureau.com/][Input]] font. If, like me, you're
+coming from something more like SauceCodePro, Consolas, or even just Menlo,
+this font may at first seem a little "blocky," but it's so wonderfully
+[[http://input.fontbureau.com/download/#customize][customizable]] that you should really give it a try. My current settings are:
+
+ - Download a custom four-style family
+| Regular     | Input Mono Light         |
+| Italic      | Input Mono Light Italic  |
+| Bold        | Input Mono Medium        |
+| Bold Italic | Input Mono Medium Italic |
+ - ~Source Code Pro style~
+   * second option for ~a~ and ~g~
+ - 1.4x Line spacing
+
+*Note:* Check out [[http://mbauman.net/geek/2009/03/15/minor-truetype-font-editing-on-a-mac/][this post]] for advice on fixing the Consolas font on macOS. This
+helps with the modeline text vertical alignments and makes it consistent with
+other fonts. Post last updated in 2011, last successfully tested in 09/2016 (by
+myself).
+:END:
 ** Text
-Text-mode is nicer than fundamental-mode.
+Text-mode is nicer than fundamental-mode, or so I hear.
 #+begin_src emacs-lisp
 (setq-default major-mode 'text-mode)
 #+end_src
@@ -314,7 +324,7 @@ Who uses double spaces between sentences?
 (setq sentence-end-double-space nil)
 #+end_src
 ** Minibuffer
-Make the cursor not-blocky in minibuffer.
+Use a bar cursor in the minibuffer.
 #+begin_src emacs-lisp
 (add-hook 'minibuffer-setup-hook
           (lambda () (setq-local cursor-type '(bar . 1))))
@@ -348,7 +358,7 @@ Clean up whitespace before saving files.
 (add-hook 'before-save-hook #'whitespace-cleanup)
 #+end_src
 ** Tramp
-Use ssh and remember passwords for [[https://www.gnu.org/software/tramp/][tramp]].
+Use ssh by default and remember passwords for [[https://www.gnu.org/software/tramp/][tramp]].
 #+begin_src emacs-lisp
 (setq tramp-default-method "ssh"
       password-cache-expiry nil)
@@ -374,7 +384,7 @@ mouse in emacs.
       mouse-wheel-progressive-speed nil)
 #+end_src
 ** Tabs/completion
-Dear god I hate tabs, also, four spaces is a good indentation default.
+Dear god I hate tabs. Also, four spaces is a good indentation default.
 #+begin_src emacs-lisp
 (setq-default indent-tabs-mode nil
               tab-width 4)
@@ -391,6 +401,8 @@ Show the column number in the modeline, because I'm not a savage.
 (setq column-number-mode t)
 #+end_src
 ** Linux browser
+Something about this one time Emacs on Linux didn't recognize my default
+browser, so why not set it explicitly.
 #+begin_src emacs-lisp
 (when (eq system-type 'gnu/linux)
   (setq browse-url-generic-program
@@ -399,8 +411,9 @@ Show the column number in the modeline, because I'm not a savage.
 #+end_src
 ** [[https://www.youtube.com/watch?v=UWHEcIbhDiw][There is unrest in the forest...]]
 #+begin_src emacs-lisp
-(when (file-exists-p  "~/.emacs.d/lisp/there-is-trouble-with-the-trees.el")
-    (load-file "~/.emacs.d/lisp/there-is-trouble-with-the-trees.el"))
+(let ((the-trees "~/.emacs.d/lisp/there-is-trouble-with-the-trees.el"))
+  (when (file-exists-p the-trees)
+    (load-file the-trees)))
 #+end_src
 #+begin_quote
 For the Maples want more sunlight
@@ -409,7 +422,7 @@ And the Oaks ignore their pleas
 #+end_quote
 * Functions
 Stolen and original functions and macros. Should be explained well enough in
-the docstrings.
+the docstrings. /Should/ be.
 
 ** Files/buffers
 *** File Manipulation
@@ -1824,7 +1837,8 @@ so I went with it.
                                    (emacs-lisp . t)
                                    (calc . t)
                                    (ipython . t)
-                                   (shell . t)))
+                                   (shell . t)
+                                   (lisp . t)))
 
   ;; appearance
   (setq org-src-fontify-natively t
@@ -2522,6 +2536,7 @@ For show.
 #+begin_quote
   Make your Emacs sound like a proper typewriter.
 #+end_quote
+Clackity-clack.
 #+begin_src emacs-lisp
 (use-package selectric-mode)
 #+end_src
@@ -3154,7 +3169,7 @@ Supposedly better than autocomplete.
 #+begin_quote
   Package to display keyboard macros or latest interactive commands as emacs lisp.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package elmacro
   :defer 10
   :config
