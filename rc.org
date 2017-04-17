@@ -1050,6 +1050,7 @@ include "~/.nano/*.nanorc"
 [dmenu]
 dmenu_command = rofi -font 'Iosevka 20'
 p = [Networks]
+rofi_highlight=True
 # # Note that dmenu_command can contain arguments as well like `rofi -width 30`
 # # Rofi and dmenu are set to case insensitive by default `-i`
 # l = number of lines to display, defaults to number of total network options
@@ -2111,12 +2112,13 @@ A script to update pip, apt, and homebrew packages.
 Make sure not in a virtualenv and track pyenv python version.
 #+begin_src sh
 if [ -n "$VIRTUAL_ENV" ]; then
-  echo 'Exit virtualenv first'
+    echo 'Exit virtualenv first'
 elif [ -n "$PYTHONPATH" ]; then
-  echo 'Not updating, PYTHONPATH is set.'
+    echo 'Not updating, PYTHONPATH is set.'
 else
-	# Track global python version
-	globalpython=$(echo $(pyenv version) | cut -d' ' -f1)
+    # Track global python version
+    eval "$(pyenv init -)"
+    globalpython=$(echo $(pyenv version) | cut -d' ' -f1)
 #+end_src
 *** Python 2 pip
 #+begin_src sh
