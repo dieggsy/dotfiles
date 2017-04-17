@@ -27,6 +27,7 @@ readable in org format than in rendered markdown.
    - [[#ssh][ssh]]
    - [[#termite][termite]]
    - [[#tmux][tmux]]
+   - [[#xresources][Xresources]]
    - [[#zathurarc][zathurarc]]
  - [[#scripts][Scripts]]
    - [[#dropmite][dropmite]]
@@ -1433,6 +1434,21 @@ windows:
       panes:
         - cmus
         - cava
+#+end_src
+** Xresources
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.Xresources")
+:END:
+
+#+begin_src conf-xdefaults
+rofi.color-enabled: true
+rofi.color-window: #282828, #fdf4c1, #fdf4c1
+rofi.color-normal: #282828, #fdf4c1, #282828, #3c3836, #fdf4c1
+rofi.color-active: #282828, #B8BB26, #282828, #3c3836, #B8BB26
+rofi.color-urgent: #282828, #FB4933, #282828, #3c3836, #FB4933
+
+Emacs.font: Iosevka-9.5
+Emacs*geometry: 99x41
 #+end_src
 ** zathurarc
 :PROPERTIES:
