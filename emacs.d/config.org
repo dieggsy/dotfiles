@@ -77,7 +77,7 @@ erm, don't follow my example there? Whatever.
    - [[#prog-mode][Prog-mode]]
    - [[#python][Python]]
    - [[#matlab][Matlab]]
-   - [[#emacs-lisp][Emacs-Lisp]]
+   - [[#lisp][Lisp]]
    - [[#term-mode][Term mode]]
    - [[#eshell][Eshell]]
    - [[#calc-mode][Calc mode]]
@@ -3328,6 +3328,20 @@ Pretty neat, though not entirely complete, IMO.
 #+begin_src emacs-lisp
 (use-package yapfify)
 #+end_src
+*** [[https://github.com/slime/slime][slime]]
+#+begin_src emacs-lisp
+(use-package slime
+  :config
+  (load (expand-file-name "~/quicklisp/slime-helper.el"))
+  (setq inferior-lisp-program "sbcl")
+  (setq slime-contribs '(slime-fancy slime-company))
+  (evil-define-key 'insert slime-repl-mode-map
+    (kbd "<up>") #'slime-repl-previous-input
+    (kbd "<down>") #'slime-repl-next-input))
+
+(use-package slime-company
+  :after slime)
+#+end_src
 ** Navigation
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
 #+begin_quote
@@ -3660,7 +3674,7 @@ Configuration that applies to all programming modes.
   (highlight-numbers-mode 0))
 (add-hook 'matlab-mode-hook #'diego/setup-matlab-mode)
 #+end_src
-** Emacs-Lisp
+** Lisp
 #+begin_src emacs-lisp
 (defun diego/setup-lisp-mode ()
   "Custom `emacs-lisp-mode' configuration."
@@ -3679,10 +3693,11 @@ Configuration that applies to all programming modes.
     "es" 'eval-surrounding-sexp
     "el" 'eval-last-sexp))
 
-(add-hook 'emacs-lisp-mode-hook #'diego/setup-lisp-mode)
-(add-hook 'lisp-interaction-mode-hook #'diego/setup-lisp-mode)
+(dolist (hook '(emacs-lisp-mode-hook
+                lisp-interaction-mode-hook
+                lisp-mode-hook))
+  (add-hook hook #'diego/setup-lisp-mode))
 #+end_src
-
 ** Term mode
 #+begin_src emacs-lisp
 (defun diego/setup-term-mode ()
