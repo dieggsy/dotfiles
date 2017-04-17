@@ -1,4 +1,4 @@
-* dotfiles
+#+TITLE: dotfiles
 
 Just my dotfiles. Some of this is my own, a lot is inspired by or taken from
 others' configs and adapted to my needs. This is a largely org-mode (and
@@ -6,7 +6,19 @@ therefore emacs) based dotfiles configuration. The configs are kept in org
 files that tangle (written) to the appropriate place on save. The tangle is /in
 theory/ OS aware (Linux or Darwin).
 
-** Contents
+** Contents                                                      :toc:TOC_3:
+   - [[#files][Files]]
+     - [[#emacsdconfigorg---emacs-config][emacs.d/config.org - emacs config]]
+     - [[#zshorg---zsh-config][zsh.org - zsh config]]
+     - [[#rcorg---dotfiles-and-scripts][rc.org - dotfiles and scripts]]
+     - [[#org-tangle---install-script][org-tangle - install script]]
+     - [[#installed-programs][installed-programs]]
+     - [[#vimvimrc][vim/vimrc]]
+   - [[#installation][Installation]]
+     - [[#full][Full]]
+     - [[#partial][Partial]]
+
+** Files
 *** [[./emacs.d/config.org][emacs.d/config.org]] - emacs config
 An emacs configuration based largely on [[https://github.com/jwiegley/use-package][use-package]], [[https://github.com/emacs-evil/evil][evil-mode]], and [[https://github.com/abo-abo/swiper][ivy]], with
 inspiration and code from [[https://github.com/syl20bnr/spacemacs][spacemacs]] and others' configs. The tangled file
