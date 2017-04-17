@@ -66,7 +66,7 @@ rc.org and tangle the files under that heading.
 For example, say you want my emacs config, and /just/ my tmux and i3 configs from
 ~rc.org~:
 #+begin_src sh
-./org-tangle emcas.d/config.org tmux i3
+./org-tangle emacs.d/config.org tmux i3
 #+end_src
 At any point you can put in the ~--ask~ flag, and you will be prompted before
 files or headings after that flag are tangled.
