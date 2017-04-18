@@ -1793,7 +1793,14 @@ echo -e "\e[1;34mDone"
 *** Linux
 **** apt-get packages
 #+begin_src sh :tangle (when (eq system-type 'gnu/linux) "~/bin/masterinstall")
-<~/dotfiles/installed-programs/apt.txt xargs sudo apt-get install
+tar -xf ~/dotfiles/installed-programs/apt.tgz /tmp/apt
+sudo apt-key add /tmp/apt/repo.keys
+sudo cp -R /tmp/apt/sources.list* /etc/apt/
+sudo apt-get update
+sudo apt-get install dselect
+sudo dselect update
+sudo dpkg --set-selections < /tmp/apt/package.list
+sudo apt-get dselect-upgrade -y
 #+end_src
 **** golang
 #+begin_src sh :tangle (when (eq system-type 'gnu/linux) "~/bin/masterinstall")
@@ -1810,6 +1817,47 @@ curl -sSL https://get.haskellstack.org/ | sh
 #+begin_src sh :tangle (when (eq system-type 'gnu/linux) "~/bin/masterinstall")
 curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
 pyenv update
+#+end_src
+**** Iosevka
+***** nodejs
+#+begin_src sh
+curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
+sudo apt-get install -y nodejs
+#+end_src
+***** ttfautohint
+#+begin_src sh
+sudo apt-get install ttfautohint
+#+end_src
+***** premake5
+#+begin_src sh
+wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha11/premake-5.0.0-alpha11-linux.tar.gz
+tar -xf premake-5.0.0-alpha11-linux.tar.gz
+sudo cp premake5 /usr/local/bin/premake5
+#+end_src
+***** otfcc
+#+begin_src sh
+ghq get caryll/otfcc
+cd ~/.ghq/github.com/caryll/otfcc
+premake5 gmake
+cd build/make
+make config=release_x64
+cd ../../
+cd bin/release-x64
+mv otfccbuild /usr/local/bin # or wherever
+mv otfccdump /usr/local/bin # or wherever
+#+end_src
+***** Iosevka
+#+begin_src sh
+ghq get be5invis/iosevka
+cd ~/.ghq/github.com/be5invis/iosevka
+npm install
+make custom-config set=input design='v-l-tailed v-i-hooky v-a-singlestorey v-zero-dotted v-asterisk-low v-g-singlestorey v-brace-straight'
+make custom-config set=term design='v-l-tailed v-i-hooky v-a-singlestorey v-zero-dotted v-asterisk-low v-g-singlestorey v-brace-straight term'
+make custom set=input
+make custom set=term
+mv dist/iosevka-input ~/.local/share/fonts/
+mv dist/iosevka-term ~/.local/share/fonts/
+fc-cache -f -v
 #+end_src
 *** Python versions
 #+begin_src sh
@@ -1832,21 +1880,11 @@ echo "\n\e[1;34mInstalling: \e[91mpip2 programs\e[0;97m"
 
 pyenv global $python3version
 #+end_src
-*** Symlink dirs
+*** Tangle dotfiles
 #+begin_src sh
-echo "\n\e[1;34mSymlinking: \e[91m.emacs.d, .vim\e[0;97m"
-ln -s ~/dotfiles/emacs.d ~/.emacs.d
-ln -s ~/dotfiles/vim ~/.vim
-#+end_src
-*** Tangle rc.org
-#+begin_src sh
-echo "\n\e[1;34mTangling: \e[91mrc.org\e[0;97m"
-~/dotfiles/org-tangle ~/dotfiles/rc.org > /dev/null 2>&1
-#+end_src
-*** Tangle config.org
-#+begin_src sh
-echo "\n\e[1;34mTangling: \e[91mconfig.org\e[0;97m"
-~/dotfiles/org-tangle ~/dotfiles/emacs.d/config.org > /dev/null 2>&1
+if [ -d ~/dotfiles ]; then
+    ~/dotfiles/org-tangle
+fi
 #+end_src
 ** ocrpdf
 :PROPERTIES:
@@ -2182,13 +2220,17 @@ brew doctor
 brew bundle dump --force --file=~/dotfiles/installed-programs/brew.rb
 #+end_src
 
-**** GNU/Linux
+**** Debian
 #+begin_src sh :tangle (when (eq system-type 'gnu/linux) "~/bin/updates")
 echo -e "\n\e[1;34mUpdating: \e[91mapt-get\e[0;97m"
 sudo apt-get update
 sudo apt-get upgrade
 
-apt list --installed | sed 's@/.*@@' | tail -n+2 > ~/dotfiles/installed-programs/apt.txt
+mkdir -p /tmp/apt
+dpkg --get-selections > /tmp/apt/package.list
+sudo cp -R /etc/apt/sources.list* /tmp/apt/
+sudo apt-key exportall > /tmp/apt/repo.keys
+cd /tmp/ && tar cf ~/dotfiles/installed-programs/apt.tgz apt/ && cd -
 #+end_src
 *** Finalize
 #+begin_src sh
