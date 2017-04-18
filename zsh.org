@@ -7,8 +7,9 @@ aosnetuh
  - [[#introduction][Introduction]]
  - [[#zshrc][zshrc]]
    - [[#initial-setup][Initial setup]]
-   - [[#zsh-options][Zsh options]]
+   - [[#completion][Completion]]
    - [[#pluginsexternal][Plugins/External]]
+   - [[#zsh-options][Zsh options]]
    - [[#keys][Keys]]
    - [[#vars][Vars]]
    - [[#aliases][Aliases]]
@@ -28,6 +29,7 @@ aosnetuh
 :END:
 ** Initial setup
 *** Prompt
+A minimalist prompt adapted from prezto with no (gasp!) prompt character.
 #+begin_src sh
 zmodload zsh/zprof
 start_time="$(date +%s%N | cut -b1-13)"
@@ -48,6 +50,8 @@ setopt prompt_subst
 PROMPT='${$(git_status)}%F{7}$(prompt_sorin_pwd)%f%b '
 #+end_src
 *** Cursor
+Changes the cursor depending on whether in insert or normal mode (I use vi
+keys in zsh).
 #+begin_src sh
 if [ "$(uname)" = "Darwin" ]; then
     zle-line-init () {
@@ -111,6 +115,7 @@ elif [ -z "$INSIDE_EMACS" ]; then
 fi
 #+end_src
 *** Setup help
+Sets up the ~help~ command on zsh.
 #+begin_src sh
 autoload -Uz run-help
 if [ "alias" = $(whence -w run-help | cut -d ' ' -f2) ]; then
@@ -118,17 +123,10 @@ if [ "alias" = $(whence -w run-help | cut -d ' ' -f2) ]; then
 fi
 alias help=run-help
 #+end_src
-** Zsh options
+** Completion
 #+begin_src sh
-setopt glob_complete
-setopt auto_cd
-setopt histignoredups
-setopt autonamedirs
-setopt clobber
-unsetopt correct
 autoload -Uz compinit && compinit -i
-autoload -Uz cool-peco
-cool-peco
+setopt glob_complete
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' menu select
 zstyle ':completion:*' group-name ''
@@ -165,6 +163,7 @@ if [[ ! -d ~/.zplug ]];then
 fi
 source ~/.zplug/init.zsh
 #+end_src
+
 **** [[https://github.com/b4b4r07/enhancd][enhancd]]
 #+begin_src sh
 zplug "b4b4r07/enhancd", use:init.sh
@@ -256,6 +255,16 @@ if zplug check zsh-users/zsh-history-substring-search; then
     HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_FOUND=''
     HISTORY_SUBSTRING_SEARCH_HIGHLIGHT_NOT_FOUND=''
 fi
+#+end_src
+** Zsh options
+#+begin_src sh
+setopt auto_cd
+setopt histignoredups
+setopt autonamedirs
+setopt clobber
+unsetopt correct
+autoload -Uz cool-peco
+cool-peco
 #+end_src
 ** Keys
 #+begin_src sh
