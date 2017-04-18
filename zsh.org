@@ -47,7 +47,7 @@ function prompt_sorin_pwd {
 
 setopt prompt_subst
 
-PROMPT='${$(git_super_status)}%F{7}$(prompt_sorin_pwd)%f%b '
+PROMPT='${$(git_status)}%F{7}$(prompt_sorin_pwd)%f%b '
 #+end_src
 *** Cursor
 Changes the cursor depending on whether in insert or normal mode (I use vi
@@ -163,12 +163,6 @@ if [[ ! -d ~/.zplug ]];then
 fi
 source ~/.zplug/init.zsh
 #+end_src
-**** [[https://github.com/olivierverdier/zsh-git-prompt][zsh-git-prompt]]
-#+begin_src sh
-zplug "olivierverdier/zsh-git-prompt",\
-      hook-build:"stack build && stack install",\
-      use:zshrc.sh
-#+end_src
 **** [[https://github.com/b4b4r07/enhancd][enhancd]]
 #+begin_src sh
 zplug "b4b4r07/enhancd", use:init.sh
@@ -248,15 +242,6 @@ fi
 *** zplug load
 #+begin_src sh
 zplug load
-if zplug check olivierverdier/zsh-git-prompt; then
-    GIT_PROMPT_EXECUTABLE="haskell"
-    ZSH_THEME_GIT_PROMPT_BRANCH="%{$fg_bold[green]%}"
-    ZSH_THEME_GIT_PROMPT_CHANGED="%{%F{009}✚%G%}"
-    ZSH_THEME_GIT_PROMPT_AHEAD="%{%F{013}↑%G%}"
-    ZSH_THEME_GIT_PROMPT_BEHIND="%{%F{013}↓%G%}"
-    ZSH_THEME_GIT_PROMPT_CLEAN="%{%F{010}✓%G%}"
-    ZSH_THEME_GIT_PROMPT_STAGED="%{%F{012}●%G%}"
-fi
 if zplug check zsh-users/zsh-syntax-highlighting; then
     ZSH_HIGHLIGHT_STYLES[globbing]='fg=208'
     ZSH_HIGHLIGHT_STYLES[command]='fg=010'
