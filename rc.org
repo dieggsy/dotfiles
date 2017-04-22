@@ -35,6 +35,7 @@ readable in org format than in rendered markdown.
    - [[#ev][ev]]
    - [[#i3blocks][i3blocks]]
    - [[#masterinstall][masterinstall]]
+   - [[#mbuild][mbuild]]
    - [[#ocrpdf][ocrpdf]]
    - [[#ocrpdf2][ocrpdf2]]
    - [[#org-tangle][org-tangle]]
@@ -1887,6 +1888,65 @@ pyenv global $python3version
 if [ -d ~/dotfiles ]; then
     ~/dotfiles/org-tangle
 fi
+#+end_src
+** mbuild
+:PROPERTIES:
+:header-args+: :tangle ~/bin/mbuild :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+if [ "$1" = "iosevka" ]; then
+    cd ~/.ghq/github.com/be5invis/iosevka
+    git pull
+    echo -e "\e[94mMaking configs...\e[0m"
+    make custom-config set=term design='v-l-tailed v-i-hooky v-a-singlestorey v-zero-dotted v-asterisk-low v-g-singlestorey v-brace-straight term'
+    make custom-config set=input design='v-l-tailed v-i-hooky v-a-singlestorey v-zero-dotted v-asterisk-low v-g-singlestorey v-brace-straight'
+    echo -e "\e[94mMaking fonts...\e[0m"
+    make custom set=term
+    make custom set=input
+    echo -e "\e[94mMoving fonts\e[0m"
+    mv dist/iosevka-term ~/.local/share/fonts/
+    mv dist/iosevka-input ~/.local/share/fonts/
+    echo -e "\e[94mRebuilding font cache...\e[0m"
+    fc-cache -f -v
+    echo -e "\e[92mDone!\e[0m"
+elif [ "$1" = "emacs" ]; then
+    cd ~/.ghq/git.savannah.gnu.org/emacs/
+    git pull
+    echo -e "\e[94mRunning autogen.sh...\e[0m"
+    ./autogen.sh
+    ./autogen.sh git
+    echo -e "\e[94mRunning configure...\e[0m"
+    ./configure
+    echo -e "\e[94mMaking...\e[0m"
+    make
+    echo -e "\e[94mInstalling...\e[0m"
+    sudo make install
+    echo -e "\e[92mDone!\e[0m"
+elif [ "$1" = "sbcl" ]; then
+    cd ~/.ghq/git.code.sf.net/p/sbcl/sbcl/
+    git pull
+    echo -e "\e[94mMaking...\e[0m"
+    ./make.sh --with-sb-core-compression
+    echo -e "\e[94mInstalling...\e[0m"
+    INSTALL_ROOT=/usr/local sudo ./install.sh && echo -e "\e[92mDone!\e[0m" || echo -e "\e[91mAborted.\e[0m"
+elif [ "$1" = "rofi" ]; then
+    cd ~/.ghq/github.com/DaveDavenport/rofi/
+    git pull
+    echo -e "\e[94mUpdating submodules...\e[0m"
+    git submodule update --init
+    echo -e "\e[94mRunning autoreconf...\e[0m"
+    autoreconf -i
+    mkdir -p build && cd build
+    echo -e "\e[94mCofiguring...\e[0m"
+    ../configure
+    echo -e "\e[94mMaking...\e[0m"
+    make
+    echo -e "\e[94mInstalling...\e[0m"
+    sudo make install
+else
+    echo -e "\e[91mInvalid argument.\e[0m"
+fi
+
 #+end_src
 ** ocrpdf
 :PROPERTIES:
