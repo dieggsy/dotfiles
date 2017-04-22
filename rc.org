@@ -2031,22 +2031,21 @@ Standalone emacs-lisp script to tangle rc.org and config.org.
             (progn
               (require 'org)
               (dolist (file default-files)
-                (progn
-                  (let ((filename (dotfiles-file file))
-                        (file-list '()))
-                    (if (file-exists-p filename)
-                        (progn
-                          (message "Found file: %s, installing to:" (green-text file))
-                          (find-file filename)
-                          (while (search-forward-regexp ":tangle[^~\n]+\\(~/.[^[:space:]\"]+\\)" nil t)
-                            (add-to-list 'file-list (match-string 1) t))
-                          (dolist (i file-list)
-                            (message "    %s" (blue-text i)))
-                          (if (or (not confirm-install) (y-or-n-p "Continue?"))
-                              (let ((inhibit-message t))
-                                (org-babel-tangle-file filename))
-                            (message "Skipping...")))
-                      (message "File %s not found, skipping..." (red-text filename))))))
+                (let ((filename (dotfiles-file file))
+                      (file-list '()))
+                  (if (file-exists-p filename)
+                      (progn
+                        (message "Found file: %s, installing to:" (green-text file))
+                        (find-file filename)
+                        (while (search-forward-regexp ":tangle[^~\n]+\\(~/.[^[:space:]\"]+\\)" nil t)
+                          (add-to-list 'file-list (match-string 1) t))
+                        (dolist (i file-list)
+                          (message "    %s" (blue-text i)))
+                        (if (or (not confirm-install) (y-or-n-p "Continue?"))
+                            (let ((inhibit-message t))
+                              (org-babel-tangle-file filename))
+                          (message "Skipping...")))
+                    (message "File %s not found, skipping..." (red-text filename)))))
               (message "Done!"))
           (messsage "Aborted.")))
 
@@ -2089,6 +2088,7 @@ Standalone emacs-lisp script to tangle rc.org and config.org.
                     (message "Skipping..."))))))
           (message "Done!"))
       (message "Aborted."))))
+
 (message "Symlinking dotfiles/emacs.d to ~/.emacs.d...")
 (cond ((string= (file-symlink-p (expand-file-name "~/.emacs.d")) (dotfiles-file "emacs.d/"))
        (message "~/.emacs.d already points to %s" (dotfiles-file ".emacs.d/")))
@@ -2292,7 +2292,7 @@ mkdir -p /tmp/apt
 dpkg --get-selections > /tmp/apt/package.list
 sudo cp -R /etc/apt/sources.list* /tmp/apt/
 sudo apt-key exportall > /tmp/apt/repo.keys
-cd /tmp/ && tar cf ~/dotfiles/installed-programs/apt.tgz apt/ && cd -
+cd /tmp/ && tar czf ~/dotfiles/installed-programs/apt.tgz apt/
 #+end_src
 *** Finalize
 #+begin_src sh
