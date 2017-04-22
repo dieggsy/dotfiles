@@ -334,7 +334,6 @@ alias cpwd="pwd | tr -d '\n' | pbcopy"
 alias ddg='surfraw duckduckgo -j'
 alias def='dict -d wn'
 alias ed="ed -p:"
-alias edit="emacsclient -n"
 alias editv="emacsclient -t"
 alias encrypt="gpg2 --armor --encrypt"
 alias lock="gpg2 -c --armor"
@@ -356,7 +355,7 @@ if [ -d /Applications/Mathematica.app ]; then
     alias mathematica='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
 fi
 alias mux='tmuxinator'
-alias pass="EDITOR='emacsclient -nw' pass"
+alias pass="EDITOR='emacsclient' pass"
 alias pep8="pep8 --first --ignore=E129,W503,E226"
 alias piphere="pip install --target=./"
 alias printers="lpstat -p | awk '{print $2}'"
@@ -372,6 +371,10 @@ alias wiki="wiki -w 80"
 #+end_src
 *** Function "aliases"
 #+begin_src sh
+edit () {
+    emacsclient -n $@
+    (( $+commands[i3-msg] )) && i3-msg '[title="emacs@Ragnarok"] scratchpad show' > /dev/null 2>&1
+}
 ff() { find . -type f -iname "*$1*" | peco --prompt "[find-file]" }
 
 fd() { find . -type d -iname "*$1*" | peco --prompt="[find-dir]"}
