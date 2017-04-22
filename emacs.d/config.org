@@ -3357,6 +3357,10 @@ Pretty neat, though not entirely complete, IMO.
 (use-package slime-company
   :after slime)
 #+end_src
+*** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers]]
+#+begin_src emacs-lisp
+(use-package color-identifiers-mode)
+#+end_src
 ** Navigation
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
 #+begin_quote
