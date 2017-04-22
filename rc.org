@@ -313,11 +313,11 @@ bindsym $mod+space [title="^emacs@Ragnarok$"] scratchpad show
 # Floating terminal
 exec --no-startup-id termite --name=dropmite
 for_window [instance="dropmite"] floating enable;
-for_window [instance="dropmite"] move scratchpad; [instance="dropmite"] scratchpad show; resize set 2446 607; move position center; move up 420px; move scratchpad
+for_window [instance="dropmite"] move scratchpad; [instance="dropmite"] scratchpad show; resize set 2446 607; move absolute position 59px 95px; move scratchpad
 bindsym $mod+Return [instance="dropmite"] scratchpad show
 
 # File finder with ripgrep and rofi
-bindsym $mod+f exec --no-startup-id "~/.zplug/bin/rg --files --no-ignore --hidden -g '!{.git,node_modules,.cache}/*'  2>/dev/null | rofi -dmenu -i -levenshtein-sort -matching regex -font 'Iosevka 20' -p '[files] ' | xargs xdg-open"
+bindsym $mod+f exec --no-startup-id "~/.zplug/bin/rg --files --no-ignore --hidden -g '!{.git,node_modules,.cache}/*'  2>/dev/null | rofi -dmenu -i -levenshtein-sort -matching regex -font 'Iosevka 20' -p '[files] ' | xargs -d '\n' xdg-open"
 
 # change focus
 bindsym $mod+h focus left
@@ -489,7 +489,9 @@ exec greenclip daemon
 exec --no-startup-id /home/diego/.ghq/github.com/olemartinorg/i3-alternating-layout/alternating_layouts.py
 exec unclutter
 exec xset s off
+exec xset r rate 300 50
 exec setxkbmap dvorak
+
 #+end_src
 *** i3blocks
 :PROPERTIES:
