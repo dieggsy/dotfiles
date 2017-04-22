@@ -2107,7 +2107,7 @@ so I went with it.
     (save-excursion
       ;; Go to top level heading for subtree
       (unless (eq (org-current-level) 1)
-        (outline-up-heading 10))
+        (org-up-heading-all 10))
       ;; Set export format, pandoc options, post properties
       (let* ((org-pandoc-format 'markdown)
              (org-pandoc-options-for-markdown '((standalone . t)
@@ -2118,11 +2118,11 @@ so I went with it.
              (title (format "\"%s\"" (org-element-property :title hl)))
              (slug (format "\"%s\"" (org-element-property :SLUG hl)))
              (date (format "\"%s\"" (org-element-property :DATE hl)))
-             (tags (org-get-tags))
+             (tags (org-get-tags-at))
              (categories
               (format "[\"%s\"]" (mapconcat 'identity tags "\",\""))))
-        (if (member "draft" tags)
-            (message "Post draft not exported")
+        (if (string= (org-get-todo-state) "DRAFT")
+            (message "Draft not exported")
           (progn
             ;; Make the export
             (org-export-to-file
@@ -2130,7 +2130,8 @@ so I went with it.
                 (org-export-output-file-name
                  (concat (make-temp-name ".tmp") ".org") t)
               nil t nil nil nil
-              (lambda (f) (org-pandoc-run-to-buffer-or-file f 'markdown t nil)))
+              (lambda (f)
+                (org-pandoc-run-to-buffer-or-file f 'markdown t nil)))
             ;; Use advice-add to add advice to existing process sentinel
             ;; to modify file /after/ the export process has finished.
             (advice-add
@@ -2157,8 +2158,9 @@ so I went with it.
                       (replace-match (cdr reps))))))
              '((name . "hugo-advice")))
             ;; We don't want our advice to stick around afterwards
-            (advice-remove #'org-pandoc-sentinel 'hugo-advice))))))
-  )
+            (advice-remove #'org-pandoc-sentinel 'hugo-advice)
+            (when (string= (org-get-todo-state) "↑")
+              (org-todo))))))))
 #+end_src
 *** Keyboard Macros
 #+begin_src emacs-lisp
