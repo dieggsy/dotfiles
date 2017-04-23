@@ -1782,7 +1782,7 @@ ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/
 # Install brew bundle
 echo "\n\e[1;34mInstalling: \e[91mhomebrew programs\e[0;97m"
 /usr/local/bin/brew tap Homebrew/bundle
-/usr/local/bin/brew bundle --file=~/dotfiles/installed-programs/brew.rb
+/usr/local/bin/brew bundle --file=~/Dropbox\ \(MIT\)/installed-programs/brew.rb
 #+end_src
 **** Install alfred workflow utils
 #+begin_src sh :tangle (when (eq system-type 'darwin) "~/bin/masterinstall")
@@ -1796,7 +1796,7 @@ echo -e "\e[1;34mDone"
 *** Linux
 **** apt-get packages
 #+begin_src sh :tangle (when (eq system-type 'gnu/linux) "~/bin/masterinstall")
-tar -xf ~/dotfiles/installed-programs/apt.tgz /tmp/apt
+tar -xf ~/Dropbox\ \(MIT\)/installed-programs/apt.tgz /tmp/apt
 sudo apt-key add /tmp/apt/repo.keys
 sudo cp -R /tmp/apt/sources.list* /etc/apt/
 sudo apt-get update
@@ -1875,11 +1875,11 @@ usr/local/bin/pyenv rehash
 #+begin_src sh
 pyenv global $python3version
 echo "\n\e[1;34mInstalling: \e[91mpip3 programs\e[0;97m"
-<~/dotfiles/installed-programs/pip3.txt xargs pip install
+<~/Dropbox\ \(MIT\)/installed-programs/pip3.txt xargs pip install
 
 pyenv global $python2version
 echo "\n\e[1;34mInstalling: \e[91mpip2 programs\e[0;97m"
-<~/dotfiles/installed-programs/pip2.txt xargs pip install
+<~/Dropbox\ \(MIT\)/installed-programs/pip3.txt xargs pip install
 
 pyenv global $python3version
 #+end_src
@@ -2248,8 +2248,8 @@ if [ -z "$res" ]; then
 else
     echo $res | xargs pip install --upgrade
 fi
-pip freeze > ~/dotfiles/installed-programs/pip2.txt
-sed -i -e 's/=.*//' ~/dotfiles/installed-programs/pip2.txt
+pip freeze > ~/Dropbox\ \(MIT\)/installed-programs/pip2.txt
+sed -i -e 's/=.*//' ~/Dropbox\ \(MIT\)/installed-programs/pip2.txt
 #+end_src
 *** Python 3 pip
 #+begin_src sh
@@ -2265,8 +2265,8 @@ if [ -z "$res" ]; then
 else
     echo $res | xargs pip install --upgrade
 fi
-pip freeze > ~/dotfiles/installed-programs/pip3.txt
-sed -i -e 's/=.*//' ~/dotfiles/installed-programs/pip3.txt
+pip freeze > ~/Dropbox\ \(MIT\)/installed-programs/pip3.txt
+sed -i -e 's/=.*//' ~/Dropbox\ \(MIT\)/installed-programs/pip3.txt
 #+end_src
 *** Package manager
 **** Darwin
@@ -2279,7 +2279,7 @@ brew cleanup
 brew prune
 brew doctor
 
-brew bundle dump --force --file=~/dotfiles/installed-programs/brew.rb
+brew bundle dump --force --file=~/Dropbox\ \(MIT\)/installed-programs/brew.rb
 #+end_src
 
 **** Debian
@@ -2288,11 +2288,10 @@ echo -e "\n\e[1;34mUpdating: \e[91mapt-get\e[0;97m"
 sudo apt-get update
 sudo apt-get upgrade
 
-mkdir -p /tmp/apt
-dpkg --get-selections > /tmp/apt/package.list
-sudo cp -R /etc/apt/sources.list* /tmp/apt/
-sudo apt-key exportall > /tmp/apt/repo.keys
-cd /tmp/ && tar czf ~/dotfiles/installed-programs/apt.tgz apt/
+mkdir -p ~/Dropbox\ \(MIT\)/installed-programs/apt
+dpkg --get-selections > ~/Dropbox\ \(MIT\)/installed-programs/apt/package.list
+sudo cp -R /etc/apt/sources.list* ~/Dropbox\ \(MIT\)/installed-programs/apt/
+sudo apt-key exportall > ~/Dropbox\ \(MIT\)/installed-programs/apt/repo.keys
 #+end_src
 *** Finalize
 #+begin_src sh

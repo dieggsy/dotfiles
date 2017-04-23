@@ -12,7 +12,6 @@ theory/ OS aware (Linux or Darwin).
      - [[#zshorg---zsh-config][zsh.org - zsh config]]
      - [[#rcorg---dotfiles-and-scripts][rc.org - dotfiles and scripts]]
      - [[#org-tangle---install-script][org-tangle - install script]]
-     - [[#installed-programs][installed-programs]]
      - [[#vimvimrc][vim/vimrc]]
    - [[#installation][Installation]]
      - [[#full][Full]]
@@ -36,9 +35,6 @@ A kind of messy script that makes use of ~emacs --script~ to run emacs-lisp code
 as a shell script for initial installation of dotfiles, with support for
 partial installation - you can choose which files or even headers from rc.org
 to install.
-*** [[./installed-programs][installed-programs]]
-A couple lists that get outomatically updated keeping track of software I have
-installed for, er. Convenience? See [[https://github.com/therockmandolinist/dotfiles/blob/master/rc.org#updates][updates]] and [[https://github.com/therockmandolinist/dotfiles/blob/master/rc.org#masterinstall][masterinstall]].
 *** [[./vim/vimrc][vim/vimrc]]
 Oh yeah, then there's vim. I would go elsewhere for this bit if I were you, but
 use at your own risk.
