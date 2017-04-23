@@ -1463,9 +1463,9 @@ they are in `spacemacs/set-leader-keys'."
 #+end_quote
 #+begin_src emacs-lisp
 (use-package evil-numbers
-  :quelpa ((evil-numbers
-            :fetcher github
-            :repo "therockmandolinist/evil-numbers")))
+  :quelpa (evil-numbers
+           :fetcher github
+           :repo "therockmandolinist/evil-numbers"))
 #+end_src
 *** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
 #+begin_quote
@@ -2608,8 +2608,8 @@ An Emacs 24 theme remixed from gruvbox
 (use-package darktooth-theme
   :demand t
   :quelpa (darktooth-theme
-             :fetcher github
-             :repo "therockmandolinist/emacs-theme-darktooth"))
+           :fetcher github
+           :repo "therockmandolinist/emacs-theme-darktooth"))
 #+end_src
 *** [[https://github.com/iqbalansari/emacs-emojify][emacs-emojify]]
 #+begin_quote
@@ -3382,6 +3382,11 @@ Pretty neat, though not entirely complete, IMO.
 (use-package avy
   :config
   (setq avy-keys (string-to-list "aoeuidhtns")))
+#+end_src
+*** [[https://www.emacswiki.org/emacs/dired%252b.el][dired+]]
+#+begin_src emacs-lisp
+(use-package dired+
+  :after ranger)
 #+end_src
 *** [[https://github.com/bbatsov/projectile][projectile]]
 #+begin_quote
