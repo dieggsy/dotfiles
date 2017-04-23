@@ -1016,27 +1016,6 @@ editing. So I went for it. Now I'll never go back.
   (define-key evil-visual-state-map [?\C-_] #'keyboard-quit)
   (define-key evil-visual-state-map [?\C-/] #'keyboard-quit)
 
-  (dolist (key '([mouse-1]
-                 [mouse-4]
-                 [mouse-5]
-                 [mouse-6]
-                 [mouse-7]
-                 [down-mouse-1]
-                 [drag-mouse-1]
-                 [wheel-right]
-                 [double-wheel-right]
-                 [triple-wheel-right]
-                 [wheel-left]
-                 [double-wheel-left]
-                 [triple-wheel-left]
-                 [wheel-down]
-                 [double-wheel-down]
-                 [triple-wheel-down]
-                 [wheel-up]
-                 [double-wheel-up]
-                 [triple-wheel-up]))
-    (define-key evil-motion-state-map key #'ignore))
-
   (evil-ex-define-cmd "dtw" 'delete-trailing-whitespace))
 #+end_src
 **** Setup
@@ -2696,7 +2675,27 @@ I use this for reading, mostly.
 (use-package disable-mouse
   :defer 5
   :config
-  (global-disable-mouse-mode))
+  (global-disable-mouse-mode)
+  (dolist (key '([mouse-1]
+                 [mouse-4]
+                 [mouse-5]
+                 [mouse-6]
+                 [mouse-7]
+                 [down-mouse-1]
+                 [drag-mouse-1]
+                 [wheel-right]
+                 [double-wheel-right]
+                 [triple-wheel-right]
+                 [wheel-left]
+                 [double-wheel-left]
+                 [triple-wheel-left]
+                 [wheel-down]
+                 [double-wheel-down]
+                 [triple-wheel-down]
+                 [wheel-up]
+                 [double-wheel-up]
+                 [triple-wheel-up]))
+    (define-key evil-motion-state-map key #'ignore)))
 #+end_src
 *** [[https://www.emacswiki.org/emacs/eimp.el][eimp]]
 #+begin_quote
