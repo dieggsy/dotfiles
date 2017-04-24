@@ -279,7 +279,8 @@ __pychache__
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.config/i3/config")
 :END:
-#+begin_src sh
+**** Defaults
+#+begin_src conf
 # Set modifier key to command/windows key
 set $mod Mod4
 
@@ -290,23 +291,43 @@ font pango:Iosevka 8
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+# reload the configuration file
+bindsym $mod+Shift+j reload
+
+# reload X11
+bindsym $mod+Shift+x exec xrdb -merge ~/.Xresources
+
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+p restart
+
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+period exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+#+end_src
+**** Rofi
+#+begin_src conf
 # kill focused window
 bindsym $mod+Shift+apostrophe kill
 
 # start rofi for windows and commands
 bindsym Mod1+space exec "rofi -combi-modi window,run -show combi -modi combi -font 'Iosevka 20'"
 
-# password-store helper with rofi
+# pass helper
 bindsym $mod+p exec "~/.password-store/.extensions/rofi.bash"
 
-# clipboard manager helper with rofi
+# clipboard manager
 bindsym $mod+c exec "rofi -modi 'clipboard:greenclip print' -show clipboard -font 'Iosevka 20'"
 
+# File finder with ripgrep
+bindsym $mod+f exec --no-startup-id "~/.zplug/bin/rg --files --no-ignore --hidden -g '!{.git,node_modules,.cache}/*'  2>/dev/null | rofi -dmenu -i -levenshtein-sort -matching regex -font 'Iosevka 20' -p '[files] ' | xargs -d '\n' xdg-open"
+#+end_src
+**** Scratchpad and floating
+#+begin_src conf
 # Scratchpad
 bindsym $mod+minus move scratchpad
 bindsym $mod+shift+minus scratchpad show
 
 # Floating editor
+exec emacs
 for_window [title="^emacs@Ragnarok$"] floating enable;
 for_window [title="^emacs@Ragnarok$"] move scratchpad; [title="^emacs@Ragnarok$"] scratchpad show; move scratchpad
 bindsym $mod+space [title="^emacs@Ragnarok$"] scratchpad show
@@ -316,10 +337,9 @@ exec --no-startup-id termite --name=dropmite
 for_window [instance="dropmite"] floating enable;
 for_window [instance="dropmite"] move scratchpad; [instance="dropmite"] scratchpad show; resize set 2446 607; move absolute position 59px 95px; move scratchpad
 bindsym $mod+Return [instance="dropmite"] scratchpad show
-
-# File finder with ripgrep and rofi
-bindsym $mod+f exec --no-startup-id "~/.zplug/bin/rg --files --no-ignore --hidden -g '!{.git,node_modules,.cache}/*'  2>/dev/null | rofi -dmenu -i -levenshtein-sort -matching regex -font 'Iosevka 20' -p '[files] ' | xargs -d '\n' xdg-open"
-
+#+end_src
+**** Focus
+#+begin_src conf
 # change focus
 bindsym $mod+h focus left
 bindsym $mod+t focus down
@@ -332,6 +352,17 @@ bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
+# change focus between tiling / floating windows
+# bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# focus the child container
+#bindsym $mod+d focus child
+#+end_src
+**** Motion
+#+begin_src conf
 # move focused window
 bindsym $mod+Shift+h move left
 bindsym $mod+Shift+t move down
@@ -344,7 +375,9 @@ bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
 bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
-
+#+end_src
+**** Layout and splitting
+#+begin_src conf
 # split in horizontal orientation
 bindsym $mod+d split h
 
@@ -361,16 +394,9 @@ bindsym $mod+period layout toggle split
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
-
-# change focus between tiling / floating windows
-# bindsym $mod+space focus mode_toggle
-
-# focus the parent container
-bindsym $mod+a focus parent
-
-# focus the child container
-#bindsym $mod+d focus child
-
+#+end_src
+**** Workspaces
+#+begin_src conf
 # switch to workspace
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
@@ -394,19 +420,9 @@ bindsym $mod+Shift+7 move container to workspace 7
 bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
-
-# reload the configuration file
-bindsym $mod+Shift+j reload
-
-# reload X11
-bindsym $mod+Shift+x exec xrdb -merge ~/.Xresources
-
-# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
-bindsym $mod+Shift+p restart
-
-# exit i3 (logs you out of your X session)
-bindsym $mod+Shift+period exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-
+#+end_src
+**** Resizing
+#+begin_src conf
 # resize window (you can also use the mouse for that)
 mode "resize" {
         # These bindings trigger as soon as you enter the resize mode
@@ -432,7 +448,9 @@ mode "resize" {
 }
 
 bindsym $mod+r mode "resize"
-
+#+end_src
+**** Bar
+#+begin_src conf
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
@@ -450,7 +468,9 @@ bar {
         binding_mode       #2f343a #901A1E #FDF4c1
     }
 }
-
+#+end_src
+**** Appearance
+#+begin_src conf
 client.focused #EBDBD2 #EBDBD2 #2D2D2D #3fd7e5
 client.focused_inactive #2d2d2d #282828 #dcdcdc #484e50
 client.unfocused        #2D2D2D #2d2d2d #dcdcdc #292d2e
@@ -459,7 +479,9 @@ client.urgent #2D2D2D #2D2D2D #dcdcdc #901A1E
 gaps inner 30
 gaps outer 0
 new_window 1pixel
-
+#+end_src
+**** Bindings
+#+begin_src conf
 # Keyboard brightness
 bindsym XF86KbdBrightnessDown exec kb-light - && pkill -RTMIN+2 i3blocks
 bindsym XF86KbdBrightnessUp exec kb-light + && pkill -RTMIN+2 i3blocks
@@ -482,9 +504,10 @@ bindsym XF86AudioPlay exec playerctl-cmus play-pause && pkill -RTMIN+1 i3blocks
 bindsym --release XF86LaunchB exec "scrot -s ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
 bindsym Shift+XF86LaunchB exec "scrot -ub ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
 bindsym XF86LaunchA exec "scrot ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
-
+#+end_src
+**** Startup Programs/Commands
+#+begin_src conf
 exec dropbox start
-exec emacs
 exec sh ~/.fehbg
 exec greenclip daemon
 exec --no-startup-id /home/diego/.ghq/github.com/olemartinorg/i3-alternating-layout/alternating_layouts.py
@@ -492,7 +515,6 @@ exec unclutter
 exec xset s off
 exec xset r rate 300 50
 exec setxkbmap dvorak
-
 #+end_src
 *** i3blocks
 :PROPERTIES:
