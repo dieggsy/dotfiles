@@ -1,3 +1,4 @@
+# -*- org-src-fontify-natively: nil -*-
 #+TITLE: rc.org
 #+PROPERTY: header-args :comments link :mkdirp yes :results silent
 
