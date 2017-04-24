@@ -1925,6 +1925,7 @@ fi
 if [ "$1" = "iosevka" ]; then
     cd ~/.ghq/github.com/be5invis/iosevka
     git pull
+    make clean
     echo -e "\e[94mMaking configs...\e[0m"
     make custom-config set=term design='v-l-tailed v-i-hooky v-a-singlestorey v-zero-dotted v-asterisk-low v-g-singlestorey v-brace-straight term'
     make custom-config set=input design='v-l-tailed v-i-hooky v-a-singlestorey v-zero-dotted v-asterisk-low v-g-singlestorey v-brace-straight'
