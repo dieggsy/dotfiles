@@ -142,7 +142,8 @@
        (rainbow-mode 1)))))
  '(safe-local-variable-values
    (quote
-    ((org-log-done)
+    ((org-src-fontify-natively)
+     (org-log-done)
      (rainbow-mode . t)
      (aggressive-indent-mode)
      (after-save-hook lambda nil
