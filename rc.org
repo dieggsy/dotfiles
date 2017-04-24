@@ -218,6 +218,11 @@ I know, it probably doesn't make sense to keep my gitconfig here.
 [credential]
 	helper = /usr/local/bin/pass-git-helper
 #+end_src
+**** gpg
+#+begin_src conf
+[gpg]
+    program = gpg2
+#+end_src
 **** alias
 #+begin_src conf
 [alias]
