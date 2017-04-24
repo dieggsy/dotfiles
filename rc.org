@@ -238,6 +238,15 @@ I know, it probably doesn't make sense to keep my gitconfig here.
 	plog-nocolor = log --graph --pretty=format:'%h - %<(50,trunc)%s %<(20)%an %<(15)%cr%d' --abbrev-commit
 	update-from-upstream = pull --rebase -s recursive -X theirs upstream/master
 	aliases = config --get-regexp '^alias\\.'
+    s = status
+    sl = status --long
+    c = checkout
+    cb = checkout -b
+    b = branch
+    r = rebase
+    p = pull
+    ps = push
+    psf = push --force
 #+end_src
 **** http
 #+begin_src conf
