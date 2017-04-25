@@ -8,7 +8,8 @@ emacs.d/.python-environments
 emacs.d/config.el
 emacs.d/config.elc
 emacs.d/elpa
-emacs.d/etc/
+emacs.d/etc/*
+!emacs.d/etc/yasnippet
 !emacs.d/etc/yasnippet/snippets
 emacs.d/init.elc
 emacs.d/lisp/there-is-trouble-with-the-trees.el

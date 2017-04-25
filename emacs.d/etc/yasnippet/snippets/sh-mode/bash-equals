@@ -1,0 +1,4 @@
+# key: =
+# name: bash-equals
+# --
+[ "$1" = "$2" ]$0

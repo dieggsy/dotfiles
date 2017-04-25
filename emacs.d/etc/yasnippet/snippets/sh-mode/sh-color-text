@@ -1,0 +1,4 @@
+# key: scolor
+# name: sh-color-text
+# --
+"\e[$1m$2\e[0m"$0
