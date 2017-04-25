@@ -1623,7 +1623,32 @@ A really nice search/completion system for emacs.
 
   (advice-add #'counsel--yank-pop-format-function
               :override
-              #'diego/counsel-yank-pop-format-function))
+              #'diego/counsel-yank-pop-format-function)
+
+  ;; (defun get-faces (pos)
+  ;;   "Get the font faces at POS."
+  ;;   (nth 0
+  ;;        (-flatten
+  ;;         (remq nil
+  ;;               (remq 'hl-line
+  ;;                     (list
+  ;;                      (get-char-property pos 'read-face-name)
+  ;;                      (get-char-property pos 'face)
+  ;;                      (plist-get (text-properties-at pos) 'face)))))))
+
+  ;; (defun diego/conusel-describe-face ()
+  ;;   (interactive)
+  ;;   (let (cands)
+  ;;     (mapatoms
+  ;;      (lambda (s)
+  ;;        (if (facep s)
+  ;;            (push (symbol-name s) cands))))
+  ;;     (ivy-read "Face: " cands
+  ;;               :preselect (symbol-name (get-faces (point)))
+  ;;               :action #'describe-face)))
+
+  )
+
 
 (use-package counsel-projectile)
 
