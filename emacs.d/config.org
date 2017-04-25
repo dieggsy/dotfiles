@@ -2904,6 +2904,9 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 (use-package password-store)
 #+end_src
 *** [[https://github.com/politza/pdf-tools][pdf-tools]]
+#+begin_quote
+  Emacs support library for PDF files.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package pdf-tools
   :defer 10
@@ -3156,6 +3159,13 @@ Freakin yasnippet. It's the best.
 #+begin_src emacs-lisp
 (use-package anaconda-mode)
 #+end_src
+*** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers]]
+#+begin_quote
+  Emacs minor mode to highlight each source code identifier uniquely based on its name
+#+end_quote
+#+begin_src emacs-lisp
+(use-package color-identifiers-mode)
+#+end_src
 *** [[https://github.com/company-mode/company-mode][company-mode]]
 #+begin_quote
   Modular in-buffer completion framework for Emacs
@@ -3181,6 +3191,13 @@ Supposedly better than autocomplete.
 
 (use-package company-anaconda
   :after company)
+#+end_src
+*** [[https://github.com/magnars/dash.el][dash]]
+#+begin_quote
+  A modern list library for Emacs
+#+end_quote
+#+begin_src emacs-lisp
+(use-package dash)
 #+end_src
 *** [[https://github.com/jacktasia/dumb-jump][dumb-jump]]
 #+begin_src emacs-lisp :tangle no
@@ -3347,10 +3364,37 @@ Better parentheses coloring
 (use-package rainbow-delimiters)
 #+end_src
 *** [[https://github.com/tkf/emacs-request][request]]
+#+begin_quote
+  Easy HTTP request for Emacs Lisp
+#+end_quote
 #+begin_src emacs-lisp
 (use-package request)
 
 (use-package request-deferred)
+#+end_src
+*** [[https://github.com/magnars/s.el][s]]
+#+begin_quote
+  The long lost Emacs string manipulation library.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package s)
+#+end_src
+*** [[https://github.com/slime/slime][slime]]
+#+begin_quote
+  The Superior Lisp Interaction Mode for Emacs
+#+end_quote
+#+begin_src emacs-lisp
+(use-package slime
+  :config
+  (load (expand-file-name "~/quicklisp/slime-helper.el"))
+  (setq inferior-lisp-program "sbcl")
+  (setq slime-contribs '(slime-fancy slime-company))
+  (evil-define-key 'insert slime-repl-mode-map
+    (kbd "<up>") #'slime-repl-previous-input
+    (kbd "<down>") #'slime-repl-next-input))
+
+(use-package slime-company
+  :after slime)
 #+end_src
 *** [[https://github.com/naiquevin/sphinx-doc.el][sphinx-doc]]
 #+begin_quote
@@ -3366,24 +3410,6 @@ Pretty neat, though not entirely complete, IMO.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package yapfify)
-#+end_src
-*** [[https://github.com/slime/slime][slime]]
-#+begin_src emacs-lisp
-(use-package slime
-  :config
-  (load (expand-file-name "~/quicklisp/slime-helper.el"))
-  (setq inferior-lisp-program "sbcl")
-  (setq slime-contribs '(slime-fancy slime-company))
-  (evil-define-key 'insert slime-repl-mode-map
-    (kbd "<up>") #'slime-repl-previous-input
-    (kbd "<down>") #'slime-repl-next-input))
-
-(use-package slime-company
-  :after slime)
-#+end_src
-*** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers]]
-#+begin_src emacs-lisp
-(use-package color-identifiers-mode)
 #+end_src
 ** Navigation
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
