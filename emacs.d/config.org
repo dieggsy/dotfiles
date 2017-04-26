@@ -1187,6 +1187,7 @@ based on or copied from spacemacs, so definitely check them out!
     "fc"  'diego/copy-file
     "fd"  'crux-delete-file-and-buffer
     "ff"  'counsel-find-file
+    "fj"  'counsel-file-jump
     "fl"  'counsel-locate
     "fpn" 'diego/pop-to-org-notes
     "fpt" 'diego/pop-to-org-todo
@@ -1583,7 +1584,10 @@ A really nice search/completion system for emacs.
     (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind))
   (setq counsel-yank-pop-separator "
   ─────────────────────────
-")
+"
+        counsel-find-file-ignore-regexp (concat "\\(\\`\\.\\)"
+                                                "\\|\\(\\.elc$\\)"
+                                                "\\|\\(.pyc$\\)"))
   (counsel-mode 1)
   (defalias 'ag #'counsel-ag)
   (defalias 'locate #'counsel-locate)
