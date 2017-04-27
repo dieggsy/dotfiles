@@ -890,7 +890,9 @@ or that enhance emacs at a deeper level than any regular mode.
   :config
   (savehist-mode 1)
   (add-to-list 'savehist-additional-variables 'kill-ring)
-  (save-place-mode 1))
+  (save-place-mode 1)
+  (setq auto-save-file-name-transforms
+        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 #+end_src
 ** [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]]
 #+begin_quote
