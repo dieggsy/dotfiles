@@ -3415,8 +3415,8 @@ Better parentheses coloring
 #+begin_src emacs-lisp
 (use-package slime
   :config
-  (load (expand-file-name "~/quicklisp/slime-helper.el"))
-  (setq inferior-lisp-program "sbcl")
+  ;; (load (expand-file-name "~/quicklisp/slime-helper.el"))
+  (setq inferior-lisp-program "/usr/local/bin/sbcl")
   (setq slime-contribs '(slime-fancy slime-company))
   (evil-define-key 'insert slime-repl-mode-map
     (kbd "<up>") #'slime-repl-previous-input
