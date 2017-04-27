@@ -3731,7 +3731,7 @@ Non-interactively SEARCH-STRING is the string to search."
   (defun diego/epe-git-added (symbol)
     (let ((result (diego/epe-git-helper
                    (concat epe-git-status
-                           " | grep '^A \\|^M | wc -l'"))))
+                           " | grep '^A \\|^M ' | wc -l"))))
       (if (not (string= result ""))
           (concat symbol result)
         result)))
