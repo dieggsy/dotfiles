@@ -218,6 +218,10 @@ zplug "~/.zmodules", from:local
 #+begin_src sh
 zplug "peco/peco", as:command, from:gh-r
 #+end_src
+**** cool-peco
+#+begin_src sh
+zplug "therockmandolinist/cool-peco", use:cool-peco
+#+end_src
 **** rg
 #+begin_src sh
 zplug "BurntSushi/ripgrep", as:command, rename-to:rg, from:gh-r
@@ -262,8 +266,6 @@ setopt histignoredups
 setopt autonamedirs
 setopt clobber
 unsetopt correct
-autoload -Uz cool-peco
-cool-peco
 #+end_src
 ** Keys
 #+begin_src sh
