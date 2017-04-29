@@ -273,6 +273,7 @@ I know, it probably doesn't make sense to keep my gitconfig here.
 [status]
 	showUntrackedFiles = all
     short=true
+    branch=true
 #+end_src
 **** commit
 #+begin_src conf
