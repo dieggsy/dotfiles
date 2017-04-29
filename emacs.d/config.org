@@ -2923,17 +2923,29 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 #+begin_src emacs-lisp
 (use-package paradox
   :config
-  (setq paradox-automatically-star t
-        paradox-execute-asynchronously t)
+  (setq paradox-execute-asynchronously t)
   (evil-define-key 'normal paradox-menu-mode-map
-    "q"  'paradox-quit-and-close
-    "fc" 'paradox-filter-clear
-    "fr" 'paradox-filter-regexp
-    "fu" 'paradox-filter-upgrades
-    "fs" 'paradox-filter-stars
-    "x"  'paradox-menu-execute
-    "i"  'package-menu-mark-install
-    "d"  'package-menu-mark-delete))
+    "(" 'package-menu-toggle-hiding
+    "?" 'package-menu-describe-package
+    "F" 'package-menu-filter
+    "RET" 'paradox-push-button
+    "S*" 'paradox-sort-by-★
+    "Sp" 'paradox-sort-by-package
+    "Ss" 'paradox-sort-by-status
+    "TAB" 'forward-button
+    "U" 'package-menu-mark-upgrades
+    "d" 'package-menu-mark-delete
+    "f" 'hydra-paradox-filter/body
+    "i" 'package-menu-mark-install
+    "q" 'paradox-quit-and-close
+    "r" 'package-menu-refresh
+    "u" 'package-menu-mark-unmark
+    "vh" 'paradox-menu-visit-homepage
+    "vl" 'paradox-menu-view-commit-list
+    "x" 'paradox-menu-execute
+    "~" 'package-menu-mark-obsolete-for-deletion
+    (kbd "<backtab>") 'backward-button
+    ))
 #+end_src
 *** [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store]]
 #+begin_src emacs-lisp
