@@ -335,7 +335,7 @@ bindsym $mod+p exec "~/.password-store/.extensions/rofi.bash"
 bindsym $mod+c exec "rofi -modi 'clipboard:greenclip print' -show clipboard -font 'Iosevka 20'"
 
 # File finder with ripgrep
-bindsym $mod+f exec --no-startup-id "~/.zplug/bin/rg --files --no-ignore --hidden -g '!{.git,node_modules,.cache}/*'  2>/dev/null | rofi -dmenu -i -levenshtein-sort -matching regex -font 'Iosevka 20' -p '[files] ' | xargs -d '\n' xdg-open"
+bindsym $mod+f exec --no-startup-id "~/.zplug/bin/rg --files --hidden -g '!{.git,node_modules,.cache}/*'  2>/dev/null | rofi -dmenu -i -levenshtein-sort -matching regex -font 'Iosevka 20' -p '[files] ' | xargs -d '\n' xdg-open"
 #+end_src
 **** Scratchpad and floating
 #+begin_src conf
