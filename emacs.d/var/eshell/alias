@@ -1,34 +1,19 @@
 alias ls exa --group-directories-first --sort=extension --color=always $*
 alias rg rg --color=always $*
-alias resetwifi networksetup -setairportpower en0 off; sleep 2; networksetup -setairportpower en0 on
-alias lst ls -t
-alias filecount ls -1 | wc -l
-alias ff find . -type f -iname
-alias fd find . -type d -iname
-alias f find . -iname $1
 alias ev view-file $1
 alias edit find-file $1
-alias drop cd ~/Dropbox\ \(MIT\)
-alias drive cd ~/Google\ Drive
-alias down cd ~/Downloads
-alias docs cd ~/Documents
-alias desk cd ~/Desktop
 alias config find-file ~/dotfiles/config/emacs.d/config.org
-alias au a $*
-alias apps cd /Applications
 alias printers lpstat -p | awk '{print $2}'
-alias piphere pip install --target=./
-alias pep8 pep8 --first --ignore=E129,W503,E226
-alias git hub
+alias pep8 pep8 --first --ignore=E129,W503,E226 $*
+alias git hub $*
 alias history-stat history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head
-alias filecount ls -1 | wc -l
-alias decryptdir gpg-zip -d
-alias decrypt gpg2 -d
-alias gpg gpg2
-alias lockdir gpg-zip -c
-alias encryptdir gpg-zip --encrypt
-alias encrypt gpg2 --armor --encrypt
-alias def dict -d wn
+alias decryptdir gpg-zip -d $*
+alias decrypt gpg2 -d $*
+alias gpg gpg2 $*
+alias lockdir gpg-zip -c $*
+alias encryptdir gpg-zip --encrypt $*
+alias encrypt gpg2 --armor --encrypt $*
+alias def dict -d wn $*
 alias -- cd -
 alias ...... ../../../../..
 alias ..... ../../../..
