@@ -3248,7 +3248,7 @@ Supposedly better than autocomplete.
 (use-package dash)
 #+end_src
 *** [[https://github.com/jacktasia/dumb-jump][dumb-jump]]
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package dumb-jump
   :config
   (setq dumb-jump-selector 'ivy
