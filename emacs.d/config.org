@@ -1865,14 +1865,19 @@ so I went with it.
         org-imenu-depth 5
         org-link-search-must-match-exact-headline nil
         org-confirm-elisp-link-function 'y-or-n-p
-        org-confirm-elisp-link-not-regexp "(\\(wiki-search\\|describe-function\\|describe-variable\\).*?)"
-        org-babel-load-languages '((python . t)
-                                   (emacs-lisp . t)
-                                   (calc . t)
-                                   (ipython . t)
-                                   (shell . t)
-                                   (lisp . t)))
-
+        org-confirm-elisp-link-not-regexp (concat "(\\(wiki-search"
+                                                  "\\|describe-function"
+                                                  "\\|describe-variable"
+                                                  "\\).*?)"))
+  (org-babel-do-load-languages
+   'org-babel-load-languages
+   '((python . t)
+     (emacs-lisp . t)
+     (calc . t)
+     (ipython . t)
+     (shell . t)
+     (lisp . t)
+     (C . t)))
   ;; appearance
   (setq org-src-fontify-natively t
         org-src-preserve-indentation t
