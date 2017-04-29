@@ -537,9 +537,9 @@ exec setxkbmap dvorak
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.i3blocks.conf")
 :END:
 #+begin_src conf
-[focused window]
-command=xtitle -s -t 75 -f "  %s\n"
-interval=persist
+# [focused window]
+# command=xtitle -s -t 75 -f "  %s\n"
+# interval=persist
 
 [music]
 command=~/bin/i3blocks/music
@@ -1670,7 +1670,7 @@ Short=$(df -h "$1" | grep -v "^[A-Z]" | awk '{print $4}')
 if [ -z "$1" ];then
     echo -e "Enter Your Mounted Point Name Ex : \"/\" "
 else
-    echo -e "  $Disk "
+    # echo -e "  $Disk "
     echo -e "  $Short "
 fi
 #+end_src
@@ -1695,7 +1695,7 @@ elif [ "$layout" = "dvorak" ]; then
     layout="DV"
 fi
 
-echo "   $layout "
+# echo "   $layout "
 echo "  "
 #+end_src
 *** music
@@ -1787,8 +1787,9 @@ fi
 name="$(iwgetid -r)"
 if [ -n "$name" ]; then
     strength="$(nmcli device wifi list | grep '*' | tail -1 | awk -F '[[:space:]][[:space:]]+' '{print $6}')"
-    echo -e "   $name $strength%"
+    # echo -e "   $name $strength%"
     echo -e "   $strength%"
+    echo ""
     echo "#B8BB26"
 else
     echo -e "   None "
