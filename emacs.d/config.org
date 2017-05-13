@@ -3459,6 +3459,13 @@ Pretty neat, though not entirely complete, IMO.
 #+begin_src emacs-lisp
 (use-package sphinx-doc)
 #+end_src
+*** [[https://github.com/therockmandolinist/turing-machine][turing-machine]]
+#+begin_src emacs-lisp
+(use-package turing-machine
+  :quelpa (turing-machine
+           :fetcher github
+           :repo "therockmandolinist/turing-machine"))
+#+end_src
 *** [[https://github.com/JorisE/yapfify][yapfify]]
 #+begin_quote
   Yapf for Emacs
