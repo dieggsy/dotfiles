@@ -3729,125 +3729,12 @@ Non-interactively SEARCH-STRING is the string to search."
   Display extra information and color for your eshell prompt.
 #+end_quote
 #+begin_src emacs-lisp
-(use-package eshell-prompt-extras
+(use-package egp
+  :ensure nil
   :after eshell
-  :commands epe-colorize-with-face
   :config
-  (autoload 'epe-theme-dakrone "eshell-prompt-extras")
   (setq eshell-highlight-prompt nil
-        eshell-prompt-function 'epe-theme-diego
-        epe-git-dirty-char "…")
-  (require 'cl)
-  (defface epe-ahead-behind-face '((t (:foreground "#D3869B")))
-    "WHat")
-
-  (defface epe-added-face '((t (:foreground "#83a598")))
-    "Ahh")
-
-  (defface epe-modified-face '((t (:foreground "#FB4933" )))
-    "Things")
-
-  (defun diego/epe-git-helper (command)
-    (let ((output (shell-command-to-string command)))
-      (if (not (string= output ""))
-          (substring output 0 (1- (length output)))
-        output)))
-
-  (defun diego/epe-git-modified (symbol)
-    (let ((result (diego/epe-git-helper
-                   (concat epe-git-status
-                           " | grep '^ M \\|^AM \\|^ T ' | wc -l"))))
-      (if (not (string= result ""))
-          (concat symbol result)
-        result)))
-
-  (defun diego/epe-git-added (symbol)
-    (let ((result (diego/epe-git-helper
-                   (concat epe-git-status
-                           " | grep '^A \\|^M ' | wc -l"))))
-      (if (not (string= result ""))
-          (concat symbol result)
-        result)))
-
-  (defun diego/epe-git-ahead (symbol)
-    (let ((result (diego/epe-git-helper
-                   (concat epe-git-status
-                           " | grep -oP 'ahead \\K\\d+'"))))
-      (if (not (string= result ""))
-          (concat symbol result)
-        result)))
-
-  (defun diego/epe-git-behind (symbol)
-    (let ((result (diego/epe-git-helper
-                   (concat epe-git-status
-                           " | grep -oP 'behind \\K\\d+'"))))
-      (if (not (string= result ""))
-          (concat symbol result)
-        result)))
-
-  (defun fish-path (path max-len)
-    "Return a potentially trimmed-down version of the directory PATH, replacing
-parent directories with their initial characters to try to get the character
-length of PATH (sans directory slashes) down to MAX-LEN."
-         (let* ((components (split-string (abbreviate-file-name path) "/"))
-                (len (+ (1- (length components))
-                        (reduce '+ components :key 'length)))
-                (str ""))
-           (while (and (> len max-len)
-                       (cdr components))
-             (setq str (concat str
-                               (cond ((= 0 (length (car components))) "/")
-                                     ((= 1 (length (car components)))
-                                      (concat (car components) "/"))
-                                     (t
-                                      (if (string= "."
-                                                   (string (elt (car components) 0)))
-                                          (concat (substring (car components) 0 2)
-                                                  "/")
-                                        (string (elt (car components) 0) ?/)))))
-                   len (- len (1- (length (car components))))
-                   components (cdr components)))
-           (concat str (reduce (lambda (a b) (concat a "/" b)) components))))
-
-  (defun epe-theme-diego ()
-    "A eshell-prompt lambda theme with directory shrinking."
-    (setq eshell-prompt-regexp "^[^#\nλ]* λ[#]* ")
-    (concat
-     (when (epe-remote-p)
-       (epe-colorize-with-face
-        (concat (epe-remote-user) "@" (epe-remote-host) " ")
-        'epe-remote-face))
-
-     (when (epe-git-p)
-       (concat
-        "("
-        (epe-colorize-with-face (epe-git-branch) 'epe-git-face)
-        (epe-colorize-with-face
-         (concat (diego/epe-git-ahead "↑")
-                 (diego/epe-git-behind "↓"))
-         'epe-ahead-behind-face)
-        "|"
-        (epe-colorize-with-face (diego/epe-git-added "●") 'epe-added-face)
-        (epe-colorize-with-face (diego/epe-git-modified "✚") 'epe-modified-face)
-        (epe-git-dirty)
-        ;; (epe-git-untracked)
-        ;; (unless (= (epe-git-unpushed-number) 0)
-        ;;   (concat ":" (number-to-string (epe-git-unpushed-number))))
-
-        ")"))
-
-     (when epe-show-python-info
-       (when (fboundp 'epe-venv-p)
-         (when (and (epe-venv-p) venv-current-name)
-           (epe-colorize-with-face (concat "(" venv-current-name ") ") 'epe-venv-face))))
-
-     (epe-colorize-with-face (fish-path (eshell/pwd) 0) 'epe-dir-face)
-
-
-     (epe-colorize-with-face " λ" 'epe-symbol-face)
-     (epe-colorize-with-face (if (= (user-uid) 0) "#" "") 'epe-sudo-symbol-face)
-     " "))
-  )
+        eshell-prompt-function 'egp-theme))
 #+end_src
 *** [[https://github.com/xuchunyang/eshell-z][eshell-z]]
 #+begin_quote
