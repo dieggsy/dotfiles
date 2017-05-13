@@ -2298,7 +2298,7 @@ pyenv global $python3version
 echo -e "\n\e[1;34mUpdating: \e[91mpip3\e[0;97m"
 IFS=$'\n'
 echo  $'Getting outdated pip3 packages...'
-res=$(pip list -o --format=legacy | sed 's/ .*//' | sed '/\(^$\|requests\)/d')
+res=$(pip list -o --format=legacy | sed 's/ .*//')
 
 if [ -z "$res" ]; then
     echo $'All packages up to date.'
