@@ -1289,10 +1289,13 @@ bind-key C-a send-prefix
 #+end_src
 **** Bindings
 #+begin_src conf
+bind r source-file ~/.tmux.conf
+
 set -g mouse on
 set-window-option -g xterm-keys on
 set-option -g status-keys vi
 setw -g mode-keys vi
+bind-key x kill-pane
 bind-key q detach-client
 bind-key Q detach-client
 bind-key Escape copy-mode
@@ -1334,10 +1337,6 @@ bind-key + select-layout even-vertical
 #+begin_src conf
 set-option -g bell-action any
 set-option -g visual-bell off
-#+end_src
-**** Reload config
-#+begin_src conf
-bind r source-file ~/.tmux.conf
 #+end_src
 **** Theming
 #+begin_src conf
