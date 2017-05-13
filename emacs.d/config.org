@@ -1824,7 +1824,7 @@ so I went with it.
         org-agenda-skip-scheduled-if-done t
         org-agenda-skip-deadline-if-done t
         org-agenda-hide-tags-regexp ".*"
-        org-agenda-span 'day)
+        org-agenda-span 'week)
 
   (setq org-agenda-deadline-faces
         '((1.0 . org-warning)
