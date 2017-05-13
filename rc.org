@@ -280,6 +280,11 @@ I know, it probably doesn't make sense to keep my gitconfig here.
 [commit]
 	gpgsign = true
 #+end_src
+**** push
+#+begin_src conf
+[push]
+    followTags = true
+#+end_src
 *** gitignore
 :PROPERTIES:
 :header-args+: :tangle ~/.gitignore
