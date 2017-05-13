@@ -220,7 +220,7 @@ zplug "peco/peco", as:command, from:gh-r
 #+end_src
 **** cool-peco
 #+begin_src sh
-zplug "therockmandolinist/cool-peco", use:cool-peco
+zplug "therockmandolinist/cool-peco"
 #+end_src
 **** rg
 #+begin_src sh
@@ -443,7 +443,6 @@ path=(
 
 fpath=(
     /usr/share/zsh/site-functions/
-    $HOME/Code/zsh/cool-peco
     $fpath
 )
 export MANPATH=":$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/man/"
