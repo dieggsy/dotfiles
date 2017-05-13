@@ -73,7 +73,7 @@ follow my example there? Whatever.
    - [[#referencesearch][Reference/search]]
    - [[#shell-utilities][Shell utilities]]
  - [[#aliases][Aliases]]
- - [[#mode-specific-configuration][Mode Specific Configuration]]
+ - [[#modes][Modes]]
    - [[#prog-mode][Prog-mode]]
    - [[#python][Python]]
    - [[#matlab][Matlab]]
@@ -198,7 +198,7 @@ Integrates use-package and quelpa for maximum fun.
 #+end_src
 *** async-bytecomp-mode
 Byte compile installed packages asynchronously, which remedies errors on
-upgrading loaded packages.
+upgrading loaded packages (or something).
 #+begin_src emacs-lisp
 (with-eval-after-load 'async-bytecomp
   (async-bytecomp-package-mode 1)
@@ -269,6 +269,9 @@ Choose a font in order of preference, when available.
         ((x-list-fonts "Menlo")
          (add-to-list 'default-frame-alist '(font . "Menlo-11"))
          (set-face-attribute 'default t :font "Menlo-11")))
+#+end_src
+And use [[http://fontawesome.io/][Font Awesome]] for the unicode glyphs it supports.
+#+begin_src emacs-lisp
   (when (x-list-fonts "FontAwesome")
     (set-fontset-font t 'unicode "FontAwesome" nil 'prepend)))
 #+end_src
@@ -884,6 +887,9 @@ or that enhance emacs at a deeper level than any regular mode.
 #+begin_quote
   Help keeping ~/.emacs.d clean
 #+end_quote
+Usually, a bunch of crap is kept in your ~.emacs.d~ folder by both built-in emacs
+features and external packages. This package sets up a convention to store
+everything in either ~.emacs.d/var~ or ~.emacs.d/etc~.
 #+begin_src emacs-lisp
 (use-package no-littering
   :demand t
@@ -1878,6 +1884,7 @@ so I went with it.
      (shell . t)
      (lisp . t)
      (C . t)))
+
   ;; appearance
   (setq org-src-fontify-natively t
         org-src-preserve-indentation t
@@ -3855,7 +3862,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 #+begin_src emacs-lisp
 (defalias 'yes-or-no-p #'y-or-n-p) ; y or n is enough
 #+end_src
-* Mode Specific Configuration
+* Modes
 ** Prog-mode
 Configuration that applies to all programming modes.
 #+begin_src emacs-lisp
