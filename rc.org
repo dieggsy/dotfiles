@@ -1466,16 +1466,8 @@ name: hud
 
 windows:
   - shell:
-  - social:
-      layout: even-horizontal
-      panes:
-        - weechat
-        - rtv
-  - music:
-      layout: even-horizontal
-      panes:
-        - cmus
-        - cava
+  - social: weechat
+  - music: cmus
 #+end_src
 ** Xresources
 :PROPERTIES:
