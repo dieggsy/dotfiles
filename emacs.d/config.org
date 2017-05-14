@@ -2649,7 +2649,7 @@ A speed reading mode for Emacs.
 #+end_src
 *** [[https://github.com/therockmandolinist/emacs-theme-darktooth][darktooth-theme]]
 #+begin_quote
-An Emacs 24 theme remixed from gruvbox
+  An Emacs 24 theme remixed from gruvbox
 #+end_quote
 (my fork)
 #+begin_src emacs-lisp
@@ -2734,6 +2734,7 @@ I use this for reading, mostly.
   (crux-with-region-or-line eval-region)
   (crux-with-region-or-buffer indent-region)
   (crux-with-region-or-buffer untabify)
+  (crux-with-region-or-buffer tabify)
   (crux-with-region-or-buffer fill-region))
 #+end_src
 *** [[https://github.com/purcell/disable-mouse][disable-mouse]]
@@ -3006,14 +3007,10 @@ Sorts ivy by most recently used, I think.
   :config
   (setq sunshine-location "02139,USA"))
 #+end_src
-*** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
-Kind of makes undo's like git. Or Vim, apparently, if you're into that.
 *** [[https://github.com/etu/webpaste.el][webpaste]]
 #+begin_src emacs-lisp
-(use-package undo-tree
 (use-package webpaste
   :config
-  (setq undo-tree-visualizer-timestamps t))
   (setq webpaste-provider-priority '("gist.github.com"))
   (setq webpaste-open-in-browser t))
 #+end_src
@@ -3202,6 +3199,13 @@ Freakin yasnippet. It's the best.
   :if (not noninteractive)
   :config
   (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match))
+#+end_src
+*** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
+Kind of makes undo's like git. Or Vim, apparently, if you're into that.
+#+begin_src emacs-lisp
+(use-package undo-tree
+  :config
+  (setq undo-tree-visualizer-timestamps t))
 #+end_src
 ** Programming utilites
 *** [[https://github.com/Malabarba/aggressive-indent-mode/][aggressive-indent]]
@@ -3728,10 +3732,7 @@ Non-interactively SEARCH-STRING is the string to search."
 (use-package sx)
 #+end_src
 ** Shell utilities
-*** [[https://github.com/hiddenlotus/eshell-prompt-extras][eshell-prompt-extras]]
-#+begin_quote
-  Display extra information and color for your eshell prompt.
-#+end_quote
+*** egp
 #+begin_src emacs-lisp
 (use-package egp
   :ensure nil
