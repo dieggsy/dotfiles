@@ -3007,10 +3007,14 @@ Sorts ivy by most recently used, I think.
 #+end_src
 *** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
 Kind of makes undo's like git. Or Vim, apparently, if you're into that.
+*** [[https://github.com/etu/webpaste.el][webpaste]]
 #+begin_src emacs-lisp
 (use-package undo-tree
+(use-package webpaste
   :config
   (setq undo-tree-visualizer-timestamps t))
+  (setq webpaste-provider-priority '("gist.github.com"))
+  (setq webpaste-open-in-browser t))
 #+end_src
 ** Editing Major Modes
 *** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
