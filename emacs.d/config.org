@@ -985,16 +985,6 @@ editing. So I went for it. Now I'll never go back.
 ;; Global bindings.
 (defun diego/evil-bindings ()
   "Set custom evil bindings."
-  (define-key evil-normal-state-map "gc"          #'evilnc-comment-operator)
-  (define-key evil-normal-state-map "gy"          #'evilnc-copy-and-comment-lines)
-  (define-key evil-normal-state-map (kbd "RET")   #'diego/ret)
-  (define-key evil-motion-state-map (kbd "RET")   #'diego/ret)
-  (define-key evil-insert-state-map (kbd "C-e")   #'end-of-line)
-  (define-key evil-normal-state-map (kbd "S-SPC") #'org-agenda-list)
-
-  (define-key evil-normal-state-map "-" #'negative-argument)
-  (define-key evil-normal-state-map (kbd "\\") #'evil-window-next)
-
   (evil-define-key 'normal custom-mode-map
     "q" #'Custom-buffer-done)
 
@@ -1009,21 +999,6 @@ editing. So I went for it. Now I'll never go back.
     (kbd "C-u")     'evil-scroll-up
     (kbd "C-w C-w") 'other-window)
 
-  ;; Make escape and C-/ quit everything, whenever possible.
-  (define-key evil-insert-state-map [?\C-_] #'evil-normal-state)
-  (define-key evil-insert-state-map [?\C-/] #'evil-normal-state)
-
-  (define-key evil-replace-state-map [?\C-_] #'evil-normal-state)
-  (define-key evil-replace-state-map [?\C-/] #'evil-normal-state)
-
-  (define-key evil-normal-state-map [escape] #'keyboard-quit)
-  (define-key evil-normal-state-map [?\C-_] #'keyboard-quit)
-  (define-key evil-normal-state-map [?\C-/] #'keyboard-quit)
-
-  (define-key evil-visual-state-map [escape] #'keyboard-quit)
-  (define-key evil-visual-state-map [?\C-_] #'keyboard-quit)
-  (define-key evil-visual-state-map [?\C-/] #'keyboard-quit)
-
   (evil-ex-define-cmd "dtw" 'delete-trailing-whitespace))
 #+end_src
 **** Setup
@@ -1031,6 +1006,27 @@ editing. So I went for it. Now I'll never go back.
 (use-package evil
   :demand t
   :if (not noninteractive)
+  :bind (:map
+         evil-normal-state-map
+         ("RET" . diego/ret)
+         ("S-SPC" . org-agenda-list)
+         ("-" . negative-argument)
+         ("\\" . evil-window-next)
+         ("C-_" . keyboard-quit)
+         ("C-/" . keyboard-quit)
+         ([escape] . keyboard-quit)
+         :map evil-insert-state-map
+         ("C-_" . evil-normal-state)
+         ("C-/" . evil-normal-state)
+         :map evil-replace-state-map
+         ("C-_" . evil-normal-state)
+         ("C-/" . evil-normal-state)
+         :map evil-visual-state-map
+         ("C-_" . keyboard-quit)
+         ("C-/" . keyboard-quit)
+         ([escape] . keyboard-quit)
+         :map evil-motion-state-map
+         ("RET" . diego/ret))
   :functions (evil-visual-line--mark-org-element-when-heading)
   :init
   (setq evil-want-C-u-scroll t
@@ -1485,6 +1481,9 @@ they are in `spacemacs/set-leader-keys'."
 #+begin_src emacs-lisp
 (use-package evil-nerd-commenter
   :commands evilnc-comment-operator
+  :bind (:map evil-normal-state-map
+              ("gc" . evilnc-comment-operator)
+              ("gy" . evilnc-copy-and-comment-lines))
   :config
   ;; Copy of spacemacs/comment-or-uncomment-lines-inverse
   (defun diego/comment-or-uncomment-lines-inverse (&optional arg)
