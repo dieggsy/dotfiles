@@ -2883,10 +2883,6 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 #+begin_src emacs-lisp
 (use-package fontawesome)
 #+end_src
-*** [[https://www.emacswiki.org/emacs/info+.el][info+]]
-#+begin_src emacs-lisp
-(use-package info+)
-#+end_src
 *** [[https://notmuchmail.org/notmuch-emacs/][notmuch]]
 #+begin_src emacs-lisp
 (use-package notmuch
