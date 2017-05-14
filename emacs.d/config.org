@@ -1535,6 +1535,7 @@ A really nice search/completion system for emacs.
         ivy-extra-directories nil; '("../") ; ignore current folder and parent dir
         ivy-initial-inputs-alist '((man . "^"))
         ivy-switch-buffer-faces-alist '((dired-mode . ivy-subdir))
+        recentf-max-saved-items 50
         ivy-ignore-buffers
         '("\\` "
           "\\`\\*LV\\*"
