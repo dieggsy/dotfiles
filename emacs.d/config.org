@@ -255,9 +255,9 @@ back if you need to.
 Choose a font in order of preference, when available.
 #+begin_src emacs-lisp
 (when window-system
-  (cond ((x-list-fonts "Iosevka")
-         (add-to-list 'default-frame-alist '(font . "Iosevka-9.5"))
-         (set-face-attribute 'default t :font "Iosevka-9.5"))
+  (cond ((x-list-fonts "Iosevka Term")
+         (add-to-list 'default-frame-alist '(font . "Iosevka Term-9.5"))
+         (set-face-attribute 'default t :font "Iosevka Term-9.5"))
         ((x-list-fonts "Input")
          (add-to-list 'default-frame-alist '(font . "Input-10"))
          (set-face-attribute 'default t :font "Input-10"))
