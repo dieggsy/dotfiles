@@ -82,6 +82,7 @@ follow my example there? Whatever.
    - [[#eshell][Eshell]]
    - [[#calc-mode][Calc mode]]
    - [[#c-mode][C mode]]
+   - [[#conf][Conf]]
  - [[#local-vars][Local vars!]]
 
 * Personal Info
@@ -3881,6 +3882,15 @@ Configuration that applies to all programming modes.
   (aggressive-indent-mode))
 (add-hook 'c-mode-hook #'diego/setup-c-mode)
 #+end_src
+** Conf
+#+begin_src emacs-lisp
+(defun diego/setup-conf-mode ()
+  "Custom `conf-mode' configuration."
+  (highlight-numbers-mode)
+  (nlinum-relative-mode)
+  (rainbow-mode))
+
+(add-hook 'conf-mode-hook #'diego/setup-conf-mode)
 #+end_src
 * Local vars!
 I'll probably remove that exclamation point at some point, but right now I'm
