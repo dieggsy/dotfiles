@@ -2775,8 +2775,9 @@ I use this for reading, mostly.
   An Emacs web feeds client
 #+end_quote
 Configure the Elfeed RSS reader with an Orgmode file
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package elfeed
+  :disabled t
   :if (not noninteractive)
   :config
   (add-hook 'elfeed-search-mode-hook (lambda () (evil-smartparens-mode -1)))
@@ -2813,7 +2814,7 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+begin_quote
   Configure the Elfeed RSS reader with an Orgmode file
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package elfeed-org
   :after elfeed
   :if (not noninteractive)
@@ -2825,7 +2826,7 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+begin_quote
   Various goodies for Elfeed
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package elfeed-goodies
   :after elfeed
   :config
