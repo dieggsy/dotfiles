@@ -1869,6 +1869,8 @@ so I went with it.
         org-list-use-circular-motion t
         org-log-into-drawer t
         org-imenu-depth 5
+        org-goto-interface 'outline-path-completion
+        org-outline-path-complete-in-steps nil
         org-link-search-must-match-exact-headline nil
         org-confirm-elisp-link-function 'y-or-n-p
         org-confirm-elisp-link-not-regexp (concat "(\\(wiki-search"
