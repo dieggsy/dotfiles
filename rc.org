@@ -189,35 +189,35 @@ I know, it probably doesn't make sense to keep my gitconfig here.
 **** media
 #+begin_src conf
 [filter "media"]
-	required = true
-	clean = git media clean %f
-	smudge = git media smudge %f
+    required = true
+    clean = git media clean %f
+    smudge = git media smudge %f
 #+end_src
 **** user
 #+begin_src conf
 [user]
-	name = therockmandolinist
-	email = diegoamundo@protonmail.com
-	signingkey = AEAC5CE8E1F933F0
+    name = therockmandolinist
+    email = diegoamundo@protonmail.com
+    signingkey = AEAC5CE8E1F933F0
 #+end_src
 **** filter
 #+begin_src conf
 [filter "lfs"]
-	clean = git-lfs clean %f
-	smudge = git-lfs smudge %f
-	required = true
+    clean = git-lfs clean %f
+    smudge = git-lfs smudge %f
+    required = true
 #+end_src
 **** core
 #+begin_src conf
 [core]
-	editor = emacsclient -t
-	excludesfile = ~/.gitignore
-	pager = "less"
+    editor = emacsclient -t
+    excludesfile = ~/.gitignore
+    pager = "less"
 #+end_src
 **** credential
 #+begin_src conf
 [credential]
-	helper = /usr/local/bin/pass-git-helper
+    helper = /usr/local/bin/pass-git-helper
 #+end_src
 **** gpg
 #+begin_src conf
@@ -227,16 +227,16 @@ I know, it probably doesn't make sense to keep my gitconfig here.
 **** alias
 #+begin_src conf
 [alias]
-	eclipse = !git fetch upstream && git rebase -s recursive -X theirs upstream/master
-	gconfig = config --global
-	lconfig = config --local
-	mypull = pull -s recursive -X ours
-	myrebase = rebase -s recursive -X theirs
+    eclipse = !git fetch upstream && git rebase -s recursive -X theirs upstream/master
+    gconfig = config --global
+    lconfig = config --local
+    mypull = pull -s recursive -X ours
+    myrebase = rebase -s recursive -X theirs
     optimize = "!f() { git reflog expire --all --expire=now && git gc --prune=now --aggressive; }; f"
-	plog = log --graph --pretty=format:'%C(bold black)%h%Creset - %<(50,trunc)%C(bold normal)%s%Creset %<(20)%C(bold green)%an%Creset %<(15)%C(bold red)%cr%Creset%C(bold yellow)%d%Creset' --abbrev-commit
-	plog-nocolor = log --graph --pretty=format:'%h - %<(50,trunc)%s %<(20)%an %<(15)%cr%d' --abbrev-commit
-	update-from-upstream = pull --rebase -s recursive -X theirs upstream/master
-	aliases = config --get-regexp '^alias\\.'
+    plog = log --graph --pretty=format:'%C(bold black)%h%Creset - %<(50,trunc)%C(bold normal)%s%Creset %<(20)%C(bold green)%an%Creset %<(15)%C(bold red)%cr%Creset%C(bold yellow)%d%Creset' --abbrev-commit
+    plog-nocolor = log --graph --pretty=format:'%h - %<(50,trunc)%s %<(20)%an %<(15)%cr%d' --abbrev-commit
+    update-from-upstream = pull --rebase -s recursive -X theirs upstream/master
+    aliases = config --get-regexp '^alias\\.'
     a = add
     s = status
     sl = status --long
@@ -252,12 +252,12 @@ I know, it probably doesn't make sense to keep my gitconfig here.
 **** http
 #+begin_src conf
 [http]
-	postBuffer = 524288000
+    postBuffer = 524288000
 #+end_src
 **** color
 #+begin_src conf
 [color]
-	ui = auto
+    ui = auto
 [color "status"]
     added = green bold
     changed = red bold
@@ -266,19 +266,19 @@ I know, it probably doesn't make sense to keep my gitconfig here.
 **** http
 #+begin_src conf
 [push]
-	followTags = true
+    followTags = true
 #+end_src
 **** status
 #+begin_src conf
 [status]
-	showUntrackedFiles = all
+    showUntrackedFiles = all
     short=true
     branch=true
 #+end_src
 **** commit
 #+begin_src conf
 [commit]
-	gpgsign = true
+    gpgsign = true
 #+end_src
 **** push
 #+begin_src conf
