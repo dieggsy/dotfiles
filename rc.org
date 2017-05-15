@@ -332,13 +332,13 @@ bindsym $mod+Shift+period exec "i3-nagbar -t warning -m 'You pressed the exit sh
 bindsym $mod+Shift+apostrophe kill
 
 # start rofi for windows and commands
-bindsym Mod1+space exec "rofi -combi-modi window,run -show combi -modi combi -font 'Iosevka 20'"
+bindsym Mod1+space exec "rofi -combi-modi window,run -show combi -modi combi"
 
 # pass helper
 bindsym $mod+p exec "~/.password-store/.extensions/rofi.bash"
 
 # clipboard manager
-bindsym $mod+c exec "rofi -modi 'clipboard:greenclip print' -show clipboard -font 'Iosevka 20'"
+bindsym $mod+c exec "rofi -modi 'clipboard:greenclip print' -show clipboard"
 
 # File finder with ripgrep
 bindsym $mod+f exec --no-startup-id "~/bin/rofi-files"
@@ -1096,7 +1096,7 @@ include "~/.nano/*.nanorc"
 :END:
 #+begin_src conf
 [dmenu]
-dmenu_command = rofi -font 'Iosevka 20'
+dmenu_command = rofi
 p = [Networks]
 rofi_highlight=True
 # # Note that dmenu_command can contain arguments as well like `rofi -width 30`
@@ -1482,6 +1482,7 @@ windows:
 
 #+begin_src conf-xdefaults
 rofi.color-enabled: true
+rofi.font: Iosevka Term 20
 rofi.color-window: #282828, #fdf4c1, #fdf4c1
 rofi.color-normal: #282828, #fdf4c1, #282828, #3c3836, #fdf4c1
 rofi.color-active: #282828, #B8BB26, #282828, #3c3836, #B8BB26
@@ -2162,7 +2163,7 @@ name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
 #+begin_src sh
 name=$(~/.zplug/bin/rg -g "*.gpg" "$HOME/.password-store" --files \
            | sed 's@'"$HOME"'/\.password-store/\(.\+\?\)\.gpg@\1@' \
-           | rofi -dmenu -i -p "[pass] " -font "Iosevka 20")
+           | rofi -dmenu -i -p "[pass] ")
 
 if [[ -n "$name" ]]; then
     ps axf | grep 'greenclip daemon' | grep -v grep | awk '{print $1}' | xargs kill -20
@@ -2362,7 +2363,7 @@ except IOError:
 ~/.zplug/bin/rg --files 2>/dev/null \
     | LC_ALL=C sort \
     | awk -v len=86 '{ if (length($0) > len) print "..." substr($0, length($0)-len, length($0)); else print; }' \
-    | rofi -dmenu -i -levenshtein-sort -matching regex -font 'Iosevka 20' -p '[files] '\
+    | rofi -dmenu -i -levenshtein-sort -matching regex -p '[files] '\
     | xargs -d '\n' xdg-open
 
 #+end_src
