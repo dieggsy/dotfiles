@@ -891,11 +891,44 @@ editing. So I went for it. Now I'll never go back.
   The extensible vi layer for Emacs.
 #+end_quote
 
+**** Setup
+#+begin_src emacs-lisp
+(use-package evil
+  :demand t
+  :if (not noninteractive)
+  :bind (:map
+         evil-normal-state-map
+         ("RET" . diego/ret)
+         ("S-SPC" . org-agenda-list)
+         ("-" . negative-argument)
+         ("\\" . evil-window-next)
+         ("C-_" . keyboard-quit)
+         ("C-/" . keyboard-quit)
+         ([escape] . keyboard-quit)
+         :map evil-insert-state-map
+         ("C-_" . evil-normal-state)
+         ("C-/" . evil-normal-state)
+         :map evil-replace-state-map
+         ("C-_" . evil-normal-state)
+         ("C-/" . evil-normal-state)
+         :map evil-visual-state-map
+         ("C-_" . keyboard-quit)
+         ("C-/" . keyboard-quit)
+         ([escape] . keyboard-quit)
+         :map evil-motion-state-map
+         ("RET" . diego/ret))
+  :functions (evil-visual-line--mark-org-element-when-heading)
+  :init
+  (setq evil-want-C-u-scroll t
+        evil-want-fine-undo t
+        evil-search-module 'evil-search
+        evil-lookup-func (lambda () (man (thing-at-point 'word))))
+  :config
+  (evil-mode 1))
+#+end_src
 **** Modes
 #+begin_src emacs-lisp
-(defun diego/evil-modes ()
-  "Set default evil state and mode-specific config for different modes."
-
+(with-eval-after-load 'evil
   ;; Use Emacs state in these additional modes.
   (dolist (mode '(ag-mode
                   flycheck-error-list-mode
@@ -937,8 +970,7 @@ editing. So I went for it. Now I'll never go back.
 #+end_src
 **** Appearance
 #+begin_src emacs-lisp
-(defun diego/evil-appearance ()
-  "Set variables controlling the appearance of evil-mode."
+(with-eval-after-load 'evil
   (setq evil-insert-state-cursor '(bar . 1)
         evil-emacs-state-cursor '(bar . 1)
         evil-normal-state-tag  " NORMAL "
@@ -951,8 +983,7 @@ editing. So I went for it. Now I'll never go back.
 **** Bindings
 #+begin_src emacs-lisp
 ;; Global bindings.
-(defun diego/evil-bindings ()
-  "Set custom evil bindings."
+(with-eval-after-load 'evil
   (evil-define-key 'normal custom-mode-map
     "q" #'Custom-buffer-done)
 
@@ -966,39 +997,11 @@ editing. So I went for it. Now I'll never go back.
 
   (evil-ex-define-cmd "dtw" 'delete-trailing-whitespace))
 #+end_src
-**** Setup
+**** Use-package binding helper
+This adds an ~:evil-bind~ keyword to use-package declarations, so I can niftily
+set evil bindings in a more integrated way. Check out [[#org-mode][my org mode setup]] for an example.
 #+begin_src emacs-lisp
-(use-package evil
-  :demand t
-  :if (not noninteractive)
-  :bind (:map
-         evil-normal-state-map
-         ("RET" . diego/ret)
-         ("S-SPC" . org-agenda-list)
-         ("-" . negative-argument)
-         ("\\" . evil-window-next)
-         ("C-_" . keyboard-quit)
-         ("C-/" . keyboard-quit)
-         ([escape] . keyboard-quit)
-         :map evil-insert-state-map
-         ("C-_" . evil-normal-state)
-         ("C-/" . evil-normal-state)
-         :map evil-replace-state-map
-         ("C-_" . evil-normal-state)
-         ("C-/" . evil-normal-state)
-         :map evil-visual-state-map
-         ("C-_" . keyboard-quit)
-         ("C-/" . keyboard-quit)
-         ([escape] . keyboard-quit)
-         :map evil-motion-state-map
-         ("RET" . diego/ret))
-  :functions (evil-visual-line--mark-org-element-when-heading)
-  :init
-  (setq evil-want-C-u-scroll t
-        evil-want-fine-undo t
-        evil-search-module 'evil-search
-        evil-lookup-func (lambda () (man (thing-at-point 'word))))
-  :config
+(with-eval-after-load 'evil
   (eval-and-compile
 
     (defun diego/get-plist-chunk (plist keyword)
@@ -1062,11 +1065,7 @@ editing. So I went for it. Now I'll never go back.
              body)
           body)))
 
-    (evil-bind-use-package-set-keyword))
-  (diego/evil-modes)
-  (diego/evil-appearance)
-  (diego/evil-bindings)
-  (evil-mode 1))
+    (evil-bind-use-package-set-keyword)))
 #+end_src
 *** [[https://github.com/justbur/emacs-bind-map][evil-leader (emacs-bind-map)]]
 #+begin_quote
@@ -1074,10 +1073,118 @@ editing. So I went for it. Now I'll never go back.
 #+end_quote
 A good chunk if not all of the bindings/functions in this section are either
 based on or copied from spacemacs, so definitely check them out!
+**** Setup
+#+begin_src emacs-lisp
+(use-package bind-map
+  :after evil
+  :bind (:map universal-argument-map
+              ("SPC u" . universal-argument-more))
+  :config
+  (defvar diego-evil-leader-key "SPC"
+    "Evil leader key.")
+
+  (defvar diego-alt-evil-leader-key (concat "C-" diego-evil-leader-key)
+    "Evil leader key for insert and emacs modes.")
+
+  (defvar diego-major-mode-leader-key ","
+    "Major mode leader key.")
+
+  (defvar diego-alt-major-mode-leader-key (concat "C-" diego-major-mode-leader-key)
+    "Major mode leader key.")
+
+  (defvar diego-default-map (make-sparse-keymap)
+    "Base keymap for all spacemacs leader key commands.")
+
+  (bind-map diego-default-map
+    ;; :keys ("M-m")
+    :evil-keys (diego-evil-leader-key)
+    :evil-states (normal motion visual))
+
+  (bind-map diego-default-map
+    ;; :keys ("M-m")
+    :evil-keys (diego-alt-evil-leader-key)
+    :evil-states (insert emacs))
+
+  (defun diego/set-leader-keys (key def &rest bindings)
+    "Add KEY and DEF as key bindings under
+`diego-evil-leader-key'.
+
+KEY should be a string suitable for passing to `kbd', and it
+should not include the leaders. DEF is most likely a quoted
+command. See `define-key' for more information about the possible
+choices for DEF. This function simply uses `define-key' to add
+the bindings.
+
+For convenience, this function will accept additional KEY DEF
+pairs. For example,
+
+\(spacemacs/set-leader-keys
+   \"a\" 'command1
+   \"C-c\" 'command2
+   \"bb\" 'command3\)"
+    (declare (indent defun))
+    (while key
+      (define-key diego-default-map (kbd key) def)
+      (setq key (pop bindings) def (pop bindings))))
+
+  (defun diego//init-leader-mode-map (mode map &optional minor)
+    "Check for MAP-prefix. If it doesn't exist yet, use `bind-map'
+to create it and bind it to `diego-major-mode-leader-key'.
+If MODE is a minor-mode, the third argument should be non nil."
+    (let* ((prefix (intern (format "%s-prefix" map)))
+           (leader1 diego-major-mode-leader-key)
+           (leader2 (concat diego-evil-leader-key " m"))
+           (leaders (delq nil (list leader1 leader2)))
+           (alt-leader1 diego-alt-major-mode-leader-key)
+           (alt-leader2 (concat diego-alt-evil-leader-key " m"))
+           (alt-leaders (delq nil (list alt-leader1 alt-leader2))))
+      (or (boundp prefix)
+          (progn
+            (eval
+             `(bind-map ,map
+                :prefix-cmd ,prefix
+                ,(if minor :minor-modes :major-modes) (,mode)
+                :evil-keys ,leaders
+                :evil-states (normal motion visual)))
+            (eval
+             `(bind-map ,map
+                :prefix-cmd ,prefix
+                ,(if minor :minor-modes :major-modes) (,mode)
+                :evil-keys ,alt-leaders
+                :evil-states (insert emacs)))
+            (boundp prefix)))))
+
+  (defun diego/set-leader-keys-for-major-mode (mode key def &rest bindings)
+    "Add KEY and DEF as key bindings under
+`diego-major-mode-leader-key' and
+`diego-major-mode-emacs-leader-key' for the major-mode
+MODE. MODE should be a quoted symbol corresponding to a valid
+major mode. The rest of the arguments are treated exactly like
+they are in `diego/set-leader-keys'."
+    (declare (indent defun))
+    (let* ((map (intern (format "diego-%s-map" mode))))
+      (when (diego//init-leader-mode-map mode map)
+        (while key
+          (define-key (symbol-value map) (kbd key) def)
+          (setq key (pop bindings) def (pop bindings))))))
+
+  (defun diego/set-leader-keys-for-minor-mode (mode key def &rest bindings)
+    "Add KEY and DEF as key bindings under
+`dotspacemacs-major-mode-leader-key' and
+`dotspacemacs-major-mode-emacs-leader-key' for the minor-mode
+MODE. MODE should be a quoted symbol corresponding to a valid
+minor mode. The rest of the arguments are treated exactly like
+they are in `spacemacs/set-leader-keys'."
+    (declare (indent defun))
+    (let* ((map (intern (format "diego-%s-map" mode))))
+      (when (diego//init-leader-mode-map mode map t)
+        (while key
+          (define-key (symbol-value map) (kbd key) def)
+          (setq key (pop bindings) def (pop bindings)))))))
+#+end_src
 **** Search
 #+begin_src emacs-lisp
-(defun diego/leader-search ()
-  "Set all leader bindings related to reference/search."
+(with-eval-after-load 'bind-map
   (diego/set-leader-keys
     "sS" 'swiper-all
     "sd" 'ddg-this-search
@@ -1090,8 +1197,7 @@ based on or copied from spacemacs, so definitely check them out!
 #+end_src
 **** Projects
 #+begin_src emacs-lisp
-(defun diego/leader-projects ()
-  "Set all leader bindings related to projectile."
+(with-eval-after-load 'bind-map
   (diego/set-leader-keys
     "pb" 'counsel-projectile-switch-to-buffer
     "pd" 'counsel-projectile-find-dir
@@ -1111,8 +1217,7 @@ based on or copied from spacemacs, so definitely check them out!
 #+end_src
 **** Window
 #+begin_src emacs-lisp
-(defun diego/leader-window ()
-  "Set all leader bindings related to window manipulation."
+(with-eval-after-load 'bind-map
   (diego/set-leader-keys
     "\\" 'ace-window
     "wD" 'ace-delete-window
@@ -1128,8 +1233,7 @@ based on or copied from spacemacs, so definitely check them out!
 #+end_src
 **** Eyebrowse
 #+begin_src emacs-lisp
-(defun diego/leader-eyebrowse ()
-  "Set all leader bindings related to eyebrowse/workspaces."
+(with-eval-after-load 'bind-map
   (diego/set-leader-keys
     "es" 'eyebrowse-switch-to-window-config
     "el" 'eyebrowse-next-window-config
@@ -1140,8 +1244,7 @@ based on or copied from spacemacs, so definitely check them out!
 #+end_src
 **** Jumping
 #+begin_src emacs-lisp
-(defun diego/leader-jumping ()
-  "Set all leader bindings related to in-buffer motion and 'jumping'."
+(with-eval-after-load 'bind-map
   (diego/set-leader-keys
     "jE" 'dumb-jump-go-prefer-external-other-window
     "jG" 'dumb-jump-go-other-window
@@ -1158,8 +1261,7 @@ based on or copied from spacemacs, so definitely check them out!
 #+end_src
 **** Applications
 #+begin_src emacs-lisp
-(defun diego/leader-applications ()
-  "Set all leader bindings that run a standalone mode or program."
+(with-eval-after-load 'bind-map
   (diego/set-leader-keys
     "aW"  'sunshine-quick-forecast
     "ac"  'calc-dispatch
@@ -1193,8 +1295,7 @@ based on or copied from spacemacs, so definitely check them out!
 #+end_src
 **** Buffers & Files
 #+begin_src emacs-lisp
-(defun diego/leader-buffers-files ()
-  "Set all leader bindings related to buffer and file manipulation."
+(with-eval-after-load 'bind-map
   (diego/set-leader-keys
     "TAB" 'diego/switch-to-previous-buffer
     "b*"  'diego/switch-to-star
@@ -1229,8 +1330,7 @@ based on or copied from spacemacs, so definitely check them out!
 #+end_src
 **** Editing
 #+begin_src emacs-lisp
-(defun diego/leader-editing ()
-  "Set all leader bindings related to text-editing."
+(with-eval-after-load 'bind-map
   (diego/set-leader-keys
     ";"   'evilnc-comment-operator
     "ci"  'diego/comment-or-uncomment-lines-inverse
@@ -1282,8 +1382,7 @@ based on or copied from spacemacs, so definitely check them out!
 #+end_src
 **** magit
 #+begin_src emacs-lisp
-(defun diego/leader-magit ()
-  "Set all leader bindings related to magit and version control."
+(with-eval-after-load 'bind-map
   (diego/set-leader-keys
     "gB" 'magit-blame-toggle
     "gC" 'magit-clone
@@ -1298,8 +1397,7 @@ based on or copied from spacemacs, so definitely check them out!
 #+end_src
 **** Help
 #+begin_src emacs-lisp
-(defun diego/leader-help ()
-  "Set all leader bindings related to help and Emacs reference."
+(with-eval-after-load 'bind-map
   (diego/set-leader-keys
     "hca" 'customize-apropos
     "hcf" 'customize-face-other-window
@@ -1326,8 +1424,7 @@ based on or copied from spacemacs, so definitely check them out!
 #+end_src
 **** Quit
 #+begin_src emacs-lisp
-(defun diego/leader-quit ()
-  "Set all leader bindings related to quitting, closing, and restarting."
+(with-eval-after-load 'bind-map
   (diego/set-leader-keys
     "qf" 'delete-frame
     "qq" 'save-buffers-kill-emacs
@@ -1335,9 +1432,7 @@ based on or copied from spacemacs, so definitely check them out!
 #+end_src
 **** Global/non-prefix
 #+begin_src emacs-lisp
-(defun diego/config-evil-leader ()
-  "Set evil leader non-prefix bindings and call leader helper functions."
-
+(with-eval-after-load 'bind-map
   (diego/set-leader-keys
     "&"   'async-shell-command
     "-"   'ivy-resume
@@ -1359,130 +1454,7 @@ based on or copied from spacemacs, so definitely check them out!
     "t"   'hydra-toggle/body
     "u"   'universal-argument
     "y"   'counsel-yank-pop
-    "z"   'hydra-zoom/body)
-
-  (diego/leader-applications)
-  (diego/leader-buffers-files)
-  (diego/leader-editing)
-  (diego/leader-help)
-  (diego/leader-eyebrowse)
-  (diego/leader-jumping)
-  (diego/leader-magit)
-  (diego/leader-projects)
-  (diego/leader-quit)
-  (diego/leader-search)
-  (diego/leader-window))
-#+end_src
-**** Setup
-#+begin_src emacs-lisp
-(use-package bind-map
-  :after evil
-  :bind (:map universal-argument-map
-              ("SPC u" . universal-argument-more))
-  :config
-  (defvar diego-evil-leader-key "SPC"
-    "Evil leader key.")
-
-  (defvar diego-alt-evil-leader-key (concat "C-" diego-evil-leader-key)
-    "Evil leader key for insert and emacs modes.")
-
-  (defvar diego-major-mode-leader-key ","
-    "Major mode leader key.")
-
-  (defvar diego-alt-major-mode-leader-key (concat "C-" diego-major-mode-leader-key)
-    "Major mode leader key.")
-
-  (defvar diego-default-map (make-sparse-keymap)
-    "Base keymap for all spacemacs leader key commands.")
-
-  (bind-map diego-default-map
-    ;; :keys ("M-m")
-    :evil-keys (diego-evil-leader-key)
-    :evil-states (normal motion visual))
-
-  (bind-map diego-default-map
-    ;; :keys ("M-m")
-    :evil-keys (diego-alt-evil-leader-key)
-    :evil-states (insert emacs))
-
-  (defun diego/set-leader-keys (key def &rest bindings)
-    "Add KEY and DEF as key bindings under
-`diego-evil-leader-key'.
-
-KEY should be a string suitable for passing to `kbd', and it
-should not include the leaders. DEF is most likely a quoted
-command. See `define-key' for more information about the possible
-choices for DEF. This function simply uses `define-key' to add
-the bindings.
-
-For convenience, this function will accept additional KEY DEF
-pairs. For example,
-
-\(spacemacs/set-leader-keys
-   \"a\" 'command1
-   \"C-c\" 'command2
-   \"bb\" 'command3\)"
-    (while key
-      (define-key diego-default-map (kbd key) def)
-      (setq key (pop bindings) def (pop bindings))))
-  (put 'diego/set-leader-keys 'lisp-indent-function 'defun)
-
-  (defun diego//init-leader-mode-map (mode map &optional minor)
-    "Check for MAP-prefix. If it doesn't exist yet, use `bind-map'
-to create it and bind it to `diego-major-mode-leader-key'.
-If MODE is a minor-mode, the third argument should be non nil."
-    (let* ((prefix (intern (format "%s-prefix" map)))
-           (leader1 diego-major-mode-leader-key)
-           (leader2 (concat diego-evil-leader-key " m"))
-           (leaders (delq nil (list leader1 leader2)))
-           (alt-leader1 diego-alt-major-mode-leader-key)
-           (alt-leader2 (concat diego-alt-evil-leader-key " m"))
-           (alt-leaders (delq nil (list alt-leader1 alt-leader2))))
-      (or (boundp prefix)
-          (progn
-            (eval
-             `(bind-map ,map
-                :prefix-cmd ,prefix
-                ,(if minor :minor-modes :major-modes) (,mode)
-                :evil-keys ,leaders
-                :evil-states (normal motion visual)))
-            (eval
-             `(bind-map ,map
-                :prefix-cmd ,prefix
-                ,(if minor :minor-modes :major-modes) (,mode)
-                :evil-keys ,alt-leaders
-                :evil-states (insert emacs)))
-            (boundp prefix)))))
-
-  (defun diego/set-leader-keys-for-major-mode (mode key def &rest bindings)
-    "Add KEY and DEF as key bindings under
-`diego-major-mode-leader-key' and
-`diego-major-mode-emacs-leader-key' for the major-mode
-MODE. MODE should be a quoted symbol corresponding to a valid
-major mode. The rest of the arguments are treated exactly like
-they are in `diego/set-leader-keys'."
-    (let* ((map (intern (format "diego-%s-map" mode))))
-      (when (diego//init-leader-mode-map mode map)
-        (while key
-          (define-key (symbol-value map) (kbd key) def)
-          (setq key (pop bindings) def (pop bindings))))))
-  (put 'diego/set-leader-keys-for-major-mode 'lisp-indent-function 'defun)
-
-  (defun diego/set-leader-keys-for-minor-mode (mode key def &rest bindings)
-    "Add KEY and DEF as key bindings under
-`dotspacemacs-major-mode-leader-key' and
-`dotspacemacs-major-mode-emacs-leader-key' for the minor-mode
-MODE. MODE should be a quoted symbol corresponding to a valid
-minor mode. The rest of the arguments are treated exactly like
-they are in `spacemacs/set-leader-keys'."
-    (let* ((map (intern (format "diego-%s-map" mode))))
-      (when (diego//init-leader-mode-map mode map t)
-        (while key
-          (define-key (symbol-value map) (kbd key) def)
-          (setq key (pop bindings) def (pop bindings))))))
-  (put 'diego/set-leader-keys-for-minor-mode 'lisp-indent-function 'defun)
-
-  (diego/config-evil-leader))
+    "z"   'hydra-zoom/body))
 #+end_src
 *** [[https://github.com/TheBB/evil-indent-plus][evil-indent-plus]]
 #+begin_quote
@@ -1729,10 +1701,41 @@ I actually don't think I tried the former option, but the latter simply worked
 so I went with it.
 :END:
 
+*** Setup
+#+begin_src emacs-lisp
+(use-package org
+  :ensure org-plus-contrib
+  :defines (org-habit-graph-column)
+  :evil-bind (:normal
+              org-mode-map
+              ("RET" . diego/ret)
+              ("<" . org-metaleft)
+              (">" . org-metaright)
+              ("gh" . outline-up-heading)
+              ("gl" . outline-next-visible-heading)
+              ("gj" . org-forward-heading-same-level)
+              ("gk" . org-backward-heading-same-level)
+              ("gt" . org-todo)
+              ("ga" . org-archive-subtree)
+              ("M-l" . org-metaright)
+              ("M-h" . org-metaleft)
+              ("M-k" . org-metaup)
+              ("M-j" . org-metadown)
+              ("M-L" . org-shiftmetaright)
+              ("M-H" . org-shiftmetaleft)
+              ("M-K" . org-shiftmetaup)
+              ("M-J" . org-shiftmetadown))
+  :init
+  (setq org-list-allow-alphabetical t)
+  :config
+  (add-hook 'org-agenda-mode-hook #'diego/setup-org-agenda)
+  (add-hook 'org-mode-hook #'diego/setup-org-mode)
+  (require 'ox-extra)
+  (ox-extras-activate '(ignore-headlines)))
+#+end_src
 *** Bindings
 #+begin_src emacs-lisp
-(defun diego/org-bindings ()
-  "Set custom bindings for `org-mode'."
+(with-eval-after-load 'org
   (defmacro diego|org-emphasize (fname char)
     "Make function for setting the emphasis in org mode"
     `(defun ,fname () (interactive)
@@ -1811,8 +1814,7 @@ so I went with it.
 *** Custom vars
 **** Files
 #+begin_src emacs-lisp
-(defun diego/org-file-vars ()
-  "Set all custom `org-mode' vars related to files."
+(with-eval-after-load 'org
   (setq org-agenda-text-search-extra-files '(agenda-archives)
         org-agenda-files '("~/Dropbox (MIT)/org/todo.org" "~/Dropbox (MIT)/org/gcal.org")
         org-default-notes-file "~/Dropbox (MIT)/org/todo.org"
@@ -1825,8 +1827,7 @@ so I went with it.
 #+end_src
 **** Todo/agenda
 #+begin_src emacs-lisp
-(defun diego/org-todo-vars ()
-  "Set all custom `org-mode' vars related to todo and agenda."
+(with-eval-after-load 'org
   (setq org-enforce-todo-dependencies t
         org-log-done (quote time)
         org-log-redeadline (quote time)
@@ -1866,8 +1867,7 @@ so I went with it.
 
 **** Behavior/appearance
 #+begin_src emacs-lisp
-(defun diego/org-general-vars ()
-  "Set all custom `org-mode' vars related to general appearance and behavior."
+(with-eval-after-load 'org
   (setq org-insert-heading-respect-content t
         org-src-window-setup 'current-window
         org-list-demote-modify-bullet '(("-" . "*")
@@ -1928,9 +1928,7 @@ so I went with it.
 #+end_src
 *** Agenda config
 #+begin_src emacs-lisp
-(defun diego/setup-org-agenda ()
-  "Function called with `org-agenda-mode-hook'."
-  (setq org-habit-graph-column 50)
+(with-eval-after-load 'org-agenda
   (bind-keys :map org-agenda-mode-map
              ("j" . org-agenda-next-line)
              ("k" . org-agenda-previous-line)
@@ -1938,7 +1936,11 @@ so I went with it.
              ("p" . org-agenda-previous-date-line)
              ("c" . org-agenda-capture)
              ("R" . org-revert-all-org-buffers)
-             ("RET" . org-agenda-switch-to))
+             ("RET" . org-agenda-switch-to)))
+
+(defun diego/setup-org-agenda ()
+  "Function called with `org-agenda-mode-hook'."
+  (setq org-habit-graph-column 50)
 
   (setq-local prettify-symbols-alist
               '(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
@@ -1950,15 +1952,13 @@ so I went with it.
 
   (prettify-symbols-mode))
 #+end_src
-*** Copture config
+*** Capture config
 #+begin_src emacs-lisp
-(defun diego/setup-org-capture ()
-  "Function called with `org-capture-mode-hook'."
-  (evil-define-key 'insert org-capture-mode-map (kbd "C-d")
-    #'diego/org-agenda-toggle-date)
-  (evil-define-key 'normal org-capture-mode-map (kbd "C-d")
-    #'diego/org-agenda-toggle-date)
-  (evil-insert-state))
+(with-eval-after-load 'org-capture
+  (diego/evil-bind-keys :insert org-capture-mode-mop
+                        ("C-d" . diego/org-agenda-toggle-date)
+                        :normal org-capture-mode-map
+                        ("C-d" . diego/org-agenda-toggle-date)))
 #+end_src
 *** Org config
 #+begin_src emacs-lisp
@@ -2230,43 +2230,6 @@ so I went with it.
         [?\{ ?i return ?# ?+ ?b ?e ?g ?i ?n ?_ ?q ?u ?o ?t ?e ?\C-/ ?\} ?i return
              up ?# ?+ ?e ?n ?d ?_ ?q ?u ?o ?t ?e ?\C-/ ?\{ ?j ?i ?  ?  ?\M-q
              ?\M-q ?\M-q ?\C-/]))
-#+end_src
-*** Setup
-#+begin_src emacs-lisp
-(use-package org
-  :ensure org-plus-contrib
-  :defines (org-habit-graph-column)
-  :evil-bind (:normal
-              org-mode-map
-              ("RET" . diego/ret)
-              ("<" . org-metaleft)
-              (">" . org-metaright)
-              ("gh" . outline-up-heading)
-              ("gl" . outline-next-visible-heading)
-              ("gj" . org-forward-heading-same-level)
-              ("gk" . org-backward-heading-same-level)
-              ("gt" . org-todo)
-              ("ga" . org-archive-subtree)
-              ("M-l" . org-metaright)
-              ("M-h" . org-metaleft)
-              ("M-k" . org-metaup)
-              ("M-j" . org-metadown)
-              ("M-L" . org-shiftmetaright)
-              ("M-H" . org-shiftmetaleft)
-              ("M-K" . org-shiftmetaup)
-              ("M-J" . org-shiftmetadown))
-  :init
-  (setq org-list-allow-alphabetical t)
-  :config
-  (diego/org-bindings)
-  (diego/org-file-vars)
-  (diego/org-todo-vars)
-  (diego/org-general-vars)
-  (add-hook 'org-agenda-mode-hook #'diego/setup-org-agenda)
-  (add-hook 'org-capture-mode-hook #'diego/setup-org-capture)
-  (add-hook 'org-mode-hook #'diego/setup-org-mode)
-  (require 'ox-extra)
-  (ox-extras-activate '(ignore-headlines)))
 #+end_src
 ** [[https://github.com/abo-abo/hydra][hydra]]
 #+begin_quote
