@@ -712,21 +712,28 @@ the right."
 #+end_src
 *** Justify
 #+begin_src emacs-lisp
-(defmacro diego|justify (type)
-  (let ((func-name (intern (concat "diego/justify-" type))))
-    `(defun ,func-name ()
-       (interactive)
-       (if (region-active-p)
-           (set-justification (region-beginning) (region-end) (intern ,type))
-         (set-justification (line-beginning-position)
-                            (line-end-position)
-                            (intern ,type))))))
+(defmacro diego|justify (type &rest types)
+  `(progn
+     ,@(cl-loop
+        while type collect
+        (let ((func-name (intern (concat "diego/justify-" type)))
+              (current-type type))
+          (setq type (pop types))
+          `(defun ,func-name ()
+             (interactive)
+             (if (region-active-p)
+                 (set-justification (region-beginning)
+                                    (region-end)
+                                    (intern ,current-type))
+               (set-justification (line-beginning-position)
+                                  (line-end-position)
+                                  (intern ,current-type))))))))
 
-(diego|justify "left")
-(diego|justify "right")
-(diego|justify "full")
-(diego|justify "center")
-(diego|justify "none")
+(diego|justify "left"
+               "right"
+               "full"
+               "center"
+               "none")
 #+end_src
 
 *** Paragraph
@@ -3146,18 +3153,26 @@ Syntax highlighting for matlab scripts.
     (sp-local-pair modes "'" nil :actions nil)
     (sp-local-pair modes "`" nil :actions nil))
 
-  (defmacro diego|sp-wrap-with (char-name char)
+  (defmacro diego|sp-wrap-with (char-name char &rest other)
     "Make function for wrapping with character using `sp-wrap-with-pair'"
-    (let ((fname (intern (concat "diego/sp-wrap-with-" char-name))))
-      `(defun ,fname (&optional arg)
-         (interactive "P")
-         (sp-wrap-with-pair ,char))))
+    (declare (indent defun))
+    `(progn
+       ,@(cl-loop while char-name collect
+                  (let* ((current-char-name char-name)
+                         (current-char char)
+                         (fname (intern (concat "diego/sp-wrap-with-" current-char-name))))
+                    (setq char-name (pop other)
+                          char (pop other))
+                    `(defun ,fname (&optional arg)
+                       (interactive "P")
+                       (sp-wrap-with-pair ,current-char))
+                    ))))
 
-  (diego|sp-wrap-with "paren"   "(")
-  (diego|sp-wrap-with "bracket" "[")
-  (diego|sp-wrap-with "curly"   "{")
-  (diego|sp-wrap-with "quote2" "\"")
-  (diego|sp-wrap-with "quote"   "'"))
+  (diego|sp-wrap-with
+    "paren" "("
+    "curly" "{"
+    "double-quote" "\""
+    "single-quote" "'"))
 
 (use-package evil-smartparens
   :after smartparens
