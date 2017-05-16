@@ -1603,12 +1603,16 @@ A really nice search/completion system for emacs.
   :config
   (when (eq system-type 'darwin)
     (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind))
-  (setq counsel-yank-pop-separator "
-  ─────────────────────────
-"
+  (setq conusel-org-goto-display-style 'path
+        counsel-org-goto-separator ": "
+        counsel-org-goto-face-style 'org
         counsel-find-file-ignore-regexp (concat "\\(\\`\\.\\)"
                                                 "\\|\\(\\.elc$\\)"
-                                                "\\|\\(.pyc$\\)"))
+                                                "\\|\\(.pyc$\\)")
+        counsel-yank-pop-separator "
+  ─────────────────────────
+"
+        )
   (counsel-mode 1)
   (defalias 'ag #'counsel-ag)
   (defalias 'locate #'counsel-locate)
