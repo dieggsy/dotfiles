@@ -886,8 +886,7 @@ package should fix them nicely.
   :defer 5
   :config
   (setq exec-path-from-shell-check-startup-files nil)
-  (when (eq system-type 'darwin)
-    (exec-path-from-shell-initialize)))
+  (exec-path-from-shell-initialize))
 #+end_src
 ** evil
 I really like Vim bindings. I originally learned Emacs bindings but there was
@@ -954,7 +953,7 @@ editing. So I went for it. Now I'll never go back.
   (setq evil-insert-state-modes (delq 'term-mode evil-insert-state-modes))
 
   ;; Use insert state in these additional modes.
-  (dolist (mode '(magit-log-edit-mode))
+  (dolist (mode '(magit-log-edit-mode org-capture-mode))
     (add-to-list 'evil-insert-state-modes mode))
 
   (add-to-list 'evil-buffer-regexps '("\\*Flycheck"))
@@ -1022,10 +1021,11 @@ set evil bindings in a more integrated way. Check out [[#org-mode][my org mode s
       (let* ((only-keys (cl-remove-if-not #'keywordp plist))
              (valid-keys
               (cl-remove-if-not (lambda (x)
-                                  (fboundp (intern (concat
-                                                    "evil-"
-                                                    (substring (symbol-name x) 1)
-                                                    "-state"))))
+                                  (fboundp
+                                   (intern (concat
+                                            "evil-"
+                                            (substring (symbol-name x) 1)
+                                            "-state"))))
                                 only-keys)))
         `(progn
            ,@(cl-loop for state in valid-keys collect
@@ -1035,7 +1035,10 @@ set evil bindings in a more integrated way. Check out [[#org-mode][my org mode s
                              (bindings (nth 2 plist-chunk))
                              (map (pop bindings)))
                         (setq plist (append (cl-subseq plist 0 start)
-                                            (cl-subseq plist (if end end (length plist)) (length plist))))
+                                            (cl-subseq plist
+                                                       (if end end
+                                                         (length plist))
+                                                       (length plist))))
                         `(evil-define-key ',(intern (substring (symbol-name state) 1)) ,map
                            ,@(cl-loop while bindings append
                                       (let* ((pair (pop bindings))
@@ -1060,8 +1063,10 @@ set evil bindings in a more integrated way. Check out [[#org-mode][my org mode s
             (use-package-error
              (concat label " a (<string or vector> . <symbol or string>)"
                      " or list of these")))
-          (use-package-normalize-pairs (lambda (k) (or (stringp k) (vectorp k)))
-                                       (lambda (b) (or (symbolp b) (stringp b)))
+          (use-package-normalize-pairs (lambda (k)
+                                         (or (stringp k) (vectorp k)))
+                                       (lambda (b)
+                                         (or (symbolp b) (stringp b)))
                                        name label arg))))
 
     (defun use-package-handler/:evil-bind (name-symbol keyword args rest state)
@@ -1751,20 +1756,22 @@ so I went with it.
   (diego/set-leader-keys-for-major-mode 'org-mode
     "$"  'org-archive-subtree
     "'"  'org-edit-special
-    "/"  'org-sparse-tree
-    "^"  'org-sort
-    "a"  'org-agenda
-    "A"  'org-archive-subtree
-    "c"  'org-capture
-    "d"  'org-deadline
     "."  'org-time-stamp
-    "l"  'diego/org-choose-bullet-type
-    "n"  'org-narrow-to-subtree
+    "/"  'org-sparse-tree
+    ":"  'diego/org-set-tags
+    "A"  'org-archive-subtree
     "N"  'widen
     "P"  'org-set-property
     "R"  'org-refile
+    "^"  'org-sort
+    "a"  'org-agenda
+    "c"  'org-capture
+    "d"  'org-deadline
+    "g"  'counsel-org-goto
+    "G"  'counsel-org-goto-all
+    "l"  'diego/org-choose-bullet-type
+    "n"  'org-narrow-to-subtree
     "s"  'org-schedule
-    ":"  'diego/org-set-tags
 
     "ic" 'org-table-insert-column
     "ir" 'org-table-insert-row
@@ -2410,17 +2417,18 @@ _S_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
     "Declare a prefix PREFIX. PREFIX is a string describing a key
 sequence. NAME is a string used as the prefix command.
 LONG-NAME if given is stored in `spacemacs/prefix-titles'."
+    (declare (indent defun))
     (while prefix
       (which-key-add-key-based-replacements
         (concat diego-evil-leader-key " " prefix) name
         (concat diego-alt-evil-leader-key " " prefix) name)
       (setq prefix (pop more) name (pop more))))
-  (put 'diego/declare-prefix 'lisp-indent-function 'defun)
 
   (defun diego/declare-prefix-for-major-mode (mode prefix name &rest more)
     "Declare a prefix PREFIX. PREFIX is a string describing a key
 sequence. NAME is a string used as the prefix command.
 LONG-NAME if given is stored in `spacemacs/prefix-titles'."
+    (declare (indent defun))
     (while prefix
       (which-key-add-major-mode-key-based-replacements mode
         (concat diego-evil-leader-key " m" prefix) name
@@ -2428,7 +2436,6 @@ LONG-NAME if given is stored in `spacemacs/prefix-titles'."
         (concat diego-alt-evil-leader-key " m" prefix) name
         (concat diego-alt-major-mode-leader-key " " prefix) name)
       (setq prefix (pop more) name (pop more))))
-  (put 'diego/declare-prefix-for-major-mode 'lisp-indent-function 'defun)
 
   (diego/declare-prefix
     "a"   "applications"
@@ -2791,7 +2798,6 @@ I use this for reading, mostly.
 Configure the Elfeed RSS reader with an Orgmode file
 #+begin_src emacs-lisp
 (use-package elfeed
-  :disabled t
   :if (not noninteractive)
   :evil-bind (:normal
               elfeed-search-mode-map
@@ -2829,7 +2835,6 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+end_quote
 #+begin_src emacs-lisp
 (use-package elfeed-org
-  :disabled t
   :after elfeed
   :if (not noninteractive)
   :config
@@ -2841,7 +2846,6 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+end_quote
 #+begin_src emacs-lisp
 (use-package elfeed-goodies
-  :disabled t
   :after elfeed
   :config
   (elfeed-goodies/setup)
@@ -3479,7 +3483,6 @@ Better parentheses coloring
               ([up] . slime-repl-previous-input)
               ([down] . slime-repl-next-input))
   :config
-  ;; (load (expand-file-name "~/quicklisp/slime-helper.el"))
   (setq inferior-lisp-program "/usr/local/bin/sbcl")
   (setq slime-contribs '(slime-fancy slime-company)))
 
@@ -3814,7 +3817,7 @@ Remap fill-paragraph binding to ~diego/fill-or-unfill~, which toggles paragraph 
 #+end_src
 * Aliases
 #+begin_src emacs-lisp
-(defalias 'yes-or-no-p #'y-or-n-p) ; y or n is enough
+(defalias 'yes-or-no-p #'y-or-n-p)
 #+end_src
 * Modes
 ** Prog-mode
@@ -3845,6 +3848,7 @@ Configuration that applies to all programming modes.
   (set (make-local-variable 'comment-inline-offset) 2)
   (anaconda-mode)
   (anaconda-eldoc-mode)
+  (require 'company)
   (add-to-list 'company-backends
                (company-mode/backend-with-yas 'company-anaconda))
   (defvar diego/python-prettify-alist
@@ -3854,8 +3858,8 @@ Configuration that applies to all programming modes.
       ("==" . "≈")
       ("is" . "≡")
       ("sum" . "∑")
-      ("math.sqrt" . "√")
-      ("math.pi" . "π")
+      ("sqrt" . "√")
+      ("pi" . "π")
       ("lambda" . "λ")
       ("and" . 8743)
       ("or" . 8744)
@@ -3863,7 +3867,8 @@ Configuration that applies to all programming modes.
       ("in" . "∈")
       ("not in" . "∉")))
   (setq-local prettify-symbols-alist
-              diego/python-prettify-alist))
+              diego/python-prettify-alist)
+  (prettify-symbols-mode))
 
 (add-hook 'python-mode-hook #'diego/setup-python-mode)
 #+end_src
