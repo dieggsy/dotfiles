@@ -263,6 +263,12 @@ I know, it probably doesn't make sense to keep my gitconfig here.
     added = green bold
     changed = red bold
     untracked = red bold
+[color "branch"]
+    current = green bold
+    remote = magenta bold
+[color "diff"]
+    new = green bold
+    old = red bold
 #+end_src
 **** http
 #+begin_src conf
