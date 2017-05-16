@@ -1000,6 +1000,70 @@ editing. So I went for it. Now I'll never go back.
         evil-search-module 'evil-search
         evil-lookup-func (lambda () (man (thing-at-point 'word))))
   :config
+  (eval-and-compile
+
+    (defun diego/get-plist-chunk (plist keyword)
+      (let* ((exists (cl-position keyword plist))
+             (start (when exists (1+ exists)))
+             (end (cl-position-if #'keywordp plist :start start)))
+        (when start
+          (list (1- start) end (cl-subseq plist start end)))))
+
+    (defmacro diego/evil-bind-keys (&rest plist)
+      (let* ((only-keys (cl-remove-if-not #'keywordp plist))
+             (valid-keys
+              (cl-remove-if-not (lambda (x)
+                                  (fboundp (intern (concat
+                                                    "evil-"
+                                                    (substring (symbol-name x) 1)
+                                                    "-state"))))
+                                only-keys)))
+        `(progn
+           ,@(cl-loop for state in valid-keys collect
+                      (let* ((plist-chunk (diego/get-plist-chunk plist state))
+                             (start (car plist-chunk ))
+                             (end (cadr plist-chunk))
+                             (bindings (nth 2 plist-chunk))
+                             (map (pop bindings)))
+                        (setq plist (append (cl-subseq plist 0 start)
+                                            (cl-subseq plist (if end end (length plist)) (length plist))))
+                        `(evil-define-key ',(intern (substring (symbol-name state) 1)) ,map
+                           ,@(cl-loop while bindings append
+                                      (let* ((pair (pop bindings))
+                                             (key (if (vectorp (car pair))
+                                                      (car pair)
+                                                    (read-kbd-macro (car pair))))
+                                             (func (cdr pair)))
+                                        `(,key ',func)))))))))
+
+    (defun evil-bind-use-package-set-keyword ()
+      (unless (member :evil-bind use-package-keywords)
+        (setq use-package-keywords
+              (let* ((pos (cl-position :bind use-package-keywords))
+                     (head (cl-subseq use-package-keywords 0 (+ 1 pos)))
+                     (tail (nthcdr (+ 1 pos) use-package-keywords)))
+                (append head (list :evil-bind) tail)))))
+
+    (defun use-package-normalize/:evil-bind (name keyword args)
+      (use-package-as-one (symbol-name keyword) args
+        (lambda (label arg)
+          (unless (consp arg)
+            (use-package-error
+             (concat label " a (<string or vector> . <symbol or string>)"
+                     " or list of these")))
+          (use-package-normalize-pairs (lambda (k) (or (stringp k) (vectorp k)))
+                                       (lambda (b) (or (symbolp b) (stringp b)))
+                                       name label arg))))
+
+    (defun use-package-handler/:evil-bind (name-symbol keyword args rest state)
+      (let ((body (use-package-process-keywords name-symbol rest state)))
+        (if args
+            (use-package-concat
+             `((diego/evil-bind-keys ,@args))
+             body)
+          body)))
+
+    (evil-bind-use-package-set-keyword))
   (diego/evil-modes)
   (diego/evil-appearance)
   (diego/evil-bindings)
@@ -1308,8 +1372,7 @@ based on or copied from spacemacs, so definitely check them out!
   (diego/leader-projects)
   (diego/leader-quit)
   (diego/leader-search)
-  (diego/leader-window)
-  (define-key universal-argument-map (kbd "SPC u") 'universal-argument-more))
+  (diego/leader-window))
 #+end_src
 **** Setup
 #+begin_src emacs-lisp
@@ -1744,26 +1807,7 @@ so I went with it.
     "tw"  'org-table-wrap-region)
 
   (diego/set-leader-keys-for-minor-mode 'org-src-mode
-    "'" 'org-edit-src-exit)
-
-  (evil-define-key 'normal org-mode-map
-    (kbd "RET") 'diego/ret
-    "<"         'org-metaleft
-    ">"         'org-metaright
-    "gh"        'outline-up-heading
-    "gl"        'outline-next-visible-heading
-    "gj"        'org-forward-heading-same-level
-    "gk"        'org-backward-heading-same-level
-    "gt"        'org-todo
-    "ga"        'org-archive-subtree
-    (kbd "M-l") 'org-metaright
-    (kbd "M-h") 'org-metaleft
-    (kbd "M-k") 'org-metaup
-    (kbd "M-j") 'org-metadown
-    (kbd "M-L") 'org-shiftmetaright
-    (kbd "M-H") 'org-shiftmetaleft
-    (kbd "M-K") 'org-shiftmetaup
-    (kbd "M-J") 'org-shiftmetadown))
+    "'" 'org-edit-src-exit))
 #+end_src
 *** Custom vars
 **** Files
@@ -2193,6 +2237,25 @@ so I went with it.
 (use-package org
   :ensure org-plus-contrib
   :defines (org-habit-graph-column)
+  :evil-bind (:normal
+              org-mode-map
+              ("RET" . diego/ret)
+              ("<" . org-metaleft)
+              (">" . org-metaright)
+              ("gh" . outline-up-heading)
+              ("gl" . outline-next-visible-heading)
+              ("gj" . org-forward-heading-same-level)
+              ("gk" . org-backward-heading-same-level)
+              ("gt" . org-todo)
+              ("ga" . org-archive-subtree)
+              ("M-l" . org-metaright)
+              ("M-h" . org-metaleft)
+              ("M-k" . org-metaup)
+              ("M-j" . org-metadown)
+              ("M-L" . org-shiftmetaright)
+              ("M-H" . org-shiftmetaleft)
+              ("M-K" . org-shiftmetaup)
+              ("M-J" . org-shiftmetadown))
   :init
   (setq org-list-allow-alphabetical t)
   :config
@@ -2512,12 +2575,13 @@ For the cold winters.
 #+begin_src emacs-lisp
 (use-package fireplace
   :config
-  (evil-define-key 'normal fireplace-mode-map
-    "q" 'fireplace-off
-    "Q" 'fireplace-off
-    "-" 'fireplace-down
-    "=" 'fireplace-up
-    "*" 'fireplace-toggle-smoke))
+  :evil-bind (:normal
+              fireplace-mode-map
+              ("q" . fireplace-off)
+              ("Q" . fireplace-off)
+              ("-" . fireplace-down)
+              ("=" . fireplace-up)
+              ("*" . fireplace-toggle-smoke)))
 #+end_src
 *** [[https://github.com/therockmandolinist/emacs-hacker-typer][hacker-typer]]
 #+begin_quote
@@ -2583,19 +2647,20 @@ A speed reading mode for Emacs.
 #+begin_src emacs-lisp
 (use-package xkcd
   :config
-  (evil-define-key 'normal xkcd-mode-map
-    "j" 'xkcd-next
-    "h" 'xkcd-prev
-    "k" 'xkcd-prev
-    "l" 'xkcd-next
-    "t" 'xkcd-alt-text
-    "q" 'xkcd-kill-buffer
-    "c" 'xkcd-copy-link
-    "g" 'xkcd-get
-    "r" 'xkcd-rand
-    "o" 'xkcd-open-browser
-    "e" 'xkcd-open-explanation-browser
-    "G" 'xkcd-get-latest))
+  :evil-bind (:normal
+              xkcd-mode-map
+              ("j" . xkcd-next)
+              ("h" . xkcd-prev)
+              ("k" . xkcd-prev)
+              ("l" . xkcd-next)
+              ("t" . xkcd-alt-text)
+              ("q" . xkcd-kill-buffer)
+              ("c" . xkcd-copy-link)
+              ("g" . xkcd-get)
+              ("r" . xkcd-rand)
+              ("o" . xkcd-open-browser)
+              ("e" . xkcd-open-explanation-browser)
+              ("G" . xkcd-get-latest)))
 #+end_src
 
 ** Appearance
@@ -2639,9 +2704,9 @@ A speed reading mode for Emacs.
 #+begin_quote
 Display battery in Emacs Mode line
 #+end_quote
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package fancy-battery
-  ;; Something something battery
+  :disabled t
   :defer 10
   :config
   (fancy-battery-mode)
@@ -2753,59 +2818,59 @@ I use this for reading, mostly.
   An Emacs web feeds client
 #+end_quote
 Configure the Elfeed RSS reader with an Orgmode file
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package elfeed
   :disabled t
   :if (not noninteractive)
+  :evil-bind (:normal
+              elfeed-search-mode-map
+              ("RET" . elfeed-search-show-entry)
+              ("+" . elfeed-search-tag-all)
+              ("-" . elfeed-search-untag-all)
+              ("G" . elfeed-search-fetch)
+              ("S" . elfeed-search-set-filter)
+              ("b" . elfeed-search-browse-url)
+              ("g" . elfeed-search-update--force)
+              ("q" . quit-window)
+              ("r" . elfeed-search-untag-all-unread)
+              ("s" . elfeed-search-live-filter)
+              ("u" . elfeed-search-tag-all-unread)
+              ("y" . elfeed-search-yank)
+              ("U" . elfeed-update)
+              :normal elfeed-show-mode-map
+              ("+" . elfeed-show-tag)
+              ("-" . elfeed-show-untag)
+              ("P" . elfeed-show-play-enclosure)
+              ("b" . elfeed-show-visit)
+              ("d" . elfeed-show-save-enclosure)
+              ("g" . elfeed-show-refresh)
+              ("l" . elfeed-goodies/split-show-next)
+              ("h" . elfeed-goodies/split-show-prev)
+              ("q" . elfeed-kill-buffer)
+              ("s" . elfeed-show-new-live-search)
+              ("y" . elfeed-show-yank))
   :config
-  (add-hook 'elfeed-search-mode-hook (lambda () (evil-smartparens-mode -1)))
-  (evil-define-key 'normal elfeed-search-mode-map
-    (kbd "RET") 'elfeed-search-show-entry
-    "+"         'elfeed-search-tag-all
-    "-"         'elfeed-search-untag-all
-    "G"         'elfeed-search-fetch
-    "S"         'elfeed-search-set-filter
-    "b"         'elfeed-search-browse-url
-    "g"         'elfeed-search-update--force
-    "q"         'quit-window
-    "r"         'elfeed-search-untag-all-unread
-    "s"         'elfeed-search-live-filter
-    "u"         'elfeed-search-tag-all-unread
-    "y"         'elfeed-search-yank
-    "U"         'elfeed-update)
-
-  (evil-define-key 'normal elfeed-show-mode-map
-    "+" 'elfeed-show-tag
-    "-" 'elfeed-show-untag
-    "P" 'elfeed-show-play-enclosure
-    "b" 'elfeed-show-visit
-    "d" 'elfeed-show-save-enclosure
-    "g" 'elfeed-show-refresh
-    "l" 'elfeed-goodies/split-show-next
-    "h" 'elfeed-goodies/split-show-prev
-    "q" 'elfeed-kill-buffer
-    "s" 'elfeed-show-new-live-search
-    "y" 'elfeed-show-yank))
-
+  (add-hook 'elfeed-search-mode-hook (lambda () (evil-smartparens-mode -1))))
 #+end_src
 **** [[https://github.com/remyhonig/elfeed-org][elfeed-org]]
 #+begin_quote
   Configure the Elfeed RSS reader with an Orgmode file
 #+end_quote
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package elfeed-org
+  :disabled t
   :after elfeed
   :if (not noninteractive)
   :config
   (elfeed-org))
-
 #+end_src
 **** [[https://github.com/algernon/elfeed-goodies][elfeed-goodies]]
 #+begin_quote
   Various goodies for Elfeed
 #+end_quote
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package elfeed-goodies
+  :disabled t
   :after elfeed
   :config
   (elfeed-goodies/setup)
@@ -2904,30 +2969,28 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 #+end_quote
 #+begin_src emacs-lisp
 (use-package paradox
-  :config
-  (setq paradox-execute-asynchronously t)
-  (evil-define-key 'normal paradox-menu-mode-map
-    "(" 'package-menu-toggle-hiding
-    "?" 'package-menu-describe-package
-    "F" 'package-menu-filter
-    "RET" 'paradox-push-button
-    "S*" 'paradox-sort-by-★
-    "Sp" 'paradox-sort-by-package
-    "Ss" 'paradox-sort-by-status
-    "TAB" 'forward-button
-    "U" 'package-menu-mark-upgrades
-    "d" 'package-menu-mark-delete
-    "f" 'hydra-paradox-filter/body
-    "i" 'package-menu-mark-install
-    "q" 'paradox-quit-and-close
-    "r" 'package-menu-refresh
-    "u" 'package-menu-mark-unmark
-    "vh" 'paradox-menu-visit-homepage
-    "vl" 'paradox-menu-view-commit-list
-    "x" 'paradox-menu-execute
-    "~" 'package-menu-mark-obsolete-for-deletion
-    (kbd "<backtab>") 'backward-button
-    ))
+  :evil-bind (:normal
+              paradox-menu-mode-map
+              ("(" . package-menu-toggle-hiding)
+              ("?" . package-menu-describe-package)
+              ("F" . package-menu-filter)
+              ("RET" . paradox-push-button)
+              ("S*" . paradox-sort-by-★)
+              ("Sp" . paradox-sort-by-package)
+              ("Ss" . paradox-sort-by-status)
+              ("TAB" . forward-button)
+              ("U" . package-menu-mark-upgrades)
+              ("d" . package-menu-mark-delete)
+              ("f" . hydra-paradox-filter/body)
+              ("i" . package-menu-mark-install)
+              ("q" . paradox-quit-and-close)
+              ("r" . package-menu-refresh)
+              ("u" . package-menu-mark-unmark)
+              ("vh" . paradox-menu-visit-homepage)
+              ("vl" . paradox-menu-view-commit-list)
+              ("x" . paradox-menu-execute)
+              ("~" . package-menu-mark-obsolete-for-deletion)
+              ([backtab] . backward-button))
 #+end_src
 *** [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store]]
 #+begin_src emacs-lisp
@@ -3137,8 +3200,9 @@ Syntax highlighting for matlab scripts.
 #+begin_quote
   Edit text area on Chrome with Emacs using Atomic Chrome
 #+end_quote
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package atomic-chrome
+  :disabled t
   :defer 10
   :config
   (unless atomic-chrome-server-atomic-chrome
@@ -3251,8 +3315,9 @@ Supposedly better than autocomplete.
 #+begin_quote
   Package to display keyboard macros or latest interactive commands as emacs lisp.
 #+end_quote
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package elmacro
+  :disabled t
   :defer 10
   :config
   (elmacro-mode))
@@ -3426,13 +3491,14 @@ Better parentheses coloring
 #+end_quote
 #+begin_src emacs-lisp
 (use-package slime
+  :evil-bind (:insert
+              slime-repl-mode-map
+              ([up] . slime-repl-previous-input)
+              ([down] . slime-repl-next-input))
   :config
   ;; (load (expand-file-name "~/quicklisp/slime-helper.el"))
   (setq inferior-lisp-program "/usr/local/bin/sbcl")
-  (setq slime-contribs '(slime-fancy slime-company))
-  (evil-define-key 'insert slime-repl-mode-map
-    (kbd "<up>") #'slime-repl-previous-input
-    (kbd "<down>") #'slime-repl-next-input))
+  (setq slime-contribs '(slime-fancy slime-company)))
 
 (use-package slime-company
   :after slime)
@@ -3574,7 +3640,7 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 #+begin_quote
   Export org-mode docs as HTML compatible with Twitter Bootstrap.
 #+end_quote
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package ox-twbs
   :after org)
 #+end_src
