@@ -51,6 +51,7 @@ follow my example there? Whatever.
    - [[#window][Window]]
    - [[#editing][Editing]]
    - [[#misc][Misc.]]
+ - [[#bindings][Bindings]]
  - [[#major-configs][Major configs]]
    - [[#no-littering][no-littering]]
    - [[#exec-path-from-shell][exec-path-from-shell]]
@@ -71,7 +72,6 @@ follow my example there? Whatever.
    - [[#org-mode-1][Org mode]]
    - [[#referencesearch][Reference/search]]
    - [[#shell-utilities][Shell utilities]]
- - [[#bindings][Bindings]]
  - [[#aliases][Aliases]]
  - [[#modes][Modes]]
    - [[#prog-mode][Prog-mode]]
@@ -853,6 +853,34 @@ Otherwise, executes `evil-ret'."
   (if full
       (find-file "~/Dropbox (MIT)/org/notes.org")
     (find-file-other-window "~/Dropbox (MIT)/org/notes.org")))
+#+end_src
+* Bindings
+I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard, so I like to
+also use these keys to quit out of the minibuffer. See more [[#bindings-1][here]].
+#+begin_src emacs-lisp
+(dolist (map (list minibuffer-local-map
+                   minibuffer-local-ns-map
+                   minibuffer-local-completion-map
+                   minibuffer-local-must-match-map
+                   minibuffer-local-isearch-map))
+  (dolist (key '([?\C-/] [?\C-_] [escape]))
+    (define-key map key #'minibuffer-keyboard-quit)))
+#+end_src
+A convenient full-screen binding I'm used to from iTerm.
+#+begin_src emacs-lisp
+(global-set-key (kbd "<s-return>") #'toggle-frame-fullscreen)
+#+end_src
+Make indent-rigidly more vimmy.
+#+begin_src emacs-lisp
+(bind-keys :map indent-rigidly-map
+           ("h" . indent-rigidly-left)
+           ("l" . indent-rigidly-right)
+           ("H" . indent-rigidly-left-to-tab-stop)
+           ("L" . indent-rigidly-right-to-tab-stop))
+#+end_src
+Remap fill-paragraph binding to ~diego/fill-or-unfill~, which toggles paragraph filling.
+#+begin_src emacs-lisp
+(global-set-key [remap fill-paragraph] #'diego/fill-or-unfill)
 #+end_src
 * Major configs
 These are packages that I consider /absolutely essential/ to my emacs workflow,
@@ -3790,34 +3818,6 @@ Non-interactively SEARCH-STRING is the string to search."
 I wanted a slightly better terminal in emacs. This seems to do the trick.
 #+begin_src emacs-lisp
 (use-package sane-term)
-#+end_src
-* Bindings
-I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard, so I like to
-also use these keys to quit out of the minibuffer. See more [[#bindings-1][here]].
-#+begin_src emacs-lisp
-(dolist (map (list minibuffer-local-map
-                   minibuffer-local-ns-map
-                   minibuffer-local-completion-map
-                   minibuffer-local-must-match-map
-                   minibuffer-local-isearch-map))
-  (dolist (key '([?\C-/] [?\C-_] [escape]))
-    (define-key map key #'minibuffer-keyboard-quit)))
-#+end_src
-A convenient full-screen binding I'm used to from iTerm.
-#+begin_src emacs-lisp
-(global-set-key (kbd "<s-return>") #'toggle-frame-fullscreen)
-#+end_src
-Make indent-rigidly more vimmy.
-#+begin_src emacs-lisp
-(bind-keys :map indent-rigidly-map
-           ("h" . indent-rigidly-left)
-           ("l" . indent-rigidly-right)
-           ("H" . indent-rigidly-left-to-tab-stop)
-           ("L" . indent-rigidly-right-to-tab-stop))
-#+end_src
-Remap fill-paragraph binding to ~diego/fill-or-unfill~, which toggles paragraph filling.
-#+begin_src emacs-lisp
-(global-set-key [remap fill-paragraph] #'diego/fill-or-unfill)
 #+end_src
 * Aliases
 #+begin_src emacs-lisp
