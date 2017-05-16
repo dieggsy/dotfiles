@@ -51,7 +51,6 @@ follow my example there? Whatever.
    - [[#window][Window]]
    - [[#editing][Editing]]
    - [[#misc][Misc.]]
- - [[#bindings][Bindings]]
  - [[#major-configs][Major configs]]
    - [[#no-littering][no-littering]]
    - [[#exec-path-from-shell][exec-path-from-shell]]
@@ -72,6 +71,7 @@ follow my example there? Whatever.
    - [[#org-mode-1][Org mode]]
    - [[#referencesearch][Reference/search]]
    - [[#shell-utilities][Shell utilities]]
+ - [[#bindings][Bindings]]
  - [[#aliases][Aliases]]
  - [[#modes][Modes]]
    - [[#prog-mode][Prog-mode]]
@@ -845,41 +845,6 @@ Otherwise, executes `evil-ret'."
   (if full
       (find-file "~/Dropbox (MIT)/org/notes.org")
     (find-file-other-window "~/Dropbox (MIT)/org/notes.org")))
-#+end_src
-* Bindings
-I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard, so I unbind
-these. See more [[#bindings-1][here]].
-#+begin_src emacs-lisp
-(with-eval-after-load 'undo-tree
-  (global-unset-key [?\C-/])
-  (global-unset-key [?\C-_])
-  (define-key undo-tree-map (kbd "C-/") nil)
-  (define-key undo-tree-map (kbd "C-_") nil))
-#+end_src
-Likewise, use these keys to quit out of the minibuffer.
-#+begin_src emacs-lisp
-(dolist (map (list minibuffer-local-map
-                   minibuffer-local-ns-map
-                   minibuffer-local-completion-map
-                   minibuffer-local-must-match-map
-                   minibuffer-local-isearch-map))
-  (dolist (key '([?\C-/] [?\C-_] [escape]))
-    (define-key map key #'minibuffer-keyboard-quit)))
-#+end_src
-A convenient full-screen binding I'm used to from iTerm.
-#+begin_src emacs-lisp
-(global-set-key (kbd "<s-return>") #'toggle-frame-fullscreen)
-#+end_src
-Make indent-rigidly more vimmy.
-#+begin_src emacs-lisp
-(define-key indent-rigidly-map "h" #'indent-rigidly-left)
-(define-key indent-rigidly-map "l" #'indent-rigidly-right)
-(define-key indent-rigidly-map "H" #'indent-rigidly-left-to-tab-stop)
-(define-key indent-rigidly-map "L" #'indent-rigidly-right-to-tab-stop)
-#+end_src
-Remap fill-paragraph binding to ~diego/fill-or-unfill~, which toggles paragraph filling.
-#+begin_src emacs-lisp
-(global-set-key [remap fill-paragraph] #'diego/fill-or-unfill)
 #+end_src
 * Major configs
 These are packages that I consider /absolutely essential/ to my emacs workflow,
@@ -1922,13 +1887,14 @@ so I went with it.
 (defun diego/setup-org-agenda ()
   "Function called with `org-agenda-mode-hook'."
   (setq org-habit-graph-column 50)
-  (define-key org-agenda-mode-map "j"          #'org-agenda-next-line)
-  (define-key org-agenda-mode-map "k"          #'org-agenda-previous-line)
-  (define-key org-agenda-mode-map "n"          #'org-agenda-next-date-line)
-  (define-key org-agenda-mode-map "p"          #'org-agenda-previous-date-line)
-  (define-key org-agenda-mode-map "c"          #'diego/org-agenda-capture)
-  (define-key org-agenda-mode-map "R"          #'org-revert-all-org-buffers)
-  (define-key org-agenda-mode-map (kbd "RET")  #'org-agenda-switch-to)
+  (bind-keys :map org-agenda-mode-map
+             ("j" . org-agenda-next-line)
+             ("k" . org-agenda-previous-line)
+             ("n" . org-agenda-next-date-line)
+             ("p" . org-agenda-previous-date-line)
+             ("c" . org-agenda-capture)
+             ("R" . org-revert-all-org-buffers)
+             ("RET" . org-agenda-switch-to))
 
   (setq-local prettify-symbols-alist
               '(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
@@ -2715,6 +2681,11 @@ I was looking for something with the nice look and simplicity of
   (spaceline-compile))
 #+end_src
 ** Misc utilities
+*** [[https://github.com/jwiegley/use-package/blob/master/bind-key.el][bind-key]]
+#+begin_src emacs-lisp
+(use-package bind-key
+  :ensure t)
+#+end_src
 *** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
 #+begin_quote
   Cursor stays vertically centered.
@@ -3758,6 +3729,34 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 #+begin_src emacs-lisp
 (use-package sane-term)
 #+end_src
+* Bindings
+I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard, so I like to
+also use these keys to quit out of the minibuffer. See more [[#bindings-1][here]].
+#+begin_src emacs-lisp
+(dolist (map (list minibuffer-local-map
+                   minibuffer-local-ns-map
+                   minibuffer-local-completion-map
+                   minibuffer-local-must-match-map
+                   minibuffer-local-isearch-map))
+  (dolist (key '([?\C-/] [?\C-_] [escape]))
+    (define-key map key #'minibuffer-keyboard-quit)))
+#+end_src
+A convenient full-screen binding I'm used to from iTerm.
+#+begin_src emacs-lisp
+(global-set-key (kbd "<s-return>") #'toggle-frame-fullscreen)
+#+end_src
+Make indent-rigidly more vimmy.
+#+begin_src emacs-lisp
+(bind-keys :map indent-rigidly-map
+           ("h" . indent-rigidly-left)
+           ("l" . indent-rigidly-right)
+           ("H" . indent-rigidly-left-to-tab-stop)
+           ("L" . indent-rigidly-right-to-tab-stop))
+#+end_src
+Remap fill-paragraph binding to ~diego/fill-or-unfill~, which toggles paragraph filling.
+#+begin_src emacs-lisp
+(global-set-key [remap fill-paragraph] #'diego/fill-or-unfill)
+#+end_src
 * Aliases
 #+begin_src emacs-lisp
 (defalias 'yes-or-no-p #'y-or-n-p) ; y or n is enough
@@ -3827,10 +3826,11 @@ Configuration that applies to all programming modes.
   "Custom `emacs-lisp-mode' configuration."
   (hs-minor-mode)
   (aggressive-indent-mode)
-  (local-set-key (kbd "C-c <up>") #'hs-hide-all)
-  (local-set-key (kbd "C-c <down>") #'hs-show-all)
-  (local-set-key (kbd "C-c <left>") #'hs-hide-block)
-  (local-set-key (kbd "C-c <right>") #'hs-show-block))
+  (bind-keys :map (current-local-map)
+             ("C-c <up>" . hs-hide-all)
+             ("C-c <down>" . hs-show-all)
+             ("C-c <left>" . hs-hide-block)
+             ("C-c <right>" . hs-show-block)))
 
 (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
   (diego/set-leader-keys-for-major-mode mode
