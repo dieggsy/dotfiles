@@ -365,6 +365,7 @@ Clean up whitespace before saving files.
 Use ssh by default and remember passwords for [[https://www.gnu.org/software/tramp/][tramp]].
 #+begin_src emacs-lisp
 (setq tramp-default-method "ssh"
+      tramp-verbose 2
       password-cache-expiry nil)
 #+end_src
 ** Dired
