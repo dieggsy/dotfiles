@@ -2552,9 +2552,11 @@ Like git, for emacs. But cooler.
   :if (not noninteractive))
 
 (use-package magithub
-  :after magit
   :disabled t
-  :if (not noninteractive))
+  :after magit
+  :config (magithub-feature-autoinject t)
+  (setq ghub-username "therockmandolinist"
+        ghub-token (password-store-get "tokens/github/master")))
 #+end_src
 
 * Packages
@@ -2991,6 +2993,9 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
               ("x" . paradox-menu-execute)
               ("~" . package-menu-mark-obsolete-for-deletion)
               ([backtab] . backward-button))
+  :config
+  (setq paradox-execute-asynchronously t
+        paradox-github-token (password-store-get "tokens/github/paradox")))
 #+end_src
 *** [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store]]
 #+begin_src emacs-lisp
@@ -3042,7 +3047,8 @@ Sorts ivy by most recently used, I think.
 #+begin_src emacs-lisp
 (use-package sunshine
   :config
-  (setq sunshine-location "02139,USA"))
+  (setq sunshine-location "02139,USA"
+        sunshine-appid (password-store-get "api/openweathermap")))
 #+end_src
 *** [[https://github.com/etu/webpaste.el][webpaste]]
 #+begin_src emacs-lisp
