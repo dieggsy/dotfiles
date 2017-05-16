@@ -1315,6 +1315,8 @@ based on or copied from spacemacs, so definitely check them out!
 #+begin_src emacs-lisp
 (use-package bind-map
   :after evil
+  :bind (:map universal-argument-map
+              ("SPC u" . universal-argument-more))
   :config
   (defvar diego-evil-leader-key "SPC"
     "Evil leader key.")
@@ -1484,12 +1486,20 @@ A really nice search/completion system for emacs.
               ivy-previous-history-element
               ivy-next-history-element
               ivy-immediate-done)
+  :bind (:map ivy-minibuffer-map
+              ([escape] . keyboard-escape-quit)
+              ("C-/" . keyboard-escape-quit)
+              ("RET" . ivy-alt-done)
+              ([S-return] . ivy-dispatching-done)
+              ([C-return] . ivy-immediate-done)
+              ("C-j" . ivy-next-line)
+              ("C-k" . ivy-previous-line)
+              ([S-up] . ivy-previous-history-element)
+              ([S-down] . ivy-next-history-element))
   :init
   (setq ivy-do-completion-in-region nil)
   :config
   (ivy-mode 1)
-  (define-key ivy-minibuffer-map [escape] #'keyboard-escape-quit)
-  (define-key ivy-minibuffer-map (kbd "C-/") #'keyboard-escape-quit)
 
   (setq ivy-re-builders-alist '((swiper . ivy--regex-plus)
                                 (t . ivy--regex-ignore-order)))
@@ -1527,16 +1537,7 @@ A really nice search/completion system for emacs.
           "\\`\\*Man"
           "\\`\\*Quail"
           "\\`\\*Paradox Report\\*"
-          "\\`\\*Backtrace\\*"))
-
-  ;; RET enters folder rather than opening dired
-  (define-key ivy-minibuffer-map (kbd "RET") #'ivy-alt-done)
-  (define-key ivy-minibuffer-map [S-return] #'ivy-dispatching-done)
-  (define-key ivy-minibuffer-map [C-return] #'ivy-immediate-done)
-  (define-key ivy-minibuffer-map (kbd "C-j") #'ivy-next-line)
-  (define-key ivy-minibuffer-map (kbd "C-k") #'ivy-previous-line)
-  (define-key ivy-minibuffer-map (kbd "<S-up>") #'ivy-previous-history-element)
-  (define-key ivy-minibuffer-map (kbd "<S-down>") #'ivy-next-history-element))
+          "\\`\\*Backtrace\\*")))
 
 (use-package ivy-hydra)
 #+end_src
@@ -2465,10 +2466,11 @@ Like git, for emacs. But cooler.
 #+begin_src emacs-lisp
 (use-package magit
   :if (not noninteractive)
+  :bind (:map magit-mode-map
+              ("SPC" . nil))
   :functions (magit-blame-quit)
   :defines (magit-diff-use-overlays)
   :config
-  (define-key magit-mode-map (kbd "SPC") nil)
   (setq magit-diff-use-overlays nil
         auto-revert-check-vc-info t
         git-commit-summary-max-length 50)
@@ -3176,6 +3178,9 @@ Freakin yasnippet. It's the best.
 Kind of makes undo's like git. Or Vim, apparently, if you're into that.
 #+begin_src emacs-lisp
 (use-package undo-tree
+  :bind (:map undo-tree-map
+              ("C-/" . nil)
+              ("C-_" . nil))
   :config
   (setq undo-tree-visualizer-timestamps t))
 #+end_src
@@ -3209,13 +3214,14 @@ Supposedly better than autocomplete.
 #+begin_src emacs-lisp
 (use-package company
   :defer 5
+  :bind (:map company-active-map
+              ([tab] . company-complete-common-or-cycle))
   :init
   (setq company-idle-delay 0.3
         company-minimum-prefix-length 1
         company-selection-wrap-around t
         company-dabbrev-char-regexp "\\sw\\|\\s_\\|[-_]")
   :config
-  (define-key company-active-map [tab] 'company-complete-common-or-cycle)
   (defun company-mode/backend-with-yas (backend)
     (if (and (listp backend) (member 'company-yasnippet backend))
         backend
