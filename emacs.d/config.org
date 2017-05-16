@@ -849,7 +849,8 @@ Otherwise, executes `evil-ret'."
 #+end_src
 * Major configs
 These are packages that I consider /absolutely essential/ to my emacs workflow,
-or that enhance emacs at a deeper level than any regular mode.
+or that enhance emacs at a deeper level than any regular mode. Or, I just had
+to load them before other things.
 ** [[https://github.com/tarsius/no-littering/][no-littering]]
 #+begin_quote
   Help keeping ~/.emacs.d clean
@@ -954,9 +955,6 @@ editing. So I went for it. Now I'll never go back.
   "Set custom evil bindings."
   (evil-define-key 'normal custom-mode-map
     "q" #'Custom-buffer-done)
-
-  (evil-define-key 'normal message-mode-map
-    "q" #'diego/switch-to-previous-buffer)
 
   (evil-add-hjkl-bindings occur-mode-map 'emacs
     (kbd "/")       'evil-search-forward
