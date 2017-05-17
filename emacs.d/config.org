@@ -821,6 +821,19 @@ Source: http://tinyurl.com/le6wxuo"
     (forward-sexp)
     (eval-last-sexp nil)))
 
+(defun eval-and-replace ()
+  "Replace the preceding sexp with its value.
+
+Source: http://tinyurl.com/mh5ev6x"
+  (interactive)
+  (forward-sexp)
+  (forward-char)
+  (backward-kill-sexp)
+  (condition-case nil
+      (prin1 (eval (read (current-kill 0)))
+             (current-buffer))
+    (error (message "Invalid expression")
+           (insert (current-kill 0)))))
 (defun diego/pop-to-org-todo (full)
   "Visit todo file, in other window or current one if `FULL' provided.
 
