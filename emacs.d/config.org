@@ -738,17 +738,6 @@ the right."
 
 *** Paragraph
 #+begin_src emacs-lisp
-(defun diego/fill-or-unfill ()
-  "Toggle paragraph filling.
-Like `fill-paragraph', but unfill if used twice."
-  (interactive)
-  (let ((fill-column
-         (if (eq last-command 'diego/fill-or-unfill)
-             (progn (setq this-command nil)
-                    (point-max))
-           fill-column)))
-    (call-interactively #'fill-paragraph)))
-
 (defun diego/paragraphize ()
 "Remove newlines from region, I think."
   (interactive)
@@ -877,10 +866,6 @@ Make indent-rigidly more vimmy.
            ("l" . indent-rigidly-right)
            ("H" . indent-rigidly-left-to-tab-stop)
            ("L" . indent-rigidly-right-to-tab-stop))
-#+end_src
-Remap fill-paragraph binding to ~diego/fill-or-unfill~, which toggles paragraph filling.
-#+begin_src emacs-lisp
-(global-set-key [remap fill-paragraph] #'diego/fill-or-unfill)
 #+end_src
 * Major configs
 These are packages that I consider /absolutely essential/ to my emacs workflow,
@@ -3227,6 +3212,10 @@ Syntax highlighting for matlab scripts.
   (unless atomic-chrome-server-atomic-chrome
     (atomic-chrome-start-server))
   (setq atomic-chrome-buffer-open-style 'frame))
+*** [[https://github.com/purcell/unfill][unfill]]
+#+begin_src emacs-lisp
+(use-package unfill
+  :bind (([remap fill-paragraph] . unfill-toggle)))
 #+end_src
 *** [[https://github.com/joaotavora/yasnippet][yasnippet]]
 #+begin_quote
