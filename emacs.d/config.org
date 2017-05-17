@@ -834,6 +834,21 @@ Source: http://tinyurl.com/mh5ev6x"
              (current-buffer))
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
+
+(defun diego/shorten-url-at-point ()
+  "Shorten the url at point using the TinyURL api.
+
+Source: http://tinyurl.com/l8z7vph"
+  (interactive)
+  (let* ((long-url (thing-at-point 'url))
+         (short-url (with-temp-buffer
+                      (mm-url-insert (concat "http://tinyurl.com/api-create.php?url="
+                                             (url-hexify-string long-url)))
+                      (buffer-string)))
+         (bounds (bounds-of-thing-at-point 'url)))
+    (kill-region (car bounds) (cdr bounds))
+    (insert short-url)))
+
 (defun diego/pop-to-org-todo (full)
   "Visit todo file, in other window or current one if `FULL' provided.
 
