@@ -507,7 +507,7 @@ Repeated invocations toggle between the two most recently open buffers."
   "Narrow to a region, if set, otherwise to an Org subtree, if present."
   (interactive)
   (if (and mark-active
-           (not (= (region-beginning) (region-end))))
+         (not (= (region-beginning) (region-end))))
       (narrow-and-set-normal)
     (if (derived-mode-p 'org-mode)
         (org-narrow-to-subtree))))
@@ -629,7 +629,7 @@ are interchanged."
     (transpose-words -1)))
 
 (defun diego/move-line-or-region (arg)
-"Move line down one one line.
+"Move line or region down one one line.
 With prefix arg ARG, effect is to take line at point and
 drag it down past ARG other lines (up if ARG negative)."
   (interactive "P")
@@ -642,7 +642,7 @@ drag it down past ARG other lines (up if ARG negative)."
     (diego/backward-move-line-or-region (- arg))))
 
 (defun diego/backward-move-line-or-region (arg)
-"Move line up one one line.
+"Move line or region up one one line.
 With prefix arg ARG, effect is to take line at point and
 drag it up past ARG other lines (down if ARG negative)."
   (interactive "P")
@@ -663,7 +663,9 @@ drag it up past ARG other lines (down if ARG negative)."
 
 If JUSTIFY-RIGHT is non nil justify to the right instead of the
 left. If AFTER is non-nil, add whitespace to the left instead of
-the right."
+the right.
+
+Source: http://tinyurl.com/l5vxsfr"
   (interactive "r\nsAlign regexp: ")
   (let* ((ws-regexp (if (string-empty-p regexp)
                         "\\(\\s-+\\)"
@@ -697,15 +699,17 @@ the right."
 (eval-when-compile
   (declare-function align-region "align"))
 (defun diego/align-repeat-decimal (start end)
-  "Align a table of numbers on decimal points and dollar signs (both optional)."
+  "Align a table of numbers on decimal points and dollar signs (both optional).
+
+Source: http://tinyurl.com/lzy5wg2"
   (interactive "r")
   (require 'align)
   (align-region start end nil
                 '((nil (regexp . "\\([\t ]*\\)\\$?\\([\t ]+[0-9]+\\)\\.?")
-                       (repeat . t)
-                       (group 1 2)
-                       (spacing 1 1)
-                       (justify nil t)))
+                     (repeat . t)
+                     (group 1 2)
+                     (spacing 1 1)
+                     (justify nil t)))
                 nil))
 
 
@@ -753,29 +757,13 @@ the right."
   (let ((sane-term-shell-command "ipython"))
     (sane-term-create)))
 
-(defun diego/class-notes ()
-  "Prompt for a class and create a lecture/recitation notes file.
-
-File matches format %Y-%m-%d_lecture.org and is created in class/notes subdirectory."
-  (interactive)
-  (let ((rec-or-lec
-         (ivy-completing-read "choose: "
-                              '("lecture" "recitation"))))
-    (ivy-read "class: " '("16.405"
-                          "16.83"
-                          "Paradox_and_Infinity")
-              :action (lambda (x)
-                        (find-file
-                         (concat "~/MIT 2017-2017/Spring/" x "/notes/"
-                                 (format-time-string "%Y-%m-%d_")
-                                 rec-or-lec ".org" )))
-              :caller 'diego/class-notes)))
-
 (eval-when-compile
   (defvar zone-programs))
 
 (defun diego/zone-choose ()
-  "Choose a PGM to run for `zone'."
+  "Choose a PGM to run for `zone'.
+
+Source: http://tinyurl.com/lo96nwc"
   (interactive)
   (require 'zone nil t)
   (let* ((pgm (completing-read
@@ -816,28 +804,35 @@ Otherwise, executes `evil-ret'."
         (t (evil-ret))))
 
 (defun eval-surrounding-sexp (levels)
-"Eval sexp around point, specifying depth with LEVELS."
+  "Eval sexp around point, specifying depth with LEVELS.
+
+Source: http://tinyurl.com/le6wxuo"
   (interactive "p")
   (save-excursion
     (up-list (abs levels))
     (eval-last-sexp nil)))
 
 (defun eval-next-sexp ()
-  "Eval next sexp (after point)."
+  "Eval next sexp (after point).
+
+Source: http://tinyurl.com/le6wxuo"
   (interactive)
   (save-excursion
     (forward-sexp)
     (eval-last-sexp nil)))
 
 (defun diego/pop-to-org-todo (full)
-  "Visit todo file, in other window or current one if `FULL' provided."
+  "Visit todo file, in other window or current one if `FULL' provided.
+
+Source: http://tinyurl.com/lvxzqn8"
   (interactive "P")
   (if full
       (find-file "~/Dropbox (MIT)/org/todo.org")
     (find-file-other-window "~/Dropbox (MIT)/org/todo.org")))
 
 (defun diego/pop-to-org-notes (full)
-  "Visit notes file in other window or current one if `FULL' provided."
+  "Visit notes file in other window or current one if `FULL' provided.
+Source: http://tinyurl.com/mtlq7ly"
   (interactive "P")
   (if full
       (find-file "~/Dropbox (MIT)/org/notes.org")
@@ -1121,12 +1116,10 @@ based on or copied from spacemacs, so definitely check them out!
     "Base keymap for all spacemacs leader key commands.")
 
   (bind-map diego-default-map
-    ;; :keys ("M-m")
     :evil-keys (diego-evil-leader-key)
     :evil-states (normal motion visual))
 
   (bind-map diego-default-map
-    ;; :keys ("M-m")
     :evil-keys (diego-alt-evil-leader-key)
     :evil-states (insert emacs))
 
@@ -1666,7 +1659,6 @@ A really nice search/completion system for emacs.
   (advice-add #'counsel--yank-pop-format-function
               :override
               #'diego/counsel-yank-pop-format-function)
-
   ;; (defun get-faces (pos)
   ;;   "Get the font faces at POS."
   ;;   (nth 0
@@ -2985,7 +2977,8 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
               ([backtab] . backward-button))
   :config
   (setq paradox-execute-asynchronously t
-        paradox-github-token (password-store-get "tokens/github/paradox")))
+        paradox-github-token (password-store-get "tokens/github/paradox")
+        paradox-automatically-star nil))
 #+end_src
 *** [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store]]
 #+begin_src emacs-lisp
@@ -3151,6 +3144,32 @@ Syntax highlighting for matlab scripts.
   (setq web-mode-markup-indent-offset 2))
 #+end_src
 ** Editing utilities
+*** [[https://github.com/alpha22jp/atomic-chrome][atomic-chrome]]
+#+begin_quote
+  Edit text area on Chrome with Emacs using Atomic Chrome
+#+end_quote
+#+begin_src emacs-lisp
+(use-package atomic-chrome
+  :defer 10
+  :config
+  (unless atomic-chrome-server-atomic-chrome
+    (atomic-chrome-start-server))
+  (setq atomic-chrome-buffer-open-style 'frame))
+#+end_src
+*** [[https://github.com/abo-abo/auto-yasnippet][auto-yasnippet]]
+#+begin_src emacs-lisp
+(use-package auto-yasnippet)
+#+end_src
+*** [[https://github.com/hlissner/evil-multiedit][evil-multiedit]]
+#+begin_quote
+  Multiple cursors for evil-mode, based on iedit
+#+end_quote
+#+begin_src emacs-lisp
+(use-package evil-multiedit
+  :if (not noninteractive)
+  :config
+  (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match))
+#+end_src
 *** [[https://github.com/Fuco1/smartparens][smartparens]]
 #+begin_quote
   Minor mode for Emacs that deals with parens pairs and tries to be smart about
@@ -3200,18 +3219,16 @@ Syntax highlighting for matlab scripts.
   :config
   (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
 #+end_src
-*** [[https://github.com/alpha22jp/atomic-chrome][atomic-chrome]]
-#+begin_quote
-  Edit text area on Chrome with Emacs using Atomic Chrome
-#+end_quote
+*** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
+Kind of makes undo's like git. Or Vim, apparently, if you're into that.
 #+begin_src emacs-lisp
-(use-package atomic-chrome
-  :disabled t
-  :defer 10
+(use-package undo-tree
+  :bind (:map undo-tree-map
+              ("C-/" . nil)
+              ("C-_" . nil))
   :config
-  (unless atomic-chrome-server-atomic-chrome
-    (atomic-chrome-start-server))
-  (setq atomic-chrome-buffer-open-style 'frame))
+  (setq undo-tree-visualizer-timestamps t))
+#+end_src
 *** [[https://github.com/purcell/unfill][unfill]]
 #+begin_src emacs-lisp
 (use-package unfill
@@ -3231,30 +3248,6 @@ Freakin yasnippet. It's the best.
 **** [[https://github.com/haskell/haskell-snippets][haskell-snippets]]
 #+begin_src emacs-lisp
 (use-package haskell-snippets)
-#+end_src
-*** [[https://github.com/abo-abo/auto-yasnippet][auto-yasnippet]]
-#+begin_src emacs-lisp
-(use-package auto-yasnippet)
-#+end_src
-*** [[https://github.com/hlissner/evil-multiedit][evil-multiedit]]
-#+begin_quote
-  Multiple cursors for evil-mode, based on iedit
-#+end_quote
-#+begin_src emacs-lisp
-(use-package evil-multiedit
-  :if (not noninteractive)
-  :config
-  (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match))
-#+end_src
-*** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
-Kind of makes undo's like git. Or Vim, apparently, if you're into that.
-#+begin_src emacs-lisp
-(use-package undo-tree
-  :bind (:map undo-tree-map
-              ("C-/" . nil)
-              ("C-_" . nil))
-  :config
-  (setq undo-tree-visualizer-timestamps t))
 #+end_src
 ** Programming utilites
 *** [[https://github.com/Malabarba/aggressive-indent-mode/][aggressive-indent]]
