@@ -3841,17 +3841,29 @@ Configuration that applies to all programming modes.
     '(("<=" . "≤")
       (">=" . "≥")
       ("!=" . "≠")
-      ("==" . "≈")
       ("is" . "≡")
+      ("=" . "←")
+      ("==" . "≣")
+      ("not" . "¬")
+      ("is not" . "≢")
       ("sum" . "∑")
       ("sqrt" . "√")
       ("pi" . "π")
       ("lambda" . "λ")
-      ("and" . 8743)
-      ("or" . 8744)
+      ("and" . "⋏")
+      ("or" . "⋎")
       ("self" . "↻")
       ("in" . "∈")
-      ("not in" . "∉")))
+      ("def" . "ƒ")
+      ("not in" . "∉")
+      ("return" . "→")
+      ("yield" . "⊢")
+      ("None" . "∅")
+      ("*" . "·")
+      ("inf" . "∞")
+      ("all" . "∀")
+      ("^" . "⊻")
+      ("**" . "^")))
   (setq-local prettify-symbols-alist
               diego/python-prettify-alist)
   (prettify-symbols-mode))
@@ -3876,15 +3888,35 @@ Configuration that applies to all programming modes.
              ("C-c <up>" . hs-hide-all)
              ("C-c <down>" . hs-show-all)
              ("C-c <left>" . hs-hide-block)
-             ("C-c <right>" . hs-show-block)))
+             ("C-c <right>" . hs-show-block))
+  (defvar diego/lisp-prettify-alist
+    '(("<=" . "≤")
+      (">=" . "≥")
+      ("/=" . "≠")
+      ("eq" . "≡")
+      ("equal" . "≣")
+      ("sqrt" . "√")
+      ("float-pi" . "π")
+      ("lambda" . "λ")
+      ("and" . "⋏")
+      ("or" . "⋎")
+      ("defun" . "ƒ")
+      ("defmacro" . (?ƒ (Br . Bl) ?ₘ))
+      ("not" . "¬")
+      ("nil" . "∅")))
+  (setq-local prettify-symbols-alist diego/lisp-prettify-alist)
+  (prettify-symbols-mode))
+
 
 (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
   (diego/set-leader-keys-for-major-mode mode
     "eb" 'eval-buffer
     "ef" 'eval-defun
     "er" 'eval-region
+    "eR" 'eval-and-replace
     "es" 'eval-surrounding-sexp
-    "el" 'eval-last-sexp))
+    "el" 'eval-last-sexp
+    "m"  'emacs-lisp-macroexpand))
 
 (dolist (hook '(emacs-lisp-mode-hook
                 lisp-interaction-mode-hook
