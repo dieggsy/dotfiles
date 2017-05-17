@@ -3451,6 +3451,13 @@ imenu on steroids.
 #+begin_src emacs-lisp :tangle no
 (use-package nlinum-relative)
 #+end_src
+*** [[https://github.com/Ilazki/prettify-utils.el][prettify-utils]]
+#+begin_src emacs-lisp
+(use-package prettify-utils
+  :quelpa (prettify-utils
+           :fetcher github
+           :repo "Ilazki/prettify-utils.el"))
+#+end_src
 *** [[https://github.com/proofit404/pyenv-mode][pyenv-mode]]
 #+begin_quote
   Integrate pyenv with python-mode.
