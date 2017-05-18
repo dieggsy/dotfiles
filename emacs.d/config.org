@@ -3048,6 +3048,17 @@ Sorts ivy by most recently used, I think.
   (setq webpaste-provider-priority '("gist.github.com"))
   (setq webpaste-open-in-browser t))
 #+end_src
+*** [[https://github.com/defunkt/gist.el][gist]]
+#+begin_src emacs-lisp
+(use-package gist
+  :config
+  (let ((gh-vals (cdar gh-profile-alist)))
+    (diego/repeat-calls setf 2
+      gh-vals (plist-put gh-vals
+                         :username "therockmandolinist")
+      gh-vals (plist-put gh-vals
+                         :token (password-store-get "tokens/github/gist")))))
+#+end_src
 ** Editing Major Modes
 *** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
 #+begin_quote
