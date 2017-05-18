@@ -582,7 +582,6 @@ Source: http://tinyurl.com/mtlq7ly"
          ;; byte-compile
          (byte-compile-file
           (expand-file-name  (locate-user-emacs-file "config.el"))))
-       ;; 'ignore
        `(lambda (result)
           (if result
               (message "SUCCESS: config.org successfully tangled. (%.3fs)"
@@ -1109,7 +1108,7 @@ set evil bindings in a more integrated way. Check out [[#org-mode][my org mode s
 (with-eval-after-load 'evil
   (eval-and-compile
 
-    (defun diego/get-plist-chunk (plist keyword)
+    (defun diego/plist-get-chunk (plist keyword)
       (let* ((exists (cl-position keyword plist))
              (start (when exists (1+ exists)))
              (end (cl-position-if #'keywordp plist :start start)))
@@ -1128,7 +1127,7 @@ set evil bindings in a more integrated way. Check out [[#org-mode][my org mode s
                                 only-keys)))
         `(progn
            ,@(cl-loop for state in valid-keys collect
-                      (let* ((plist-chunk (diego/get-plist-chunk plist state))
+                      (let* ((plist-chunk (diego/plist-get-chunk plist state))
                              (start (car plist-chunk ))
                              (end (cadr plist-chunk))
                              (bindings (nth 2 plist-chunk))
@@ -1786,7 +1785,8 @@ Source: http://tinyurl.com/k9j3bhg"
 
 (use-package counsel-projectile)
 
-(use-package counsel-osx-app)
+(use-package counsel-osx-app
+  :if (eq system-type 'darwin))
 #+end_src
 ** [[http://orgmode.org/][org-mode]]
 #+begin_quote
@@ -2765,7 +2765,9 @@ I use this for reading, mostly.
 #+begin_src emacs-lisp
 (use-package crux
   :defer 5
-  :commands (crux-with-region-or-line crux-with-region-or-buffer)
+  :commands (crux-with-region-or-line
+             crux-with-region-or-buffer
+             crux-switch-to-previous-buffer)
   :config
   (crux-with-region-or-line eval-region)
   (crux-with-region-or-buffer indent-region)
@@ -3582,11 +3584,8 @@ Pretty neat, though not entirely complete, IMO.
 #+begin_src emacs-lisp
 (use-package projectile
   :config
-  (setq projectile-globally-ignored-files
-        '("TAGS"
-          ".DS_Store"))
-  (setq projectile-ignored-projects
-        '("/usr/local"))
+  (setq projectile-globally-ignored-files '("TAGS" ".DS_Store")
+        projectile-ignored-projects '("/usr/local"))
   (projectile-mode))
 #+end_src
 *** [[https://github.com/ralesi/ranger.el][ranger]]
@@ -3753,9 +3752,9 @@ PREFIX determines quoting."
     (let* ((term (if (region-active-p)
                      (buffer-substring (region-beginning) (region-end))
                    (or (thing-at-point 'symbol)
-                       (thing-at-point 'word)
-                       (buffer-substring (line-beginning-position)
-                                         (line-end-position)))))
+                      (thing-at-point 'word)
+                      (buffer-substring (line-beginning-position)
+                                        (line-end-position)))))
            (term (read-string (concat "DuckDuckGo [" term "]: ") nil nil term)))
       term))
 
