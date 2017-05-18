@@ -1939,6 +1939,8 @@ fi
 :END:
 #+begin_src sh
 if [ "$1" = "iosevka" ]; then
+    [ ! -d "$HOME/.ghq/github.com/be5invis/iosevka/" ] && \
+        ghq get be5invis/iosevka
     cd ~/.ghq/github.com/be5invis/iosevka
     git pull
     make clean
@@ -1955,6 +1957,8 @@ if [ "$1" = "iosevka" ]; then
     fc-cache -f -v
     echo -e "\e[92mDone!\e[0m"
 elif [ "$1" = "emacs" ]; then
+    [ ! -d "$HOME/.ghq/git.savannah.gnu.org/emacs/"] && \
+        ghq get git://git.savannah.gnu.org/emacs.git
     cd ~/.ghq/git.savannah.gnu.org/emacs/
     git pull
     echo -e "\e[94mRunning autogen.sh...\e[0m"
@@ -1968,6 +1972,8 @@ elif [ "$1" = "emacs" ]; then
     sudo make install
     echo -e "\e[92mDone!\e[0m"
 elif [ "$1" = "sbcl" ]; then
+    [ ! -d "$HOME/.ghq/git.code.sf.net/p/sbcl/sbcl/" ] && \
+        ghq get ghq get git://git.code.sf.net/p/sbcl/sbcl
     cd ~/.ghq/git.code.sf.net/p/sbcl/sbcl/
     git pull
     echo -e "\e[94mMaking...\e[0m"
@@ -1975,6 +1981,8 @@ elif [ "$1" = "sbcl" ]; then
     echo -e "\e[94mInstalling...\e[0m"
     INSTALL_ROOT=/usr/local sudo ./install.sh && echo -e "\e[92mDone!\e[0m" || echo -e "\e[91mAborted.\e[0m"
 elif [ "$1" = "rofi" ]; then
+    [ ! -d "$HOME/.ghq/github.com/DaveDavenport/rofi/" ] && \
+        ghq get DaveDavenport/rofi
     cd ~/.ghq/github.com/DaveDavenport/rofi/
     git pull
     echo -e "\e[94mUpdating submodules...\e[0m"
@@ -1989,6 +1997,8 @@ elif [ "$1" = "rofi" ]; then
     echo -e "\e[94mInstalling...\e[0m"
     sudo make install
 elif [ "$1" = "i3" ] || [ "$1" = "i3-gaps" ]; then
+    [ ! -d "$HOME/.ghq/github.com/airblader/i3-gaps/" ] && \
+        ghq get airblader/i3-gaps
     cd ~/.ghq/github.com/airblader/i3-gaps/
     git pull
     echo -e  "\e[94mRunning autoreconf...\e[0m"
@@ -2002,6 +2012,8 @@ elif [ "$1" = "i3" ] || [ "$1" = "i3-gaps" ]; then
     echo -e  "\e[94mInstalling...\e[0m"
     sudo make install
 elif [ "$1" = "zsh" ]; then
+    [ ! -d "$HOME/.ghq/git.code.sf.net/p/zsh/code/" ] && \
+        ghq get git://git.code.sf.net/p/zsh/code
     cd ~/.ghq/git.code.sf.net/p/zsh/zsh/
     echo -e   "\e[94mRunning ./Util/preconfig...\e[0m"
     ./Util/preconfig
