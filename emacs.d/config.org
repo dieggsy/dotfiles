@@ -608,12 +608,16 @@ Source: http://tinyurl.com/mtlq7ly"
     (save-buffer)))
 
 (defun diego/copy-file ()
-  "Copy file to another location."
+  "Copy file to another location.
+
+Source: http://tinyurl.com/mqunewc"
   (interactive)
   (call-interactively #'write-file))
 
 (defun diego/safe-erase-buffer ()
-  "Prompt before erasing buffer."
+  "Prompt before erasing buffer.
+
+Source: http://tinyurl.com/msu4l2k"
   (interactive)
   (if (y-or-n-p (format "Erase content of buffer %s ? " (current-buffer)))
       (progn
@@ -664,7 +668,9 @@ Repeated invocations toggle between the two most recently open buffers."
 *** Narrowing
 #+begin_src emacs-lisp
 (defun narrow-and-set-normal ()
-  "Narrow to the region and, if in a visual mode, set normal mode."
+  "Narrow to the region and, if in a visual mode, set normal mode.
+
+Source: http://tinyurl.com/llzbxh7"
   (interactive)
   (narrow-to-region (region-beginning) (region-end))
   (if (string= evil-state "visual")
@@ -672,7 +678,9 @@ Repeated invocations toggle between the two most recently open buffers."
              (evil-goto-first-line))))
 
 (defun narrow-to-region-or-subtree ()
-  "Narrow to a region, if set, otherwise to an Org subtree, if present."
+  "Narrow to a region, if set, otherwise to an Org subtree, if present.
+
+Source: http://tinyurl.com/kdbewhk"
   (interactive)
   (if (and mark-active
          (not (= (region-beginning) (region-end))))
@@ -682,7 +690,9 @@ Repeated invocations toggle between the two most recently open buffers."
 
 (defun diego/narrow-dwim ()
   "Narrow to a thing or widen based on context.
-Attempts to follow the Do What I Mean philosophy."
+Attempts to follow the Do What I Mean philosophy.
+
+Source: http://tinyurl.com/m3k84u8"
   (interactive)
   (if (buffer-narrowed-p)
       (widen)
@@ -691,7 +701,9 @@ Attempts to follow the Do What I Mean philosophy."
 ** Window
 #+begin_src emacs-lisp
 (defun diego/toggle-window-split ()
-  "Switch between vertical and horizontal window split."
+  "Switch between vertical and horizontal window split.
+
+Source: http://tinyurl.com/k7s96fa"
   (interactive)
   (if (= (count-windows) 2)
       (let* ((this-win-buffer (window-buffer))
@@ -729,7 +741,9 @@ Attempts to follow the Do What I Mean philosophy."
   (other-window 1))
 
 (defun diego/move-splitter-left (arg)
-  "Move window splitter left."
+  "Move window splitter left.
+
+Source: http://tinyurl.com/lroxxrs"
   (interactive "p")
   (if (let ((windmove-wrap-around))
         (windmove-find-other-window 'right))
@@ -737,7 +751,9 @@ Attempts to follow the Do What I Mean philosophy."
     (enlarge-window-horizontally arg)))
 
 (defun diego/move-splitter-right (arg)
-  "Move window splitter right."
+  "Move window splitter right.
+
+Source: http://tinyurl.com/lvfpwx3"
   (interactive "p")
   (if (let ((windmove-wrap-around))
         (windmove-find-other-window 'right))
@@ -745,7 +761,9 @@ Attempts to follow the Do What I Mean philosophy."
     (shrink-window-horizontally arg)))
 
 (defun diego/move-splitter-up (arg)
-  "Move window splitter up."
+  "Move window splitter up.
+
+Source: http://tinyurl.com/m3xlm3o"
   (interactive "p")
   (if (let ((windmove-wrap-around))
         (windmove-find-other-window 'up))
@@ -753,7 +771,9 @@ Attempts to follow the Do What I Mean philosophy."
     (shrink-window arg)))
 
 (defun diego/move-splitter-down (arg)
-  "Move window splitter down."
+  "Move window splitter down.
+
+Source: http://tinyurl.com/koowarm"
   (interactive "p")
   (if (let ((windmove-wrap-around))
         (windmove-find-other-window 'up))
@@ -825,7 +845,6 @@ drag it up past ARG other lines (down if ARG negative)."
 #+end_src
 *** Align
 #+begin_src emacs-lisp
-;; Copy of spacemacs/align-repeat
 (defun diego/align-repeat (start end regexp &optional justify-right after)
   "Repeat alignment with respect to the given regular expression.
 
@@ -846,6 +865,9 @@ Source: http://tinyurl.com/l5vxsfr"
     (align-regexp start end complete-regexp group 1 t)))
 
 (defmacro diego|create-align-repeat-x (name regexp &optional justify-right default-after)
+  "Create an alignment function given name and alignment regexp.
+
+Source: http://tinyurl.com/kgrqr83"
   (let ((new-func (intern (concat "diego/align-repeat-" name))))
     `(defun ,new-func (start end switch)
        (interactive "r\nP")
@@ -1220,6 +1242,7 @@ pairs. For example,
    \"a\" 'command1
    \"C-c\" 'command2
    \"bb\" 'command3\)"
+Source: http://tinyurl.com/lxkjxq9"
     (declare (indent defun))
     (while key
       (define-key diego-default-map (kbd key) def)
@@ -1228,7 +1251,9 @@ pairs. For example,
   (defun diego//init-leader-mode-map (mode map &optional minor)
     "Check for MAP-prefix. If it doesn't exist yet, use `bind-map'
 to create it and bind it to `diego-major-mode-leader-key'.
-If MODE is a minor-mode, the third argument should be non nil."
+If MODE is a minor-mode, the third argument should be non nil.
+
+Source: http://tinyurl.com/kxf5oeh"
     (let* ((prefix (intern (format "%s-prefix" map)))
            (leader1 diego-major-mode-leader-key)
            (leader2 (concat diego-evil-leader-key " m"))
@@ -1258,7 +1283,9 @@ If MODE is a minor-mode, the third argument should be non nil."
 `diego-major-mode-emacs-leader-key' for the major-mode
 MODE. MODE should be a quoted symbol corresponding to a valid
 major mode. The rest of the arguments are treated exactly like
-they are in `diego/set-leader-keys'."
+they are in `diego/set-leader-keys'.
+
+Source: http://tinyurl.com/k7u2x8s"
     (declare (indent defun))
     (let* ((map (intern (format "diego-%s-map" mode))))
       (when (diego//init-leader-mode-map mode map)
@@ -1272,7 +1299,9 @@ they are in `diego/set-leader-keys'."
 `dotspacemacs-major-mode-emacs-leader-key' for the minor-mode
 MODE. MODE should be a quoted symbol corresponding to a valid
 minor mode. The rest of the arguments are treated exactly like
-they are in `spacemacs/set-leader-keys'."
+they are in `spacemacs/set-leader-keys'.
+
+Source: http://tinyurl.com/l3oenrf"
     (declare (indent defun))
     (let* ((map (intern (format "diego-%s-map" mode))))
       (when (diego//init-leader-mode-map mode map t)
@@ -1585,8 +1614,8 @@ they are in `spacemacs/set-leader-keys'."
               ("gc" . evilnc-comment-operator)
               ("gy" . evilnc-copy-and-comment-lines))
   :config
-  ;; Copy of spacemacs/comment-or-uncomment-lines-inverse
   (defun diego/comment-or-uncomment-lines-inverse (&optional arg)
+    "Source: http://tinyurl.com/kwjd3fp"
     (interactive "p")
     (let ((evilnc-invert-comment-line-by-line t))
       (evilnc-comment-or-uncomment-lines arg))))
@@ -1704,7 +1733,9 @@ A really nice search/completion system for emacs.
   (defalias 'locate #'counsel-locate)
 
   (defun diego/counsel-yank-pop-action (s)
-    "Make consistent with evil-paste-after."
+    "Make consistent with evil-paste-after.
+
+Source: http://tinyurl.com/kyjk8cf"
     (save-excursion
       (undo-boundary)
       (unless (eq (point) (point-max))
@@ -1720,7 +1751,9 @@ A really nice search/completion system for emacs.
               :override #'diego/counsel-yank-pop-action)
 
   (defun diego/counsel-yank-pop-format-function (cand-pairs)
-    "Make counsel-yank-pop look a little more like the rest of ivy."
+    "Make counsel-yank-pop look a little more like the rest of ivy.
+
+Source: http://tinyurl.com/k9j3bhg"
     (ivy--format-function-generic
      (lambda (str)
        (let ((temp-list (split-string (counsel--yank-pop-truncate str) "\n" t)))
@@ -2162,6 +2195,7 @@ so I went with it.
     This has the effect of automatically creating a properly indented list
     leader; like hyphen, asterisk, or plus sign; without having to use
     list-specific key maps."
+Source: http://tinyurl.com/lrfu2ww"
     (if (= (current-column) 0)
         (insert (concat " " char " "))
       (insert char)))
@@ -2185,6 +2219,7 @@ so I went with it.
   (defun diego/org-set-tags (tag)
     "Add TAG if it is not in the list of tags, remove it otherwise.
     TAG is chosen interactively from the global tags completion table."
+Source: http://tinyurl.com/l3zpzse"
     (interactive
      (list (let ((org-last-tags-completion-table
                   (if (derived-mode-p 'org-mode)
@@ -2469,7 +2504,9 @@ _S_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
   (defun diego/declare-prefix (prefix name &rest more)
     "Declare a prefix PREFIX. PREFIX is a string describing a key
 sequence. NAME is a string used as the prefix command.
-LONG-NAME if given is stored in `spacemacs/prefix-titles'."
+LONG-NAME if given is stored in `spacemacs/prefix-titles'.
+
+Source: http://tinyurl.com/l6feofx"
     (declare (indent defun))
     (while prefix
       (which-key-add-key-based-replacements
@@ -2480,7 +2517,8 @@ LONG-NAME if given is stored in `spacemacs/prefix-titles'."
   (defun diego/declare-prefix-for-major-mode (mode prefix name &rest more)
     "Declare a prefix PREFIX. PREFIX is a string describing a key
 sequence. NAME is a string used as the prefix command.
-LONG-NAME if given is stored in `spacemacs/prefix-titles'."
+
+Source-ish: http://tinyurl.com/lmzvfh3"
     (declare (indent defun))
     (while prefix
       (which-key-add-major-mode-key-based-replacements mode
@@ -2570,7 +2608,9 @@ Like git, for emacs. But cooler.
   (add-hook 'git-commit-mode-hook (lambda () (setq-local fill-column 72)))
 
   (defun magit-blame-toggle ()
-    "Toggle magit-blame-mode on and off interactively."
+    "Toggle magit-blame-mode on and off interactively.
+
+Source: http://tinyurl.com/lty44qa"
     (interactive)
     (if (and (boundp 'magit-blame-mode) magit-blame-mode)
         (magit-blame-quit)
@@ -2935,7 +2975,9 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
     (flyspell-auto-correct-word))
 
   (defun diego/flyspell-add-to-dictionary ()
-    "Add word at point to flyspell dictionary at `/Users/diego/.ispell_english'"
+    "Add word at point to flyspell dictionary at `/Users/diego/.ispell_english'.
+
+Source: http://tinyurl.com/k8g9sex"
     (interactive)
     (let ((current-location (point))
           (word (flyspell-get-word)))
@@ -3332,6 +3374,7 @@ Supposedly better than autocomplete.
         company-dabbrev-char-regexp "\\sw\\|\\s_\\|[-_]")
   :config
   (defun company-mode/backend-with-yas (backend)
+    "Source: http://tinyurl.com/n63vfhw"
     (if (and (listp backend) (member 'company-yasnippet backend))
         backend
       (append (if (consp backend) backend (list backend))
