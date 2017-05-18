@@ -2103,14 +2103,13 @@ so I went with it.
     (let ((newfunc (intern
                     (concat "diego/org-wrap-with-block-"
                             (replace-regexp-in-string " " "-" blocktype)))))
-      `(fset (quote ,newfunc)
-             (vconcat [?\{ ?i return ?# ?+ ?b ?e ?g ?i ?n ?_]
-                      (vconcat ,blocktype)
-                      [?\C-/ ?\} ?i return up ?# ?+ ?e ?n ?d ?_]
-                      (vconcat (car (split-string ,blocktype)))
-                      [?\C-/ ?\{ ?j]))))
-
-
+      `(defun ,newfunc ()
+         (interactive)
+         (backward-paragraph)
+         (insert (format "\n#+begin_%s" ,blocktype))
+         (forward-paragraph)
+         (insert (format "#+end_%s\n" (car (split-string ,blocktype))))
+         (backward-paragrap))))
 
 
   (diego/repeat-calls diego|create-block-wrap 1
