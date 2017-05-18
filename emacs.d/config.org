@@ -952,7 +952,8 @@ also use these keys to quit out of the minibuffer. See more [[#bindings-1][here]
 #+end_src
 A convenient full-screen binding I'm used to from iTerm.
 #+begin_src emacs-lisp
-(global-set-key (kbd "<s-return>") #'toggle-frame-fullscreen)
+(when (eq system-type 'darwin)
+  (global-set-key (kbd "<s-return>") #'toggle-frame-fullscreen))
 #+end_src
 Make indent-rigidly more vimmy.
 #+begin_src emacs-lisp
