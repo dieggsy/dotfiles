@@ -1988,6 +1988,31 @@ elif [ "$1" = "rofi" ]; then
     make
     echo -e "\e[94mInstalling...\e[0m"
     sudo make install
+elif [ "$1" = "i3" ] || [ "$1" = "i3-gaps" ]; then
+    cd ~/.ghq/github.com/airblader/i3-gaps/
+    git pull
+    echo -e  "\e[94mRunning autoreconf...\e[0m"
+    autoreconf --force --install
+    echo -e   "\e[94mRunning ../configure...\e[0m"
+    rm -rf build/
+    mkdir -p build && cd build/
+    ../configure --prefix=/usr --sysconfdir=/etc --disable-sanitizers
+    echo -e  "\e[94mMaking...\e[0m"
+    make
+    echo -e  "\e[94mInstalling...\e[0m"
+    sudo make install
+elif [ "$1" = "zsh" ]; then
+    cd ~/.ghq/git.code.sf.net/p/zsh/zsh/
+    echo -e   "\e[94mRunning ./Util/preconfig...\e[0m"
+    ./Util/preconfig
+    echo -e   "\e[94mRunning ./configure...\e[0m"
+    ./configure --prefix=/usr/local --enable-site-fndir=/usr/local/share/zsh/site-functions
+    echo -e  "\e[94mMaking...\e[0m"
+    make
+    make check
+    echo -e  "\e[94mInstalling...\e[0m"
+    sudo make install
+    sudo make install.info
 else
     echo -e "\e[91mInvalid argument.\e[0m"
 fi
