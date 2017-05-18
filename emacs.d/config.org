@@ -548,6 +548,14 @@ Source: http://tinyurl.com/mtlq7ly"
       (find-file "~/Dropbox (MIT)/org/notes.org")
     (find-file-other-window "~/Dropbox (MIT)/org/notes.org")))
 
+(defmacro diego/repeat-calls (name num-args &rest args)
+  (declare (indent defun))
+  (if (not (= (mod (length args) num-args) 0))
+      (error "diego/repeat-calls: Not enough arguments.")
+    `(progn
+       ,@(cl-loop while args collect
+                  `(,name ,@(cl-loop repeat num-args collect (pop args)))))))
+#+end_src
 ** Dotfile handling
 #+begin_src emacs-lisp
 (with-eval-after-load 'org
@@ -844,17 +852,18 @@ Source: http://tinyurl.com/l5vxsfr"
        (let ((after (not (eq (if switch t nil) (if ,default-after t nil)))))
          (diego/align-repeat start end ,regexp ,justify-right after)))))
 
-(diego|create-align-repeat-x "comma" "," nil t)
-(diego|create-align-repeat-x "semicolon" ";" nil t)
-(diego|create-align-repeat-x "colon" ":" nil t)
-(diego|create-align-repeat-x "equal" "=")
-(diego|create-align-repeat-x "math-oper" "[+\\-*/]")
-(diego|create-align-repeat-x "ampersand" "&")
-(diego|create-align-repeat-x "bar" "|")
-(diego|create-align-repeat-x "left-paren" "(")
-(diego|create-align-repeat-x "right-paren" ")" t)
-(diego|create-align-repeat-x "backslash" "\\\\")
-(diego|create-align-repeat-x "single-quote" "'")
+(diego/repeat-calls diego|create-align-repeat-x 4
+  "comma" "," nil t
+  "semicolon" ";" nil t
+  "colon" ":" nil t
+  "equal" "=" nil nil
+  "math-oper" "[+\\-*/]" nil nil
+  "ampersand" "&" nil nil
+  "bar" "|" nil nil
+  "left-paren" "(" nil nil
+  "right-paren" ")" t nil
+  "backslash" "\\\\" nil nil
+  "single-quote" "'" nil nil)
 
 (eval-when-compile
   (declare-function align-region "align"))
@@ -2091,10 +2100,6 @@ so I went with it.
                       (vconcat (car (split-string ,blocktype)))
                       [?\C-/ ?\{ ?j]))))
 
-  (diego|create-block-wrap "src")
-  (diego|create-block-wrap "src python")
-  (diego|create-block-wrap "src emacs-lisp")
-  (diego|create-block-wrap "export latex")
 
   (defun diego/org-set-category-property (value)
     "Set the category property of the current item to VALUE."
@@ -2130,6 +2135,12 @@ so I went with it.
     (interactive)
     (let ((org-overriding-default-time (org-get-cursor-date)))
       (org-capture nil "a")))
+  (diego/repeat-calls diego|create-block-wrap 1
+    "src"
+    "src python"
+    "src emacs-lisp"
+    "export latex")
+
 
   (defun diego/org-agenda-toggle-date (current-line)
     "Toggle `SCHEDULED' and `DEADLINE' tag in the capture buffer."
