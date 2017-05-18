@@ -637,12 +637,6 @@ Source: http://tinyurl.com/msu4l2k"
 #+end_src
 *** Switching
 #+begin_src emacs-lisp
-(defun diego/switch-to-previous-buffer ()
-  "Switch to previously open buffer.
-Repeated invocations toggle between the two most recently open buffers."
-  (interactive)
-  (switch-to-buffer (other-buffer (current-buffer) 1)))
-
 (defun diego/switch-to-scratch ()
   "Switch to scratch buffer."
   (interactive)
@@ -1424,7 +1418,7 @@ Source: http://tinyurl.com/l3oenrf"
 #+begin_src emacs-lisp
 (with-eval-after-load 'bind-map
   (diego/set-leader-keys
-    "TAB" 'diego/switch-to-previous-buffer
+    "TAB" 'crux-switch-to-previous-buffer
     "b*"  'diego/switch-to-star
     "bC"  'diego/switch-to-customize
     "bK"  'kill-buffer
