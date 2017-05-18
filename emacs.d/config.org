@@ -1958,23 +1958,23 @@ so I went with it.
           (0.0 . '(:foreground "#A89984"))))
 
   (setq org-todo-keywords
-        '((sequence "❯ TODO(t)" "○ IN-PROGRESS(p)" "￭ WAITING(w)" "|"
-                    "✓ DONE(d)" "✗ CANCELED(c)")
-          (sequence "❙ READ(r)" "|"
-                    "✓ DONE(h)")))
+        '((sequence "TODO(t)" "IN-PROGRESS(p)" "WAITING(w)" "|"
+                    "DONE(d)" "CANCELED(c)")
+          (sequence "READ(r)" "|"
+                    "DONE(h)")))
 
   (setq org-capture-templates
         '(("t" "Todo")
           ("ts" "Todo: School")
           ("tsU" "UROP" entry
            (file+olp diego/todo-file "School" "School" "UROP")
-           "* ❯ TODO %?\nDEADLINE: %^t")
+           "* TODO %?\nDEADLINE: %^t")
           ("ts6" "622" entry
            (file+olp diego/todo-file "School" "School" "622")
-           "* ❯ TODO %?\nDEADLINE: %^t")
+           "* TODO %?\nDEADLINE: %^t")
           ("te" "Todo: Emacs" entry
            (file+olp diego/todo-file "Emacs")
-           "* ❯ TODO %?")
+           "* TODO %?")
           ("n" "Note")
           ("g" "Google calendar" entry
            (file "~/Dropbox (MIT)/org/gcal.org") "* %?\n\n%^T"))))
