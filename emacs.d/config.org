@@ -101,7 +101,8 @@ Start server if not already running. You can do this with ~emacs --daemon~ or
 even automate it with ~brew services start emacs~ on macOS, but I usually just
 run Emacs on login anyway, so this suffices.
 
-See [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html#Emacs-Server][Using Emacs as a Server]].
+This makes startup time irrelevant. Start emacs once, connect with emacsclient
+every other time. See [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html#Emacs-Server][Using Emacs as a Server]].
 #+begin_src emacs-lisp
 (require 'server)
 (unless (server-running-p)
@@ -207,7 +208,7 @@ upgrading loaded packages (or something).
 (with-eval-after-load 'async-bytecomp
   (async-bytecomp-package-mode 1)
   ;; (setq async-bytecomp-allowed-packages 'all)
-)
+  )
 #+end_src
 * Defaults
 Some nice defaults. Does away with most uneccessary visuals, sets up smooth
@@ -365,7 +366,8 @@ Clean up whitespace before saving files.
 (add-hook 'before-save-hook #'whitespace-cleanup)
 #+end_src
 ** Tramp
-Use ssh by default and remember passwords for [[https://www.gnu.org/software/tramp/][tramp]].
+Use ssh by default and remember passwords for [[https://www.gnu.org/software/tramp/][tramp]]. Also make it quieter
+except for warnings and errors.
 #+begin_src emacs-lisp
 (setq tramp-default-method "ssh"
       tramp-verbose 2
@@ -463,7 +465,7 @@ Source: http://tinyurl.com/lo96nwc"
   (paradox-upgrade-packages))
 
 (defun diego/iterm-go-here ()
-"Go to `default-directory' in iTerm.
+  "Go to `default-directory' in iTerm.
 
 If `default-directory' is nil, go to home directory."
   (interactive)
@@ -706,9 +708,9 @@ Source: http://tinyurl.com/k7s96fa"
              (this-win-edges (window-edges (selected-window)))
              (next-win-edges (window-edges (next-window)))
              (this-win-2nd (not (and (<= (car this-win-edges)
-                                         (car next-win-edges))
-                                     (<= (cadr this-win-edges)
-                                         (cadr next-win-edges)))))
+                                    (car next-win-edges))
+                                 (<= (cadr this-win-edges)
+                                    (cadr next-win-edges)))))
              (splitter
               (if (= (car this-win-edges)
                      (car (window-edges (next-window))))
@@ -903,6 +905,7 @@ Source: http://tinyurl.com/lzy5wg2"
 *** Justify
 #+begin_src emacs-lisp
 (defmacro diego|justify (type &rest types)
+  "Create justification function(s), one per given TYPE."
   `(progn
      ,@(cl-loop
         while type collect
@@ -929,7 +932,7 @@ Source: http://tinyurl.com/lzy5wg2"
 *** Paragraph
 #+begin_src emacs-lisp
 (defun diego/paragraphize ()
-"Remove newlines from region, I think."
+"Remove newlines from region."
   (interactive)
   (if (region-active-p)
       (flush-lines "^$" (region-beginning) (region-end))
@@ -1237,10 +1240,11 @@ the bindings.
 For convenience, this function will accept additional KEY DEF
 pairs. For example,
 
-\(spacemacs/set-leader-keys
+\(diego/set-leader-keys
    \"a\" 'command1
    \"C-c\" 'command2
-   \"bb\" 'command3\)"
+   \"bb\" 'command3\)
+
 Source: http://tinyurl.com/lxkjxq9"
     (declare (indent defun))
     (while key
@@ -1261,20 +1265,20 @@ Source: http://tinyurl.com/kxf5oeh"
            (alt-leader2 (concat diego-alt-evil-leader-key " m"))
            (alt-leaders (delq nil (list alt-leader1 alt-leader2))))
       (or (boundp prefix)
-          (progn
-            (eval
-             `(bind-map ,map
-                :prefix-cmd ,prefix
-                ,(if minor :minor-modes :major-modes) (,mode)
-                :evil-keys ,leaders
-                :evil-states (normal motion visual)))
-            (eval
-             `(bind-map ,map
-                :prefix-cmd ,prefix
-                ,(if minor :minor-modes :major-modes) (,mode)
-                :evil-keys ,alt-leaders
-                :evil-states (insert emacs)))
-            (boundp prefix)))))
+         (progn
+           (eval
+            `(bind-map ,map
+               :prefix-cmd ,prefix
+               ,(if minor :minor-modes :major-modes) (,mode)
+               :evil-keys ,leaders
+               :evil-states (normal motion visual)))
+           (eval
+            `(bind-map ,map
+               :prefix-cmd ,prefix
+               ,(if minor :minor-modes :major-modes) (,mode)
+               :evil-keys ,alt-leaders
+               :evil-states (insert emacs)))
+           (boundp prefix)))))
 
   (defun diego/set-leader-keys-for-major-mode (mode key def &rest bindings)
     "Add KEY and DEF as key bindings under
@@ -1717,6 +1721,7 @@ A really nice search/completion system for emacs.
   :config
   (when (eq system-type 'darwin)
     (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind))
+
   (setq conusel-org-goto-display-style 'path
         counsel-org-goto-separator ": "
         counsel-org-goto-face-style 'org
@@ -1725,8 +1730,7 @@ A really nice search/completion system for emacs.
                                                 "\\|\\(.pyc$\\)")
         counsel-yank-pop-separator "
   ─────────────────────────
-"
-        )
+")
   (counsel-mode 1)
   (defalias 'ag #'counsel-ag)
   (defalias 'locate #'counsel-locate)
@@ -2185,13 +2189,15 @@ so I went with it.
         (if (search-forward "DEADLINE:" search-limit t)
             (replace-match "SCHEDULED:")
           (and (search-forward "SCHEDULED:" search-limit t)
-               (replace-match "DEADLINE:"))))))
+             (replace-match "DEADLINE:"))))))
 
   (defun diego/org-insert-list-leader-or-self (char)
     "If on column 0, insert space-padded CHAR; otherwise insert CHAR.
-    This has the effect of automatically creating a properly indented list
-    leader; like hyphen, asterisk, or plus sign; without having to use
-    list-specific key maps."
+
+This has the effect of automatically creating a properly indented list
+leader; like hyphen, asterisk, or plus sign; without having to use
+list-specific key maps.
+
 Source: http://tinyurl.com/lrfu2ww"
     (if (= (current-column) 0)
         (insert (concat " " char " "))
@@ -2215,14 +2221,16 @@ Source: http://tinyurl.com/lrfu2ww"
 
   (defun diego/org-set-tags (tag)
     "Add TAG if it is not in the list of tags, remove it otherwise.
-    TAG is chosen interactively from the global tags completion table."
+
+TAG is chosen interactively from the global tags completion table.
+
 Source: http://tinyurl.com/l3zpzse"
     (interactive
      (list (let ((org-last-tags-completion-table
                   (if (derived-mode-p 'org-mode)
                       (org-uniquify
                        (delq nil (append (org-get-buffer-tags)
-                                         (org-global-tags-completion-table))))
+                                       (org-global-tags-completion-table))))
                     (org-global-tags-completion-table))))
              (completing-read
               "Tag: " 'org-tags-completion-function nil nil nil
@@ -2241,7 +2249,7 @@ Source: http://tinyurl.com/l3zpzse"
     "Change the bullet type for org lists with a prompt."
     (interactive)
     (let ((char (read-char-choice
-                 "enter bullet type (-|*|+|1|2|a|b|A|B): "
+                 "Bullet type? (-|*|+|1|2|a|b|A|B): "
                  '(?* ?- ?+ ?1 ?2 ?a ?b ?A ?B))))
       (cond ((eq char ?1)
              (org-cycle-list-bullet 3))
@@ -3277,7 +3285,7 @@ Syntax highlighting for matlab scripts.
     (sp-local-pair modes "`" nil :actions nil))
 
   (defmacro diego|sp-wrap-with (char-name char &rest other)
-    "Make function for wrapping with character using `sp-wrap-with-pair'"
+    "Make function(s) for wrapping with character using `sp-wrap-with-pair'"
     (declare (indent defun))
     `(progn
        ,@(cl-loop while char-name collect
@@ -3288,8 +3296,7 @@ Syntax highlighting for matlab scripts.
                           char (pop other))
                     `(defun ,fname (&optional arg)
                        (interactive "P")
-                       (sp-wrap-with-pair ,current-char))
-                    ))))
+                       (sp-wrap-with-pair ,current-char))))))
 
   (diego|sp-wrap-with
     "paren" "("
