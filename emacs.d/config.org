@@ -1031,7 +1031,6 @@ editing. So I went for it. Now I'll never go back.
          ([escape] . keyboard-quit)
          :map evil-motion-state-map
          ("RET" . diego/ret))
-  :functions (evil-visual-line--mark-org-element-when-heading)
   :init
   (setq evil-want-C-u-scroll t
         evil-want-fine-undo t
@@ -1645,11 +1644,6 @@ A really nice search/completion system for emacs.
 *** ivy
 #+begin_src emacs-lisp
 (use-package ivy
-  :functions (ivy-alt-done
-              ivy-dispatching-done
-              ivy-previous-history-element
-              ivy-next-history-element
-              ivy-immediate-done)
   :bind (:map ivy-minibuffer-map
               ([escape] . keyboard-escape-quit)
               ("C-/" . keyboard-escape-quit)
@@ -1715,8 +1709,6 @@ A really nice search/completion system for emacs.
 (use-package counsel
   :bind (("M-x" . counsel-M-x)
          ("C-x C-f" . counsel-find-file))
-  :functions (ivy--format-function-generic
-              counsel--yank-pop-truncate)
   :commands counsel-describe-face
   :config
   (when (eq system-type 'darwin)
@@ -2345,25 +2337,7 @@ Source: http://tinyurl.com/l3zpzse"
 *** Setup
 #+begin_src emacs-lisp
 (use-package hydra
-  :defer 5
-  :functions (sp-wrap-with-pair
-              sp-rewrap-sexp
-              sp-unwrap-sexp
-              sp-forward-barf-sexp
-              sp-backward-barf-sexp
-              sp-forward-slurp-sexp
-              sp-backward-slurp-sexp
-              diego/flyspell-add-to-dictionary
-              diego/flyspell-correct-next
-              flyspell-auto-correct-previous-word
-              sp-local-pair
-              diego/sp-wrap-with-paren
-              diego/sp-wrap-with-bracket
-              diego/sp-wrap-with-curly
-              diego/sp-wrap-with-quote2
-              diego/sp-wrap-with-quote)
   :config)
-
 #+end_src
 *** Hydras
 **** window
@@ -2603,7 +2577,6 @@ Like git, for emacs. But cooler.
   :if (not noninteractive)
   :bind (:map magit-mode-map
               ("SPC" . nil))
-  :functions (magit-blame-quit)
   :defines (magit-diff-use-overlays)
   :config
   (setq magit-diff-use-overlays nil
@@ -2969,10 +2942,6 @@ Configure the Elfeed RSS reader with an Orgmode file
 Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted/flyspell-correct][d12frosted/flyspell-correct]]
 #+begin_src emacs-lisp
 (use-package flyspell
-  :functions (flyspell-goto-next-error
-              flyspell-get-word
-              flyspell-do-correct
-              flyspell-auto-correct-word)
   :config
   (defun diego/flyspell-correct-next ()
     (interactive "p")
@@ -3269,7 +3238,6 @@ Syntax highlighting for matlab scripts.
 #+begin_src emacs-lisp
 (use-package smartparens
   :defer 5
-  :functions (sp-local-pair)
   :config
   (require 'smartparens-config)
   (smartparens-global-mode)
@@ -3801,7 +3769,6 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package google-this
-  :functions (google-this--maybe-wrap-in-quotes)
   :commands ddg-this-search
   :config
   (defun ddg-this-parse-and-search-string (text prefix &optional search-url)
