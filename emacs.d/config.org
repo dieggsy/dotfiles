@@ -1702,6 +1702,8 @@ A really nice search/completion system for emacs.
   (setq conusel-org-goto-display-style 'path
         counsel-org-goto-separator ": "
         counsel-org-goto-face-style 'org
+        counsel-org-goto-display-tags t
+        counsel-org-goto-display-todo t
         counsel-find-file-ignore-regexp (concat "\\(\\`\\.\\)"
                                                 "\\|\\(\\.elc$\\)"
                                                 "\\|\\(.pyc$\\)")
