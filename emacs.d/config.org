@@ -76,15 +76,16 @@ follow my example there? Whatever.
    - [[#shell-utilities][Shell utilities]]
  - [[#aliases][Aliases]]
  - [[#modes][Modes]]
+   - [[#c-mode][C mode]]
+   - [[#calc-mode][Calc mode]]
+   - [[#conf][Conf]]
+   - [[#eshell][Eshell]]
+   - [[#help-mode][Help mode]]
+   - [[#lisp][Lisp]]
+   - [[#matlab][Matlab]]
    - [[#prog-mode][Prog-mode]]
    - [[#python][Python]]
-   - [[#matlab][Matlab]]
-   - [[#lisp][Lisp]]
    - [[#term-mode][Term mode]]
-   - [[#eshell][Eshell]]
-   - [[#calc-mode][Calc mode]]
-   - [[#c-mode][C mode]]
-   - [[#conf][Conf]]
  - [[#local-vars][Local vars!]]
 
 * Personal Info
@@ -3896,6 +3897,111 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 (defalias 'yes-or-no-p #'y-or-n-p)
 #+end_src
 * Modes
+** C mode
+#+begin_src emacs-lisp
+(defun diego/setup-c-mode ()
+  "Custom `c-mode' configuration."
+  (aggressive-indent-mode))
+(add-hook 'c-mode-hook #'diego/setup-c-mode)
+#+end_src
+** Calc mode
+*** Settings
+#+begin_src emacs-lisp
+(setq calc-multiplication-has-precedence nil)
+(defun diego/setup-calc-mode()
+  "Custom `calc-mode' configuration."
+  (local-set-key (kbd "x") (lambda () (interactive) (counsel-M-x "^calc-")))
+  (setq calc-symbolic-mode 1))
+
+(add-hook 'calc-mode-hook #'diego/setup-calc-mode)
+#+end_src
+*** Custom vars and funcs
+#+begin_src emacs-lisp
+(defvar var-G '(float 667408 -16)
+  "Universal gravitational constant.")
+
+(defvar var-c '299792458
+  "Speed of light in a vaccum.")
+#+end_src
+** Conf
+#+begin_src emacs-lisp
+(defun diego/setup-conf-mode ()
+  "Custom `conf-mode' configuration."
+  (highlight-numbers-mode)
+  (nlinum-relative-mode)
+  (rainbow-mode))
+
+(add-hook 'conf-mode-hook #'diego/setup-conf-mode)
+#+end_src
+** Eshell
+#+begin_src emacs-lisp
+(with-eval-after-load 'eshell
+  (defun eshell/clear ()
+    "Custom `eshell' clear function to clear to top."
+    (interactive)
+    (let ((inhibit-read-only t))
+      (erase-buffer))))
+#+end_src
+** Help mode
+#+begin_src emacs-lisp
+(add-hook 'help-mode-hook #'goto-address-mode)
+#+end_src
+** Lisp
+#+begin_src emacs-lisp
+(defvar diego/lisp-prettify-alist
+  (prettify-utils-generate
+   ("<=" "≤")
+   (">=" "≥")
+   ("/=" "≠")
+   ("eq" "≡")
+   ("equal" "≣")
+   ("sqrt" "√")
+   ("float-pi" "π")
+   ("lambda" "λ")
+   ("and" "⋏")
+   ("or" "⋎")
+   ("defun" "ƒ")
+   ("defmacro" "ƒₘ")
+   ("not" "¬")
+   ("nil" "∅")))
+
+(defun diego/setup-lisp-mode ()
+  "Custom `emacs-lisp-mode' configuration."
+  (hs-minor-mode)
+  (aggressive-indent-mode)
+  (bind-keys :map (current-local-map)
+             ("C-c <up>" . hs-hide-all)
+             ("C-c <down>" . hs-show-all)
+             ("C-c <left>" . hs-hide-block)
+             ("C-c <right>" . hs-show-block))
+
+  (setq-local prettify-symbols-alist diego/lisp-prettify-alist)
+  (prettify-symbols-mode))
+
+
+(dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
+  (diego/set-leader-keys-for-major-mode mode
+    "eb" 'eval-buffer
+    "ef" 'eval-defun
+    "er" 'eval-region
+    "eR" 'eval-and-replace
+    "es" 'eval-surrounding-sexp
+    "el" 'eval-last-sexp
+    "m"  'emacs-lisp-macroexpand))
+
+(dolist (hook '(emacs-lisp-mode-hook
+                lisp-interaction-mode-hook
+                lisp-mode-hook))
+  (add-hook hook #'diego/setup-lisp-mode))
+#+end_src
+** Matlab
+#+begin_src emacs-lisp
+(defun diego/setup-matlab-mode ()
+  "Custom `matlab-mode' configuration."
+  (diego/setup-prog-mode)
+  (highlight-numbers-mode 0))
+(add-hook 'matlab-mode-hook #'diego/setup-matlab-mode)
+#+end_src
 ** Prog-mode
 Configuration that applies to all programming modes.
 #+begin_src emacs-lisp
@@ -3919,6 +4025,34 @@ Configuration that applies to all programming modes.
 #+end_src
 ** Python
 #+begin_src emacs-lisp
+(defvar diego/python-prettify-alist
+  '(("<=" . "≤")
+    (">=" . "≥")
+    ("!=" . "≠")
+    ("is" . "≡")
+    ("=" . "←")
+    ("==" . "≣")
+    ("not" . "¬")
+    ("is not" . "≢")
+    ("sum" . "∑")
+    ("sqrt" . "√")
+    ("pi" . "π")
+    ("lambda" . "λ")
+    ("and" . "⋏")
+    ("or" . "⋎")
+    ("self" . "↻")
+    ("in" . "∈")
+    ("def" . "ƒ")
+    ("not in" . "∉")
+    ("return" . "→")
+    ("yield" . "⊢")
+    ("None" . "∅")
+    ("*" . "·")
+    ("inf" . "∞")
+    ("all" . "∀")
+    ("^" . "⊻")
+    ("**" . "^")))
+
 (defun diego/setup-python-mode ()
   "Custom `python-mode' configuration."
   (set (make-local-variable 'comment-inline-offset) 2)
@@ -3927,91 +4061,11 @@ Configuration that applies to all programming modes.
   (require 'company)
   (add-to-list 'company-backends
                (company-mode/backend-with-yas 'company-anaconda))
-  (defvar diego/python-prettify-alist
-    '(("<=" . "≤")
-      (">=" . "≥")
-      ("!=" . "≠")
-      ("is" . "≡")
-      ("=" . "←")
-      ("==" . "≣")
-      ("not" . "¬")
-      ("is not" . "≢")
-      ("sum" . "∑")
-      ("sqrt" . "√")
-      ("pi" . "π")
-      ("lambda" . "λ")
-      ("and" . "⋏")
-      ("or" . "⋎")
-      ("self" . "↻")
-      ("in" . "∈")
-      ("def" . "ƒ")
-      ("not in" . "∉")
-      ("return" . "→")
-      ("yield" . "⊢")
-      ("None" . "∅")
-      ("*" . "·")
-      ("inf" . "∞")
-      ("all" . "∀")
-      ("^" . "⊻")
-      ("**" . "^")))
   (setq-local prettify-symbols-alist
               diego/python-prettify-alist)
   (prettify-symbols-mode))
 
 (add-hook 'python-mode-hook #'diego/setup-python-mode)
-#+end_src
-** Matlab
-#+begin_src emacs-lisp
-(defun diego/setup-matlab-mode ()
-  "Custom `matlab-mode' configuration."
-  (diego/setup-prog-mode)
-  (highlight-numbers-mode 0))
-(add-hook 'matlab-mode-hook #'diego/setup-matlab-mode)
-#+end_src
-** Lisp
-#+begin_src emacs-lisp
-(defun diego/setup-lisp-mode ()
-  "Custom `emacs-lisp-mode' configuration."
-  (hs-minor-mode)
-  (aggressive-indent-mode)
-  (bind-keys :map (current-local-map)
-             ("C-c <up>" . hs-hide-all)
-             ("C-c <down>" . hs-show-all)
-             ("C-c <left>" . hs-hide-block)
-             ("C-c <right>" . hs-show-block))
-  (defvar diego/lisp-prettify-alist
-    '(("<=" . "≤")
-      (">=" . "≥")
-      ("/=" . "≠")
-      ("eq" . "≡")
-      ("equal" . "≣")
-      ("sqrt" . "√")
-      ("float-pi" . "π")
-      ("lambda" . "λ")
-      ("and" . "⋏")
-      ("or" . "⋎")
-      ("defun" . "ƒ")
-      ("defmacro" . (?ƒ (Br . Bl) ?ₘ))
-      ("not" . "¬")
-      ("nil" . "∅")))
-  (setq-local prettify-symbols-alist diego/lisp-prettify-alist)
-  (prettify-symbols-mode))
-
-
-(dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
-  (diego/set-leader-keys-for-major-mode mode
-    "eb" 'eval-buffer
-    "ef" 'eval-defun
-    "er" 'eval-region
-    "eR" 'eval-and-replace
-    "es" 'eval-surrounding-sexp
-    "el" 'eval-last-sexp
-    "m"  'emacs-lisp-macroexpand))
-
-(dolist (hook '(emacs-lisp-mode-hook
-                lisp-interaction-mode-hook
-                lisp-mode-hook))
-  (add-hook hook #'diego/setup-lisp-mode))
 #+end_src
 ** Term mode
 #+begin_src emacs-lisp
@@ -4020,51 +4074,6 @@ Configuration that applies to all programming modes.
   (setq-local yas-dont-activate-functions t)
   (local-set-key (kbd "<C-tab>") #'multi-term-next))
 (add-hook 'term-mode-hook #'diego/setup-term-mode)
-#+end_src
-** Eshell
-#+begin_src emacs-lisp
-(with-eval-after-load 'eshell
-  (defun eshell/clear ()
-    "Custom `eshell' clear function to clear to top."
-    (interactive)
-    (let ((inhibit-read-only t))
-      (erase-buffer))))
-#+end_src
-** Calc mode
-*** Settings
-#+begin_src emacs-lisp
-(setq calc-multiplication-has-precedence nil)
-(defun diego/setup-calc-mode()
-  "Custom `calc-mode' configuration."
-  (local-set-key (kbd "x") (lambda () (interactive) (counsel-M-x "^calc-")))
-  (setq calc-symbolic-mode 1))
-
-(add-hook 'calc-mode-hook #'diego/setup-calc-mode)
-#+end_src
-*** Custom vars and funcs
-#+begin_src emacs-lisp
-(defvar var-G '(float 667408 -16)
-  "Universal gravitational constant.")
-
-(defvar var-c '299792458
-  "Speed of light in a vaccum.")
-#+end_src
-** C mode
-#+begin_src emacs-lisp
-(defun diego/setup-c-mode ()
-  "Custom `c-mode' configuration."
-  (aggressive-indent-mode))
-(add-hook 'c-mode-hook #'diego/setup-c-mode)
-#+end_src
-** Conf
-#+begin_src emacs-lisp
-(defun diego/setup-conf-mode ()
-  "Custom `conf-mode' configuration."
-  (highlight-numbers-mode)
-  (nlinum-relative-mode)
-  (rainbow-mode))
-
-(add-hook 'conf-mode-hook #'diego/setup-conf-mode)
 #+end_src
 * Local vars!
 I'll probably remove that exclamation point at some point, but right now I'm
