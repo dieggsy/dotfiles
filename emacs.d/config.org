@@ -12,8 +12,9 @@ inspiration (and erm, code) for this is taken from them.
 *Note:* The usual way to do this is to call ~(org-babel-load-file "config.org")~,
 and I did that for a while, but for whatever reason I decided I wanted
 =config.el= (and its compiled verison) to be produced as I changed the file
-itself, hence the [[#local-vars][file local variables]]. Also, the optional ~COMPILE~ argument of
-~org-babel-load-file~ wasn't working for me, so there's that.
+itself, hence the [[#dotfile-handling][dotfile handling]] functions and [[#local-vars][file local variables]]. Also,
+the optional ~COMPILE~ argument of ~org-babel-load-file~ wasn't working for me, so
+there's that.
 :END:
 
 First off, let's set lexical binding, in accordance with the
@@ -48,6 +49,7 @@ follow my example there? Whatever.
    - [[#there-is-unrest-in-the-forest][There is unrest in the forest...]]
  - [[#functions][Functions]]
    - [[#misc][Misc.]]
+   - [[#dotfile-handling][Dotfile handling]]
    - [[#filesbuffers][Files/buffers]]
    - [[#window][Window]]
    - [[#editing][Editing]]
@@ -546,6 +548,46 @@ Source: http://tinyurl.com/mtlq7ly"
       (find-file "~/Dropbox (MIT)/org/notes.org")
     (find-file-other-window "~/Dropbox (MIT)/org/notes.org")))
 
+** Dotfile handling
+#+begin_src emacs-lisp
+(with-eval-after-load 'org
+  (defun diego/async-tangle-init ()
+    "Asynchronously tangle config.org and and byte-compile."
+    (interactive)
+    (let ((init-tangle-start-time (current-time)))
+      (async-start
+       (lambda ()
+         ;; make async emacs aware of packages (for byte-compilation)
+         (package-initialize)
+         (require 'org)
+
+         ;; tangle
+         (org-babel-tangle-file
+          (expand-file-name (locate-user-emacs-file "config.org")))
+
+         ;; byte-compile
+         (byte-compile-file
+          (expand-file-name  (locate-user-emacs-file "config.el"))))
+       ;; 'ignore
+       `(lambda (result)
+          (if result
+              (message "SUCCESS: config.org successfully tangled. (%.3fs)"
+                       (float-time (time-subtract (current-time)
+                                                  ',init-tangle-start-time)))
+            (message "ERROR: config.org tangle failed."))))))
+
+  (defun diego/async-babel-tangle ()
+    "Tangle file asynchronously"
+    (interactive)
+    (let ((file (buffer-file-name)))
+      (async-start
+       `(lambda ()
+          (require 'org)
+          (org-babel-tangle-file ,file))
+       (lambda (result)
+         (if result
+             (message "SUCCESS: successfully tangled file.")
+           (message "ERROR: tangle file failed.")))))))
 #+end_src
 ** Files/buffers
 *** File Manipulation
@@ -2171,44 +2213,6 @@ so I went with it.
             ((eq char ?B)
              (org-cycle-list-bullet 8))
             (t (org-cycle-list-bullet (char-to-string char))))))
-
-  (defun diego/async-babel-tangle ()
-    "Tangle file asynchronously"
-    (interactive)
-    (let ((file (buffer-file-name)))
-      (async-start
-       `(lambda ()
-          (require 'org)
-          (org-babel-tangle-file ,file))
-       (lambda (result)
-         (if result
-             (message "SUCCESS: successfully tangled file.")
-           (message "ERROR: tangle file failed."))))))
-
-  (defun diego/async-tangle-init ()
-    "Asynchronously tangle config.org and and byte-compile."
-    (interactive)
-    (let ((init-tangle-start-time (current-time)))
-      (async-start
-       (lambda ()
-         ;; make async emacs aware of packages (for byte-compilation)
-         (package-initialize)
-         (require 'org)
-
-         ;; tangle
-         (org-babel-tangle-file
-          (expand-file-name (locate-user-emacs-file "config.org")))
-
-         ;; byte-compile
-         (byte-compile-file
-          (expand-file-name  (locate-user-emacs-file "config.el"))))
-       ;; 'ignore
-       `(lambda (result)
-          (if result
-              (message "SUCCESS: config.org successfully tangled. (%.3fs)"
-                       (float-time (time-subtract (current-time)
-                                                  ',init-tangle-start-time)))
-            (message "ERROR: config.org tangle failed."))))))
 
   (defun diego/org-hugo-export ()
     "Export current subheading to markdown using pandoc."
