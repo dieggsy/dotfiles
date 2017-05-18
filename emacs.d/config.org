@@ -2077,12 +2077,7 @@ so I went with it.
   (setq org-habit-graph-column 50)
 
   (setq-local prettify-symbols-alist
-              '(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
-                ("❙ READ"        . (?❙ (Br . Bl) ?❙ (Br . Bl) ?❙))
-                ("○ IN-PROGRESS" . (?○ (Br . Bl) ?○ (Br . Bl) ?○))
-                ("￭ WAITING"     . (?￭ (Br . Bl) ?￭ (Br . Bl) ?￭))
-                ("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
-                ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
+              diego/org-prettify-alist)
 
   (prettify-symbols-mode))
 #+end_src
@@ -2096,6 +2091,15 @@ so I went with it.
 #+end_src
 *** Org config
 #+begin_src emacs-lisp
+(defvar diego/org-prettify-alist
+  (prettify-utils-generate
+   ("TODO" "❯❯❯")
+   ("READ" "❙❙❙")
+   ("IN-PROGRESS" "○○○")
+   ("WAITING" "￭￭￭")
+   ("CANCELED" "✗✗✗")
+   ("DONE" "✓✓✓")))
+
 (defun diego/setup-org-mode ()
   "Fuction called with `org-mode-hook'."
   (require 'ox-md)
@@ -2104,13 +2108,7 @@ so I went with it.
       `(lambda ()
          (interactive)
          (diego/org-insert-list-leader-or-self ,char))))
-  (setq-local prettify-symbols-alist
-              '(("❯ TODO"        . (?❯ (Br . Bl) ?❯ (Br . Bl) ?❯))
-                ("❙ READ"        . (?❙ (Br . Bl) ?❙ (Br . Bl) ?❙))
-                ("○ IN-PROGRESS" . (?○ (Br . Bl) ?○ (Br . Bl) ?○))
-                ("￭ WAITING"     . (?￭ (Br . Bl) ?￭ (Br . Bl) ?￭))
-                ("✗ CANCELED"    . (?✗ (Br . Bl) ?✗ (Br . Bl) ?✗))
-                ("✓ DONE"        . (?✓ (Br . Bl) ?✓ (Br . Bl) ?✓))))
+  (setq-local prettify-symbols-alist diego/org-prettify-alist)
   (prettify-symbols-mode)
   (org-bullets-mode 1)
   (setq org-bullets-bullet-list '("•"))
