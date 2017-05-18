@@ -1103,9 +1103,13 @@ editing. So I went for it. Now I'll never go back.
     (kbd "N")       'evil-search-previous
     (kbd "C-d")     'evil-scroll-down
     (kbd "C-u")     'evil-scroll-up
-    (kbd "C-w C-w") 'other-window)
-
-  (evil-ex-define-cmd "dtw" 'delete-trailing-whitespace))
+    (kbd "C-w C-w") 'other-window))
+#+end_src
+**** Evil-ex commands
+#+begin_src emacs-lisp
+(with-eval-after-load 'evil
+  (evil-ex-define-cmd "dtw" #'delete-trailing-whitespace)
+  (evil-ex-define-cmd "buffers" #'ibuffer))
 #+end_src
 **** Use-package binding helper
 This adds an ~:evil-bind~ keyword to use-package declarations, so I can niftily
