@@ -47,10 +47,10 @@ follow my example there? Whatever.
    - [[#linux-browser][Linux browser]]
    - [[#there-is-unrest-in-the-forest][There is unrest in the forest...]]
  - [[#functions][Functions]]
+   - [[#misc][Misc.]]
    - [[#filesbuffers][Files/buffers]]
    - [[#window][Window]]
    - [[#editing][Editing]]
-   - [[#misc][Misc.]]
  - [[#bindings][Bindings]]
  - [[#major-configs][Major configs]]
    - [[#no-littering][no-littering]]
@@ -429,6 +429,124 @@ And the Oaks ignore their pleas
 Stolen and original functions and macros. Should be explained well enough in
 the docstrings. /Should/ be.
 
+** Misc.
+#+begin_src emacs-lisp
+(defun diego/ipython-shell ()
+  "Open an ipython shell using multi-term, respecting virtualenv."
+  (interactive)
+  (let ((sane-term-shell-command "ipython"))
+    (sane-term-create)))
+
+(eval-when-compile
+  (defvar zone-programs))
+
+(defun diego/zone-choose ()
+  "Choose a PGM to run for `zone'.
+
+Source: http://tinyurl.com/lo96nwc"
+  (interactive)
+  (require 'zone nil t)
+  (let* ((pgm (completing-read
+               "Program: "
+               (mapcar #'symbol-name zone-programs)))
+         (zone-programs (list (intern pgm))))
+    (redisplay)
+    (zone)))
+
+(defun updates ()
+  "Run `paradox-upgrade-packages' and  `quelpa-upgrade'."
+  (interactive)
+  (quelpa-upgrade)
+  (paradox-upgrade-packages))
+
+(defun diego/iterm-go-here ()
+"Go to `default-directory' in iTerm.
+
+If `default-directory' is nil, go to home directory."
+  (interactive)
+  (call-process-shell-command
+   (concat  "tmux select-window -t hud:shell && "
+            (format "tmux send-keys -t hud:shell 'cd %s' enter && "
+                    (shell-quote-argument (or default-directory "~")))
+            "open -a iTerm") nil 0))
+
+(defun diego/ret ()
+  "Dwim return key binding.
+
+If url at point, opens url with `goto-address-at-point'.
+If in `org-mode', calls `org-open-at-point'.
+Otherwise, executes `evil-ret'."
+  (interactive)
+  (cond ((thing-at-point 'url) (goto-address-at-point))
+        ((eq major-mode 'org-mode)
+         (unless (ignore-errors (or (org-open-at-point) t))
+           (evil-ret)))
+        (t (evil-ret))))
+
+(defun eval-surrounding-sexp (levels)
+  "Eval sexp around point, specifying depth with LEVELS.
+
+Source: http://tinyurl.com/le6wxuo"
+  (interactive "p")
+  (save-excursion
+    (up-list (abs levels))
+    (eval-last-sexp nil)))
+
+(defun eval-next-sexp ()
+  "Eval next sexp (after point).
+
+Source: http://tinyurl.com/le6wxuo"
+  (interactive)
+  (save-excursion
+    (forward-sexp)
+    (eval-last-sexp nil)))
+
+(defun eval-and-replace ()
+  "Replace the preceding sexp with its value.
+
+Source: http://tinyurl.com/mh5ev6x"
+  (interactive)
+  (forward-sexp)
+  (forward-char)
+  (backward-kill-sexp)
+  (condition-case nil
+      (prin1 (eval (read (current-kill 0)))
+             (current-buffer))
+    (error (message "Invalid expression")
+           (insert (current-kill 0)))))
+
+(defun diego/shorten-url-at-point ()
+  "Shorten the url at point using the TinyURL api.
+
+Source: http://tinyurl.com/l8z7vph"
+  (interactive)
+  (let* ((long-url (thing-at-point 'url))
+         (short-url (with-temp-buffer
+                      (mm-url-insert (concat "http://tinyurl.com/api-create.php?url="
+                                             (url-hexify-string long-url)))
+                      (buffer-string)))
+         (bounds (bounds-of-thing-at-point 'url)))
+    (kill-region (car bounds) (cdr bounds))
+    (insert short-url)))
+
+(defun diego/pop-to-org-todo (full)
+  "Visit todo file, in other window or current one if `FULL' provided.
+
+Source: http://tinyurl.com/lvxzqn8"
+  (interactive "P")
+  (if full
+      (find-file "~/Dropbox (MIT)/org/todo.org")
+    (find-file-other-window "~/Dropbox (MIT)/org/todo.org")))
+
+(defun diego/pop-to-org-notes (full)
+  "Visit notes file in other window or current one if `FULL' provided.
+Source: http://tinyurl.com/mtlq7ly"
+  (interactive "P")
+  (if full
+      (find-file "~/Dropbox (MIT)/org/notes.org")
+    (find-file-other-window "~/Dropbox (MIT)/org/notes.org")))
+
+#+end_src
 ** Files/buffers
 *** File Manipulation
 #+begin_src emacs-lisp
@@ -748,123 +866,6 @@ Source: http://tinyurl.com/lzy5wg2"
   (if (region-active-p)
       (flush-lines "^$" (region-beginning) (region-end))
     (message "No region active.")))
-#+end_src
-** Misc.
-#+begin_src emacs-lisp
-(defun diego/ipython-shell ()
-  "Open an ipython shell using multi-term, respecting virtualenv."
-  (interactive)
-  (let ((sane-term-shell-command "ipython"))
-    (sane-term-create)))
-
-(eval-when-compile
-  (defvar zone-programs))
-
-(defun diego/zone-choose ()
-  "Choose a PGM to run for `zone'.
-
-Source: http://tinyurl.com/lo96nwc"
-  (interactive)
-  (require 'zone nil t)
-  (let* ((pgm (completing-read
-               "Program: "
-               (mapcar #'symbol-name zone-programs)))
-         (zone-programs (list (intern pgm))))
-    (redisplay)
-    (zone)))
-
-(defun updates ()
-  "Run `paradox-upgrade-packages' and  `quelpa-upgrade'."
-  (interactive)
-  (quelpa-upgrade)
-  (paradox-upgrade-packages))
-
-(defun diego/iterm-go-here ()
-"Go to `default-directory' in iTerm.
-
-If `default-directory' is nil, go to home directory."
-  (interactive)
-  (call-process-shell-command
-   (concat  "tmux select-window -t hud:shell && "
-            (format "tmux send-keys -t hud:shell 'cd %s' enter && "
-                    (shell-quote-argument (or default-directory "~")))
-            "open -a iTerm") nil 0))
-
-(defun diego/ret ()
-  "Dwim return key binding.
-
-If url at point, opens url with `goto-address-at-point'.
-If in `org-mode', calls `org-open-at-point'.
-Otherwise, executes `evil-ret'."
-  (interactive)
-  (cond ((thing-at-point 'url) (goto-address-at-point))
-        ((eq major-mode 'org-mode)
-         (unless (ignore-errors (or (org-open-at-point) t))
-           (evil-ret)))
-        (t (evil-ret))))
-
-(defun eval-surrounding-sexp (levels)
-  "Eval sexp around point, specifying depth with LEVELS.
-
-Source: http://tinyurl.com/le6wxuo"
-  (interactive "p")
-  (save-excursion
-    (up-list (abs levels))
-    (eval-last-sexp nil)))
-
-(defun eval-next-sexp ()
-  "Eval next sexp (after point).
-
-Source: http://tinyurl.com/le6wxuo"
-  (interactive)
-  (save-excursion
-    (forward-sexp)
-    (eval-last-sexp nil)))
-
-(defun eval-and-replace ()
-  "Replace the preceding sexp with its value.
-
-Source: http://tinyurl.com/mh5ev6x"
-  (interactive)
-  (forward-sexp)
-  (forward-char)
-  (backward-kill-sexp)
-  (condition-case nil
-      (prin1 (eval (read (current-kill 0)))
-             (current-buffer))
-    (error (message "Invalid expression")
-           (insert (current-kill 0)))))
-
-(defun diego/shorten-url-at-point ()
-  "Shorten the url at point using the TinyURL api.
-
-Source: http://tinyurl.com/l8z7vph"
-  (interactive)
-  (let* ((long-url (thing-at-point 'url))
-         (short-url (with-temp-buffer
-                      (mm-url-insert (concat "http://tinyurl.com/api-create.php?url="
-                                             (url-hexify-string long-url)))
-                      (buffer-string)))
-         (bounds (bounds-of-thing-at-point 'url)))
-    (kill-region (car bounds) (cdr bounds))
-    (insert short-url)))
-
-(defun diego/pop-to-org-todo (full)
-  "Visit todo file, in other window or current one if `FULL' provided.
-
-Source: http://tinyurl.com/lvxzqn8"
-  (interactive "P")
-  (if full
-      (find-file "~/Dropbox (MIT)/org/todo.org")
-    (find-file-other-window "~/Dropbox (MIT)/org/todo.org")))
-
-(defun diego/pop-to-org-notes (full)
-  "Visit notes file in other window or current one if `FULL' provided.
-Source: http://tinyurl.com/mtlq7ly"
-  (interactive "P")
-  (if full
-      (find-file "~/Dropbox (MIT)/org/notes.org")
-    (find-file-other-window "~/Dropbox (MIT)/org/notes.org")))
 #+end_src
 * Bindings
 I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard, so I like to
