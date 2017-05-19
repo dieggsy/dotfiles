@@ -75,7 +75,7 @@ follow my example there? Whatever.
   - [[#referencesearch][Reference/search]]
   - [[#shell-utilities][Shell utilities]]
 - [[#aliases][Aliases]]
-- [[#modes][Modes]]
+- [[#mode-configs][Mode configs]]
   - [[#c-mode][C mode]]
   - [[#calc-mode][Calc mode]]
   - [[#conf][Conf]]
@@ -406,9 +406,12 @@ Use tab for completion and cycling candidates (relevant for the minibuffer?).
       tab-always-indent 'complete)
 #+end_src
 ** Line position/highlighting
-Show the column number in the modeline, because I'm not a savage.
+Show the column number in the modeline, because I'm not a savage. Also, only
+scroll the current line horizontally (as opposed to the whole buffer) to see the
+rest of a truncated line.
 #+begin_src emacs-lisp
-(setq column-number-mode t)
+(setq column-number-mode t
+      auto-hscroll-mode 'current-line)
 #+end_src
 ** Linux browser
 Something about this one time Emacs on Linux didn't recognize my default
@@ -3852,7 +3855,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 #+begin_src emacs-lisp
 (defalias 'yes-or-no-p #'y-or-n-p)
 #+end_src
-* Modes
+* Mode configs
 ** C mode
 #+begin_src emacs-lisp
 (defun diego/setup-c-mode ()
