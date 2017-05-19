@@ -1,4 +1,3 @@
-# -*- org-src-fontify-natively: nil -*-
 #+TITLE: Emacs Init File!
 #+PROPERTY: header-args :results silent :comments link :tangle ~/dotfiles/emacs.d/config.el
 
@@ -1550,13 +1549,13 @@ also use these keys to quit out of the minibuffer. See more [[#bindings-1][here]
     "r"   'repeat
     "u"   'universal-argument))
 #+end_src
-* Help                                                     :search:reference:
+* Help
 ** Defaults
 #+begin_src emacs-lisp
 (add-hook 'help-mode-hook #'goto-address-mode)
 #+end_src
 ** Packages
-*** [[https://github.com/abo-abo/define-word][define-word]]
+*** [[https://github.com/abo-abo/define-word][define-word]]        :search:
 #+begin_quote
   Display the definition of word at point in Emacs
 #+end_quote
@@ -1576,7 +1575,7 @@ also use these keys to quit out of the minibuffer. See more [[#bindings-1][here]
                  (thing-at-point 'word))))
       (define-word word))))
 #+end_src
-*** [[https://github.com/xuchunyang/devdocs.el][devdocs]]
+*** [[https://github.com/xuchunyang/devdocs.el][devdocs]]          :search:
 #+begin_quote
   Emacs package allowing you to easily search the DevDocs documentation
 #+end_quote
@@ -1584,7 +1583,7 @@ also use these keys to quit out of the minibuffer. See more [[#bindings-1][here]
 (use-package devdocs
   :leader-bind ("hdd"  . devdocs-search))
 #+end_src
-*** [[https://github.com/Malabarba/emacs-google-this][emacs-google-this]]
+*** [[https://github.com/Malabarba/emacs-google-this][emacs-google-this]] :search:
 #+begin_quote
   A set of emacs functions and bindings to google under point.
 #+end_quote
@@ -1686,7 +1685,7 @@ Leader bindings
     "hs"  'system-name
     "hv"  'version))
 #+end_src
-* Files and Buffers                                  :dired:project:bookmark:
+* Files and Buffers
 ** Defaults
 If a frame is already open, use it to open files.
 #+begin_src emacs-lisp
@@ -1767,7 +1766,7 @@ Which means it's less likely to block up emacs. Or something.
       (deer-jump-other-window))))
 #+end_src
 
-*** [[https://github.com/bbatsov/projectile][projectile]]
+*** [[https://github.com/bbatsov/projectile][projectile]]         :project:
 #+begin_quote
   Project Interaction Library for Emacs
 #+end_quote
@@ -1783,7 +1782,7 @@ Which means it's less likely to block up emacs. Or something.
   (projectile-mode))
 #+end_src
 
-*** [[https://github.com/ericdanan/counsel-projectile][counsel-projectile]]
+*** [[https://github.com/ericdanan/counsel-projectile][counsel-projectile]] :project:
 #+begin_src emacs-lisp
 (use-package counsel-projectile
   :commands diego/project-find-file
@@ -1800,7 +1799,7 @@ Which means it's less likely to block up emacs. Or something.
       (error (counsel-projectile-find-file)))))
 #+end_src
 
-*** [[https://github.com/abo-abo/headlong][headlong]]
+*** [[https://github.com/abo-abo/headlong][headlong]]            :bookmark:
 #+begin_src emacs-lisp
 (use-package headlong
   :leader-bind (("fB" . headlong-bookmark-jump-other)
@@ -2416,9 +2415,9 @@ Leader keys
 
     "im"  'insert-kbd-macro))
 #+end_src
-* Navigation                                                    :nav:windows:
+* Navigation
 ** Packages
-*** [[https://github.com/abo-abo/ace-window][ace-window]]
+*** [[https://github.com/abo-abo/ace-window][ace-window]]          :window:
 #+begin_quote
   Quickly switch windows in Emacs
 #+end_quote
@@ -2492,7 +2491,7 @@ imenu on steroids.
 (use-package imenu-anywhere)
 #+end_src
 
-** Functions
+** Functions                                                        :window:
 #+begin_src emacs-lisp
 (defun diego/toggle-window-split ()
   "Switch between vertical and horizontal window split.
@@ -2574,7 +2573,7 @@ Source: http://tinyurl.com/koowarm"
       (shrink-window arg)
     (enlarge-window arg)))
 #+end_src
-** Hydras
+** Hydras                                                           :window:
 #+begin_src emacs-lisp
 (with-eval-after-load 'hydra
   (defhydra hydra-splitter ()
@@ -3230,7 +3229,7 @@ Source: http://tinyurl.com/lty44qa"
       (call-interactively 'magit-blame)))
 #+end_src
 
-* Appearance                                           :theme:modeline:color:
+* Appearance
 ** Defaults
 *** Startup
 Get right to your files or the scratch buffer. No B.S.
@@ -3332,7 +3331,7 @@ Use a bar cursor in the minibuffer.
 #+begin_src emacs-lisp
 (use-package focus)
 #+end_src
-*** [[http://git.savannah.gnu.org/cgit/emacs/elpa.git/tree/packages/rainbow-mode/rainbow-mode.el][rainbow-mode]]
+*** [[http://git.savannah.gnu.org/cgit/emacs/elpa.git/tree/packages/rainbow-mode/rainbow-mode.el][rainbow-mode]]                                                    :color:
 #+begin_quote
   Colorize color names in buffers
 #+end_quote
@@ -3342,7 +3341,7 @@ Use a bar cursor in the minibuffer.
   (setq rainbow-x-colors-major-mode-list '(c-mode c++-mode java-mode))
   (add-hook 'help-mode-hook #'rainbow-mode))
 #+end_src
-*** [[https://github.com/therockmandolinist/emacs-theme-darktooth][darktooth-theme]]
+*** [[https://github.com/therockmandolinist/emacs-theme-darktooth][darktooth-theme]]                                                 :theme:
 #+begin_quote
   An Emacs 24 theme remixed from gruvbox
 #+end_quote
@@ -3354,7 +3353,7 @@ Use a bar cursor in the minibuffer.
            :fetcher github
            :repo "therockmandolinist/emacs-theme-darktooth"))
 #+end_src
-*** [[https://github.com/hlissner/emacs-doom-theme][doom-theme]]
+*** [[https://github.com/hlissner/emacs-doom-theme][doom-theme]]                                                      :theme:
 #+begin_src emacs-lisp
 (use-package doom-themes
   :disabled t
@@ -3381,7 +3380,7 @@ Display battery in Emacs Mode line
   (setq fancy-battery-show-percentage t)
   (fancy-battery-update))
 #+end_src
-*** [[https://github.com/TheBB/spaceline][spaceline]]
+*** [[https://github.com/TheBB/spaceline][spaceline]]                                                    :modeline:
 #+begin_quote
   Powerline theme from Spacemacs
 #+end_quote
@@ -3438,7 +3437,7 @@ I was looking for something with the nice look and simplicity of
   (add-hook 'company-completion-cancelled-hook 'company-maybe-turn-on-fci))
 #+end_src
 
-*** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers]]
+*** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers]]                                               :color:
 #+begin_quote
   Emacs minor mode to highlight each source code identifier uniquely based on its name
 #+end_quote
@@ -3446,7 +3445,7 @@ I was looking for something with the nice look and simplicity of
 (use-package color-identifiers-mode)
 #+end_src
 
-*** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]
+*** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]                                               :color:
 #+begin_quote
   Highlight numbers in source code
 #+end_quote
@@ -3463,7 +3462,7 @@ Neat-o
 (use-package highlight-parentheses)
 #+end_src
 
-*** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
+*** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]                                              :color:
 Better parentheses coloring
 #+begin_src emacs-lisp
 (use-package rainbow-delimiters)
