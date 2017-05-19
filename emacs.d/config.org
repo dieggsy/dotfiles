@@ -1017,8 +1017,9 @@ so I went with it.
 
     "ed" 'org-export-dispatch
     "eh" 'diego/org-hugo-export
-    "es" 'eval-surrounding-sexp
+    "es" 'diego/eval-surrounding-sexp
     "er" 'eval-region
+    "eb" 'diego/eval-buffer
 
     "b"  'org-babel-tangle
     "xb" (diego|org-emphasize diego/org-bold ?*)
@@ -3216,7 +3217,7 @@ Pretty neat, though not entirely complete, IMO.
 #+end_src
 *** Functions
 #+begin_src emacs-lisp
-(defun eval-surrounding-sexp (levels)
+(defun diego/eval-surrounding-sexp (levels)
   "Eval sexp around point, specifying depth with LEVELS.
 
 Source: http://tinyurl.com/le6wxuo"
@@ -3225,7 +3226,7 @@ Source: http://tinyurl.com/le6wxuo"
     (up-list (abs levels))
     (eval-last-sexp nil)))
 
-(defun eval-next-sexp ()
+(defun diego/eval-next-sexp ()
   "Eval next sexp (after point).
 
 Source: http://tinyurl.com/le6wxuo"
@@ -3234,7 +3235,7 @@ Source: http://tinyurl.com/le6wxuo"
     (forward-sexp)
     (eval-last-sexp nil)))
 
-(defun eval-and-replace ()
+(defun diego/eval-and-replace ()
   "Replace the preceding sexp with its value.
 
 Source: http://tinyurl.com/mh5ev6x"
@@ -3247,16 +3248,21 @@ Source: http://tinyurl.com/mh5ev6x"
              (current-buffer))
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
+
+(defun diego/eval-buffer ()
+  (if (eq major-mode 'org-mode)
+      (org-babel-execute-src-block)
+    (eval-buffer)))
 #+end_src
 *** Bindings
 #+begin_src emacs-lisp
 (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
   (diego/set-leader-keys-for-major-mode mode
-    "eb" 'eval-buffer
+    "eb" 'diego/eval-buffer
     "ef" 'eval-defun
     "er" 'eval-region
-    "eR" 'eval-and-replace
-    "es" 'eval-surrounding-sexp
+    "eR" 'diego/eval-and-replace
+    "es" 'diego/eval-surrounding-sexp
     "el" 'eval-last-sexp
     "m"  'emacs-lisp-macroexpand))
 #+end_src
