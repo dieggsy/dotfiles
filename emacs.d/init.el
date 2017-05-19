@@ -141,7 +141,8 @@
        (rainbow-mode 1)))))
  '(safe-local-variable-values
    (quote
-    ((org-src-fontify-natively)
+    ((org-tags-match-list-sublevels)
+     (org-src-fontify-natively)
      (org-log-done)
      (rainbow-mode . t)
      (aggressive-indent-mode)

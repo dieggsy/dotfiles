@@ -1,4 +1,3 @@
-# -*- org-src-fontify-natively: nil -*-
 #+TITLE: rc.org
 #+PROPERTY: header-args :comments link :mkdirp yes :results silent
 
@@ -2416,5 +2415,6 @@ Tangles the files asynchronously on save.
 # Local Variables:
 # after-save-hook: (git-gutter diego/async-babel-tangle)
 # org-pretty-entities: nil
+# org-src-fontify-natively: nil
 # End:
 #+end_example

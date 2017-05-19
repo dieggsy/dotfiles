@@ -4001,5 +4001,7 @@ For org config.org
 #+begin_example
 # Local Variables:
 # after-save-hook: (git-gutter diego/async-tangle-init)
+# org-src-fontify-natively: nil
+# org-tags-match-list-sublevels: nil
 # End:
 #+end_example
