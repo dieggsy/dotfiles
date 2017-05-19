@@ -1,4 +1,5 @@
-# -*- org-src-fontify-natively: nil -*- #+TITLE: Emacs Init File!
+# -*- org-src-fontify-natively: nil -*-
+#+TITLE: Emacs Init File!
 #+PROPERTY: header-args :results silent :comments link :tangle ~/dotfiles/emacs.d/config.el
 
 * Intro
@@ -30,18 +31,17 @@ follow my example there? Whatever.
 - [[#initial-setup][Initial Setup]]
 - [[#package-management][Package management]]
 - [[#core][Core]]
-- [[#emacs][Emacs]]
-- [[#help-and-reference][Help and reference]]
+- [[#help][Help]]
 - [[#files-and-buffers][Files and Buffers]]
-- [[#appearance][Appearance]]
 - [[#editing][Editing]]
 - [[#navigation][Navigation]]
-- [[#mode-config][Mode config]]
+- [[#modes][Modes]]
 - [[#git-and-github][Git and github]]
+- [[#appearance][Appearance]]
 - [[#enhancements][Enhancements]]
 - [[#fun][Fun]]
+- [[#web][Web?]]
 - [[#local-vars][Local vars!]]
-- [[#packages][Packages]]
 
 * Initial Setup
 ** Personal Info
@@ -207,11 +207,6 @@ rest of a truncated line.
 #+begin_src emacs-lisp
 (setq column-number-mode t
       auto-hscroll-mode 'current-line)
-#+end_src
-Dear god I hate tabs. Also, four spaces is a good indentation default.
-#+begin_src emacs-lisp
-(setq-default indent-tabs-mode nil
-              tab-width 4)
 #+end_src
 Use tab for completion and cycling candidates (relevant for the minibuffer?).
 #+begin_src emacs-lisp
@@ -379,6 +374,18 @@ editing. So I went for it. Now I'll never go back.
         evil-search-module 'evil-search
         evil-lookup-func (lambda () (man (thing-at-point 'word))))
   :config
+  (setq evil-insert-state-cursor '(bar . 1)
+        evil-emacs-state-cursor '(bar . 1)
+        evil-normal-state-tag  " NORMAL "
+        evil-insert-state-tag  " INSERT "
+        evil-motion-state-tag  " MOTION "
+        evil-visual-state-tag  " VISUAL "
+        evil-emacs-state-tag   " EMACS "
+        evil-replace-state-tag " REPLACE ")
+
+  (evil-ex-define-cmd "dtw" #'delete-trailing-whitespace)
+  (evil-ex-define-cmd "buffers" #'ibuffer)
+
   (evil-mode 1))
 #+end_src
 **** Modes
@@ -406,39 +413,6 @@ editing. So I went for it. Now I'll never go back.
     (add-to-list 'evil-insert-state-modes mode))
 
   (add-to-list 'evil-buffer-regexps '("\\*Flycheck")))
-#+end_src
-**** Appearance
-#+begin_src emacs-lisp
-(with-eval-after-load 'evil
-  (setq evil-insert-state-cursor '(bar . 1)
-        evil-emacs-state-cursor '(bar . 1)
-        evil-normal-state-tag  " NORMAL "
-        evil-insert-state-tag  " INSERT "
-        evil-motion-state-tag  " MOTION "
-        evil-visual-state-tag  " VISUAL "
-        evil-emacs-state-tag   " EMACS "
-        evil-replace-state-tag " REPLACE "))
-#+end_src
-**** Bindings
-#+begin_src emacs-lisp
-;; Global bindings.
-(with-eval-after-load 'evil
-  (evil-define-key 'normal custom-mode-map
-    "q" #'Custom-buffer-done)
-
-  (evil-add-hjkl-bindings occur-mode-map 'emacs
-    (kbd "/")       'evil-search-forward
-    (kbd "n")       'evil-search-next
-    (kbd "N")       'evil-search-previous
-    (kbd "C-d")     'evil-scroll-down
-    (kbd "C-u")     'evil-scroll-up
-    (kbd "C-w C-w") 'other-window))
-#+end_src
-**** Evil-ex commands
-#+begin_src emacs-lisp
-(with-eval-after-load 'evil
-  (evil-ex-define-cmd "dtw" #'delete-trailing-whitespace)
-  (evil-ex-define-cmd "buffers" #'ibuffer))
 #+end_src
 **** Use-package binding helper
 This adds an ~:evil-bind~ keyword to use-package declarations, so I can niftily
@@ -528,7 +502,11 @@ based on or copied from spacemacs, so definitely check them out!
   :after evil
   :bind (:map universal-argument-map
               ("SPC u" . universal-argument-more))
-  :config
+  :config)
+#+end_src
+**** Leader wrapper
+#+begin_src emacs-lisp
+(with-eval-after-load 'bind-map
   (defvar diego-evil-leader-key "SPC"
     "Evil leader key.")
 
@@ -636,31 +614,6 @@ Source: http://tinyurl.com/l3oenrf"
         (while key
           (define-key (symbol-value map) (kbd key) def)
           (setq key (pop bindings) def (pop bindings)))))))
-#+end_src
-**** Applications
-#+begin_src emacs-lisp
-(with-eval-after-load 'bind-map
-  (diego/set-leader-keys
-    "ac"  'calc-dispatch
-    "ai"  'erc))
-#+end_src
-**** Quit
-#+begin_src emacs-lisp
-(with-eval-after-load 'bind-map
-  (diego/set-leader-keys
-    "qf" 'delete-frame
-    "qq" 'save-buffers-kill-emacs))
-#+end_src
-**** Global/non-prefix
-#+begin_src emacs-lisp
-(with-eval-after-load 'bind-map
-  (diego/set-leader-keys
-    "&"   'async-shell-command
-    ":"   'eval-expression
-    "S"   'hydra-spelling/body
-    "r"   'repeat
-    "t"   'hydra-toggle/body
-    "u"   'universal-argument))
 #+end_src
 **** Use-package leader helper
 #+begin_src emacs-lisp
@@ -887,21 +840,6 @@ Source: http://tinyurl.com/k9j3bhg"
   (advice-add #'counsel--yank-pop-format-function
               :override
               #'diego/counsel-yank-pop-format-function))
-
-
-(use-package counsel-projectile
-  :commands diego/project-find-file
-  :leader-bind (("pb" . counsel-projectile-switch-to-buffer)
-                ("pd" . counsel-projectile-find-dir)
-                ("pf" . counsel-projectile-find-file)
-                ("pp" . counsel-projectile)
-                ("ps" . counsel-projectile-switch-project))
-  :config
-  (defun diego/project-find-file ()
-    (interactive)
-    (condition-case nil
-        (counsel-git)
-      (error (counsel-projectile-find-file)))))
 #+end_src
 *** [[http://orgmode.org/][org-mode]]
 #+begin_quote
@@ -1258,7 +1196,9 @@ so I went with it.
 
 
   (defun diego/org-agenda-toggle-date (current-line)
-    "Toggle `SCHEDULED' and `DEADLINE' tag in the capture buffer."
+    "Toggle `SCHEDULED' and `DEADLINE' tag in the capture buffer.
+
+Source: http://tinyurl.com/kq24yph"
     (interactive "P")
     (save-excursion
       (let ((search-limit (if current-line
@@ -1314,7 +1254,7 @@ Source: http://tinyurl.com/l3zpzse"
                   (if (derived-mode-p 'org-mode)
                       (org-uniquify
                        (delq nil (append (org-get-buffer-tags)
-                                       (org-global-tags-completion-table))))
+                                         (org-global-tags-completion-table))))
                     (org-global-tags-completion-table))))
              (completing-read
               "Tag: " 'org-tags-completion-function nil nil nil
@@ -1426,59 +1366,9 @@ Source: http://tinyurl.com/l3zpzse"
 #+begin_quote
   make Emacs bindings that stick around
 #+end_quote
-**** Setup
 #+begin_src emacs-lisp
 (use-package hydra
   :config)
-#+end_src
-**** Hydras
-***** evil-numbers
-#+begin_src emacs-lisp
-(with-eval-after-load 'hydra
-  (defhydra hydra-numbers ()
-    "evil-numbers"
-    ("="  evil-numbers/inc-at-pt "inc")
-    ("-" evil-numbers/dec-at-pt "dec")))
-#+end_src
-***** spelling
-#+begin_src emacs-lisp
-(with-eval-after-load 'hydra
-  (defhydra hydra-spelling ()
-    "flyspell"
-    ("b" flyspell-buffer "buffer")
-    ("g" flyspell-goto-next-error "go to next")
-    ("a" diego/flyspell-add-to-dictionary "add to dict")
-    ("n" flyspell-correct-next-word-generic "correct next generic")
-    ("p" flyspell-correct-previous-word-generic "correct prev generic")
-    ("N" diego/flyspell-correct-next "correct next")
-    ("P" flyspell-auto-correct-previous-word "correct pref")))
-#+end_src
-***** toggle
-#+begin_src emacs-lisp
-(with-eval-after-load 'hydra
-  (defvar flycheck-mode nil)
-  (defvar focus-mode nil)
-  (defhydra hydra-toggle (:color pink)
-    "
-_a_ abbrev:              %-3s`abbrev-mode   _d_ debug-on-error:      %-3s`debug-on-error   _P_ prettify-symbols:   %-3s`prettify-symbols-mode
-_i_ aggressive-indent:   %-3s`aggressive-indent-mode   _l_ nlinum:              %-3s`nlinum-mode   _F_ focus:              %-3s`focus-mode
-_c_ column-indicator:    %-3s`fci-mode   _p_ smartparens:         %-3s`smartparens-mode
-_f_ flycheck:            %-3s`flycheck-mode   _e_ evil-smartparens:    %-3s`evil-smartparens-mode
-_s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`global-whitespace-mode
-"
-    ("a" abbrev-mode nil)
-    ("i" aggressive-indent-mode nil)
-    ("d" toggle-debug-on-error nil)
-    ("c" fci-mode nil)
-    ("l" nlinum-mode nil)
-    ("p" smartparens-mode nil)
-    ("P" prettify-symbols-mode nil)
-    ("e" evil-smartparens-mode nil)
-    ("f" flycheck-mode nil)
-    ("F" focus-mode nil)
-    ("s" flyspell-mode nil)
-    ("w" global-whitespace-mode nil)
-    ("q" nil "quit")))
 #+end_src
 *** [[https://github.com/bbatsov/crux][crux]]
 #+begin_quote
@@ -1625,11 +1515,18 @@ Source-ish: http://tinyurl.com/lmzvfh3"
                   "evilnc-\\(.+\\)"
                   "magit-\\(.+\\)"
                   "avy-\\(.+\\)"
+                  "eyebrowse-\\(.+\\)"
                   ;; "hydra-[^/]+/\\(.+\\)"
                   ))
     (push `((nil . ,pref) . (nil . "\\1")) which-key-replacement-alist)))
 #+end_src
 ** Bindings
+A convenient full-screen binding I'm used to from iTerm.
+#+begin_src emacs-lisp
+(when (eq system-type 'darwin)
+  (global-set-key (kbd "<s-return>") #'toggle-frame-fullscreen))
+#+end_src
+*** Minibuffer
 I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard, so I like to
 also use these keys to quit out of the minibuffer. See more [[#bindings-1][here]].
 #+begin_src emacs-lisp
@@ -1641,148 +1538,19 @@ also use these keys to quit out of the minibuffer. See more [[#bindings-1][here]
   (dolist (key '([?\C-/] [?\C-_] [escape]))
     (define-key map key #'minibuffer-keyboard-quit)))
 #+end_src
-A convenient full-screen binding I'm used to from iTerm.
+*** Leader
 #+begin_src emacs-lisp
-(when (eq system-type 'darwin)
-  (global-set-key (kbd "<s-return>") #'toggle-frame-fullscreen))
-#+end_src
-* Emacs
-** Packages
-*** [[https://github.com/jwiegley/use-package/blob/master/bind-key.el][bind-key]]
-#+begin_src emacs-lisp
-(use-package bind-key
-  :ensure t)
-#+end_src
-*** [[https://github.com/purcell/disable-mouse][disable-mouse]]
-#+begin_quote
-  Disable the mouse in Emacs
-#+end_quote
-#+begin_src emacs-lisp
-(use-package disable-mouse
-  :defer 5
-  :config
-  (global-disable-mouse-mode)
-  (dolist (key '([mouse-1]
-                 [mouse-4]
-                 [mouse-5]
-                 [mouse-6]
-                 [mouse-7]
-                 [down-mouse-1]
-                 [drag-mouse-1]
-                 [wheel-right]
-                 [double-wheel-right]
-                 [triple-wheel-right]
-                 [wheel-left]
-                 [double-wheel-left]
-                 [triple-wheel-left]
-                 [wheel-down]
-                 [double-wheel-down]
-                 [triple-wheel-down]
-                 [wheel-up]
-                 [double-wheel-up]
-                 [triple-wheel-up]))
-    (define-key evil-motion-state-map key #'ignore)))
-#+end_src
+(with-eval-after-load 'bind-map
+  (diego/set-leader-keys
+    "qf" 'delete-frame
+    "qq" 'save-buffers-kill-emacs
 
-*** [[https://github.com/lewang/flx][flx]]
-#+begin_quote
-  Fuzzy matching for Emacs ... a la Sublime Text.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package flx)
+    "&"   'async-shell-command
+    ":"   'eval-expression
+    "r"   'repeat
+    "u"   'universal-argument))
 #+end_src
-
-*** [[https://github.com/nonsequitur/smex][smex]]
-#+begin_quote
-  A smart M-x enhancement for Emacs.
-#+end_quote
-Sorts ivy by most recently used, I think.
-#+begin_src emacs-lisp
-(use-package smex)
-#+end_src
-
-*** [[https://github.com/Fanael/persistent-scratch][persistent-scratch]]
-#+begin_quote
-  Preserve the scratch buffer across Emacs sessions
-#+end_quote
-#+begin_src emacs-lisp
-(use-package persistent-scratch
-  :defer 10
-  :config
-  (persistent-scratch-setup-default))
-#+end_src
-*** [[https://github.com/iqbalansari/restart-emacs][restart-emacs]]
-#+begin_quote
-  A simple emacs package to restart emacs from within emacs.
-#+end_quote
-SUPER nifty.
-#+begin_src emacs-lisp
-(use-package restart-emacs
-  :leader-bind ("qr" . restart-emacs)
-  :init
-  (evil-ex-define-cmd "qr[estart]" 'restart-emacs))
-#+end_src
-*** [[https://github.com/Malabarba/paradox][paradox]]
-#+begin_quote
-  Project for modernizing Emacs' Package Menu. With package ratings, usage
-  statistics, customizability, and more.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package paradox
-  :leader-bind ("ap" . paradox-list-packages)
-  :evil-bind (:normal
-              paradox-menu-mode-map
-              ("(" . package-menu-toggle-hiding)
-              ("?" . package-menu-describe-package)
-              ("F" . package-menu-filter)
-              ("RET" . paradox-push-button)
-              ("S*" . paradox-sort-by-★)
-              ("Sp" . paradox-sort-by-package)
-              ("Ss" . paradox-sort-by-status)
-              ("TAB" . forward-button)
-              ("U" . package-menu-mark-upgrades)
-              ("d" . package-menu-mark-delete)
-              ("f" . hydra-paradox-filter/body)
-              ("i" . package-menu-mark-install)
-              ("q" . paradox-quit-and-close)
-              ("r" . package-menu-refresh)
-              ("u" . package-menu-mark-unmark)
-              ("vh" . paradox-menu-visit-homepage)
-              ("vl" . paradox-menu-view-commit-list)
-              ("x" . paradox-menu-execute)
-              ("~" . package-menu-mark-obsolete-for-deletion)
-              ([backtab] . backward-button))
-  :config
-  (setq paradox-execute-asynchronously t
-        paradox-github-token (password-store-get "tokens/github/paradox")
-        paradox-automatically-star nil))
-#+end_src
-
-*** [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store]]
-#+begin_src emacs-lisp
-(use-package password-store)
-#+end_src
-
-*** [[https://github.com/jschaf/esup][esup]]
-#+begin_quote
-  ESUP - Emacs Start Up Profiler
-#+end_quote
-#+begin_src emacs-lisp
-(use-package esup
-  :config
-  (setq esup-insignificant-time 0.001))
-#+end_src
-
-*** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
-#+begin_quote
-  Cursor stays vertically centered.
-#+end_quote
-I use this for reading, mostly.
-#+begin_src emacs-lisp
-(use-package centered-cursor-mode)
-#+end_src
-
-* Help and reference
+* Help                                                     :search:reference:
 ** Defaults
 #+begin_src emacs-lisp
 (add-hook 'help-mode-hook #'goto-address-mode)
@@ -1918,7 +1686,7 @@ Leader bindings
     "hs"  'system-name
     "hv"  'version))
 #+end_src
-* Files and Buffers
+* Files and Buffers                                  :dired:project:bookmark:
 ** Defaults
 If a frame is already open, use it to open files.
 #+begin_src emacs-lisp
@@ -1943,6 +1711,102 @@ Which means it's less likely to block up emacs. Or something.
   (autoload 'dired-async-mode "dired-async.el" nil t)
   (dired-async-mode 1))
 #+end_src
+** Packages
+*** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
+#+begin_quote
+  Make Emacs' delete-by-moving-to-trash do what you expect it to do on OS X.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package osx-trash
+  :defer 5
+  :if (eq system-type 'darwin)
+  :config
+  (osx-trash-setup)
+  (setq delete-by-moving-to-trash t))
+#+end_src
+
+*** [[https://www.emacswiki.org/emacs/dired%252b.el][dired+]]
+#+begin_src emacs-lisp
+(use-package dired+
+  :after ranger)
+#+end_src
+
+*** [[https://github.com/ralesi/ranger.el][ranger]]
+#+begin_quote
+  Bringing the goodness of ranger to dired!
+#+end_quote
+#+begin_src emacs-lisp
+(use-package ranger
+  :commands diego/deer
+  :leader-bind (("ad" . diego/deer)
+                ("ar" . ranger))
+  :init
+  (require 'bookmark)
+  :config
+  (ranger-override-dired-mode t)
+  (setq ranger-show-literal nil
+        ranger-show-hidden nil
+        ranger-cleanup-eagerly t
+        ranger-parent-depth 0)
+
+  (defun diego/ranger-travel ()
+    "Use ivy for ranger-travel instead."
+    (interactive)
+    (cond
+     ((featurep 'ivy)
+      (counsel-find-file default-directory))
+     (t (call-interactively #'ido-find-file))))
+
+  (advice-add #'ranger-travel
+              :override #'diego/ranger-travel)
+
+  (defun diego/deer (arg)
+    (interactive "P")
+    (if arg
+        (deer)
+      (deer-jump-other-window))))
+#+end_src
+
+*** [[https://github.com/bbatsov/projectile][projectile]]
+#+begin_quote
+  Project Interaction Library for Emacs
+#+end_quote
+#+begin_src emacs-lisp
+(use-package projectile
+  :leader-bind (("pg" . projectile-vc)
+                ("pk" . projectile-kill-buffers)
+                ("po" . projectile-multi-occur)
+                ("pr" . projectil-recentf))
+  :config
+  (setq projectile-globally-ignored-files '("TAGS" ".DS_Store")
+        projectile-ignored-projects '("/usr/local"))
+  (projectile-mode))
+#+end_src
+
+*** [[https://github.com/ericdanan/counsel-projectile][counsel-projectile]]
+#+begin_src emacs-lisp
+(use-package counsel-projectile
+  :commands diego/project-find-file
+  :leader-bind (("pb" . counsel-projectile-switch-to-buffer)
+                ("pd" . counsel-projectile-find-dir)
+                ("pf" . counsel-projectile-find-file)
+                ("pp" . counsel-projectile)
+                ("ps" . counsel-projectile-switch-project))
+  :config
+  (defun diego/project-find-file ()
+    (interactive)
+    (condition-case nil
+        (counsel-git)
+      (error (counsel-projectile-find-file)))))
+#+end_src
+
+*** [[https://github.com/abo-abo/headlong][headlong]]
+#+begin_src emacs-lisp
+(use-package headlong
+  :leader-bind (("fB" . headlong-bookmark-jump-other)
+                ("fb" . headlong-bookmark-jump)))
+#+end_src
+
 ** Functions
 *** File Manipulation
 #+begin_src emacs-lisp
@@ -2056,261 +1920,12 @@ Source: http://tinyurl.com/m3k84u8"
     "bv"  'view-mode
 
     "fc"  'diego/copy-file
-    "fpn" 'diego/pop-to-org-notes
-    "fpt" 'diego/pop-to-org-todo
     "fs"  'diego/save-buffer
 
     "nf"  'narrow-to-defun
     "nn"  'diego/narrow-dwim
     "np"  'narrow-to-page
     "nr"  'narrow-to-region))
-#+end_src
-
-* Appearance
-** Defaults
-*** Startup
-Get right to your files or the scratch buffer. No B.S.
-#+begin_src emacs-lisp
-(setq inhibit-splash-screen t
-      inhibit-startup-message t
-      inhibit-startup-echo-area-message t)
-#+end_src
-*** Time display
-#+begin_src emacs-lisp :tangle no
-(with-eval-after-load 'time
-  (setq  display-time-24hr-format t
-         display-time-default-load-average nil
-         display-time-format "│ %Y-%d-%m %H:%M │"
-         display-time-load-average nil))
-#+end_src
-*** Gui elements
-Turn off gui elements that I never use. Gui emacs is great, but I still prefer
-text-based interaction thank you very much.
-#+begin_src emacs-lisp
-(menu-bar-mode 0)
-(tool-bar-mode 0)
-(scroll-bar-mode 0)
-(setq custom-raised-buttons nil
-      use-dialog-box nil)
-(blink-cursor-mode 0)
-#+end_src
-*** Buffer display
-I don't want line-wrapping madness, just tell me there's more to see and I'll
-have a look. Additionally, show whitespace.
-#+begin_src emacs-lisp
-(setq-default truncate-lines t)
-(setq whitespace-style '(face trailing tabs))
-(global-whitespace-mode)
-#+end_src
-*** Font
-Choose a font in order of preference, when available.
-#+begin_src emacs-lisp
-(when window-system
-  (cond ((x-list-fonts "Iosevka Term")
-         (add-to-list 'default-frame-alist '(font . "Iosevka Term-9.5"))
-         (set-face-attribute 'default t :font "Iosevka Term-9.5"))
-        ((x-list-fonts "Input")
-         (add-to-list 'default-frame-alist '(font . "Input-10"))
-         (set-face-attribute 'default t :font "Input-10"))
-        ((x-list-fonts "Office Code Pro D")
-         (add-to-list 'default-frame-alist '(font . "Office Code Pro D-11"))
-         (set-face-attribute 'default t :font "Office Code Pro D-11"))
-        ((x-list-fonts "Consolas")
-         (add-to-list 'default-frame-alist '(font . "Consolas-11"))
-         (set-face-attribute 'default t :font "Consolas-11"))
-        ((x-list-fonts "Menlo")
-         (add-to-list 'default-frame-alist '(font . "Menlo-11"))
-         (set-face-attribute 'default t :font "Menlo-11")))
-#+end_src
-And use [[http://fontawesome.io/][Font Awesome]] for the unicode glyphs it supports.
-#+begin_src emacs-lisp
-  (when (x-list-fonts "FontAwesome")
-    (set-fontset-font t 'unicode "FontAwesome" nil 'prepend)))
-#+end_src
-
-:NOTES:
-*Current:* Now I use [[https://be5invis.github.io/Iosevka/][Iosevka]], which is really great since it has all of the
-wonderful customization abilities of Input, but is fully open source (and has
-web variants!), sees active development, and the maintainer is incredibly
-responsive. It /is/ quite narrow, but give it a chance - I wasn't able to go back
-after a few weeks.
-
-*2016-ish:* I'm using the wonderful [[http://input.fontbureau.com/][Input]] font. If, like me, you're
-coming from something more like SauceCodePro, Consolas, or even just Menlo,
-this font may at first seem a little "blocky," but it's so wonderfully
-[[http://input.fontbureau.com/download/#customize][customizable]] that you should really give it a try. My current settings are:
-
- - Download a custom four-style family
-| Regular     | Input Mono Light         |
-| Italic      | Input Mono Light Italic  |
-| Bold        | Input Mono Medium        |
-| Bold Italic | Input Mono Medium Italic |
- - ~Source Code Pro style~
-   * second option for ~a~ and ~g~
- - 1.4x Line spacing
-
-*Note:* Check out [[http://mbauman.net/geek/2009/03/15/minor-truetype-font-editing-on-a-mac/][this post]] for advice on fixing the Consolas font on macOS. This
-helps with the modeline text vertical alignments and makes it consistent with
-other fonts. Post last updated in 2011, last successfully tested in 09/2016 (by
-myself).
-:END:
-*** Minibuffer
-Use a bar cursor in the minibuffer.
-#+begin_src emacs-lisp
-(add-hook 'minibuffer-setup-hook
-          (lambda () (setq-local cursor-type '(bar . 1))))
-#+end_src
-** Packages
-*** [[https://github.com/larstvei/Focus][focus]]
-#+begin_quote
-  Dim the font color of text in surrounding paragraphs
-#+end_quote
-#+begin_src emacs-lisp
-(use-package focus)
-#+end_src
-*** [[http://git.savannah.gnu.org/cgit/emacs/elpa.git/tree/packages/rainbow-mode/rainbow-mode.el][rainbow-mode]]
-#+begin_quote
-  Colorize color names in buffers
-#+end_quote
-#+begin_src emacs-lisp
-(use-package rainbow-mode
-  :config
-  (setq rainbow-x-colors-major-mode-list '(c-mode c++-mode java-mode))
-  (add-hook 'help-mode-hook #'rainbow-mode))
-#+end_src
-*** [[https://github.com/therockmandolinist/emacs-theme-darktooth][darktooth-theme]]
-#+begin_quote
-  An Emacs 24 theme remixed from gruvbox
-#+end_quote
-(my fork)
-#+begin_src emacs-lisp
-(use-package darktooth-theme
-  :demand t
-  :quelpa (darktooth-theme
-           :fetcher github
-           :repo "therockmandolinist/emacs-theme-darktooth"))
-#+end_src
-*** [[https://github.com/iqbalansari/emacs-emojify][emacs-emojify]]
-#+begin_quote
-  Display emojis in emacs.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package emojify)
-#+end_src
-*** [[https://github.com/lunaryorn/fancy-battery.el][fancy-battery]]
-#+begin_quote
-Display battery in Emacs Mode line
-#+end_quote
-#+begin_src emacs-lisp
-(use-package fancy-battery
-  :disabled t
-  :defer 10
-  :config
-  (fancy-battery-mode)
-  (setq fancy-battery-show-percentage t)
-  (fancy-battery-update))
-#+end_src
-*** [[https://github.com/TheBB/spaceline][spaceline]]
-#+begin_quote
-  Powerline theme from Spacemacs
-#+end_quote
-I was looking for something with the nice look and simplicity of
-[[https://github.com/itchyny/lightline.vim][this]].
-#+begin_src emacs-lisp
-(use-package spaceline
-  :demand t
-  :config
-  (require 'spaceline-config)
-  (spaceline-spacemacs-theme)
-  (spaceline-toggle-minor-modes-off)
-  (spaceline-toggle-battery-on)
-  (spaceline-toggle-hud-off)
-  (spaceline-toggle-buffer-size-off)
-  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-
-  ;; darktooth
-  (set-face-background 'spaceline-evil-normal "#B8BB26")
-  (set-face-background 'spaceline-evil-insert "#66999D")
-  (set-face-background 'spaceline-evil-visual "#FE8019")
-  (set-face-background 'spaceline-evil-emacs "#83A598")
-
-  (setq powerline-default-separator nil)
-
-  ;; some tweaks
-  (defadvice vc-mode-line (after strip-backend () activate)
-    (when (stringp vc-mode)
-      (let ((gitlogo (replace-regexp-in-string "^ Git." "  " vc-mode)))
-        (setq vc-mode gitlogo))))
-
-  (spaceline-compile))
-#+end_src
-*** [[https://github.com/alpaker/Fill-Column-Indicator][fill-column-indicator]]
-#+begin_quote
-  An Emacs minor mode that graphically indicates the fill column.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package fill-column-indicator
-  :init
-  (setq-default fci-rule-column 79)
-  (defvar-local company-fci-mode-on-p nil)
-
-  (defun company-turn-off-fci (&rest _ignore)
-    (when (boundp 'fci-mode)
-      (setq company-fci-mode-on-p fci-mode)
-      (when fci-mode (fci-mode -1))))
-
-  (defun company-maybe-turn-on-fci (&rest _ignore)
-    (when company-fci-mode-on-p (fci-mode 1)))
-
-  (add-hook 'company-completion-started-hook 'company-turn-off-fci)
-  (add-hook 'company-completion-finished-hook 'company-maybe-turn-on-fci)
-  (add-hook 'company-completion-cancelled-hook 'company-maybe-turn-on-fci))
-#+end_src
-
-*** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers]]
-#+begin_quote
-  Emacs minor mode to highlight each source code identifier uniquely based on its name
-#+end_quote
-#+begin_src emacs-lisp
-(use-package color-identifiers-mode)
-#+end_src
-
-*** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]
-#+begin_quote
-  Highlight numbers in source code
-#+end_quote
-Neat-o
-#+begin_src emacs-lisp
-(use-package highlight-numbers)
-#+end_src
-
-*** [[https://github.com/tsdh/highlight-parentheses.el][highlight-parentheses]]
-#+begin_quote
-  Emacs: highlight surrounding parentheses
-#+end_quote
-#+begin_src emacs-lisp
-(use-package highlight-parentheses)
-#+end_src
-
-*** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
-Better parentheses coloring
-#+begin_src emacs-lisp
-(use-package rainbow-delimiters)
-#+end_src
-
-** Hydras
-#+begin_src emacs-lisp
-(with-eval-after-load 'hydra
-  (defhydra hydra-zoom ()
-    "zoom"
-    ("=" text-scale-increase "in")
-    ("-" text-scale-decrease "out")
-    ("0" (text-scale-adjust 0) "reset")))
-#+end_src
-** Bindings
-#+begin_src emacs-lisp
-(diego/set-leader-keys
-  "z" 'hydra-zoom/body)
 #+end_src
 * Editing
 ** Defaults
@@ -2337,7 +1952,11 @@ Who uses double spaces between sentences?
 #+begin_src emacs-lisp
 (setq sentence-end-double-space nil)
 #+end_src
-
+Dear god I hate tabs. Also, four spaces is a good indentation default.
+#+begin_src emacs-lisp
+(setq-default indent-tabs-mode nil
+              tab-width 4)
+#+end_src
 ** Packages
 *** [[https://github.com/alpha22jp/atomic-chrome][atomic-chrome]]
 #+begin_quote
@@ -2449,7 +2068,35 @@ Freakin yasnippet. It's the best.
 #+begin_src emacs-lisp
 (use-package fontawesome)
 #+end_src
+*** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
+Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted/flyspell-correct][d12frosted/flyspell-correct]]
+#+begin_src emacs-lisp
+(use-package flyspell
+  :config
+  (defun diego/flyspell-correct-next ()
+    (interactive "p")
+    (flyspell-goto-next-error)
+    (flyspell-auto-correct-word))
 
+  (defun diego/flyspell-add-to-dictionary ()
+    "Add word at point to flyspell dictionary at `/Users/diego/.ispell_english'.
+
+Source: http://tinyurl.com/k8g9sex"
+    (interactive)
+    (let ((current-location (point))
+          (word (flyspell-get-word)))
+      (when (consp word)
+        (flyspell-do-correct 'save
+                             nil
+                             (car word)
+                             current-location
+                             (cl-caddr word)
+                             (cl-caddr word)
+                             current-location)))))
+
+(use-package flyspell-correct-ivy
+  :after flyspell)
+#+end_src
 ** Functions
 *** Move text
 #+begin_src emacs-lisp
@@ -2631,6 +2278,7 @@ Source: http://tinyurl.com/l8z7vph"
     (error "No url at point.")))
 #+end_src
 ** Hydras
+*** Multiedit
 #+begin_src emacs-lisp
 (with-eval-after-load 'hydra
   (defhydra hydra-multiedit (:hint nil)
@@ -2648,7 +2296,9 @@ _p_rev     match and _P_rev
     ("N"   evil-multiedit-match-and-next)
     ("P"   evil-multiedit-match-and-prev)
     ("q"   evil-multiedit-abort :exit t)))
-
+#+end_src
+*** Transpose
+#+begin_src emacs-lisp
 (with-eval-after-load 'hydra
   (defhydra hydra-transpose ()
     "transpose"
@@ -2659,7 +2309,9 @@ _p_rev     match and _P_rev
     ("w" transpose-words "word")
     ("W" diego/backward-transpose-words "backward word")
     ("s" transpose-sexps "sexp" :exit t)))
-
+#+end_src
+*** Justify
+#+begin_src emacs-lisp
 (with-eval-after-load 'hydra
   (defhydra hydra-justify (:exit t)
     "justify"
@@ -2668,7 +2320,9 @@ _p_rev     match and _P_rev
     ("c" diego/justify-center "center")
     ("f" diego/justify-full "full")
     ("n" diego/justify-none "none")))
-
+#+end_src
+*** Smartparens
+#+begin_src emacs-lisp
 (with-eval-after-load 'hydra
   (defhydra hydra-smartparens (:hint nil)
     "
@@ -2690,6 +2344,27 @@ _u_nwrap  _S_lurp (back)   _[_ wrap _{_
     ("\"" diego/sp-wrap-with-quote2)
     ("'"  diego/sp-wrap-with-quote)))
 #+end_src
+*** Evil-numbers
+#+begin_src emacs-lisp
+(with-eval-after-load 'hydra
+  (defhydra hydra-numbers ()
+    "evil-numbers"
+    ("="  evil-numbers/inc-at-pt "inc")
+    ("-" evil-numbers/dec-at-pt "dec")))
+#+end_src
+*** Spelling
+#+begin_src emacs-lisp
+(with-eval-after-load 'hydra
+  (defhydra hydra-spelling ()
+    "flyspell"
+    ("b" flyspell-buffer "buffer")
+    ("g" flyspell-goto-next-error "go to next")
+    ("a" diego/flyspell-add-to-dictionary "add to dict")
+    ("n" flyspell-correct-next-word-generic "correct next generic")
+    ("p" flyspell-correct-previous-word-generic "correct prev generic")
+    ("N" diego/flyspell-correct-next "correct next")
+    ("P" flyspell-auto-correct-previous-word "correct pref")))
+#+end_src
 ** Bindings
 Make indent-rigidly more vimmy.
 #+begin_src emacs-lisp
@@ -2705,6 +2380,8 @@ Leader keys
   (diego/set-leader-keys
     "n-"  'hydra-numbers/evil-numbers/dec-at-pt
     "n="  'hydra-numbers/evil-numbers/inc-at-pt
+
+    "S"   'hydra-spelling/body
 
     "xa&" 'diego/align-repeat-ampersand
     "xa'" 'diego/align-repeat-single-quote
@@ -2739,7 +2416,7 @@ Leader keys
 
     "im"  'insert-kbd-macro))
 #+end_src
-* Navigation
+* Navigation                                                    :nav:windows:
 ** Packages
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
 #+begin_quote
@@ -2767,61 +2444,6 @@ Leader keys
   :config
   (setq avy-keys (string-to-list "aoeuidhtns")))
 #+end_src
-*** [[https://www.emacswiki.org/emacs/dired%252b.el][dired+]]
-#+begin_src emacs-lisp
-(use-package dired+
-  :after ranger)
-#+end_src
-*** [[https://github.com/bbatsov/projectile][projectile]]
-#+begin_quote
-  Project Interaction Library for Emacs
-#+end_quote
-#+begin_src emacs-lisp
-(use-package projectile
-  :leader-bind (("pg" . projectile-vc)
-                ("pk" . projectile-kill-buffers)
-                ("po" . projectile-multi-occur)
-                ("pr" . projectil-recentf))
-  :config
-  (setq projectile-globally-ignored-files '("TAGS" ".DS_Store")
-        projectile-ignored-projects '("/usr/local"))
-  (projectile-mode))
-#+end_src
-*** [[https://github.com/ralesi/ranger.el][ranger]]
-#+begin_quote
-  Bringing the goodness of ranger to dired!
-#+end_quote
-#+begin_src emacs-lisp
-(use-package ranger
-  :commands diego/deer
-  :leader-bind (("ad" . diego/deer)
-                ("ar" . ranger))
-  :init
-  (require 'bookmark)
-  :config
-  (ranger-override-dired-mode t)
-  (setq ranger-show-literal nil
-        ranger-show-hidden nil
-        ranger-cleanup-eagerly t
-        ranger-parent-depth 0)
-
-  (defun diego/ranger-travel ()
-    "Use ivy for ranger-travel instead."
-    (interactive)
-    (cond
-     ((featurep 'ivy)
-      (counsel-find-file default-directory))
-     (t (call-interactively #'ido-find-file))))
-
-  (advice-add #'ranger-travel
-              :override #'diego/ranger-travel)
-
-  (defun diego/deer (arg)
-    (interactive "P")
-    (if arg
-        (deer)
-      (deer-jump-other-window))))
-#+end_src
 *** [[https://github.com/wasamasa/eyebrowse][eyebrowse]]
 #+begin_src emacs-lisp
 (use-package eyebrowse
@@ -2832,26 +2454,20 @@ Leader keys
                 ("er" . eyebrowse-rename-window-config)
                 ("ec" . eyebrowse-close-window-connfig)
                 ("e'" . eyebrowse-last-window-config)
-                ("0" . eyebrowse-switch-to-window-config-0)
-                ("1" . eyebrowse-switch-to-window-config-1)
-                ("2" . eyebrowse-switch-to-window-config-2)
-                ("3" . eyebrowse-switch-to-window-config-3)
-                ("4" . eyebrowse-switch-to-window-config-4)
-                ("5" . eyebrowse-switch-to-window-config-5)
-                ("6" . eyebrowse-switch-to-window-config-6)
-                ("7" . eyebrowse-switch-to-window-config-7)
-                ("8" . eyebrowse-switch-to-window-config-8)
-                ("9" . eyebrowse-switch-to-window-config-9))
+                ("e0" . eyebrowse-switch-to-window-config-0)
+                ("e1" . eyebrowse-switch-to-window-config-1)
+                ("e2" . eyebrowse-switch-to-window-config-2)
+                ("e3" . eyebrowse-switch-to-window-config-3)
+                ("e4" . eyebrowse-switch-to-window-config-4)
+                ("e5" . eyebrowse-switch-to-window-config-5)
+                ("e6" . eyebrowse-switch-to-window-config-6)
+                ("e7" . eyebrowse-switch-to-window-config-7)
+                ("e8" . eyebrowse-switch-to-window-config-8)
+                ("e9" . eyebrowse-switch-to-window-config-9))
   :config
   (setq eyebrowse-wrap-around t)
   (setq eyebrowse-new-workspace t)
   (eyebrowse-mode))
-#+end_src
-*** [[https://github.com/abo-abo/headlong][headlong]]
-#+begin_src emacs-lisp
-(use-package headlong
-  :leader-bind (("fB" . headlong-bookmark-jump-other)
-                ("fb" . headlong-bookmark-jump)))
 #+end_src
 *** [[https://github.com/jacktasia/dumb-jump][dumb-jump]]
 #+begin_src emacs-lisp
@@ -2986,7 +2602,7 @@ Source: http://tinyurl.com/koowarm"
     "wt" 'diego/toggle-window-split
     "wv" 'diego/split-vert-focus))
 #+end_src
-* Mode config
+* Modes
 ** Prog
 *** Packages
 **** [[https://github.com/CodeFalling/nlinum-relative][nlinum-relative]]
@@ -3013,7 +2629,6 @@ Source: http://tinyurl.com/koowarm"
   (setq flycheck-completing-read-function 'ivy-completing-read))
 #+end_src
 
-
 *** Setup
 #+begin_src emacs-lisp
 (diego/setup-mode prog
@@ -3031,7 +2646,7 @@ Source: http://tinyurl.com/koowarm"
   (setq-local calc-embedded-close-mode (concat comment-end "\n"))
   (hl-line-mode 1))
 #+end_src
-** Python
+** Python                                                             :lang:
 *** Packages
 **** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]
 #+begin_quote
@@ -3122,7 +2737,7 @@ Pretty neat, though not entirely complete, IMO.
               diego/python-prettify-alist)
   (prettify-symbols-mode))
 #+end_src
-** Lisps
+** Lisps                                                              :lang:
 *** Packages
 **** [[https://github.com/slime/slime][slime]]
 #+begin_quote
@@ -3193,8 +2808,6 @@ Pretty neat, though not entirely complete, IMO.
            :fetcher github
            :repo "Ilazki/prettify-utils.el"))
 #+end_src
-
-
 
 *** Variables
 #+begin_src emacs-lisp
@@ -3280,7 +2893,7 @@ Source: http://tinyurl.com/mh5ev6x"
   (setq-local prettify-symbols-alist diego/lisp-prettify-alist)
   (prettify-symbols-mode))
 #+end_src
-** C
+** C                                                                  :lang:
 *** Setup
 #+begin_src emacs-lisp
 (diego/setup-mode c
@@ -3306,6 +2919,11 @@ Source: http://tinyurl.com/mh5ev6x"
 
 (defvar var-c '299792458
   "Speed of light in a vaccum.")
+#+end_src
+*** Bindings
+#+begin_src emacs-lisp
+(diego/set-leader-keys
+  "ac" 'calc-dispatch)
 #+end_src
 *** Setup
 #+begin_src emacs-lisp
@@ -3358,7 +2976,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
   (setq-local yas-dont-activate-functions t)
   (local-set-key (kbd "<C-tab>") #'multi-term-next))
 #+end_src
-** Modes
+** Misc Modes
 *** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
 #+begin_quote
   Major mode for editing comma/char separated values
@@ -3452,6 +3070,17 @@ Syntax highlighting for markdown files.
 #+begin_src emacs-lisp
 (use-package pdf-tools
   :defer 10
+  :evil-bind (:normal
+              pdf-view-mode-map
+              ("s" . pdf-view-fit-width-to-window)
+              ("a" . pdf-view-fit-height-to-window)
+              ("/" . isearch-forward)
+              ("J" . pdf-view-next-page)
+              ("K" . pdf-view-previous-page)
+              ("j" . pdf-view-next-line-or-next-page)
+              ("k" . pdf-view-previou-line-or-previous-page)
+              ("-" . pdf-view-shrink)
+              ("+" . pdf-view-enlarg))
   :config
   (pdf-tools-install))
 #+end_src
@@ -3600,7 +3229,442 @@ Source: http://tinyurl.com/lty44qa"
         (magit-blame-quit)
       (call-interactively 'magit-blame)))
 #+end_src
+
+* Appearance                                           :theme:modeline:color:
+** Defaults
+*** Startup
+Get right to your files or the scratch buffer. No B.S.
+#+begin_src emacs-lisp
+(setq inhibit-splash-screen t
+      inhibit-startup-message t
+      inhibit-startup-echo-area-message t)
+#+end_src
+*** Time display
+#+begin_src emacs-lisp :tangle no
+(with-eval-after-load 'time
+  (setq  display-time-24hr-format t
+         display-time-default-load-average nil
+         display-time-format "│ %Y-%d-%m %H:%M │"
+         display-time-load-average nil))
+#+end_src
+*** Gui elements
+Turn off gui elements that I never use. Gui emacs is great, but I still prefer
+text-based interaction thank you very much.
+#+begin_src emacs-lisp
+(menu-bar-mode 0)
+(tool-bar-mode 0)
+(scroll-bar-mode 0)
+(setq custom-raised-buttons nil
+      use-dialog-box nil)
+(blink-cursor-mode 0)
+#+end_src
+*** Buffer display
+I don't want line-wrapping madness, just tell me there's more to see and I'll
+have a look. Additionally, show whitespace.
+#+begin_src emacs-lisp
+(setq-default truncate-lines t)
+(setq whitespace-style '(face trailing tabs))
+(global-whitespace-mode)
+#+end_src
+*** Font
+Choose a font in order of preference, when available.
+#+begin_src emacs-lisp
+(when window-system
+  (cond ((x-list-fonts "Iosevka Term")
+         (add-to-list 'default-frame-alist '(font . "Iosevka Term-9.5"))
+         (set-face-attribute 'default t :font "Iosevka Term-9.5"))
+        ((x-list-fonts "Input")
+         (add-to-list 'default-frame-alist '(font . "Input-10"))
+         (set-face-attribute 'default t :font "Input-10"))
+        ((x-list-fonts "Office Code Pro D")
+         (add-to-list 'default-frame-alist '(font . "Office Code Pro D-11"))
+         (set-face-attribute 'default t :font "Office Code Pro D-11"))
+        ((x-list-fonts "Consolas")
+         (add-to-list 'default-frame-alist '(font . "Consolas-11"))
+         (set-face-attribute 'default t :font "Consolas-11"))
+        ((x-list-fonts "Menlo")
+         (add-to-list 'default-frame-alist '(font . "Menlo-11"))
+         (set-face-attribute 'default t :font "Menlo-11")))
+#+end_src
+And use [[http://fontawesome.io/][Font Awesome]] for the unicode glyphs it supports.
+#+begin_src emacs-lisp
+  (when (x-list-fonts "FontAwesome")
+    (set-fontset-font t 'unicode "FontAwesome" nil 'prepend)))
+#+end_src
+
+:NOTES:
+*Current:* Now I use [[https://be5invis.github.io/Iosevka/][Iosevka]], which is really great since it has all of the
+wonderful customization abilities of Input, but is fully open source (and has
+web variants!), sees active development, and the maintainer is incredibly
+responsive. It /is/ quite narrow, but give it a chance - I wasn't able to go back
+after a few weeks.
+
+*2016-ish:* I'm using the wonderful [[http://input.fontbureau.com/][Input]] font. If, like me, you're
+coming from something more like SauceCodePro, Consolas, or even just Menlo,
+this font may at first seem a little "blocky," but it's so wonderfully
+[[http://input.fontbureau.com/download/#customize][customizable]] that you should really give it a try. My current settings are:
+
+ - Download a custom four-style family
+| Regular     | Input Mono Light         |
+| Italic      | Input Mono Light Italic  |
+| Bold        | Input Mono Medium        |
+| Bold Italic | Input Mono Medium Italic |
+ - ~Source Code Pro style~
+   * second option for ~a~ and ~g~
+ - 1.4x Line spacing
+
+*Note:* Check out [[http://mbauman.net/geek/2009/03/15/minor-truetype-font-editing-on-a-mac/][this post]] for advice on fixing the Consolas font on macOS. This
+helps with the modeline text vertical alignments and makes it consistent with
+other fonts. Post last updated in 2011, last successfully tested in 09/2016 (by
+myself).
+:END:
+*** Minibuffer
+Use a bar cursor in the minibuffer.
+#+begin_src emacs-lisp
+(add-hook 'minibuffer-setup-hook
+          (lambda () (setq-local cursor-type '(bar . 1))))
+#+end_src
+** Packages
+*** [[https://github.com/larstvei/Focus][focus]]
+#+begin_quote
+  Dim the font color of text in surrounding paragraphs
+#+end_quote
+#+begin_src emacs-lisp
+(use-package focus)
+#+end_src
+*** [[http://git.savannah.gnu.org/cgit/emacs/elpa.git/tree/packages/rainbow-mode/rainbow-mode.el][rainbow-mode]]
+#+begin_quote
+  Colorize color names in buffers
+#+end_quote
+#+begin_src emacs-lisp
+(use-package rainbow-mode
+  :config
+  (setq rainbow-x-colors-major-mode-list '(c-mode c++-mode java-mode))
+  (add-hook 'help-mode-hook #'rainbow-mode))
+#+end_src
+*** [[https://github.com/therockmandolinist/emacs-theme-darktooth][darktooth-theme]]
+#+begin_quote
+  An Emacs 24 theme remixed from gruvbox
+#+end_quote
+(my fork)
+#+begin_src emacs-lisp
+(use-package darktooth-theme
+  :demand t
+  :quelpa (darktooth-theme
+           :fetcher github
+           :repo "therockmandolinist/emacs-theme-darktooth"))
+#+end_src
+*** [[https://github.com/hlissner/emacs-doom-theme][doom-theme]]
+#+begin_src emacs-lisp
+(use-package doom-themes
+  :disabled t
+  :config
+  (load-theme 'doom-molokai t))
+#+end_src
+*** [[https://github.com/iqbalansari/emacs-emojify][emacs-emojify]]
+#+begin_quote
+  Display emojis in emacs.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package emojify)
+#+end_src
+*** [[https://github.com/lunaryorn/fancy-battery.el][fancy-battery]]
+#+begin_quote
+Display battery in Emacs Mode line
+#+end_quote
+#+begin_src emacs-lisp
+(use-package fancy-battery
+  :disabled t
+  :defer 10
+  :config
+  (fancy-battery-mode)
+  (setq fancy-battery-show-percentage t)
+  (fancy-battery-update))
+#+end_src
+*** [[https://github.com/TheBB/spaceline][spaceline]]
+#+begin_quote
+  Powerline theme from Spacemacs
+#+end_quote
+I was looking for something with the nice look and simplicity of
+[[https://github.com/itchyny/lightline.vim][this]].
+#+begin_src emacs-lisp
+(use-package spaceline
+  :demand t
+  :config
+  (require 'spaceline-config)
+  (spaceline-spacemacs-theme)
+  (spaceline-toggle-minor-modes-off)
+  (spaceline-toggle-battery-on)
+  (spaceline-toggle-hud-off)
+  (spaceline-toggle-buffer-size-off)
+  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
+
+  ;; darktooth
+  (set-face-background 'spaceline-evil-normal "#B8BB26")
+  (set-face-background 'spaceline-evil-insert "#66999D")
+  (set-face-background 'spaceline-evil-visual "#FE8019")
+  (set-face-background 'spaceline-evil-emacs "#83A598")
+
+  (setq powerline-default-separator nil)
+
+  ;; some tweaks
+  (defadvice vc-mode-line (after strip-backend () activate)
+    (when (stringp vc-mode)
+      (let ((gitlogo (replace-regexp-in-string "^ Git." "  " vc-mode)))
+        (setq vc-mode gitlogo))))
+
+  (spaceline-compile))
+#+end_src
+*** [[https://github.com/alpaker/Fill-Column-Indicator][fill-column-indicator]]
+#+begin_quote
+  An Emacs minor mode that graphically indicates the fill column.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package fill-column-indicator
+  :init
+  (setq-default fci-rule-column 79)
+  (defvar-local company-fci-mode-on-p nil)
+
+  (defun company-turn-off-fci (&rest _ignore)
+    (when (boundp 'fci-mode)
+      (setq company-fci-mode-on-p fci-mode)
+      (when fci-mode (fci-mode -1))))
+
+  (defun company-maybe-turn-on-fci (&rest _ignore)
+    (when company-fci-mode-on-p (fci-mode 1)))
+
+  (add-hook 'company-completion-started-hook 'company-turn-off-fci)
+  (add-hook 'company-completion-finished-hook 'company-maybe-turn-on-fci)
+  (add-hook 'company-completion-cancelled-hook 'company-maybe-turn-on-fci))
+#+end_src
+
+*** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers]]
+#+begin_quote
+  Emacs minor mode to highlight each source code identifier uniquely based on its name
+#+end_quote
+#+begin_src emacs-lisp
+(use-package color-identifiers-mode)
+#+end_src
+
+*** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]
+#+begin_quote
+  Highlight numbers in source code
+#+end_quote
+Neat-o
+#+begin_src emacs-lisp
+(use-package highlight-numbers)
+#+end_src
+
+*** [[https://github.com/tsdh/highlight-parentheses.el][highlight-parentheses]]
+#+begin_quote
+  Emacs: highlight surrounding parentheses
+#+end_quote
+#+begin_src emacs-lisp
+(use-package highlight-parentheses)
+#+end_src
+
+*** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
+Better parentheses coloring
+#+begin_src emacs-lisp
+(use-package rainbow-delimiters)
+#+end_src
+
+** Hydras
+#+begin_src emacs-lisp
+(with-eval-after-load 'hydra
+  (defhydra hydra-zoom ()
+    "zoom"
+    ("=" text-scale-increase "in")
+    ("-" text-scale-decrease "out")
+    ("0" (text-scale-adjust 0) "reset")))
+#+end_src
+** Bindings
+#+begin_src emacs-lisp
+(diego/set-leader-keys
+  "z" 'hydra-zoom/body)
+#+end_src
 * Enhancements
+** Emacs
+*** Packages
+**** [[https://github.com/jwiegley/use-package/blob/master/bind-key.el][bind-key]]
+#+begin_src emacs-lisp
+(use-package bind-key
+  :ensure t)
+#+end_src
+**** [[https://github.com/purcell/disable-mouse][disable-mouse]]
+#+begin_quote
+  Disable the mouse in Emacs
+#+end_quote
+#+begin_src emacs-lisp
+(use-package disable-mouse
+  :defer 5
+  :config
+  (global-disable-mouse-mode)
+  (dolist (key '([mouse-1]
+                 [mouse-4]
+                 [mouse-5]
+                 [mouse-6]
+                 [mouse-7]
+                 [down-mouse-1]
+                 [drag-mouse-1]
+                 [wheel-right]
+                 [double-wheel-right]
+                 [triple-wheel-right]
+                 [wheel-left]
+                 [double-wheel-left]
+                 [triple-wheel-left]
+                 [wheel-down]
+                 [double-wheel-down]
+                 [triple-wheel-down]
+                 [wheel-up]
+                 [double-wheel-up]
+                 [triple-wheel-up]))
+    (define-key evil-motion-state-map key #'ignore)))
+#+end_src
+
+**** [[https://github.com/lewang/flx][flx]]
+#+begin_quote
+  Fuzzy matching for Emacs ... a la Sublime Text.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package flx)
+#+end_src
+
+**** [[https://github.com/nonsequitur/smex][smex]]
+#+begin_quote
+  A smart M-x enhancement for Emacs.
+#+end_quote
+Sorts ivy by most recently used, I think.
+#+begin_src emacs-lisp
+(use-package smex)
+#+end_src
+
+**** [[https://github.com/Fanael/persistent-scratch][persistent-scratch]]
+#+begin_quote
+  Preserve the scratch buffer across Emacs sessions
+#+end_quote
+#+begin_src emacs-lisp
+(use-package persistent-scratch
+  :defer 10
+  :config
+  (persistent-scratch-setup-default))
+#+end_src
+**** [[https://github.com/iqbalansari/restart-emacs][restart-emacs]]
+#+begin_quote
+  A simple emacs package to restart emacs from within emacs.
+#+end_quote
+SUPER nifty.
+#+begin_src emacs-lisp
+(use-package restart-emacs
+  :leader-bind ("qr" . restart-emacs)
+  :init
+  (evil-ex-define-cmd "qr[estart]" 'restart-emacs))
+#+end_src
+**** [[https://github.com/Malabarba/paradox][paradox]]
+#+begin_quote
+  Project for modernizing Emacs' Package Menu. With package ratings, usage
+  statistics, customizability, and more.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package paradox
+  :leader-bind ("ap" . paradox-list-packages)
+  :evil-bind (:normal
+              paradox-menu-mode-map
+              ("(" . package-menu-toggle-hiding)
+              ("?" . package-menu-describe-package)
+              ("F" . package-menu-filter)
+              ("RET" . paradox-push-button)
+              ("S*" . paradox-sort-by-★)
+              ("Sp" . paradox-sort-by-package)
+              ("Ss" . paradox-sort-by-status)
+              ("TAB" . forward-button)
+              ("U" . package-menu-mark-upgrades)
+              ("d" . package-menu-mark-delete)
+              ("f" . hydra-paradox-filter/body)
+              ("i" . package-menu-mark-install)
+              ("q" . paradox-quit-and-close)
+              ("r" . package-menu-refresh)
+              ("u" . package-menu-mark-unmark)
+              ("vh" . paradox-menu-visit-homepage)
+              ("vl" . paradox-menu-view-commit-list)
+              ("x" . paradox-menu-execute)
+              ("~" . package-menu-mark-obsolete-for-deletion)
+              ([backtab] . backward-button))
+  :config
+  (setq paradox-execute-asynchronously t
+        paradox-github-token (password-store-get "tokens/github/paradox")
+        paradox-automatically-star nil))
+#+end_src
+
+**** [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store]]
+#+begin_src emacs-lisp
+(use-package password-store)
+#+end_src
+
+**** [[https://github.com/jschaf/esup][esup]]
+#+begin_quote
+  ESUP - Emacs Start Up Profiler
+#+end_quote
+#+begin_src emacs-lisp
+(use-package esup
+  :config
+  (setq esup-insignificant-time 0.001))
+#+end_src
+
+**** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
+#+begin_quote
+  Cursor stays vertically centered.
+#+end_quote
+I use this for reading, mostly.
+#+begin_src emacs-lisp
+(use-package centered-cursor-mode)
+#+end_src
+*** Hydras
+**** toggle
+#+begin_src emacs-lisp
+(with-eval-after-load 'hydra
+  (defvar flycheck-mode nil)
+  (defvar focus-mode nil)
+  (defhydra hydra-toggle (:color pink)
+    "
+_a_ abbrev:              %-3s`abbrev-mode   _d_ debug-on-error:      %-3s`debug-on-error   _P_ prettify-symbols:   %-3s`prettify-symbols-mode
+_i_ aggressive-indent:   %-3s`aggressive-indent-mode   _l_ nlinum:              %-3s`nlinum-mode   _F_ focus:              %-3s`focus-mode
+_c_ column-indicator:    %-3s`fci-mode   _p_ smartparens:         %-3s`smartparens-mode
+_f_ flycheck:            %-3s`flycheck-mode   _e_ evil-smartparens:    %-3s`evil-smartparens-mode
+_s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`global-whitespace-mode
+"
+    ("a" abbrev-mode nil)
+    ("i" aggressive-indent-mode nil)
+    ("d" toggle-debug-on-error nil)
+    ("c" fci-mode nil)
+    ("l" nlinum-mode nil)
+    ("p" smartparens-mode nil)
+    ("P" prettify-symbols-mode nil)
+    ("e" evil-smartparens-mode nil)
+    ("f" flycheck-mode nil)
+    ("F" focus-mode nil)
+    ("s" flyspell-mode nil)
+    ("w" global-whitespace-mode nil)
+    ("q" nil "quit")))
+#+end_src
+
+*** Bindings
+#+begin_src emacs-lisp
+(diego/set-leader-keys
+  "t"   'hydra-toggle/body)
+
+(with-eval-after-load 'evil
+  (evil-define-key 'normal custom-mode-map
+    "q" #'Custom-buffer-done)
+
+  (evil-add-hjkl-bindings occur-mode-map 'emacs
+    (kbd "/")       'evil-search-forward
+    (kbd "n")       'evil-search-next
+    (kbd "N")       'evil-search-previous
+    (kbd "C-d")     'evil-scroll-down
+    (kbd "C-u")     'evil-scroll-up
+    (kbd "C-w C-w") 'other-window))
+#+end_src
 ** Evil
 *** [[https://github.com/TheBB/evil-indent-plus][evil-indent-plus]]
 #+begin_quote
@@ -3743,7 +3807,6 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
   (elfeed-goodies/setup)
   (setq elfeed-goodies/entry-pane-position 'bottom))
 #+end_src
-
 * Fun
 ** Packages
 *** [[https://github.com/josuah/drawille][drawille]]
@@ -3877,20 +3940,9 @@ Source: http://tinyurl.com/lo96nwc"
     "agg" 'gomoku
     "agt" 'tetris))
 #+end_src
-* Local vars!
-I'll probably remove that exclamation point at some point, but right now I'm
-excited about file local vars.
 
-For org config.org
-#+begin_example
-# Local Variables:
-# after-save-hook: (git-gutter diego/async-tangle-init)
-# End:
-#+end_example
-
-
-* Packages
-** Misc utilities
+* Web?
+** Packages
 *** [[https://github.com/skeeto/elfeed][elfeed]]
 #+begin_quote
   An Emacs web feeds client
@@ -3930,47 +3982,6 @@ Configure the Elfeed RSS reader with an Orgmode file
   :config
   (add-hook 'elfeed-search-mode-hook (lambda () (evil-smartparens-mode -1))))
 #+end_src
-*** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
-Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted/flyspell-correct][d12frosted/flyspell-correct]]
-#+begin_src emacs-lisp
-(use-package flyspell
-  :config
-  (defun diego/flyspell-correct-next ()
-    (interactive "p")
-    (flyspell-goto-next-error)
-    (flyspell-auto-correct-word))
-
-  (defun diego/flyspell-add-to-dictionary ()
-    "Add word at point to flyspell dictionary at `/Users/diego/.ispell_english'.
-
-Source: http://tinyurl.com/k8g9sex"
-    (interactive)
-    (let ((current-location (point))
-          (word (flyspell-get-word)))
-      (when (consp word)
-        (flyspell-do-correct 'save
-                             nil
-                             (car word)
-                             current-location
-                             (cl-caddr word)
-                             (cl-caddr word)
-                             current-location)))))
-
-(use-package flyspell-correct-ivy
-  :after flyspell)
-#+end_src
-*** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
-#+begin_quote
-  Make Emacs' delete-by-moving-to-trash do what you expect it to do on OS X.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package osx-trash
-  :defer 5
-  :if (eq system-type 'darwin)
-  :config
-  (osx-trash-setup)
-  (setq delete-by-moving-to-trash t))
-#+end_src
 *** [[https://github.com/aaronbieber/sunshine.el][sunshine]]
 #+begin_quote
   An Emacs package for displaying the forecast from OpenWeatherMap.
@@ -3983,3 +3994,13 @@ Source: http://tinyurl.com/k8g9sex"
   (setq sunshine-location "02139,USA"
         sunshine-appid (password-store-get "api/openweathermap")))
 #+end_src
+* Local vars!
+I'll probably remove that exclamation point at some point, but right now I'm
+excited about file local vars.
+
+For org config.org
+#+begin_example
+# Local Variables:
+# after-save-hook: (git-gutter diego/async-tangle-init)
+# End:
+#+end_example
