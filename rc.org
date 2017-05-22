@@ -1949,7 +1949,7 @@ if [ "$1" = "iosevka" ]; then
     fc-cache -f -v
     echo -e "\e[92mDone!\e[0m"
 elif [ "$1" = "emacs" ]; then
-    [ ! -d "$HOME/.ghq/git.savannah.gnu.org/emacs/"] && \
+    [ ! -d "$HOME/.ghq/git.savannah.gnu.org/emacs/" ] && \
         ghq get git://git.savannah.gnu.org/emacs.git
     cd ~/.ghq/git.savannah.gnu.org/emacs/
     git pull
