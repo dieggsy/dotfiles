@@ -342,9 +342,6 @@ bindsym Mod1+space exec "rofi -combi-modi window,run -show combi -modi combi"
 # pass helper
 bindsym $mod+p exec "~/.password-store/.extensions/rofi.bash"
 
-# clipboard manager
-bindsym $mod+c exec "rofi -modi 'clipboard:greenclip print' -show clipboard"
-
 # File finder with ripgrep
 bindsym $mod+f exec --no-startup-id "~/bin/rofi-files"
 #+end_src
@@ -537,7 +534,6 @@ bindsym XF86LaunchA exec "scrot ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
 #+begin_src conf
 exec dropbox start
 exec sh ~/.fehbg
-exec greenclip daemon
 exec --no-startup-id /home/diego/.ghq/github.com/olemartinorg/i3-alternating-layout/alternating_layouts.py
 exec unclutter
 exec xset s off
@@ -2206,14 +2202,6 @@ name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
 name=$(~/.zplug/bin/rg -g "*.gpg" "$HOME/.password-store" --files \
            | sed 's@'"$HOME"'/\.password-store/\(.\+\?\)\.gpg@\1@' \
            | rofi -dmenu -i -p "[pass] ")
-
-if [[ -n "$name" ]]; then
-    ps axf | grep 'greenclip daemon' | grep -v grep | awk '{print $1}' | xargs kill -20
-    pass -c $name
-    sleep 45
-    greenclip print ' '
-    ps axf | grep 'greenclip daemon' | grep -v grep | awk '{print $1}' | xargs kill -18
-fi
 #+end_src
 ** pixelate
 :PROPERTIES:
