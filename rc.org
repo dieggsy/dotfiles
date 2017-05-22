@@ -1477,8 +1477,13 @@ windows:
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.Xresources")
 :END:
-
 #+begin_src conf-xdefaults
+Xft.antialias: 1
+Xft.hinting: 1
+Xft.rgba: rgb
+Xft.hinstyle: hintfull
+Xft.dpi: 184
+
 rofi.color-enabled: true
 rofi.font: Iosevka Term 20
 rofi.color-window: #282828, #fdf4c1, #fdf4c1
