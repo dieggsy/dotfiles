@@ -34,9 +34,9 @@ follow my example there? Whatever.
 - [[#files-and-buffers][Files and Buffers]]
 - [[#editing][Editing]]
 - [[#navigation][Navigation]]
-- [[#modes][Modes]]
 - [[#git-and-github][Git and github]]
 - [[#appearance][Appearance]]
+- [[#modes][Modes]]
 - [[#enhancements][Enhancements]]
 - [[#fun][Fun]]
 - [[#web][Web?]]
@@ -840,6 +840,13 @@ Source: http://tinyurl.com/k9j3bhg"
               :override
               #'diego/counsel-yank-pop-format-function))
 #+end_src
+*** [[https://github.com/Ilazki/prettify-utils.el][prettify-utils]]
+  #+begin_src emacs-lisp
+(use-package prettify-utils
+  :quelpa (prettify-utils
+           :fetcher github
+           :repo "Ilazki/prettify-utils.el"))
+  #+end_src
 *** [[http://orgmode.org/][org-mode]]
 #+begin_quote
   Org mode is for keeping notes, maintaining TODO lists, planning projects, and
@@ -874,134 +881,7 @@ I actually don't think I tried the former option, but the latter simply worked
 so I went with it.
 :END:
 
-**** Setup
-#+begin_src emacs-lisp
-(use-package org
-  :ensure org-plus-contrib
-  :defines (org-habit-graph-column)
-  :evil-bind (:normal
-              org-mode-map
-              ("RET" . diego/ret)
-              ("<" . org-metaleft)
-              (">" . org-metaright)
-              ("gh" . outline-up-heading)
-              ("gl" . outline-next-visible-heading)
-              ("gj" . org-forward-heading-same-level)
-              ("gk" . org-backward-heading-same-level)
-              ("gt" . org-todo)
-              ("ga" . org-archive-subtree)
-              ("M-l" . org-metaright)
-              ("M-h" . org-metaleft)
-              ("M-k" . org-metaup)
-              ("M-j" . org-metadown)
-              ("M-L" . org-shiftmetaright)
-              ("M-H" . org-shiftmetaleft)
-              ("M-K" . org-shiftmetaup)
-              ("M-J" . org-shiftmetadown))
-  :leader-bind (("C" . org-capture)
-                ("bo". org-iswitchb)
-                ("ao#" . org-agenda-list-stuck-projects)
-                ("ao/" . org-occur-in-agenda-files)
-                ("aoO" . org-clock-out)
-                ("aoa" . org-agenda-list)
-                ("aoe" . org-store-agenda-views)
-                ("aol" . org-store-link)
-                ("aom" . org-store-tags-view)
-                ("aoo" . org-agenda)
-                ("aos" . org-search-view)
-                ("aot" . org-todo-list))
-  :init
-  (setq org-list-allow-alphabetical t)
-  :config
-  (add-hook 'org-agenda-mode-hook #'diego/setup-org-agenda)
-  (add-hook 'org-mode-hook #'diego/setup-org-mode)
-  (require 'ox-extra)
-  (ox-extras-activate '(ignore-headlines)))
-#+end_src
-**** Bindings
-#+begin_src emacs-lisp
-(with-eval-after-load 'org
-  (defmacro diego|org-emphasize (fname char)
-    "Make function for setting the emphasis in org mode"
-    `(defun ,fname () (interactive)
-        (org-emphasize ,char)))
-
-  (diego/set-leader-keys-for-major-mode 'org-mode
-    "$"  'org-archive-subtree
-    "'"  'org-edit-special
-    "."  'org-time-stamp
-    "/"  'org-sparse-tree
-    ":"  'diego/org-set-tags
-    "A"  'org-archive-subtree
-    "N"  'widen
-    "P"  'org-set-property
-    "R"  'org-refile
-    "^"  'org-sort
-    "a"  'org-agenda
-    "c"  'org-capture
-    "d"  'org-deadline
-    "g"  'counsel-org-goto
-    "G"  'counsel-org-goto-all
-    "l"  'diego/org-choose-bullet-type
-    "n"  'org-narrow-to-subtree
-    "s"  'org-schedule
-
-    "ic" 'org-table-insert-column
-    "ir" 'org-table-insert-row
-    "il" 'org-insert-link
-    "if" 'org-footnote-new
-    "id" 'org-insert-drawer
-
-    "ed" 'org-export-dispatch
-    "eh" 'diego/org-hugo-export
-    "es" 'diego/eval-surrounding-sexp
-    "er" 'eval-region
-    "eb" 'diego/eval-buffer
-
-    "b"  'org-babel-tangle
-    "xb" (diego|org-emphasize diego/org-bold ?*)
-    "xi" (diego|org-emphasize diego/org-italic ?/)
-    "xc" (diego|org-emphasize diego/org-code ?~)
-    "xu" (diego|org-emphasize diego/org-underline ?_)
-    "xv" (diego|org-emphasize diego/org-verbatim ?=)
-    "xs" (diego|org-emphasize diego/org-strike-through ?+)
-    "xr" (diego|org-emphasize diego/org-clear ? )
-    "xq" 'diego/org-wrap-with-quote
-    "xx" 'org-cut-special
-    "xp" 'org-paste-special
-
-    ;; tables
-    "ta"  'org-table-align
-    "tb"  'org-table-blank-field
-    "tc"  'org-table-convert
-    "tdc" 'org-table-delete-column
-    "tdr" 'org-table-kill-row
-    "te"  'org-table-eval-formula
-    "tE"  'org-table-export
-    "th"  'org-table-previous-field
-    "tH"  'org-table-move-column-left
-    "tic" 'org-table-insert-column
-    "tih" 'org-table-insert-hline
-    "tiH" 'org-table-hline-and-move
-    "tir" 'org-table-insert-row
-    "tI"  'org-table-import
-    "tj"  'org-table-next-row
-    "tJ"  'org-table-move-row-down
-    "tK"  'org-table-move-row-up
-    "tl"  'org-table-next-field
-    "tL"  'org-table-move-column-right
-    "tn"  'org-table-create
-    "tN"  'org-table-create-with-table.el
-    "tr"  'org-table-recalculate
-    "ts"  'org-table-sort-lines
-    "ttf" 'org-table-toggle-formula-debugger
-    "tto" 'org-table-toggle-coordinate-overlays
-    "tw"  'org-table-wrap-region)
-
-  (diego/set-leader-keys-for-minor-mode 'org-src-mode
-    "'" 'org-edit-src-exit))
-#+end_src
-**** Custom vars
+**** Defaults
 ***** Files
 #+begin_src emacs-lisp
 (with-eval-after-load 'org
@@ -1073,6 +953,7 @@ so I went with it.
         org-outline-path-complete-in-steps nil
         org-link-search-must-match-exact-headline nil
         org-confirm-elisp-link-function 'y-or-n-p
+        org-edit-src-persistent-message nil
         org-confirm-elisp-link-not-regexp (concat "(\\(wiki-search"
                                                   "\\|describe-function"
                                                   "\\|describe-variable"
@@ -1116,36 +997,49 @@ so I went with it.
   (add-to-list 'org-latex-packages-alist '("" "color"))
   (add-to-list 'org-latex-packages-alist '("" "tabularx")))
 #+end_src
-**** Agenda config
+**** Package
 #+begin_src emacs-lisp
-(with-eval-after-load 'org-agenda
-  (bind-keys :map org-agenda-mode-map
-             ("j" . org-agenda-next-line)
-             ("k" . org-agenda-previous-line)
-             ("n" . org-agenda-next-date-line)
-             ("p" . org-agenda-previous-date-line)
-             ("c" . org-agenda-capture)
-             ("R" . org-revert-all-org-buffers)
-             ("RET" . org-agenda-switch-to)))
-
-(defun diego/setup-org-agenda ()
-  "Function called with `org-agenda-mode-hook'."
-  (setq org-habit-graph-column 50)
-
-  (setq-local prettify-symbols-alist
-              diego/org-prettify-alist)
-
-  (prettify-symbols-mode))
+(use-package org
+  :ensure org-plus-contrib
+  :defines (org-habit-graph-column)
+  :evil-bind (:normal
+              org-mode-map
+              ("RET" . diego/ret)
+              ("<" . org-metaleft)
+              (">" . org-metaright)
+              ("gh" . outline-up-heading)
+              ("gl" . outline-next-visible-heading)
+              ("gj" . org-forward-heading-same-level)
+              ("gk" . org-backward-heading-same-level)
+              ("gt" . org-todo)
+              ("ga" . org-archive-subtree)
+              ("M-l" . org-metaright)
+              ("M-h" . org-metaleft)
+              ("M-k" . org-metaup)
+              ("M-j" . org-metadown)
+              ("M-L" . org-shiftmetaright)
+              ("M-H" . org-shiftmetaleft)
+              ("M-K" . org-shiftmetaup)
+              ("M-J" . org-shiftmetadown))
+  :leader-bind (("C" . org-capture)
+                ("bo". org-iswitchb)
+                ("ao#" . org-agenda-list-stuck-projects)
+                ("ao/" . org-occur-in-agenda-files)
+                ("aoO" . org-clock-out)
+                ("aoa" . org-agenda-list)
+                ("aoe" . org-store-agenda-views)
+                ("aol" . org-store-link)
+                ("aom" . org-store-tags-view)
+                ("aoo" . org-agenda)
+                ("aos" . org-search-view)
+                ("aot" . org-todo-list))
+  :init
+  (setq org-list-allow-alphabetical t)
+  :config
+  (require 'ox-extra)
+  (ox-extras-activate '(ignore-headlines)))
 #+end_src
-**** Capture config
-#+begin_src emacs-lisp
-(with-eval-after-load 'org-capture
-  (diego/evil-bind-keys :insert org-capture-mode-mop
-                        ("C-d" . diego/org-agenda-toggle-date)
-                        :normal org-capture-mode-map
-                        ("C-d" . diego/org-agenda-toggle-date)))
-#+end_src
-**** Org config
+**** Variables
 #+begin_src emacs-lisp
 (defvar diego/org-prettify-alist
   (prettify-utils-generate
@@ -1155,23 +1049,8 @@ so I went with it.
    ("WAITING" "￭￭￭")
    ("CANCELED" "✗✗✗")
    ("DONE" "✓✓✓")))
-
-(defun diego/setup-org-mode ()
-  "Fuction called with `org-mode-hook'."
-  (require 'ox-md)
-  (dolist (char '("+" "-"))
-    (define-key org-mode-map (kbd char)
-      `(lambda ()
-         (interactive)
-         (diego/org-insert-list-leader-or-self ,char))))
-  (setq-local prettify-symbols-alist diego/org-prettify-alist)
-  (prettify-symbols-mode)
-  (org-bullets-mode 1)
-  (setq org-bullets-bullet-list '("•"))
-  (goto-address-mode)
-  (org-indent-mode))
 #+end_src
-**** Helper functions
+**** Functions
 #+begin_src emacs-lisp
 (with-eval-after-load 'org
   (defmacro diego|create-block-wrap (blocktype)
@@ -1186,13 +1065,16 @@ so I went with it.
          (insert (format "#+end_%s\n" (car (split-string ,blocktype))))
          (backward-paragrap))))
 
-
   (diego/repeat-calls diego|create-block-wrap 1
     "src"
     "src python"
     "src emacs-lisp"
     "export latex")
 
+  (defmacro diego|org-emphasize (fname char)
+    "Make function for setting the emphasis in org mode"
+    `(defun ,fname () (interactive)
+        (org-emphasize ,char)))
 
   (defun diego/org-agenda-toggle-date (current-line)
     "Toggle `SCHEDULED' and `DEADLINE' tag in the capture buffer.
@@ -1351,15 +1233,135 @@ Source: http://tinyurl.com/l3zpzse"
               (org-todo))))))))
 #+end_src
 **** Keyboard Macros
+***** TODO Turn this into an elisp function
 #+begin_src emacs-lisp
 (with-eval-after-load 'org
-  (fset 'diego/insert-footnote
-        [?/ ?\{ ?\[ ?0 ?- ?9 ?\] ?+ ?\} return ?a ?f ?n ?: escape ?  ?x ?p ?r ?\[])
-
   (fset 'diego/org-wrap-with-quote
         [?\{ ?i return ?# ?+ ?b ?e ?g ?i ?n ?_ ?q ?u ?o ?t ?e ?\C-/ ?\} ?i return
              up ?# ?+ ?e ?n ?d ?_ ?q ?u ?o ?t ?e ?\C-/ ?\{ ?j ?i ?  ?  ?\M-q
              ?\M-q ?\M-q ?\C-/]))
+#+end_src
+**** Bindings
+#+begin_src emacs-lisp
+(with-eval-after-load 'org
+  (diego/set-leader-keys-for-major-mode 'org-mode
+    "$"  'org-archive-subtree
+    "'"  'org-edit-special
+    "."  'org-time-stamp
+    "/"  'org-sparse-tree
+    ":"  'diego/org-set-tags
+    "A"  'org-archive-subtree
+    "N"  'widen
+    "P"  'org-set-property
+    "R"  'org-refile
+    "^"  'org-sort
+    "a"  'org-agenda
+    "c"  'org-capture
+    "d"  'org-deadline
+    "g"  'counsel-org-goto
+    "G"  'counsel-org-goto-all
+    "l"  'diego/org-choose-bullet-type
+    "n"  'org-narrow-to-subtree
+    "s"  'org-schedule
+
+    "ic" 'org-table-insert-column
+    "ir" 'org-table-insert-row
+    "il" 'org-insert-link
+    "if" 'org-footnote-new
+    "id" 'org-insert-drawer
+
+    "ed" 'org-export-dispatch
+    "eh" 'diego/org-hugo-export
+    "es" 'diego/eval-surrounding-sexp
+    "er" 'eval-region
+    "eb" 'diego/eval-buffer
+
+    "b"  'org-babel-tangle
+    "xb" (diego|org-emphasize diego/org-bold ?*)
+    "xi" (diego|org-emphasize diego/org-italic ?/)
+    "xc" (diego|org-emphasize diego/org-code ?~)
+    "xu" (diego|org-emphasize diego/org-underline ?_)
+    "xv" (diego|org-emphasize diego/org-verbatim ?=)
+    "xs" (diego|org-emphasize diego/org-strike-through ?+)
+    "xr" (diego|org-emphasize diego/org-clear ? )
+    "xq" 'diego/org-wrap-with-quote
+    "xx" 'org-cut-special
+    "xp" 'org-paste-special
+
+    ;; tables
+    "ta"  'org-table-align
+    "tb"  'org-table-blank-field
+    "tc"  'org-table-convert
+    "tdc" 'org-table-delete-column
+    "tdr" 'org-table-kill-row
+    "te"  'org-table-eval-formula
+    "tE"  'org-table-export
+    "th"  'org-table-previous-field
+    "tH"  'org-table-move-column-left
+    "tic" 'org-table-insert-column
+    "tih" 'org-table-insert-hline
+    "tiH" 'org-table-hline-and-move
+    "tir" 'org-table-insert-row
+    "tI"  'org-table-import
+    "tj"  'org-table-next-row
+    "tJ"  'org-table-move-row-down
+    "tK"  'org-table-move-row-up
+    "tl"  'org-table-next-field
+    "tL"  'org-table-move-column-right
+    "tn"  'org-table-create
+    "tN"  'org-table-create-with-table.el
+    "tr"  'org-table-recalculate
+    "ts"  'org-table-sort-lines
+    "ttf" 'org-table-toggle-formula-debugger
+    "tto" 'org-table-toggle-coordinate-overlays
+    "tw"  'org-table-wrap-region)
+
+  (diego/set-leader-keys-for-minor-mode 'org-src-mode
+    "'" 'org-edit-src-exit))
+#+end_src
+**** Setup
+***** Agenda
+#+begin_src emacs-lisp
+(with-eval-after-load 'org-agenda
+  (bind-keys :map org-agenda-mode-map
+             ("j" . org-agenda-next-line)
+             ("k" . org-agenda-previous-line)
+             ("n" . org-agenda-next-date-line)
+             ("p" . org-agenda-previous-date-line)
+             ("c" . org-agenda-capture)
+             ("R" . org-revert-all-org-buffers)
+             ("RET" . org-agenda-switch-to))
+  (setq org-habit-graph-column 50)
+
+  (diego/setup-mode org-agenda
+    (setq-local prettify-symbols-alist diego/org-prettify-alist)
+    (prettify-symbols-mode)))
+
+#+end_src
+***** Capture
+#+begin_src emacs-lisp
+(with-eval-after-load 'org-capture
+  (diego/evil-bind-keys :insert org-capture-mode-mop
+                        ("C-d" . diego/org-agenda-toggle-date)
+                        :normal org-capture-mode-map
+                        ("C-d" . diego/org-agenda-toggle-date)))
+#+end_src
+***** Org
+#+begin_src emacs-lisp
+(with-eval-after-load 'org
+  (dolist (char '("+" "-"))
+    (define-key org-mode-map (kbd char)
+      `(lambda ()
+         (interactive)
+         (diego/org-insert-list-leader-or-self ,char))))
+  (setq org-bullets-bullet-list '("•")))
+
+(diego/setup-mode org
+  (setq-local prettify-symbols-alist diego/org-prettify-alist)
+  (prettify-symbols-mode)
+  (org-bullets-mode 1)
+  (goto-address-mode)
+  (org-indent-mode))
 #+end_src
 *** [[https://github.com/abo-abo/hydra][hydra]]
 #+begin_quote
@@ -2601,502 +2603,6 @@ Source: http://tinyurl.com/koowarm"
     "wt" 'diego/toggle-window-split
     "wv" 'diego/split-vert-focus))
 #+end_src
-* Modes
-** Prog
-*** Packages
-**** [[https://github.com/CodeFalling/nlinum-relative][nlinum-relative]]
-#+begin_quote
-  Emacs relative line number besed on nlinum-mode
-#+end_quote
-#+begin_src emacs-lisp :tangle no
-(use-package nlinum-relative)
-#+end_src
-**** [[https://github.com/Malabarba/aggressive-indent-mode/][aggressive-indent]]
-#+begin_quote
-  Emacs minor mode that keeps your code always indented. More reliable than electric-indent-mode.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package aggressive-indent)
-#+end_src
-**** [[https://github.com/flycheck/flycheck][flycheck]]
-#+begin_quote
-  On the fly syntax checking for GNU Emacs
-#+end_quote
-#+begin_src emacs-lisp
-(use-package flycheck
-  :config
-  (setq flycheck-completing-read-function 'ivy-completing-read))
-#+end_src
-
-*** Setup
-#+begin_src emacs-lisp
-(diego/setup-mode prog
-  (subword-mode)
-  (smartparens-strict-mode)
-  (highlight-parentheses-mode 1)
-  (rainbow-delimiters-mode)
-  (goto-address-prog-mode)
-  (fci-mode)
-  (highlight-numbers-mode)
-  (nlinum-relative-mode 1)
-  (auto-fill-mode 1)
-  (setq-local comment-auto-fill-only-comments t)
-  (setq-local calc-embedded-open-mode (concat comment-start " "))
-  (setq-local calc-embedded-close-mode (concat comment-end "\n"))
-  (hl-line-mode 1))
-#+end_src
-** Python                                                             :lang:
-*** Packages
-**** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]
-#+begin_quote
-  Code navigation, documentation lookup and completion for Python.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package anaconda-mode)
-#+end_src
-**** [[https://github.com/proofit404/pyenv-mode][pyenv-mode]]
-#+begin_quote
-  Integrate pyenv with python-mode.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package pyenv-mode
-  :config
-  (pyenv-mode))
-#+end_src
-**** [[https://github.com/ssbb/pyenv-mode-auto][pyenv-mode-auto]]
-#+begin_src emacs-lisp
-(use-package pyenv-mode-auto
-  :after pyenv-mode)
-#+end_src
-
-**** [[https://github.com/naiquevin/sphinx-doc.el][sphinx-doc]]
-#+begin_quote
-   Generate Sphinx friendly docstrings for Python functions in Emacs
-#+end_quote
-Pretty neat, though not entirely complete, IMO.
-#+begin_src emacs-lisp
-(use-package sphinx-doc)
-#+end_src
-
-**** [[https://github.com/JorisE/yapfify][yapfify]]
-#+begin_quote
-  Yapf for Emacs
-#+end_quote
-#+begin_src emacs-lisp
-(use-package yapfify)
-#+end_src
-*** Variables
-#+begin_src emacs-lisp
-(defvar diego/python-prettify-alist
-  '(("<=" . "≤")
-    (">=" . "≥")
-    ("!=" . "≠")
-    ("is" . "≡")
-    ("=" . "←")
-    ("==" . "≣")
-    ("not" . "¬")
-    ("is not" . "≢")
-    ("sum" . "∑")
-    ("sqrt" . "√")
-    ("pi" . "π")
-    ("lambda" . "λ")
-    ("and" . "⋏")
-    ("or" . "⋎")
-    ("self" . "↻")
-    ("in" . "∈")
-    ("def" . "ƒ")
-    ("not in" . "∉")
-    ("return" . "→")
-    ("yield" . "⊢")
-    ("None" . "∅")
-    ("*" . "·")
-    ("inf" . "∞")
-    ("all" . "∀")
-    ("^" . "⊻")
-    ("**" . "^")))
-#+end_src
-*** Functions
-#+begin_src emacs-lisp
-(defun diego/ipython-shell ()
-  "Open an ipython shell using multi-term, respecting virtualenv."
-  (interactive)
-  (let ((sane-term-shell-command "ipython"))
-    (sane-term-create)))
-#+end_src
-*** Setup
-#+begin_src emacs-lisp
-(diego/setup-mode python
-  (set (make-local-variable 'comment-inline-offset) 2)
-  (anaconda-mode)
-  (anaconda-eldoc-mode)
-  (require 'company)
-  (add-to-list 'company-backends
-               (company-mode/backend-with-yas 'company-anaconda))
-  (setq-local prettify-symbols-alist
-              diego/python-prettify-alist)
-  (prettify-symbols-mode))
-#+end_src
-** Lisps                                                              :lang:
-*** Packages
-**** [[https://github.com/slime/slime][slime]]
-#+begin_quote
-  The Superior Lisp Interaction Mode for Emacs
-#+end_quote
-#+begin_src emacs-lisp
-(use-package slime
-  :evil-bind (:insert
-              slime-repl-mode-map
-              ([up] . slime-repl-previous-input)
-              ([down] . slime-repl-next-input))
-  :config
-  (setq inferior-lisp-program "/usr/local/bin/sbcl")
-  (setq slime-contribs '(slime-fancy slime-company)))
-
-(use-package slime-company
-  :after slime)
-#+end_src
-**** [[https://github.com/tkf/emacs-request][request]]
-#+begin_quote
-  Easy HTTP request for Emacs Lisp
-#+end_quote
-#+begin_src emacs-lisp
-(use-package request)
-
-(use-package request-deferred)
-#+end_src
-
-**** [[https://github.com/magnars/s.el][s]]
-#+begin_quote
-  The long lost Emacs string manipulation library.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package s)
-#+end_src
-
-**** [[https://github.com/magnars/dash.el][dash]]
-#+begin_quote
-  A modern list library for Emacs
-#+end_quote
-#+begin_src emacs-lisp
-(use-package dash)
-#+end_src
-
-**** [[https://github.com/purcell/flycheck-package][flycheck-package]]
-#+begin_src emacs-lisp
-(use-package flycheck-package
-  :after flycheck
-  :config
-  (flycheck-package-setup))
-#+end_src
-
-**** [[https://github.com/Silex/elmacro][elmacro]]
-#+begin_quote
-  Package to display keyboard macros or latest interactive commands as emacs lisp.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package elmacro
-  :disabled t
-  :defer 10
-  :config
-  (elmacro-mode))
-#+end_src
-**** [[https://github.com/Ilazki/prettify-utils.el][prettify-utils]]
-#+begin_src emacs-lisp
-(use-package prettify-utils
-  :quelpa (prettify-utils
-           :fetcher github
-           :repo "Ilazki/prettify-utils.el"))
-#+end_src
-
-*** Variables
-#+begin_src emacs-lisp
-(defvar diego/lisp-prettify-alist
-  (prettify-utils-generate
-   ("<=" "≤")
-   (">=" "≥")
-   ("/=" "≠")
-   ("eq" "≡")
-   ("equal" "≣")
-   ("sqrt" "√")
-   ("float-pi" "π")
-   ("lambda" "λ")
-   ("and" "⋏")
-   ("or" "⋎")
-   ("defun" "ƒ")
-   ("defmacro" "ƒₘ")
-   ("not" "¬")
-   ("nil" "∅")))
-#+end_src
-*** Functions
-#+begin_src emacs-lisp
-(defun diego/eval-surrounding-sexp (levels)
-  "Eval sexp around point, specifying depth with LEVELS.
-
-Source: http://tinyurl.com/le6wxuo"
-  (interactive "p")
-  (save-excursion
-    (up-list (abs levels))
-    (eval-last-sexp nil)))
-
-(defun diego/eval-next-sexp ()
-  "Eval next sexp (after point).
-
-Source: http://tinyurl.com/le6wxuo"
-  (interactive)
-  (save-excursion
-    (forward-sexp)
-    (eval-last-sexp nil)))
-
-(defun diego/eval-and-replace ()
-  "Replace the preceding sexp with its value.
-
-Source: http://tinyurl.com/mh5ev6x"
-  (interactive)
-  (forward-sexp)
-  (forward-char)
-  (backward-kill-sexp)
-  (condition-case nil
-      (prin1 (eval (read (current-kill 0)))
-             (current-buffer))
-    (error (message "Invalid expression")
-           (insert (current-kill 0)))))
-
-(defun diego/eval-buffer ()
-  (if (eq major-mode 'org-mode)
-      (org-babel-execute-src-block)
-    (eval-buffer)))
-#+end_src
-*** Bindings
-#+begin_src emacs-lisp
-(dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
-  (diego/set-leader-keys-for-major-mode mode
-    "eb" 'diego/eval-buffer
-    "ef" 'eval-defun
-    "er" 'eval-region
-    "eR" 'diego/eval-and-replace
-    "es" 'diego/eval-surrounding-sexp
-    "el" 'eval-last-sexp
-    "m"  'emacs-lisp-macroexpand))
-#+end_src
-*** Setup
-#+begin_src emacs-lisp
-(diego/setup-mode (lisp lisp-interaction emacs-lisp)
-  (hs-minor-mode)
-  (aggressive-indent-mode)
-  (bind-keys :map (current-local-map)
-             ("C-c <up>" . hs-hide-all)
-             ("C-c <down>" . hs-show-all)
-             ("C-c <left>" . hs-hide-block)
-             ("C-c <right>" . hs-show-block))
-
-  (setq-local prettify-symbols-alist diego/lisp-prettify-alist)
-  (prettify-symbols-mode))
-#+end_src
-** C                                                                  :lang:
-*** Setup
-#+begin_src emacs-lisp
-(diego/setup-mode c
-  (aggressive-indent-mode))
-#+end_src
-** Conf
-*** Setup
-#+begin_src emacs-lisp
-(diego/setup-mode conf
-  (highlight-numbers-mode)
-  (nlinum-relative-mode)
-  (rainbow-mode))
-#+end_src
-** Calc
-*** Defaults
-#+begin_src emacs-lisp
-(setq calc-multiplication-has-precedence nil)
-#+end_src
-*** Variables
-#+begin_src emacs-lisp
-(defvar var-G '(float 667408 -16)
-  "Universal gravitational constant.")
-
-(defvar var-c '299792458
-  "Speed of light in a vaccum.")
-#+end_src
-*** Bindings
-#+begin_src emacs-lisp
-(diego/set-leader-keys
-  "ac" 'calc-dispatch)
-#+end_src
-*** Setup
-#+begin_src emacs-lisp
-(diego/setup-mode calc
-  (local-set-key (kbd "x") (lambda () (interactive) (counsel-M-x "^calc-")))
-  (setq calc-symbolic-mode 1))
-#+end_src
-** Shell
-*** Packages
-**** egp
-#+begin_src emacs-lisp
-(use-package egp
-  :ensure nil
-  :after eshell
-  :config
-  (setq eshell-highlight-prompt nil
-        eshell-prompt-function 'egp-theme))
-#+end_src
-**** [[https://github.com/xuchunyang/eshell-z][eshell-z]]
-#+begin_quote
-  cd to frequent directory in eshell, an Emacs port of https://github.com/rupa/z
-#+end_quote
-#+begin_src emacs-lisp
-(use-package eshell-z
-  :after eshell)
-#+end_src
-**** [[https://github.com/adamrt/sane-term][sane-term]]
-#+begin_quote
-  Cycle through terms in emacs
-#+end_quote
-I wanted a slightly better terminal in emacs. This seems to do the trick.
-#+begin_src emacs-lisp
-(use-package sane-term
-  :leader-bind ("at" . sane-term-create))
-#+end_src
-
-*** Functions
-#+begin_src emacs-lisp
-(with-eval-after-load 'eshell
-  (defun eshell/clear ()
-    "Custom `eshell' clear function to clear to top."
-    (interactive)
-    (let ((inhibit-read-only t))
-      (erase-buffer))))
-#+end_src
-
-*** Setup
-#+begin_src emacs-lisp
-(diego/setup-mode term
-  (setq-local yas-dont-activate-functions t)
-  (local-set-key (kbd "<C-tab>") #'multi-term-next))
-#+end_src
-** Misc Modes
-*** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
-#+begin_quote
-  Major mode for editing comma/char separated values
-#+end_quote
-Eh, wanted to try a simpler way of editing csv files. (Excel and Numbers both
-kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
-#+begin_src emacs-lisp
-(use-package csv-mode
-  :mode "\\.csv\\'"
-  :config
-  (add-hook 'csv-mode-hook #'csv-align-fields))
-#+end_src
-*** [[https://github.com/Kitware/CMake][cmake-mode]]
-#+begin_src emacs-lisp
-(use-package cmake-mode)
-#+end_src
-*** [[http://jblevins.org/projects/markdown-mode/][markdown-mode]]
-Syntax highlighting for markdown files.
-#+begin_src emacs-lisp
-(use-package markdown-mode
-  :mode "\\.md\\'"
-  :config)
-#+end_src
-*** [[https://github.com/haskell/haskell-mode][haskell-mode]]
-#+begin_src emacs-lisp
-(use-package haskell-mode
-  :mode "\\.hs\\'"
-  :config
-  (setq haskell-indentation-layout-offset 4
-        haskell-indentation-left-offset 4
-        haskell-indentation-ifte-offset 4))
-
-#+end_src
-*** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
-#+begin_quote
-  The emacs major mode for editing files in the YAML data serialization format.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package yaml-mode
-  :mode "\\.yml\\'")
-#+end_src
-*** [[https://github.com/clojure-emacs/clojure-mode][clojure-mode]]
-#+begin_quote
-  Emacs support for the Clojure(Script) programming language
-#+end_quote
-#+begin_src emacs-lisp
-(use-package clojure-mode)
-#+end_src
-*** [[https://github.com/joshwnj/json-mode][json-mode]]
-#+begin_quote
-  Major mode for editing JSON files with emacs
-#+end_quote
-#+begin_src emacs-lisp
-(use-package json-mode
-  :mode "\\.json\\'")
-#+end_src
-*** [[https://github.com/defunkt/coffee-mode][coffee-mode]]
-#+begin_quote
-  Emacs Major Mode for CoffeeScript
-#+end_quote
-#+begin_src emacs-lisp
-(use-package coffee-mode
-  :mode "\\.coffee\\'")
-#+end_src
-*** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
-#+begin_quote
-  Jupyter and IPython 2.x/3.x notebook client in Emacs
-#+end_quote
-#+begin_src emacs-lisp
-(use-package ein)
-#+end_src
-*** [[https://github.com/immerrr/lua-mode][lua-mode]]
-#+begin_quote
-  Emacs major mode for editing Lua
-#+end_quote
-#+begin_src emacs-lisp
-(use-package lua-mode)
-#+end_src
-*** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]]
-#+begin_quote
-  Enables syntax highlighting for .vimrc/_vimrc files
-#+end_quote
-#+begin_src emacs-lisp
-(use-package vimrc-mode)
-#+end_src
-
-*** [[https://github.com/politza/pdf-tools][pdf-tools]]
-#+begin_quote
-  Emacs support library for PDF files.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package pdf-tools
-  :defer 10
-  :evil-bind (:normal
-              pdf-view-mode-map
-              ("s" . pdf-view-fit-width-to-window)
-              ("a" . pdf-view-fit-height-to-window)
-              ("/" . isearch-forward)
-              ("J" . pdf-view-next-page)
-              ("K" . pdf-view-previous-page)
-              ("j" . pdf-view-next-line-or-next-page)
-              ("k" . pdf-view-previou-line-or-previous-page)
-              ("-" . pdf-view-shrink)
-              ("+" . pdf-view-enlarg))
-  :config
-  (pdf-tools-install))
-#+end_src
-*** [[https://github.com/fxbois/web-mode][web-mode]]
-#+begin_src emacs-lisp
-(use-package web-mode
-  :mode ("\\.html?\\'" "\\.xml\\'" "\\.launch\\'")
-  :config
-  (setq web-mode-markup-indent-offset 2))
-#+end_src
-*** [[https://github.com/therockmandolinist/turing-machine][turing-machine]]
-#+begin_src emacs-lisp
-(use-package turing-machine
-  :quelpa (turing-machine
-           :fetcher github
-           :repo "therockmandolinist/turing-machine"))
-#+end_src
 * Git and github
 ** Packages
 *** [[https://github.com/magit/magit][magit]]
@@ -3481,6 +2987,495 @@ Better parentheses coloring
 #+begin_src emacs-lisp
 (diego/set-leader-keys
   "z" 'hydra-zoom/body)
+#+end_src
+* Modes
+** Prog
+*** Packages
+**** [[https://github.com/CodeFalling/nlinum-relative][nlinum-relative]]
+#+begin_quote
+  Emacs relative line number besed on nlinum-mode
+#+end_quote
+#+begin_src emacs-lisp :tangle no
+(use-package nlinum-relative)
+#+end_src
+**** [[https://github.com/Malabarba/aggressive-indent-mode/][aggressive-indent]]
+#+begin_quote
+  Emacs minor mode that keeps your code always indented. More reliable than electric-indent-mode.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package aggressive-indent)
+#+end_src
+**** [[https://github.com/flycheck/flycheck][flycheck]]
+#+begin_quote
+  On the fly syntax checking for GNU Emacs
+#+end_quote
+#+begin_src emacs-lisp
+(use-package flycheck
+  :config
+  (setq flycheck-completing-read-function 'ivy-completing-read))
+#+end_src
+
+*** Setup
+#+begin_src emacs-lisp
+(diego/setup-mode prog
+  (subword-mode)
+  (smartparens-strict-mode)
+  (highlight-parentheses-mode 1)
+  (rainbow-delimiters-mode)
+  (goto-address-prog-mode)
+  (fci-mode)
+  (highlight-numbers-mode)
+  (nlinum-relative-mode 1)
+  (auto-fill-mode 1)
+  (setq-local comment-auto-fill-only-comments t)
+  (setq-local calc-embedded-open-mode (concat comment-start " "))
+  (setq-local calc-embedded-close-mode (concat comment-end "\n"))
+  (hl-line-mode 1))
+#+end_src
+** Python                                                             :lang:
+*** Packages
+**** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]
+#+begin_quote
+  Code navigation, documentation lookup and completion for Python.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package anaconda-mode)
+#+end_src
+**** [[https://github.com/proofit404/pyenv-mode][pyenv-mode]]
+#+begin_quote
+  Integrate pyenv with python-mode.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package pyenv-mode
+  :config
+  (pyenv-mode))
+#+end_src
+**** [[https://github.com/ssbb/pyenv-mode-auto][pyenv-mode-auto]]
+#+begin_src emacs-lisp
+(use-package pyenv-mode-auto
+  :after pyenv-mode)
+#+end_src
+
+**** [[https://github.com/naiquevin/sphinx-doc.el][sphinx-doc]]
+#+begin_quote
+   Generate Sphinx friendly docstrings for Python functions in Emacs
+#+end_quote
+Pretty neat, though not entirely complete, IMO.
+#+begin_src emacs-lisp
+(use-package sphinx-doc)
+#+end_src
+
+**** [[https://github.com/JorisE/yapfify][yapfify]]
+#+begin_quote
+  Yapf for Emacs
+#+end_quote
+#+begin_src emacs-lisp
+(use-package yapfify)
+#+end_src
+*** Variables
+#+begin_src emacs-lisp
+(defvar diego/python-prettify-alist
+  '(("<=" . "≤")
+    (">=" . "≥")
+    ("!=" . "≠")
+    ("is" . "≡")
+    ("=" . "←")
+    ("==" . "≣")
+    ("not" . "¬")
+    ("is not" . "≢")
+    ("sum" . "∑")
+    ("sqrt" . "√")
+    ("pi" . "π")
+    ("lambda" . "λ")
+    ("and" . "⋏")
+    ("or" . "⋎")
+    ("self" . "↻")
+    ("in" . "∈")
+    ("def" . "ƒ")
+    ("not in" . "∉")
+    ("return" . "→")
+    ("yield" . "⊢")
+    ("None" . "∅")
+    ("*" . "·")
+    ("inf" . "∞")
+    ("all" . "∀")
+    ("^" . "⊻")
+    ("**" . "^")))
+#+end_src
+*** Functions
+#+begin_src emacs-lisp
+(defun diego/ipython-shell ()
+  "Open an ipython shell using multi-term, respecting virtualenv."
+  (interactive)
+  (let ((sane-term-shell-command "ipython"))
+    (sane-term-create)))
+#+end_src
+*** Setup
+#+begin_src emacs-lisp
+(diego/setup-mode python
+  (set (make-local-variable 'comment-inline-offset) 2)
+  (anaconda-mode)
+  (anaconda-eldoc-mode)
+  (require 'company)
+  (add-to-list 'company-backends
+               (company-mode/backend-with-yas 'company-anaconda))
+  (setq-local prettify-symbols-alist
+              diego/python-prettify-alist)
+  (prettify-symbols-mode))
+#+end_src
+** Lisps                                                              :lang:
+*** Packages
+**** [[https://github.com/slime/slime][slime]]
+#+begin_quote
+  The Superior Lisp Interaction Mode for Emacs
+#+end_quote
+#+begin_src emacs-lisp
+(use-package slime
+  :evil-bind (:insert
+              slime-repl-mode-map
+              ([up] . slime-repl-previous-input)
+              ([down] . slime-repl-next-input))
+  :config
+  (setq inferior-lisp-program "/usr/local/bin/sbcl")
+  (setq slime-contribs '(slime-fancy slime-company)))
+
+(use-package slime-company
+  :after slime)
+#+end_src
+**** [[https://github.com/tkf/emacs-request][request]]
+#+begin_quote
+  Easy HTTP request for Emacs Lisp
+#+end_quote
+#+begin_src emacs-lisp
+(use-package request)
+
+(use-package request-deferred)
+#+end_src
+
+**** [[https://github.com/magnars/s.el][s]]
+#+begin_quote
+  The long lost Emacs string manipulation library.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package s)
+#+end_src
+
+**** [[https://github.com/magnars/dash.el][dash]]
+#+begin_quote
+  A modern list library for Emacs
+#+end_quote
+#+begin_src emacs-lisp
+(use-package dash)
+#+end_src
+
+**** [[https://github.com/purcell/flycheck-package][flycheck-package]]
+#+begin_src emacs-lisp
+(use-package flycheck-package
+  :after flycheck
+  :config
+  (flycheck-package-setup))
+#+end_src
+
+**** [[https://github.com/Silex/elmacro][elmacro]]
+#+begin_quote
+  Package to display keyboard macros or latest interactive commands as emacs lisp.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package elmacro
+  :disabled t
+  :defer 10
+  :config
+  (elmacro-mode))
+#+end_src
+
+*** Variables
+#+begin_src emacs-lisp
+(defvar diego/lisp-prettify-alist
+  (prettify-utils-generate
+   ("<=" "≤")
+   (">=" "≥")
+   ("/=" "≠")
+   ("eq" "≡")
+   ("equal" "≣")
+   ("sqrt" "√")
+   ("float-pi" "π")
+   ("lambda" "λ")
+   ("and" "⋏")
+   ("or" "⋎")
+   ("defun" "ƒ")
+   ("defmacro" "ƒₘ")
+   ("not" "¬")
+   ("nil" "∅")))
+#+end_src
+*** Functions
+#+begin_src emacs-lisp
+(defun diego/eval-surrounding-sexp (levels)
+  "Eval sexp around point, specifying depth with LEVELS.
+
+Source: http://tinyurl.com/le6wxuo"
+  (interactive "p")
+  (save-excursion
+    (up-list (abs levels))
+    (eval-last-sexp nil)))
+
+(defun diego/eval-next-sexp ()
+  "Eval next sexp (after point).
+
+Source: http://tinyurl.com/le6wxuo"
+  (interactive)
+  (save-excursion
+    (forward-sexp)
+    (eval-last-sexp nil)))
+
+(defun diego/eval-and-replace ()
+  "Replace the preceding sexp with its value.
+
+Source: http://tinyurl.com/mh5ev6x"
+  (interactive)
+  (forward-sexp)
+  (forward-char)
+  (backward-kill-sexp)
+  (condition-case nil
+      (prin1 (eval (read (current-kill 0)))
+             (current-buffer))
+    (error (message "Invalid expression")
+           (insert (current-kill 0)))))
+
+(defun diego/eval-buffer ()
+  (if (eq major-mode 'org-mode)
+      (org-babel-execute-src-block)
+    (eval-buffer)))
+#+end_src
+*** Bindings
+#+begin_src emacs-lisp
+(dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
+  (diego/set-leader-keys-for-major-mode mode
+    "eb" 'diego/eval-buffer
+    "ef" 'eval-defun
+    "er" 'eval-region
+    "eR" 'diego/eval-and-replace
+    "es" 'diego/eval-surrounding-sexp
+    "el" 'eval-last-sexp
+    "m"  'emacs-lisp-macroexpand))
+#+end_src
+*** Setup
+#+begin_src emacs-lisp
+(diego/setup-mode (lisp lisp-interaction emacs-lisp)
+  (hs-minor-mode)
+  (aggressive-indent-mode)
+  (bind-keys :map (current-local-map)
+             ("C-c <up>" . hs-hide-all)
+             ("C-c <down>" . hs-show-all)
+             ("C-c <left>" . hs-hide-block)
+             ("C-c <right>" . hs-show-block))
+
+  (setq-local prettify-symbols-alist diego/lisp-prettify-alist)
+  (prettify-symbols-mode))
+#+end_src
+** C                                                                  :lang:
+*** Setup
+#+begin_src emacs-lisp
+(diego/setup-mode c
+  (aggressive-indent-mode))
+#+end_src
+** Conf
+*** Setup
+#+begin_src emacs-lisp
+(diego/setup-mode conf
+  (highlight-numbers-mode)
+  (nlinum-relative-mode)
+  (rainbow-mode))
+#+end_src
+** Calc
+*** Defaults
+#+begin_src emacs-lisp
+(setq calc-multiplication-has-precedence nil)
+#+end_src
+*** Variables
+#+begin_src emacs-lisp
+(defvar var-G '(float 667408 -16)
+  "Universal gravitational constant.")
+
+(defvar var-c '299792458
+  "Speed of light in a vaccum.")
+#+end_src
+*** Bindings
+#+begin_src emacs-lisp
+(diego/set-leader-keys
+  "ac" 'calc-dispatch)
+#+end_src
+*** Setup
+#+begin_src emacs-lisp
+(diego/setup-mode calc
+  (local-set-key (kbd "x") (lambda () (interactive) (counsel-M-x "^calc-")))
+  (setq calc-symbolic-mode 1))
+#+end_src
+** Shell
+*** Packages
+**** egp
+#+begin_src emacs-lisp
+(use-package egp
+  :ensure nil
+  :after eshell
+  :config
+  (setq eshell-highlight-prompt nil
+        eshell-prompt-function 'egp-theme))
+#+end_src
+**** [[https://github.com/xuchunyang/eshell-z][eshell-z]]
+#+begin_quote
+  cd to frequent directory in eshell, an Emacs port of https://github.com/rupa/z
+#+end_quote
+#+begin_src emacs-lisp
+(use-package eshell-z
+  :after eshell)
+#+end_src
+**** [[https://github.com/adamrt/sane-term][sane-term]]
+#+begin_quote
+  Cycle through terms in emacs
+#+end_quote
+I wanted a slightly better terminal in emacs. This seems to do the trick.
+#+begin_src emacs-lisp
+(use-package sane-term
+  :leader-bind ("at" . sane-term-create))
+#+end_src
+
+*** Functions
+#+begin_src emacs-lisp
+(with-eval-after-load 'eshell
+  (defun eshell/clear ()
+    "Custom `eshell' clear function to clear to top."
+    (interactive)
+    (let ((inhibit-read-only t))
+      (erase-buffer))))
+#+end_src
+
+*** Setup
+#+begin_src emacs-lisp
+(diego/setup-mode term
+  (setq-local yas-dont-activate-functions t)
+  (local-set-key (kbd "<C-tab>") #'multi-term-next))
+#+end_src
+** Misc Modes
+*** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
+#+begin_quote
+  Major mode for editing comma/char separated values
+#+end_quote
+Eh, wanted to try a simpler way of editing csv files. (Excel and Numbers both
+kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
+#+begin_src emacs-lisp
+(use-package csv-mode
+  :mode "\\.csv\\'"
+  :config
+  (add-hook 'csv-mode-hook #'csv-align-fields))
+#+end_src
+*** [[https://github.com/Kitware/CMake][cmake-mode]]
+#+begin_src emacs-lisp
+(use-package cmake-mode)
+#+end_src
+*** [[http://jblevins.org/projects/markdown-mode/][markdown-mode]]
+Syntax highlighting for markdown files.
+#+begin_src emacs-lisp
+(use-package markdown-mode
+  :mode "\\.md\\'"
+  :config)
+#+end_src
+*** [[https://github.com/haskell/haskell-mode][haskell-mode]]
+#+begin_src emacs-lisp
+(use-package haskell-mode
+  :mode "\\.hs\\'"
+  :config
+  (setq haskell-indentation-layout-offset 4
+        haskell-indentation-left-offset 4
+        haskell-indentation-ifte-offset 4))
+
+#+end_src
+*** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
+#+begin_quote
+  The emacs major mode for editing files in the YAML data serialization format.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package yaml-mode
+  :mode "\\.yml\\'")
+#+end_src
+*** [[https://github.com/clojure-emacs/clojure-mode][clojure-mode]]
+#+begin_quote
+  Emacs support for the Clojure(Script) programming language
+#+end_quote
+#+begin_src emacs-lisp
+(use-package clojure-mode)
+#+end_src
+*** [[https://github.com/joshwnj/json-mode][json-mode]]
+#+begin_quote
+  Major mode for editing JSON files with emacs
+#+end_quote
+#+begin_src emacs-lisp
+(use-package json-mode
+  :mode "\\.json\\'")
+#+end_src
+*** [[https://github.com/defunkt/coffee-mode][coffee-mode]]
+#+begin_quote
+  Emacs Major Mode for CoffeeScript
+#+end_quote
+#+begin_src emacs-lisp
+(use-package coffee-mode
+  :mode "\\.coffee\\'")
+#+end_src
+*** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
+#+begin_quote
+  Jupyter and IPython 2.x/3.x notebook client in Emacs
+#+end_quote
+#+begin_src emacs-lisp
+(use-package ein)
+#+end_src
+*** [[https://github.com/immerrr/lua-mode][lua-mode]]
+#+begin_quote
+  Emacs major mode for editing Lua
+#+end_quote
+#+begin_src emacs-lisp
+(use-package lua-mode)
+#+end_src
+*** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]]
+#+begin_quote
+  Enables syntax highlighting for .vimrc/_vimrc files
+#+end_quote
+#+begin_src emacs-lisp
+(use-package vimrc-mode)
+#+end_src
+
+*** [[https://github.com/politza/pdf-tools][pdf-tools]]
+#+begin_quote
+  Emacs support library for PDF files.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package pdf-tools
+  :defer 10
+  :evil-bind (:normal
+              pdf-view-mode-map
+              ("s" . pdf-view-fit-width-to-window)
+              ("a" . pdf-view-fit-height-to-window)
+              ("/" . isearch-forward)
+              ("J" . pdf-view-next-page)
+              ("K" . pdf-view-previous-page)
+              ("j" . pdf-view-next-line-or-next-page)
+              ("k" . pdf-view-previou-line-or-previous-page)
+              ("-" . pdf-view-shrink)
+              ("+" . pdf-view-enlarg))
+  :config
+  (pdf-tools-install))
+#+end_src
+*** [[https://github.com/fxbois/web-mode][web-mode]]
+#+begin_src emacs-lisp
+(use-package web-mode
+  :mode ("\\.html?\\'" "\\.xml\\'" "\\.launch\\'")
+  :config
+  (setq web-mode-markup-indent-offset 2))
+#+end_src
+*** [[https://github.com/therockmandolinist/turing-machine][turing-machine]]
+#+begin_src emacs-lisp
+(use-package turing-machine
+  :quelpa (turing-machine
+           :fetcher github
+           :repo "therockmandolinist/turing-machine"))
 #+end_src
 * Enhancements
 ** Emacs
