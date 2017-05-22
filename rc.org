@@ -66,13 +66,6 @@ if [ -n "$BASH_VERSION" ]; then
     fi
 fi
 #+end_src
-Caps lock is the most useless key.
-#+begin_src sh
-if [ "$(uname)" == "Linux" ]; then
-    xcape -e 'Control_L=Escape'
-    setxkbmap -option caps:ctrl_modifier
-fi
-#+end_src
 ** cookiecutterrc
 :PROPERTIES:
 :header-args+: :tangle ~/.cookiecutterrc
@@ -539,6 +532,10 @@ exec unclutter
 exec xset s off
 exec xset r rate 300 50
 exec setxkbmap dvorak
+exec xcape -e 'Control_L=Escape'
+exec --no-startup-id setxkbmap -option 'caps:ctrl_modifier'
+exec --no-startup-id synclient HorizEdgeScroll=1 VertEdgeScroll=1 VertScrollDelta=-111
+exec nm-applet
 #+end_src
 *** i3blocks
 :PROPERTIES:
