@@ -3280,6 +3280,34 @@ Source: http://tinyurl.com/mh5ev6x"
 (diego/setup-mode c
   (aggressive-indent-mode))
 #+end_src
+** Haskell                                                            :lang:
+*** Packages
+**** [[https://github.com/haskell/haskell-mode][haskell-mode]]
+#+begin_src emacs-lisp
+(use-package haskell-mode
+  :mode "\\.hs\\'"
+  :config
+  (setq haskell-indentation-layout-offset 4
+        haskell-indentation-left-offset 4
+        haskell-indentation-ifte-offset 4))
+
+#+end_src
+*** Variables
+#+begin_src emacs-lisp
+(defvar diego/haskell-prettify-alist
+  '(("=>" . "⇒")
+    ("forall" . "∀")
+    ("->" . "→")
+    ("<-" . "←")
+    ("not" . "¬")
+    ("lambda" . "λ")))
+#+end_src
+*** Setup
+#+begin_src emacs-lisp
+(diego/setup-mode haskell
+  (setq-local prettify-symbols-alist diego/haskell-prettify-alist)
+  (prettify-symbols-mode))
+#+end_src
 ** Conf
 *** Setup
 #+begin_src emacs-lisp
@@ -3380,16 +3408,6 @@ Syntax highlighting for markdown files.
 (use-package markdown-mode
   :mode "\\.md\\'"
   :config)
-#+end_src
-*** [[https://github.com/haskell/haskell-mode][haskell-mode]]
-#+begin_src emacs-lisp
-(use-package haskell-mode
-  :mode "\\.hs\\'"
-  :config
-  (setq haskell-indentation-layout-offset 4
-        haskell-indentation-left-offset 4
-        haskell-indentation-ifte-offset 4))
-
 #+end_src
 *** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
 #+begin_quote
