@@ -439,6 +439,7 @@ path=(
     /usr/local/{bin,sbin}
     $path
     $GOPATH/bin
+    $GOROOT/bin
 )
 
 fpath=(
