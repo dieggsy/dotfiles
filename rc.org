@@ -336,7 +336,7 @@ bindsym Mod1+space exec "rofi -combi-modi window,run -show combi -modi combi"
 bindsym $mod+p exec "~/.password-store/.extensions/rofi.bash"
 
 # File finder with ripgrep
-bindsym $mod+f exec --no-startup-id "~/bin/rofi-files"
+bindsym $mod+f exec "~/bin/rofi-files"
 #+end_src
 **** Scratchpad and floating
 #+begin_src conf
@@ -345,7 +345,7 @@ bindsym $mod+minus move scratchpad
 bindsym $mod+shift+minus scratchpad show
 
 # Floating editor
-exec emacs
+exec --no-startup-id emacs
 for_window [title="^emacs@Ragnarok$"] floating enable;
 for_window [title="^emacs@Ragnarok$"] move scratchpad; [title="^emacs@Ragnarok$"] scratchpad show; move scratchpad
 bindsym $mod+space [title="^emacs@Ragnarok$"] scratchpad show
@@ -353,7 +353,7 @@ bindsym $mod+space [title="^emacs@Ragnarok$"] scratchpad show
 # Floating terminal
 exec --no-startup-id termite --name=dropmite
 for_window [instance="dropmite"] floating enable;
-for_window [instance="dropmite"] move scratchpad; [instance="dropmite"] scratchpad show; resize set 2446 607; move absolute position 59px 95px; move scratchpad
+for_window [instance="dropmite"] move scratchpad; [instance="dropmite"] scratchpad show; resize set 2446 585; move absolute position 59px 95px; move scratchpad
 bindsym $mod+Return [instance="dropmite"] scratchpad show
 #+end_src
 **** Focus
@@ -525,17 +525,16 @@ bindsym XF86LaunchA exec "scrot ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
 #+end_src
 **** Startup Programs/Commands
 #+begin_src conf
-exec dropbox start
-exec sh ~/.fehbg
+exec --no-startup-id dropbox start
+exec --no-startup-id sh ~/.fehbg
 exec --no-startup-id /home/diego/.ghq/github.com/olemartinorg/i3-alternating-layout/alternating_layouts.py
-exec unclutter
-exec xset s off
-exec xset r rate 300 50
-exec setxkbmap dvorak
-exec xcape -e 'Control_L=Escape'
+exec --no-startup-id unclutter
+exec --no-startup-id xset s off
+exec --no-startup-id xset r rate 300 50
+exec --no-startup-id setxkbmap dvorak
+exec --no-startup-id xcape -e 'Control_L=Escape;Caps_Lock=Escape'
 exec --no-startup-id setxkbmap -option 'caps:ctrl_modifier'
-exec --no-startup-id synclient HorizEdgeScroll=1 VertEdgeScroll=1 VertScrollDelta=-111
-exec nm-applet
+exec --no-startup-id nm-applet
 #+end_src
 *** i3blocks
 :PROPERTIES:
@@ -1922,7 +1921,7 @@ echo "\n\e[1;34mInstalling: \e[91mpip3 programs\e[0;97m"
 
 pyenv global $python2version
 echo "\n\e[1;34mInstalling: \e[91mpip2 programs\e[0;97m"
-<~/Dropbox\ \(MIT\)/installed-programs/pip3.txt xargs pip install
+<~/Dropbox\ \(MIT\)/installed-programs/pip2.txt xargs pip install
 
 pyenv global $python3version
 #+end_src
@@ -2206,6 +2205,8 @@ name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
 name=$(~/.zplug/bin/rg -g "*.gpg" "$HOME/.password-store" --files \
            | sed 's@'"$HOME"'/\.password-store/\(.\+\?\)\.gpg@\1@' \
            | rofi -dmenu -i -p "[pass] ")
+
+pass -c $name
 #+end_src
 ** pixelate
 :PROPERTIES:
