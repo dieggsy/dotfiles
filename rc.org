@@ -307,7 +307,7 @@ set $mod Mod4
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:Iosevka 8
+font pango:Iosevka Term 8.5
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -474,8 +474,8 @@ bindsym $mod+r mode "resize"
 bar {
     status_command i3blocks
     position top
-    font pango:Iosevka, FontAwesome 8.5
     tray_output none
+    font pango:Iosevka Term, FontAwesome 8.5
     colors {
         background #282828
         statusline #fdf4c1
@@ -1485,13 +1485,15 @@ Xft.hinstyle: hintfull
 Xft.dpi: 184
 
 rofi.color-enabled: true
-rofi.font: Iosevka Term 20
+rofi.font: iosevka term 20
 rofi.color-window: #282828, #fdf4c1, #fdf4c1
 rofi.color-normal: #282828, #fdf4c1, #282828, #3c3836, #fdf4c1
 rofi.color-active: #282828, #B8BB26, #282828, #3c3836, #B8BB26
 rofi.color-urgent: #282828, #FB4933, #282828, #3c3836, #FB4933
 
-Emacs.font: Iosevka-9.5
+Emacs.fontBackend: xft, x
+Emacs.font: iosevka term-9.5
+Emacs.FontBackend: x
 Emacs*geometry: 99x41
 #+end_src
 ** zathurarc
@@ -1943,13 +1945,13 @@ if [ "$1" = "iosevka" ]; then
     make clean
     echo -e "\e[94mMaking configs...\e[0m"
     make custom-config set=term design='v-l-tailed v-i-hooky v-a-singlestorey v-zero-dotted v-asterisk-low v-g-singlestorey v-brace-straight term'
-    make custom-config set=input design='v-l-tailed v-i-hooky v-a-singlestorey v-zero-dotted v-asterisk-low v-g-singlestorey v-brace-straight'
+    # make custom-config set=input design='v-l-tailed v-i-hooky v-a-singlestorey v-zero-dotted v-asterisk-low v-g-singlestorey v-brace-straight'
     echo -e "\e[94mMaking fonts...\e[0m"
     make custom set=term
-    make custom set=input
+    # make custom set=input
     echo -e "\e[94mMoving fonts\e[0m"
     mv dist/iosevka-term ~/.local/share/fonts/
-    mv dist/iosevka-input ~/.local/share/fonts/
+    # mv dist/iosevka-input ~/.local/share/fonts/
     echo -e "\e[94mRebuilding font cache...\e[0m"
     fc-cache -f -v
     echo -e "\e[92mDone!\e[0m"
