@@ -10,7 +10,7 @@ readable in org format than in rendered markdown.
 * Contents                                                              :toc:
 - [[#intro][Intro]]
 - [[#config][Config]]
-  - [[#profile][.profile]]
+  - [[#profile][profile]]
   - [[#cookiecutterrc][cookiecutterrc]]
   - [[#cvimrc][cvimrc]]
   - [[#darktooththeme-cmus][darktooth.theme (cmus)]]
@@ -52,7 +52,7 @@ readable in org format than in rendered markdown.
 - [[#local-vars][Local vars]]
 
 * Config
-** .profile
+** profile
 :PROPERTIES:
 :header-args+: :tangle ~/.profile
 :END:

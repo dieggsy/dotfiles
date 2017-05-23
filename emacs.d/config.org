@@ -5,7 +5,7 @@
 
 This is the bulk of my emacs configuration, loaded by [[./init.el][init.el]]. It's pretty cool
 that I can write it in org mode, because easy organization and rearrangement
-are pretty sweet. Check out [[https://github.com/aaronbieber/dotfiles/tree/master/configs/emacs.d][@aaronbieber]], [[https://github.com/hrs/dotfiles/tree/master/emacs.d][@hrs]], and [[https://github.com/syl20bnr/spacemacs][spacemacs]] - a lot of the
+are sweet. Check out [[https://github.com/aaronbieber/dotfiles/tree/master/configs/emacs.d][@aaronbieber]], [[https://github.com/hrs/dotfiles/tree/master/emacs.d][@hrs]], and [[https://github.com/syl20bnr/spacemacs][spacemacs]] - a lot of the
 inspiration (and erm, code) for this is taken from them.
 
 :NOTE:
@@ -841,12 +841,12 @@ Source: http://tinyurl.com/k9j3bhg"
               #'diego/counsel-yank-pop-format-function))
 #+end_src
 *** [[https://github.com/Ilazki/prettify-utils.el][prettify-utils]]
-  #+begin_src emacs-lisp
+#+begin_src emacs-lisp
 (use-package prettify-utils
   :quelpa (prettify-utils
            :fetcher github
            :repo "Ilazki/prettify-utils.el"))
-  #+end_src
+#+end_src
 *** [[http://orgmode.org/][org-mode]]
 #+begin_quote
   Org mode is for keeping notes, maintaining TODO lists, planning projects, and
