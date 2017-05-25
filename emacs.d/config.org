@@ -928,12 +928,6 @@ so I went with it.
   (setq org-capture-templates
         '(("t" "Todo")
           ("ts" "Todo: School")
-          ("tsU" "UROP" entry
-           (file+olp diego/todo-file "School" "School" "UROP")
-           "* TODO %?\nDEADLINE: %^t")
-          ("ts6" "622" entry
-           (file+olp diego/todo-file "School" "School" "622")
-           "* TODO %?\nDEADLINE: %^t")
           ("te" "Todo: Emacs" entry
            (file+olp diego/todo-file "Emacs")
            "* TODO %?")
@@ -983,7 +977,7 @@ so I went with it.
         org-fontify-quote-and-verse-blocks t
         org-hide-emphasis-markers t
         org-startup-with-inline-images t
-        org-ellipsis " …"
+        org-ellipsis " "
         org-highlight-latex-and-related '(latex)
         org-pretty-entities t
         org-image-actual-width 500)
@@ -1146,7 +1140,7 @@ Source: http://tinyurl.com/l3zpzse"
                   (if (derived-mode-p 'org-mode)
                       (org-uniquify
                        (delq nil (append (org-get-buffer-tags)
-                                         (org-global-tags-completion-table))))
+                                       (org-global-tags-completion-table))))
                     (org-global-tags-completion-table))))
              (completing-read
               "Tag: " 'org-tags-completion-function nil nil nil
@@ -1392,7 +1386,8 @@ Source: http://tinyurl.com/l3zpzse"
   :defer 5
   :leader-bind (("TAB" . crux-switch-to-previous-buffer)
                 ("fd" . crux-delete-file-and-buffer)
-                ("fr" . crux-rename-file-and-buffer))
+                ("fr" . crux-rename-file-and-buffer)
+                ("br" . crux-sudo-edit))
   :commands (crux-with-region-or-line
              crux-with-region-or-buffer
              crux-switch-to-previous-buffer)
@@ -2880,6 +2875,11 @@ Use a bar cursor in the minibuffer.
   :config
   (load-theme 'doom-molokai t))
 #+end_src
+*** [[https://github.com/greduan/emacs-theme-gruvbox][gruvbox-theme]]
+#+begin_src emacs-lisp
+(use-package gruvbox-theme
+  :disabled t)
+#+end_src
 *** [[https://github.com/iqbalansari/emacs-emojify][emacs-emojify]]
 #+begin_quote
   Display emojis in emacs.
@@ -3256,6 +3256,7 @@ Source: http://tinyurl.com/mh5ev6x"
            (insert (current-kill 0)))))
 
 (defun diego/eval-buffer ()
+  (interactive)
   (if (eq major-mode 'org-mode)
       (org-babel-execute-src-block)
     (eval-buffer)))
