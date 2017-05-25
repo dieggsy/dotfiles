@@ -961,6 +961,8 @@ so I went with it.
         org-link-search-must-match-exact-headline nil
         org-confirm-elisp-link-function 'y-or-n-p
         org-edit-src-persistent-message nil
+        org-tags-exclude-from-inheritance '("crypt")
+        org-crypt-key "diegoamundo@protonmail.com"
         org-confirm-elisp-link-not-regexp (concat "(\\(wiki-search"
                                                   "\\|describe-function"
                                                   "\\|describe-variable"
@@ -1044,7 +1046,9 @@ so I went with it.
   (setq org-list-allow-alphabetical t)
   :config
   (require 'ox-extra)
-  (ox-extras-activate '(ignore-headlines)))
+  (ox-extras-activate '(ignore-headlines))
+  (require 'org-crypt)
+  (org-crypt-use-before-save-magic))
 #+end_src
 **** Variables
 #+begin_src emacs-lisp
@@ -1257,6 +1261,7 @@ Source: http://tinyurl.com/l3zpzse"
     "."  'org-time-stamp
     "/"  'org-sparse-tree
     ":"  'diego/org-set-tags
+    "-"  'org-decrypt-entry
     "A"  'org-archive-subtree
     "N"  'widen
     "P"  'org-set-property
