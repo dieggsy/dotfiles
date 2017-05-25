@@ -1564,7 +1564,7 @@ also use these keys to quit out of the minibuffer. See more [[#bindings-1][here]
 (add-hook 'help-mode-hook #'goto-address-mode)
 #+end_src
 ** Packages
-*** [[https://github.com/abo-abo/define-word][define-word]]        :search:
+*** [[https://github.com/abo-abo/define-word][define-word]]                                                    :search:
 #+begin_quote
   Display the definition of word at point in Emacs
 #+end_quote
@@ -2428,7 +2428,7 @@ Leader keys
 #+end_src
 * Navigation
 ** Packages
-*** [[https://github.com/abo-abo/ace-window][ace-window]]          :window:
+*** [[https://github.com/abo-abo/ace-window][ace-window]]                                                     :window:
 #+begin_quote
   Quickly switch windows in Emacs
 #+end_quote
