@@ -1005,6 +1005,8 @@ so I went with it.
 (use-package org
   :ensure org-plus-contrib
   :defines (org-habit-graph-column)
+  :bind (:map org-mode-map
+              ("C-," . nil))
   :evil-bind (:normal
               org-mode-map
               ("RET" . diego/ret)
