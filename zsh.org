@@ -210,6 +210,10 @@ zplug "modules/spectrum", from:prezto
 #+begin_src sh
 zplug "plugins/colored-man-pages", from:oh-my-zsh
 #+end_src
+***** pip
+#+begin_src sh
+zplug "plugins/pip", from:oh-my-zsh
+#+end_src
 **** sudo
 #+begin_src sh
 zplug "~/.zmodules", from:local
@@ -297,7 +301,7 @@ kwm="koekeishiya/formulae/kwm"
 khd="koekeishiya/formulae/khd"
 
 # Python
-export python3version=3.6.0
+export python3version=3.6.1
 export python2version=2.7.13
 
 export SURFRAW_text_browser=/usr/local/bin/lynx
