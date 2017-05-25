@@ -707,7 +707,6 @@ A really nice search/completion system for emacs.
          ivy-minibuffer-map
          ([escape] . keyboard-escape-quit)
          ("C-/" . keyboard-escape-quit)
-         ("RET" . ivy-alt-done)
          ([S-return] . ivy-dispatching-done)
          ([C-return] . ivy-immediate-done)
          ("C-j" . ivy-next-line)
