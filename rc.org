@@ -1470,8 +1470,8 @@ name: hud
 
 windows:
   - shell:
-  - social: weechat
-  - music: cmus
+  - social: exec weechat
+  - music: exec cmus
 #+end_src
 ** Xresources
 :PROPERTIES:
