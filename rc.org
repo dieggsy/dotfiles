@@ -416,6 +416,7 @@ bindsym $mod+Shift+space floating toggle
 **** Workspaces
 #+begin_src conf
 # switch to workspace
+workspace_layout tabbed
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
 bindsym $mod+3 workspace 3
@@ -527,7 +528,7 @@ bindsym XF86LaunchA exec "scrot ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
 #+begin_src conf
 exec --no-startup-id dropbox start
 exec --no-startup-id sh ~/.fehbg
-exec --no-startup-id /home/diego/.ghq/github.com/olemartinorg/i3-alternating-layout/alternating_layouts.py
+# exec --no-startup-id /home/diego/.ghq/github.com/olemartinorg/i3-alternating-layout/alternating_layouts.py
 exec --no-startup-id unclutter
 exec --no-startup-id xset s off
 exec --no-startup-id xset r rate 300 50
