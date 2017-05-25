@@ -533,8 +533,8 @@ exec --no-startup-id unclutter
 exec --no-startup-id xset s off
 exec --no-startup-id xset r rate 300 50
 exec --no-startup-id setxkbmap dvorak
-exec --no-startup-id xcape -e 'Control_L=Escape;Caps_Lock=Escape'
-exec --no-startup-id setxkbmap -option 'caps:ctrl_modifier'
+exec --no-startup-id setxkbmap -option 'ctrl:nocaps'
+exec --no-startup-id xcape -e 'Control_L=Escape'
 exec --no-startup-id nm-applet
 #+end_src
 *** i3blocks
