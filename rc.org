@@ -1304,8 +1304,8 @@ bind-key q detach-client
 bind-key Q detach-client
 bind-key Escape copy-mode
 bind-key [ copy-mode
-bind-key -T vi-copy v send-keys -X begin-selection
-bind-key -T vi-copy y send -X copy-pipe "xclip -in -selection clipboard"
+bind-key -T copy-mode-vi 'v' send -X begin-selection
+bind-key -T copy-mode-vi 'y' send -X copy-selection-and-cancel
 bind -n C-k clear-history
 #+end_src
 **** Windows/Panes
