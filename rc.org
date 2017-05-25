@@ -3,9 +3,9 @@
 
 * Intro
 
-This is where I keep the bulk of my dotfiles (that aren't emacs). If it seems
-like a bit of a mess to keep it all in one place, note that this is /much/ more
-readable in org format than in rendered markdown.
+This is where I keep the bulk of my dotfiles (that aren't emacs or zsh). If it
+seems like a bit of a mess to keep it all in one place, note that this is /much/
+more readable in org format than in rendered markdown.
 
 * Contents                                                              :toc:
 - [[#intro][Intro]]
@@ -162,9 +162,9 @@ set color_win_inactive_sel_fg=default
 #+end_src
 ** emacsclient.desktop
 :PROPERTIES:
-:header-args+: tangle: (when (eq system-type 'gnu/linux)  "~/.local/share/applications/emacsclient.desktop")
+:header-args+: :tangle (when (eq system-type 'gnu/linux)  "~/.local/share/applications/emacsclient.desktop")
 :END:
-This lets you set emacscclient as the default application for things. Kinda nifty.
+This lets you set emacsclient as the default application for things. Kinda nifty.
 #+begin_src conf
 [Desktop Entry]
 Name=Emacs Client
@@ -1501,7 +1501,7 @@ Emacs*geometry: 99x41
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.config/zathura/zathurarc")
 :END:
 #+begin_src conf
-set font "Iosevka 9"
+set font "Iosevka Term 9"
 set default-bg "#282828"
 set default-fg "#fdf4c1"
 set inputbar-bg "#282828"
