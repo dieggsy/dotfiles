@@ -141,7 +141,8 @@
        (rainbow-mode 1)))))
  '(safe-local-variable-values
    (quote
-    ((org-tags-match-list-sublevels)
+    ((auto-save-mode)
+     (org-tags-match-list-sublevels)
      (org-src-fontify-natively)
      (org-log-done)
      (rainbow-mode . t)
