@@ -953,7 +953,6 @@ so I went with it.
         org-outline-path-complete-in-steps nil
         org-link-search-must-match-exact-headline nil
         org-confirm-elisp-link-function 'y-or-n-p
-        org-edit-src-persistent-message nil
         org-tags-exclude-from-inheritance '("crypt")
         org-crypt-key "diegoamundo@protonmail.com"
         org-confirm-elisp-link-not-regexp (concat "(\\(wiki-search"
