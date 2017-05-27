@@ -3053,6 +3053,14 @@ Better parentheses coloring
 #+begin_src emacs-lisp
 (use-package anaconda-mode)
 #+end_src
+**** [[https://github.com/proofit404/company-anaconda][company-anaconda]]
+#+begin_quote
+  Anaconda backend for company-mode.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package company-anaconda
+  :after company)
+#+end_src
 **** [[https://github.com/proofit404/pyenv-mode][pyenv-mode]]
 #+begin_quote
   Integrate pyenv with python-mode.
