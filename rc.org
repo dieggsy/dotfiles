@@ -1918,7 +1918,7 @@ fi
 :header-args+: :tangle ~/bin/mbuild :shebang "#!/usr/bin/env bash"
 :END:
 #+begin_src sh
-if [ "$1" = "iosevka" ]; then
+if [ "$1" = "iosevka" ] || [ "$(pwd)" = "$HOME/.ghq/github.com/be5invis/iosevka" ]; then
     [ ! -d "$HOME/.ghq/github.com/be5invis/iosevka/" ] && \
         ghq get be5invis/iosevka
     cd ~/.ghq/github.com/be5invis/iosevka
@@ -1931,12 +1931,13 @@ if [ "$1" = "iosevka" ]; then
     make custom set=term
     # make custom set=input
     echo -e "\e[94mMoving fonts\e[0m"
+    rm -rf ~/.local/share/fonts/iosevka-term/
     mv dist/iosevka-term ~/.local/share/fonts/
     # mv dist/iosevka-input ~/.local/share/fonts/
     echo -e "\e[94mRebuilding font cache...\e[0m"
     fc-cache -f -v
     echo -e "\e[92mDone!\e[0m"
-elif [ "$1" = "emacs" ]; then
+elif [ "$1" = "emacs" ] || [ "$(pwd)" = "$HOME/.ghq/git.savannah.gnu.org/emacs" ]; then
     [ ! -d "$HOME/.ghq/git.savannah.gnu.org/emacs/" ] && \
         ghq get git://git.savannah.gnu.org/emacs.git
     cd ~/.ghq/git.savannah.gnu.org/emacs/
@@ -1951,7 +1952,7 @@ elif [ "$1" = "emacs" ]; then
     echo -e "\e[94mInstalling...\e[0m"
     sudo make install
     echo -e "\e[92mDone!\e[0m"
-elif [ "$1" = "sbcl" ]; then
+elif [ "$1" = "sbcl" ] || [ "$(pwd)" = "$HOME/.ghq/git.code.sf.net/p/sbcl/sbcl" ]; then
     [ ! -d "$HOME/.ghq/git.code.sf.net/p/sbcl/sbcl/" ] && \
         ghq get ghq get git://git.code.sf.net/p/sbcl/sbcl
     cd ~/.ghq/git.code.sf.net/p/sbcl/sbcl/
@@ -1960,7 +1961,7 @@ elif [ "$1" = "sbcl" ]; then
     ./make.sh --with-sb-core-compression
     echo -e "\e[94mInstalling...\e[0m"
     INSTALL_ROOT=/usr/local sudo ./install.sh && echo -e "\e[92mDone!\e[0m" || echo -e "\e[91mAborted.\e[0m"
-elif [ "$1" = "rofi" ]; then
+elif [ "$1" = "rofi" ] || [ "$(pwd)" = "$HOME/.ghq/github.com/DaveDavenport/rofi" ]; then
     [ ! -d "$HOME/.ghq/github.com/DaveDavenport/rofi/" ] && \
         ghq get DaveDavenport/rofi
     cd ~/.ghq/github.com/DaveDavenport/rofi/
@@ -1976,7 +1977,7 @@ elif [ "$1" = "rofi" ]; then
     make
     echo -e "\e[94mInstalling...\e[0m"
     sudo make install
-elif [ "$1" = "i3" ] || [ "$1" = "i3-gaps" ]; then
+elif [ "$1" = "i3" ] || [ "$1" = "i3-gaps" ] || [ "$(pwd)" = "$HOME/.ghq/github.com/airblader/i3-gaps" ]; then
     [ ! -d "$HOME/.ghq/github.com/airblader/i3-gaps/" ] && \
         ghq get airblader/i3-gaps
     cd ~/.ghq/github.com/airblader/i3-gaps/
@@ -1991,7 +1992,7 @@ elif [ "$1" = "i3" ] || [ "$1" = "i3-gaps" ]; then
     make
     echo -e  "\e[94mInstalling...\e[0m"
     sudo make install
-elif [ "$1" = "zsh" ]; then
+elif [ "$1" = "zsh" ] || [ "$(pwd)" = "$HOME/.ghq/github.com/DaveDavenport/rofi" ]; then
     [ ! -d "$HOME/.ghq/git.code.sf.net/p/zsh/code/" ] && \
         ghq get git://git.code.sf.net/p/zsh/code
     cd ~/.ghq/git.code.sf.net/p/zsh/zsh/
