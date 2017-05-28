@@ -2186,6 +2186,7 @@ name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
 #+begin_src sh
 name=$(~/.zplug/bin/rg -g "*.gpg" "$HOME/.password-store" --files \
            | sed 's@'"$HOME"'/\.password-store/\(.\+\?\)\.gpg@\1@' \
+           | sort \
            | rofi -dmenu -i -p "[pass] ")
 
 pass -c $name
