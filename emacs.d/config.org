@@ -44,7 +44,6 @@ follow my example there? Whatever.
 
 * Initial Setup
 ** Personal Info
-
 #+begin_src emacs-lisp
 (setq user-full-name "Diego A. Mundo"
       user-mail-address "diegoamundo@gmail.com")
@@ -781,8 +780,7 @@ A really nice search/completion system for emacs.
 **** swiper
 #+begin_src emacs-lisp
 (use-package swiper
-  :leader-bind (("ss" . swiper)
-                ("sm" . swiper-multi)
+  :leader-bind (("sm" . swiper-multi)
                 ("sS" . swiper-all))
   :config (setq swiper-goto-start-of-match t))
 #+end_src
@@ -801,6 +799,7 @@ A really nice search/completion system for emacs.
                 ("hdv" . counsel-describe-variable)
                 ("iu" . counsel-unicode-char)
                 ("sr" . counsel-rg)
+                ("ss" . counsel-grep-or-swiper)
                 ("y" . counsel-yank-pop))
   :commands counsel-describe-face
   :config
