@@ -297,9 +297,17 @@ If in `org-mode', calls `org-open-at-point'.
 Otherwise, executes `evil-ret'."
   (interactive)
   (cond ((thing-at-point 'url) (goto-address-at-point))
-        ((eq major-mode 'org-mode)
-         (unless (ignore-errors (or (org-open-at-point) t))
-           (evil-ret)))
+        ((and (eq major-mode 'org-mode) (org-element-lineage
+	                                  (org-element-context)
+	                                  '(clock comment comment-block footnote-definition
+		                                      footnote-reference headline inlinetask keyword link
+		                                      node-property timestamp)
+	                                  t))
+         (org-open-at-point))
+        ((and (eq major-mode 'org-mode) (org-at-item-checkbox-p))
+         (org-toggle-checkbox))
+        ((and (eq major-mode 'org-mode) (org-in-src-block-p))
+         (org-babel-execute-src-block))
         (t (evil-ret))))
 
 (defmacro diego/repeat-calls (name num-args &rest args)
