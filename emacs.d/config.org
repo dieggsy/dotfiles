@@ -234,6 +234,8 @@ Save stuff you've copied in other applications to the emacs kill-ring.
 ** Functions
 #+begin_src emacs-lisp
 (with-eval-after-load 'org
+  (defvar diego/show-async-tangle-results nil)
+
   (defun diego/async-tangle-init ()
     "Asynchronously tangle config.org and and byte-compile."
     (interactive)
@@ -251,12 +253,13 @@ Save stuff you've copied in other applications to the emacs kill-ring.
          ;; byte-compile
          (byte-compile-file
           (expand-file-name  (locate-user-emacs-file "config.el"))))
-       `(lambda (result)
-          (if result
-              (message "SUCCESS: config.org successfully tangled. (%.3fs)"
-                       (float-time (time-subtract (current-time)
-                                                  ',init-tangle-start-time)))
-            (message "ERROR: config.org tangle failed."))))))
+       (unless diego/show-async-tangle-results
+         `(lambda (result)
+            (if result
+                (message "SUCCESS: config.org successfully tangled. (%.3fs)"
+                         (float-time (time-subtract (current-time)
+                                                    ',init-tangle-start-time)))
+              (message "ERROR: config.org tangle failed.")))))))
 
   (defun diego/async-babel-tangle ()
     "Tangle file asynchronously"
@@ -266,11 +269,11 @@ Save stuff you've copied in other applications to the emacs kill-ring.
        `(lambda ()
           (require 'org)
           (org-babel-tangle-file ,file))
-       (lambda (result)
-         (if result
-             (message "SUCCESS: successfully tangled file.")
-           (message "ERROR: tangle file failed.")))))))
-
+       (unless diego/show-async-tangle-results
+         (lambda (result)
+           (if result
+               (message "SUCCESS: successfully tangled file.")
+             (message "ERROR: tangle file failed."))))))))
 (defmacro diego/setup-mode (modes &rest body)
   (declare (indent defun))
   (let ((modes (if (listp modes) modes (list modes))))
@@ -3660,9 +3663,9 @@ I use this for reading, mostly.
   (defvar focus-mode nil)
   (defhydra hydra-toggle (:color pink)
     "
-_a_ abbrev:              %-3s`abbrev-mode   _d_ debug-on-error:      %-3s`debug-on-error   _P_ prettify-symbols:   %-3s`prettify-symbols-mode
-_i_ aggressive-indent:   %-3s`aggressive-indent-mode   _l_ nlinum:              %-3s`nlinum-mode   _F_ focus:              %-3s`focus-mode
-_c_ column-indicator:    %-3s`fci-mode   _p_ smartparens:         %-3s`smartparens-mode
+_a_ abbrev:              %-3s`abbrev-mode   _d_ debug-on-error:      %-3s`debug-on-error   _P_ prettify-symbols:      %-3s`prettify-symbols-mode
+_i_ aggressive-indent:   %-3s`aggressive-indent-mode   _l_ nlinum:              %-3s`nlinum-mode   _F_ focus:                 %-3s`focus-mode
+_c_ column-indicator:    %-3s`fci-mode   _p_ smartparens:         %-3s`smartparens-mode   _z_ async-tangle-results:   %-3s`diego/show-async-tangle-results
 _f_ flycheck:            %-3s`flycheck-mode   _e_ evil-smartparens:    %-3s`evil-smartparens-mode
 _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`global-whitespace-mode
 "
@@ -3678,6 +3681,9 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
     ("F" focus-mode nil)
     ("s" flyspell-mode nil)
     ("w" global-whitespace-mode nil)
+    ("z" (if diego/show-async-tangle-results
+             (setq diego/show-async-tangle-results nil)
+           (setq diego/show-async-tangle-results t)) nil)
     ("q" nil "quit")))
 #+end_src
 
