@@ -232,6 +232,7 @@ Save stuff you've copied in other applications to the emacs kill-ring.
 (setq save-interprogram-paste-before-kill t)
 #+end_src
 ** Functions
+*** Dotfiles
 #+begin_src emacs-lisp
 (with-eval-after-load 'org
   (defvar diego/show-async-tangle-results nil)
@@ -274,6 +275,9 @@ Save stuff you've copied in other applications to the emacs kill-ring.
            (if result
                (message "SUCCESS: successfully tangled file.")
              (message "ERROR: tangle file failed."))))))))
+#+end_src
+*** Config helpers
+#+begin_src emacs-lisp
 (defmacro diego/setup-mode (modes &rest body)
   (declare (indent defun))
   (let ((modes (if (listp modes) modes (list modes))))
@@ -289,6 +293,16 @@ Save stuff you've copied in other applications to the emacs kill-ring.
                                                      "-mode-hook"))))
                       `(add-hook ',mode-hook #',setup-func)))))))
 
+(defmacro diego/repeat-calls (name num-args &rest args)
+  (declare (indent defun))
+  (if (not (= (mod (length args) num-args) 0))
+      (error "diego/repeat-calls: Not enough arguments.")
+    `(progn
+       ,@(cl-loop while args collect
+                  `(,name ,@(cl-loop repeat num-args collect (pop args)))))))
+#+end_src
+*** Other
+#+begin_src emacs-lisp
 (defun diego/ret ()
   "Dwim return key binding.
 
@@ -309,14 +323,6 @@ Otherwise, executes `evil-ret'."
         ((and (eq major-mode 'org-mode) (org-in-src-block-p))
          (org-babel-execute-src-block))
         (t (evil-ret))))
-
-(defmacro diego/repeat-calls (name num-args &rest args)
-  (declare (indent defun))
-  (if (not (= (mod (length args) num-args) 0))
-      (error "diego/repeat-calls: Not enough arguments.")
-    `(progn
-       ,@(cl-loop while args collect
-                  `(,name ,@(cl-loop repeat num-args collect (pop args)))))))
 #+end_src
 ** Packages
 These are packages that I consider /absolutely essential/ to my emacs workflow,
