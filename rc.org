@@ -1992,7 +1992,7 @@ elif [ "$1" = "i3" ] || [ "$1" = "i3-gaps" ] || [ "$(pwd)" = "$HOME/.ghq/github.
     make
     echo -e  "\e[94mInstalling...\e[0m"
     sudo make install
-elif [ "$1" = "zsh" ] || [ "$(pwd)" = "$HOME/.ghq/github.com/DaveDavenport/rofi" ]; then
+elif [ "$1" = "zsh" ] || [ "$(pwd)" = "$HOME/.ghq/git.code.sf.net/p/zsh/code/" ]; then
     [ ! -d "$HOME/.ghq/git.code.sf.net/p/zsh/code/" ] && \
         ghq get git://git.code.sf.net/p/zsh/code
     cd ~/.ghq/git.code.sf.net/p/zsh/zsh/
