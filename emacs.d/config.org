@@ -1685,7 +1685,14 @@ Non-interactively SEARCH-STRING is the string to search."
 #+begin_src emacs-lisp
 (use-package sx)
 #+end_src
-
+*** [[https://github.com/kuanyui/tldr.el][tldr]]
+#+begin_src emacs-lisp
+(use-package tldr
+  :leader-bind ("ht" . tldr)
+  :evil-bind (:normal
+              tldr-mode-map
+              ("q" . quit-window)))
+#+end_src
 ** Bindings
 Leader bindings
 #+begin_src emacs-lisp
@@ -2883,7 +2890,7 @@ Use a bar cursor in the minibuffer.
            :repo "therockmandolinist/emacs-theme-darktooth"))
 #+end_src
 *** [[https://github.com/hlissner/emacs-doom-theme][doom-theme]]                                                      :theme:
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package doom-themes
   :disabled t
   :config
