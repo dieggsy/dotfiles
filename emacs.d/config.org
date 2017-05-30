@@ -746,34 +746,7 @@ A really nice search/completion system for emacs.
         ivy-extra-directories nil; '("../") ; ignore current folder and parent dir
         ivy-initial-inputs-alist '((man . "^"))
         ivy-switch-buffer-faces-alist '((dired-mode . ivy-subdir))
-        recentf-max-saved-items 50
-        ivy-ignore-buffers
-        '("\\` "
-          "\\`\\*LV\\*"
-          "\\`\\*magit"
-          "\\`\\*epc"
-          "\\`\\*Calc"
-          "\\`\\*Colors"
-          "\\`\\*helm"
-          "\\`\\*Help"
-          "\\`\\*Packages"
-          "\\`\\*Customize"
-          "\\`\\*info"
-          "\\`\\*Compile"
-          "\\`\\*anaconda-mode"
-          "\\`\\*scratch"
-          "\\`\\*Messages"
-          "\\`todo.org"
-          "\\`gcal.org"
-          "\\`notes.org"
-          "\\`archive.org"
-          "\\`\\.org-gcal-token"
-          "\\`elfeed.org"
-          "\\`\\*elfeed-log\\*"
-          "\\`\\*Man"
-          "\\`\\*Quail"
-          "\\`\\*Paradox Report\\*"
-          "\\`\\*Backtrace\\*")))
+        recentf-max-saved-items 50))
 
 (use-package ivy-hydra)
 #+end_src
