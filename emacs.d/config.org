@@ -1405,13 +1405,13 @@ Supposedly better than autocomplete.
         company-selection-wrap-around t
         company-dabbrev-char-regexp "\\sw\\|\\s_\\|[-_]")
   :config
-  (defun company-mode/backend-with-yas-and-dabbrev (backend)
+  (defun company-mode/backend-with-yas (backend)
     "Source: http://tinyurl.com/n63vfhw"
     (if (and (listp backend) (member 'company-yasnippet backend))
         backend
       (append (if (consp backend) backend (list backend))
-              '(:with company-yasnippet company-dabbrev))))
-  (setq company-backends (mapcar #'company-mode/backend-with-yas-and-dabbrev
+              '(:with company-yasnippet))))
+  (setq company-backends (mapcar #'company-mode/backend-with-yas
                                  company-backends))
   (global-company-mode t))
 #+end_src
