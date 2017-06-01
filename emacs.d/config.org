@@ -3810,7 +3810,9 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 (use-package org-gcal
   :after org-agenda
   :config
-  (setq  org-gcal-file-alist '(("diegoamundo@gmail.com" . "~/Dropbox (MIT)/org/gcal.org"))))
+  (setq org-gcal-client-id (password-store-get "api/org-gcal-id")
+        org-gcal-client-secret (password-store-get "api/org-gcal-secret")
+        org-gcal-file-alist '(("diegoamundo@gmail.com" . "~/Dropbox/org/gcal.org"))))
 #+end_src
 *** [[https://github.com/larstvei/ox-gfm][ox-gfm]]
 #+begin_src emacs-lisp
