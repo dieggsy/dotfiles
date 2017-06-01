@@ -370,6 +370,7 @@ alias resetwifi="networksetup -setairportpower en0 off; sleep 2;"\
 "networksetup -setairportpower en0 on"
 alias rg="rg -i -g '!archive-contents' --colors 'line:style:bold' --colors 'path:style:bold'"
 alias rtv='PAGER=text-pager rtv --enable-media'
+alias sbcl="rlwrap -irc -pGreen -S 'SBCL> ' sbcl"
 alias starwars="telnet towel.blinkenlights.nl" # heh
 alias sudo='sudo '                             # recognize aliases
 alias toshredsyousay='shred -zvun 10'
