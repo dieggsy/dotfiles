@@ -494,7 +494,7 @@ bar {
 # class                 border  background text    indicator child_border
 client.focused          #EBDBB2 #EBDBB2    #282828 #3fd7e5   #EBDBB2
 client.focused_inactive #928374 #282828    #EBDBB2 #484e50   #928374
-client.unfocused        #928374 #282828    #A89984 #292d2e   #EBDBB3
+client.unfocused        #928374 #282828    #A89984 #292d2e   #928374
 client.urgent           #2D2D2D #2D2D2D    #EBDBB2 #901A1E
 client.background       #282828
 
