@@ -493,9 +493,9 @@ bar {
 #+begin_src conf
 # class                 border  background text    indicator child_border
 client.focused          #EBDBB2 #EBDBB2    #282828 #3fd7e5   #EBDBB2
-client.focused_inactive #282828 #282828    #dcdcdc #484e50
-client.unfocused        #2D2D2D #282828    #A89984 #292d2e
-client.urgent           #2D2D2D #2D2D2D    #dcdcdc #901A1E
+client.focused_inactive #928374 #282828    #EBDBB2 #484e50   #928374
+client.unfocused        #928374 #282828    #A89984 #292d2e   #EBDBB3
+client.urgent           #2D2D2D #2D2D2D    #EBDBB2 #901A1E
 client.background       #282828
 
 # gaps inner 30
