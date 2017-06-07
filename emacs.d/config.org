@@ -3757,9 +3757,12 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
            :fetcher github
            :repo "therockmandolinist/evil-numbers"))
 #+end_src
+*** [[https://github.com/emacs-evil/evil-surround][evil-surround]]
 #+begin_src emacs-lisp
+(use-package evil-surround
   :after evil
   :config
+  (global-evil-surround-mode 1))
 #+end_src
 ** Org
 *** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
