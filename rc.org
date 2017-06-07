@@ -498,8 +498,17 @@ client.unfocused        #2D2D2D #282828    #A89984 #292d2e
 client.urgent           #2D2D2D #2D2D2D    #dcdcdc #901A1E
 client.background       #282828
 
-gaps inner 30
-gaps outer 0
+# gaps inner 30
+# gaps outer 0
+
+set $mode_gaps Toggle gaps: (1) on (2) off
+bindsym $mod+g mode "$mode_gaps"
+mode "$mode_gaps" {
+    bindsym 1 mode "default", gaps inner all set 30, gaps outer all set 0
+    bindsym 2 mode "default", gaps inner all set 0, gaps outer all set 0
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
 new_window 1pixel
 #+end_src
 **** Bindings
