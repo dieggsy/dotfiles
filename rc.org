@@ -538,7 +538,7 @@ bindsym XF86LaunchA exec "scrot ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
 #+end_src
 **** Startup Programs/Commands
 #+begin_src conf
-exec --no-startup-id nm-applet
+# exec --no-startup-id nm-applet
 #+end_src
 *** i3blocks
 :PROPERTIES:
@@ -558,7 +558,7 @@ signal=1
 
 [Disk]
 command=~/bin/i3blocks/disk /
-interval=20
+interval=30
 # color=#766e6b
 
 [separator]
@@ -572,7 +572,7 @@ signal=2
 
 [wifi]
 command=~/bin/i3blocks/wifi
-interval=10
+interval=5
 
 [separator]
 
