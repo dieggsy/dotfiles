@@ -43,13 +43,13 @@ more readable in org format than in rendered markdown.
   - [[#pass][pass]]
   - [[#pixelate][pixelate]]
   - [[#playerctl-cmus][playerctl-cmus]]
+  - [[#rofi-files][rofi-files]]
   - [[#spectrum_ls][spectrum_ls]]
   - [[#spotify][spotify]]
   - [[#systemsettings5][systemsettings5]]
   - [[#text-pager][text-pager]]
   - [[#updates][updates]]
   - [[#wfname][wfname]]
-  - [[#rofi-files][rofi-files]]
 - [[#local-vars][Local vars]]
 
 * Config
@@ -1532,7 +1532,7 @@ XDG_CURRENT_DESKTOP=kde
 #+end_src
 ** dropmite
 :PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/dropmite") :shebang "!/usr/bin/env bash"
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/dropmite") :shebang "#!/usr/bin/env bash"
 :END:
 A wrapper to open termite with the name "dropmite," used by i3wm to make it my
 floating terminal.
@@ -2246,6 +2246,19 @@ else
 
 fi
 #+end_src
+** rofi-files
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/rofi-files") :shebang "#!/usr/bin/env zsh"
+:END:
+A script to search all files using [[https://github.com/BurntSushi/ripgrep][ripgrep]] and [[https://github.com/DaveDavenport/rofi][rofi]].
+#+begin_src sh
+~/.zplug/bin/rg --files 2>/dev/null \
+    | LC_ALL=C sort \
+    | awk -v len=86 '{ if (length($0) > len) print "..." substr($0, length($0)-len, length($0)); else print; }' \
+    | rofi -dmenu -i -levenshtein-sort -matching regex -p '[files] '\
+    | xargs -d '\n' xdg-open
+
+#+end_src
 ** spectrum_ls
 :PROPERTIES:
 :header-args+: :tangle ~/bin/spectrum_ls :shebang "#!/usr/bin/env zsh"
@@ -2384,19 +2397,6 @@ try:
     print('\nWorkflow: '+plistlib.readPlist('info.plist')['name'])
 except IOError:
     print('No \'info. plist\' file. ')
-#+end_src
-** rofi-files
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/rofi-files") :shebang "#!/usr/bin/env zsh"
-:END:
-A script to search all files using [[https://github.com/BurntSushi/ripgrep][ripgrep]] and [[https://github.com/DaveDavenport/rofi][rofi]].
-#+begin_src sh
-~/.zplug/bin/rg --files 2>/dev/null \
-    | LC_ALL=C sort \
-    | awk -v len=86 '{ if (length($0) > len) print "..." substr($0, length($0)-len, length($0)); else print; }' \
-    | rofi -dmenu -i -levenshtein-sort -matching regex -p '[files] '\
-    | xargs -d '\n' xdg-open
-
 #+end_src
 * Local vars
 Tangles the files asynchronously on save.

@@ -364,7 +364,7 @@ package should fix them nicely.
 I really like Vim bindings. I originally learned Emacs bindings but there was
 something really appealing about the simplicity and power of Vim bindings/modal
 editing. So I went for it. Now I'll never go back.
-**** Setup
+**** Package
 #+begin_src emacs-lisp
 (use-package evil
   :demand t
@@ -3700,6 +3700,13 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
     (kbd "C-w C-w") 'other-window))
 #+end_src
 ** Evil
+*** [[https://github.com/syohex/emacs-evil-anzu][evil-anzu]]
+#+begin_src emacs-lisp
+(use-package evil-anzu
+  :after evil
+  :config
+  (setq anzu-cons-mode-line-p nil))
+#+end_src
 *** [[https://github.com/TheBB/evil-indent-plus][evil-indent-plus]]
 #+begin_quote
   Better indent textobjects for evil
@@ -3710,15 +3717,11 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
   :config
   (evil-indent-plus-default-bindings))
 #+end_src
-*** [[https://github.com/therockmandolinist/evil-numbers][evil-numbers]]
-#+begin_quote
-  Increment and decrement numbers in Emacs
-#+end_quote
+*** [[https://github.com/redguardtoo/evil-matchit][evil-matchit]]
 #+begin_src emacs-lisp
-(use-package evil-numbers
-  :quelpa (evil-numbers
-           :fetcher github
-           :repo "therockmandolinist/evil-numbers"))
+(use-package evil-matchit
+  :after evil
+  :config (global-evil-matchit-mode 1))
 #+end_src
 *** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
 #+begin_quote
@@ -3744,18 +3747,19 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
     (let ((evilnc-invert-comment-line-by-line t))
       (evilnc-comment-or-uncomment-lines arg))))
 #+end_src
-*** [[https://github.com/redguardtoo/evil-matchit][evil-matchit]]
+*** [[https://github.com/therockmandolinist/evil-numbers][evil-numbers]]
+#+begin_quote
+  Increment and decrement numbers in Emacs
+#+end_quote
 #+begin_src emacs-lisp
-(use-package evil-matchit
-  :after evil
-  :config (global-evil-matchit-mode 1))
+(use-package evil-numbers
+  :quelpa (evil-numbers
+           :fetcher github
+           :repo "therockmandolinist/evil-numbers"))
 #+end_src
-*** [[https://github.com/syohex/emacs-evil-anzu][evil-anzu]]
 #+begin_src emacs-lisp
-(use-package evil-anzu
   :after evil
   :config
-  (setq anzu-cons-mode-line-p nil))
 #+end_src
 ** Org
 *** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
