@@ -1958,7 +1958,7 @@ if [ "$1" = "iosevka" ] || [ "$(pwd)" = "$HOME/.ghq/github.com/be5invis/iosevka"
     # make custom set=input
     echo -e "\e[94mMoving fonts\e[0m"
     rm -rf ~/.local/share/fonts/iosevka-term/
-    mv dist/iosevka-term ~/.local/share/fonts/
+    mv dist/iosevka-term/ttf ~/.local/share/fonts/iosevka-term
     # mv dist/iosevka-input ~/.local/share/fonts/
     echo -e "\e[94mRebuilding font cache...\e[0m"
     fc-cache -f -v
