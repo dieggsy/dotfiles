@@ -3282,6 +3282,7 @@ Source: http://tinyurl.com/mh5ev6x"
 (diego/setup-mode (lisp lisp-interaction emacs-lisp)
   (hs-minor-mode)
   (aggressive-indent-mode)
+  (push '(? . ("`" . "'")) evil-surround-pairs-alist)
   (bind-keys :map (current-local-map)
              ("C-c <up>" . hs-hide-all)
              ("C-c <down>" . hs-show-all)
@@ -3763,6 +3764,14 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
   :after evil
   :config
   (global-evil-surround-mode 1))
+#+end_src
+*** [[https://github.com/cute-jumper/evil-embrace.el][evil-embrace]]
+#+begin_src emacs-lisp
+(use-package evil-embrace
+  :after evil-surround
+  :config
+  (add-hook 'org-mode-hook 'embrace-org-mode-hook)
+  (evil-embrace-enable-evil-surround-integration))
 #+end_src
 ** Org
 *** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
