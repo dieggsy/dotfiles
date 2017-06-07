@@ -1856,7 +1856,7 @@ Source: http://tinyurl.com/msu4l2k"
 (defun diego/switch-to-scratch ()
   "Switch to scratch buffer."
   (interactive)
-  (switch-to-buffer (get-buffer-create "*scratch*")))
+  (switch-to-buffer "*scratch*"))
 
 (defun diego/switch-to-star ()
   "Switch to '*' buffers."
@@ -1873,7 +1873,7 @@ Source: http://tinyurl.com/msu4l2k"
 (defun diego/switch-to-messages ()
   "Switch to *Messages* buffer."
   (interactive)
-  (switch-to-buffer (get-buffer "*Messages*")))
+  (switch-to-buffer "*Messages*"))
 #+end_src
 *** Narrowing
 #+begin_src emacs-lisp
