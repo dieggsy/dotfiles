@@ -230,6 +230,82 @@ Save stuff you've copied in other applications to the emacs kill-ring.
 #+begin_src emacs-lisp
 (setq save-interprogram-paste-before-kill t)
 #+end_src
+*** Mode line
+#+begin_src emacs-lisp
+(defvar diego/mode-line
+  '((:eval (when  (featurep 'evil)
+             (let* ((num (when (and (featurep 'eyebrowse)
+                                  (< 1 (length
+                                        (eyebrowse--get 'window-configs))))
+                           (eyebrowse--get 'current-slot)))
+                    (tag (when num
+                           (nth 2 (assoc num
+                                         (eyebrowse--get 'window-configs)))))
+                    (str (or (if (and tag (< 0 (length tag)))
+                                tag
+                              (when num
+                                (concat " " (int-to-string num) " ")))
+                            evil-mode-line-tag)))
+               (propertize str
+                           'face
+                           `(:background
+                             ,(pcase (substring-no-properties
+                                      evil-mode-line-tag)
+                                (" N " "#B8BB26")
+                                (" I " "#66999D")
+                                (" M " "#D3869B")
+                                (" V " "#FE8019")
+                                (" E " "#83A598")
+                                (" R " "#FE8019"))
+                             :foreground "#3E3D31"
+                             :weight bold)))))
+    " %*"
+    " %[" mode-line-buffer-identification "%] "
+    (:propertize mode-name face (:foreground "#A89984"))
+    " %4l:%2c "
+    (:eval (when (or current-input-method
+                    (and (bound-and-true-p evil-mode)
+                       (bound-and-true-p evil-input-method)))
+             (cond
+              (current-input-method
+               (propertize current-input-method-title 'face 'bold))
+              ((and (featurep 'evil) (bound-and-true-p evil-input-method))
+               (nth 3 (assoc default-input-method input-method-alist))))))
+    " "
+    (:eval (when (and (bound-and-true-p anzu--state))
+             (anzu--update-mode-line)))
+    (:eval nil ;; (if (and default-directory
+           ;;        (file-remote-p default-directory 'host))
+           ;;     (concat " @" (file-remote-p default-directory 'host)":"(file-remote-p default-directory 'user))
+           ;;   (concat " @" (system-name)))
+           )
+    ;; mode-line-remote
+    (:eval (when vc-mode
+             (powerline-raw
+              (concat " (" (propertize vc-mode 'face '(:foreground "#B8BB26")) "|"
+                      (when (buffer-file-name)
+                        (pcase (vc-state (buffer-file-name))
+                          (`up-to-date (propertize "✓" 'face '(:foreground "#B8BB26")))
+                          (`edited (propertize "✚" 'face '(:foreground "#FB4933")))
+                          (`added (propertize "●" 'face '(:foreground "#83A598")))
+                          (`unregistered "…")
+                          (`removed "del")
+                          (`needs-merge (propertize "✖" 'face '(:foreground "#FB4933")))
+                          (`needs-update "upd")
+                          (`ignored "ign")))
+                      ")"))))
+    " "))
+
+(setq-default mode-line-format
+              '((:eval (progn
+                         (while (< (length (format-mode-line diego/mode-line))
+                                   (window-total-width))
+                           (setf (nth 8 diego/mode-line) (concat " " (nth 8 diego/mode-line))))
+                         (while  (> (length (format-mode-line diego/mode-line))
+                                    (window-total-width))
+                           (setf (nth 8 diego/mode-line) (substring (nth 8 diego/mode-line) 0 -1)))
+                         (format-mode-line diego/mode-line)))))
+#+end_src
 ** Functions
 *** Dotfiles
 #+begin_src emacs-lisp
@@ -398,12 +474,12 @@ editing. So I went for it. Now I'll never go back.
   :config
   (setq evil-insert-state-cursor '(bar . 1)
         evil-emacs-state-cursor '(bar . 1)
-        evil-normal-state-tag  " NORMAL "
-        evil-insert-state-tag  " INSERT "
-        evil-motion-state-tag  " MOTION "
-        evil-visual-state-tag  " VISUAL "
-        evil-emacs-state-tag   " EMACS "
-        evil-replace-state-tag " REPLACE ")
+        evil-normal-state-tag  " N "
+        evil-insert-state-tag  " I "
+        evil-motion-state-tag  " M "
+        evil-visual-state-tag  " V "
+        evil-emacs-state-tag   " E "
+        evil-replace-state-tag " R ")
 
   (evil-ex-define-cmd "dtw" #'delete-trailing-whitespace)
   (evil-ex-define-cmd "buffers" #'ibuffer)
@@ -2895,40 +2971,6 @@ Display battery in Emacs Mode line
   (fancy-battery-mode)
   (setq fancy-battery-show-percentage t)
   (fancy-battery-update))
-#+end_src
-*** [[https://github.com/TheBB/spaceline][spaceline]]                                                    :modeline:
-#+begin_quote
-  Powerline theme from Spacemacs
-#+end_quote
-I was looking for something with the nice look and simplicity of
-[[https://github.com/itchyny/lightline.vim][this]].
-#+begin_src emacs-lisp
-(use-package spaceline
-  :demand t
-  :config
-  (require 'spaceline-config)
-  (spaceline-spacemacs-theme)
-  (spaceline-toggle-minor-modes-off)
-  (spaceline-toggle-battery-on)
-  (spaceline-toggle-hud-off)
-  (spaceline-toggle-buffer-size-off)
-  (setq spaceline-highlight-face-func 'spaceline-highlight-face-evil-state)
-
-  ;; darktooth
-  (set-face-background 'spaceline-evil-normal "#B8BB26")
-  (set-face-background 'spaceline-evil-insert "#66999D")
-  (set-face-background 'spaceline-evil-visual "#FE8019")
-  (set-face-background 'spaceline-evil-emacs "#83A598")
-
-  (setq powerline-default-separator nil)
-
-  ;; some tweaks
-  (defadvice vc-mode-line (after strip-backend () activate)
-    (when (stringp vc-mode)
-      (let ((gitlogo (replace-regexp-in-string "^ Git." "  " vc-mode)))
-        (setq vc-mode gitlogo))))
-
-  (spaceline-compile))
 #+end_src
 *** [[https://github.com/alpaker/Fill-Column-Indicator][fill-column-indicator]]
 #+begin_quote
