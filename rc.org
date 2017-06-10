@@ -545,6 +545,13 @@ bindsym XF86LaunchA exec "scrot ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.i3blocks.conf")
 :END:
 #+begin_src conf
+separator=false
+# separator_block_width=7
+border_top=0
+border_left=0
+border_right=0
+border_bottom=2
+
 # [focused window]
 # command=xtitle -s -t 75 -f "  %s\n"
 # interval=persist
@@ -553,65 +560,46 @@ bindsym XF86LaunchA exec "scrot ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
 command=~/bin/i3blocks/music
 interval=5
 signal=1
+border=#FE8019
 
-[separator]
-
-[Disk]
-command=~/bin/i3blocks/disk /
-interval=30
-# color=#766e6b
-
-[separator]
-
-[Brightness]
-command=~/bin/i3blocks/bright
+[layout]
+command=~/bin/i3blocks/layout
 interval=once
-signal=2
-
-[separator]
-
-[wifi]
-command=~/bin/i3blocks/wifi
-interval=5
-
-[separator]
-
-
-# [Ram]
-# command=~/bin/i3blocks/mem.sh -m
-# interval=3
-
-[separator]
-
-# [Temp]
-# command=~/bin/i3blocks/temp.sh
-# interval=1
-
-[separator]
+border=#8EC07C
 
 [Vol]
 command=~/bin/i3blocks/volume
 interval=once
 signal=3
 
-[separator]
-
-[layout]
-command=~/bin/i3blocks/layout
+border=#FB4933
+[Brightness]
+command=~/bin/i3blocks/bright
 interval=once
+signal=2
+border=#FABD2F
 
-[separator]
+[Disk]
+label=  
+command=~/bin/i3blocks/disk /
+interval=30
+border=#D3869B
+
+[wifi]
+label=  
+command=~/bin/i3blocks/wifi
+interval=2
+border=#B8bb26
 
 [Bat]
 command=~/bin/i3blocks/battery
 interval=30
-# color=#3d97b8
-
-[separator]
+border=#83A598
 
 [Time]
 command=~/bin/i3blocks/date
 interval=10
+border=#A89984
 #+end_src
 *** i3status
 :PROPERTIES:
@@ -1578,46 +1566,46 @@ else
 fi
 
 if [ "$Adapt" = "on-line" ];then
-    icon0=""
-    icon1=""
-    icon2=""
-    icon3=""
-    icon4=""
+    icon0=" "
+    icon1=" "
+    icon2=" "
+    icon3=" "
+    icon4=" "
 else
-    icon0=""
-    icon1=""
-    icon2=""
-    icon3=""
-    icon4=""
+    icon0=" "
+    icon1=" "
+    icon2=" "
+    icon3=" "
+    icon4=" "
 fi
 
 if [ -z "$Bat" ];then
     bat=""
 elif [ "$Bat" -gt "95" ];then
-    bat=" $icon4 Full "
+    bat="  $icon4 Full "
     icon="$icon4"
     color="#B8BB26"
 elif [ "$Bat" -gt "75" ];then
-    bat=" $icon3 $Bat% "
+    bat="  $icon3 $Bat "
     icon="$icon3"
     color="#B8BB26"
 elif [ "$Bat" -gt "50" ];then
-    bat=" $icon2 $Bat% "
+    bat="  $icon2 $Bat "
     icon="$icon2"
     color="#B8BB26"
 elif [ "$Bat" -gt "25" ];then
-    bat=" $icon1 $Bat% "
+    bat="  $icon1 $Bat "
     icon="$icon1"
     color="#FABD2F"
 elif [ "$Bat" -lt "25" ];then
-    bat=" $icon0 $Bat% "
+    bat="  $icon0 $Bat "
     icon="$icon0"
     color="#FB4933"
 fi
 
 echo -e "$bat"
 echo -e "$icon"
-echo -e "$color"
+# echo -e "$color"
 #+end_src
 *** bright
 :PROPERTIES:
@@ -1631,13 +1619,13 @@ if [ "$BLOCK_BUTTON" = "1" ] && [ "$mode" = "screen" ]; then
     echo "backlight" > ~/bin/i3blocks/brightness.txt
     mode="screen"
     brightness="$(kb-light)"
-    printf "   %.0f%%" "$brightness"
+    printf "    %.0f " "$brightness"
 elif [ "$BLOCK_BUTTON" = "1" ] && [ "$mode" = "backlight" ]; then
     pkill -RTMIN+1 i3blocks
     echo "screen" > ~/bin/i3blocks/brightness.txt
     mode="backlight"
     brightness="$(xbacklight)"
-    printf "   %.0f%%" "$brightness"
+    printf "    %.0f " "$brightness"
 elif [ "$mode" = "screen" ]; then
     if [ "$BLOCK_BUTTON" = "5" ]; then
         xbacklight +2 > /dev/null 2>&1
@@ -1645,7 +1633,7 @@ elif [ "$mode" = "screen" ]; then
         xbacklight -2 > /dev/null 2>&1
     fi
     brightness="$(xbacklight)"
-    printf "   %.0f%%" "$brightness"
+    printf "    %.0f " "$brightness"
 elif [ "$mode" = "backlight" ]; then
     if [ "$BLOCK_BUTTON" = "5" ]; then
         kb-light + > /dev/null 2>&1
@@ -1653,7 +1641,7 @@ elif [ "$mode" = "backlight" ]; then
         kb-light - > /dev/null 2>&1
     fi
     brightness="$(kb-light)"
-    printf "   %.0f%%" "$brightness"
+    printf "    %.0f " "$brightness"
 fi
 #+end_src
 *** date
@@ -1664,8 +1652,8 @@ fi
 if [ "$BLOCK_BUTTON" = "1" ]; then
     notify-send "$(cal -h | head -n-1 | cut -c -20)"
 fi
-echo -e "   $(date +%Y-%m-%d\ %R) "
-echo -e "   $(date +%R) "
+echo -e "    $(date +%Y-%m-%d\ %R) "
+echo -e "    $(date +%R) "
 #+end_src
 *** disk
 :PROPERTIES:
@@ -1681,8 +1669,8 @@ Short=$(df -h "$1" | grep -v "^[A-Z]" | awk '{print $4}')
 if [ -z "$1" ];then
     echo -e "Enter Your Mounted Point Name Ex : \"/\" "
 else
-    # echo -e "  $Disk "
-    echo -e "  $Short "
+    # echo -e " $Disk "
+    echo -e " $Short "
 fi
 #+end_src
 *** layout
@@ -1707,7 +1695,7 @@ elif [ "$layout" = "dvorak" ]; then
 fi
 
 # echo "   $layout "
-echo "  "
+echo "    "
 #+end_src
 *** music
 :PROPERTIES:
@@ -1730,29 +1718,24 @@ cmusplaying="$([ -n "$cmus" ] && cmus-remote -Q | head -1 | awk '{print $2}')"
 if [ -n "$spotify" ] && [ "$spotplaying" = "RUNNING" ]; then
     artist="$(sp current | grep -E '^Artist' | cut -d' ' -f8-)"
     title="$(sp current | grep Title | cut -d' ' -f9-)"
-    color="#B8BB26"
+    icon="⏸"
 elif [ -n "$cmus" ] && [ "$cmusplaying" = "playing" ]; then
     title="$(cmus-remote -Q | grep "tag title" | cut -d" " -f3-)"
     artist="$(cmus-remote -Q | grep "tag artist" | cut -d" " -f3-)"
-    color="#B8BB26"
+    icon="⏸"
 elif [ -n "$spotify" ]; then
     artist="$(sp current | grep -E '^Artist' | cut -d' ' -f8-)"
     title="$(sp current | grep Title | cut -d' ' -f9-)"
-    color="#FB4922"
+    icon="▶"
 elif [ -n "$cmus" ]; then
     title="$(cmus-remote -Q | grep "tag title" | cut -d" " -f3-)"
     artist="$(cmus-remote -Q | grep "tag artist" | cut -d" " -f3-)"
-    color="#FB4922"
+    icon="▶"
 fi
 
 if [ -n "$artist" ] && [ -n "$title" ]; then
-    echo -e "   $artist - $title "
-    echo -e "   $title "
-    echo -e "$color"
-else
-    echo -e "  "
-    echo -e " "
-    echo -e "$color"
+    echo -e " $icon $artist - $title "
+    echo -e " $icon $title "
 fi
 #+end_src
 *** volume
@@ -1772,20 +1755,13 @@ fi
 Vol=$(amixer -D pulse get Master | grep "Left: Playback" | awk '{print $5}' | tr -d "[ %]")
 Mute=$(amixer -D pulse get Master | grep "Left: Playback" | awk '{print $6}' | tr -d "[-]")
 
-if [ "$Mute" = "off" ];then
-    echo -e "  $Vol% "
-    echo
-    echo "#FABD2F"
+if [ "$Vol" = "0" ] || [ "$Mute" = "off" ]; then
+    echo -ne "    $Vol "
+elif [ "$Vol" -ge "50" ];then
+    echo -ne "    $Vol "
 else
-    if [ "$Vol" -ge "50" ];then
-        echo -ne "  $Vol% "
-    else
-        echo -ne "  $Vol% "
-    fi
+    echo -ne "    $Vol "
 fi
-
-unset Vol
-unset Mute
 #+end_src
 *** wifi
 :PROPERTIES:
@@ -1797,15 +1773,17 @@ if [ "$BLOCK_BUTTON" = "1" ]; then
 fi
 name="$(iwgetid -r)"
 if [ -n "$name" ]; then
-    strength="$(nmcli device wifi list | grep '*' | tail -1 | awk -F '[[:space:]][[:space:]]+' '{print $6}')"
+    # strength="$(nmcli device wifi list | grep '*' | tail -1 | awk -F '[[:space:]][[:space:]]+' '{print $6}')"
     # echo -e "   $name $strength%"
-    echo -e "   $strength%"
+    # echo -e "$strength% "
+    echo -e "  $name "
     echo ""
-    echo "#B8BB26"
+    # echo "#B8BB26"
 else
-    echo -e "   None "
+    echo -e "  None "
     echo
-    echo "#FB4933"
+    echo
+    # echo "#FB4933"
 fi
 #+end_src
 ** masterinstall
