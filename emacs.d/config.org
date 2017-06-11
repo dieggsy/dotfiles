@@ -2831,7 +2831,6 @@ Source: http://tinyurl.com/lty44qa"
         (magit-blame-quit)
       (call-interactively 'magit-blame)))
 #+end_src
-
 * Appearance
 ** Defaults
 *** Startup
@@ -3715,7 +3714,7 @@ I use this for reading, mostly.
 (with-eval-after-load 'hydra
   (defvar flycheck-mode nil)
   (defvar focus-mode nil)
-  (defhydra hydra-toggle (:color pink)
+  (defhydra hydra-toggle (:color pink :exit t)
     "
 _a_ abbrev:              %-3s`abbrev-mode   _d_ debug-on-error:      %-3s`debug-on-error   _P_ prettify-symbols:      %-3s`prettify-symbols-mode
 _i_ aggressive-indent:   %-3s`aggressive-indent-mode   _l_ nlinum:              %-3s`nlinum-mode   _F_ focus:                 %-3s`focus-mode
@@ -3882,7 +3881,6 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package org-gcal
-  :after org-agenda
   :config
   (setq org-gcal-client-id (password-store-get "api/org-gcal-id")
         org-gcal-client-secret (password-store-get "api/org-gcal-secret")
