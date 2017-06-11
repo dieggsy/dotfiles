@@ -2529,12 +2529,28 @@ Leader keys
 *** [[https://github.com/wasamasa/eyebrowse][eyebrowse]]
 #+begin_src emacs-lisp
 (use-package eyebrowse
-  :defer 10
+  :commands (eyebrowse-switch-to-window-config
+             eyebrowse-next-window-config
+             eyebrowse-prev-window-config
+             eyebrowse-rename-window-config
+             eyebrowse-close-window-connfig
+             eyebrowse-close-window-config
+             eyebrowse-last-window-config
+             eyebrowse-switch-to-window-config-0
+             eyebrowse-switch-to-window-config-1
+             eyebrowse-switch-to-window-config-2
+             eyebrowse-switch-to-window-config-3
+             eyebrowse-switch-to-window-config-4
+             eyebrowse-switch-to-window-config-5
+             eyebrowse-switch-to-window-config-6
+             eyebrowse-switch-to-window-config-7
+             eyebrowse-switch-to-window-config-8
+             eyebrowse-switch-to-window-config-9)
   :leader-bind (("es" . eyebrowse-switch-to-window-config)
                 ("el" . eyebrowse-next-window-config)
                 ("eh" . eyebrowse-prev-window-config)
                 ("er" . eyebrowse-rename-window-config)
-                ("ec" . eyebrowse-close-window-connfig)
+                ("ec" . eyebrowse-close-window-config)
                 ("e'" . eyebrowse-last-window-config)
                 ("e0" . eyebrowse-switch-to-window-config-0)
                 ("e1" . eyebrowse-switch-to-window-config-1)
