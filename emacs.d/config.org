@@ -2701,6 +2701,13 @@ Source: http://tinyurl.com/koowarm"
     "wv" 'diego/split-vert-focus))
 #+end_src
 * Git and github
+** Defaults
+#+begin_src emacs-lisp
+(defadvice vc-mode-line (after strip-backend () activate)
+    (when (stringp vc-mode)
+      (let ((gitlogo (replace-regexp-in-string "^ Git." "" vc-mode)))
+        (setq vc-mode gitlogo))))
+#+end_src
 ** Packages
 *** [[https://github.com/magit/magit][magit]]
 #+begin_quote
