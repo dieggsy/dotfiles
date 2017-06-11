@@ -227,5 +227,5 @@
             t))
 
 ;; Local Variables:
-;; after-save-hook: (lambda () (byte-compile-file (locate-user-emacs-file "init.el")))
+;; after-save-hook: (lambda () (byte-compile-file (buffer-file-name)))
 ;; End:
