@@ -233,7 +233,7 @@ Save stuff you've copied in other applications to the emacs kill-ring.
 *** Mode line
 #+begin_src emacs-lisp
 (defvar diego/mode-line
-  '((:eval (when  (featurep 'evil)
+  '((:eval (when  (featurep 'evil)      ; Eyebrowse workspace and/or evil state
              (let* ((num (when (and (featurep 'eyebrowse)
                                   (< 1 (length
                                         (eyebrowse--get 'window-configs))))
@@ -259,30 +259,24 @@ Save stuff you've copied in other applications to the emacs kill-ring.
                                 (" R " "#FE8019"))
                              :foreground "#3E3D31"
                              :weight bold)))))
-    " %*"
-    " %[" mode-line-buffer-identification "%] "
-    (:propertize mode-name face (:foreground "#A89984"))
-    " %4l:%2c "
-    (:eval (when (or current-input-method
-                    (and (bound-and-true-p evil-mode)
-                       (bound-and-true-p evil-input-method)))
-             (cond
-              (current-input-method
-               (propertize current-input-method-title 'face 'bold))
-              ((and (featurep 'evil) (bound-and-true-p evil-input-method))
-               (nth 3 (assoc default-input-method input-method-alist))))))
-    " "
-    (:eval (when (and (bound-and-true-p anzu--state))
-             (anzu--update-mode-line)))
-    (:eval nil ;; (if (and default-directory
-           ;;        (file-remote-p default-directory 'host))
-           ;;     (concat " @" (file-remote-p default-directory 'host)":"(file-remote-p default-directory 'user))
-           ;;   (concat " @" (system-name)))
-           )
-    ;; mode-line-remote
+    ;; File modified
+    " %* "
+    ;; Buffer name & recursive editing
+    "%[" mode-line-buffer-identification "%] "
+    ;; Remote
+    (:eval (let ((host (file-remote-p default-directory 'host)))
+             (cond ((and host default-directory (string= host (system-name)))
+                    (concat "@" (file-remote-p default-directory 'user) " "))
+                   ((and host default-directory)
+                    (concat "@" host " ")))))
+    ;; Major mode
+    (:eval (propertize (concat mode-name " ") 'face '(:foreground "#A89984")))
+    ;; Line/column number
+    "%4l:%2c "
+    ;; Version control
     (:eval (when vc-mode
              (powerline-raw
-              (concat " (" (propertize vc-mode 'face '(:foreground "#B8BB26")) "|"
+              (concat "(" (propertize vc-mode 'face '(:foreground "#B8BB26")) "|"
                       (when (buffer-file-name)
                         (pcase (vc-state (buffer-file-name))
                           (`up-to-date (propertize "✓" 'face '(:foreground "#B8BB26")))
@@ -293,18 +287,21 @@ Save stuff you've copied in other applications to the emacs kill-ring.
                           (`needs-merge (propertize "✖" 'face '(:foreground "#FB4933")))
                           (`needs-update "upd")
                           (`ignored "ign")))
-                      ")"))))
-    " "))
+                      ") "))))
+    ;; Input method
+    (:eval (when (or current-input-method
+                    (and (bound-and-true-p evil-mode)
+                       (bound-and-true-p evil-input-method)))
+             (cond
+              (current-input-method
+               (propertize (concat current-input-method-title " ") 'face 'bold))
+              ((and (featurep 'evil) (bound-and-true-p evil-input-method))
+               (nth 3 (assoc default-input-method input-method-alist))))))
+    ;; Anzu
+    (:eval (when (and (bound-and-true-p anzu--state))
+             (anzu--update-mode-line)))))
 
-(setq-default mode-line-format
-              '((:eval (progn
-                         (while (< (length (format-mode-line diego/mode-line))
-                                   (window-total-width))
-                           (setf (nth 8 diego/mode-line) (concat " " (nth 8 diego/mode-line))))
-                         (while  (> (length (format-mode-line diego/mode-line))
-                                    (window-total-width))
-                           (setf (nth 8 diego/mode-line) (substring (nth 8 diego/mode-line) 0 -1)))
-                         (format-mode-line diego/mode-line)))))
+(setq-default mode-line-format diego/mode-line)
 #+end_src
 ** Functions
 *** Dotfiles
