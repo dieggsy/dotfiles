@@ -453,9 +453,6 @@ bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
 
-assign [class="(?i)firefox"] 1
-assign [instance="libreoffice"] 2
-for_window [class="Spotify"] move to workspace 3
 for_window [class="etcher"] floating enable
 #+end_src
 **** Resizing
