@@ -3335,7 +3335,9 @@ Source: http://tinyurl.com/le6wxuo"
 Source: http://tinyurl.com/mh5ev6x"
   (interactive)
   (forward-sexp)
-  (forward-char)
+  (if (= (point) (point-max))
+      (insert " ")
+    (forward-char))
   (backward-kill-sexp)
   (condition-case nil
       (prin1 (eval (read (current-kill 0)))
