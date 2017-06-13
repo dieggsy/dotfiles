@@ -3917,6 +3917,7 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package org-gcal
+  :commands org-gcal-sync
   :config
   (setq org-gcal-client-id (password-store-get "api/org-gcal-id")
         org-gcal-client-secret (password-store-get "api/org-gcal-secret")
