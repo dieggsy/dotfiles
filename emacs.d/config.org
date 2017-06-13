@@ -2662,7 +2662,8 @@ Like git, for emacs. But cooler.
   :config
   (setq magit-diff-use-overlays nil
         auto-revert-check-vc-info t
-        git-commit-summary-max-length 50)
+        git-commit-summary-max-length 50
+        git-commit-major-mode 'org-mode)
 
   (add-hook 'git-commit-mode-hook (lambda () (setq-local fill-column 72))))
 #+end_src
