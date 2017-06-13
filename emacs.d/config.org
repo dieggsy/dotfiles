@@ -230,79 +230,6 @@ Save stuff you've copied in other applications to the emacs kill-ring.
 #+begin_src emacs-lisp
 (setq save-interprogram-paste-before-kill t)
 #+end_src
-*** Mode line
-#+begin_src emacs-lisp
-(defvar diego/mode-line
-  '((:eval (when  (featurep 'evil)      ; Eyebrowse workspace and/or evil state
-             (let* ((num (when (and (featurep 'eyebrowse)
-                                  (< 1 (length
-                                        (eyebrowse--get 'window-configs))))
-                           (eyebrowse--get 'current-slot)))
-                    (tag (when num
-                           (nth 2 (assoc num
-                                         (eyebrowse--get 'window-configs)))))
-                    (str (or (if (and tag (< 0 (length tag)))
-                                tag
-                              (when num
-                                (concat " " (int-to-string num) " ")))
-                            evil-mode-line-tag)))
-               (propertize str
-                           'face
-                           `(:background
-                             ,(pcase (substring-no-properties
-                                      evil-mode-line-tag)
-                                (" N " "#B8BB26")
-                                (" I " "#66999D")
-                                (" M " "#D3869B")
-                                (" V " "#FE8019")
-                                (" E " "#83A598")
-                                (" R " "#FE8019"))
-                             :foreground "#3E3D31"
-                             :weight bold)))))
-    ;; File modified
-    " %* "
-    ;; Buffer name & recursive editing
-    "%[" mode-line-buffer-identification "%] "
-    ;; Remote
-    (:eval (let ((host (file-remote-p default-directory 'host)))
-             (cond ((and host default-directory (string= host (system-name)))
-                    (concat "@" (file-remote-p default-directory 'user) " "))
-                   ((and host default-directory)
-                    (concat "@" host " ")))))
-    ;; Major mode
-    (:eval (propertize (concat mode-name " ") 'face '(:foreground "#A89984")))
-    ;; Line/column number
-    "%4l:%2c "
-    ;; Version control
-    (:eval (when vc-mode
-             (powerline-raw
-              (concat "(" (propertize vc-mode 'face '(:foreground "#B8BB26")) "|"
-                      (when (buffer-file-name)
-                        (pcase (vc-state (buffer-file-name))
-                          (`up-to-date (propertize "✓" 'face '(:foreground "#B8BB26")))
-                          (`edited (propertize "✚" 'face '(:foreground "#FB4933")))
-                          (`added (propertize "●" 'face '(:foreground "#83A598")))
-                          (`unregistered "…")
-                          (`removed "del")
-                          (`needs-merge (propertize "✖" 'face '(:foreground "#FB4933")))
-                          (`needs-update "upd")
-                          (`ignored "ign")))
-                      ") "))))
-    ;; Input method
-    (:eval (when (or current-input-method
-                    (and (bound-and-true-p evil-mode)
-                       (bound-and-true-p evil-input-method)))
-             (cond
-              (current-input-method
-               (propertize (concat current-input-method-title " ") 'face 'bold))
-              ((and (featurep 'evil) (bound-and-true-p evil-input-method))
-               (nth 3 (assoc default-input-method input-method-alist))))))
-    ;; Anzu
-    (:eval (when (and (bound-and-true-p anzu--state))
-             (anzu--update-mode-line)))))
-
-(setq-default mode-line-format diego/mode-line)
-#+end_src
 ** Functions
 *** Dotfiles
 #+begin_src emacs-lisp
@@ -1590,6 +1517,11 @@ Source-ish: http://tinyurl.com/lmzvfh3"
                   ;; "hydra-[^/]+/\\(.+\\)"
                   ))
     (push `((nil . ,pref) . (nil . "\\1")) which-key-replacement-alist)))
+#+end_src
+
+*** [[https://github.com/milkypostman/powerline][powerline]]
+#+begin_src emacs-lisp
+(use-package powerline)
 #+end_src
 ** Bindings
 A convenient full-screen binding I'm used to from iTerm.
@@ -2930,6 +2862,95 @@ Use a bar cursor in the minibuffer.
 (add-hook 'minibuffer-setup-hook
           (lambda () (setq-local cursor-type '(bar . 1))))
 #+end_src
+*** Mode line
+#+begin_src emacs-lisp
+(defmacro with-modeline-status (&rest body)
+  (declare (indent defun))
+  `(let ((window-status (powerline-selected-window-active)))
+     (cl-macrolet ((propertize-active (&rest arguments)
+                                      `(if window-status
+                                           (propertize ,@arguments)
+                                         ,(car arguments))))
+       ,@body)))
+
+(defvar diego/mode-line
+  '((:eval (with-modeline-status
+             (when  (featurep 'evil)      ; Eyebrowse workspace and/or evil state
+               (let* ((num (when (and (featurep 'eyebrowse)
+                                    (< 1 (length
+                                          (eyebrowse--get 'window-configs))))
+                             (eyebrowse--get 'current-slot)))
+                      (tag (when num
+                             (nth 2 (assoc num
+                                           (eyebrowse--get 'window-configs)))))
+                      (str (or (if (and tag (< 0 (length tag)))
+                                  tag
+                                (when num
+                                  (concat " " (int-to-string num) " ")))
+                              evil-mode-line-tag)))
+                 (propertize-active str
+                                    'face
+                                    `(:background
+                                      ,(pcase (substring-no-properties
+                                               evil-mode-line-tag)
+                                         (" N " "#B8BB26")
+                                         (" I " "#66999D")
+                                         (" M " "#D3869B")
+                                         (" V " "#FE8019")
+                                         (" E " "#83A598")
+                                         (" R " "#FE8019")
+                                         (" O " "#B8BB26"))
+                                      :foreground "#3E3D31"
+                                      :weight bold))))))
+    ;; File modified
+    " %* "
+    ;; Buffer name & recursive editing
+    "%[" mode-line-buffer-identification "%] "
+    ;; Remote
+    (:eval (let ((host (file-remote-p default-directory 'host)))
+             (cond ((and host default-directory (string= host (system-name)))
+                    (concat "@" (file-remote-p default-directory 'user) " "))
+                   ((and host default-directory)
+                    (concat "@" host " ")))))
+    ;; Major mode
+    (:eval (with-modeline-status
+             (propertize-active (concat mode-name " ") 'face '(:foreground "#A89984"))))
+    ;; Line/column number
+    "%4l:%2c "
+    ;; Version control
+    (:eval (with-modeline-status
+             (when vc-mode
+               (let ((modeline-active (powerline-selected-window-active)))
+                 (concat "(" (propertize-active vc-mode 'face '(:foreground "#B8BB26"))
+                         "|"
+                         (when (buffer-file-name)
+                           (pcase (vc-state (buffer-file-name))
+                             (`up-to-date (propertize-active "✓" 'face '(:foreground "#B8BB26")))
+                             (`edited (propertize-active "✚" 'face '(:foreground "#FB4933")))
+                             (`added (propertize-active "●" 'face '(:foreground "#83A598")))
+                             (`unregistered "…")
+                             (`removed "del")
+                             (`needs-merge (propertize-active "✖" 'face '(:foreground "#FB4933")))
+                             (`needs-update "upd")
+                             (`ignored "ign")))
+                         ") ")))))
+    ;; Input method
+    (:eval (with-modeline-status
+             (when (or current-input-method
+                       (and (bound-and-true-p evil-mode)
+                            (bound-and-true-p evil-input-method)))
+               (cond
+                (current-input-method
+                 (propertize-active (concat current-input-method-title " ") 'face 'bold))
+                ((and (featurep 'evil) (bound-and-true-p evil-input-method))
+                 (concat (nth 3 (assoc default-input-method input-method-alist)) " "))))))
+    ;; Anzu
+    (:eval (with-modeline-status
+             (when (bound-and-true-p anzu--state)
+               (propertize-active (anzu--update-mode-line) 'face '(:foreground "#83A598")))))))
+
+(setq-default mode-line-format diego/mode-line)
+#+end_src
 ** Packages
 *** [[https://github.com/larstvei/Focus][focus]]
 #+begin_quote
@@ -3768,7 +3789,17 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 (use-package evil-anzu
   :after evil
   :config
-  (setq anzu-cons-mode-line-p nil))
+  (setq anzu-cons-mode-line-p nil)
+  (defun diego/anzu-update-mode-line (here total)
+    (when anzu--state
+      (let ((status (cl-case anzu--state
+                      (search (format "(%s/%d%s)"
+                                      (anzu--format-here-position here total)
+                                      total (if anzu--overflow-p "+" "")))
+                      (replace-query (format "(%d replace)" total))
+                      (replace (format "(%d/%d)" here total)))))
+        status)))
+  (setq anzu-mode-line-update-function #'diego/anzu-update-mode-line))
 #+end_src
 *** [[https://github.com/TheBB/evil-indent-plus][evil-indent-plus]]
 #+begin_quote
