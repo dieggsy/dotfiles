@@ -476,7 +476,8 @@ editing. So I went for it. Now I'll never go back.
         evil-motion-state-tag  " M "
         evil-visual-state-tag  " V "
         evil-emacs-state-tag   " E "
-        evil-replace-state-tag " R ")
+        evil-replace-state-tag " R "
+        evil-operator-state-tag " O ")
 
   (evil-ex-define-cmd "dtw" #'delete-trailing-whitespace)
   (evil-ex-define-cmd "buffers" #'ibuffer)
