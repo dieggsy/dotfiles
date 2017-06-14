@@ -2776,7 +2776,7 @@ Source: http://tinyurl.com/lty44qa"
 Get right to your files or the scratch buffer. No B.S.
 #+begin_src emacs-lisp
 (setq inhibit-splash-screen t
-      inhibit-startup-message t
+      inhibit-startup-screen t
       inhibit-startup-echo-area-message t)
 #+end_src
 *** Time display
