@@ -1319,7 +1319,7 @@ bind -n C-k clear-history
 #+begin_src conf
 setw -g monitor-activity on
 set-option -g allow-rename off
-set -g history-limit 3000
+set -g history-limit 5000
 set -g base-index 1
 set -g pane-base-index 1
 set-option -g renumber-windows on
