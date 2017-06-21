@@ -3414,6 +3414,47 @@ Source: http://tinyurl.com/mh5ev6x"
   (setq-local prettify-symbols-alist diego/haskell-prettify-alist)
   (prettify-symbols-mode))
 #+end_src
+** Scheme                                                             :lang:
+*** Packages
+**** [[https://github.com/jaor/geiser][geiser]]
+#+begin_src emacs-lisp
+(use-package geiser
+  :config
+  (setq geiser-active-implementations '(chicken)))
+#+end_src
+*** Variables
+#+begin_src emacs-lisp
+(defvar diego/scheme-prettify-alist
+  (prettify-utils-generate
+   ("<=" "≤")
+   (">=" "≥")
+   ("/=" "≠")
+   ("eqv?" "≡")
+   ("equal?" "≣")
+   ("sqrt" "√")
+   ("float-pi" "π")
+   ("lambda" "λ")
+   ("and" "⋏")
+   ("or" "⋎")
+   ("define" "ƒ")
+   ("define-syntax" "ƒₛ")
+   ("not" "¬")
+   ("->" "→")))
+#+end_src
+*** Setup
+#+begin_src emacs-lisp
+(diego/setup-mode scheme
+  (hs-minor-mode)
+  (aggressive-indent-mode)
+  (push '(? . ("`" . "'")) evil-surround-pairs-alist)
+  (bind-keys :map (current-local-map)
+             ("C-c <up>" . hs-hide-all)
+             ("C-c <down>" . hs-show-all)
+             ("C-c <left>" . hs-hide-block)
+             ("C-c <right>" . hs-show-block))
+
+  (setq-local prettify-symbols-alist diego/scheme-prettify-alist))
+#+end_src
 ** Conf
 *** Setup
 #+begin_src emacs-lisp
