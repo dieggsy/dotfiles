@@ -335,8 +335,9 @@ alias -g ....='../../..'
 alias -g .....='../../../..'
 alias -g ......='../../../../..'
 alias -- -='cd -'
-alias cpg="cool-peco-ghq"
+# alias cpg="cool-peco-ghq"
 alias cpwd="pwd | tr -d '\n' | pbcopy"
+alias csi="rlwrap csi -q"
 alias ddg='surfraw duckduckgo -j'
 alias def='dict -d wn'
 alias ed="ed -p:"
@@ -398,6 +399,22 @@ alias calc="noglob calc"
 erg () { emacsclient -n $(rg -n $1 |
                               peco --prompt="[erg]" |
                               awk -F\: '{print "+"$2,$1}') > /dev/null 2>&1}
+
+cpg () {
+    if [ "$1" = "next" ]; then
+        current="$(pwd | cut -d/ -f5-)"
+        next="$(ghq list | grep -A1 -e $current | tail -n1)"
+        cd $(ghq root)/$next
+    elif [ "$1" = "prev" ]; then
+        current="$(pwd | cut -d/ -f5-)"
+        prev="$(ghq list | grep -B1 -e $current | head -n1)"
+        cd $(ghq root)/$prev
+    elif [ -n "$1" ]; then
+        ghq "$@"
+    else;
+        cool-peco-ghq
+    fi
+}
 #+end_src
 ** Use gnu coreutils in macOS
 :PROPERTIES:
@@ -440,6 +457,7 @@ path=(
     $HOME/.cargo/bin
     $PYENV_ROOT/bin
     $HOME/bin
+    $HOME/scriptl
     $HOME/.local/bin
     /usr/local/{bin,sbin}
     $path
@@ -457,6 +475,8 @@ typeset -gU path manpath cdpath fpath
 ** Variables
 #+begin_src sh
 export PYTHONSTARTUP=$HOME/.pythonrc.py
+
+export CHICKEN_REPOSITORY=~/.local/lib/chicken
 
 export WWW_HOME='https://duckduckgo.com'
 export RTV_EDITOR='emacsclient -t'
