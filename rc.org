@@ -317,13 +317,13 @@ floating_modifier $mod
 bindsym $mod+Shift+j reload
 
 # reload X11
-bindsym $mod+Shift+x exec xrdb -merge ~/.Xresources
+bindsym $mod+Shift+x exec --no-startup-id xrdb -merge ~/.Xresources
 
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+p restart
 
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+period exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+period exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 #+end_src
 **** Rofi
 #+begin_src conf
@@ -331,13 +331,13 @@ bindsym $mod+Shift+period exec "i3-nagbar -t warning -m 'You pressed the exit sh
 bindsym $mod+Shift+apostrophe kill
 
 # start rofi for windows and commands
-bindsym Mod1+space exec "rofi -combi-modi window,run -show combi -modi combi"
+bindsym Mod1+space exec --no-startup-id "rofi -combi-modi window,run -show combi -modi combi"
 
 # pass helper
-bindsym $mod+p exec "~/.password-store/.extensions/rofi.bash"
+bindsym $mod+p exec --no-startup-id "~/.password-store/.extensions/rofi.bash"
 
 # File finder with ripgrep
-bindsym $mod+f exec "~/bin/rofi-files"
+bindsym $mod+f exec --no-startup-id "~/bin/rofi-files"
 #+end_src
 **** Windows/scratchpad
 #+begin_src conf
