@@ -26,6 +26,11 @@
     ("67b10c9473d9f1cfe8d1f5943ccfeea823250d1ea547641600e65ff5a8e0a5b3" "8b26f75ff4c58aa2ab84eefcaee8ea34b35498f87aa998ba5bc3a705700eb945" "9f3181dc1fabe5d58bbbda8c48ef7ece59b01bed606cfb868dd147e8b36af97c" "06dbcfac3705aaaa79e1a3264c6fd44ef0cf86ef5ed67930e4007e63a8c1e8ee" "1d77d43f4f40a5a986c4420a3eabe43d828e20cc068b37e7cbf05079cc94a7b3" "61c4345c064bc18cfaf24e1417e11eed20ded0d3aff85856b34fd99abe851b97" "16241cf61a64014901a8dfb661cff9e5d9702f743f4e888c26de8c92267242d6" "63fd72d437963b632631e698379662c2e43f0238e675a7821f25ff1c6a3e200a" "a95356e6a494dc27d71fa7b8ecafdf5c60901aad175357a7b0da8c9878af258f" "0e219d63550634bc5b0c214aced55eb9528640377daf486e13fb18a32bf39856" "e3d28baa3817819c97fa8e80e388b7e72d959c3e2b11c3cc7870848329875623" "bffa9739ce0752a37d9b1eee78fc00ba159748f50dc328af4be661484848e476" default)))
  '(doc-view-resolution 300)
  '(fill-column 79)
+ '(focus-mode-to-thing
+   (quote
+    ((prog-mode . defun)
+     (text-mode . sentence)
+     (org-mode . paragraph))))
  '(gnus-large-newsgroup 4000)
  '(highlight-changes-colors (quote ("#FD5FF0" "#AE81FF")))
  '(highlight-symbol-colors
@@ -52,7 +57,7 @@
     ("#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36" "#002b36")))
  '(ivy-ignore-buffers
    (quote
-    ("\\` " "\\`\\*LV\\*" "\\`\\*magit" "\\`\\*epc" "\\`\\*Calc" "\\`\\*Colors" "\\`\\*helm" "\\`\\*Help" "\\`\\*Packages" "\\`\\*Customize" "\\`\\*info" "\\`\\*Compile" "\\`\\*anaconda-mode" "\\`\\*scratch" "\\`\\*Messages" "\\`todo.org" "\\`gcal.org" "\\`notes.org" "\\`archive.org" "\\`\\.org-gcal-token" "\\`elfeed.org" "\\`\\*elfeed-log\\*" "\\`\\*Man" "\\`\\*Quail" "\\`\\*Paradox Report\\*" "\\`\\*Backtrace\\*" "\\`\\*slime-events\\*" "\\`\\*slime-compilation\\*" "\\`\\*inferior-lisp\\*" "\\`\\*Completions\\*" "\\`\\*embrace-help\\*")))
+    ("\\` " "\\`\\*LV\\*" "\\`\\*magit" "\\`\\*epc" "\\`\\*Calc" "\\`\\*Colors" "\\`\\*helm" "\\`\\*Help" "\\`\\*Packages" "\\`\\*Customize" "\\`\\*info" "\\`\\*Compile" "\\`\\*anaconda-mode" "\\`\\*scratch" "\\`\\*Messages" "\\`todo.org" "\\`gcal.org" "\\`notes.org" "\\`archive.org" "\\`\\.org-gcal-token" "\\`elfeed.org" "\\`\\*elfeed-log\\*" "\\`\\*Man" "\\`\\*Quail" "\\`\\*Paradox Report\\*" "\\`\\*Backtrace\\*" "\\`\\*slime-events\\*" "\\`\\*slime-compilation\\*" "\\`\\*inferior-lisp\\*" "\\`\\*Completions\\*" "\\`\\*embrace-help\\*" "\\`\\*geiser messages*" "\\`\\*Geiser dbg*")))
  '(notmuch-hello-sections
    (quote
     (notmuch-hello-insert-saved-searches notmuch-hello-insert-search notmuch-hello-insert-recent-searches notmuch-hello-insert-alltags notmuch-hello-insert-footer)))
@@ -113,7 +118,7 @@
      ("html" . html))))
  '(package-selected-packages
    (quote
-    (evil-embrace evil-surround adoc-mode sokoban tldr doom-themes gist unfill prettify-utils ox-twbs elfeed pdf-tools notmuch fontawesome webpaste turing-machine s quelpa darktooth-theme dired+ rainbow-identifiers color-identifiers-mode slime-company slime ledger-mode cmake-mode flycheck-package elpy w3 xpm dumb-jump password-store langtool ox-gfm web-mode ivy-hydra outshine haskell-snippets evil-matchit evil-anzu js2-mode company-ghci help+ help-fns+ auto-yasnippet hungry-delete flycheck-haskell ghc haskell-mode applescript-mode highlight-quoted evil-mc eyebrowse evil-indent-plus esup wiki-search pcre2el pandoc-mode async nyan-mode toc-org hacker-typer package-lint diminish bind-key bind-map weechat-alert weechat eimp visual-fill-column json-mode org-gcal lib-requires elmacro dash quelpa-use-package package-build no-littering autothemer bookmark+ headlong nlinum-relative zone-nyan zone-matrix yasnippet yapfify yaml-mode xkcd which-key vimrc-mode use-package twittering-mode sx sunshine spray sphinx-doc speed-type spaceline smex selectric-mode sane-term restart-emacs ranger rainbow-mode rainbow-delimiters pyenv-mode-auto persistent-scratch paradox ox-pandoc osx-trash org-plus-contrib ob-ipython nm melpa-upstream-visit matlab-mode markdown-preview-mode magithub lua-mode info+ imenu-anywhere highlight-tail highlight-parentheses highlight-numbers highlight-defined google-translate google-this git-gutter-fringe focus flyspell-correct-ivy flycheck flx fireplace fill-column-indicator fancy-battery exec-path-from-shell evil-smartparens evil-numbers evil-nerd-commenter evil-multiedit evil-magit evil-leader evil-indent-textobject eshell-z eshell-prompt-extras emojify elfeed-org elfeed-goodies ein drawille disable-mouse devdocs define-word csv-mode crux counsel-projectile counsel-osx-app counsel-bbdb company-anaconda coffee-mode clojure-mode centered-cursor-mode bbdb-vcard bbdb-ext atomic-chrome aggressive-indent ace-window)))
+    (geiser chicken-scheme evil-embrace evil-surround adoc-mode sokoban tldr doom-themes gist unfill prettify-utils ox-twbs elfeed pdf-tools notmuch fontawesome webpaste turing-machine s quelpa darktooth-theme dired+ rainbow-identifiers color-identifiers-mode slime-company slime ledger-mode cmake-mode flycheck-package elpy w3 xpm dumb-jump password-store langtool ox-gfm web-mode ivy-hydra outshine haskell-snippets evil-matchit evil-anzu js2-mode company-ghci help+ help-fns+ auto-yasnippet hungry-delete flycheck-haskell ghc haskell-mode applescript-mode highlight-quoted evil-mc eyebrowse evil-indent-plus esup wiki-search pcre2el pandoc-mode async nyan-mode toc-org hacker-typer package-lint diminish bind-key bind-map weechat-alert weechat eimp visual-fill-column json-mode org-gcal lib-requires elmacro dash quelpa-use-package package-build no-littering autothemer bookmark+ headlong nlinum-relative zone-nyan zone-matrix yasnippet yapfify yaml-mode xkcd which-key vimrc-mode use-package twittering-mode sx sunshine spray sphinx-doc speed-type spaceline smex selectric-mode sane-term restart-emacs ranger rainbow-mode rainbow-delimiters pyenv-mode-auto persistent-scratch paradox ox-pandoc osx-trash org-plus-contrib ob-ipython nm melpa-upstream-visit matlab-mode markdown-preview-mode magithub lua-mode info+ imenu-anywhere highlight-tail highlight-parentheses highlight-numbers highlight-defined google-translate google-this git-gutter-fringe focus flyspell-correct-ivy flycheck flx fireplace fill-column-indicator fancy-battery exec-path-from-shell evil-smartparens evil-numbers evil-nerd-commenter evil-multiedit evil-magit evil-leader evil-indent-textobject eshell-z eshell-prompt-extras emojify elfeed-org elfeed-goodies ein drawille disable-mouse devdocs define-word csv-mode crux counsel-projectile counsel-osx-app counsel-bbdb company-anaconda coffee-mode clojure-mode centered-cursor-mode bbdb-vcard bbdb-ext atomic-chrome aggressive-indent ace-window)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(pos-tip-background-color "#36473A")
  '(pos-tip-foreground-color "#FFFFC8")
@@ -121,7 +126,7 @@
  '(python-shell-interpreter "python")
  '(recentf-exclude
    (quote
-    ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" "/elpa/" "/xkcd/")) t)
+    ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" "/elpa/" "/xkcd/")))
  '(safe-local-eval-forms
    (quote
     ((add-hook
@@ -152,7 +157,7 @@
      (aggressive-indent-mode)
      (after-save-hook lambda nil
                       (byte-compile-file
-                       (locate-user-emacs-file "init.el")))
+                       (buffer-file-name)))
      (after-save-hook lambda nil
                       (org-beamer-export-to-pdf t))
      (after-save-hook git-gutter diego/async-tangle-init)
