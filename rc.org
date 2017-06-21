@@ -1580,47 +1580,36 @@ else
     echo "fine" > /tmp/battery-status
 fi
 
-if [ "$Adapt" = "on-line" ];then
-    icon0=" "
-    icon1=" "
-    icon2=" "
-    icon3=" "
-    icon4=" "
-else
-    icon0=" "
-    icon1=" "
-    icon2=" "
-    icon3=" "
-    icon4=" "
-fi
-
 if [ -z "$Bat" ];then
     bat=""
 elif [ "$Bat" -gt "95" ];then
-    bat="  $icon4 Full "
-    icon="$icon4"
+    icon=" "
+    bat="  $icon Full "
     color="#B8BB26"
 elif [ "$Bat" -gt "75" ];then
-    bat="  $icon3 $Bat "
-    icon="$icon3"
+    icon=" "
+    bat="  $icon $Bat "
     color="#B8BB26"
 elif [ "$Bat" -gt "50" ];then
-    bat="  $icon2 $Bat "
-    icon="$icon2"
+    icon=" "
+    bat="  $icon $Bat "
     color="#B8BB26"
 elif [ "$Bat" -gt "25" ];then
-    bat="  $icon1 $Bat "
-    icon="$icon1"
+    icon=" "
+    bat="  $icon $Bat "
     color="#FABD2F"
 elif [ "$Bat" -lt "25" ];then
-    bat="  $icon0 $Bat "
-    icon="$icon0"
+    icon=" "
+    bat="  $icon $Bat "
     color="#FB4933"
+fi
+
+if [ "$Adapt" = "on-line" ];then
+    icon=" "
 fi
 
 echo -e "$bat"
 echo -e "$icon"
-# echo -e "$color"
 #+end_src
 *** bright
 :PROPERTIES:
