@@ -44,6 +44,7 @@ more readable in org format than in rendered markdown.
   - [[#pixelate][pixelate]]
   - [[#playerctl-cmus][playerctl-cmus]]
   - [[#rofi-files][rofi-files]]
+  - [[#scriptl][scriptl]]
   - [[#spectrum_ls][spectrum_ls]]
   - [[#spotify][spotify]]
   - [[#systemsettings5][systemsettings5]]
@@ -2249,6 +2250,58 @@ A script to search all files using [[https://github.com/BurntSushi/ripgrep][ripg
     | rofi -dmenu -i -levenshtein-sort -matching regex -p '[files] '\
     | xargs -d '\n' xdg-open
 
+#+end_src
+** scriptl
+*** scriptl-server
+:PROPERTIES:
+:header-args+: :tangle ~/scriptl/scriptl-server.lisp
+:END:
+#+begin_src lisp
+(ql:quickload :swank)
+(ql:quickload :scriptl)
+(ql:quickload :dbus)
+
+(swank:create-server :port 4005 :dont-close t)
+(scriptl:start)
+
+(defmacro scriptl-script (script-name args &key (path #P"/home/diego/scriptl/") body)
+  `(progn
+     (defun ,script-name ,args
+       ,body)
+     (let ((*default-pathname-defaults* ,path))
+       (scriptl:make-script ,(string-downcase (symbol-name script-name)) ',script-name))))
+
+(load "/home/diego/scriptl/scripts.lisp")
+#+end_src
+*** scripts
+:PROPERTIES:
+:header-args+: :tangle ~/scriptl/scripts.lisp
+:END:
+**** kb-light
+#+begin_src lisp
+(scriptl-script
+ kb-light (&optional up-down)
+ :path #P"/home/diego/scriptl/"
+ :body
+ (dbus:with-open-bus (bus (dbus:system-server-addresses))
+   (dbus:with-introspected-object
+       (kb-light bus
+                 "/org/freedesktop/UPower/KbdBacklight"
+                 "org.freedesktop.UPower")
+     (let* ((delta (cond ((string= up-down "+") 2)
+                         ((string= up-down "-") -2)
+                         (t 0)))
+            (current (kb-light "org.freedesktop.UPower.KbdBacklight"
+                               "GetBrightness"))
+            (maximum (kb-light "org.freedesktop.UPower.KbdBacklight"
+                               "GetMaxBrightness"))
+            (new (max 0 (+ current delta) )))
+       (when (<= 0 new maximum)
+         (setq current new)
+         (kb-light "org.freedesktop.UPower.KbdBacklight"
+                   "SetBrightness"
+                   current))
+       (format t "~a~%" (round (* 100 (float (/ current maximum)))))))))
 #+end_src
 ** spectrum_ls
 :PROPERTIES:
