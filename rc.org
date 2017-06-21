@@ -1510,10 +1510,17 @@ Emacs*geometry: 99x41
 :END:
 #+begin_src sh
 sh ~/.fehbg &
-dropbox start &
-unclutter &
+
+pkill dropbox; dropbox start &
+
+pkill unclutter; unclutter &
+
+# tmux kill-session -t sbcl_daemon 2>/dev/null
+# tmux new -d -s sbcl_daemon /usr/local/bin/sbcl --load ~/scriptl/scriptl-server.lisp &
+
 xset s off
 xset r rate 300 50
+
 setxkbmap dvorak
 setxkbmap -option 'ctrl:nocaps'
 xcape -e 'Control_L=Escape'
