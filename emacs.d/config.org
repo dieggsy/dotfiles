@@ -2666,7 +2666,8 @@ Like git, for emacs. But cooler.
         git-commit-major-mode 'org-mode)
 
   (diego/setup-mode git-commit
-    (setq-local fill-column 72)))
+    (setq-local fill-column 72)
+    (setq-local org-hide-emphasis-markers nil)))
 #+end_src
 *** [[https://github.com/emacs-evil/evil-magit][evil-magit]]
 #+begin_quote
