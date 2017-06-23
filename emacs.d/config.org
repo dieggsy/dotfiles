@@ -3224,8 +3224,7 @@ Pretty neat, though not entirely complete, IMO.
   (add-to-list 'company-backends
                (company-mode/backend-with-yas 'company-anaconda))
   (setq-local prettify-symbols-alist
-              diego/python-prettify-alist)
-  (prettify-symbols-mode))
+              diego/python-prettify-alist))
 #+end_src
 ** Lisps                                                              :lang:
 *** Packages
@@ -3377,8 +3376,7 @@ Source: http://tinyurl.com/mh5ev6x"
              ("C-c <left>" . hs-hide-block)
              ("C-c <right>" . hs-show-block))
 
-  (setq-local prettify-symbols-alist diego/lisp-prettify-alist)
-  (prettify-symbols-mode))
+  (setq-local prettify-symbols-alist diego/lisp-prettify-alist))
 #+end_src
 ** C                                                                  :lang:
 *** Setup
@@ -3411,8 +3409,7 @@ Source: http://tinyurl.com/mh5ev6x"
 *** Setup
 #+begin_src emacs-lisp
 (diego/setup-mode haskell
-  (setq-local prettify-symbols-alist diego/haskell-prettify-alist)
-  (prettify-symbols-mode))
+  (setq-local prettify-symbols-alist diego/haskell-prettify-alist))
 #+end_src
 ** Scheme                                                             :lang:
 *** Packages
