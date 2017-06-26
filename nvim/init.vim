@@ -1,6 +1,6 @@
 set nocompatible
 filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
+set rtp+=~/.config/nvim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'VundleVim/Vundle.vim'
 Plugin 'joshdick/onedark.vim'
@@ -56,6 +56,8 @@ elseif &term =~ "screen-it"
   autocmd VimLeave * silent !printf "\033Ptmux;\033\033]12;grey\007\033\\"
 endif
 set number
+set relativenumber
+set cursorline
 set hlsearch
 let g:vim_markdown_folding_disabled = 1
 " Enable folding
@@ -80,4 +82,7 @@ au BufNewFile,BufRead *.py
     \ set autoindent |
     \ set fileformat=unix |
     \ set smartindent
-
+imap <C-_> escape
+"let g:lightline = {
+"    \ 'colorscheme' : 'gruvbox',
+"    \ }

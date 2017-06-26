@@ -16,5 +16,5 @@ emacs.d/lisp/there-is-trouble-with-the-trees.el
 emacs.d/quelpa/
 emacs.d/srecode-map.el
 emacs.d/tramp
-vim/.netrwhist
-vim/bundle/
+nvim/bundle/
+emacs.d/tldr
