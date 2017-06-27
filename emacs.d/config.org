@@ -2947,10 +2947,6 @@ Use a bar cursor in the minibuffer.
                  (propertize-active (concat current-input-method-title " ") 'face 'bold))
                 ((and (featurep 'evil) (bound-and-true-p evil-input-method))
                  (concat (nth 3 (assoc default-input-method input-method-alist)) " "))))))
-    ;; Anzu
-    (:eval (with-modeline-status
-             (when (bound-and-true-p anzu--state)
-               (propertize-active (anzu--update-mode-line) 'face '(:foreground "#83A598")))))))
 
 (setq-default mode-line-format diego/mode-line)
 #+end_src
@@ -3842,7 +3838,17 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
                       (replace-query (format "(%d replace)" total))
                       (replace (format "(%d/%d)" here total)))))
         status)))
-  (setq anzu-mode-line-update-function #'diego/anzu-update-mode-line))
+  (setq anzu-mode-line-update-function #'diego/anzu-update-mode-line)
+
+  (defun diego/evil-ex-anzu-advice (&rest _)
+    (message (concat (car evil-ex-search-pattern) (anzu--update-mode-line))))
+
+  (advice-add 'evil-ex-search-next
+              :after 'diego/evil-ex-anzu-advice)
+  (advice-add 'evil-ex-search-previous
+              :after 'diego/evil-ex-anzu-advice)
+  (advice-add 'evil-ex-start-search
+              :after 'diego/evil-ex-anzu-advice))
 #+end_src
 *** [[https://github.com/TheBB/evil-indent-plus][evil-indent-plus]]
 #+begin_quote
