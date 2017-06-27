@@ -83,7 +83,7 @@ and most active development. It builds packages around every 4 hours or so
 directly from source.
 #+begin_src emacs-lisp
 (add-to-list 'package-archives '("org"       . "http://orgmode.org/elpa/") t)
-(add-to-list 'package-archives '("melpa"     . "http://melpa.org/packages/"))
+(add-to-list 'package-archives '("melpa"     . "https://melpa.org/packages/"))
 (add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
 #+end_src
 *** package-initialize
@@ -747,7 +747,8 @@ A really nice search/completion system for emacs.
         ivy-extra-directories nil; '("../") ; ignore current folder and parent dir
         ivy-initial-inputs-alist '((man . "^"))
         ivy-switch-buffer-faces-alist '((dired-mode . ivy-subdir))
-        recentf-max-saved-items 50))
+        recentf-max-saved-items 50
+        ivy-use-selectable-prompt t))
 
 (use-package ivy-hydra)
 #+end_src
@@ -783,7 +784,6 @@ A really nice search/completion system for emacs.
   (setq conusel-org-goto-display-style 'path
         counsel-org-goto-separator ": "
         counsel-org-goto-face-style 'org
-        counsel-org-goto-display-tags t
         counsel-org-goto-display-todo t
         counsel-grep-base-command "grep -nEi '%s' %s"
         counsel-find-file-ignore-regexp (concat "\\(\\`\\.\\)"
@@ -958,7 +958,8 @@ so I went with it.
      (ipython . t)
      (shell . t)
      (lisp . t)
-     (C . t)))
+     (C . t)
+     (scheme . t)))
 
   ;; appearance
   (setq org-src-fontify-natively t
@@ -1382,7 +1383,8 @@ Source: http://tinyurl.com/l3zpzse"
                 ("br" . crux-sudo-edit))
   :commands (crux-with-region-or-line
              crux-with-region-or-buffer
-             crux-switch-to-previous-buffer)
+             crux-switch-to-previous-buffer
+             crux-rename-file-and-buffer)
   :config
   (crux-with-region-or-line eval-region)
   (crux-with-region-or-buffer indent-region)
@@ -2879,28 +2881,28 @@ Source: http://tinyurl.com/ya4nkf6h"
 
 (defmacro with-modeline-status (&rest body)
   (declare (indent defun))
-  `(let ((window-status (powerline-selected-window-active)))
+  `(let ((window-active? (powerline-selected-window-active)))
      (cl-macrolet ((propertize-active (&rest arguments)
-                                      `(if window-status
+                                      `(if window-active?
                                            (propertize ,@arguments)
                                          ,(car arguments))))
        ,@body)))
 
 (defvar diego/mode-line
   '((:eval (with-modeline-status
-             (when  (featurep 'evil)      ; Eyebrowse workspace and/or evil state
+             (when  (featurep 'evil)   ; Eyebrowse workspace and/or evil state
                (let* ((num (when (and (featurep 'eyebrowse)
-                                    (< 1 (length
-                                          (eyebrowse--get 'window-configs))))
+                                      (< 1 (length
+                                            (eyebrowse--get 'window-configs))))
                              (eyebrowse--get 'current-slot)))
                       (tag (when num
                              (nth 2 (assoc num
                                            (eyebrowse--get 'window-configs)))))
                       (str (or (if (and tag (< 0 (length tag)))
-                                  tag
-                                (when num
-                                  (concat " " (int-to-string num) " ")))
-                              evil-mode-line-tag)))
+                                   tag
+                                 (when num
+                                   (concat " " (int-to-string num) " ")))
+                               evil-mode-line-tag)))
                  (propertize-active str
                                     'face
                                     `(:background
@@ -2926,27 +2928,36 @@ Source: http://tinyurl.com/ya4nkf6h"
                    ((and host default-directory)
                     (concat "@" host " ")))))
     ;; Major mode
-    (:eval (with-modeline-status
-             (propertize-active (concat mode-name " ") 'face '(:foreground "#A89984"))))
+    (:eval
+     (with-modeline-status
+       (propertize-active (concat mode-name " ")
+                          'face
+                          '(:foreground "#A89984"))))
     ;; Line/column number
     "%4l:%2c "
     ;; Version control
-    (:eval (with-modeline-status
-             (when vc-mode
-               (let ((modeline-active (powerline-selected-window-active)))
-                 (concat "(" (propertize-active vc-mode 'face '(:foreground "#B8BB26"))
-                         "|"
-                         (when (buffer-file-name)
-                           (pcase (vc-state (buffer-file-name))
-                             (`up-to-date (propertize-active "✓" 'face '(:foreground "#B8BB26")))
-                             (`edited (propertize-active "✚" 'face '(:foreground "#FB4933")))
-                             (`added (propertize-active "●" 'face '(:foreground "#83A598")))
-                             (`unregistered "…")
-                             (`removed "del")
-                             (`needs-merge (propertize-active "✖" 'face '(:foreground "#FB4933")))
-                             (`needs-update "upd")
-                             (`ignored "ign")))
-                         ") ")))))
+    (:eval
+     (with-modeline-status
+       (when vc-mode
+         ;; (let ((modeline-active (powerline-selected-window-active))))
+         (concat "("
+                 (propertize-active vc-mode 'face '(:foreground "#B8BB26"))
+                 "|"
+                 (when (buffer-file-name)
+                   (pcase (vc-state (buffer-file-name))
+                     (`up-to-date
+                      (propertize-active "✓" 'face '(:foreground "#B8BB26")))
+                     (`edited
+                      (propertize-active "✚" 'face '(:foreground "#FB4933")))
+                     (`added
+                      (propertize-active "●" 'face '(:foreground "#83A598")))
+                     (`unregistered "…")
+                     (`removed "del")
+                     (`needs-merge
+                      (propertize-active "✖" 'face '(:foreground "#FB4933")))
+                     (`needs-update "upd")
+                     (`ignored "ign")))
+                 ") "))))
     ;; Flycheck
     (:eval
      (with-modeline-status
@@ -2963,15 +2974,18 @@ Source: http://tinyurl.com/ya4nkf6h"
                    )
           " "))))
     ;; Input method
-    (:eval (with-modeline-status
-             (when (or current-input-method
-                       (and (bound-and-true-p evil-mode)
-                            (bound-and-true-p evil-input-method)))
-               (cond
-                (current-input-method
-                 (propertize-active (concat current-input-method-title " ") 'face 'bold))
-                ((and (featurep 'evil) (bound-and-true-p evil-input-method))
-                 (concat (nth 3 (assoc default-input-method input-method-alist)) " "))))))
+    (:eval
+     (with-modeline-status
+       (when (or current-input-method
+                 (and (bound-and-true-p evil-mode)
+                      (bound-and-true-p evil-input-method)))
+         (cond
+          (current-input-method
+           (propertize-active (concat current-input-method-title " ")
+                              'face
+                              'bold))
+          ((and (featurep 'evil) (bound-and-true-p evil-input-method))
+           (concat (nth 3 (assoc default-input-method input-method-alist)) " "))))))))
 
 (setq-default mode-line-format diego/mode-line)
 #+end_src
@@ -3680,6 +3694,7 @@ Syntax highlighting for markdown files.
   :config
   (global-disable-mouse-mode)
   (dolist (key '([mouse-1]
+                 [mouse-2]
                  [mouse-4]
                  [mouse-5]
                  [mouse-6]
@@ -3708,7 +3723,6 @@ Syntax highlighting for markdown files.
 #+begin_src emacs-lisp
 (use-package flx)
 #+end_src
-
 **** [[https://github.com/nonsequitur/smex][smex]]
 #+begin_quote
   A smart M-x enhancement for Emacs.
@@ -3717,7 +3731,6 @@ Sorts ivy by most recently used, I think.
 #+begin_src emacs-lisp
 (use-package smex)
 #+end_src
-
 **** [[https://github.com/Fanael/persistent-scratch][persistent-scratch]]
 #+begin_quote
   Preserve the scratch buffer across Emacs sessions
@@ -3779,7 +3792,6 @@ SUPER nifty.
 #+begin_src emacs-lisp
 (use-package password-store)
 #+end_src
-
 **** [[https://github.com/jschaf/esup][esup]]
 #+begin_quote
   ESUP - Emacs Start Up Profiler
@@ -3789,7 +3801,6 @@ SUPER nifty.
   :config
   (setq esup-insignificant-time 0.001))
 #+end_src
-
 **** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
 #+begin_quote
   Cursor stays vertically centered.
@@ -3804,6 +3815,7 @@ I use this for reading, mostly.
 (with-eval-after-load 'hydra
   (defvar flycheck-mode nil)
   (defvar focus-mode nil)
+  (defvar diego/show-async-tangle-results nil)
   (defhydra hydra-toggle (:color pink :exit t)
     "
 _a_ abbrev:              %-3s`abbrev-mode   _d_ debug-on-error:      %-3s`debug-on-error   _P_ prettify-symbols:      %-3s`prettify-symbols-mode
