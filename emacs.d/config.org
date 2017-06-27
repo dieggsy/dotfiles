@@ -2867,6 +2867,16 @@ Use a bar cursor in the minibuffer.
 #+end_src
 *** Mode line
 #+begin_src emacs-lisp
+(defun diego/flycheck-lighter (state)
+  "Return flycheck information for the given error type STATE.
+
+Source: http://tinyurl.com/ya4nkf6h"
+  (let* ((counts (flycheck-count-errors flycheck-current-errors))
+         (errorp (flycheck-has-current-errors-p state))
+         (err (or (cdr (assq state counts)) "?"))
+         (running (eq 'running flycheck-last-status-change)))
+    (if (or errorp running) (format "•%s" err))))
+
 (defmacro with-modeline-status (&rest body)
   (declare (indent defun))
   `(let ((window-status (powerline-selected-window-active)))
@@ -2937,6 +2947,21 @@ Use a bar cursor in the minibuffer.
                              (`needs-update "upd")
                              (`ignored "ign")))
                          ") ")))))
+    ;; Flycheck
+    (:eval
+     (with-modeline-status
+       (when (and (bound-and-true-p flycheck-mode)
+                  (or flycheck-current-errors
+                      (eq 'running flycheck-last-status-change)))
+         (concat
+          (cl-loop for state in '((error . "#FB4933")
+                                  (warning . "#FABD2F")
+                                  (info . "#83A598"))
+                   as lighter = (diego/flycheck-lighter (car state))
+                   when lighter
+                   concat (propertize-active lighter 'face `(:foreground ,(cdr state)))
+                   )
+          " "))))
     ;; Input method
     (:eval (with-modeline-status
              (when (or current-input-method
