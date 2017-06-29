@@ -1998,6 +1998,13 @@ Dear god I hate tabs. Also, four spaces is a good indentation default.
   :config
   (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match))
 #+end_src
+*** [[https://github.com/nflath/hungry-delete][hungry-delete]]
+#+begin_src emacs-lisp
+(use-package hungry-delete
+  :defer 5
+  :config
+  (global-hungry-delete-mode))
+#+end_src
 *** [[https://github.com/Fuco1/smartparens][smartparens]]
 #+begin_quote
   Minor mode for Emacs that deals with parens pairs and tries to be smart about
