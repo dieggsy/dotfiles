@@ -1758,11 +1758,9 @@ layout="$(setxkbmap -query | grep layout | cut -d' ' -f6)"
 if [ "$BLOCK_BUTTON" = "1" ] && [ "$layout" = "dvorak" ]; then
     setxkbmap us
     layout="QW"
-    notify-send "  Qwerty"
 elif [ "$BLOCK_BUTTON" = "1" ] && [ "$layout" = "us" ]; then
     setxkbmap dvorak
     layout="DV"
-    notify-send "  Dvorak"
 elif [ "$layout" = "us" ]; then
     layout="QW"
 elif [ "$layout" = "dvorak" ]; then
@@ -1770,7 +1768,7 @@ elif [ "$layout" = "dvorak" ]; then
 fi
 
 # echo "   $layout "
-echo "    "
+echo "    $layout "
 #+end_src
 *** music
 :PROPERTIES:
