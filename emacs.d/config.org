@@ -1998,6 +1998,39 @@ Dear god I hate tabs. Also, four spaces is a good indentation default.
   :config
   (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match))
 #+end_src
+*** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
+Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted/flyspell-correct][d12frosted/flyspell-correct]]
+#+begin_src emacs-lisp
+(use-package flyspell
+  :config
+  (defun diego/flyspell-correct-next ()
+    (interactive "p")
+    (flyspell-goto-next-error)
+    (flyspell-auto-correct-word))
+
+  (defun diego/flyspell-add-to-dictionary ()
+    "Add word at point to flyspell dictionary at `/Users/diego/.ispell_english'.
+
+Source: http://tinyurl.com/k8g9sex"
+    (interactive)
+    (let ((current-location (point))
+          (word (flyspell-get-word)))
+      (when (consp word)
+        (flyspell-do-correct 'save
+                             nil
+                             (car word)
+                             current-location
+                             (cl-caddr word)
+                             (cl-caddr word)
+                             current-location)))))
+
+(use-package flyspell-correct-ivy
+  :after flyspell)
+#+end_src
+*** [[https://github.com/syohex/emacs-fontawesome][fontawesome]]
+#+begin_src emacs-lisp
+(use-package fontawesome)
+#+end_src
 *** [[https://github.com/nflath/hungry-delete][hungry-delete]]
 #+begin_src emacs-lisp
 (use-package hungry-delete
@@ -2084,39 +2117,6 @@ Freakin yasnippet. It's the best.
 **** [[https://github.com/haskell/haskell-snippets][haskell-snippets]]
 #+begin_src emacs-lisp
 (use-package haskell-snippets)
-#+end_src
-*** [[https://github.com/syohex/emacs-fontawesome][fontawesome]]
-#+begin_src emacs-lisp
-(use-package fontawesome)
-#+end_src
-*** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
-Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted/flyspell-correct][d12frosted/flyspell-correct]]
-#+begin_src emacs-lisp
-(use-package flyspell
-  :config
-  (defun diego/flyspell-correct-next ()
-    (interactive "p")
-    (flyspell-goto-next-error)
-    (flyspell-auto-correct-word))
-
-  (defun diego/flyspell-add-to-dictionary ()
-    "Add word at point to flyspell dictionary at `/Users/diego/.ispell_english'.
-
-Source: http://tinyurl.com/k8g9sex"
-    (interactive)
-    (let ((current-location (point))
-          (word (flyspell-get-word)))
-      (when (consp word)
-        (flyspell-do-correct 'save
-                             nil
-                             (car word)
-                             current-location
-                             (cl-caddr word)
-                             (cl-caddr word)
-                             current-location)))))
-
-(use-package flyspell-correct-ivy
-  :after flyspell)
 #+end_src
 ** Functions
 *** Move text
