@@ -2018,7 +2018,7 @@ if [ "$1" = "iosevka" ] || [ "$(pwd)" = "$HOME/.ghq/github.com/be5invis/iosevka"
     echo -e "\e[94mMaking configs...\e[0m"
     # make custom-config set=term design='v-l-tailed v-i-hooky v-a-singlestorey v-zero-dotted v-asterisk-low v-g-singlestorey v-brace-straight term'
     # make custom-config set=input design='v-l-tailed v-i-hooky v-a-singlestorey v-zero-dotted v-asterisk-low v-g-singlestorey v-brace-straight'
-    make custom-config set=term design='term v-asterisk-low'
+    make custom-config set=term design='term v-asterisk-low' italic='v-i-serifed v-l-serifed v-a-doublestorey v-g-doublestorey'
     echo -e "\e[94mMaking fonts...\e[0m"
     make custom set=term
     # make custom set=input
