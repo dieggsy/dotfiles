@@ -36,6 +36,7 @@ more readable in org format than in rendered markdown.
   - [[#dropmite][dropmite]]
   - [[#ev][ev]]
   - [[#i3blocks][i3blocks]]
+  - [[#i3-exit][i3-exit]]
   - [[#masterinstall][masterinstall]]
   - [[#mbuild][mbuild]]
   - [[#ocrpdf][ocrpdf]]
@@ -325,7 +326,8 @@ bindsym $mod+Shift+x exec --no-startup-id xrdb -merge ~/.Xresources
 bindsym $mod+Shift+p restart
 
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+period exec --no-startup-id "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+# bindsym $mod+Shift+period exec --no-startup-id "i3-nagbar -t warning -f 'Iosevka Term' -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+bindsym $mod+Shift+period exec --no-startup-id i3-exit
 #+end_src
 **** Rofi
 #+begin_src conf
@@ -1857,6 +1859,17 @@ else
     echo
     echo
     # echo "#FB4933"
+fi
+#+end_src
+** i3-exit
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3-exit") :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+message="Exit i3?"
+response=$(echo -e "Exit\nCancel" | rofi -lines 2 -width 30 -dmenu -i -mesg "$message" -p "")
+if [ "$response" = "Exit" ]; then
+    i3-msg exit
 fi
 #+end_src
 ** masterinstall
