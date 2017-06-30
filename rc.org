@@ -1576,6 +1576,7 @@ rofi.color-window: #282828, #fdf4c1, #fdf4c1
 rofi.color-normal: #282828, #fdf4c1, #282828, #3c3836, #fdf4c1
 rofi.color-active: #282828, #B8BB26, #282828, #3c3836, #B8BB26
 rofi.color-urgent: #282828, #FB4933, #282828, #3c3836, #FB4933
+rofi.width: 40
 
 Emacs.fontBackend: xft, x
 Emacs.font: iosevka term-9.5
@@ -2278,7 +2279,7 @@ name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
 name=$(~/.zplug/bin/rg -g "*.gpg" "$HOME/.password-store" --files \
            | sed 's@'"$HOME"'/\.password-store/\(.\+\?\)\.gpg@\1@' \
            | sort \
-           | rofi -dmenu -i -p "[pass] ")
+           | rofi -dmenu -i -p "[pass] " -width 30)
 
 pass -c $name
 #+end_src
@@ -2329,7 +2330,7 @@ A script to search all files using [[https://github.com/BurntSushi/ripgrep][ripg
 ~/.zplug/bin/rg --files 2>/dev/null \
     | LC_ALL=C sort \
     | awk -v len=86 '{ if (length($0) > len) print "..." substr($0, length($0)-len, length($0)); else print; }' \
-    | rofi -dmenu -i -levenshtein-sort -matching regex -p '[files] '\
+    | rofi -dmenu -i -width 50 -levenshtein-sort -matching regex -p '[files] '\
     | xargs -d '\n' xdg-open
 
 #+end_src
