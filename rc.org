@@ -1588,7 +1588,7 @@ Emacs*geometry: 99x41
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.xsessionrc") :shebang "#!/bin/bash"
 :END:
 #+begin_src sh
-sh ~/.fehbg &
+feh --bg-fill '/home/diego/Pictures/darkgray2.png' &
 
 pkill dropbox; dropbox start &
 
