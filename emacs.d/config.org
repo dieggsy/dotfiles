@@ -3754,6 +3754,11 @@ Syntax highlighting for markdown files.
            :fetcher github
            :repo "therockmandolinist/turing-machine"))
 #+end_src
+*** json
+#+begin_src emacs-lisp
+(diego/setup-mode json
+  (highlight-numbers-mode -1))
+#+end_src
 * Enhancements
 ** Emacs
 *** Packages
