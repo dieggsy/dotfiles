@@ -2996,45 +2996,46 @@ Source: http://tinyurl.com/y8ovcvsp"
 (defvar diego/mode-line
   '((:eval (with-evil-tag-color
              (with-modeline-status
-               (diego/make-xpm (if window-active?
+               (diego/make-xpm (if (and window-active?
+                                        (not (and (featurep 'eyebrowse)
+                                                  (< 1 (length (eyebrowse--get 'window-configs))))))
                                    evil-tag-color
                                  "#1D2021") 48 8))))
-    ((:eval (with-modeline-status
-              (when (and window-active?
-                         (bound-and-true-p anzu--state))
-                (with-evil-tag-color
-                  (propertize-active (anzu--update-mode-line) 'face `(:foreground "#3E3D31" :background ,evil-tag-color :box (:color ,evil-tag-color :line-width 10))))))))
-    ;; (:eval (with-modeline-status
-    ;;          (when  (featurep 'evil)   ; Eyebrowse workspace and/or evil state
-    ;;            (let* ((num (when (and (featurep 'eyebrowse)
-    ;;                                   (< 1 (length
-    ;;                                         (eyebrowse--get 'window-configs))))
-    ;;                          (eyebrowse--get 'current-slot)))
-    ;;                   (tag (when num
-    ;;                          (nth 2 (assoc num
-    ;;                                        (eyebrowse--get 'window-configs)))))
-    ;;                   (str (or (if (and tag (< 0 (length tag)))
-    ;;                                tag
-    ;;                              (when num
-    ;;                                (concat " " (int-to-string num) " ")))
-    ;;                            evil-mode-line-tag))
-    ;;                   (background (pcase (substring-no-properties
-    ;;                                       evil-mode-line-tag)
-    ;;                                 (" N " "#B8BB26")
-    ;;                                 (" I " "#66999D")
-    ;;                                 (" M " "#D3869B")
-    ;;                                 (" V " "#FE8019")
-    ;;                                 (" E " "#83A598")
-    ;;                                 (" R " "#FE8019")
-    ;;                                 (" O " "#B8BB26"))))
-    ;;              (propertize-active str
-    ;;                                 'face
-    ;;                                 `(:background
-    ;;                                   ,background
-    ;;                                   :foreground "#3E3D31"
-    ;;                                   :weight bold
-    ;;                                   ;; :box (:line-width 10 :color ,background)
-    ;;                                   ))))))
+    ((:eval
+      (with-modeline-status
+        (with-evil-tag-color
+          (when window-active?
+            (propertize-active
+             (cond  ((bound-and-true-p anzu--state)
+                     (anzu--update-mode-line))
+                    ((or defining-kbd-macro executing-kbd-macro)
+                     (if (bound-and-true-p evil-this-macro)
+                         (char-to-string evil-this-macro)
+                       "Macro"))
+                    ((or (assq 'evil-ex-substitute evil-ex-active-highlights-alist)
+                         (assq 'evil-ex-global-match evil-ex-active-highlights-alist)
+                         (assq 'evil-ex-buffer-match evil-ex-active-highlights-alist))
+                     (let ((range (if evil-ex-range
+                                      (cons (car evil-ex-range) (cadr evil-ex-range))
+                                    (cons (line-beginning-position) (line-end-position))))
+                           (pattern (car-safe (evil-delimited-arguments evil-ex-argument 2))))
+                       (if pattern
+                           (format " %s matches " (how-many pattern (car range) (cdr range)))
+                         " ... ")))
+                    ((and (featurep 'eyebrowse)
+                          (< 1 (length (eyebrowse--get 'window-configs))))
+                     (let* ((num (eyebrowse--get 'current-slot))
+                            (tag (nth 2 (assoc num (eyebrowse--get 'window-configs)))))
+                       (if (and tag (< 0 (length tag)))
+                           tag
+                         (int-to-string num))))
+                    (t ""))
+             'face
+             `(:foreground
+               "#3E3D31"
+               :weight bold
+               :background ,evil-tag-color
+               :box (:color ,evil-tag-color :line-width 10))))))))
     ;; File modified
     " %* "
     ;; Buffer name & recursive editing
@@ -3045,21 +3046,22 @@ Source: http://tinyurl.com/y8ovcvsp"
                     (concat "@" (file-remote-p default-directory 'user) " "))
                    ((and host default-directory)
                     (concat "@" host " ")))))
+    ;; Line/column number
+    (:eval (with-modeline-status
+             (propertize-active  "%4l:%2c  " 'face '(:foreground "#A89984"))))
     ;; Major mode
     (:eval
      (with-modeline-status
-       (propertize-active (concat mode-name " ")
+       (propertize-active (concat mode-name "  ")
                           'face
-                          '(:foreground "#A89984"))))
-    ;; Line/column number
-    "%4l:%2c "
+                          '(:foreground "#83A598" :weight bold))))
     ;; Version control
     (:eval
      (with-modeline-status
        (when vc-mode
          (propertize-active
-          (replace-regexp-in-string "^ Git." " " vc-mode)
-          'face '(:foreground "#DD6F48")))))
+          (concat (replace-regexp-in-string "^ Git." " " vc-mode) "  ")
+          'face '(:foreground "#FE8019" )))))
     ;; Flycheck
     (:eval
      (with-modeline-status
