@@ -3606,9 +3606,7 @@ Source: http://tinyurl.com/mh5ev6x"
 *** Setup
 #+begin_src emacs-lisp
 (diego/setup-mode conf
-  (highlight-numbers-mode)
-  (nlinum-relative-mode)
-  (rainbow-mode))
+  (diego/setup-prog-mode))
 #+end_src
 ** Calc
 *** Defaults
