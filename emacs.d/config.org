@@ -3192,7 +3192,25 @@ Better parentheses coloring
 #+begin_src emacs-lisp
 (use-package flycheck
   :config
-  (setq flycheck-completing-read-function 'ivy-completing-read))
+  (setq flycheck-completing-read-function 'ivy-completing-read)
+  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+    (vector #b00000000
+            #b10000000
+            #b11000000
+            #b11100000
+            #b11110000
+            #b11111000
+            #b11111100
+            #b11111110
+            #b11111111
+            #b11111110
+            #b11111100
+            #b11111000
+            #b11110000
+            #b11100000
+            #b11000000
+            #b10000000
+            #b00000000)))
 #+end_src
 
 *** Setup
