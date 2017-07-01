@@ -1659,7 +1659,7 @@ bat=$(acpi | cut -d " " -f4 | tr -d "%,")
 Adapt=$(acpi -a | cut -d " " -f3)
 
 touch /tmp/battery-status
-if [ "$bat" -lt 11 ] && [ "$(</tmp/battery-status)" != "critically-low" ]; then
+if [ "$bat" -lt 11 ] && [ "$(</tmp/battery-status)" != "critically-low" ] && [ "$Adapt" != "on-line" ]; then
     espeak -vf4 "battery critically low, consider charging." &
     notify-send "battery critically low, consider charging." &
     echo "critically-low" > /tmp/battery-status
