@@ -2658,13 +2658,6 @@ Source: http://tinyurl.com/koowarm"
     "wv" 'diego/split-vert-focus))
 #+end_src
 * Git and github
-** Defaults
-#+begin_src emacs-lisp
-(defadvice vc-mode-line (after strip-backend () activate)
-    (when (stringp vc-mode)
-      (let ((gitlogo (replace-regexp-in-string "^ Git." "" vc-mode)))
-        (setq vc-mode gitlogo))))
-#+end_src
 ** Packages
 *** [[https://github.com/magit/magit][magit]]
 #+begin_quote
@@ -3064,25 +3057,9 @@ Source: http://tinyurl.com/y8ovcvsp"
     (:eval
      (with-modeline-status
        (when vc-mode
-         ;; (let ((modeline-active (powerline-selected-window-active))))
-         (concat "("
-                 (propertize-active vc-mode 'face '(:foreground "#B8BB26"))
-                 "|"
-                 (when (buffer-file-name)
-                   (pcase (vc-state (buffer-file-name))
-                     (`up-to-date
-                      (propertize-active "✓" 'face '(:foreground "#B8BB26")))
-                     (`edited
-                      (propertize-active "✚" 'face '(:foreground "#FB4933")))
-                     (`added
-                      (propertize-active "●" 'face '(:foreground "#83A598")))
-                     (`unregistered "…")
-                     (`removed "del")
-                     (`needs-merge
-                      (propertize-active "✖" 'face '(:foreground "#FB4933")))
-                     (`needs-update "upd")
-                     (`ignored "ign")))
-                 ") "))))
+         (propertize-active
+          (replace-regexp-in-string "^ Git." " " vc-mode)
+          'face '(:foreground "#DD6F48")))))
     ;; Flycheck
     (:eval
      (with-modeline-status
