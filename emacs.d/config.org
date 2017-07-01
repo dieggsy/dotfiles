@@ -322,6 +322,24 @@ Otherwise, executes `evil-ret'."
         ((and (eq major-mode 'org-mode) (org-in-src-block-p))
          (org-babel-execute-src-block))
         (t (evil-ret))))
+
+(define-minor-mode relative-line-numbers-mode
+  "Display relative line numbers for current buffer."
+  nil
+  " rl"
+  nil
+  (setq display-line-numbers nil)
+  (when (and relative-line-numbers-mode
+             (not (minibufferp)))
+    (setq display-line-numbers 'relative)
+    (setq display-line-number-width
+          (length
+           (number-to-string
+            (count-lines (point-min) (point-max)))))))
+
+(define-globalized-minor-mode global-relative-line-numbers-mode relative-line-numbers-mode
+  relative-line-numbers-mode
+  (lambda () (relative-line-numbers-mode 1)))
 #+end_src
 ** Packages
 These are packages that I consider /absolutely essential/ to my emacs workflow,
@@ -3171,13 +3189,6 @@ Better parentheses coloring
 * Modes
 ** Prog
 *** Packages
-**** [[https://github.com/CodeFalling/nlinum-relative][nlinum-relative]]
-#+begin_quote
-  Emacs relative line number besed on nlinum-mode
-#+end_quote
-#+begin_src emacs-lisp :tangle no
-(use-package nlinum-relative)
-#+end_src
 **** [[https://github.com/Malabarba/aggressive-indent-mode/][aggressive-indent]]
 #+begin_quote
   Emacs minor mode that keeps your code always indented. More reliable than electric-indent-mode.
@@ -3223,7 +3234,7 @@ Better parentheses coloring
   (goto-address-prog-mode)
   (fci-mode)
   (highlight-numbers-mode)
-  (nlinum-relative-mode 1)
+  (relative-line-numbers-mode)
   (auto-fill-mode 1)
   (setq-local comment-auto-fill-only-comments t)
   (setq-local calc-embedded-open-mode (concat comment-start " "))
