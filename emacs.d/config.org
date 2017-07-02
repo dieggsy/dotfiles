@@ -2999,19 +2999,21 @@ Source: http://tinyurl.com/y8ovcvsp"
 **** Mode-line
 #+begin_src emacs-lisp
 (defvar diego/mode-line
-  '((:eval (with-evil-tag-color
-             (with-window-status
-               (cond ((and window-active?
-                           (not (or (and (featurep 'eyebrowse)
-                                         (< 1 (length (eyebrowse--get 'window-configs))))
-                                    (bound-and-true-p anzu--state)
-                                    (or defining-kbd-macro executing-kbd-macro)
-                                    (or (assq 'evil-ex-substitute evil-ex-active-highlights-alist)
-                                        (assq 'evil-ex-global-match evil-ex-active-highlights-alist)
-                                        (assq 'evil-ex-buffer-match evil-ex-active-highlights-alist)))))
-                      (diego/make-xpm evil-tag-color 56 8))
-                     ((not window-active?)
-                      (diego/make-xpm "#1D2021" 56 8))))))
+  '((:eval
+     (with-evil-tag-color
+       (with-window-status
+         (cond
+          ((and window-active?
+                (not (or (and (featurep 'eyebrowse)
+                              (< 1 (length (eyebrowse--get 'window-configs))))
+                         (bound-and-true-p anzu--state)
+                         (or defining-kbd-macro executing-kbd-macro)
+                         (or (assq 'evil-ex-substitute evil-ex-active-highlights-alist)
+                             (assq 'evil-ex-global-match evil-ex-active-highlights-alist)
+                             (assq 'evil-ex-buffer-match evil-ex-active-highlights-alist)))))
+           (diego/make-xpm evil-tag-color 56 8))
+          ((not window-active?)
+           (diego/make-xpm "#1D2021" 56 8))))))
     ((:eval
       (with-window-status
         (with-evil-tag-color
@@ -3056,22 +3058,27 @@ Source: http://tinyurl.com/y8ovcvsp"
              (let ((host (file-remote-p default-directory 'host)))
                (propertize-active
                 window-active?
-                (cond ((and host default-directory (string= host (system-name)))
-                       (concat "@" (file-remote-p default-directory 'user) " "))
+                (cond ((and host
+                            default-directory
+                            (string= host (system-name)))
+                       (concat "@"
+                               (file-remote-p default-directory 'user)
+                               " "))
                       ((and host default-directory)
                        (concat "@" host " ")))
                 'face
                 '(:foreground "#D3869B")))))
     ;; Line/column number
     (:eval (with-window-status
-             (propertize-active window-active? "%4l:%2c  " 'face '(:foreground "#A89984"))))
+             (propertize-active window-active?
+                                "%4l:%2c  "
+                                'face '(:foreground "#A89984"))))
     ;; Major mode
     (:eval
      (with-window-status
        (propertize-active window-active?
                           (concat mode-name "  ")
-                          'face
-                          '(:foreground "#83A598" :weight bold))))
+                          'face '(:foreground "#83A598" :weight bold))))
     ;; Version control
     (:eval
      (with-window-status
@@ -3092,8 +3099,10 @@ Source: http://tinyurl.com/y8ovcvsp"
                                   (info . "#83A598"))
                    as lighter = (diego/flycheck-lighter (car state))
                    when lighter
-                   concat (propertize-active window-active? lighter 'face `(:foreground ,(cdr state)))
-                   )
+                   concat (propertize-active
+                           window-active?
+                           lighter
+                           'face `(:foreground ,(cdr state))))
           " "))))
     ;; Input method
     (:eval
@@ -3108,7 +3117,8 @@ Source: http://tinyurl.com/y8ovcvsp"
                               'face
                               'bold))
           ((and (featurep 'evil) (bound-and-true-p evil-input-method))
-           (concat (nth 3 (assoc default-input-method input-method-alist)) " "))))))))
+           (concat (nth 3 (assoc default-input-method input-method-alist))
+                   " "))))))))
 
 (setq-default mode-line-format diego/mode-line)
 #+end_src
