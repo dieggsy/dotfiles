@@ -2940,14 +2940,15 @@ Source: http://tinyurl.com/ya4nkf6h"
          (running (eq 'running flycheck-last-status-change)))
     (if (or errorp running) (format "•%s" err))))
 
+(defun propertize-active (&rest arguments)
+  (if window-active?
+      (apply #'propertize arguments)
+    (car arguments)))
+
 (defmacro with-modeline-status (&rest body)
   (declare (indent defun))
   `(let ((window-active? (powerline-selected-window-active)))
-     (cl-macrolet ((propertize-active (&rest arguments)
-                                      `(if window-active?
-                                           (propertize ,@arguments)
-                                         ,(car arguments))))
-       ,@body)))
+     ,@body))
 
 (defmacro with-evil-tag-color (&rest body)
   (declare (indent defun))
@@ -2996,11 +2997,29 @@ Source: http://tinyurl.com/y8ovcvsp"
 (defvar diego/mode-line
   '((:eval (with-evil-tag-color
              (with-modeline-status
-               (diego/make-xpm (if (and window-active?
-                                        (not (and (featurep 'eyebrowse)
-                                                  (< 1 (length (eyebrowse--get 'window-configs))))))
-                                   evil-tag-color
-                                 "#1D2021") 48 8))))
+               (cond ((and window-active?
+                           (not (or (and (featurep 'eyebrowse)
+                                         (< 1 (length (eyebrowse--get 'window-configs))))
+                                    (bound-and-true-p anzu--state)
+                                    (or defining-kbd-macro executing-kbd-macro)
+                                    (or (assq 'evil-ex-substitute evil-ex-active-highlights-alist)
+                                        (assq 'evil-ex-global-match evil-ex-active-highlights-alist)
+                                        (assq 'evil-ex-buffer-match evil-ex-active-highlights-alist)))))
+                      (diego/make-xpm evil-tag-color 48 8))
+                     ((not window-active?)
+                      (diego/make-xpm "#1D2021" 48 8)))
+               ;; (diego/make-xpm (if ;; window-active?
+               ;;                     (and window-active?
+               ;;                          (not (or (and (featurep 'eyebrowse)
+               ;;                                        (< 1 (length (eyebrowse--get 'window-configs))))
+               ;;                                   (bound-and-true-p anzu--state)
+               ;;                                   (or defining-kbd-macro executing-kbd-macro)
+               ;;                                   (or (assq 'evil-ex-substitute evil-ex-active-highlights-alist)
+               ;;                                       (assq 'evil-ex-global-match evil-ex-active-highlights-alist)
+               ;;                                       (assq 'evil-ex-buffer-match evil-ex-active-highlights-alist)))))
+               ;;                     evil-tag-color
+               ;;                   "#1D2021") 48 8)
+               )))
     ((:eval
       (with-modeline-status
         (with-evil-tag-color
@@ -3008,10 +3027,6 @@ Source: http://tinyurl.com/y8ovcvsp"
             (propertize-active
              (cond  ((bound-and-true-p anzu--state)
                      (anzu--update-mode-line))
-                    ((or defining-kbd-macro executing-kbd-macro)
-                     (if (bound-and-true-p evil-this-macro)
-                         (char-to-string evil-this-macro)
-                       "Macro"))
                     ((or (assq 'evil-ex-substitute evil-ex-active-highlights-alist)
                          (assq 'evil-ex-global-match evil-ex-active-highlights-alist)
                          (assq 'evil-ex-buffer-match evil-ex-active-highlights-alist))
@@ -3020,8 +3035,12 @@ Source: http://tinyurl.com/y8ovcvsp"
                                     (cons (line-beginning-position) (line-end-position))))
                            (pattern (car-safe (evil-delimited-arguments evil-ex-argument 2))))
                        (if pattern
-                           (format " %s matches " (how-many pattern (car range) (cdr range)))
+                           (format "%s matches" (how-many pattern (car range) (cdr range)))
                          " ... ")))
+                    ((or defining-kbd-macro executing-kbd-macro)
+                     (if (bound-and-true-p evil-this-macro)
+                         (char-to-string evil-this-macro)
+                       "Macro"))
                     ((and (featurep 'eyebrowse)
                           (< 1 (length (eyebrowse--get 'window-configs))))
                      (let* ((num (eyebrowse--get 'current-slot))
