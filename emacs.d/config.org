@@ -3624,6 +3624,7 @@ Source: http://tinyurl.com/mh5ev6x"
 #+begin_src emacs-lisp
 (diego/setup-mode conf
   (diego/setup-prog-mode))
+(add-to-list 'auto-mode-alist '("\\.service\\'" . conf-mode))
 #+end_src
 ** Calc
 *** Defaults
