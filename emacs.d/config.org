@@ -1588,16 +1588,18 @@ also use these keys to quit out of the minibuffer. See more [[#bindings-1][here]
   :commands diego/define-word
   :leader-bind ("sw" . diego/define-word)
   :config
-  (defun diego/define-word ()
+  (defun diego/define-word (&optional word)
     (interactive)
-    (let ((word (read-string
-                 (concat "Define word ["
-                         (if (region-active-p)
-                             (buffer-substring (region-beginning) (region-end))
-                           (thing-at-point 'word)) "]: ")
-                 nil nil
-                 (thing-at-point 'word))))
-      (define-word word))))
+    (if word
+        (define-word word)
+      (let ((word (read-string
+                   (concat "Define word ["
+                           (if (region-active-p)
+                               (buffer-substring (region-beginning) (region-end))
+                             (thing-at-point 'word)) "]: ")
+                   nil nil
+                   (thing-at-point 'word))))
+        (define-word word)))))
 #+end_src
 *** [[https://github.com/xuchunyang/devdocs.el][devdocs]]          :search:
 #+begin_quote
