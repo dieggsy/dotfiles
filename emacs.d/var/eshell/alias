@@ -5,7 +5,7 @@ alias edit find-file $1
 alias config find-file ~/dotfiles/config/emacs.d/config.org
 alias printers lpstat -p | awk '{print $2}'
 alias pep8 pep8 --first --ignore=E129,W503,E226 $*
-alias git hub $*
+alias git hub -c color.status=always $*
 alias history-stat history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head
 alias decryptdir gpg-zip -d $*
 alias decrypt gpg2 -d $*

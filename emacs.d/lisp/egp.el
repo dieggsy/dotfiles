@@ -158,7 +158,7 @@ length of PATH (sans directory slashes) down to MAX-LEN."
       (egp-stylize "#FB4933"   "✖" num))))
 
 (defun egp-get-dirty (git-status)
-  (when (string-match  "\n?? " git-status)
+  (when (string-match  "\n\\?\\? " git-status)
     "…"))
 
 (defun egp-get-git-status ()
