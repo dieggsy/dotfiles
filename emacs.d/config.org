@@ -2940,12 +2940,14 @@ Source: http://tinyurl.com/ya4nkf6h"
          (running (eq 'running flycheck-last-status-change)))
     (if (or errorp running) (format "•%s" err))))
 
-(defun propertize-active (&rest arguments)
-  (if window-active?
-      (apply #'propertize arguments)
-    (car arguments)))
+(defun propertize-active (window-active &rest arguments)
+  (let ((str (car arguments)))
+    (cond  ((and window-active (stringp str))
+            (apply #'propertize arguments) )
+           ((stringp str)
+            (car arguments)))))
 
-(defmacro with-modeline-status (&rest body)
+(defmacro with-window-status (&rest body)
   (declare (indent defun))
   `(let ((window-active? (powerline-selected-window-active)))
      ,@body))
@@ -2996,7 +2998,7 @@ Source: http://tinyurl.com/y8ovcvsp"
 #+begin_src emacs-lisp
 (defvar diego/mode-line
   '((:eval (with-evil-tag-color
-             (with-modeline-status
+             (with-window-status
                (cond ((and window-active?
                            (not (or (and (featurep 'eyebrowse)
                                          (< 1 (length (eyebrowse--get 'window-configs))))
@@ -3005,26 +3007,15 @@ Source: http://tinyurl.com/y8ovcvsp"
                                     (or (assq 'evil-ex-substitute evil-ex-active-highlights-alist)
                                         (assq 'evil-ex-global-match evil-ex-active-highlights-alist)
                                         (assq 'evil-ex-buffer-match evil-ex-active-highlights-alist)))))
-                      (diego/make-xpm evil-tag-color 48 8))
+                      (diego/make-xpm evil-tag-color 56 8))
                      ((not window-active?)
-                      (diego/make-xpm "#1D2021" 48 8)))
-               ;; (diego/make-xpm (if ;; window-active?
-               ;;                     (and window-active?
-               ;;                          (not (or (and (featurep 'eyebrowse)
-               ;;                                        (< 1 (length (eyebrowse--get 'window-configs))))
-               ;;                                   (bound-and-true-p anzu--state)
-               ;;                                   (or defining-kbd-macro executing-kbd-macro)
-               ;;                                   (or (assq 'evil-ex-substitute evil-ex-active-highlights-alist)
-               ;;                                       (assq 'evil-ex-global-match evil-ex-active-highlights-alist)
-               ;;                                       (assq 'evil-ex-buffer-match evil-ex-active-highlights-alist)))))
-               ;;                     evil-tag-color
-               ;;                   "#1D2021") 48 8)
-               )))
+                      (diego/make-xpm "#1D2021" 56 8))))))
     ((:eval
-      (with-modeline-status
+      (with-window-status
         (with-evil-tag-color
           (when window-active?
             (propertize-active
+             window-active?
              (cond  ((bound-and-true-p anzu--state)
                      (anzu--update-mode-line))
                     ((or (assq 'evil-ex-substitute evil-ex-active-highlights-alist)
@@ -3047,43 +3038,49 @@ Source: http://tinyurl.com/y8ovcvsp"
                             (tag (nth 2 (assoc num (eyebrowse--get 'window-configs)))))
                        (if (and tag (< 0 (length tag)))
                            tag
-                         (int-to-string num))))
-                    (t ""))
+                         (int-to-string num)))))
              'face
              `(:foreground
                "#3E3D31"
                :weight bold
                :background ,evil-tag-color
-               :box (:color ,evil-tag-color :line-width 10))))))))
+               :box (:color ,evil-tag-color :line-width 14))))))))
     ;; File modified
     " %* "
     ;; Buffer name & recursive editing
     "%[" mode-line-buffer-identification "%] "
     ;; Remote
-    (:eval (let ((host (file-remote-p default-directory 'host)))
-             (cond ((and host default-directory (string= host (system-name)))
-                    (concat "@" (file-remote-p default-directory 'user) " "))
-                   ((and host default-directory)
-                    (concat "@" host " ")))))
+    (:eval (with-window-status
+             (let ((host (file-remote-p default-directory 'host)))
+               (propertize-active
+                window-active?
+                (cond ((and host default-directory (string= host (system-name)))
+                       (concat "@" (file-remote-p default-directory 'user) " "))
+                      ((and host default-directory)
+                       (concat "@" host " ")))
+                'face
+                '(:foreground "#D3869B")))))
     ;; Line/column number
-    (:eval (with-modeline-status
-             (propertize-active  "%4l:%2c  " 'face '(:foreground "#A89984"))))
+    (:eval (with-window-status
+             (propertize-active window-active? "%4l:%2c  " 'face '(:foreground "#A89984"))))
     ;; Major mode
     (:eval
-     (with-modeline-status
-       (propertize-active (concat mode-name "  ")
+     (with-window-status
+       (propertize-active window-active?
+                          (concat mode-name "  ")
                           'face
                           '(:foreground "#83A598" :weight bold))))
     ;; Version control
     (:eval
-     (with-modeline-status
+     (with-window-status
        (when vc-mode
          (propertize-active
+          window-active?
           (concat (replace-regexp-in-string "^ Git." " " vc-mode) "  ")
           'face '(:foreground "#FE8019" )))))
     ;; Flycheck
     (:eval
-     (with-modeline-status
+     (with-window-status
        (when (and (bound-and-true-p flycheck-mode)
                   (or flycheck-current-errors
                       (eq 'running flycheck-last-status-change)))
@@ -3093,18 +3090,19 @@ Source: http://tinyurl.com/y8ovcvsp"
                                   (info . "#83A598"))
                    as lighter = (diego/flycheck-lighter (car state))
                    when lighter
-                   concat (propertize-active lighter 'face `(:foreground ,(cdr state)))
+                   concat (propertize-active window-active? lighter 'face `(:foreground ,(cdr state)))
                    )
           " "))))
     ;; Input method
     (:eval
-     (with-modeline-status
+     (with-window-status
        (when (or current-input-method
                  (and (bound-and-true-p evil-mode)
                       (bound-and-true-p evil-input-method)))
          (cond
           (current-input-method
-           (propertize-active (concat current-input-method-title " ")
+           (propertize-active window-active?
+                              (concat current-input-method-title " ")
                               'face
                               'bold))
           ((and (featurep 'evil) (bound-and-true-p evil-input-method))
