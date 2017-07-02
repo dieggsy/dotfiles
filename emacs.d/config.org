@@ -311,11 +311,11 @@ Otherwise, executes `evil-ret'."
   (interactive)
   (cond ((thing-at-point 'url) (goto-address-at-point))
         ((and (eq major-mode 'org-mode) (org-element-lineage
-	                                  (org-element-context)
-	                                  '(clock comment comment-block footnote-definition
-		                                      footnote-reference headline inlinetask keyword link
-		                                      node-property timestamp)
-	                                  t))
+	                                     (org-element-context)
+	                                     '(clock comment comment-block footnote-definition
+		                                         footnote-reference headline inlinetask keyword link
+		                                         node-property timestamp)
+	                                     t))
          (org-open-at-point))
         ((and (eq major-mode 'org-mode) (org-at-item-checkbox-p))
          (org-toggle-checkbox))
