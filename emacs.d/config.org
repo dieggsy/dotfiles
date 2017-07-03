@@ -4033,7 +4033,7 @@ I use this for reading, mostly.
   (defhydra hydra-toggle (:color pink :exit t)
     "
 _a_ abbrev:              %-3s`abbrev-mode   _d_ debug-on-error:      %-3s`debug-on-error   _P_ prettify-symbols:      %-3s`prettify-symbols-mode
-_i_ aggressive-indent:   %-3s`aggressive-indent-mode   _l_ nlinum:              %-3s`nlinum-mode   _F_ focus:                 %-3s`focus-mode
+_i_ aggressive-indent:   %-3s`aggressive-indent-mode   _l_ rlines:              %-3s`relative-line-numbers-mode   _F_ focus:                 %-3s`focus-mode
 _c_ column-indicator:    %-3s`fci-mode   _p_ smartparens:         %-3s`smartparens-mode   _z_ async-tangle-results:   %-3s`diego/show-async-tangle-results
 _f_ flycheck:            %-3s`flycheck-mode   _e_ evil-smartparens:    %-3s`evil-smartparens-mode
 _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`global-whitespace-mode
@@ -4042,7 +4042,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
     ("i" aggressive-indent-mode nil)
     ("d" toggle-debug-on-error nil)
     ("c" fci-mode nil)
-    ("l" nlinum-mode nil)
+    ("l" relative-line-numbers-mode nil)
     ("p" smartparens-mode nil)
     ("P" prettify-symbols-mode nil)
     ("e" evil-smartparens-mode nil)
