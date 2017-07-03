@@ -3127,6 +3127,8 @@ Source: http://tinyurl.com/y8ovcvsp"
                    " "))))))))
 
 (setq-default mode-line-format diego/mode-line)
+(with-current-buffer "*Messages*"
+  (setq-local mode-line-format diego/mode-line))
 #+end_src
 ** Packages
 *** [[https://github.com/larstvei/Focus][focus]]
