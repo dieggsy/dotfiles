@@ -3709,10 +3709,10 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
       (erase-buffer)))
 
   (defun eshell/cpg (&optional x)
-    (let* ((ghq-dirs (cl-remove-if
-                      #'string-empty-p
-                      (split-string (shell-command-to-string "ghq list")
-                                    "\n")))
+    (let* ((ghq-dirs
+            (split-string (shell-command-to-string "ghq list")
+                          "\n"
+                          t))
            (current (s-chop-prefix "/home/diego/.ghq/" (eshell/pwd)))
            (current-pos (cl-position current ghq-dirs :test 'string=)))
       (cond ((string= x "next")
@@ -3751,7 +3751,20 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 
   (defun eshell/rg (&rest args)
     (eshell-grep "rg" (push "--no-heading" args))
-    (other-window 1)))
+    (other-window 1))
+
+  (defun eshell/cool-peco-ps ()
+    (interactive)
+    (let ((ps  (split-string
+                (shell-command-to-string
+                 "ps axco user,pid,%cpu,%mem,start,time,command")
+                "\n"
+                t)
+               ))
+      (ivy-read "[ps] "
+                ps
+                :action (lambda (x)
+                          (insert (cadr (split-string x " " t))))))))
 #+end_src
 
 *** Setup
