@@ -74,6 +74,12 @@ really bad self-made themes, ~org-export-async-init-file~, etc.
 
   (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/"))
 #+end_src
+** cl-lib
+I'm sure this will be required by some package somewhere along the way, but I
+use this a fair bit so why not explicitly require it?
+#+begin_src emacs-lisp
+(require 'cl-lib)
+#+end_src
 * Package management
 ** Defaults
 *** Package-archives
