@@ -1581,7 +1581,7 @@ rofi.width: 40
 Emacs.fontBackend: xft, x
 Emacs.font: iosevka term-9.5
 Emacs.FontBackend: x
-Emacs*geometry: 99x41
+Emacs*geometry: 105x41
 #+end_src
 ** xsessionrc
 :PROPERTIES:
