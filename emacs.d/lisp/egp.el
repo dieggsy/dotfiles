@@ -95,7 +95,7 @@ length of PATH (sans directory slashes) down to MAX-LEN."
 (defun egp-stylize (color symbol str)
   (propertize (concat symbol (when str (format "%s" str)))
               'face
-              `((t (:foreground ,color)))))
+              `(:foreground ,color)))
 
 (defun egp-get-branch (git-status)
   (cond ((string= git-status "") nil)
