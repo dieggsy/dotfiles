@@ -3457,7 +3457,10 @@ Pretty neat, though not entirely complete, IMO.
 #+begin_src emacs-lisp
 (use-package dash)
 #+end_src
-
+**** [[https://github.com/rejeep/f.el][f]]
+#+begin_src emacs-lisp
+(use-package f)
+#+end_src
 **** [[https://github.com/purcell/flycheck-package][flycheck-package]]
 #+begin_src emacs-lisp
 (use-package flycheck-package
