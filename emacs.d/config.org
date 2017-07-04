@@ -3470,12 +3470,14 @@ Pretty neat, though not entirely complete, IMO.
 #+begin_quote
   Package to display keyboard macros or latest interactive commands as emacs lisp.
 #+end_quote
+**** [[https://github.com/Wilfred/suggest.el][suggest]]
 #+begin_src emacs-lisp
 (use-package elmacro
   :disabled t
   :defer 10
   :config
   (elmacro-mode))
+(use-package suggest)
 #+end_src
 
 *** Variables
