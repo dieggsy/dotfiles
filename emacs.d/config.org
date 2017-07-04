@@ -3996,7 +3996,9 @@ SUPER nifty.
 
 **** [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store]]
 #+begin_src emacs-lisp
-(use-package password-store)
+(use-package password-store
+  :config
+  (setq password-store-password-length 20))
 #+end_src
 **** [[https://github.com/jschaf/esup][esup]]
 #+begin_quote
