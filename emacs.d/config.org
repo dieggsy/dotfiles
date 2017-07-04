@@ -1857,13 +1857,6 @@ Which means it's less likely to block up emacs. Or something.
 ** Functions
 *** File Manipulation
 #+begin_src emacs-lisp
-(defun diego/save-buffer ()
-  "Save current buffer, or original buffer if in org-src-mode."
-  (interactive)
-  (if (and (boundp 'org-src-mode) org-src-mode)
-      (org-edit-src-save)
-    (save-buffer)))
-
 (defun diego/copy-file ()
   "Copy file to another location.
 
@@ -1967,7 +1960,7 @@ Source: http://tinyurl.com/m3k84u8"
     "bv"  'view-mode
 
     "fc"  'diego/copy-file
-    "fs"  'diego/save-buffer
+    "fs"  'save-buffer
 
     "nf"  'narrow-to-defun
     "nn"  'diego/narrow-dwim
