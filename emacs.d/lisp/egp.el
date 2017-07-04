@@ -107,7 +107,8 @@ length of PATH (sans directory slashes) down to MAX-LEN."
         (t
          (egp-stylize "#B8BB26"  nil (substring git-status
                                                 (+ (string-match "## " git-status) 3)
-                                                (string-match "\\.\\.\\." git-status))))))
+                                                (or (string-match "\\.\\.\\." git-status)
+                                                    (string-match "\n" git-status)))))))
 
 
 (defun egp-get-ahead-behind (git-status)
