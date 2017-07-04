@@ -38,7 +38,7 @@
   :group 'eshell-prompt)
 
 (defface egp-remote-face
-  '((t (:inherit font-lock-comment-face)))
+  '((t (:foreground "#D3869B")))
   "Face of remote info in prompt."
   :group 'egp)
 
@@ -187,25 +187,25 @@ length of PATH (sans directory slashes) down to MAX-LEN."
 ;;;###autoload
 (defun egp-theme ()
   "A eshell-prompt lambda theme with directory shrinking."
-  ;; (setq eshell-prompt-regexp "^[^#\nλ]* λ[#]* ")
   (setq eshell-prompt-regexp "^.* [#]*")
-  (concat
-   (when (tramp-tramp-file-p default-directory)
-     (propertize
-      (concat (tramp-file-name-user
-               (tramp-dissect-file-name default-directory))
-              "@"
-              (tramp-file-name-real-host
-               (tramp-dissect-file-name default-directory))
-              " ")
-      'face
-      'egp-remote-face))
-
-   (egp-get-git-status)
-
-   (propertize (egp-fish-path (eshell/pwd) 0) 'face 'egp-dir-face)
-   (propertize (if (= (user-uid) 0) "#" "") 'face 'egp-root-face)
-   " "))
+  (propertize
+   (concat
+    (let ((host (file-remote-p default-directory 'host)))
+      (propertize
+       (cond ((and host default-directory (string= host (system-name)))
+              (concat "@" (file-remote-p default-directory 'user)))
+             ((and host default-directory)
+              (concat "@" host))
+             (t ""))
+       'face
+       'egp-remote-face))
+    (egp-get-git-status)
+    (propertize (egp-fish-path (eshell/pwd) 0) 'face 'egp-dir-face)
+    (propertize (if (= (user-uid) 0) "#" "") 'face 'egp-root-face)
+    " ")
+   'read-only t
+   'front-sticky '(:font-lock-face read-only)
+   'rear-nonsticky '(:font-lock-face read-only)))
 
 (provide 'egp)
 ;;; egp.el ends here
