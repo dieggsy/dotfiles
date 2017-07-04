@@ -56,7 +56,8 @@
   "Return a potentially trimmed-down version of the directory PATH, replacing
 parent directories with their initial characters to try to get the character
 length of PATH (sans directory slashes) down to MAX-LEN."
-  (let* ((components (split-string (abbreviate-file-name path) "/"))
+  (let* ((path (replace-regexp-in-string "^/.*?:.*?:" "" path))
+         (components (split-string (abbreviate-file-name path) "/"))
          (len (+ (1- (length components))
                  (cl-reduce '+ components :key 'length)))
          (str ""))
