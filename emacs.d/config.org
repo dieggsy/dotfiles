@@ -2974,7 +2974,6 @@ Source: http://tinyurl.com/ya4nkf6h"
                            (" O " "#B8BB26"))))
      ,@body))
 
-
 (defun diego/make-xpm (color height width)
   "Create an XPM bitmap.
 
@@ -3002,6 +3001,30 @@ Source: http://tinyurl.com/y8ovcvsp"
                                         else collect (string-to-char "."))
                                (if (eq idx len) "\"};" "\",\n")))))
       'xpm t :ascent 'center))))
+
+(defun eyebrowse-relevant-p ()
+  (and (featurep 'eyebrowse)
+       (< 1 (length (eyebrowse--get 'window-configs)))))
+
+(defun in-macro-p ()
+  (or defining-kbd-macro executing-kbd-macro))
+
+(defun in-evil-substitution-p ()
+  (or (assq 'evil-ex-substitute evil-ex-active-highlights-alist)
+      (assq 'evil-ex-global-match evil-ex-active-highlights-alist)
+      (assq 'evil-ex-buffer-match evil-ex-active-highlights-alist)))
+
+(defun evil-substitute-num-matches ()
+  "Return the number of matches for the current evil substitution.
+
+Source: http://tinyurl.com/y76p5dv8"
+  (let ((range (if evil-ex-range
+                   (cons (car evil-ex-range) (cadr evil-ex-range))
+                 (cons (line-beginning-position) (line-end-position))))
+        (pattern (car-safe (evil-delimited-arguments evil-ex-argument 2))))
+    (if pattern
+        (format "%s matches" (how-many pattern (car range) (cdr range)))
+      " ... ")))
 #+end_src
 **** Mode-line
 #+begin_src emacs-lisp
@@ -3009,18 +3032,14 @@ Source: http://tinyurl.com/y8ovcvsp"
   '((:eval
      (with-evil-tag-color
        (with-window-status
-         (cond
-          ((and window-active?
-                (not (or (and (featurep 'eyebrowse)
-                              (< 1 (length (eyebrowse--get 'window-configs))))
-                         (bound-and-true-p anzu--state)
-                         (or defining-kbd-macro executing-kbd-macro)
-                         (or (assq 'evil-ex-substitute evil-ex-active-highlights-alist)
-                             (assq 'evil-ex-global-match evil-ex-active-highlights-alist)
-                             (assq 'evil-ex-buffer-match evil-ex-active-highlights-alist)))))
-           (diego/make-xpm evil-tag-color 56 8))
-          ((not window-active?)
-           (diego/make-xpm "#1D2021" 56 8))))))
+         (cond ((and window-active?
+                     (not (or (eyebrowse-relevant-p)
+                              (bound-and-true-p anzu--state)
+                              (in-macro-p)
+                              (in-evil-substitution-p))))
+                (diego/make-xpm evil-tag-color 56 8))
+               ((not window-active?)
+                (diego/make-xpm "#1D2021" 56 8))))))
     ((:eval
       (with-window-status
         (with-evil-tag-color
@@ -3029,22 +3048,13 @@ Source: http://tinyurl.com/y8ovcvsp"
              window-active?
              (cond  ((bound-and-true-p anzu--state)
                      (anzu--update-mode-line))
-                    ((or (assq 'evil-ex-substitute evil-ex-active-highlights-alist)
-                         (assq 'evil-ex-global-match evil-ex-active-highlights-alist)
-                         (assq 'evil-ex-buffer-match evil-ex-active-highlights-alist))
-                     (let ((range (if evil-ex-range
-                                      (cons (car evil-ex-range) (cadr evil-ex-range))
-                                    (cons (line-beginning-position) (line-end-position))))
-                           (pattern (car-safe (evil-delimited-arguments evil-ex-argument 2))))
-                       (if pattern
-                           (format "%s matches" (how-many pattern (car range) (cdr range)))
-                         " ... ")))
-                    ((or defining-kbd-macro executing-kbd-macro)
+                    ((in-evil-substitution-p)
+                     (evil-substitute-num-matches))
+                    ((in-macro-p)
                      (if (bound-and-true-p evil-this-macro)
                          (char-to-string evil-this-macro)
                        "Macro"))
-                    ((and (featurep 'eyebrowse)
-                          (< 1 (length (eyebrowse--get 'window-configs))))
+                    ((eyebrowse-relevant-p)
                      (let* ((num (eyebrowse--get 'current-slot))
                             (tag (nth 2 (assoc num (eyebrowse--get 'window-configs)))))
                        (if (and tag (< 0 (length tag)))
