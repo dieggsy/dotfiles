@@ -1305,6 +1305,7 @@ Source: http://tinyurl.com/l3zpzse"
     "es" 'diego/eval-surrounding-sexp
     "er" 'eval-region
     "eb" 'diego/eval-buffer
+    "ef" 'diego/eval-defun
 
     "b"  'org-babel-tangle
     "xb" (diego|org-emphasize diego/org-bold ?*)
@@ -3532,6 +3533,16 @@ Source: http://tinyurl.com/mh5ev6x"
   (if (eq major-mode 'org-mode)
       (org-babel-execute-src-block)
     (eval-buffer)))
+
+(defun diego/eval-defun ()
+  (interactive)
+  (if  (eq major-mode 'org-mode)
+      (progn
+        (when (org-in-src-block-p)
+          (org-edit-special)
+          (eval-defun nil)
+          (org-edit-src-exit)))
+    (eval-defun)))
 #+end_src
 *** Bindings
 #+begin_src emacs-lisp
