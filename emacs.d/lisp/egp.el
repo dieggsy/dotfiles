@@ -118,7 +118,7 @@ length of PATH (sans directory slashes) down to MAX-LEN."
             (egp-stylize "#d3869b" "↑" (substring first-line
                                                   (+ 6 ahead)
                                                   (string-match "," first-line)))
-            (egp-stylize "#d3869b" "↑" (substring first-line
+            (egp-stylize "#d3869b" "↓" (substring first-line
                                                   (+ 7 behnd)
                                                   (string-match "]" first-line)))))
           (ahead
@@ -126,7 +126,7 @@ length of PATH (sans directory slashes) down to MAX-LEN."
                                                  (+ 6 ahead)
                                                  (cl-search "]" first-line))))
           (behind
-           (egp-stylize "#d3869b" "↑" (substring first-line
+           (egp-stylize "#d3869b" "↓" (substring first-line
                                                  (+ 7 behind)
                                                  (cl-search "]" first-line)))))))
 
