@@ -2973,7 +2973,7 @@ Source: http://tinyurl.com/ya4nkf6h"
                            (" I " "#66999D")
                            (" M " "#D3869B")
                            (" V " "#FE8019")
-                           (" E " "#83A598")
+                           (" E " "#FABD2F" )
                            (" R " "#FE8019")
                            (" O " "#B8BB26"))))
      ,@body))
