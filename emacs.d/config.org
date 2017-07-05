@@ -76,7 +76,7 @@ really bad self-made themes, ~org-export-async-init-file~, etc.
 #+end_src
 ** cl-lib
 I'm sure this will be required by some package somewhere along the way, but I
-use this a fair bit so why not explicitly require it?
+use this a fair bit so let's explicitly require it.
 #+begin_src emacs-lisp
 (require 'cl-lib)
 #+end_src
@@ -181,6 +181,7 @@ Integrates use-package and quelpa for maximum fun.
 * Core
 ** Defaults
 *** Prompts
+Having to type "yes" can be annoying.
 #+begin_src emacs-lisp
 (defalias 'yes-or-no-p #'y-or-n-p)
 #+end_src
@@ -268,7 +269,7 @@ Save stuff you've copied in other applications to the emacs kill-ring.
               (message "ERROR: config.org tangle failed.")))))))
 
   (defun diego/async-babel-tangle ()
-    "Tangle file asynchronously"
+    "Tangle org file asynchronously."
     (interactive)
     (let ((file (buffer-file-name)))
       (async-start
@@ -284,6 +285,7 @@ Save stuff you've copied in other applications to the emacs kill-ring.
 *** Config helpers
 #+begin_src emacs-lisp
 (defmacro diego/setup-mode (modes &rest body)
+  "Create a setup function for MODES and add it to relevant hook(s)."
   (declare (indent defun))
   (let ((modes (if (listp modes) modes (list modes))))
     (let ((setup-func
@@ -299,6 +301,7 @@ Save stuff you've copied in other applications to the emacs kill-ring.
                       `(add-hook ',mode-hook #',setup-func)))))))
 
 (defmacro diego/repeat-calls (name num-args &rest args)
+  "Call a function repeatedly."
   (declare (indent defun))
   (if (not (= (mod (length args) num-args) 0))
       (error "diego/repeat-calls: Not enough arguments.")
@@ -330,6 +333,7 @@ Otherwise, executes `evil-ret'."
         (t (evil-ret))))
 
 (defun toggle-rlines ()
+  "Toggle relative line numbers."
   (interactive)
   (if (eq display-line-numbers 'relative)
       (setq display-line-numbers t)
@@ -1593,7 +1597,7 @@ also use these keys to quit out of the minibuffer. See more [[#bindings-1][here]
 (add-hook 'help-mode-hook #'goto-address-mode)
 #+end_src
 ** Packages
-*** [[https://github.com/abo-abo/define-word][define-word]]                                                    :search:
+*** [[https://github.com/abo-abo/define-word][define-word]]
 #+begin_quote
   Display the definition of word at point in Emacs
 #+end_quote
@@ -1615,7 +1619,7 @@ also use these keys to quit out of the minibuffer. See more [[#bindings-1][here]
                    (thing-at-point 'word))))
         (define-word word)))))
 #+end_src
-*** [[https://github.com/xuchunyang/devdocs.el][devdocs]]          :search:
+*** [[https://github.com/xuchunyang/devdocs.el][devdocs]]
 #+begin_quote
   Emacs package allowing you to easily search the DevDocs documentation
 #+end_quote
@@ -1623,7 +1627,7 @@ also use these keys to quit out of the minibuffer. See more [[#bindings-1][here]
 (use-package devdocs
   :leader-bind ("hdd"  . devdocs-search))
 #+end_src
-*** [[https://github.com/Malabarba/emacs-google-this][emacs-google-this]] :search:
+*** [[https://github.com/Malabarba/emacs-google-this][emacs-google-this]]
 #+begin_quote
   A set of emacs functions and bindings to google under point.
 #+end_quote
@@ -1813,7 +1817,7 @@ Which means it's less likely to block up emacs. Or something.
       (deer-jump-other-window))))
 #+end_src
 
-*** [[https://github.com/bbatsov/projectile][projectile]]         :project:
+*** [[https://github.com/bbatsov/projectile][projectile]]
 #+begin_quote
   Project Interaction Library for Emacs
 #+end_quote
@@ -1829,7 +1833,7 @@ Which means it's less likely to block up emacs. Or something.
   (projectile-mode))
 #+end_src
 
-*** [[https://github.com/ericdanan/counsel-projectile][counsel-projectile]] :project:
+*** [[https://github.com/ericdanan/counsel-projectile][counsel-projectile]]
 #+begin_src emacs-lisp
 (use-package counsel-projectile
   :commands diego/project-find-file
@@ -1846,7 +1850,7 @@ Which means it's less likely to block up emacs. Or something.
       (error (counsel-projectile-find-file)))))
 #+end_src
 
-*** [[https://github.com/abo-abo/headlong][headlong]]            :bookmark:
+*** [[https://github.com/abo-abo/headlong][headlong]]
 #+begin_src emacs-lisp
 (use-package headlong
   :leader-bind (("fB" . headlong-bookmark-jump-other)
@@ -2466,7 +2470,7 @@ Leader keys
 #+end_src
 * Navigation
 ** Packages
-*** [[https://github.com/abo-abo/ace-window][ace-window]]                                                     :window:
+*** [[https://github.com/abo-abo/ace-window][ace-window]]
 #+begin_quote
   Quickly switch windows in Emacs
 #+end_quote
@@ -2556,7 +2560,7 @@ imenu on steroids.
 (use-package imenu-anywhere)
 #+end_src
 
-** Functions                                                        :window:
+** Functions
 #+begin_src emacs-lisp
 (defun diego/toggle-window-split ()
   "Switch between vertical and horizontal window split.
@@ -2638,7 +2642,7 @@ Source: http://tinyurl.com/koowarm"
       (shrink-window arg)
     (enlarge-window arg)))
 #+end_src
-** Hydras                                                           :window:
+** Hydras
 #+begin_src emacs-lisp
 (with-eval-after-load 'hydra
   (defhydra hydra-splitter ()
@@ -3149,7 +3153,7 @@ Source: http://tinyurl.com/y76p5dv8"
 #+begin_src emacs-lisp
 (use-package focus)
 #+end_src
-*** [[http://git.savannah.gnu.org/cgit/emacs/elpa.git/tree/packages/rainbow-mode/rainbow-mode.el][rainbow-mode]]                                                    :color:
+*** [[http://git.savannah.gnu.org/cgit/emacs/elpa.git/tree/packages/rainbow-mode/rainbow-mode.el][rainbow-mode]]
 #+begin_quote
   Colorize color names in buffers
 #+end_quote
@@ -3159,7 +3163,7 @@ Source: http://tinyurl.com/y76p5dv8"
   (setq rainbow-x-colors-major-mode-list '(c-mode c++-mode java-mode))
   (add-hook 'help-mode-hook #'rainbow-mode))
 #+end_src
-*** [[https://github.com/therockmandolinist/emacs-theme-darktooth][darktooth-theme]]                                                 :theme:
+*** [[https://github.com/therockmandolinist/emacs-theme-darktooth][darktooth-theme]]
 #+begin_quote
   An Emacs 24 theme remixed from gruvbox
 #+end_quote
@@ -3171,7 +3175,7 @@ Source: http://tinyurl.com/y76p5dv8"
            :fetcher github
            :repo "therockmandolinist/emacs-theme-darktooth"))
 #+end_src
-*** [[https://github.com/hlissner/emacs-doom-theme][doom-theme]]                                                      :theme:
+*** [[https://github.com/hlissner/emacs-doom-theme][doom-theme]]
 #+begin_src emacs-lisp :tangle no
 (use-package doom-themes
   :disabled t
@@ -3226,7 +3230,7 @@ Display battery in Emacs Mode line
   (add-hook 'company-completion-cancelled-hook 'company-maybe-turn-on-fci))
 #+end_src
 
-*** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers]]                                               :color:
+*** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers]]
 #+begin_quote
   Emacs minor mode to highlight each source code identifier uniquely based on its name
 #+end_quote
@@ -3234,7 +3238,7 @@ Display battery in Emacs Mode line
 (use-package color-identifiers-mode)
 #+end_src
 
-*** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]                                               :color:
+*** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]
 #+begin_quote
   Highlight numbers in source code
 #+end_quote
@@ -3251,7 +3255,7 @@ Neat-o
 (use-package highlight-parentheses)
 #+end_src
 
-*** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]                                              :color:
+*** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
 Better parentheses coloring
 #+begin_src emacs-lisp
 (use-package rainbow-delimiters)
@@ -3326,7 +3330,7 @@ Better parentheses coloring
   (setq-local calc-embedded-close-mode (concat comment-end "\n"))
   (hl-line-mode 1))
 #+end_src
-** Python                                                             :lang:
+** Python
 *** Packages
 **** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]
 #+begin_quote
@@ -3424,7 +3428,7 @@ Pretty neat, though not entirely complete, IMO.
   (setq-local prettify-symbols-alist
               diego/python-prettify-alist))
 #+end_src
-** Lisps                                                              :lang:
+** Lisps
 *** Packages
 **** [[https://github.com/slime/slime][slime]]
 #+begin_quote
@@ -3580,13 +3584,13 @@ Source: http://tinyurl.com/mh5ev6x"
 
   (setq-local prettify-symbols-alist diego/lisp-prettify-alist))
 #+end_src
-** C                                                                  :lang:
+** C
 *** Setup
 #+begin_src emacs-lisp
 (diego/setup-mode c
   (aggressive-indent-mode))
 #+end_src
-** Haskell                                                            :lang:
+** Haskell
 *** Packages
 **** [[https://github.com/haskell/haskell-mode][haskell-mode]]
 #+begin_src emacs-lisp
@@ -3613,7 +3617,7 @@ Source: http://tinyurl.com/mh5ev6x"
 (diego/setup-mode haskell
   (setq-local prettify-symbols-alist diego/haskell-prettify-alist))
 #+end_src
-** Scheme                                                             :lang:
+** Scheme
 *** Packages
 **** [[https://github.com/jaor/geiser][geiser]]
 #+begin_src emacs-lisp
@@ -4462,10 +4466,8 @@ Configure the Elfeed RSS reader with an Orgmode file
 I'll probably remove that exclamation point at some point, but right now I'm
 excited about file local vars.
 
-For org config.org
 #+begin_example
 # Local Variables:
 # after-save-hook: (git-gutter diego/async-tangle-init)
-# org-tags-match-list-sublevels: nil
 # End:
 #+end_example
