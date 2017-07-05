@@ -2153,13 +2153,18 @@ fi
 :END:
 Standalone emacs-lisp script to tangle rc.org, zsh.org, and config.org.
 #+begin_src emacs-lisp
+(require 'subr-x)
+(require 'org)
+
+(defvar specified-files (cdddr command-line-args))
+
+(defvar default-files '("rc.org" "zsh.org" "emacs.d/config.org"))
+
+(defvar confirm-install nil)
+
 (defun dotfiles-file (name)
   (expand-file-name
-   (concat
-    (substring default-directory
-               0
-               (+ (string-match "dotfiles/" default-directory) 9))
-    name)))
+   (concat default-directory name)))
 
 (defun blue-text (text)
   (format "\e[94m%s\e[0m" text))
@@ -2170,78 +2175,69 @@ Standalone emacs-lisp script to tangle rc.org, zsh.org, and config.org.
 (defun red-text (text)
   (format "\e[91m%s\e[0m" text))
 
-(let ((specified-files (nthcdr 3 command-line-args))
-      (default-files '("rc.org" "zsh.org" "emacs.d/config.org"))
-      (confirm-install nil))
-  (if (or (= (length specified-files) 0)
-          (and (= (length specified-files) 1) (string= (car specified-files) "--ask")))
-      (progn
-        (when (string= (car specified-files) "--ask")
-          (setq confirm-install t))
-        (message "Intalling default files: %s"
-                 (blue-text
-                  (mapconcat 'identity default-files "\e[0m, \e[94m")))
-        (if (y-or-n-p "Continue?")
-            (progn
-              (require 'org)
-              (dolist (file default-files)
-                (let ((filename (dotfiles-file file))
-                      (file-list '()))
-                  (if (file-exists-p filename)
-                      (progn
-                        (message "Found file: %s, installing to:" (green-text file))
-                        (find-file filename)
-                        (while (search-forward-regexp ":tangle[^~\n]+\\(~/.[^[:space:]\"]+\\)" nil t)
-                          (add-to-list 'file-list (match-string 1) t))
-                        (dolist (i file-list)
-                          (message "    %s" (blue-text i)))
-                        (if (or (not confirm-install) (y-or-n-p "Continue?"))
-                            (let ((inhibit-message t))
-                              (org-babel-tangle-file filename))
-                          (message "Skipping...")))
-                    (message "File %s not found, skipping..." (red-text filename)))))
-              (message "Done!"))
-          (messsage "Aborted.")))
 
-    (message "Installing specified files/headings: %s"
-             (blue-text (mapconcat 'identity (remove "--ask" specified-files) "\e[0m, \e[94m")))
-    (if (y-or-n-p "Continue?")
-        (progn
-          (require 'org)
-          (dolist (file specified-files)
-            (if (string= file "--ask")
-                (setq confirm-install t)
-              (let ((filename (expand-file-name (dotfiles-file file))))
-                (if (not (file-exists-p filename))
-                    (progn
-                      (find-file (dotfiles-file "rc.org"))
-                      (if (search-forward-regexp (concat "* " file "$"))
-                          (progn
-                            (org-narrow-to-subtree)
-                            (let ((file-list '()))
-                              (while (search-forward-regexp ":tangle[^~\n]+\\(~/.[^[:space:]\"]+\\)" nil t)
-                                (add-to-list 'file-list (match-string 1) t))
-                              (message "Found heading %s, installing to:" (green-text file))
-                              (dolist (i file-list)
-                                (message "    %s" (blue-text i))))
-                            (let ((inhibit-message t))
-                              (if (or (not confirm-install) (y-or-n-p "Continue?"))
-                                  (org-babel-tangle)
-                                (message "Skipping..."))))
-                        (message "File or heading %s doesn't exist, skipping..." (red-text file))))
-                  (message "Found file %s, installing to:" (green-text file))
-                  (find-file filename)
-                  (let ((file-list '()))
-                    (while (search-forward-regexp ":tangle[^~\n]+\\(~/.[^[:space:]\"]+\\)" nil t)
-                      (add-to-list 'file-list (match-string 1) t))
-                    (dolist (i file-list)
-                      (message "    %s" (blue-text i))))
-                  (if (or (not confirm-install) (y-or-n-p "Continue?"))
-                      (let ((inhibit-message t))
-                        (org-babel-tangle-file (expand-file-name filename)))
-                    (message "Skipping..."))))))
-          (message "Done!"))
-      (message "Aborted."))))
+(if (or (= (length specified-files) 0)
+        (and (not (cdr specified-files)) (string= (car specified-files) "--ask")))
+    (progn
+      (when (string= (car specified-files) "--ask")
+        (setq confirm-install t))
+      (message "Intalling default files: %s"
+               (string-join (mapcar #'blue-text default-files) ", "))
+      (if (y-or-n-p "Continue?")
+          (progn
+            (dolist (file (mapcar #'dotfiles-file default-files))
+              (let ((file-list '()))
+                (message "Installing %s to:" (green-text file))
+                (find-file file)
+                (while (search-forward-regexp ":tangle[^~\n]+\\(~/.[^[:space:]\"]+\\)" nil t)
+                  (add-to-list 'file-list (match-string 1) t))
+                (dolist (i file-list)
+                  (message "    %s" (blue-text i)))
+                (if (or (not confirm-install) (y-or-n-p "Continue?"))
+                    (let ((inhibit-message t))
+                      (org-babel-tangle-file file))
+                  (message "Skipping..."))))
+            (message "Done!"))
+        (messsage "Aborted.")))
+
+  (message "Installing specified files/headings: %s"
+           (blue-text (mapconcat 'identity (remove "--ask" specified-files) "\e[0m, \e[94m")))
+  (if (y-or-n-p "Continue?")
+      (progn
+        (dolist (file specified-files)
+          (if (string= file "--ask")
+              (setq confirm-install t)
+            (let ((filename (expand-file-name (dotfiles-file file))))
+              (if (not (file-exists-p filename))
+                  (progn
+                    (find-file (dotfiles-file "rc.org"))
+                    (if (search-forward-regexp (concat "* " file "$"))
+                        (progn
+                          (org-narrow-to-subtree)
+                          (let ((file-list '()))
+                            (while (search-forward-regexp ":tangle[^~\n]+\\(~/.[^[:space:]\"]+\\)" nil t)
+                              (add-to-list 'file-list (match-string 1) t))
+                            (message "Found heading %s, installing to:" (green-text file))
+                            (dolist (i file-list)
+                              (message "    %s" (blue-text i))))
+                          (let ((inhibit-message t))
+                            (if (or (not confirm-install) (y-or-n-p "Continue?"))
+                                (org-babel-tangle)
+                              (message "Skipping..."))))
+                      (message "File or heading %s doesn't exist, skipping..." (red-text file))))
+                (message "Found file %s, installing to:" (green-text file))
+                (find-file filename)
+                (let ((file-list '()))
+                  (while (search-forward-regexp ":tangle[^~\n]+\\(~/.[^[:space:]\"]+\\)" nil t)
+                    (add-to-list 'file-list (match-string 1) t))
+                  (dolist (i file-list)
+                    (message "    %s" (blue-text i))))
+                (if (or (not confirm-install) (y-or-n-p "Continue?"))
+                    (let ((inhibit-message t))
+                      (org-babel-tangle-file (expand-file-name filename)))
+                  (message "Skipping..."))))))
+        (message "Done!"))
+    (message "Aborted.")))
 
 (message "Symlinking dotfiles/emacs.d to ~/.emacs.d...")
 (cond ((string= (file-symlink-p (expand-file-name "~/.emacs.d")) (dotfiles-file "emacs.d/"))
