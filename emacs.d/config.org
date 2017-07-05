@@ -3714,8 +3714,6 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 *** Functions
 #+begin_src emacs-lisp
 (with-eval-after-load 'eshell
-  (require 's)
-
   (defun eshell/clear ()
     "Custom `eshell' clear function to clear to top."
     (interactive)
@@ -3727,7 +3725,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
             (split-string (shell-command-to-string "ghq list")
                           "\n"
                           t))
-           (current (s-chop-prefix "/home/diego/.ghq/" (eshell/pwd)))
+           (current (string-remove-prefix "/home/diego/.ghq/" (eshell/pwd)))
            (current-pos (cl-position current ghq-dirs :test 'string=)))
       (cond ((string= x "next")
              (eshell/cd (concat "~/.ghq/" (nth (1+ current-pos) ghq-dirs))))
