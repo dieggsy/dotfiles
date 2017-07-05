@@ -3669,25 +3669,18 @@ Source: http://tinyurl.com/mh5ev6x"
 *** Defaults
 #+begin_src emacs-lisp
 (setq calc-multiplication-has-precedence nil)
-#+end_src
-*** Variables
-#+begin_src emacs-lisp
-(defvar var-G '(float 667408 -16)
-  "Universal gravitational constant.")
-
-(defvar var-c '299792458
-  "Speed of light in a vaccum.")
+(setq calc-symbolic-mode t)
 #+end_src
 *** Bindings
 #+begin_src emacs-lisp
 (diego/set-leader-keys
   "ac" 'calc-dispatch)
-#+end_src
-*** Setup
-#+begin_src emacs-lisp
-(diego/setup-mode calc
-  (local-set-key (kbd "x") (lambda () (interactive) (counsel-M-x "^calc-")))
-  (setq calc-symbolic-mode 1))
+
+(with-eval-after-load 'calc-ext
+  (bind-key "x" (lambda () (interactive) (counsel-M-x "^calc-")) calc-mode-map))
+
+(with-eval-after-load 'calc
+  (bind-key "x" (lambda () (interactive) (counsel-M-x "^calc-")) calc-mode-map))
 #+end_src
 ** Shell
 *** Packages
