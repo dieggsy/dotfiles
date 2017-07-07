@@ -583,7 +583,7 @@ A really nice search/completion system for emacs.
   (defun diego/counsel-yank-pop-action (s)
     "Make consistent with evil-paste-after.
 
-Source: http://tinyurl.com/kyjk8cf"
+Source: https://git.io/vQKmf"
     (save-excursion
       (undo-boundary)
       (unless (eq (point) (point-max))
@@ -601,7 +601,7 @@ Source: http://tinyurl.com/kyjk8cf"
   (defun diego/counsel-yank-pop-format-function (cand-pairs)
     "Make counsel-yank-pop look a little more like the rest of ivy.
 
-Source: http://tinyurl.com/k9j3bhg"
+Source: https://git.io/vQK0v"
     (ivy--format-function-generic
      (lambda (str)
        (let ((temp-list (split-string (counsel--yank-pop-truncate str) "\n" t)))
@@ -861,7 +861,7 @@ so I went with it.
   (defun diego/org-agenda-toggle-date (current-line)
     "Toggle `SCHEDULED' and `DEADLINE' tag in the capture buffer.
 
-Source: http://tinyurl.com/kq24yph"
+Source: https://git.io/vQK0I"
     (interactive "P")
     (save-excursion
       (let ((search-limit (if current-line
@@ -882,7 +882,7 @@ This has the effect of automatically creating a properly indented list
 leader; like hyphen, asterisk, or plus sign; without having to use
 list-specific key maps.
 
-Source: http://tinyurl.com/lrfu2ww"
+Source: https://git.io/vQK0s"
     (if (= (current-column) 0)
         (insert (concat " " char " "))
       (insert char)))
@@ -893,7 +893,7 @@ Source: http://tinyurl.com/lrfu2ww"
 The assumption is that TAGS will be a string conforming to Org Mode's
 tag format specifications, or nil to remove all tags.
 
-Source: http://tinyurl.com/nx9suzj"
+Source: https://git.io/vQKEE"
     (let ((old-tags (org-get-tags-string))
           (tags (if tags
                     (concat " " tags)
@@ -911,7 +911,7 @@ Source: http://tinyurl.com/nx9suzj"
 
 TAG is chosen interactively from the global tags completion table.
 
-Source: http://tinyurl.com/l3zpzse"
+Source: https://git.io/vQKEa"
     (interactive
      (list (let ((org-last-tags-completion-table
                   (if (derived-mode-p 'org-mode)
@@ -1213,7 +1213,7 @@ Supposedly better than autocomplete.
         company-dabbrev-char-regexp "\\sw\\|\\s_\\|[-_]")
   :config
   (defun company-mode/backend-with-yas (backend)
-    "Source: http://tinyurl.com/n63vfhw"
+    "Source: https://git.io/vQKE6"
     (if (and (listp backend) (member 'company-yasnippet backend))
         backend
       (append (if (consp backend) backend (list backend))
@@ -1643,14 +1643,13 @@ Which means it's less likely to block up emacs. Or something.
 (defun diego/copy-file ()
   "Copy file to another location.
 
-Source: http://tinyurl.com/mqunewc"
+Source: https://git.io/vQKES"
   (interactive)
   (call-interactively #'write-file))
 
 (defun diego/safe-erase-buffer ()
   "Prompt before erasing buffer.
-
-Source: http://tinyurl.com/msu4l2k"
+Source: https://git.io/vQKEd"
   (interactive)
   (if (y-or-n-p (format "Erase content of buffer %s ? " (current-buffer)))
       (progn
@@ -1697,7 +1696,7 @@ Source: http://tinyurl.com/msu4l2k"
 (defun narrow-and-set-normal ()
   "Narrow to the region and, if in a visual mode, set normal mode.
 
-Source: http://tinyurl.com/llzbxh7"
+Source: https://git.io/vQKEx"
   (interactive)
   (narrow-to-region (region-beginning) (region-end))
   (if (string= evil-state "visual")
@@ -1707,7 +1706,7 @@ Source: http://tinyurl.com/llzbxh7"
 (defun narrow-to-region-or-subtree ()
   "Narrow to a region, if set, otherwise to an Org subtree, if present.
 
-Source: http://tinyurl.com/kdbewhk"
+Source: https://git.io/vQKuf"
   (interactive)
   (if (and mark-active
            (not (= (region-beginning) (region-end))))
@@ -1719,7 +1718,7 @@ Source: http://tinyurl.com/kdbewhk"
   "Narrow to a thing or widen based on context.
 Attempts to follow the Do What I Mean philosophy.
 
-Source: http://tinyurl.com/m3k84u8"
+Source: https://git.io/vQKuU"
   (interactive)
   (if (buffer-narrowed-p)
       (widen)
@@ -1995,7 +1994,7 @@ If JUSTIFY-RIGHT is non nil justify to the right instead of the
 left. If AFTER is non-nil, add whitespace to the left instead of
 the right.
 
-Source: http://tinyurl.com/l5vxsfr"
+Source: https://git.io/vQKul"
   (interactive "r\nsAlign regexp: ")
   (let* ((ws-regexp (if (string-empty-p regexp)
                         "\\(\\s-+\\)"
@@ -2010,7 +2009,7 @@ Source: http://tinyurl.com/l5vxsfr"
 (defmacro diego|create-align-repeat-x (name regexp &optional justify-right default-after)
   "Create an alignment function given name and alignment regexp.
 
-Source: http://tinyurl.com/kgrqr83"
+Source: https://git.io/vQKu4"
   (let ((new-func (intern (concat "diego/align-repeat-" name))))
     `(defun ,new-func (start end switch)
        (interactive "r\nP")
@@ -2035,7 +2034,7 @@ Source: http://tinyurl.com/kgrqr83"
 (defun diego/align-repeat-decimal (start end)
   "Align a table of numbers on decimal points and dollar signs (both optional).
 
-Source: http://tinyurl.com/lzy5wg2"
+Source: https://git.io/vQKu2"
   (interactive "r")
   (require 'align)
   (align-region start end nil
@@ -2087,20 +2086,39 @@ Source: http://tinyurl.com/lzy5wg2"
 *** Url
 #+begin_src emacs-lisp
 (defun diego/shorten-url-at-point ()
-  "Shorten the url at point using the TinyURL api.
+  "Shorten the url at point using the github url shortener or the TinyURL api.
 
 Source: http://tinyurl.com/l8z7vph"
   (interactive)
   (if (thing-at-point 'url)
       (let* ((long-url (thing-at-point 'url))
-             (short-url (with-temp-buffer
-                          (mm-url-insert
-                           (concat "http://tinyurl.com/api-create.php?url="
-                                   (url-hexify-string long-url)))
-                          (buffer-string)))
+             (short-url
+              (cond ((save-match-data
+                       (string-match "https://\\(github.com\\|gist.github.com\\)" long-url))
+                     (let ((info (shell-command-to-string
+                                  (format "curl -i \"https://git.io\" -F \"url=%s\""
+                                          long-url))))
+                       (save-match-data
+                         (and (string-match "Location: \\(.*?\\)" info)
+                              (match-string 1 info)))))
+                    (t
+                     (shell-command-to-string
+                      (format "curl -s \"http://tinyurl.com/api-create.php?url=%s\""
+                              (url-hexify-string long-url))))))
              (bounds (bounds-of-thing-at-point 'url)))
         (kill-region (car bounds) (cdr bounds))
         (insert short-url))
+    (error "No url at point.")))
+
+(defun diego/expand-url-at-point ()
+  (interactive)
+  (if (thing-at-point 'url)
+      (let* ((short-url (thing-at-point 'url))
+             (long-url (shell-command-to-string (format "curl -Ls -o /dev/null -w '%%{url_effective}' \"%s\""
+                                                        short-url)))
+             (bounds (bounds-of-thing-at-point 'url)))
+        (kill-region (car bounds) (cdr bounds))
+        (insert long-url))
     (error "No url at point.")))
 #+end_src
 ** Hydras
@@ -2238,6 +2256,7 @@ Leader keys
  "xp"  'hydra-smartparens/body
 
  "xs"  'diego/shorten-url-at-point
+ "xe"  'diego/expand-url-at-point
 
  "im"  'insert-kbd-macro)
 #+end_src
@@ -2395,7 +2414,7 @@ Source: http://tinyurl.com/k7s96fa"
 (defun diego/move-splitter-left (arg)
   "Move window splitter left.
 
-Source: http://tinyurl.com/lroxxrs"
+Source: https://git.io/vQKuS"
   (interactive "p")
   (if (let ((windmove-wrap-around))
         (windmove-find-other-window 'right))
@@ -2405,7 +2424,7 @@ Source: http://tinyurl.com/lroxxrs"
 (defun diego/move-splitter-right (arg)
   "Move window splitter right.
 
-Source: http://tinyurl.com/lvfpwx3"
+Source: https://git.io/vQKu7"
   (interactive "p")
   (if (let ((windmove-wrap-around))
         (windmove-find-other-window 'right))
@@ -2415,7 +2434,7 @@ Source: http://tinyurl.com/lvfpwx3"
 (defun diego/move-splitter-up (arg)
   "Move window splitter up.
 
-Source: http://tinyurl.com/m3xlm3o"
+Source: https://git.io/vQKu5"
   (interactive "p")
   (if (let ((windmove-wrap-around))
         (windmove-find-other-window 'up))
@@ -2425,7 +2444,7 @@ Source: http://tinyurl.com/m3xlm3o"
 (defun diego/move-splitter-down (arg)
   "Move window splitter down.
 
-Source: http://tinyurl.com/koowarm"
+Source: https://git.io/vQKuF"
   (interactive "p")
   (if (let ((windmove-wrap-around))
         (windmove-find-other-window 'up))
@@ -2627,7 +2646,7 @@ Like git, for emacs. But cooler.
 (defun magit-blame-toggle ()
   "Toggle magit-blame-mode on and off interactively.
 
-Source: http://tinyurl.com/lty44qa"
+Source: https://git.io/vQKub"
   (interactive)
   (if (and (boundp 'magit-blame-mode) magit-blame-mode)
       (magit-blame-quit)
@@ -2733,7 +2752,7 @@ Use a bar cursor in the minibuffer.
 (defun diego/flycheck-lighter (state)
   "Return flycheck information for the given error type STATE.
 
-Source: http://tinyurl.com/ya4nkf6h"
+Source: https://git.io/vQKzv"
   (let* ((counts (flycheck-count-errors flycheck-current-errors))
          (errorp (flycheck-has-current-errors-p state))
          (err (or (cdr (assq state counts)) "?"))
@@ -2769,7 +2788,7 @@ Source: http://tinyurl.com/ya4nkf6h"
 (defun diego/make-xpm (color height width)
   "Create an XPM bitmap.
 
-Source: http://tinyurl.com/y8ovcvsp"
+Source: https://git.io/vQKzL"
   (propertize
    " " 'display
    (let ((data (make-list height (make-list width 1)))
@@ -2809,7 +2828,7 @@ Source: http://tinyurl.com/y8ovcvsp"
 (defun evil-substitute-num-matches ()
   "Return the number of matches for the current evil substitution.
 
-Source: http://tinyurl.com/y76p5dv8"
+Source: https://git.io/vQKzq"
   (let ((range (if evil-ex-range
                    (cons (car evil-ex-range) (cadr evil-ex-range))
                  (cons (line-beginning-position) (line-end-position))))
@@ -3370,7 +3389,7 @@ it specifies how to indent.  The property value can be:
 This function returns either the indentation to use, or nil if the
 Lisp function does not specify a special indentation.
 
-Source: http://tinyurl.com/y6unzp8h"
+Source: https://git.io/vQKz8"
   (let ((normal-indent (current-column))
         (orig-point (point)))
     (goto-char (1+ (elt state 1)))
@@ -4017,7 +4036,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
    "cy" 'evilnc-copy-and-comment-lines)
   :config
   (defun diego/comment-or-uncomment-lines-inverse (&optional arg)
-    "Source: http://tinyurl.com/kwjd3fp"
+    "Source: https://git.io/vQKza"
     (interactive "p")
     (let ((evilnc-invert-comment-line-by-line t))
       (evilnc-comment-or-uncomment-lines arg))))
