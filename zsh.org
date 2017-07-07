@@ -143,10 +143,7 @@ zstyle ':completion:*' _expand_alias
 ** Plugins/External
 *** [[https://github.com/yyuu/pyenv/][pyenv]]
 #+begin_src sh
-pyenv() {
-    eval "$( command pyenv init -)"
-    pyenv "$@"
-}
+eval "$(pyenv init -)"
 #+end_src
 *** [[https://github.com/nvbn/thefuck][thefuck]]
 #+begin_src sh
