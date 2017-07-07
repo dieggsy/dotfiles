@@ -3,19 +3,18 @@
 Just my dotfiles. Some of this is my own, a lot is inspired by or taken from
 others' configs and adapted to my needs. This is a largely org-mode (and
 therefore emacs) based dotfiles configuration. The configs are kept in org
-files that tangle (written) to the appropriate place on save. The tangle is /in
-theory/ OS aware (Linux or Darwin).
+files that are tangled to the right place on save. The tangle is in theory OS
+aware (Linux or Darwin).
 
 ** Contents                                                      :toc:TOC_3:
-   - [[#files][Files]]
-     - [[#emacsdconfigorg---emacs-config][emacs.d/config.org - emacs config]]
-     - [[#zshorg---zsh-config][zsh.org - zsh config]]
-     - [[#rcorg---dotfiles-and-scripts][rc.org - dotfiles and scripts]]
-     - [[#org-tangle---install-script][org-tangle - install script]]
-     - [[#vimvimrc][vim/vimrc]]
-   - [[#installation][Installation]]
-     - [[#full][Full]]
-     - [[#partial][Partial]]
+  - [[#files][Files]]
+    - [[#emacsdconfigorg---emacs-config][emacs.d/config.org - emacs config]]
+    - [[#zshorg---zsh-config][zsh.org - zsh config]]
+    - [[#rcorg---dotfiles-and-scripts][rc.org - dotfiles and scripts]]
+    - [[#org-tangle---install-script][org-tangle - install script]]
+  - [[#installation][Installation]]
+    - [[#full][Full]]
+    - [[#partial][Partial]]
 
 ** Files
 *** [[./emacs.d/config.org][emacs.d/config.org]] - emacs config
@@ -35,9 +34,6 @@ A kind of messy script that makes use of ~emacs --script~ to run emacs-lisp code
 as a shell script for initial installation of dotfiles, with support for
 partial installation - you can choose which files or even headers from rc.org
 to install.
-*** [[./vim/vimrc][vim/vimrc]]
-Oh yeah, then there's vim. I would go elsewhere for this bit if I were you, but
-use at your own risk.
 ** Installation
 You should /probably/ have a fairly recent version of emacs, and potentially
 org-mode. I tend to use a "bleeding edge" installation of emacs from source
