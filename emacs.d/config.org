@@ -425,7 +425,6 @@ editing. So I went for it. Now I'll never go back.
 #+begin_src emacs-lisp
 (use-package evil
   :demand t
-  :if (not noninteractive)
   :bind
   (:map evil-normal-state-map
    ("RET" . diego/ret)
@@ -855,8 +854,9 @@ so I went with it.
 
   (defmacro diego|org-emphasize (fname char)
     "Make function for setting the emphasis in org mode"
-    `(defun ,fname () (interactive)
-        (org-emphasize ,char)))
+    `(defun ,fname ()
+       (interactive)
+       (org-emphasize ,char)))
 
   (defun diego/org-agenda-toggle-date (current-line)
     "Toggle `SCHEDULED' and `DEADLINE' tag in the capture buffer.
@@ -873,7 +873,7 @@ Source: http://tinyurl.com/kq24yph"
         (if (search-forward "DEADLINE:" search-limit t)
             (replace-match "SCHEDULED:")
           (and (search-forward "SCHEDULED:" search-limit t)
-             (replace-match "DEADLINE:"))))))
+               (replace-match "DEADLINE:"))))))
 
   (defun diego/org-insert-list-leader-or-self (char)
     "If on column 0, insert space-padded CHAR; otherwise insert CHAR.
@@ -917,7 +917,7 @@ Source: http://tinyurl.com/l3zpzse"
                   (if (derived-mode-p 'org-mode)
                       (org-uniquify
                        (delq nil (append (org-get-buffer-tags)
-                                       (org-global-tags-completion-table))))
+                                         (org-global-tags-completion-table))))
                     (org-global-tags-completion-table))))
              (completing-read
               "Tag: " 'org-tags-completion-function nil nil nil
@@ -1026,80 +1026,80 @@ Source: http://tinyurl.com/l3zpzse"
 **** Bindings
 #+begin_src emacs-lisp
 (with-eval-after-load 'org
-(diego/mode-leader-keys
- :keymaps 'org-mode-map
- "$"  'org-archive-subtree
- "'"  'org-edit-special
- "."  'org-time-stamp
- "/"  'org-sparse-tree
- ":"  'diego/org-set-tags
- "-"  'org-decrypt-entry
- "A"  'org-archive-subtree
- "N"  'widen
- "P"  'org-set-property
- "R"  'org-refile
- "^"  'org-sort
- "a"  'org-agenda
- "c"  'org-capture
- "d"  'org-deadline
- "g"  'counsel-org-goto
- "G"  'counsel-org-goto-all
- "l"  'diego/org-choose-bullet-type
- "n"  'org-narrow-to-subtree
- "s"  'org-schedule
+  (diego/mode-leader-keys
+   :keymaps 'org-mode-map
+   "$"  'org-archive-subtree
+   "'"  'org-edit-special
+   "."  'org-time-stamp
+   "/"  'org-sparse-tree
+   ":"  'diego/org-set-tags
+   "-"  'org-decrypt-entry
+   "A"  'org-archive-subtree
+   "N"  'widen
+   "P"  'org-set-property
+   "R"  'org-refile
+   "^"  'org-sort
+   "a"  'org-agenda
+   "c"  'org-capture
+   "d"  'org-deadline
+   "g"  'counsel-org-goto
+   "G"  'counsel-org-goto-all
+   "l"  'diego/org-choose-bullet-type
+   "n"  'org-narrow-to-subtree
+   "s"  'org-schedule
 
- "ic" 'org-table-insert-column
- "ir" 'org-table-insert-row
- "il" 'org-insert-link
- "if" 'org-footnote-new
- "id" 'org-insert-drawer
+   "ic" 'org-table-insert-column
+   "ir" 'org-table-insert-row
+   "il" 'org-insert-link
+   "if" 'org-footnote-new
+   "id" 'org-insert-drawer
 
- "ed" 'org-export-dispatch
- "eh" 'diego/org-hugo-export
- "es" 'diego/eval-surrounding-sexp
- "er" 'eval-region
- "eb" 'diego/eval-buffer
- "ef" 'diego/eval-defun
+   "ed" 'org-export-dispatch
+   "eh" 'diego/org-hugo-export
+   "es" 'diego/eval-surrounding-sexp
+   "er" 'eval-region
+   "eb" 'diego/eval-buffer
+   "ef" 'diego/eval-defun
 
- "b"  'org-babel-tangle
- "xb" (diego|org-emphasize diego/org-bold ?*)
- "xi" (diego|org-emphasize diego/org-italic ?/)
- "xc" (diego|org-emphasize diego/org-code ?~)
- "xu" (diego|org-emphasize diego/org-underline ?_)
- "xv" (diego|org-emphasize diego/org-verbatim ?=)
- "xs" (diego|org-emphasize diego/org-strike-through ?+)
- "xr" (diego|org-emphasize diego/org-clear ? )
- "xq" 'diego/org-wrap-with-quote
- "xx" 'org-cut-special
- "xp" 'org-paste-special
+   "b"  'org-babel-tangle
+   "xb" (diego|org-emphasize diego/org-bold ?*)
+   "xi" (diego|org-emphasize diego/org-italic ?/)
+   "xc" (diego|org-emphasize diego/org-code ?~)
+   "xu" (diego|org-emphasize diego/org-underline ?_)
+   "xv" (diego|org-emphasize diego/org-verbatim ?=)
+   "xs" (diego|org-emphasize diego/org-strike-through ?+)
+   "xr" (diego|org-emphasize diego/org-clear ? )
+   "xq" 'diego/org-wrap-with-quote
+   "xx" 'org-cut-special
+   "xp" 'org-paste-special
 
- ;; tables
- "ta"  'org-table-align
- "tb"  'org-table-blank-field
- "tc"  'org-table-convert
- "tdc" 'org-table-delete-column
- "tdr" 'org-table-kill-row
- "te"  'org-table-eval-formula
- "tE"  'org-table-export
- "th"  'org-table-previous-field
- "tH"  'org-table-move-column-left
- "tic" 'org-table-insert-column
- "tih" 'org-table-insert-hline
- "tiH" 'org-table-hline-and-move
- "tir" 'org-table-insert-row
- "tI"  'org-table-import
- "tj"  'org-table-next-row
- "tJ"  'org-table-move-row-down
- "tK"  'org-table-move-row-up
- "tl"  'org-table-next-field
- "tL"  'org-table-move-column-right
- "tn"  'org-table-create
- "tN"  'org-table-create-with-table.el
- "tr"  'org-table-recalculate
- "ts"  'org-table-sort-lines
- "ttf" 'org-table-toggle-formula-debugger
- "tto" 'org-table-toggle-coordinate-overlays
- "tw"  'org-table-wrap-region)
+   ;; tables
+   "ta"  'org-table-align
+   "tb"  'org-table-blank-field
+   "tc"  'org-table-convert
+   "tdc" 'org-table-delete-column
+   "tdr" 'org-table-kill-row
+   "te"  'org-table-eval-formula
+   "tE"  'org-table-export
+   "th"  'org-table-previous-field
+   "tH"  'org-table-move-column-left
+   "tic" 'org-table-insert-column
+   "tih" 'org-table-insert-hline
+   "tiH" 'org-table-hline-and-move
+   "tir" 'org-table-insert-row
+   "tI"  'org-table-import
+   "tj"  'org-table-next-row
+   "tJ"  'org-table-move-row-down
+   "tK"  'org-table-move-row-up
+   "tl"  'org-table-next-field
+   "tL"  'org-table-move-column-right
+   "tn"  'org-table-create
+   "tN"  'org-table-create-with-table.el
+   "tr"  'org-table-recalculate
+   "ts"  'org-table-sort-lines
+   "ttf" 'org-table-toggle-formula-debugger
+   "tto" 'org-table-toggle-coordinate-overlays
+   "tw"  'org-table-wrap-region))
 
 (diego/mode-leader-keys
  :keymaps 'org-src-mode-map
@@ -1107,25 +1107,26 @@ Source: http://tinyurl.com/l3zpzse"
 
 (diego/leader-keys
  :keymaps 'org-src-mode-map
- "fs" 'org-edit-src-save))
+ "fs" 'org-edit-src-save)
 #+end_src
 **** Setup
 ***** Agenda
 #+begin_src emacs-lisp
-(with-eval-after-load 'org-agenda
-  (bind-keys :map org-agenda-mode-map
-             ("j" . org-agenda-next-line)
-             ("k" . org-agenda-previous-line)
-             ("n" . org-agenda-next-date-line)
-             ("p" . org-agenda-previous-date-line)
-             ("c" . org-agenda-capture)
-             ("R" . org-revert-all-org-buffers)
-             ("RET" . org-agenda-switch-to))
-  (setq org-habit-graph-column 50)
+(general-define-key :keymaps 'org-agenda-mode-map
+  "j" 'org-agenda-next-line
+  "k" 'org-agenda-previous-line
+  "n" 'org-agenda-next-date-line
+  "p" 'org-agenda-previous-date-line
+  "c" 'org-agenda-capture
+  "R" 'org-revert-all-org-buffers
+  "RET" 'org-agenda-switch-to)
 
-  (diego/setup-mode org-agenda
-    (setq-local prettify-symbols-alist diego/org-prettify-alist)
-    (prettify-symbols-mode)))
+(with-eval-after-load 'org-agenda
+  (setq org-habit-graph-column 50))
+
+(diego/setup-mode org-agenda
+  (setq-local prettify-symbols-alist diego/org-prettify-alist)
+  (prettify-symbols-mode))
 
 #+end_src
 ***** Capture
@@ -1178,10 +1179,10 @@ Source: http://tinyurl.com/l3zpzse"
   :defer 5
   :general
   (diego/leader-keys
-"TAB" 'crux-switch-to-previous-buffer
-  "fd" 'crux-delete-file-and-buffer
-  "fr" 'crux-rename-file-and-buffer
-  "br" 'crux-sudo-edit )
+   "TAB" 'crux-switch-to-previous-buffer
+   "fd" 'crux-delete-file-and-buffer
+   "fr" 'crux-rename-file-and-buffer
+   "br" 'crux-sudo-edit )
   :commands (crux-with-region-or-line
              crux-with-region-or-buffer
              crux-switch-to-previous-buffer
@@ -1402,8 +1403,9 @@ A convenient full-screen binding I'm used to from iTerm.
 (use-package google-this
   :commands ddg-this-search
   :general
-  (diego/leader-keys "sd" 'ddg-this-search
-  "sg" 'google-this-search)
+  (diego/leader-keys
+   "sd" 'ddg-this-search
+   "sg" 'google-this-search)
   :config
   (defun ddg-this-parse-and-search-string (text prefix &optional search-url)
     "Convert illegal characters in TEXT to their %XX versions, and then duckduckgo.
@@ -1479,10 +1481,10 @@ Non-interactively SEARCH-STRING is the string to search."
 (use-package tldr
   :general
   (diego/leader-keys "ht" 'tldr)
-  :general (:states
-            'normal
-            :keymaps 'tldr-mode-map
-            "q" 'quit-window))
+  :general
+  (:states 'normal
+   :keymaps 'tldr-mode-map
+   "q" 'quit-window))
 #+end_src
 ** Bindings
 Leader bindings
@@ -1558,8 +1560,9 @@ Which means it's less likely to block up emacs. Or something.
 (use-package ranger
   :commands diego/deer
   :general
-  (diego/leader-keys "ad" 'diego/deer
-  "ar" 'ranger)
+  (diego/leader-keys
+   "ad" 'diego/deer
+   "ar" 'ranger)
   :init
   (require 'bookmark)
   :config
@@ -1594,10 +1597,11 @@ Which means it's less likely to block up emacs. Or something.
 #+begin_src emacs-lisp
 (use-package projectile
   :general
-  (diego/leader-keys "pg" 'projectile-vc
-  "pk" 'projectile-kill-buffers
-  "po" 'projectile-multi-occur
-  "pr" 'projectil-recentf)
+  (diego/leader-keys
+   "pg" 'projectile-vc
+   "pk" 'projectile-kill-buffers
+   "po" 'projectile-multi-occur
+   "pr" 'projectil-recentf)
   :config
   (setq projectile-globally-ignored-files '("TAGS" ".DS_Store")
         projectile-ignored-projects '("/usr/local"))
@@ -1609,11 +1613,12 @@ Which means it's less likely to block up emacs. Or something.
 (use-package counsel-projectile
   :commands diego/project-find-file
   :general
-  (diego/leader-keys "pb" 'counsel-projectile-switch-to-buffer
-  "pd" 'counsel-projectile-find-dir
-  "pf" 'counsel-projectile-find-file
-  "pp" 'counsel-projectile
-  "ps" 'counsel-projectile-switch-project)
+  (diego/leader-keys
+   "pb" 'counsel-projectile-switch-to-buffer
+   "pd" 'counsel-projectile-find-dir
+   "pf" 'counsel-projectile-find-file
+   "pp" 'counsel-projectile
+   "ps" 'counsel-projectile-switch-project)
   :config
   (defun diego/project-find-file ()
     (interactive)
@@ -1627,7 +1632,7 @@ Which means it's less likely to block up emacs. Or something.
 (use-package headlong
   :general
   (diego/leader-keys "fB" 'headlong-bookmark-jump-other
- "fb" 'headlong-bookmark-jump)
+                     "fb" 'headlong-bookmark-jump)
   :config
   (bookmark-maybe-load-default-file))
 #+end_src
@@ -1705,7 +1710,7 @@ Source: http://tinyurl.com/llzbxh7"
 Source: http://tinyurl.com/kdbewhk"
   (interactive)
   (if (and mark-active
-         (not (= (region-beginning) (region-end))))
+           (not (= (region-beginning) (region-end))))
       (narrow-and-set-normal)
     (if (derived-mode-p 'org-mode)
         (org-narrow-to-subtree))))
@@ -1797,7 +1802,6 @@ Dear god I hate tabs. Also, four spaces is a good indentation default.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package evil-multiedit
-  :if (not noninteractive)
   :config
   (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match))
 #+end_src
@@ -1956,7 +1960,7 @@ are interchanged."
     (transpose-words -1)))
 
 (defun diego/move-line-or-region (arg)
-"Move line or region down one one line.
+  "Move line or region down one one line.
 With prefix arg ARG, effect is to take line at point and
 drag it down past ARG other lines (up if ARG negative)."
   (interactive "P")
@@ -1969,7 +1973,7 @@ drag it down past ARG other lines (up if ARG negative)."
     (diego/backward-move-line-or-region (- arg))))
 
 (defun diego/backward-move-line-or-region (arg)
-"Move line or region up one one line.
+  "Move line or region up one one line.
 With prefix arg ARG, effect is to take line at point and
 drag it up past ARG other lines (down if ARG negative)."
   (interactive "P")
@@ -2036,10 +2040,10 @@ Source: http://tinyurl.com/lzy5wg2"
   (require 'align)
   (align-region start end nil
                 '((nil (regexp . "\\([\t ]*\\)\\$?\\([\t ]+[0-9]+\\)\\.?")
-                     (repeat . t)
-                     (group 1 2)
-                     (spacing 1 1)
-                     (justify nil t)))
+                       (repeat . t)
+                       (group 1 2)
+                       (spacing 1 1)
+                       (justify nil t)))
                 nil))
 
 
@@ -2074,7 +2078,7 @@ Source: http://tinyurl.com/lzy5wg2"
 *** Paragraph
 #+begin_src emacs-lisp
 (defun diego/paragraphize ()
-"Remove newlines from region."
+  "Remove newlines from region."
   (interactive)
   (if (region-active-p)
       (flush-lines "^$" (region-beginning) (region-end))
@@ -2190,11 +2194,11 @@ _u_nwrap  _S_lurp (back)   _[_ wrap _{_
 ** Bindings
 Make indent-rigidly more vimmy.
 #+begin_src emacs-lisp
-(bind-keys :map indent-rigidly-map
-           ("h" . indent-rigidly-left)
-           ("l" . indent-rigidly-right)
-           ("H" . indent-rigidly-left-to-tab-stop)
-           ("L" . indent-rigidly-right-to-tab-stop))
+(general-define-key :keymaps 'indent-rigidly-map
+  "h" 'indent-rigidly-left
+  "l" 'indent-rigidly-right
+  "H" 'indent-rigidly-left-to-tab-stop
+  "L" 'indent-rigidly-right-to-tab-stop)
 #+end_src
 Leader keys
 #+begin_src emacs-lisp
@@ -2261,10 +2265,10 @@ Leader keys
 #+begin_src emacs-lisp
 (use-package avy
   :general
-(diego/leader-keys
-  "jc" 'avy-goto-char-2
-  "jl" 'avy-goto-line
-  "jw" 'avy-goto-word-1)
+  (diego/leader-keys
+   "jc" 'avy-goto-char-2
+   "jl" 'avy-goto-line
+   "jw" 'avy-goto-word-1)
   :config
   (setq avy-keys (string-to-list "aoeuidhtns")))
 #+end_src
@@ -2325,12 +2329,12 @@ Leader keys
 #+begin_src emacs-lisp
 (use-package dumb-jump
   :general
-(diego/leader-keys
-  "jE" 'dumb-jump-go-prefer-external-other-window
-  "jG" 'dumb-jump-go-other-window
-  "jb" 'dumb-jump-back
-  "je" 'dumb-jump-go-prefer-external
-  "jg" 'dumb-jump-go)
+  (diego/leader-keys
+   "jE" 'dumb-jump-go-prefer-external-other-window
+   "jG" 'dumb-jump-go-other-window
+   "jb" 'dumb-jump-back
+   "je" 'dumb-jump-go-prefer-external
+   "jg" 'dumb-jump-go)
   :config
   (setq dumb-jump-selector 'ivy
         dumb-jump-prefer-searcher 'rg))
@@ -2359,9 +2363,9 @@ Source: http://tinyurl.com/k7s96fa"
              (this-win-edges (window-edges (selected-window)))
              (next-win-edges (window-edges (next-window)))
              (this-win-2nd (not (and (<= (car this-win-edges)
-                                    (car next-win-edges))
-                                 (<= (cadr this-win-edges)
-                                    (cadr next-win-edges)))))
+                                         (car next-win-edges))
+                                     (<= (cadr this-win-edges)
+                                         (cadr next-win-edges)))))
              (splitter
               (if (= (car this-win-edges)
                      (car (window-edges (next-window))))
@@ -2464,18 +2468,17 @@ Source: http://tinyurl.com/koowarm"
 Like git, for emacs. But cooler.
 #+begin_src emacs-lisp
 (use-package magit
-  :if (not noninteractive)
   :general
-(diego/leader-keys
-  "gB" 'magit-blame-toggle
-  "gC" 'magit-clone
-  "gL" 'magit-log-buffer-file
-  "ga" 'magit-submodule-add
-  "gb" 'magit-branch
-  "gc" 'magit-checkout
-  "gf" 'magit-find-file
-  "gl" 'magit-log-all
-  "gs" 'magit-status)
+  (diego/leader-keys
+   "gB" 'magit-blame-toggle
+   "gC" 'magit-clone
+   "gL" 'magit-log-buffer-file
+   "ga" 'magit-submodule-add
+   "gb" 'magit-branch
+   "gc" 'magit-checkout
+   "gf" 'magit-find-file
+   "gl" 'magit-log-all
+   "gs" 'magit-status)
   :defines (magit-diff-use-overlays)
   :config
   (setq magit-diff-use-overlays nil
@@ -2493,8 +2496,7 @@ Like git, for emacs. But cooler.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package evil-magit
-  :after magit
-  :if (not noninteractive))
+  :after magit)
 #+end_src
 *** [[https://github.com/vermiculus/magithub][magithub]]
 #+begin_quote
@@ -2623,13 +2625,13 @@ Like git, for emacs. But cooler.
 ** Functions
 #+begin_src emacs-lisp
 (defun magit-blame-toggle ()
-    "Toggle magit-blame-mode on and off interactively.
+  "Toggle magit-blame-mode on and off interactively.
 
 Source: http://tinyurl.com/lty44qa"
-    (interactive)
-    (if (and (boundp 'magit-blame-mode) magit-blame-mode)
-        (magit-blame-quit)
-      (call-interactively 'magit-blame)))
+  (interactive)
+  (if (and (boundp 'magit-blame-mode) magit-blame-mode)
+      (magit-blame-quit)
+    (call-interactively 'magit-blame)))
 #+end_src
 * Appearance
 ** Defaults
@@ -2689,8 +2691,8 @@ Choose a font in order of preference, when available.
 #+end_src
 And use [[http://fontawesome.io/][Font Awesome]] for the unicode glyphs it supports.
 #+begin_src emacs-lisp
-  (when (x-list-fonts "FontAwesome")
-    (set-fontset-font t 'unicode "FontAwesome" nil 'prepend)))
+(when (x-list-fonts "FontAwesome")
+  (set-fontset-font t 'unicode "FontAwesome" nil 'prepend)))
 #+end_src
 
 :NOTES:
@@ -2752,15 +2754,16 @@ Source: http://tinyurl.com/ya4nkf6h"
 
 (defmacro with-evil-tag-color (&rest body)
   (declare (indent defun))
-  `(let ((evil-tag-color (pcase (substring-no-properties
-                                 evil-mode-line-tag)
-                           (" N " "#B8BB26")
-                           (" I " "#66999D")
-                           (" M " "#D3869B")
-                           (" V " "#FE8019")
-                           (" E " "#FABD2F" )
-                           (" R " "#FE8019")
-                           (" O " "#B8BB26"))))
+  `(let ((evil-tag-color
+          (pcase (substring-no-properties
+                  evil-mode-line-tag)
+            (" N " "#B8BB26")
+            (" I " "#66999D")
+            (" M " "#D3869B")
+            (" V " "#FE8019")
+            (" E " "#FABD2F" )
+            (" R " "#FE8019")
+            (" O " "#B8BB26"))))
      ,@body))
 
 (defun diego/make-xpm (color height width)
@@ -3058,7 +3061,7 @@ Better parentheses coloring
 ** Bindings
 #+begin_src emacs-lisp
 (diego/leader-keys
-  "z" 'hydra-zoom/body)
+ "z" 'hydra-zoom/body)
 #+end_src
 * Modes
 ** Prog
@@ -3344,6 +3347,78 @@ Source: http://tinyurl.com/mh5ev6x"
           (eval-defun nil)
           (org-edit-src-exit)))
     (eval-defun)))
+
+(defun Fuco1/lisp-indent-function (indent-point state)
+  "This function is the normal value of the variable `lisp-indent-function'.
+The function `calculate-lisp-indent' calls this to determine
+if the arguments of a Lisp function call should be indented specially.
+INDENT-POINT is the position at which the line being indented begins.
+Point is located at the point to indent under (for default indentation);
+STATE is the `parse-partial-sexp' state for that position.
+If the current line is in a call to a Lisp function that has a non-nil
+property `lisp-indent-function' (or the deprecated `lisp-indent-hook'),
+it specifies how to indent.  The property value can be:
+,* `defun', meaning indent `defun'-style
+  \(this is also the case if there is no property and the function
+  has a name that begins with \"def\", and three or more arguments);
+,* an integer N, meaning indent the first N arguments specially
+  (like ordinary function arguments), and then indent any further
+  arguments like a body;
+,* a function to call that returns the indentation (or nil).
+  `lisp-indent-function' calls this function with the same two arguments
+  that it itself received.
+This function returns either the indentation to use, or nil if the
+Lisp function does not specify a special indentation.
+
+Source: http://tinyurl.com/y6unzp8h"
+  (let ((normal-indent (current-column))
+        (orig-point (point)))
+    (goto-char (1+ (elt state 1)))
+    (parse-partial-sexp (point) calculate-lisp-indent-last-sexp 0 t)
+    (cond
+     ;; car of form doesn't seem to be a symbol, or is a keyword
+     ((and (elt state 2)
+           (or (not (looking-at "\\sw\\|\\s_"))
+               (looking-at ":")))
+      (if (not (> (save-excursion (forward-line 1) (point))
+                  calculate-lisp-indent-last-sexp))
+          (progn (goto-char calculate-lisp-indent-last-sexp)
+                 (beginning-of-line)
+                 (parse-partial-sexp (point)
+                                     calculate-lisp-indent-last-sexp 0 t)))
+      ;; Indent under the list or under the first sexp on the same
+      ;; line as calculate-lisp-indent-last-sexp.  Note that first
+      ;; thing on that line has to be complete sexp since we are
+      ;; inside the innermost containing sexp.
+      (backward-prefix-chars)
+      (current-column))
+     ((and (save-excursion
+             (goto-char indent-point)
+             (skip-syntax-forward " ")
+             (not (looking-at ":")))
+           (save-excursion
+             (goto-char orig-point)
+             (looking-at ":")))
+      (save-excursion
+        (goto-char (+ 2 (elt state 1)))
+        (current-column)))
+     (t
+      (let ((function (buffer-substring (point)
+                                        (progn (forward-sexp 1) (point))))
+            method)
+        (setq method (or (function-get (intern-soft function)
+                                       'lisp-indent-function)
+                         (get (intern-soft function) 'lisp-indent-hook)))
+        (cond ((or (eq method 'defun)
+                   (and (null method)
+                        (> (length function) 3)
+                        (string-match "\\`def" function)))
+               (lisp-indent-defform state indent-point))
+              ((integerp method)
+               (lisp-indent-specform method state
+                                     indent-point normal-indent))
+              (method
+               (funcall method indent-point state))))))))
 #+end_src
 *** Bindings
 #+begin_src emacs-lisp
@@ -3363,12 +3438,13 @@ Source: http://tinyurl.com/mh5ev6x"
   (hs-minor-mode)
   (aggressive-indent-mode)
   (push '(? . ("`" . "'")) evil-surround-pairs-alist)
-  (bind-keys :map (current-local-map)
-             ("C-c <up>" . hs-hide-all)
-             ("C-c <down>" . hs-show-all)
-             ("C-c <left>" . hs-hide-block)
-             ("C-c <right>" . hs-show-block))
-
+  (general-define-key
+   :keymaps 'local
+   "C-c <up>" 'hs-hide-all
+   "C-c <down>" 'hs-show-all
+   "C-c <left>" 'hs-hide-block
+   "C-c <right>" 'hs-show-block)
+  (setq-local lisp-indent-function #'Fuco1/lisp-indent-function)
   (setq-local prettify-symbols-alist diego/lisp-prettify-alist))
 #+end_src
 ** C
@@ -3437,11 +3513,12 @@ Source: http://tinyurl.com/mh5ev6x"
   (hs-minor-mode)
   (aggressive-indent-mode)
   (push '(? . ("`" . "'")) evil-surround-pairs-alist)
-  (bind-keys :map (current-local-map)
-             ("C-c <up>" . hs-hide-all)
-             ("C-c <down>" . hs-show-all)
-             ("C-c <left>" . hs-hide-block)
-             ("C-c <right>" . hs-show-block))
+  (general-define-key
+   :keymaps 'local
+   "C-c <up>" 'hs-hide-all
+   "C-c <down>" 'hs-show-all
+   "C-c <left>" 'hs-hide-block
+   "C-c <right>" 'hs-show-block)
 
   (setq-local prettify-symbols-alist diego/scheme-prettify-alist))
 #+end_src
@@ -3461,13 +3538,12 @@ Source: http://tinyurl.com/mh5ev6x"
 *** Bindings
 #+begin_src emacs-lisp
 (diego/leader-keys
-  "ac" 'calc-dispatch)
+ "ac" 'calc-dispatch)
 
 (with-eval-after-load 'calc-ext
-  (bind-key "x" (lambda () (interactive) (counsel-M-x "^calc-")) calc-mode-map))
-
-(with-eval-after-load 'calc
-  (bind-key "x" (lambda () (interactive) (counsel-M-x "^calc-")) calc-mode-map))
+  (general-define-key
+   :keymaps 'calc-mode-map
+   "x" (lambda () (interactive) (counsel-M-x "^calc-"))))
 #+end_src
 ** Shell
 *** Packages
@@ -3872,7 +3948,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 *** Bindings
 #+begin_src emacs-lisp
 (diego/leader-keys
-  "t"   'hydra-toggle/body)
+ "t"   'hydra-toggle/body)
 
 (with-eval-after-load 'evil
   (evil-define-key 'normal custom-mode-map
@@ -4041,7 +4117,6 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 #+begin_src emacs-lisp
 (use-package elfeed-org
   :after elfeed
-  :if (not noninteractive)
   :config
   (elfeed-org))
 #+end_src
@@ -4201,7 +4276,6 @@ Source: http://tinyurl.com/lo96nwc"
 Configure the Elfeed RSS reader with an Orgmode file
 #+begin_src emacs-lisp
 (use-package elfeed
-  :if (not noninteractive)
   :general
   (diego/leader-keys "ae" 'elfeed)
   (:states 'normal
@@ -4242,9 +4316,9 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+begin_src emacs-lisp
 (use-package sunshine
   :general
-(diego/leader-keys
-  "aW" 'sunshine-quick-forecast
-  "aw" 'sunshine-forecast)
+  (diego/leader-keys
+   "aW" 'sunshine-quick-forecast
+   "aw" 'sunshine-forecast)
   :config
   (setq sunshine-location "02139,USA"
         sunshine-appid (password-store-get "api/openweathermap")))
