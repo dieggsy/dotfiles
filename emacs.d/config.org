@@ -1895,7 +1895,11 @@ Source: http://tinyurl.com/k8g9sex"
 Kind of makes undo's like git. Or Vim, apparently, if you're into that.
 #+begin_src emacs-lisp
 (use-package undo-tree
-  :general (diego/leader-keys "au" 'undo-tree-visualize)
+  :general
+  (diego/leader-keys "au" 'undo-tree-visualize)
+  (:keymaps 'undo-tree-map
+   "C-/" nil
+   "C-_" nil)
   :config
   (setq undo-tree-visualizer-timestamps t))
 #+end_src
