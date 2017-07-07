@@ -3430,6 +3430,7 @@ Pretty neat, though not entirely complete, IMO.
 #+begin_src emacs-lisp
 (diego/setup-mode python
   (set (make-local-variable 'comment-inline-offset) 2)
+  (flycheck-mode)
   (anaconda-mode)
   (anaconda-eldoc-mode)
   (require 'company)
