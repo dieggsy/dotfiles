@@ -1156,6 +1156,11 @@ Source: http://tinyurl.com/l3zpzse"
   (goto-address-mode)
   (org-indent-mode))
 #+end_src
+***** Org-src
+#+begin_src emacs-lisp
+(diego/setup-mode org-src
+  (evil-normalize-keymaps))
+#+end_src
 *** [[https://github.com/abo-abo/hydra][hydra]]
 #+begin_quote
   make Emacs bindings that stick around
