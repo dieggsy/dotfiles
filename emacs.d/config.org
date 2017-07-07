@@ -426,9 +426,13 @@ editing. So I went for it. Now I'll never go back.
 (use-package evil
   :demand t
   :if (not noninteractive)
+  :bind
+  (:map evil-normal-state-map
+   ("RET" . diego/ret)
+   :map evil-motion-state-map
+   ("RET" . diego/ret))
   :general
   (:states 'normal
-   "RET"  'diego/ret
    "S-SPC" 'org-agenda-list
    "-" 'negative-argument
    "\\" 'evil-window-next
@@ -440,8 +444,6 @@ editing. So I went for it. Now I'll never go back.
    "C-/" 'evil-normal-state)
   (:states 'visual
    [escape] 'keyboard-quit)
-  (:states 'motion
-   "RET" 'diego/ret)
   :init
   (setq evil-want-C-u-scroll t
         evil-want-fine-undo t
@@ -781,7 +783,6 @@ so I went with it.
   :general
   (:states 'normal
    :keymaps 'org-mode-map
-   "RET" 'diego/ret
    "<" 'org-metaleft
    ">" 'org-metaright
    "gh" 'outline-up-heading
