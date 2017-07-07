@@ -354,7 +354,7 @@ bindsym $mod+shift+plus sticky toggle
 exec --no-startup-id emacs
 for_window [title="^emacs@Ragnarok$"] floating enable;
 for_window [title="^emacs@Ragnarok$"] sticky enable;
-for_window [title="^emacs@Ragnarok$"] move scratchpad; [title="^emacs@Ragnarok$"] scratchpad show; move scratchpad;
+for_window [title="^emacs@Ragnarok$"] move scratchpad;
 bindsym $mod+space [title="^emacs@Ragnarok$"] scratchpad show
 
 # Floating terminal
