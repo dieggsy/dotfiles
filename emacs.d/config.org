@@ -393,6 +393,27 @@ package should fix them nicely.
   (setq exec-path-from-shell-check-startup-files nil)
   (exec-path-from-shell-initialize))
 #+end_src
+*** [[https://github.com/noctuid/general.el][general]]
+#+begin_quote
+  More convenient key definitions in emacs
+#+end_quote
+That undersells it. The /most/ convenient key definitions in emacs.
+#+begin_src emacs-lisp
+(use-package general
+  :after evil
+  :config
+  (general-create-definer
+   diego/mode-leader-keys
+   :states '(emacs normal visual motion insert)
+   :non-normal-prefix "C-,"
+   :prefix ",")
+
+  (general-create-definer
+   diego/leader-keys
+   :states '(emacs normal visual motion insert)
+   :non-normal-prefix "C-SPC"
+   :prefix "SPC"))
+#+end_src
 *** [[https://github.com/emacs-evil/evil][evil]]
 #+begin_quote
   The extensible vi layer for Emacs.
@@ -405,27 +426,22 @@ editing. So I went for it. Now I'll never go back.
 (use-package evil
   :demand t
   :if (not noninteractive)
-  :bind (:map
-         evil-normal-state-map
-         ("RET" . diego/ret)
-         ("S-SPC" . org-agenda-list)
-         ("-" . negative-argument)
-         ("\\" . evil-window-next)
-         ("C-_" . keyboard-quit)
-         ("C-/" . keyboard-quit)
-         ([escape] . keyboard-quit)
-         :map evil-insert-state-map
-         ("C-_" . evil-normal-state)
-         ("C-/" . evil-normal-state)
-         :map evil-replace-state-map
-         ("C-_" . evil-normal-state)
-         ("C-/" . evil-normal-state)
-         :map evil-visual-state-map
-         ("C-_" . keyboard-quit)
-         ("C-/" . keyboard-quit)
-         ([escape] . keyboard-quit)
-         :map evil-motion-state-map
-         ("RET" . diego/ret))
+  :general
+  (:states 'normal
+   "RET"  'diego/ret
+   "S-SPC" 'org-agenda-list
+   "-" 'negative-argument
+   "\\" 'evil-window-next
+   "C-_" 'keyboard-quit
+   "C-/"  'keyboard-quit
+   [escape]  'keyboard-quit)
+  (:states '(insert replace visual)
+   "C-_" 'evil-normal-state
+   "C-/" 'evil-normal-state)
+  (:states 'visual
+   [escape] 'keyboard-quit)
+  (:states 'motion
+   "RET" 'diego/ret)
   :init
   (setq evil-want-C-u-scroll t
         evil-want-fine-undo t
@@ -473,280 +489,6 @@ editing. So I went for it. Now I'll never go back.
 
   (add-to-list 'evil-buffer-regexps '("\\*Flycheck")))
 #+end_src
-**** Use-package binding helper
-This adds an ~:evil-bind~ keyword to use-package declarations, so I can niftily
-set evil bindings in a more integrated way. Check out [[#org-mode][my org mode setup]] for an example.
-#+begin_src emacs-lisp
-(with-eval-after-load 'evil
-  (eval-and-compile
-
-    (defun diego/plist-get-chunk (plist keyword)
-      (let* ((exists (cl-position keyword plist))
-             (start (when exists (1+ exists)))
-             (end (cl-position-if #'keywordp plist :start start)))
-        (when start
-          (list (1- start) end (cl-subseq plist start end)))))
-
-    (defmacro diego/evil-bind-keys (&rest plist)
-      (let* ((only-keys (cl-remove-if-not #'keywordp plist))
-             (valid-keys
-              (cl-remove-if-not (lambda (x)
-                                  (fboundp
-                                   (intern (concat
-                                            "evil-"
-                                            (substring (symbol-name x) 1)
-                                            "-state"))))
-                                only-keys)))
-        `(progn
-           ,@(cl-loop for state in valid-keys collect
-                      (let* ((plist-chunk (diego/plist-get-chunk plist state))
-                             (start (car plist-chunk ))
-                             (end (cadr plist-chunk))
-                             (bindings (nth 2 plist-chunk))
-                             (map (pop bindings)))
-                        (setq plist (append (cl-subseq plist 0 start)
-                                            (cl-subseq plist
-                                                       (if end end
-                                                         (length plist))
-                                                       (length plist))))
-                        `(evil-define-key ',(intern (substring (symbol-name state) 1)) ,map
-                           ,@(cl-loop while bindings append
-                                      (let* ((pair (pop bindings))
-                                             (key (if (vectorp (car pair))
-                                                      (car pair)
-                                                    (read-kbd-macro (car pair))))
-                                             (func (cdr pair)))
-                                        `(,key ',func)))))))))
-
-    (defun evil-bind-use-package-set-keyword ()
-      (unless (member :evil-bind use-package-keywords)
-        (setq use-package-keywords
-              (let* ((pos (cl-position :bind use-package-keywords))
-                     (head (cl-subseq use-package-keywords 0 (+ 1 pos)))
-                     (tail (nthcdr (+ 1 pos) use-package-keywords)))
-                (append head (list :evil-bind) tail)))))
-
-    (defun use-package-normalize/:evil-bind (name keyword args)
-      (use-package-as-one (symbol-name keyword) args
-        (lambda (label arg)
-          (unless (consp arg)
-            (use-package-error
-             (concat label " a (<string or vector> . <symbol or string>)"
-                     " or list of these")))
-          (use-package-normalize-pairs (lambda (k)
-                                         (or (stringp k) (vectorp k)))
-                                       (lambda (b)
-                                         (or (symbolp b) (stringp b)))
-                                       name label arg))))
-
-    (defun use-package-handler/:evil-bind (name-symbol keyword args rest state)
-      (let ((body (use-package-process-keywords name-symbol rest state)))
-        (if args
-            (use-package-concat
-             `((diego/evil-bind-keys ,@args))
-             body)
-          body)))
-
-    (evil-bind-use-package-set-keyword)))
-#+end_src
-*** [[https://github.com/justbur/emacs-bind-map][evil-leader (emacs-bind-map)]]
-#+begin_quote
-  Bind personal keymaps in multiple locations
-#+end_quote
-A good chunk if not all of the bindings/functions in this section are either
-based on or copied from spacemacs, so definitely check them out!
-**** Setup
-#+begin_src emacs-lisp
-(use-package bind-map
-  :after evil
-  :bind (:map universal-argument-map
-              ("SPC u" . universal-argument-more))
-  :config)
-#+end_src
-**** Leader wrapper
-#+begin_src emacs-lisp
-(with-eval-after-load 'bind-map
-  (defvar diego-evil-leader-key "SPC"
-    "Evil leader key.")
-
-  (defvar diego-alt-evil-leader-key (concat "C-" diego-evil-leader-key)
-    "Evil leader key for insert and emacs modes.")
-
-  (defvar diego-major-mode-leader-key ","
-    "Major mode leader key.")
-
-  (defvar diego-alt-major-mode-leader-key (concat "C-" diego-major-mode-leader-key)
-    "Major mode leader key.")
-
-  (defvar diego-default-map (make-sparse-keymap)
-    "Base keymap for all spacemacs leader key commands.")
-
-  (bind-map diego-default-map
-    :evil-keys (diego-evil-leader-key)
-    :evil-states (normal motion visual))
-
-  (bind-map diego-default-map
-    :evil-keys (diego-alt-evil-leader-key)
-    :evil-states (insert emacs))
-
-  (defun diego/set-leader-keys (key def &rest bindings)
-    "Add KEY and DEF as key bindings under
-`diego-evil-leader-key'.
-
-KEY should be a string suitable for passing to `kbd', and it
-should not include the leaders. DEF is most likely a quoted
-command. See `define-key' for more information about the possible
-choices for DEF. This function simply uses `define-key' to add
-the bindings.
-
-For convenience, this function will accept additional KEY DEF
-pairs. For example,
-
-\(diego/set-leader-keys
-   \"a\" 'command1
-   \"C-c\" 'command2
-   \"bb\" 'command3\)
-
-Source: http://tinyurl.com/lxkjxq9"
-    (declare (indent defun))
-    (while key
-      (define-key diego-default-map (kbd key) def)
-      (setq key (pop bindings) def (pop bindings))))
-
-  (defun diego//init-leader-mode-map (mode map &optional minor)
-    "Check for MAP-prefix. If it doesn't exist yet, use `bind-map'
-to create it and bind it to `diego-major-mode-leader-key'.
-If MODE is a minor-mode, the third argument should be non nil.
-
-Source: http://tinyurl.com/kxf5oeh"
-    (let* ((prefix (intern (format "%s-prefix" map)))
-           (leader1 diego-major-mode-leader-key)
-           (leader2 (concat diego-evil-leader-key " m"))
-           (leaders (delq nil (list leader1 leader2)))
-           (alt-leader1 diego-alt-major-mode-leader-key)
-           (alt-leader2 (concat diego-alt-evil-leader-key " m"))
-           (alt-leaders (delq nil (list alt-leader1 alt-leader2))))
-      (or (boundp prefix)
-         (progn
-           (eval
-            `(bind-map ,map
-               :prefix-cmd ,prefix
-               ,(if minor :minor-modes :major-modes) (,mode)
-               :evil-keys ,leaders
-               :evil-states (normal motion visual)))
-           (eval
-            `(bind-map ,map
-               :prefix-cmd ,prefix
-               ,(if minor :minor-modes :major-modes) (,mode)
-               :evil-keys ,alt-leaders
-               :evil-states (insert emacs)))
-           (boundp prefix)))))
-
-  (defun diego/set-leader-keys-for-major-mode (mode key def &rest bindings)
-    "Add KEY and DEF as key bindings under
-`diego-major-mode-leader-key' and
-`diego-major-mode-emacs-leader-key' for the major-mode
-MODE. MODE should be a quoted symbol corresponding to a valid
-major mode. The rest of the arguments are treated exactly like
-they are in `diego/set-leader-keys'.
-
-Source: http://tinyurl.com/k7u2x8s"
-    (declare (indent defun))
-    (let* ((map (intern (format "diego-%s-map" mode))))
-      (when (diego//init-leader-mode-map mode map)
-        (while key
-          (define-key (symbol-value map) (kbd key) def)
-          (setq key (pop bindings) def (pop bindings))))))
-
-  (defun diego/set-leader-keys-for-minor-mode (mode key def &rest bindings)
-    "Add KEY and DEF as key bindings under
-`dotspacemacs-major-mode-leader-key' and
-`dotspacemacs-major-mode-emacs-leader-key' for the minor-mode
-MODE. MODE should be a quoted symbol corresponding to a valid
-minor mode. The rest of the arguments are treated exactly like
-they are in `spacemacs/set-leader-keys'.
-
-Source: http://tinyurl.com/l3oenrf"
-    (declare (indent defun))
-    (let* ((map (intern (format "diego-%s-map" mode))))
-      (when (diego//init-leader-mode-map mode map t)
-        (while key
-          (define-key (symbol-value map) (kbd key) def)
-          (setq key (pop bindings) def (pop bindings)))))))
-#+end_src
-**** Use-package leader helper
-#+begin_src emacs-lisp
-(with-eval-after-load 'bind-key
-  (eval-and-compile
-
-    (defmacro diego/leader-bind-keys (&rest plist)
-      (let* ((global-bindings (cl-subseq plist 0 (cl-position-if #'keywordp plist)))
-             (only-keys (cl-remove-if-not #'keywordp plist))
-             (mode-keys (cl-remove-if-not (lambda (x)
-                                            (member x '(:major :minor)))
-                                          only-keys)))
-        `(progn
-           ,(when global-bindings
-              `(diego/set-leader-keys
-                 ,@(cl-loop while global-bindings append
-                            (let* ((pair (pop global-bindings))
-                                   (key (car pair))
-                                   (func (cdr pair)))
-                              `(,key ',func)))))
-           ,@(cl-loop for mode-type in mode-keys collect
-                      (let* ((plist-chunk (diego/plist-get-chunk plist mode-type))
-                             (start (car plist-chunk))
-                             (end (cadr plist-chunk))
-                             (bindings (nth 2 plist-chunk))
-                             (leader-func (intern (concat "diego/set-leader-keys-for-"
-                                                          (substring (symbol-name mode-type) 1)
-                                                          "-mode")))
-                             (mode (pop bindings)))
-                        (setq plist (append (cl-subseq plist 0 start)
-                                            (cl-subseq plist
-                                                       (if end end
-                                                         (length plist))
-                                                       (length plist))))
-                        `(,leader-func ',mode
-                                       ,@(cl-loop while bindings append
-                                                  (let* ((pair (pop bindings))
-                                                         (key (car pair))
-                                                         (func (cdr pair)))
-                                                    `(,key ',func)))))))))
-
-
-    (defun leader-bind-use-package-set-keyword ()
-      (unless (member :leader-bind use-package-keywords)
-        (setq use-package-keywords
-              (let* ((pos (cl-position :bind use-package-keywords))
-                     (head (cl-subseq use-package-keywords 0 (+ 1 pos)))
-                     (tail (nthcdr (+ 1 pos) use-package-keywords)))
-                (append head (list :leader-bind) tail)))))
-
-
-    (defun use-package-normalize/:leader-bind (name keyword args)
-      (use-package-as-one (symbol-name keyword) args
-        (lambda (label arg)
-          (unless (consp arg)
-            (use-package-error
-             (concat label " a (<string or vector> . <symbol or string>)"
-                     " or list of these")))
-          (use-package-normalize-pairs (lambda (k)
-                                         (or (stringp k) (vectorp k)))
-                                       (lambda (b)
-                                         (or (symbolp b) (stringp b)))
-                                       name label arg))))
-
-    (defun use-package-handler/:leader-bind (name-symbol keyword args rest state)
-      (let ((body (use-package-process-keywords name-symbol rest state)))
-        (if args
-            (use-package-concat
-             `((diego/leader-bind-keys ,@args))
-             body)
-          body)))
-
-    (leader-bind-use-package-set-keyword)))
-#+end_src
 *** [[https://github.com/abo-abo/swiper][ivy]]
 #+begin_quote
   Ivy - a generic completion frontend for Emacs, Swiper - isearch with an
@@ -756,19 +498,20 @@ A really nice search/completion system for emacs.
 **** ivy
 #+begin_src emacs-lisp
 (use-package ivy
-  :bind (:map
-         ivy-minibuffer-map
-         ([escape] . keyboard-escape-quit)
-         ("C-/" . keyboard-escape-quit)
-         ([S-return] . ivy-dispatching-done)
-         ([C-return] . ivy-immediate-done)
-         ("C-j" . ivy-next-line)
-         ("C-k" . ivy-previous-line)
-         ([S-up] . ivy-previous-history-element)
-         ([S-down] . ivy-next-history-element))
-  :leader-bind (("-" . ivy-resume)
-                ("bb" . ivy-switch-buffer)
-                ("bB" . ivy-switch-buffer-other-window))
+  :general
+  (:keymaps 'ivy-minibuffer-map
+   [escape] 'keyboard-escape-quit
+   "C-/" 'keyboard-escape-quit
+   [S-return] 'ivy-dispatching-done
+   [C-return] 'ivy-immediate-done
+   "C-j" 'ivy-next-line
+   "C-k" 'ivy-previous-line
+   [S-up] 'ivy-previous-history-element
+   [S-down] 'ivy-next-history-element)
+  (diego/leader-keys
+   "-" 'ivy-resume
+   "bb" 'ivy-switch-buffer
+   "bB" 'ivy-switch-buffer-other-window)
   :init
   (setq ivy-do-completion-in-region nil)
   :config
@@ -791,27 +534,31 @@ A really nice search/completion system for emacs.
 **** swiper
 #+begin_src emacs-lisp
 (use-package swiper
-  :leader-bind (("sm" . swiper-multi)
-                ("sS" . swiper-all))
+  :general
+  (diego/leader-keys
+   "sm" 'swiper-multi
+   "sS" 'swiper-all)
   :config (setq swiper-goto-start-of-match t))
 #+end_src
 **** counsel
 #+begin_src emacs-lisp
 (use-package counsel
-  :bind (("M-x" . counsel-M-x)
-         ("C-x C-f" . counsel-find-file))
-  :leader-bind (("SPC" . counsel-M-x)
-                ("ff" . counsel-find-file)
-                ("fj" . counsel-file-jump)
-                ("fl" . counsel-locate)
-                ("hdF" . counsel-describe-face)
-                ("hdb" . counsel-descbinds)
-                ("hdf" . counsel-describe-function)
-                ("hdv" . counsel-describe-variable)
-                ("iu" . counsel-unicode-char)
-                ("sr" . counsel-rg)
-                ("ss" . counsel-grep-or-swiper)
-                ("y" . counsel-yank-pop))
+  :general
+  ("M-x" 'counsel-M-x
+   "C-x C-f" 'counsel-find-file)
+  (diego/leader-keys
+   "SPC"  'counsel-M-x
+   "ff"  'counsel-find-file
+   "fj"  'counsel-file-jump
+   "fl"  'counsel-locate
+   "hdF" 'counsel-describe-face
+   "hdb" 'counsel-descbinds
+   "hdf" 'counsel-describe-function
+   "hdv" 'counsel-describe-variable
+   "iu"  'counsel-unicode-char
+   "sr"  'counsel-rg
+   "ss"  'counsel-grep-or-swiper
+   "y"   'counsel-yank-pop)
   :commands counsel-describe-face
   :config
   (when (eq system-type 'darwin)
@@ -1031,39 +778,39 @@ so I went with it.
 (use-package org
   :ensure org-plus-contrib
   :defines (org-habit-graph-column)
-  :bind (:map org-mode-map
-              ("C-," . nil))
-  :evil-bind (:normal
-              org-mode-map
-              ("RET" . diego/ret)
-              ("<" . org-metaleft)
-              (">" . org-metaright)
-              ("gh" . outline-up-heading)
-              ("gl" . outline-next-visible-heading)
-              ("gj" . org-forward-heading-same-level)
-              ("gk" . org-backward-heading-same-level)
-              ("gt" . org-todo)
-              ("ga" . org-archive-subtree)
-              ("M-l" . org-metaright)
-              ("M-h" . org-metaleft)
-              ("M-k" . org-metaup)
-              ("M-j" . org-metadown)
-              ("M-L" . org-shiftmetaright)
-              ("M-H" . org-shiftmetaleft)
-              ("M-K" . org-shiftmetaup)
-              ("M-J" . org-shiftmetadown))
-  :leader-bind (("C" . org-capture)
-                ("bo". org-iswitchb)
-                ("ao#" . org-agenda-list-stuck-projects)
-                ("ao/" . org-occur-in-agenda-files)
-                ("aoO" . org-clock-out)
-                ("aoa" . org-agenda-list)
-                ("aoe" . org-store-agenda-views)
-                ("aol" . org-store-link)
-                ("aom" . org-store-tags-view)
-                ("aoo" . org-agenda)
-                ("aos" . org-search-view)
-                ("aot" . org-todo-list))
+  :general
+  (:states 'normal
+   :keymaps 'org-mode-map
+   "RET" 'diego/ret
+   "<" 'org-metaleft
+   ">" 'org-metaright
+   "gh" 'outline-up-heading
+   "gl" 'outline-next-visible-heading
+   "gj" 'org-forward-heading-same-level
+   "gk" 'org-backward-heading-same-level
+   "gt" 'org-todo
+   "ga" 'org-archive-subtree
+   "M-l" 'org-metaright
+   "M-h" 'org-metaleft
+   "M-k" 'org-metaup
+   "M-j" 'org-metadown
+   "M-L" 'org-shiftmetaright
+   "M-H" 'org-shiftmetaleft
+   "M-K" 'org-shiftmetaup
+   "M-J" 'org-shiftmetadown)
+  (diego/leader-keys
+   "C"   'org-capture
+   "bo"  'org-iswitchb
+   "ao#" 'org-agenda-list-stuck-projects
+   "ao/" 'org-occur-in-agenda-files
+   "aoO" 'org-clock-out
+   "aoa" 'org-agenda-list
+   "aoe" 'org-store-agenda-views
+   "aol" 'org-store-link
+   "aom" 'org-store-tags-view
+   "aoo" 'org-agenda
+   "aos" 'org-search-view
+   "aot" 'org-todo-list )
   :init
   (setq org-list-allow-alphabetical t)
   :config
@@ -1278,82 +1025,88 @@ Source: http://tinyurl.com/l3zpzse"
 **** Bindings
 #+begin_src emacs-lisp
 (with-eval-after-load 'org
-  (diego/set-leader-keys-for-major-mode 'org-mode
-    "$"  'org-archive-subtree
-    "'"  'org-edit-special
-    "."  'org-time-stamp
-    "/"  'org-sparse-tree
-    ":"  'diego/org-set-tags
-    "-"  'org-decrypt-entry
-    "A"  'org-archive-subtree
-    "N"  'widen
-    "P"  'org-set-property
-    "R"  'org-refile
-    "^"  'org-sort
-    "a"  'org-agenda
-    "c"  'org-capture
-    "d"  'org-deadline
-    "g"  'counsel-org-goto
-    "G"  'counsel-org-goto-all
-    "l"  'diego/org-choose-bullet-type
-    "n"  'org-narrow-to-subtree
-    "s"  'org-schedule
+(diego/mode-leader-keys
+ :keymaps 'org-mode-map
+ "$"  'org-archive-subtree
+ "'"  'org-edit-special
+ "."  'org-time-stamp
+ "/"  'org-sparse-tree
+ ":"  'diego/org-set-tags
+ "-"  'org-decrypt-entry
+ "A"  'org-archive-subtree
+ "N"  'widen
+ "P"  'org-set-property
+ "R"  'org-refile
+ "^"  'org-sort
+ "a"  'org-agenda
+ "c"  'org-capture
+ "d"  'org-deadline
+ "g"  'counsel-org-goto
+ "G"  'counsel-org-goto-all
+ "l"  'diego/org-choose-bullet-type
+ "n"  'org-narrow-to-subtree
+ "s"  'org-schedule
 
-    "ic" 'org-table-insert-column
-    "ir" 'org-table-insert-row
-    "il" 'org-insert-link
-    "if" 'org-footnote-new
-    "id" 'org-insert-drawer
+ "ic" 'org-table-insert-column
+ "ir" 'org-table-insert-row
+ "il" 'org-insert-link
+ "if" 'org-footnote-new
+ "id" 'org-insert-drawer
 
-    "ed" 'org-export-dispatch
-    "eh" 'diego/org-hugo-export
-    "es" 'diego/eval-surrounding-sexp
-    "er" 'eval-region
-    "eb" 'diego/eval-buffer
-    "ef" 'diego/eval-defun
+ "ed" 'org-export-dispatch
+ "eh" 'diego/org-hugo-export
+ "es" 'diego/eval-surrounding-sexp
+ "er" 'eval-region
+ "eb" 'diego/eval-buffer
+ "ef" 'diego/eval-defun
 
-    "b"  'org-babel-tangle
-    "xb" (diego|org-emphasize diego/org-bold ?*)
-    "xi" (diego|org-emphasize diego/org-italic ?/)
-    "xc" (diego|org-emphasize diego/org-code ?~)
-    "xu" (diego|org-emphasize diego/org-underline ?_)
-    "xv" (diego|org-emphasize diego/org-verbatim ?=)
-    "xs" (diego|org-emphasize diego/org-strike-through ?+)
-    "xr" (diego|org-emphasize diego/org-clear ? )
-    "xq" 'diego/org-wrap-with-quote
-    "xx" 'org-cut-special
-    "xp" 'org-paste-special
+ "b"  'org-babel-tangle
+ "xb" (diego|org-emphasize diego/org-bold ?*)
+ "xi" (diego|org-emphasize diego/org-italic ?/)
+ "xc" (diego|org-emphasize diego/org-code ?~)
+ "xu" (diego|org-emphasize diego/org-underline ?_)
+ "xv" (diego|org-emphasize diego/org-verbatim ?=)
+ "xs" (diego|org-emphasize diego/org-strike-through ?+)
+ "xr" (diego|org-emphasize diego/org-clear ? )
+ "xq" 'diego/org-wrap-with-quote
+ "xx" 'org-cut-special
+ "xp" 'org-paste-special
 
-    ;; tables
-    "ta"  'org-table-align
-    "tb"  'org-table-blank-field
-    "tc"  'org-table-convert
-    "tdc" 'org-table-delete-column
-    "tdr" 'org-table-kill-row
-    "te"  'org-table-eval-formula
-    "tE"  'org-table-export
-    "th"  'org-table-previous-field
-    "tH"  'org-table-move-column-left
-    "tic" 'org-table-insert-column
-    "tih" 'org-table-insert-hline
-    "tiH" 'org-table-hline-and-move
-    "tir" 'org-table-insert-row
-    "tI"  'org-table-import
-    "tj"  'org-table-next-row
-    "tJ"  'org-table-move-row-down
-    "tK"  'org-table-move-row-up
-    "tl"  'org-table-next-field
-    "tL"  'org-table-move-column-right
-    "tn"  'org-table-create
-    "tN"  'org-table-create-with-table.el
-    "tr"  'org-table-recalculate
-    "ts"  'org-table-sort-lines
-    "ttf" 'org-table-toggle-formula-debugger
-    "tto" 'org-table-toggle-coordinate-overlays
-    "tw"  'org-table-wrap-region)
+ ;; tables
+ "ta"  'org-table-align
+ "tb"  'org-table-blank-field
+ "tc"  'org-table-convert
+ "tdc" 'org-table-delete-column
+ "tdr" 'org-table-kill-row
+ "te"  'org-table-eval-formula
+ "tE"  'org-table-export
+ "th"  'org-table-previous-field
+ "tH"  'org-table-move-column-left
+ "tic" 'org-table-insert-column
+ "tih" 'org-table-insert-hline
+ "tiH" 'org-table-hline-and-move
+ "tir" 'org-table-insert-row
+ "tI"  'org-table-import
+ "tj"  'org-table-next-row
+ "tJ"  'org-table-move-row-down
+ "tK"  'org-table-move-row-up
+ "tl"  'org-table-next-field
+ "tL"  'org-table-move-column-right
+ "tn"  'org-table-create
+ "tN"  'org-table-create-with-table.el
+ "tr"  'org-table-recalculate
+ "ts"  'org-table-sort-lines
+ "ttf" 'org-table-toggle-formula-debugger
+ "tto" 'org-table-toggle-coordinate-overlays
+ "tw"  'org-table-wrap-region)
 
-  (diego/set-leader-keys-for-minor-mode 'org-src-mode
-    "'" 'org-edit-src-exit))
+(diego/mode-leader-keys
+ :keymaps 'org-src-mode-map
+ "'" 'org-edit-src-exit)
+
+(diego/leader-keys
+ :keymaps 'org-src-mode-map
+ "fs" 'org-edit-src-save))
 #+end_src
 **** Setup
 ***** Agenda
@@ -1376,11 +1129,14 @@ Source: http://tinyurl.com/l3zpzse"
 #+end_src
 ***** Capture
 #+begin_src emacs-lisp
-(with-eval-after-load 'org-capture
-  (diego/evil-bind-keys :insert org-capture-mode-mop
-                        ("C-d" . diego/org-agenda-toggle-date)
-                        :normal org-capture-mode-map
-                        ("C-d" . diego/org-agenda-toggle-date)))
+(general-define-key
+ :states 'insert
+ :keymaps 'org-capture-mode-mop
+ "C-d" 'diego/org-agenda-toggle-date)
+(general-define-key
+ :states 'normal
+ :keymaps 'org-capture-mode-map
+ "C-d" 'diego/org-agenda-toggle-date)
 #+end_src
 ***** Org
 #+begin_src emacs-lisp
@@ -1414,10 +1170,12 @@ Source: http://tinyurl.com/l3zpzse"
 #+begin_src emacs-lisp
 (use-package crux
   :defer 5
-  :leader-bind (("TAB" . crux-switch-to-previous-buffer)
-                ("fd" . crux-delete-file-and-buffer)
-                ("fr" . crux-rename-file-and-buffer)
-                ("br" . crux-sudo-edit))
+  :general
+  (diego/leader-keys
+"TAB" 'crux-switch-to-previous-buffer
+  "fd" 'crux-delete-file-and-buffer
+  "fr" 'crux-rename-file-and-buffer
+  "br" 'crux-sudo-edit )
   :commands (crux-with-region-or-line
              crux-with-region-or-buffer
              crux-switch-to-previous-buffer
@@ -1438,8 +1196,9 @@ Supposedly better than autocomplete.
 #+begin_src emacs-lisp
 (use-package company
   :defer 5
-  :bind (:map company-active-map
-              ([tab] . company-complete-common-or-cycle))
+  :general
+  (:keymaps 'company-active-map
+   [tab] 'company-complete-common-or-cycle)
   :init
   (setq company-idle-delay 0.3
         company-minimum-prefix-length 1
@@ -1464,37 +1223,30 @@ Supposedly better than autocomplete.
 #+begin_src emacs-lisp
 (use-package which-key
   :defer 10
-  :leader-bind ("hk" . which-key-show-top-level)
+  :general
+  (diego/leader-keys
+   "hk" 'which-key-show-top-level)
   :config
   (which-key-mode)
-  ;; (setq which-key-show-operator-state-maps t)
 
-  (defun diego/declare-prefix (prefix name &rest more)
-    "Declare a prefix PREFIX. PREFIX is a string describing a key
-sequence. NAME is a string used as the prefix command.
-LONG-NAME if given is stored in `spacemacs/prefix-titles'.
-
-Source: http://tinyurl.com/l6feofx"
+  (defmacro diego/declare-prefix (&rest body)
     (declare (indent defun))
-    (while prefix
-      (which-key-add-key-based-replacements
-        (concat diego-evil-leader-key " " prefix) name
-        (concat diego-alt-evil-leader-key " " prefix) name)
-      (setq prefix (pop more) name (pop more))))
+    `(diego/leader-keys
+      ,@(cl-loop for (prefix name) on body
+                 by #'cddr
+                 as j = `(:ignore t :which-key ,name)
+                 while name
+                 append `(,prefix ',j))))
 
-  (defun diego/declare-prefix-for-major-mode (mode prefix name &rest more)
-    "Declare a prefix PREFIX. PREFIX is a string describing a key
-sequence. NAME is a string used as the prefix command.
-
-Source-ish: http://tinyurl.com/lmzvfh3"
+  (defmacro diego/declare-map-prefix (maps &rest body)
     (declare (indent defun))
-    (while prefix
-      (which-key-add-major-mode-key-based-replacements mode
-        (concat diego-evil-leader-key " m" prefix) name
-        (concat diego-major-mode-leader-key " " prefix) name
-        (concat diego-alt-evil-leader-key " m" prefix) name
-        (concat diego-alt-major-mode-leader-key " " prefix) name)
-      (setq prefix (pop more) name (pop more))))
+    `(diego/mode-leader-keys
+      :keymaps ,maps
+      ,@(cl-loop for (prefix name) on body
+                 by #'cddr
+                 as j = `(:ignore t :which-key ,name)
+                 while name
+                 append `(,prefix ',j))))
 
   (diego/declare-prefix
     "a"   "applications"
@@ -1502,6 +1254,7 @@ Source-ish: http://tinyurl.com/lmzvfh3"
     "ag"  "games"
     "b"   "buffer"
     "c"   "comment"
+    "e"   "eyebrowse"
     "f"   "file"
     "fp"  "pop-to-file"
     "g"   "magit"
@@ -1529,15 +1282,14 @@ Source-ish: http://tinyurl.com/lmzvfh3"
     "S"   "spelling"
     "SPC"     "root")
 
-  (diego/declare-prefix-for-major-mode 'org-mode
+  (diego/declare-map-prefix 'org-mode-map
     "i" "insert"
     "x" "text"
     "t" "table"
     "e" "eval-export")
 
-  (dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
-    (diego/declare-prefix-for-major-mode mode
-      "e" "eval"))
+  (diego/declare-map-prefix '(emacs-lisp-mode-map lisp-interaction-mode-map)
+    "e" "eval")
 
   (setq which-key-sort-order 'which-key-key-order-alpha)
   (setq which-key-sort-uppercase-first nil)
@@ -1563,10 +1315,16 @@ Source-ish: http://tinyurl.com/lmzvfh3"
 (use-package powerline)
 #+end_src
 ** Bindings
-A convenient full-screen binding I'm used to from iTerm.
+*** Leader
 #+begin_src emacs-lisp
-(when (eq system-type 'darwin)
-  (global-set-key (kbd "<s-return>") #'toggle-frame-fullscreen))
+(diego/leader-keys
+ "qf" 'delete-frame
+ "qq" 'save-buffers-kill-emacs
+
+ "&"   'async-shell-command
+ ":"   'eval-expression
+ "r"   'repeat
+ "u"   'universal-argument)
 #+end_src
 *** Minibuffer
 I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard, so I like to
@@ -1580,17 +1338,17 @@ also use these keys to quit out of the minibuffer. See more [[#bindings-1][here]
   (dolist (key '([?\C-/] [?\C-_] [escape]))
     (define-key map key #'minibuffer-keyboard-quit)))
 #+end_src
-*** Leader
+*** universal argument
 #+begin_src emacs-lisp
-(with-eval-after-load 'bind-map
-  (diego/set-leader-keys
-    "qf" 'delete-frame
-    "qq" 'save-buffers-kill-emacs
-
-    "&"   'async-shell-command
-    ":"   'eval-expression
-    "r"   'repeat
-    "u"   'universal-argument))
+(general-define-key
+ :keymaps 'universal-argument-map
+ "SPC u" 'universal-argument-more)
+#+end_src
+*** macOS fullscreen
+A convenient full-screen binding I'm used to from iTerm.
+#+begin_src emacs-lisp
+(when (eq system-type 'darwin)
+  (global-set-key (kbd "<s-return>") #'toggle-frame-fullscreen))
 #+end_src
 * Help
 ** Defaults
@@ -1605,7 +1363,8 @@ also use these keys to quit out of the minibuffer. See more [[#bindings-1][here]
 #+begin_src emacs-lisp
 (use-package define-word
   :commands diego/define-word
-  :leader-bind ("sw" . diego/define-word)
+  :general
+  (diego/leader-keys "sw" 'diego/define-word)
   :config
   (defun diego/define-word (&optional word)
     (interactive)
@@ -1626,7 +1385,8 @@ also use these keys to quit out of the minibuffer. See more [[#bindings-1][here]
 #+end_quote
 #+begin_src emacs-lisp
 (use-package devdocs
-  :leader-bind ("hdd"  . devdocs-search))
+  :general
+  (diego/leader-keys "hdd"  'devdocs-search))
 #+end_src
 *** [[https://github.com/Malabarba/emacs-google-this][emacs-google-this]]
 #+begin_quote
@@ -1635,8 +1395,9 @@ also use these keys to quit out of the minibuffer. See more [[#bindings-1][here]
 #+begin_src emacs-lisp
 (use-package google-this
   :commands ddg-this-search
-  :leader-bind (("sd" . ddg-this-search)
-                ("sg" . google-this-search))
+  :general
+  (diego/leader-keys "sd" 'ddg-this-search
+  "sg" 'google-this-search)
   :config
   (defun ddg-this-parse-and-search-string (text prefix &optional search-url)
     "Convert illegal characters in TEXT to their %XX versions, and then duckduckgo.
@@ -1661,9 +1422,9 @@ PREFIX determines quoting."
     (let* ((term (if (region-active-p)
                      (buffer-substring (region-beginning) (region-end))
                    (or (thing-at-point 'symbol)
-                      (thing-at-point 'word)
-                      (buffer-substring (line-beginning-position)
-                                        (line-end-position)))))
+                       (thing-at-point 'word)
+                       (buffer-substring (line-beginning-position)
+                                         (line-end-position)))))
            (term (read-string (concat "DuckDuckGo [" term "]: ") nil nil term)))
       term))
 
@@ -1710,32 +1471,33 @@ Non-interactively SEARCH-STRING is the string to search."
 *** [[https://github.com/kuanyui/tldr.el][tldr]]
 #+begin_src emacs-lisp
 (use-package tldr
-  :leader-bind ("ht" . tldr)
-  :evil-bind (:normal
-              tldr-mode-map
-              ("q" . quit-window)))
+  :general
+  (diego/leader-keys "ht" 'tldr)
+  :general (:states
+            'normal
+            :keymaps 'tldr-mode-map
+            "q" 'quit-window))
 #+end_src
 ** Bindings
 Leader bindings
 #+begin_src emacs-lisp
-(with-eval-after-load 'bind-map
-  (diego/set-leader-keys
-    "hca" 'customize-apropos
-    "hcf" 'customize-face-other-window
-    "hcg" 'customize-group-other-window
-    "hcm" 'customize-mode
-    "hcv" 'customize-variable-other-window
-    "hdV" 'apropos-value
-    "hdc" 'describe-char
-    "hdk" 'describe-key
-    "hdm" 'describe-mode
-    "hdp" 'describe-package
-    "hds" 'describe-symbol
-    "hdt" 'describe-theme
-    "hm"  'man
-    "hn"  'view-emacs-news
-    "hs"  'system-name
-    "hv"  'version))
+(diego/leader-keys
+ "hca" 'customize-apropos
+ "hcf" 'customize-face-other-window
+ "hcg" 'customize-group-other-window
+ "hcm" 'customize-mode
+ "hcv" 'customize-variable-other-window
+ "hdV" 'apropos-value
+ "hdc" 'describe-char
+ "hdk" 'describe-key
+ "hdm" 'describe-mode
+ "hdp" 'describe-package
+ "hds" 'describe-symbol
+ "hdt" 'describe-theme
+ "hm"  'man
+ "hn"  'view-emacs-news
+ "hs"  'system-name
+ "hv"  'version)
 #+end_src
 * Files and Buffers
 ** Defaults
@@ -1789,8 +1551,9 @@ Which means it's less likely to block up emacs. Or something.
 #+begin_src emacs-lisp
 (use-package ranger
   :commands diego/deer
-  :leader-bind (("ad" . diego/deer)
-                ("ar" . ranger))
+  :general
+  (diego/leader-keys "ad" 'diego/deer
+  "ar" 'ranger)
   :init
   (require 'bookmark)
   :config
@@ -1824,10 +1587,11 @@ Which means it's less likely to block up emacs. Or something.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package projectile
-  :leader-bind (("pg" . projectile-vc)
-                ("pk" . projectile-kill-buffers)
-                ("po" . projectile-multi-occur)
-                ("pr" . projectil-recentf))
+  :general
+  (diego/leader-keys "pg" 'projectile-vc
+  "pk" 'projectile-kill-buffers
+  "po" 'projectile-multi-occur
+  "pr" 'projectil-recentf)
   :config
   (setq projectile-globally-ignored-files '("TAGS" ".DS_Store")
         projectile-ignored-projects '("/usr/local"))
@@ -1838,11 +1602,12 @@ Which means it's less likely to block up emacs. Or something.
 #+begin_src emacs-lisp
 (use-package counsel-projectile
   :commands diego/project-find-file
-  :leader-bind (("pb" . counsel-projectile-switch-to-buffer)
-                ("pd" . counsel-projectile-find-dir)
-                ("pf" . counsel-projectile-find-file)
-                ("pp" . counsel-projectile)
-                ("ps" . counsel-projectile-switch-project))
+  :general
+  (diego/leader-keys "pb" 'counsel-projectile-switch-to-buffer
+  "pd" 'counsel-projectile-find-dir
+  "pf" 'counsel-projectile-find-file
+  "pp" 'counsel-projectile
+  "ps" 'counsel-projectile-switch-project)
   :config
   (defun diego/project-find-file ()
     (interactive)
@@ -1854,8 +1619,9 @@ Which means it's less likely to block up emacs. Or something.
 *** [[https://github.com/abo-abo/headlong][headlong]]
 #+begin_src emacs-lisp
 (use-package headlong
-  :leader-bind (("fB" . headlong-bookmark-jump-other)
-                ("fb" . headlong-bookmark-jump))
+  :general
+  (diego/leader-keys "fB" 'headlong-bookmark-jump-other
+ "fb" 'headlong-bookmark-jump)
   :config
   (bookmark-maybe-load-default-file))
 #+end_src
@@ -1950,28 +1716,27 @@ Source: http://tinyurl.com/m3k84u8"
 #+end_src
 ** Bindings
 #+begin_src emacs-lisp
-(with-eval-after-load 'bind-map
-  (diego/set-leader-keys
-    "b*"  'diego/switch-to-star
-    "bC"  'diego/switch-to-customize
-    "bK"  'kill-buffer
-    "bM"  'diego/switch-to-messages
-    "bR"  'revert-buffer
-    "bS"  'diego/switch-to-scratch
-    "bc"  'clone-indirect-buffer-other-window
-    "be"  'diego/safe-erase-buffer
-    "bi"  'ibuffer
-    "bk"  'kill-this-buffer
-    "bm"  'kill-matching-buffers
-    "bv"  'view-mode
+(diego/leader-keys
+ "b*"  'diego/switch-to-star
+ "bC"  'diego/switch-to-customize
+ "bK"  'kill-buffer
+ "bM"  'diego/switch-to-messages
+ "bR"  'revert-buffer
+ "bS"  'diego/switch-to-scratch
+ "bc"  'clone-indirect-buffer-other-window
+ "be"  'diego/safe-erase-buffer
+ "bi"  'ibuffer
+ "bk"  'kill-this-buffer
+ "bm"  'kill-matching-buffers
+ "bv"  'view-mode
 
-    "fc"  'diego/copy-file
-    "fs"  'save-buffer
+ "fc"  'diego/copy-file
+ "fs"  'save-buffer
 
-    "nf"  'narrow-to-defun
-    "nn"  'diego/narrow-dwim
-    "np"  'narrow-to-page
-    "nr"  'narrow-to-region))
+ "nf"  'narrow-to-defun
+ "nn"  'diego/narrow-dwim
+ "np"  'narrow-to-page
+ "nr"  'narrow-to-region)
 #+end_src
 * Editing
 ** Defaults
@@ -2121,18 +1886,16 @@ Source: http://tinyurl.com/k8g9sex"
 Kind of makes undo's like git. Or Vim, apparently, if you're into that.
 #+begin_src emacs-lisp
 (use-package undo-tree
-  :bind (:map undo-tree-map
-              ("C-/" . nil)
-              ("C-_" . nil))
-  :leader-bind ("au" . undo-tree-visualize)
+  :general (diego/leader-keys "au" 'undo-tree-visualize)
   :config
   (setq undo-tree-visualizer-timestamps t))
 #+end_src
 *** [[https://github.com/purcell/unfill][unfill]]
 #+begin_src emacs-lisp
 (use-package unfill
-  :bind (([remap fill-paragraph] . unfill-toggle))
-  :leader-bind ("xq" . unfill-toggle))
+  :general
+  (diego/leader-keys "xq" 'unfill-toggle)
+  ([remap fill-paragraph] 'unfill-toggle))
 #+end_src
 *** [[https://github.com/joaotavora/yasnippet][yasnippet]]
 #+begin_quote
@@ -2142,7 +1905,7 @@ Freakin yasnippet. It's the best.
 #+begin_src emacs-lisp
 (use-package yasnippet
   :defer 5
-  :leader-bind ("iy" . yas-insert-snippet)
+  :general (diego/leader-keys "iy" 'yas-insert-snippet)
   :config
   (yas-global-mode 1))
 #+end_src
@@ -2429,45 +2192,44 @@ Make indent-rigidly more vimmy.
 #+end_src
 Leader keys
 #+begin_src emacs-lisp
-(with-eval-after-load 'bind-map
-  (diego/set-leader-keys
-    "n-"  'hydra-numbers/evil-numbers/dec-at-pt
-    "n="  'hydra-numbers/evil-numbers/inc-at-pt
+(diego/leader-keys
+ "n-"  'hydra-numbers/evil-numbers/dec-at-pt
+ "n="  'hydra-numbers/evil-numbers/inc-at-pt
 
-    "S"   'hydra-spelling/body
+ "S"   'hydra-spelling/body
 
-    "xa&" 'diego/align-repeat-ampersand
-    "xa'" 'diego/align-repeat-single-quote
-    "xa(" 'diego/align-repeat-left-paren
-    "xa)" 'diego/align-repeat-right-paren
-    "xa," 'diego/align-repeat-comma
-    "xa." 'diego/align-repeat-decimal
-    "xa:" 'diego/align-repeat-colon
-    "xa;" 'diego/align-repeat-semicolon
-    "xa=" 'diego/align-repeat-equal
-    "xaa" 'align
-    "xac" 'align-current
-    "xam" 'diego/align-repeat-math-oper
-    "xar" 'align-regexp
-    "xar" 'diego/align-repeat
-    "xa|" 'diego/align-repeat-bar
+ "xa&" 'diego/align-repeat-ampersand
+ "xa'" 'diego/align-repeat-single-quote
+ "xa(" 'diego/align-repeat-left-paren
+ "xa)" 'diego/align-repeat-right-paren
+ "xa," 'diego/align-repeat-comma
+ "xa." 'diego/align-repeat-decimal
+ "xa:" 'diego/align-repeat-colon
+ "xa;" 'diego/align-repeat-semicolon
+ "xa=" 'diego/align-repeat-equal
+ "xaa" 'align
+ "xac" 'align-current
+ "xam" 'diego/align-repeat-math-oper
+ "xar" 'align-regexp
+ "xar" 'diego/align-repeat
+ "xa|" 'diego/align-repeat-bar
 
-    "xdw" 'delete-trailing-whitespace
-    "xib" 'indent-buffer
-    "xii" 'indent-rigidly
-    "xir" 'indent-region
-    "xj"  'hydra-justify/body
-    "xls" 'sort-lines
-    "xt"  'hydra-transpose/body
-    "xwc" 'count-words
+ "xdw" 'delete-trailing-whitespace
+ "xib" 'indent-buffer
+ "xii" 'indent-rigidly
+ "xir" 'indent-region
+ "xj"  'hydra-justify/body
+ "xls" 'sort-lines
+ "xt"  'hydra-transpose/body
+ "xwc" 'count-words
 
-    "xm"  'hydra-multiedit/body
+ "xm"  'hydra-multiedit/body
 
-    "xp"  'hydra-smartparens/body
+ "xp"  'hydra-smartparens/body
 
-    "xs"  'diego/shorten-url-at-point
+ "xs"  'diego/shorten-url-at-point
 
-    "im"  'insert-kbd-macro))
+ "im"  'insert-kbd-macro)
 #+end_src
 * Navigation
 ** Packages
@@ -2477,11 +2239,12 @@ Leader keys
 #+end_quote
 #+begin_src emacs-lisp
 (use-package ace-window
-  :bind ("M-p" . ace-window)
-  :leader-bind (("\\" . ace-window)
-                ("wD" . ace-delete-window)
-                ("wS" . ace-swap-window)
-                ("wa" . ace-window))
+  :general
+  (diego/leader-keys
+   "\\" 'ace-window
+   "wD" 'ace-delete-window
+   "wS" 'ace-swap-window
+   "wa" 'ace-window)
   :config
   (setq aw-keys (string-to-list "aoeuidhtns")))
 #+end_src
@@ -2491,9 +2254,11 @@ Leader keys
 #+end_quote
 #+begin_src emacs-lisp
 (use-package avy
-  :leader-bind (("jc" . avy-goto-char-2)
-                ("jl" . avy-goto-line)
-                ("jw" . avy-goto-word-1))
+  :general
+(diego/leader-keys
+  "jc" 'avy-goto-char-2
+  "jl" 'avy-goto-line
+  "jw" 'avy-goto-word-1)
   :config
   (setq avy-keys (string-to-list "aoeuidhtns")))
 #+end_src
@@ -2517,32 +2282,34 @@ Leader keys
              eyebrowse-switch-to-window-config-7
              eyebrowse-switch-to-window-config-8
              eyebrowse-switch-to-window-config-9)
-  :leader-bind (("es" . eyebrowse-switch-to-window-config)
-                ("el" . eyebrowse-next-window-config)
-                ("eh" . eyebrowse-prev-window-config)
-                ("er" . eyebrowse-rename-window-config)
-                ("ec" . eyebrowse-close-window-config)
-                ("e'" . eyebrowse-last-window-config)
-                ("e0" . eyebrowse-switch-to-window-config-0)
-                ("e1" . eyebrowse-switch-to-window-config-1)
-                ("e2" . eyebrowse-switch-to-window-config-2)
-                ("e3" . eyebrowse-switch-to-window-config-3)
-                ("e4" . eyebrowse-switch-to-window-config-4)
-                ("e5" . eyebrowse-switch-to-window-config-5)
-                ("e6" . eyebrowse-switch-to-window-config-6)
-                ("e7" . eyebrowse-switch-to-window-config-7)
-                ("e8" . eyebrowse-switch-to-window-config-8)
-                ("e9" . eyebrowse-switch-to-window-config-9)
-                ("0" . eyebrowse-switch-to-window-config-0)
-                ("1" . eyebrowse-switch-to-window-config-1)
-                ("2" . eyebrowse-switch-to-window-config-2)
-                ("3" . eyebrowse-switch-to-window-config-3)
-                ("4" . eyebrowse-switch-to-window-config-4)
-                ("5" . eyebrowse-switch-to-window-config-5)
-                ("6" . eyebrowse-switch-to-window-config-6)
-                ("7" . eyebrowse-switch-to-window-config-7)
-                ("8" . eyebrowse-switch-to-window-config-8)
-                ("9" . eyebrowse-switch-to-window-config-9))
+  :general
+  (diego/leader-keys
+   "es" 'eyebrowse-switch-to-window-config
+   "el" 'eyebrowse-next-window-config
+   "eh" 'eyebrowse-prev-window-config
+   "er" 'eyebrowse-rename-window-config
+   "ec" 'eyebrowse-close-window-config
+   "e'" 'eyebrowse-last-window-config
+   "e0" 'eyebrowse-switch-to-window-config-0
+   "e1" 'eyebrowse-switch-to-window-config-1
+   "e2" 'eyebrowse-switch-to-window-config-2
+   "e3" 'eyebrowse-switch-to-window-config-3
+   "e4" 'eyebrowse-switch-to-window-config-4
+   "e5" 'eyebrowse-switch-to-window-config-5
+   "e6" 'eyebrowse-switch-to-window-config-6
+   "e7" 'eyebrowse-switch-to-window-config-7
+   "e8" 'eyebrowse-switch-to-window-config-8
+   "e9" 'eyebrowse-switch-to-window-config-9
+   "0" 'eyebrowse-switch-to-window-config-0
+   "1" 'eyebrowse-switch-to-window-config-1
+   "2" 'eyebrowse-switch-to-window-config-2
+   "3" 'eyebrowse-switch-to-window-config-3
+   "4" 'eyebrowse-switch-to-window-config-4
+   "5" 'eyebrowse-switch-to-window-config-5
+   "6" 'eyebrowse-switch-to-window-config-6
+   "7" 'eyebrowse-switch-to-window-config-7
+   "8" 'eyebrowse-switch-to-window-config-8
+   "9" 'eyebrowse-switch-to-window-config-9)
   :config
   (setq eyebrowse-wrap-around t)
   (setq eyebrowse-new-workspace t)
@@ -2551,11 +2318,13 @@ Leader keys
 *** [[https://github.com/jacktasia/dumb-jump][dumb-jump]]
 #+begin_src emacs-lisp
 (use-package dumb-jump
-  :leader-bind (("jE" . dumb-jump-go-prefer-external-other-window)
-                ("jG" . dumb-jump-go-other-window)
-                ("jb" . dumb-jump-back)
-                ("je" . dumb-jump-go-prefer-external)
-                ("jg" . dumb-jump-go))
+  :general
+(diego/leader-keys
+  "jE" 'dumb-jump-go-prefer-external-other-window
+  "jG" 'dumb-jump-go-other-window
+  "jb" 'dumb-jump-back
+  "je" 'dumb-jump-go-prefer-external
+  "jg" 'dumb-jump-go)
   :config
   (setq dumb-jump-selector 'ivy
         dumb-jump-prefer-searcher 'rg))
@@ -2666,20 +2435,19 @@ Source: http://tinyurl.com/koowarm"
 #+end_src
 ** Bindings
 #+begin_src emacs-lisp
-(with-eval-after-load 'bind-map
-  (diego/set-leader-keys
-    "jI" 'imenu-anywhere
-    "jf" 'find-function
-    "ji" 'imenu
-    "jv" 'find-variable
+(diego/leader-keys
+ "jI" 'imenu-anywhere
+ "jf" 'find-function
+ "ji" 'imenu
+ "jv" 'find-variable
 
-    "wd" 'delete-window
-    "wf" 'make-frame
-    "wh" 'diego/split-horz-focus
-    "wo" 'delete-other-windows
-    "ws" 'hydra-splitter/body
-    "wt" 'diego/toggle-window-split
-    "wv" 'diego/split-vert-focus))
+ "wd" 'delete-window
+ "wf" 'make-frame
+ "wh" 'diego/split-horz-focus
+ "wo" 'delete-other-windows
+ "ws" 'hydra-splitter/body
+ "wt" 'diego/toggle-window-split
+ "wv" 'diego/split-vert-focus)
 #+end_src
 * Git and github
 ** Packages
@@ -2691,17 +2459,17 @@ Like git, for emacs. But cooler.
 #+begin_src emacs-lisp
 (use-package magit
   :if (not noninteractive)
-  :bind (:map magit-mode-map
-              ("SPC" . nil))
-  :leader-bind (("gB" . magit-blame-toggle)
-                ("gC" . magit-clone)
-                ("gL" . magit-log-buffer-file)
-                ("ga" . magit-submodule-add)
-                ("gb" . magit-branch)
-                ("gc" . magit-checkout)
-                ("gf" . magit-find-file)
-                ("gl" . magit-log-all)
-                ("gs" . magit-status))
+  :general
+(diego/leader-keys
+  "gB" 'magit-blame-toggle
+  "gC" 'magit-clone
+  "gL" 'magit-log-buffer-file
+  "ga" 'magit-submodule-add
+  "gb" 'magit-branch
+  "gc" 'magit-checkout
+  "gf" 'magit-find-file
+  "gl" 'magit-log-all
+  "gs" 'magit-status)
   :defines (magit-diff-use-overlays)
   :config
   (setq magit-diff-use-overlays nil
@@ -3283,7 +3051,7 @@ Better parentheses coloring
 #+end_src
 ** Bindings
 #+begin_src emacs-lisp
-(diego/set-leader-keys
+(diego/leader-keys
   "z" 'hydra-zoom/body)
 #+end_src
 * Modes
@@ -3448,10 +3216,11 @@ Pretty neat, though not entirely complete, IMO.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package slime
-  :evil-bind (:insert
-              slime-repl-mode-map
-              ([up] . slime-repl-previous-input)
-              ([down] . slime-repl-next-input))
+  :general
+  (:states 'insert
+   :keymaps 'slime-repl-mode-map
+   [up] 'slime-repl-previous-input
+   [down] 'slime-repl-next-input)
   :config
   (setq inferior-lisp-program "/usr/local/bin/sbcl")
   (setq slime-contribs '(slime-fancy slime-company)))
@@ -3572,16 +3341,16 @@ Source: http://tinyurl.com/mh5ev6x"
 #+end_src
 *** Bindings
 #+begin_src emacs-lisp
-(dolist (mode '(emacs-lisp-mode lisp-interaction-mode))
-  (diego/set-leader-keys-for-major-mode mode
-    "eb" 'diego/eval-buffer
-    "ef" 'eval-defun
-    "er" 'eval-region
-    "eR" 'diego/eval-and-replace
-    "es" 'diego/eval-surrounding-sexp
-    "el" 'eval-last-sexp
-    "m"  'emacs-lisp-macroexpand))
-#+end_src
+(diego/mode-leader-keys
+ :keymaps '(emacs-lisp-mode-map lisp-interaction-mode-map)
+ "eb" 'diego/eval-buffer
+ "ef" 'eval-defun
+ "er" 'eval-region
+ "eR" 'diego/eval-and-replace
+ "es" 'diego/eval-surrounding-sexp
+ "el" 'eval-last-sexp
+ "m"  'emacs-lisp-macroexpand)
+ #+end_src
 *** Setup
 #+begin_src emacs-lisp
 (diego/setup-mode (lisp lisp-interaction emacs-lisp)
@@ -3685,7 +3454,7 @@ Source: http://tinyurl.com/mh5ev6x"
 #+end_src
 *** Bindings
 #+begin_src emacs-lisp
-(diego/set-leader-keys
+(diego/leader-keys
   "ac" 'calc-dispatch)
 
 (with-eval-after-load 'calc-ext
@@ -3720,7 +3489,7 @@ Source: http://tinyurl.com/mh5ev6x"
 I wanted a slightly better terminal in emacs. This seems to do the trick.
 #+begin_src emacs-lisp
 (use-package sane-term
-  :leader-bind ("at" . sane-term-create))
+  :general (diego/leader-keys "at" 'sane-term-create))
 #+end_src
 
 *** Functions
@@ -3880,17 +3649,18 @@ Syntax highlighting for markdown files.
 #+begin_src emacs-lisp
 (use-package pdf-tools
   :defer 10
-  :evil-bind (:normal
-              pdf-view-mode-map
-              ("s" . pdf-view-fit-width-to-window)
-              ("a" . pdf-view-fit-height-to-window)
-              ("/" . isearch-forward)
-              ("J" . pdf-view-next-page)
-              ("K" . pdf-view-previous-page)
-              ("j" . pdf-view-next-line-or-next-page)
-              ("k" . pdf-view-previou-line-or-previous-page)
-              ("-" . pdf-view-shrink)
-              ("+" . pdf-view-enlarg))
+  :general
+  (:states 'normal
+   :keymaps 'pdf-view-mode-map
+   "s" 'pdf-view-fit-width-to-window
+   "a" 'pdf-view-fit-height-to-window
+   "/" 'isearch-forward
+   "J" 'pdf-view-next-page
+   "K" 'pdf-view-previous-page
+   "j" 'pdf-view-next-line-or-next-page
+   "k" 'pdf-view-previou-line-or-previous-page
+   "-" 'pdf-view-shrink
+   "+" 'pdf-view-enlarg)
   :config
   (pdf-tools-install))
 #+end_src
@@ -3985,7 +3755,7 @@ Sorts ivy by most recently used, I think.
 SUPER nifty.
 #+begin_src emacs-lisp
 (use-package restart-emacs
-  :leader-bind ("qr" . restart-emacs)
+  :general (diego/leader-keys "qr" 'restart-emacs)
   :init
   (evil-ex-define-cmd "qr[estart]" 'restart-emacs))
 #+end_src
@@ -3996,29 +3766,30 @@ SUPER nifty.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package paradox
-  :leader-bind ("ap" . paradox-list-packages)
-  :evil-bind (:normal
-              paradox-menu-mode-map
-              ("(" . package-menu-toggle-hiding)
-              ("?" . package-menu-describe-package)
-              ("F" . package-menu-filter)
-              ("RET" . paradox-push-button)
-              ("S*" . paradox-sort-by-★)
-              ("Sp" . paradox-sort-by-package)
-              ("Ss" . paradox-sort-by-status)
-              ("TAB" . forward-button)
-              ("U" . package-menu-mark-upgrades)
-              ("d" . package-menu-mark-delete)
-              ("f" . hydra-paradox-filter/body)
-              ("i" . package-menu-mark-install)
-              ("q" . paradox-quit-and-close)
-              ("r" . package-menu-refresh)
-              ("u" . package-menu-mark-unmark)
-              ("vh" . paradox-menu-visit-homepage)
-              ("vl" . paradox-menu-view-commit-list)
-              ("x" . paradox-menu-execute)
-              ("~" . package-menu-mark-obsolete-for-deletion)
-              ([backtab] . backward-button))
+  :general
+  (diego/leader-keys "ap" 'paradox-list-packages)
+  (:states 'normal
+   :keymaps 'paradox-menu-mode-map
+   "(" 'package-menu-toggle-hiding
+   "?" 'package-menu-describe-package
+   "F" 'package-menu-filter
+   "RET" 'paradox-push-button
+   "S*" 'paradox-sort-by-★
+   "Sp" 'paradox-sort-by-package
+   "Ss" 'paradox-sort-by-status
+   "TAB" 'forward-button
+   "U" 'package-menu-mark-upgrades
+   "d" 'package-menu-mark-delete
+   "f" 'hydra-paradox-filter/body
+   "i" 'package-menu-mark-install
+   "q" 'paradox-quit-and-close
+   "r" 'package-menu-refresh
+   "u" 'package-menu-mark-unmark
+   "vh" 'paradox-menu-visit-homepage
+   "vl" 'paradox-menu-view-commit-list
+   "x" 'paradox-menu-execute
+   "~" 'package-menu-mark-obsolete-for-deletion
+   [backtab] 'backward-button)
   :config
   (setq paradox-execute-asynchronously t
         paradox-github-token (password-store-get "tokens/github/paradox")
@@ -4094,7 +3865,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 
 *** Bindings
 #+begin_src emacs-lisp
-(diego/set-leader-keys
+(diego/leader-keys
   "t"   'hydra-toggle/body)
 
 (with-eval-after-load 'evil
@@ -4151,15 +3922,17 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 (use-package evil-nerd-commenter
   :commands (evilnc-comment-operator
              diego/comment-or-uncomment-lines-inverse)
-  :bind (:map evil-normal-state-map
-              ("gc" . evilnc-comment-operator)
-              ("gy" . evilnc-copy-and-comment-lines))
-  :leader-bind ((";" . evilnc-comment-operator)
-                ("ci" . diego/comment-or-uncomment-lines-inverse)
-                ("cl" . evilnc-comment-or-uncomment-lines)
-                ("cp" . evilnc-comment-or-uncomment-paragraphs)
-                ("ct" . evilnc-comment-or-uncomment-to-the-line)
-                ("cy" . evilnc-copy-and-comment-lines))
+  :general
+  (:states 'normal
+   "gc" 'evilnc-comment-operator
+   "gy" 'evilnc-copy-and-comment-lines)
+  (diego/leader-keys
+   ";"  'evilnc-comment-operator
+   "ci" 'diego/comment-or-uncomment-lines-inverse
+   "cl" 'evilnc-comment-or-uncomment-lines
+   "cp" 'evilnc-comment-or-uncomment-paragraphs
+   "ct" 'evilnc-comment-or-uncomment-to-the-line
+   "cy" 'evilnc-copy-and-comment-lines)
   :config
   (defun diego/comment-or-uncomment-lines-inverse (&optional arg)
     "Source: http://tinyurl.com/kwjd3fp"
@@ -4296,13 +4069,14 @@ For the cold winters.
 #+begin_src emacs-lisp
 (use-package fireplace
   :config
-  :evil-bind (:normal
-              fireplace-mode-map
-              ("q" . fireplace-off)
-              ("Q" . fireplace-off)
-              ("-" . fireplace-down)
-              ("=" . fireplace-up)
-              ("*" . fireplace-toggle-smoke)))
+  :general
+  (:states 'normal
+   :keymaps 'fireplace-mode-map
+   "q" 'fireplace-off
+   "Q" 'fireplace-off
+   "-" 'fireplace-down
+   "=" 'fireplace-up
+   "*" 'fireplace-toggle-smoke))
 #+end_src
 *** [[https://github.com/therockmandolinist/emacs-hacker-typer][hacker-typer]]
 #+begin_quote
@@ -4350,7 +4124,7 @@ Clackity-clack.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package speed-type
-  :leader-bind ("as" . speed-type-text)
+  :general (diego/leader-keys "as" 'speed-type-text)
   :config
   (setq speed-type--gb-url-format
         "http://www.gutenberg.org/cache/epub/%d/pg%d.txt"))
@@ -4368,21 +4142,22 @@ A speed reading mode for Emacs.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package xkcd
-  :leader-bind ("ax" . xkcd)
-  :evil-bind (:normal
-              xkcd-mode-map
-              ("j" . xkcd-next)
-              ("h" . xkcd-prev)
-              ("k" . xkcd-prev)
-              ("l" . xkcd-next)
-              ("t" . xkcd-alt-text)
-              ("q" . xkcd-kill-buffer)
-              ("c" . xkcd-copy-link)
-              ("g" . xkcd-get)
-              ("r" . xkcd-rand)
-              ("o" . xkcd-open-browser)
-              ("e" . xkcd-open-explanation-browser)
-              ("G" . xkcd-get-latest))
+  :general (diego/leader-keys "ax" 'xkcd)
+  :general
+  (:states 'normal
+   :keymaps 'xkcd-mode-map
+   "j" 'xkcd-next
+   "h" 'xkcd-prev
+   "k" 'xkcd-prev
+   "l" 'xkcd-next
+   "t" 'xkcd-alt-text
+   "q" 'xkcd-kill-buffer
+   "c" 'xkcd-copy-link
+   "g" 'xkcd-get
+   "r" 'xkcd-rand
+   "o" 'xkcd-open-browser
+   "e" 'xkcd-open-explanation-browser
+   "G" 'xkcd-get-latest)
   :config)
 #+end_src
 ** Functions
@@ -4405,11 +4180,10 @@ Source: http://tinyurl.com/lo96nwc"
 #+end_src
 ** Bindings
 #+begin_src emacs-lisp
-(with-eval-after-load 'bind-map
-  (diego/set-leader-keys
-    "agd" 'dunnet
-    "agg" 'gomoku
-    "agt" 'tetris))
+(diego/leader-keys
+ "agd" 'dunnet
+ "agg" 'gomoku
+ "agt" 'tetris)
 #+end_src
 
 * Web?
@@ -4422,34 +4196,36 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+begin_src emacs-lisp
 (use-package elfeed
   :if (not noninteractive)
-  :leader-bind ("ae" . elfeed)
-  :evil-bind (:normal
-              elfeed-search-mode-map
-              ("RET" . elfeed-search-show-entry)
-              ("+" . elfeed-search-tag-all)
-              ("-" . elfeed-search-untag-all)
-              ("G" . elfeed-search-fetch)
-              ("S" . elfeed-search-set-filter)
-              ("b" . elfeed-search-browse-url)
-              ("g" . elfeed-search-update--force)
-              ("q" . quit-window)
-              ("r" . elfeed-search-untag-all-unread)
-              ("s" . elfeed-search-live-filter)
-              ("u" . elfeed-search-tag-all-unread)
-              ("y" . elfeed-search-yank)
-              ("U" . elfeed-update)
-              :normal elfeed-show-mode-map
-              ("+" . elfeed-show-tag)
-              ("-" . elfeed-show-untag)
-              ("P" . elfeed-show-play-enclosure)
-              ("b" . elfeed-show-visit)
-              ("d" . elfeed-show-save-enclosure)
-              ("g" . elfeed-show-refresh)
-              ("l" . elfeed-goodies/split-show-next)
-              ("h" . elfeed-goodies/split-show-prev)
-              ("q" . elfeed-kill-buffer)
-              ("s" . elfeed-show-new-live-search)
-              ("y" . elfeed-show-yank))
+  :general
+  (diego/leader-keys "ae" 'elfeed)
+  (:states 'normal
+   :keymaps 'elfeed-search-mode-map
+   "RET" 'elfeed-search-show-entry
+   "+" 'elfeed-search-tag-all
+   "-" 'elfeed-search-untag-all
+   "G" 'elfeed-search-fetch
+   "S" 'elfeed-search-set-filter
+   "b" 'elfeed-search-browse-url
+   "g" 'elfeed-search-update--force
+   "q" 'quit-window
+   "r" 'elfeed-search-untag-all-unread
+   "s" 'elfeed-search-live-filter
+   "u" 'elfeed-search-tag-all-unread
+   "y" 'elfeed-search-yank
+   "U" 'elfeed-update)
+  (:states 'normal
+   :keymaps 'elfeed-show-mode-map
+   "+" 'elfeed-show-tag
+   "-" 'elfeed-show-untag
+   "P" 'elfeed-show-play-enclosure
+   "b" 'elfeed-show-visit
+   "d" 'elfeed-show-save-enclosure
+   "g" 'elfeed-show-refresh
+   "l" 'elfeed-goodies/split-show-next
+   "h" 'elfeed-goodies/split-show-prev
+   "q" 'elfeed-kill-buffer
+   "s" 'elfeed-show-new-live-search
+   "y" 'elfeed-show-yank)
   :config
   (add-hook 'elfeed-search-mode-hook (lambda () (evil-smartparens-mode -1))))
 #+end_src
@@ -4459,8 +4235,10 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+end_quote
 #+begin_src emacs-lisp
 (use-package sunshine
-  :leader-bind (("aW" . sunshine-quick-forecast)
-                ("aw" . sunshine-forecast))
+  :general
+(diego/leader-keys
+  "aW" 'sunshine-quick-forecast
+  "aw" 'sunshine-forecast)
   :config
   (setq sunshine-location "02139,USA"
         sunshine-appid (password-store-get "api/openweathermap")))
