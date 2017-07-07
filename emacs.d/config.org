@@ -2857,20 +2857,20 @@ Source: https://git.io/vQKzq"
           (when window-active?
             (propertize-active
              window-active?
-             (cond  ((bound-and-true-p anzu--state)
-                     (anzu--update-mode-line))
-                    ((in-evil-substitution-p)
-                     (evil-substitute-num-matches))
-                    ((in-macro-p)
-                     (if (bound-and-true-p evil-this-macro)
-                         (char-to-string evil-this-macro)
-                       "Macro"))
-                    ((eyebrowse-relevant-p)
-                     (let* ((num (eyebrowse--get 'current-slot))
-                            (tag (nth 2 (assoc num (eyebrowse--get 'window-configs)))))
-                       (if (and tag (< 0 (length tag)))
-                           tag
-                         (int-to-string num)))))
+             (cond ((in-evil-substitution-p)
+                    (evil-substitute-num-matches))
+                   ((in-macro-p)
+                    (if (bound-and-true-p evil-this-macro)
+                        (char-to-string evil-this-macro)
+                      "Macro"))
+                   ((bound-and-true-p anzu--state)
+                    (anzu--update-mode-line))
+                   ((eyebrowse-relevant-p)
+                    (let* ((num (eyebrowse--get 'current-slot))
+                           (tag (nth 2 (assoc num (eyebrowse--get 'window-configs)))))
+                      (if (and tag (< 0 (length tag)))
+                          tag
+                        (int-to-string num)))))
              'face
              `(:foreground
                "#3E3D31"
