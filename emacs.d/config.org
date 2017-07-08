@@ -3355,6 +3355,12 @@ Source: http://tinyurl.com/mh5ev6x"
     (error (message "Invalid expression")
            (insert (current-kill 0)))))
 
+(defun diego/pp-macroexpand-surrounding-sexp (levels)
+  (interactive "p")
+  (save-excursion
+    (up-list (abs levels))
+    (pp-macroexpand-last-sexp nil)))
+
 (defun diego/eval-buffer ()
   (interactive)
   (if (eq major-mode 'org-mode)
@@ -3453,7 +3459,8 @@ Source: https://git.io/vQKz8"
  "eR" 'diego/eval-and-replace
  "es" 'diego/eval-surrounding-sexp
  "el" 'eval-last-sexp
- "m"  'emacs-lisp-macroexpand)
+ "M"  'emacs-lisp-macroexpand
+ "m" 'diego/pp-macroexpand-surrounding-sexp)
  #+end_src
 *** Setup
 #+begin_src emacs-lisp
