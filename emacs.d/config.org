@@ -366,7 +366,13 @@ That undersells it. The /most/ convenient key definitions in emacs.
 #+begin_src emacs-lisp
 (use-package general
   :after evil
+  :quelpa (general
+           :fetcher github
+           :repo "noctuid/general.el"
+           :branch "buttercup")
   :config
+  (general-evil-setup t t)
+
   (general-create-definer
    diego/mode-leader-keys
    :states '(emacs normal visual motion insert)
