@@ -1336,15 +1336,18 @@ Supposedly better than autocomplete.
 #+end_src
 *** Minibuffer
 I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard, so I like to
-also use these keys to quit out of the minibuffer. See more [[#bindings-1][here]].
+also use these keys to quit out of the minibuffer.
 #+begin_src emacs-lisp
-(dolist (map (list minibuffer-local-map
-                   minibuffer-local-ns-map
-                   minibuffer-local-completion-map
-                   minibuffer-local-must-match-map
-                   minibuffer-local-isearch-map))
-  (dolist (key '([?\C-/] [?\C-_] [escape]))
-    (define-key map key #'minibuffer-keyboard-quit)))
+(general-define-key
+ :keymaps '(minibuffer-local-map
+            minibuffer-local-ns-map
+            minibuffer-local-completion-map
+            minibuffer-local-must-match-map
+            minibuffer-local-isearch-map)
+ [?\C-/]  'minibuffer-keyboard-quit
+ [?\C-_]  'minibuffer-keyboard-quit
+ [escape] 'minibuffer-keyboard-quit)
+
 #+end_src
 *** universal argument
 #+begin_src emacs-lisp
