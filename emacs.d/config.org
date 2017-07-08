@@ -1092,15 +1092,17 @@ Source: https://git.io/vQKEa"
    "ts"  'org-table-sort-lines
    "ttf" 'org-table-toggle-formula-debugger
    "tto" 'org-table-toggle-coordinate-overlays
-   "tw"  'org-table-wrap-region))
+   "tw"  'org-table-wrap-region)
 
 (diego/mode-leader-keys
- :keymaps 'org-src-mode-map
+ :keymaps 'org-src-mode
+ :definer 'minor-mode
  "'" 'org-edit-src-exit)
 
 (diego/leader-keys
- :keymaps 'org-src-mode-map
- "fs" 'org-edit-src-save)
+ :keymaps 'org-src-mode
+ :definer 'minor-mode
+ "fs" 'org-edit-src-save))
 #+end_src
 **** Setup
 ***** Agenda
@@ -1149,11 +1151,6 @@ Source: https://git.io/vQKEa"
   (org-bullets-mode 1)
   (goto-address-mode)
   (org-indent-mode))
-#+end_src
-***** Org-src
-#+begin_src emacs-lisp
-(diego/setup-mode org-src
-  (evil-normalize-keymaps))
 #+end_src
 *** [[https://github.com/abo-abo/hydra][hydra]]
 #+begin_quote
