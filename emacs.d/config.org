@@ -4084,7 +4084,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 #+begin_src emacs-lisp
 (use-package ox-pandoc
-  :after org
+  :after ox
   :config
   ;; default options for all output formats
   (setq org-pandoc-options '((standalone . t)
@@ -4100,7 +4100,7 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package ox-twbs
-  :after org)
+  :after ox)
 #+end_src
 *** [[https://github.com/snosov1/toc-org][toc-org]]
 #+begin_quote
@@ -4128,7 +4128,7 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 *** [[https://github.com/larstvei/ox-gfm][ox-gfm]]
 #+begin_src emacs-lisp
 (use-package ox-gfm
-  :after org)
+  :after ox)
 #+end_src
 ** Elfeed
 *** [[https://github.com/remyhonig/elfeed-org][elfeed-org]]
