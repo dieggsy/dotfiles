@@ -18,11 +18,9 @@ there's that.
 :END:
 
 First off, let's set lexical binding, in accordance with the
-[[https://github.com/bbatsov/emacs-lisp-style-guide#source-code-layout--organization][emacs-lisp-style-guide]], and silence some compiler warnings. Now technically,
-there's not really any point to byte-compiling your init.el, so erm, don't
-follow my example there? Whatever.
+[[https://github.com/bbatsov/emacs-lisp-style-guide#source-code-layout--organization][emacs-lisp-style-guide]].
 #+begin_src emacs-lisp :comments no
-;;; -*- lexical-binding: t; byte-compile-warnings: (not free-vars unresolved make-local); -*-
+;;; -*- lexical-binding: t -*-
 #+end_src
 
 * Contents                                                            :toc_1:
@@ -250,16 +248,11 @@ Save stuff you've copied in other applications to the emacs kill-ring.
       (async-start
        (lambda ()
          ;; make async emacs aware of packages (for byte-compilation)
-         (package-initialize)
          (require 'org)
 
          ;; tangle
          (org-babel-tangle-file
-          (expand-file-name (locate-user-emacs-file "config.org")))
-
-         ;; byte-compile
-         (byte-compile-file
-          (expand-file-name  (locate-user-emacs-file "config.el"))))
+          (expand-file-name "~/dotfiles/emacs.d/config.org")))
        (unless diego/show-async-tangle-results
          `(lambda (result)
             (if result
