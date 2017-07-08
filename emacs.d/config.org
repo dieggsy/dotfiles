@@ -3552,20 +3552,18 @@ Source: https://git.io/vQKz8"
 (add-to-list 'auto-mode-alist '("\\.service\\'" . conf-mode))
 #+end_src
 ** Calc
-*** Defaults
 #+begin_src emacs-lisp
-(setq calc-multiplication-has-precedence nil)
-(setq calc-symbolic-mode t)
-#+end_src
-*** Bindings
-#+begin_src emacs-lisp
-(diego/leader-keys
- "ac" 'calc-dispatch)
-
-(with-eval-after-load 'calc-ext
-  (general-define-key
+(use-package calc
+  :ensure nil
+  :general
+  (diego/leader-keys
+   "ac" 'calc-dispatch)
+  (:states 'emacs
    :keymaps 'calc-mode-map
-   "x" (lambda () (interactive) (counsel-M-x "^calc-"))))
+   "x" (lambda () (interactive) (counsel-M-x "^calc-")))
+  :config
+  (setq calc-multiplication-has-precedence nil)
+  (setq calc-symbolic-mode t))
 #+end_src
 ** Shell
 *** Packages
