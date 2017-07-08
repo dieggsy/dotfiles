@@ -416,12 +416,9 @@ editing. So I went for it. Now I'll never go back.
 #+begin_src emacs-lisp
 (use-package evil
   :demand t
-  :bind
-  (:map evil-normal-state-map
-   ("RET" . diego/ret)
-   :map evil-motion-state-map
-   ("RET" . diego/ret))
   :general
+  (:keymaps '(evil-normal-state-map evil-motion-state-map)
+   "RET" 'diego/ret)
   (:states 'normal
    "S-SPC" 'org-agenda-list
    "-" 'negative-argument
