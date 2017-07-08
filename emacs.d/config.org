@@ -822,19 +822,20 @@ so I went with it.
 **** Functions
 #+begin_src emacs-lisp
 (with-eval-after-load 'org
-  (defun diego|create-block-wrap (&rest blocktypes)
-    (cl-loop
-     for type in blocktypes do
-     (let ((newfunc (intern
-                     (concat "diego/org-wrap-with-block-"
-                             (replace-regexp-in-string " " "-" type)))))
-       (eval `(defun ,newfunc ()
-                (interactive)
-                (backward-paragraph)
-                (insert ,(format "\n#+begin_%s" type))
-                (forward-paragraph)
-                (insert ,(format "#+end_%s\n" (car (split-string type))))
-                (backward-paragraph))))))
+  (defmacro diego|create-block-wrap (&rest blocktypes)
+    `(progn
+       ,@(cl-loop
+          for type in blocktypes collect
+          (let ((newfunc (intern
+                          (concat "diego/org-wrap-with-block-"
+                                  (replace-regexp-in-string " " "-" type)))))
+            `(defun ,newfunc ()
+               (interactive)
+               (backward-paragraph)
+               (insert ,(format "\n#+begin_%s" type))
+               (forward-paragraph)
+               (insert ,(format "#+end_%s\n" (car (split-string type))))
+               (backward-paragraph))))))
 
   (diego|create-block-wrap
    "src"
@@ -842,14 +843,15 @@ so I went with it.
    "src emacs-lisp"
    "export latex")
 
-  (defun diego|org-emphasize (&rest args)
+  (defmacro diego|org-emphasize (&rest args)
     "Make functions for setting the emphasis in org mode"
-    (cl-loop for (name char) on args
-             by #'cddr do
-             (let ((fname (intern (concat "diego/org-" name))))
-               (eval `(defun ,fname ()
-                        (interactive)
-                        (org-emphasize ,char))))))
+    `(progn
+       ,@(cl-loop for (name char) on args
+                  by #'cddr collect
+                  (let ((fname (intern (concat "diego/org-" name))))
+                    `(defun ,fname ()
+                       (interactive)
+                       (org-emphasize ,char))))))
 
   (diego|org-emphasize
    "bold" ?*
@@ -1868,14 +1870,15 @@ Source: http://tinyurl.com/k8g9sex"
     (sp-local-pair modes "'" nil :actions nil)
     (sp-local-pair modes "`" nil :actions nil))
 
-  (defun diego|sp-wrap-with (&rest args)
+  (defmacro diego|sp-wrap-with (&rest args)
     "Make function(s) for wrapping with character using `sp-wrap-with-pair'"
-    (cl-loop for (char-name char) on args
-             by #'cddr do
-             (let ((fname (intern (concat "diego/sp-wrap-with-" char-name))))
-               (eval `(defun ,fname (&optional arg)
-                        (interactive "P")
-                        (sp-wrap-with-pair ,char))))))
+    `(progn
+       ,@(cl-loop for (char-name char) on args
+                  by #'cddr collect
+                  (let ((fname (intern (concat "diego/sp-wrap-with-" char-name))))
+                    `(defun ,fname (&optional arg)
+                       (interactive "P")
+                       (sp-wrap-with-pair ,char))))))
 
   (diego|sp-wrap-with
    "paren" "("
@@ -2007,18 +2010,19 @@ Source: https://git.io/vQKul"
     (message "%S" complete-regexp)
     (align-regexp start end complete-regexp group 1 t)))
 
-(defun diego|create-align-repeat-x (&rest args)
+(defmacro diego|create-align-repeat-x (&rest args)
   "Create an alignment function given name and alignment regexp.
 
 Source: https://git.io/vQKu4"
-  (cl-loop
-   for (name regexp justify-right default-after) on args
-   by #'cddddr do
-   (let ((new-func (intern (concat "diego/align-repeat-" name))))
-     (eval `(defun ,new-func (start end switch)
-              (interactive "r\nP")
-              (let ((after (not (eq (if switch t nil) (if ,default-after t nil)))))
-                (diego/align-repeat start end ,regexp ,justify-right after)))))))
+  `(progn
+     ,@(cl-loop
+        for (name regexp justify-right default-after) on args
+        by #'cddddr collect
+        (let ((new-func (intern (concat "diego/align-repeat-" name))))
+          `(defun ,new-func (start end switch)
+             (interactive "r\nP")
+             (let ((after (not (eq (if switch t nil) (if ,default-after t nil)))))
+               (diego/align-repeat start end ,regexp ,justify-right after)))))))
 
 (diego|create-align-repeat-x
  "comma" "," nil t
@@ -2053,22 +2057,22 @@ Source: https://git.io/vQKu2"
 #+end_src
 *** Justify
 #+begin_src emacs-lisp
-(defun diego|justify (type &rest types)
+(defmacro diego|justify (&rest types)
   "Create justification function(s), one per given TYPE."
-  (cl-loop
-   while type collect
-   (let ((func-name (intern (concat "diego/justify-" type)))
-         (current-type type))
-     (setq type (pop types))
-     (eval `(defun ,func-name ()
-              (interactive)
-              (if (region-active-p)
-                  (set-justification (region-beginning)
-                                     (region-end)
-                                     (intern ,current-type))
-                (set-justification (line-beginning-position)
-                                   (line-end-position)
-                                   (intern ,current-type))))))))
+  `(progn
+     ,@(cl-loop
+        for type in types collect
+        (let ((func-name (intern (concat "diego/justify-" type)))
+              (current-type type))
+          `(defun ,func-name ()
+             (interactive)
+             (if (region-active-p)
+                 (set-justification (region-beginning)
+                                    (region-end)
+                                    (intern ,current-type))
+               (set-justification (line-beginning-position)
+                                  (line-end-position)
+                                  (intern ,current-type))))))))
 
 (diego|justify "left"
                "right"
