@@ -397,20 +397,17 @@ editing. So I went for it. Now I'll never go back.
 (use-package evil
   :demand t
   :general
-  (:keymaps '(evil-normal-state-map evil-motion-state-map)
-   "RET" 'diego/ret)
-  (:states 'normal
+  (nmap
    "S-SPC" 'org-agenda-list
    "-" 'negative-argument
    "\\" 'evil-window-next
    "C-_" 'keyboard-quit
    "C-/"  'keyboard-quit
    [escape]  'keyboard-quit)
-  (:states '(insert replace visual)
+  (:states '(i r v)
    "C-_" 'evil-normal-state
    "C-/" 'evil-normal-state)
-  (:states 'visual
-   [escape] 'keyboard-quit)
+  (vmap [escape] 'keyboard-quit)
   :init
   (setq evil-want-C-u-scroll t
         evil-want-fine-undo t
@@ -748,24 +745,23 @@ so I went with it.
   :ensure org-plus-contrib
   :defines (org-habit-graph-column)
   :general
-  (:states 'normal
-   :keymaps 'org-mode-map
-   "<" 'org-metaleft
-   ">" 'org-metaright
-   "gh" 'outline-up-heading
-   "gl" 'outline-next-visible-heading
-   "gj" 'org-forward-heading-same-level
-   "gk" 'org-backward-heading-same-level
-   "gt" 'org-todo
-   "ga" 'org-archive-subtree
-   "M-l" 'org-metaright
-   "M-h" 'org-metaleft
-   "M-k" 'org-metaup
-   "M-j" 'org-metadown
-   "M-L" 'org-shiftmetaright
-   "M-H" 'org-shiftmetaleft
-   "M-K" 'org-shiftmetaup
-   "M-J" 'org-shiftmetadown)
+  (nmap :keymaps 'org-mode-map
+    "<" 'org-metaleft
+    ">" 'org-metaright
+    "gh" 'outline-up-heading
+    "gl" 'outline-next-visible-heading
+    "gj" 'org-forward-heading-same-level
+    "gk" 'org-backward-heading-same-level
+    "gt" 'org-todo
+    "ga" 'org-archive-subtree
+    "M-l" 'org-metaright
+    "M-h" 'org-metaleft
+    "M-k" 'org-metaup
+    "M-j" 'org-metadown
+    "M-L" 'org-shiftmetaright
+    "M-H" 'org-shiftmetaleft
+    "M-K" 'org-shiftmetaup
+    "M-J" 'org-shiftmetadown)
   (diego/leader-keys
    "C"   'org-capture
    "bo"  'org-iswitchb
@@ -1126,14 +1122,10 @@ Source: https://git.io/vQKEa"
 #+end_src
 ***** Capture
 #+begin_src emacs-lisp
-(general-define-key
- :states 'insert
- :keymaps 'org-capture-mode-mop
- "C-d" 'diego/org-agenda-toggle-date)
-(general-define-key
- :states 'normal
- :keymaps 'org-capture-mode-map
- "C-d" 'diego/org-agenda-toggle-date)
+(imap :keymaps 'org-capture-mode-mop
+  "C-d" 'diego/org-agenda-toggle-date)
+(nmap :keymaps 'org-capture-mode-map
+  "C-d" 'diego/org-agenda-toggle-date)
 #+end_src
 ***** Org
 #+begin_src emacs-lisp
@@ -1314,14 +1306,12 @@ Supposedly better than autocomplete.
 ** Bindings
 *** Ret
 #+begin_src emacs-lisp
-(general-define-key
- :states '(normal motion)
- "RET"
- (general-predicate-dispatch nil
-   (thing-at-point 'url) 'go-to-address-at-point
-   (fbound-and-true-p org-at-openable-item-p) 'org-open-at-point
-   (fbound-and-true-p org-at-item-checkbox-p) 'org-toggle-checkbox
-   (fbound-and-true-p org-in-src-block-p) 'org-babel-execute-src-block))
+(mmap "RET"
+      (general-predicate-dispatch nil
+        (thing-at-point 'url) 'go-to-address-at-point
+        (fbound-and-true-p org-at-openable-item-p) 'org-open-at-point
+        (fbound-and-true-p org-at-item-checkbox-p) 'org-toggle-checkbox
+        (fbound-and-true-p org-in-src-block-p) 'org-babel-execute-src-block))
 #+end_src
 *** Leader
 #+begin_src emacs-lisp
@@ -1486,9 +1476,8 @@ Non-interactively SEARCH-STRING is the string to search."
   :general
   (diego/leader-keys "ht" 'tldr)
   :general
-  (:states 'normal
-   :keymaps 'tldr-mode-map
-   "q" 'quit-window))
+  (nmap :keymaps 'tldr-mode-map
+    "q" 'quit-window))
 #+end_src
 ** Bindings
 Leader bindings
@@ -3249,10 +3238,9 @@ Pretty neat, though not entirely complete, IMO.
 #+begin_src emacs-lisp
 (use-package slime
   :general
-  (:states 'insert
-   :keymaps 'slime-repl-mode-map
-   [up] 'slime-repl-previous-input
-   [down] 'slime-repl-next-input)
+  (imap :keymaps 'slime-repl-mode-map
+    [up] 'slime-repl-previous-input
+    [down] 'slime-repl-next-input)
   :config
   (setq inferior-lisp-program "/usr/local/bin/sbcl")
   (setq slime-contribs '(slime-fancy slime-company)))
@@ -3566,9 +3554,8 @@ Source: https://git.io/vQKz8"
   :general
   (diego/leader-keys
    "ac" 'calc-dispatch)
-  (:states 'emacs
-   :keymaps 'calc-mode-map
-   "x" (lambda () (interactive) (counsel-M-x "^calc-")))
+  (emap :keymaps 'calc-mode-map
+    "x" (lambda () (interactive) (counsel-M-x "^calc-")))
   :config
   (setq calc-multiplication-has-precedence nil)
   (setq calc-symbolic-mode t))
@@ -3760,17 +3747,16 @@ Syntax highlighting for markdown files.
 (use-package pdf-tools
   :defer 10
   :general
-  (:states 'normal
-   :keymaps 'pdf-view-mode-map
-   "s" 'pdf-view-fit-width-to-window
-   "a" 'pdf-view-fit-height-to-window
-   "/" 'isearch-forward
-   "J" 'pdf-view-next-page
-   "K" 'pdf-view-previous-page
-   "j" 'pdf-view-next-line-or-next-page
-   "k" 'pdf-view-previou-line-or-previous-page
-   "-" 'pdf-view-shrink
-   "+" 'pdf-view-enlarg)
+  (nmap :keymaps 'pdf-view-mode-map
+    "s" 'pdf-view-fit-width-to-window
+    "a" 'pdf-view-fit-height-to-window
+    "/" 'isearch-forward
+    "J" 'pdf-view-next-page
+    "K" 'pdf-view-previous-page
+    "j" 'pdf-view-next-line-or-next-page
+    "k" 'pdf-view-previou-line-or-previous-page
+    "-" 'pdf-view-shrink
+    "+" 'pdf-view-enlarg)
   :config
   (pdf-tools-install))
 #+end_src
@@ -3878,28 +3864,27 @@ SUPER nifty.
 (use-package paradox
   :general
   (diego/leader-keys "ap" 'paradox-list-packages)
-  (:states 'normal
-   :keymaps 'paradox-menu-mode-map
-   "(" 'package-menu-toggle-hiding
-   "?" 'package-menu-describe-package
-   "F" 'package-menu-filter
-   "RET" 'paradox-push-button
-   "S*" 'paradox-sort-by-★
-   "Sp" 'paradox-sort-by-package
-   "Ss" 'paradox-sort-by-status
-   "TAB" 'forward-button
-   "U" 'package-menu-mark-upgrades
-   "d" 'package-menu-mark-delete
-   "f" 'hydra-paradox-filter/body
-   "i" 'package-menu-mark-install
-   "q" 'paradox-quit-and-close
-   "r" 'package-menu-refresh
-   "u" 'package-menu-mark-unmark
-   "vh" 'paradox-menu-visit-homepage
-   "vl" 'paradox-menu-view-commit-list
-   "x" 'paradox-menu-execute
-   "~" 'package-menu-mark-obsolete-for-deletion
-   [backtab] 'backward-button)
+  (nmap :keymaps 'paradox-menu-mode-map
+    "(" 'package-menu-toggle-hiding
+    "?" 'package-menu-describe-package
+    "F" 'package-menu-filter
+    "RET" 'paradox-push-button
+    "S*" 'paradox-sort-by-★
+    "Sp" 'paradox-sort-by-package
+    "Ss" 'paradox-sort-by-status
+    "TAB" 'forward-button
+    "U" 'package-menu-mark-upgrades
+    "d" 'package-menu-mark-delete
+    "f" 'hydra-paradox-filter/body
+    "i" 'package-menu-mark-install
+    "q" 'paradox-quit-and-close
+    "r" 'package-menu-refresh
+    "u" 'package-menu-mark-unmark
+    "vh" 'paradox-menu-visit-homepage
+    "vl" 'paradox-menu-view-commit-list
+    "x" 'paradox-menu-execute
+    "~" 'package-menu-mark-obsolete-for-deletion
+    [backtab] 'backward-button)
   :config
   (setq paradox-execute-asynchronously t
         paradox-github-token (password-store-get "tokens/github/paradox")
@@ -4033,7 +4018,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
   :commands (evilnc-comment-operator
              diego/comment-or-uncomment-lines-inverse)
   :general
-  (:states 'normal
+  (nmap
    "gc" 'evilnc-comment-operator
    "gy" 'evilnc-copy-and-comment-lines)
   (diego/leader-keys
@@ -4179,13 +4164,12 @@ For the cold winters.
 (use-package fireplace
   :config
   :general
-  (:states 'normal
-   :keymaps 'fireplace-mode-map
-   "q" 'fireplace-off
-   "Q" 'fireplace-off
-   "-" 'fireplace-down
-   "=" 'fireplace-up
-   "*" 'fireplace-toggle-smoke))
+  (nmap :keymaps 'fireplace-mode-map
+    "q" 'fireplace-off
+    "Q" 'fireplace-off
+    "-" 'fireplace-down
+    "=" 'fireplace-up
+    "*" 'fireplace-toggle-smoke))
 #+end_src
 *** [[https://github.com/therockmandolinist/emacs-hacker-typer][hacker-typer]]
 #+begin_quote
@@ -4253,20 +4237,19 @@ A speed reading mode for Emacs.
 (use-package xkcd
   :general (diego/leader-keys "ax" 'xkcd)
   :general
-  (:states 'normal
-   :keymaps 'xkcd-mode-map
-   "j" 'xkcd-next
-   "h" 'xkcd-prev
-   "k" 'xkcd-prev
-   "l" 'xkcd-next
-   "t" 'xkcd-alt-text
-   "q" 'xkcd-kill-buffer
-   "c" 'xkcd-copy-link
-   "g" 'xkcd-get
-   "r" 'xkcd-rand
-   "o" 'xkcd-open-browser
-   "e" 'xkcd-open-explanation-browser
-   "G" 'xkcd-get-latest)
+  (nmap :keymaps 'xkcd-mode-map
+    "j" 'xkcd-next
+    "h" 'xkcd-prev
+    "k" 'xkcd-prev
+    "l" 'xkcd-next
+    "t" 'xkcd-alt-text
+    "q" 'xkcd-kill-buffer
+    "c" 'xkcd-copy-link
+    "g" 'xkcd-get
+    "r" 'xkcd-rand
+    "o" 'xkcd-open-browser
+    "e" 'xkcd-open-explanation-browser
+    "G" 'xkcd-get-latest)
   :config)
 #+end_src
 ** Functions
@@ -4306,34 +4289,32 @@ Configure the Elfeed RSS reader with an Orgmode file
 (use-package elfeed
   :general
   (diego/leader-keys "ae" 'elfeed)
-  (:states 'normal
-   :keymaps 'elfeed-search-mode-map
-   "RET" 'elfeed-search-show-entry
-   "+" 'elfeed-search-tag-all
-   "-" 'elfeed-search-untag-all
-   "G" 'elfeed-search-fetch
-   "S" 'elfeed-search-set-filter
-   "b" 'elfeed-search-browse-url
-   "g" 'elfeed-search-update--force
-   "q" 'quit-window
-   "r" 'elfeed-search-untag-all-unread
-   "s" 'elfeed-search-live-filter
-   "u" 'elfeed-search-tag-all-unread
-   "y" 'elfeed-search-yank
-   "U" 'elfeed-update)
-  (:states 'normal
-   :keymaps 'elfeed-show-mode-map
-   "+" 'elfeed-show-tag
-   "-" 'elfeed-show-untag
-   "P" 'elfeed-show-play-enclosure
-   "b" 'elfeed-show-visit
-   "d" 'elfeed-show-save-enclosure
-   "g" 'elfeed-show-refresh
-   "l" 'elfeed-goodies/split-show-next
-   "h" 'elfeed-goodies/split-show-prev
-   "q" 'elfeed-kill-buffer
-   "s" 'elfeed-show-new-live-search
-   "y" 'elfeed-show-yank)
+  (nmap :keymaps 'elfeed-search-mode-map
+    "RET" 'elfeed-search-show-entry
+    "+" 'elfeed-search-tag-all
+    "-" 'elfeed-search-untag-all
+    "G" 'elfeed-search-fetch
+    "S" 'elfeed-search-set-filter
+    "b" 'elfeed-search-browse-url
+    "g" 'elfeed-search-update--force
+    "q" 'quit-window
+    "r" 'elfeed-search-untag-all-unread
+    "s" 'elfeed-search-live-filter
+    "u" 'elfeed-search-tag-all-unread
+    "y" 'elfeed-search-yank
+    "U" 'elfeed-update)
+  (nmap :keymaps 'elfeed-show-mode-map
+    "+" 'elfeed-show-tag
+    "-" 'elfeed-show-untag
+    "P" 'elfeed-show-play-enclosure
+    "b" 'elfeed-show-visit
+    "d" 'elfeed-show-save-enclosure
+    "g" 'elfeed-show-refresh
+    "l" 'elfeed-goodies/split-show-next
+    "h" 'elfeed-goodies/split-show-prev
+    "q" 'elfeed-kill-buffer
+    "s" 'elfeed-show-new-live-search
+    "y" 'elfeed-show-yank)
   :config
   (add-hook 'elfeed-search-mode-hook (lambda () (evil-smartparens-mode -1))))
 #+end_src
