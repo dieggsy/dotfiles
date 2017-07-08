@@ -238,42 +238,41 @@ Save stuff you've copied in other applications to the emacs kill-ring.
 ** Functions
 *** Dotfiles
 #+begin_src emacs-lisp
-(with-eval-after-load 'org
-  (defvar diego/show-async-tangle-results nil)
+(defvar diego/show-async-tangle-results nil)
 
-  (defun diego/async-tangle-init ()
-    "Asynchronously tangle config.org and and byte-compile."
-    (interactive)
-    (let ((init-tangle-start-time (current-time)))
-      (async-start
-       (lambda ()
-         ;; make async emacs aware of packages (for byte-compilation)
-         (require 'org)
+(defun diego/async-tangle-init ()
+  "Asynchronously tangle config.org and and byte-compile."
+  (interactive)
+  (let ((init-tangle-start-time (current-time)))
+    (async-start
+     (lambda ()
+       ;; make async emacs aware of packages (for byte-compilation)
+       (require 'org)
 
-         ;; tangle
-         (org-babel-tangle-file
-          (expand-file-name "~/dotfiles/emacs.d/config.org")))
-       (unless diego/show-async-tangle-results
-         `(lambda (result)
-            (if result
-                (message "SUCCESS: config.org successfully tangled. (%.3fs)"
-                         (float-time (time-subtract (current-time)
-                                                    ',init-tangle-start-time)))
-              (message "ERROR: config.org tangle failed.")))))))
+       ;; tangle
+       (org-babel-tangle-file
+        (expand-file-name "~/dotfiles/emacs.d/config.org")))
+     (unless diego/show-async-tangle-results
+       `(lambda (result)
+          (if result
+              (message "SUCCESS: config.org successfully tangled. (%.3fs)"
+                       (float-time (time-subtract (current-time)
+                                                  ',init-tangle-start-time)))
+            (message "ERROR: config.org tangle failed.")))))))
 
-  (defun diego/async-babel-tangle ()
-    "Tangle org file asynchronously."
-    (interactive)
-    (let ((file (buffer-file-name)))
-      (async-start
-       `(lambda ()
-          (require 'org)
-          (org-babel-tangle-file ,file))
-       (unless diego/show-async-tangle-results
-         (lambda (result)
-           (if result
-               (message "SUCCESS: successfully tangled file.")
-             (message "ERROR: tangle file failed."))))))))
+(defun diego/async-babel-tangle ()
+  "Tangle org file asynchronously."
+  (interactive)
+  (let ((file (buffer-file-name)))
+    (async-start
+     `(lambda ()
+        (require 'org)
+        (org-babel-tangle-file ,file))
+     (unless diego/show-async-tangle-results
+       (lambda (result)
+         (if result
+             (message "SUCCESS: successfully tangled file.")
+           (message "ERROR: tangle file failed.")))))))
 #+end_src
 *** Config helpers
 #+begin_src emacs-lisp
