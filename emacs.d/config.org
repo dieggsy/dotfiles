@@ -922,19 +922,15 @@ Source: https://git.io/vQKEa"
     (let ((char (read-char-choice
                  "Bullet type? (-|*|+|1|2|a|b|A|B): "
                  '(?* ?- ?+ ?1 ?2 ?a ?b ?A ?B))))
-      (cond ((eq char ?1)
-             (org-cycle-list-bullet 3))
-            ((eq char ?2)
-             (org-cycle-list-bullet 4))
-            ((eq char ?a)
-             (org-cycle-list-bullet 5))
-            ((eq char ?b)
-             (org-cycle-list-bullet 7))
-            ((eq char ?A)
-             (org-cycle-list-bullet 6))
-            ((eq char ?B)
-             (org-cycle-list-bullet 8))
-            (t (org-cycle-list-bullet (char-to-string char))))))
+      (pcase char
+        (?1 (org-cycle-list-bullet 3))
+        (?2 (org-cycle-list-bullet 4))
+        (?a (org-cycle-list-bullet 5))
+        (?b (org-cycle-list-bullet 7))
+        (?A (org-cycle-list-bullet 6))
+        (?B (org-cycle-list-bullet 8))
+        (_ (org-cycle-list-bullet (char-to-string char))))))
+
   (defun org-at-openable-item-p ()
     (when (eq major-mode 'org-mode)
       (let* ((context (org-element-lineage
