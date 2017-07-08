@@ -3807,7 +3807,7 @@ Syntax highlighting for markdown files.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package disable-mouse
-  :defer 5
+  :demand  t
   :config
   (global-disable-mouse-mode)
   (dolist (key '([mouse-1]
