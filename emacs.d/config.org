@@ -294,28 +294,6 @@ Save stuff you've copied in other applications to the emacs kill-ring.
 #+end_src
 *** Other
 #+begin_src emacs-lisp
-(defun diego/ret ()
-  "Dwim return key binding.
-
-If url at point, opens url with `goto-address-at-point'.
-If in `org-mode', calls `org-open-at-point'.
-Otherwise, executes `evil-ret'."
-  (interactive)
-  (cond ((thing-at-point 'url) (goto-address-at-point))
-        ((and (eq major-mode 'org-mode)
-              (org-element-lineage
-               (org-element-context)
-               '(clock comment comment-block footnote-definition
-                       footnote-reference headline inlinetask keyword link
-                       node-property timestamp)
-               t))
-         (org-open-at-point))
-        ((and (eq major-mode 'org-mode) (org-at-item-checkbox-p))
-         (org-toggle-checkbox))
-        ((and (eq major-mode 'org-mode) (org-in-src-block-p))
-         (org-babel-execute-src-block))
-        (t (evil-ret))))
-
 (defun toggle-rlines ()
   "Toggle relative line numbers."
   (interactive)
@@ -341,6 +319,10 @@ Otherwise, executes `evil-ret'."
 (define-globalized-minor-mode global-rlines-mode rlines-mode
   rlines-mode
   (lambda () (rlines-mode 1)))
+
+(defmacro fbound-and-true-p (name &optional args)
+  `(and (fboundp #',name)
+        (apply #',name ,args)))
 #+end_src
 ** Packages
 These are packages that I consider /absolutely essential/ to my emacs workflow,
@@ -947,6 +929,19 @@ Source: https://git.io/vQKEa"
             ((eq char ?B)
              (org-cycle-list-bullet 8))
             (t (org-cycle-list-bullet (char-to-string char))))))
+  (defun org-at-openable-item-p ()
+    (when (eq major-mode 'org-mode)
+      (let* ((context (org-element-lineage
+                       (org-element-context)
+                       '(clock footnote-definition footnote-reference headline
+                               inlinetask link timestamp)
+                       t))
+             (type (org-element-type context)))
+        (memq type '(footnote-definition
+                     footnote-reference
+                     headline inlinetask
+                     link
+                     timestamp)))))
 
   (defun diego/org-hugo-export ()
     "Export current subheading to markdown using pandoc."
@@ -1318,6 +1313,17 @@ Supposedly better than autocomplete.
 (use-package powerline)
 #+end_src
 ** Bindings
+*** Ret
+#+begin_src emacs-lisp
+(general-define-key
+ :states '(normal motion)
+ "RET"
+ (general-predicate-dispatch nil
+   (thing-at-point 'url) 'go-to-address-at-point
+   (fbound-and-true-p org-at-openable-item-p) 'org-open-at-point
+   (fbound-and-true-p org-at-item-checkbox-p) 'org-toggle-checkbox
+   (fbound-and-true-p org-in-src-block-p) 'org-babel-execute-src-block))
+#+end_src
 *** Leader
 #+begin_src emacs-lisp
 (diego/leader-keys
