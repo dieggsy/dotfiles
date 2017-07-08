@@ -299,15 +299,6 @@ Save stuff you've copied in other applications to the emacs kill-ring.
                     (let ((mode-hook (intern (concat (symbol-name mode)
                                                      "-mode-hook"))))
                       `(add-hook ',mode-hook #',setup-func)))))))
-
-(defmacro diego/repeat-calls (name num-args &rest args)
-  "Call a function repeatedly."
-  (declare (indent defun))
-  (if (not (= (mod (length args) num-args) 0))
-      (error "diego/repeat-calls: Not enough arguments.")
-    `(progn
-       ,@(cl-loop while args collect
-                  `(,name ,@(cl-loop repeat num-args collect (pop args)))))))
 #+end_src
 *** Other
 #+begin_src emacs-lisp
@@ -834,29 +825,43 @@ so I went with it.
 **** Functions
 #+begin_src emacs-lisp
 (with-eval-after-load 'org
-  (defmacro diego|create-block-wrap (blocktype)
-    (let ((newfunc (intern
-                    (concat "diego/org-wrap-with-block-"
-                            (replace-regexp-in-string " " "-" blocktype)))))
-      `(defun ,newfunc ()
-         (interactive)
-         (backward-paragraph)
-         (insert (format "\n#+begin_%s" ,blocktype))
-         (forward-paragraph)
-         (insert (format "#+end_%s\n" (car (split-string ,blocktype))))
-         (backward-paragrap))))
+  (defun diego|create-block-wrap (&rest blocktypes)
+    (cl-loop
+     for type in blocktypes do
+     (let ((newfunc (intern
+                     (concat "diego/org-wrap-with-block-"
+                             (replace-regexp-in-string " " "-" type)))))
+       (eval `(defun ,newfunc ()
+                (interactive)
+                (backward-paragraph)
+                (insert ,(format "\n#+begin_%s" type))
+                (forward-paragraph)
+                (insert ,(format "#+end_%s\n" (car (split-string type))))
+                (backward-paragraph))))))
 
-  (diego/repeat-calls diego|create-block-wrap 1
-    "src"
-    "src python"
-    "src emacs-lisp"
-    "export latex")
+  (diego|create-block-wrap
+   "src"
+   "src python"
+   "src emacs-lisp"
+   "export latex")
 
-  (defmacro diego|org-emphasize (fname char)
-    "Make function for setting the emphasis in org mode"
-    `(defun ,fname ()
-       (interactive)
-       (org-emphasize ,char)))
+  (defun diego|org-emphasize (&rest args)
+    "Make functions for setting the emphasis in org mode"
+    (cl-loop for (name char) on args
+             by #'cddr do
+             (let ((fname (intern (concat "diego/org-" name))))
+               (eval `(defun ,fname ()
+                        (interactive)
+                        (org-emphasize ,char))))))
+
+  (diego|org-emphasize
+   "bold" ?*
+   "italic" ?/
+   "code" ?~
+   "underline" ?_
+   "verbatim" ?=
+   "strike-through" ?+
+   "clear" ? )
 
   (defun diego/org-agenda-toggle-date (current-line)
     "Toggle `SCHEDULED' and `DEADLINE' tag in the capture buffer.
@@ -1062,13 +1067,13 @@ Source: https://git.io/vQKEa"
    "ef" 'diego/eval-defun
 
    "b"  'org-babel-tangle
-   "xb" (diego|org-emphasize diego/org-bold ?*)
-   "xi" (diego|org-emphasize diego/org-italic ?/)
-   "xc" (diego|org-emphasize diego/org-code ?~)
-   "xu" (diego|org-emphasize diego/org-underline ?_)
-   "xv" (diego|org-emphasize diego/org-verbatim ?=)
-   "xs" (diego|org-emphasize diego/org-strike-through ?+)
-   "xr" (diego|org-emphasize diego/org-clear ? )
+   "xb" 'diego/org-bold
+   "xi" 'diego/org-italic
+   "xc" 'diego/org-code
+   "xu" 'diego/org-underline
+   "xv" 'diego/org-verbatim
+   "xs" 'diego/org-strike-through
+   "xr" 'diego/org-clear
    "xq" 'diego/org-wrap-with-quote
    "xx" 'org-cut-special
    "xp" 'org-paste-special
@@ -1866,25 +1871,20 @@ Source: http://tinyurl.com/k8g9sex"
     (sp-local-pair modes "'" nil :actions nil)
     (sp-local-pair modes "`" nil :actions nil))
 
-  (defmacro diego|sp-wrap-with (char-name char &rest other)
+  (defun diego|sp-wrap-with (&rest args)
     "Make function(s) for wrapping with character using `sp-wrap-with-pair'"
-    (declare (indent defun))
-    `(progn
-       ,@(cl-loop while char-name collect
-                  (let* ((current-char-name char-name)
-                         (current-char char)
-                         (fname (intern (concat "diego/sp-wrap-with-" current-char-name))))
-                    (setq char-name (pop other)
-                          char (pop other))
-                    `(defun ,fname (&optional arg)
-                       (interactive "P")
-                       (sp-wrap-with-pair ,current-char))))))
+    (cl-loop for (char-name char) on args
+             by #'cddr do
+             (let ((fname (intern (concat "diego/sp-wrap-with-" char-name))))
+               (eval `(defun ,fname (&optional arg)
+                        (interactive "P")
+                        (sp-wrap-with-pair ,char))))))
 
   (diego|sp-wrap-with
-    "paren" "("
-    "curly" "{"
-    "double-quote" "\""
-    "single-quote" "'"))
+   "paren" "("
+   "curly" "{"
+   "double-quote" "\""
+   "single-quote" "'"))
 
 (use-package evil-smartparens
   :after smartparens
@@ -2010,28 +2010,31 @@ Source: https://git.io/vQKul"
     (message "%S" complete-regexp)
     (align-regexp start end complete-regexp group 1 t)))
 
-(defmacro diego|create-align-repeat-x (name regexp &optional justify-right default-after)
+(defun diego|create-align-repeat-x (&rest args)
   "Create an alignment function given name and alignment regexp.
 
 Source: https://git.io/vQKu4"
-  (let ((new-func (intern (concat "diego/align-repeat-" name))))
-    `(defun ,new-func (start end switch)
-       (interactive "r\nP")
-       (let ((after (not (eq (if switch t nil) (if ,default-after t nil)))))
-         (diego/align-repeat start end ,regexp ,justify-right after)))))
+  (cl-loop
+   for (name regexp justify-right default-after) on args
+   by #'cddddr do
+   (let ((new-func (intern (concat "diego/align-repeat-" name))))
+     (eval `(defun ,new-func (start end switch)
+              (interactive "r\nP")
+              (let ((after (not (eq (if switch t nil) (if ,default-after t nil)))))
+                (diego/align-repeat start end ,regexp ,justify-right after)))))))
 
-(diego/repeat-calls diego|create-align-repeat-x 4
-  "comma" "," nil t
-  "semicolon" ";" nil t
-  "colon" ":" nil t
-  "equal" "=" nil nil
-  "math-oper" "[+\\-*/]" nil nil
-  "ampersand" "&" nil nil
-  "bar" "|" nil nil
-  "left-paren" "(" nil nil
-  "right-paren" ")" t nil
-  "backslash" "\\\\" nil nil
-  "single-quote" "'" nil nil)
+(diego|create-align-repeat-x
+ "comma" "," nil t
+ "semicolon" ";" nil t
+ "colon" ":" nil t
+ "equal" "=" nil nil
+ "math-oper" "[+\\-*/]" nil nil
+ "ampersand" "&" nil nil
+ "bar" "|" nil nil
+ "left-paren" "(" nil nil
+ "right-paren" ")" t nil
+ "backslash" "\\\\" nil nil
+ "single-quote" "'" nil nil)
 
 (eval-when-compile
   (declare-function align-region "align"))
@@ -2053,23 +2056,22 @@ Source: https://git.io/vQKu2"
 #+end_src
 *** Justify
 #+begin_src emacs-lisp
-(defmacro diego|justify (type &rest types)
+(defun diego|justify (type &rest types)
   "Create justification function(s), one per given TYPE."
-  `(progn
-     ,@(cl-loop
-        while type collect
-        (let ((func-name (intern (concat "diego/justify-" type)))
-              (current-type type))
-          (setq type (pop types))
-          `(defun ,func-name ()
-             (interactive)
-             (if (region-active-p)
-                 (set-justification (region-beginning)
-                                    (region-end)
-                                    (intern ,current-type))
-               (set-justification (line-beginning-position)
-                                  (line-end-position)
-                                  (intern ,current-type))))))))
+  (cl-loop
+   while type collect
+   (let ((func-name (intern (concat "diego/justify-" type)))
+         (current-type type))
+     (setq type (pop types))
+     (eval `(defun ,func-name ()
+              (interactive)
+              (if (region-active-p)
+                  (set-justification (region-beginning)
+                                     (region-end)
+                                     (intern ,current-type))
+                (set-justification (line-beginning-position)
+                                   (line-end-position)
+                                   (intern ,current-type))))))))
 
 (diego|justify "left"
                "right"
@@ -2638,11 +2640,8 @@ Like git, for emacs. But cooler.
 (use-package gist
   :config
   (let ((gh-vals (cdar gh-profile-alist)))
-    (diego/repeat-calls setf 2
-      gh-vals (plist-put gh-vals
-                         :username "therockmandolinist")
-      gh-vals (plist-put gh-vals
-                         :token (password-store-get "tokens/github/gist")))))
+    (setf gh-vals (plist-put gh-vals :username "therockmandolinist")
+          gh-vals (plist-put gh-vals :token (password-store-get "tokens/github/gist")))))
 #+end_src
 
 ** Functions
