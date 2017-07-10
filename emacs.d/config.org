@@ -1220,22 +1220,35 @@ Supposedly better than autocomplete.
 
   (defmacro diego/declare-prefix (&rest body)
     (declare (indent defun))
-    `(diego/leader-keys
-      ,@(cl-loop for (prefix name) on body
-                 by #'cddr
-                 as j = `(:ignore t :which-key ,name)
-                 while name
-                 append `(,prefix ',j))))
+    `(which-key-add-key-based-replacements
+       ,@(cl-loop
+          for (prefix name) on body
+          by #'cddr
+          while name
+          append `(,(concat "SPC " prefix) ,name
+                   ,(concat "C-SPC " prefix) ,name))))
 
-  (defmacro diego/declare-map-prefix (maps &rest body)
+  (defmacro diego/declare-mode-prefix (modes &rest body)
     (declare (indent defun))
-    `(diego/mode-leader-keys
-      :keymaps ,maps
-      ,@(cl-loop for (prefix name) on body
-                 by #'cddr
-                 as j = `(:ignore t :which-key ,name)
-                 while name
-                 append `(,prefix ',j))))
+    (let ((modes (if (listp modes) modes (list modes))))
+      `(progn
+         ,@(cl-loop
+            for mode in modes collect
+            `(which-key-add-major-mode-key-based-replacements ',mode
+               ,@(cl-loop
+                  for (prefix name) on body
+                  by #'cddr
+                  while name
+                  append `(,(concat ", " prefix) ,name
+                           ,(concat "C-, " prefix) ,name)))))))
+
+  (defmacro diego/which-key-remove-prefix (&rest body)
+    (declare (indent defun))
+    `(progn
+       ,@(cl-loop for regexp in body collect
+                  `(push '((nil . ,(concat regexp "\\(.+\\)")) . (nil . "\\1"))
+                         which-key-replacement-alist))))
+
 
   (diego/declare-prefix
     "a"   "applications"
@@ -1271,32 +1284,30 @@ Supposedly better than autocomplete.
     "S"   "spelling"
     "SPC"     "root")
 
-  (diego/declare-map-prefix 'org-mode-map
+  (diego/declare-mode-prefix org-mode
     "i" "insert"
     "x" "text"
     "t" "table"
     "e" "eval-export")
 
-  (diego/declare-map-prefix '(emacs-lisp-mode-map lisp-interaction-mode-map)
-    "e" "eval")
+  (diego/declare-mode-prefix (emacs-lisp-mode lisp-interaction-mode)
+    "e" "eval"
+    "p" "pp")
 
   (setq which-key-sort-order 'which-key-key-order-alpha)
   (setq which-key-sort-uppercase-first nil)
 
-  (dolist (pref '("ivy-\\(.+\\)"
-                  "counsel-\\(.+\\)"
-                  "projectile-\\(.+\\)"
-                  "counsel-projectile-\\(.+\\)"
-                  "crux-\\(.+\\)"
-                  "headlong-\\(.+\\)"
-                  "diego/\\(.+\\)"
-                  "evilnc-\\(.+\\)"
-                  "magit-\\(.+\\)"
-                  "avy-\\(.+\\)"
-                  "eyebrowse-\\(.+\\)"
-                  ;; "hydra-[^/]+/\\(.+\\)"
-                  ))
-    (push `((nil . ,pref) . (nil . "\\1")) which-key-replacement-alist)))
+  (diego/which-key-remove-prefix
+    "ivy-"
+    "counsel-"
+    "projectile-"
+    "counsel-projectile-"
+    "crux-"
+    "diego/"
+    "evilnc-"
+    "magit-"
+    "avy-"
+    "eyebrowse-"))
 #+end_src
 
 *** [[https://github.com/milkypostman/powerline][powerline]]
