@@ -3315,39 +3315,25 @@ Pretty neat, though not entirely complete, IMO.
 Source: http://tinyurl.com/le6wxuo"
   (interactive "p")
   (save-excursion
-    (up-list (abs levels))
+    (sp-end-of-sexp (abs levels))
     (eval-last-sexp nil)))
 
-(defun diego/eval-next-sexp ()
-  "Eval next sexp (after point).
-
-Source: http://tinyurl.com/le6wxuo"
-  (interactive)
-  (save-excursion
-    (forward-sexp)
-    (eval-last-sexp nil)))
-
-(defun diego/eval-and-replace ()
+(defun diego/pp-eval-surrounding-sexp (levels)
   "Replace the preceding sexp with its value.
 
 Source: http://tinyurl.com/mh5ev6x"
-  (interactive)
-  (forward-sexp)
-  (if (= (point) (point-max))
-      (insert " ")
-    (forward-char))
-  (backward-kill-sexp)
-  (condition-case nil
-      (prin1 (eval (read (current-kill 0)))
-             (current-buffer))
-    (error (message "Invalid expression")
-           (insert (current-kill 0)))))
+  (interactive "p")
+  (let (pp-escape-newlines)
+    (save-excursion
+      (sp-end-of-sexp (abs levels))
+      (pp-eval-last-sexp nil))))
 
 (defun diego/pp-macroexpand-surrounding-sexp (levels)
   (interactive "p")
-  (save-excursion
-    (up-list (abs levels))
-    (pp-macroexpand-last-sexp nil)))
+  (let (pp-escape-newlines)
+    (save-excursion
+      (sp-end-of-sexp (abs levels))
+      (pp-macroexpand-last-sexp nil))))
 
 (defun diego/eval-buffer ()
   (interactive)
@@ -3447,8 +3433,8 @@ Source: https://git.io/vQKz8"
  "eR" 'diego/eval-and-replace
  "es" 'diego/eval-surrounding-sexp
  "el" 'eval-last-sexp
- "M"  'emacs-lisp-macroexpand
- "m" 'diego/pp-macroexpand-surrounding-sexp)
+ "pm" 'diego/pp-macroexpand-surrounding-sexp
+ "ps" 'diego/pp-eval-surrounding-sexp)
  #+end_src
 *** Setup
 #+begin_src emacs-lisp
