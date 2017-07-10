@@ -375,8 +375,12 @@ alias wiki="wiki -w 80"
 #+begin_src sh
 edit () {
     emacsclient -n $@
-    (( $+commands[i3-msg] )) && i3-msg '[title="emacs@Ragnarok"] scratchpad show' > /dev/null 2>&1
+    if (( $+commands[i3-msg] )); then
+        i3-msg '[instance="dropmite"] move scratchpad' > /dev/null 2>&1
+        i3-msg '[title="emacs@Ragnarok"] focus' > /dev/null 2>&1
+    fi
 }
+
 ff() { find . -type f -iname "*$1*" | peco --prompt "[find-file]" }
 
 fd() { find . -type d -iname "*$1*" | peco --prompt="[find-dir]"}

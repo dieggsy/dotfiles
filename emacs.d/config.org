@@ -404,7 +404,7 @@ editing. So I went for it. Now I'll never go back.
    "C-_" 'keyboard-quit
    "C-/"  'keyboard-quit
    [escape]  'keyboard-quit)
-  (:states '(i r v)
+  (:states '(insert replace visual)
    "C-_" 'evil-normal-state
    "C-/" 'evil-normal-state)
   (vmap [escape] 'keyboard-quit)
@@ -1308,7 +1308,7 @@ Supposedly better than autocomplete.
 #+begin_src emacs-lisp
 (mmap "RET"
       (general-predicate-dispatch nil
-        (thing-at-point 'url) 'go-to-address-at-point
+        (thing-at-point 'url) 'goto-address-at-point
         (fbound-and-true-p org-at-openable-item-p) 'org-open-at-point
         (fbound-and-true-p org-at-item-checkbox-p) 'org-toggle-checkbox
         (fbound-and-true-p org-in-src-block-p) 'org-babel-execute-src-block))
@@ -1886,9 +1886,6 @@ Kind of makes undo's like git. Or Vim, apparently, if you're into that.
 (use-package undo-tree
   :general
   (diego/leader-keys "au" 'undo-tree-visualize)
-  (:keymaps 'undo-tree-map
-   "C-/" nil
-   "C-_" nil)
   :config
   (setq undo-tree-visualizer-timestamps t))
 #+end_src
