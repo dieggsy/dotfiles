@@ -2759,17 +2759,17 @@ Source: https://git.io/vQKzv"
          (running (eq 'running flycheck-last-status-change)))
     (if (or errorp running) (format "•%s" err))))
 
-(defun d/propertize-active (window-active &rest arguments)
-  (let ((str (car arguments)))
-    (cond  ((and window-active (stringp str))
-            (apply #'propertize arguments) )
-           ((stringp str)
-            (car arguments)))))
-
 (defmacro d/with-window-status (&rest body)
   (declare (indent defun))
   `(let ((window-active? (powerline-selected-window-active)))
-     ,@body))
+     (cl-flet ((propertize-active
+                (&rest arguments)
+                (let ((str (car arguments)))
+                  (cond  ((and window-active? (stringp str))
+                          (apply #'propertize arguments) )
+                         ((stringp str)
+                          (car arguments))))))
+       ,@body)))
 
 (defmacro d/with-evil-tag-color (&rest body)
   (declare (indent defun))
@@ -2842,111 +2842,106 @@ Source: https://git.io/vQKzq"
 (defvar d/mode-line
   '((:eval
      (d/with-evil-tag-color
-       (d/with-window-status
-         (cond ((and window-active?
-                     (not (or (d/eyebrowse-relevant-p)
-                              (bound-and-true-p anzu--state)
-                              (d/in-macro-p)
-                              (d/in-evil-substitution-p))))
-                (d/make-xpm evil-tag-color 56 8))
-               ((not window-active?)
-                (d/make-xpm "#1D2021" 56 8))))))
+      (d/with-window-status
+       (cond ((and window-active?
+                   (not (or (d/eyebrowse-relevant-p)
+                            (bound-and-true-p anzu--state)
+                            (d/in-macro-p)
+                            (d/in-evil-substitution-p))))
+              (d/make-xpm evil-tag-color 56 8))
+             ((not window-active?)
+              (d/make-xpm "#1D2021" 56 8))))))
     ((:eval
       (d/with-window-status
-        (d/with-evil-tag-color
-          (when window-active?
-            (d/propertize-active
-             window-active?
-             (cond ((d/in-evil-substitution-p)
-                    (d/evil-substitute-num-matches))
-                   ((d/in-macro-p)
-                    (if (bound-and-true-p evil-this-macro)
-                        (char-to-string evil-this-macro)
-                      "Macro"))
-                   ((bound-and-true-p anzu--state)
-                    (anzu--update-mode-line))
-                   ((d/eyebrowse-relevant-p)
-                    (let* ((num (eyebrowse--get 'current-slot))
-                           (tag (nth 2 (assoc num (eyebrowse--get 'window-configs)))))
-                      (if (and tag (< 0 (length tag)))
-                          tag
-                        (int-to-string num)))))
-             'face
-             `(:foreground
-               "#3E3D31"
-               :weight bold
-               :background ,evil-tag-color
-               :box (:color ,evil-tag-color :line-width 14))))))))
+       (d/with-evil-tag-color
+        (when window-active?
+          (propertize-active
+           (cond ((d/in-evil-substitution-p)
+                  (d/evil-substitute-num-matches))
+                 ((d/in-macro-p)
+                  (if (bound-and-true-p evil-this-macro)
+                      (char-to-string evil-this-macro)
+                    "Macro"))
+                 ((bound-and-true-p anzu--state)
+                  (anzu--update-mode-line))
+                 ((d/eyebrowse-relevant-p)
+                  (let* ((num (eyebrowse--get 'current-slot))
+                         (tag (nth 2 (assoc num (eyebrowse--get 'window-configs)))))
+                    (if (and tag (< 0 (length tag)))
+                        tag
+                      (int-to-string num)))))
+           'face
+           `(:foreground
+             "#3E3D31"
+             :weight bold
+             :background ,evil-tag-color
+             :box (:color ,evil-tag-color :line-width 14))))))))
     ;; File modified
     " %* "
     ;; Buffer name & recursive editing
     "%[" mode-line-buffer-identification "%] "
     ;; Remote
     (:eval (d/with-window-status
-             (let ((host (file-remote-p default-directory 'host)))
-               (d/propertize-active
-                window-active?
-                (cond ((and host
-                            default-directory
-                            (string= host (system-name)))
-                       (concat "@"
-                               (file-remote-p default-directory 'user)
-                               " "))
-                      ((and host default-directory)
-                       (concat "@" host " ")))
-                'face
-                '(:foreground "#D3869B")))))
+            (let ((host (file-remote-p default-directory 'host)))
+              (propertize-active
+               (cond ((and host
+                           default-directory
+                           (string= host (system-name)))
+                      (concat "@"
+                              (file-remote-p default-directory 'user)
+                              " "))
+                     ((and host default-directory)
+                      (concat "@" host " ")))
+               'face
+               '(:foreground "#D3869B")))))
     ;; Line/column number
     (:eval (d/with-window-status
-             (d/propertize-active window-active?
-                                "%4l:%2c  "
-                                'face '(:foreground "#A89984"))))
+            (propertize-active "%4l:%2c  "
+                                 'face '(:foreground "#A89984"))))
     ;; Major mode
     (:eval
      (d/with-window-status
-       (d/propertize-active window-active?
-                          (concat mode-name "  ")
-                          'face '(:foreground "#83A598" :weight bold))))
+      (propertize-active
+       (concat mode-name "  ")
+       'face '(:foreground "#83A598" :weight bold))))
     ;; Version control
     (:eval
      (d/with-window-status
-       (when vc-mode
-         (d/propertize-active
-          window-active?
-          (concat (replace-regexp-in-string "^ Git." " " vc-mode) "  ")
-          'face '(:foreground "#FE8019" )))))
+      (when vc-mode
+        (propertize-active
+         (concat (replace-regexp-in-string "^ Git." " " vc-mode) "  ")
+         'face '(:foreground "#FE8019" )))))
     ;; Flycheck
     (:eval
      (d/with-window-status
-       (when (and (bound-and-true-p flycheck-mode)
-                  (or flycheck-current-errors
-                      (eq 'running flycheck-last-status-change)))
-         (concat
-          (cl-loop for state in '((error . "#FB4933")
-                                  (warning . "#FABD2F")
-                                  (info . "#83A598"))
-                   as lighter = (d/flycheck-lighter (car state))
-                   when lighter
-                   concat (d/propertize-active
-                           window-active?
-                           lighter
-                           'face `(:foreground ,(cdr state))))
-          " "))))
+      (when (and (bound-and-true-p flycheck-mode)
+                 (or flycheck-current-errors
+                     (eq 'running flycheck-last-status-change)))
+        (concat
+         (cl-loop for state in '((error . "#FB4933")
+                                 (warning . "#FABD2F")
+                                 (info . "#83A598"))
+                  as lighter = (d/flycheck-lighter (car state))
+                  when lighter
+                  concat (propertize-active
+                          lighter
+                          'face `(:foreground ,(cdr state))))
+         " "))))
     ;; Input method
     (:eval
      (d/with-window-status
-       (when (or current-input-method
-                 (and (bound-and-true-p evil-mode)
-                      (bound-and-true-p evil-input-method)))
-         (cond
-          (current-input-method
-           (d/propertize-active window-active?
-                              (concat current-input-method-title " ")
-                              'face
-                              'bold))
-          ((and (featurep 'evil) (bound-and-true-p evil-input-method))
-           (concat (nth 3 (assoc default-input-method input-method-alist))
-                   " "))))))))
+      (when (or current-input-method
+                (and (bound-and-true-p evil-mode)
+                     (bound-and-true-p evil-input-method)))
+        (cond
+         (current-input-method
+          (propertize-active
+           (concat current-input-method-title " ")
+           'face
+           'bold))
+         ((and (featurep 'evil) (bound-and-true-p evil-input-method))
+          (concat (nth 3 (assoc default-input-method input-method-alist))
+                  " "))))))))
 
 (setq-default mode-line-format d/mode-line)
 (with-current-buffer "*Messages*"
