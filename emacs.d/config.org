@@ -170,7 +170,7 @@ Integrates use-package and quelpa for maximum fun.
 #+end_src
 ** Functions
 #+begin_src emacs-lisp
-(defun updates ()
+(defun d/updates ()
   "Run `paradox-upgrade-packages' and  `quelpa-upgrade'."
   (interactive)
   (quelpa-upgrade)
@@ -238,9 +238,9 @@ Save stuff you've copied in other applications to the emacs kill-ring.
 ** Functions
 *** Dotfiles
 #+begin_src emacs-lisp
-(defvar diego/show-async-tangle-results nil)
+(defvar d/show-async-tangle-results nil)
 
-(defun diego/async-tangle-init ()
+(defun d/async-tangle-init ()
   "Asynchronously tangle config.org and and byte-compile."
   (interactive)
   (let ((init-tangle-start-time (current-time)))
@@ -252,7 +252,7 @@ Save stuff you've copied in other applications to the emacs kill-ring.
        ;; tangle
        (org-babel-tangle-file
         (expand-file-name "~/dotfiles/emacs.d/config.org")))
-     (unless diego/show-async-tangle-results
+     (unless d/show-async-tangle-results
        `(lambda (result)
           (if result
               (message "SUCCESS: config.org successfully tangled. (%.3fs)"
@@ -260,7 +260,7 @@ Save stuff you've copied in other applications to the emacs kill-ring.
                                                   ',init-tangle-start-time)))
             (message "ERROR: config.org tangle failed.")))))))
 
-(defun diego/async-babel-tangle ()
+(defun d/async-babel-tangle ()
   "Tangle org file asynchronously."
   (interactive)
   (let ((file (buffer-file-name)))
@@ -268,7 +268,7 @@ Save stuff you've copied in other applications to the emacs kill-ring.
      `(lambda ()
         (require 'org)
         (org-babel-tangle-file ,file))
-     (unless diego/show-async-tangle-results
+     (unless d/show-async-tangle-results
        (lambda (result)
          (if result
              (message "SUCCESS: successfully tangled file.")
@@ -276,12 +276,12 @@ Save stuff you've copied in other applications to the emacs kill-ring.
 #+end_src
 *** Config helpers
 #+begin_src emacs-lisp
-(defmacro diego/setup-mode (modes &rest body)
+(defmacro d/setup-mode (modes &rest body)
   "Create a setup function for MODES and add it to relevant hook(s)."
   (declare (indent defun))
   (let ((modes (if (listp modes) modes (list modes))))
     (let ((setup-func
-           (intern (concat "diego/setup-"
+           (intern (concat "d/setup-"
                            (symbol-name (car modes))
                            "-mode"))))
       `(progn
@@ -294,7 +294,7 @@ Save stuff you've copied in other applications to the emacs kill-ring.
 #+end_src
 *** Other
 #+begin_src emacs-lisp
-(defun toggle-rlines ()
+(defun d/toggle-rlines ()
   "Toggle relative line numbers."
   (interactive)
   (if (eq display-line-numbers 'relative)
@@ -302,13 +302,13 @@ Save stuff you've copied in other applications to the emacs kill-ring.
     (setq display-line-numbers 'relative)))
 
 
-(define-minor-mode rlines-mode
+(define-minor-mode d/rlines-mode
   "Display relative line numbers for current buffer."
   nil
   " rl"
   nil
   (setq display-line-numbers nil)
-  (when (and rlines-mode
+  (when (and d/rlines-mode
              (not (minibufferp)))
     (setq display-line-numbers 'relative)
     (setq display-line-number-width
@@ -316,11 +316,11 @@ Save stuff you've copied in other applications to the emacs kill-ring.
            (number-to-string
             (count-lines (point-min) (point-max)))))))
 
-(define-globalized-minor-mode global-rlines-mode rlines-mode
-  rlines-mode
-  (lambda () (rlines-mode 1)))
+(define-globalized-minor-mode d/global-rlines-mode d/rlines-mode
+  d/rlines-mode
+  (lambda () (d/rlines-mode 1)))
 
-(defmacro fbound-and-true-p (name &optional args)
+(defmacro d/fbound-and-true-p (name &optional args)
   `(and (fboundp #',name)
         (apply #',name ,args)))
 #+end_src
@@ -374,13 +374,13 @@ That undersells it. The /most/ convenient key definitions in emacs.
   (general-evil-setup t t)
 
   (general-create-definer
-   diego/mode-leader-keys
+   d/mode-leader-keys
    :states '(emacs normal visual motion insert)
    :non-normal-prefix "C-,"
    :prefix ",")
 
   (general-create-definer
-   diego/leader-keys
+   d/leader-keys
    :states '(emacs normal visual motion insert)
    :non-normal-prefix "C-SPC"
    :prefix "SPC"))
@@ -474,7 +474,7 @@ A really nice search/completion system for emacs.
    "C-k" 'ivy-previous-line
    [S-up] 'ivy-previous-history-element
    [S-down] 'ivy-next-history-element)
-  (diego/leader-keys
+  (d/leader-keys
    "-" 'ivy-resume
    "bb" 'ivy-switch-buffer
    "bB" 'ivy-switch-buffer-other-window)
@@ -501,7 +501,7 @@ A really nice search/completion system for emacs.
 #+begin_src emacs-lisp
 (use-package swiper
   :general
-  (diego/leader-keys
+  (d/leader-keys
    "sm" 'swiper-multi
    "sS" 'swiper-all)
   :config (setq swiper-goto-start-of-match t))
@@ -512,7 +512,7 @@ A really nice search/completion system for emacs.
   :general
   ("M-x" 'counsel-M-x
    "C-x C-f" 'counsel-find-file)
-  (diego/leader-keys
+  (d/leader-keys
    "SPC"  'counsel-M-x
    "ff"  'counsel-find-file
    "fj"  'counsel-file-jump
@@ -545,7 +545,7 @@ A really nice search/completion system for emacs.
   (defalias 'ag #'counsel-ag)
   (defalias 'locate #'counsel-locate)
 
-  (defun diego/counsel-yank-pop-action (s)
+  (defun d/counsel-yank-pop-action (s)
     "Make consistent with evil-paste-after.
 
 Source: https://git.io/vQKmf"
@@ -561,9 +561,9 @@ Source: https://git.io/vQKmf"
     (forward-char (length s)))
 
   (advice-add #'counsel-yank-pop-action
-              :override #'diego/counsel-yank-pop-action)
+              :override #'d/counsel-yank-pop-action)
 
-  (defun diego/counsel-yank-pop-format-function (cand-pairs)
+  (defun d/counsel-yank-pop-format-function (cand-pairs)
     "Make counsel-yank-pop look a little more like the rest of ivy.
 
 Source: https://git.io/vQK0v"
@@ -584,7 +584,7 @@ Source: https://git.io/vQK0v"
 
   (advice-add #'counsel--yank-pop-format-function
               :override
-              #'diego/counsel-yank-pop-format-function))
+              #'d/counsel-yank-pop-format-function))
 #+end_src
 *** [[https://github.com/Ilazki/prettify-utils.el][prettify-utils]]
 #+begin_src emacs-lisp
@@ -634,7 +634,7 @@ so I went with it.
   (setq org-agenda-text-search-extra-files '(agenda-archives)
         org-agenda-files '("~/Dropbox/org/todo.org" "~/Dropbox/org/gcal.org")
         org-default-notes-file "~/Dropbox/org/todo.org"
-        diego/notes-file "~Dropbox/org/notes.org"
+        d/notes-file "~Dropbox/org/notes.org"
         org-directory "~/Dropbox/org"
         org-archive-location "~/Dropbox/org/archive.org::"
         org-mobile-inbox-for-pull "~/Dropbox/org/mobile.org"
@@ -762,7 +762,7 @@ so I went with it.
     "M-H" 'org-shiftmetaleft
     "M-K" 'org-shiftmetaup
     "M-J" 'org-shiftmetadown)
-  (diego/leader-keys
+  (d/leader-keys
    "C"   'org-capture
    "bo"  'org-iswitchb
    "ao#" 'org-agenda-list-stuck-projects
@@ -786,7 +786,7 @@ so I went with it.
 #+end_src
 **** Variables
 #+begin_src emacs-lisp
-(defvar diego/org-prettify-alist
+(defvar d/org-prettify-alist
   (prettify-utils-generate
    ("TODO" "❯❯❯")
    ("READ" "❙❙❙")
@@ -798,12 +798,12 @@ so I went with it.
 **** Functions
 #+begin_src emacs-lisp
 (with-eval-after-load 'org
-  (defmacro diego|create-block-wrap (&rest blocktypes)
+  (defmacro d/create-block-wrap (&rest blocktypes)
     `(progn
        ,@(cl-loop
           for type in blocktypes collect
           (let ((newfunc (intern
-                          (concat "diego/org-wrap-with-block-"
+                          (concat "d/org-wrap-with-block-"
                                   (replace-regexp-in-string " " "-" type)))))
             `(defun ,newfunc ()
                (interactive)
@@ -813,23 +813,23 @@ so I went with it.
                (insert ,(format "#+end_%s\n" (car (split-string type))))
                (backward-paragraph))))))
 
-  (diego|create-block-wrap
+  (d/create-block-wrap
    "src"
    "src python"
    "src emacs-lisp"
    "export latex")
 
-  (defmacro diego|org-emphasize (&rest args)
+  (defmacro d/org-emphasize (&rest args)
     "Make functions for setting the emphasis in org mode"
     `(progn
        ,@(cl-loop for (name char) on args
                   by #'cddr collect
-                  (let ((fname (intern (concat "diego/org-" name))))
+                  (let ((fname (intern (concat "d/org-" name))))
                     `(defun ,fname ()
                        (interactive)
                        (org-emphasize ,char))))))
 
-  (diego|org-emphasize
+  (d/org-emphasize
    "bold" ?*
    "italic" ?/
    "code" ?~
@@ -838,7 +838,7 @@ so I went with it.
    "strike-through" ?+
    "clear" ? )
 
-  (defun diego/org-agenda-toggle-date (current-line)
+  (defun d/org-agenda-toggle-date (current-line)
     "Toggle `SCHEDULED' and `DEADLINE' tag in the capture buffer.
 
 Source: https://git.io/vQK0I"
@@ -855,7 +855,7 @@ Source: https://git.io/vQK0I"
           (and (search-forward "SCHEDULED:" search-limit t)
                (replace-match "DEADLINE:"))))))
 
-  (defun diego/org-insert-list-leader-or-self (char)
+  (defun d/org-insert-list-leader-or-self (char)
     "If on column 0, insert space-padded CHAR; otherwise insert CHAR.
 
 This has the effect of automatically creating a properly indented list
@@ -867,7 +867,7 @@ Source: https://git.io/vQK0s"
         (insert (concat " " char " "))
       (insert char)))
 
-  (defun diego/org-swap-tags (tags)
+  (defun d/org-swap-tags (tags)
     "Replace any tags on the current headline with TAGS.
 
 The assumption is that TAGS will be a string conforming to Org Mode's
@@ -886,7 +886,7 @@ Source: https://git.io/vQKEE"
         (replace-match tags)
         (org-set-tags t))))
 
-  (defun diego/org-set-tags (tag)
+  (defun d/org-set-tags (tag)
     "Add TAG if it is not in the list of tags, remove it otherwise.
 
 TAG is chosen interactively from the global tags completion table.
@@ -910,9 +910,9 @@ Source: https://git.io/vQKEa"
                                 ":"))
            (new (if (> (length new-tags) 1) (concat " :" new-tags ":")
                   nil)))
-      (diego/org-swap-tags new)))
+      (d/org-swap-tags new)))
 
-  (defun diego/org-choose-bullet-type ()
+  (defun d/org-choose-bullet-type ()
     "Change the bullet type for org lists with a prompt."
     (interactive)
     (let ((char (read-char-choice
@@ -941,7 +941,7 @@ Source: https://git.io/vQKEa"
                      link
                      timestamp)))))
 
-  (defun diego/org-hugo-export ()
+  (defun d/org-hugo-export ()
     "Export current subheading to markdown using pandoc."
     (interactive)
     ;; Save cursor position
@@ -1007,7 +1007,7 @@ Source: https://git.io/vQKEa"
 ***** TODO Turn this into an elisp function
 #+begin_src emacs-lisp
 (with-eval-after-load 'org
-  (fset 'diego/org-wrap-with-quote
+  (fset 'd/org-wrap-with-quote
         [?\{ ?i return ?# ?+ ?b ?e ?g ?i ?n ?_ ?q ?u ?o ?t ?e ?\C-/ ?\} ?i return
              up ?# ?+ ?e ?n ?d ?_ ?q ?u ?o ?t ?e ?\C-/ ?\{ ?j ?i ?  ?  ?\M-q
              ?\M-q ?\M-q ?\C-/]))
@@ -1015,13 +1015,13 @@ Source: https://git.io/vQKEa"
 **** Bindings
 #+begin_src emacs-lisp
 (with-eval-after-load 'org
-  (diego/mode-leader-keys
+  (d/mode-leader-keys
    :keymaps 'org-mode-map
    "$"  'org-archive-subtree
    "'"  'org-edit-special
    "."  'org-time-stamp
    "/"  'org-sparse-tree
-   ":"  'diego/org-set-tags
+   ":"  'd/org-set-tags
    "-"  'org-decrypt-entry
    "A"  'org-archive-subtree
    "N"  'widen
@@ -1033,7 +1033,7 @@ Source: https://git.io/vQKEa"
    "d"  'org-deadline
    "g"  'counsel-org-goto
    "G"  'counsel-org-goto-all
-   "l"  'diego/org-choose-bullet-type
+   "l"  'd/org-choose-bullet-type
    "n"  'org-narrow-to-subtree
    "s"  'org-schedule
 
@@ -1044,21 +1044,21 @@ Source: https://git.io/vQKEa"
    "id" 'org-insert-drawer
 
    "ed" 'org-export-dispatch
-   "eh" 'diego/org-hugo-export
-   "es" 'diego/eval-surrounding-sexp
+   "eh" 'd/org-hugo-export
+   "es" 'd/eval-surrounding-sexp
    "er" 'eval-region
-   "eb" 'diego/eval-buffer
-   "ef" 'diego/eval-defun
+   "eb" 'd/eval-buffer
+   "ef" 'd/eval-defun
 
    "b"  'org-babel-tangle
-   "xb" 'diego/org-bold
-   "xi" 'diego/org-italic
-   "xc" 'diego/org-code
-   "xu" 'diego/org-underline
-   "xv" 'diego/org-verbatim
-   "xs" 'diego/org-strike-through
-   "xr" 'diego/org-clear
-   "xq" 'diego/org-wrap-with-quote
+   "xb" 'd/org-bold
+   "xi" 'd/org-italic
+   "xc" 'd/org-code
+   "xu" 'd/org-underline
+   "xv" 'd/org-verbatim
+   "xs" 'd/org-strike-through
+   "xr" 'd/org-clear
+   "xq" 'd/org-wrap-with-quote
    "xx" 'org-cut-special
    "xp" 'org-paste-special
 
@@ -1090,12 +1090,12 @@ Source: https://git.io/vQKEa"
    "tto" 'org-table-toggle-coordinate-overlays
    "tw"  'org-table-wrap-region)
 
-(diego/mode-leader-keys
+(d/mode-leader-keys
  :keymaps 'org-src-mode
  :definer 'minor-mode
  "'" 'org-edit-src-exit)
 
-(diego/leader-keys
+(d/leader-keys
  :keymaps 'org-src-mode
  :definer 'minor-mode
  "fs" 'org-edit-src-save))
@@ -1115,17 +1115,17 @@ Source: https://git.io/vQKEa"
 (with-eval-after-load 'org-agenda
   (setq org-habit-graph-column 50))
 
-(diego/setup-mode org-agenda
-  (setq-local prettify-symbols-alist diego/org-prettify-alist)
+(d/setup-mode org-agenda
+  (setq-local prettify-symbols-alist d/org-prettify-alist)
   (prettify-symbols-mode))
 
 #+end_src
 ***** Capture
 #+begin_src emacs-lisp
 (imap :keymaps 'org-capture-mode-mop
-  "C-d" 'diego/org-agenda-toggle-date)
+  "C-d" 'd/org-agenda-toggle-date)
 (nmap :keymaps 'org-capture-mode-map
-  "C-d" 'diego/org-agenda-toggle-date)
+  "C-d" 'd/org-agenda-toggle-date)
 #+end_src
 ***** Org
 #+begin_src emacs-lisp
@@ -1134,11 +1134,11 @@ Source: https://git.io/vQKEa"
     (define-key org-mode-map (kbd char)
       `(lambda ()
          (interactive)
-         (diego/org-insert-list-leader-or-self ,char))))
+         (d/org-insert-list-leader-or-self ,char))))
   (setq org-bullets-bullet-list '("•")))
 
-(diego/setup-mode org
-  (setq-local prettify-symbols-alist diego/org-prettify-alist)
+(d/setup-mode org
+  (setq-local prettify-symbols-alist d/org-prettify-alist)
   (prettify-symbols-mode)
   (org-bullets-mode 1)
   (goto-address-mode)
@@ -1160,7 +1160,7 @@ Source: https://git.io/vQKEa"
 (use-package crux
   :defer 5
   :general
-  (diego/leader-keys
+  (d/leader-keys
    "TAB" 'crux-switch-to-previous-buffer
    "fd" 'crux-delete-file-and-buffer
    "fr" 'crux-rename-file-and-buffer
@@ -1213,12 +1213,12 @@ Supposedly better than autocomplete.
 (use-package which-key
   :defer 10
   :general
-  (diego/leader-keys
+  (d/leader-keys
    "hk" 'which-key-show-top-level)
   :config
   (which-key-mode)
 
-  (defmacro diego/declare-prefix (&rest body)
+  (defmacro d/declare-prefix (&rest body)
     (declare (indent defun))
     `(which-key-add-key-based-replacements
        ,@(cl-loop
@@ -1228,7 +1228,7 @@ Supposedly better than autocomplete.
           append `(,(concat "SPC " prefix) ,name
                    ,(concat "C-SPC " prefix) ,name))))
 
-  (defmacro diego/declare-mode-prefix (modes &rest body)
+  (defmacro d/declare-mode-prefix (modes &rest body)
     (declare (indent defun))
     (let ((modes (if (listp modes) modes (list modes))))
       `(progn
@@ -1242,7 +1242,7 @@ Supposedly better than autocomplete.
                   append `(,(concat ", " prefix) ,name
                            ,(concat "C-, " prefix) ,name)))))))
 
-  (defmacro diego/which-key-remove-prefix (&rest body)
+  (defmacro d/which-key-remove-prefix (&rest body)
     (declare (indent defun))
     `(progn
        ,@(cl-loop for regexp in body collect
@@ -1250,7 +1250,7 @@ Supposedly better than autocomplete.
                          which-key-replacement-alist))))
 
 
-  (diego/declare-prefix
+  (d/declare-prefix
     "a"   "applications"
     "ao"  "org"
     "ag"  "games"
@@ -1284,26 +1284,26 @@ Supposedly better than autocomplete.
     "S"   "spelling"
     "SPC"     "root")
 
-  (diego/declare-mode-prefix org-mode
+  (d/declare-mode-prefix org-mode
     "i" "insert"
     "x" "text"
     "t" "table"
     "e" "eval-export")
 
-  (diego/declare-mode-prefix (emacs-lisp-mode lisp-interaction-mode)
+  (d/declare-mode-prefix (emacs-lisp-mode lisp-interaction-mode)
     "e" "eval"
     "p" "pp")
 
   (setq which-key-sort-order 'which-key-key-order-alpha)
   (setq which-key-sort-uppercase-first nil)
 
-  (diego/which-key-remove-prefix
+  (d/which-key-remove-prefix
     "ivy-"
     "counsel-"
     "projectile-"
     "counsel-projectile-"
     "crux-"
-    "diego/"
+    "d/"
     "evilnc-"
     "magit-"
     "avy-"
@@ -1320,13 +1320,13 @@ Supposedly better than autocomplete.
 (mmap "RET"
       (general-predicate-dispatch nil
         (thing-at-point 'url) 'goto-address-at-point
-        (fbound-and-true-p org-at-openable-item-p) 'org-open-at-point
-        (fbound-and-true-p org-at-item-checkbox-p) 'org-toggle-checkbox
-        (fbound-and-true-p org-in-src-block-p) 'org-babel-execute-src-block))
+        (d/fbound-and-true-p org-at-openable-item-p) 'org-open-at-point
+        (d/fbound-and-true-p org-at-item-checkbox-p) 'org-toggle-checkbox
+        (d/fbound-and-true-p org-in-src-block-p) 'org-babel-execute-src-block))
 #+end_src
 *** Leader
 #+begin_src emacs-lisp
-(diego/leader-keys
+(d/leader-keys
  "qf" 'delete-frame
  "qq" 'save-buffers-kill-emacs
 
@@ -1374,11 +1374,11 @@ A convenient full-screen binding I'm used to from iTerm.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package define-word
-  :commands diego/define-word
+  :commands d/define-word
   :general
-  (diego/leader-keys "sw" 'diego/define-word)
+  (d/leader-keys "sw" 'd/define-word)
   :config
-  (defun diego/define-word (&optional word)
+  (defun d/define-word (&optional word)
     (interactive)
     (if word
         (define-word word)
@@ -1398,7 +1398,7 @@ A convenient full-screen binding I'm used to from iTerm.
 #+begin_src emacs-lisp
 (use-package devdocs
   :general
-  (diego/leader-keys "hdd"  'devdocs-search))
+  (d/leader-keys "hdd"  'devdocs-search))
 #+end_src
 *** [[https://github.com/Malabarba/emacs-google-this][emacs-google-this]]
 #+begin_quote
@@ -1408,7 +1408,7 @@ A convenient full-screen binding I'm used to from iTerm.
 (use-package google-this
   :commands ddg-this-search
   :general
-  (diego/leader-keys
+  (d/leader-keys
    "sd" 'ddg-this-search
    "sg" 'google-this-search)
   :config
@@ -1485,7 +1485,7 @@ Non-interactively SEARCH-STRING is the string to search."
 #+begin_src emacs-lisp
 (use-package tldr
   :general
-  (diego/leader-keys "ht" 'tldr)
+  (d/leader-keys "ht" 'tldr)
   :general
   (nmap :keymaps 'tldr-mode-map
     "q" 'quit-window))
@@ -1493,7 +1493,7 @@ Non-interactively SEARCH-STRING is the string to search."
 ** Bindings
 Leader bindings
 #+begin_src emacs-lisp
-(diego/leader-keys
+(d/leader-keys
  "hca" 'customize-apropos
  "hcf" 'customize-face-other-window
  "hcg" 'customize-group-other-window
@@ -1562,10 +1562,10 @@ Which means it's less likely to block up emacs. Or something.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package ranger
-  :commands diego/deer
+  :commands d/deer
   :general
-  (diego/leader-keys
-   "ad" 'diego/deer
+  (d/leader-keys
+   "ad" 'd/deer
    "ar" 'ranger)
   :init
   (require 'bookmark)
@@ -1576,7 +1576,7 @@ Which means it's less likely to block up emacs. Or something.
         ranger-cleanup-eagerly t
         ranger-parent-depth 0)
 
-  (defun diego/ranger-travel ()
+  (defun d/ranger-travel ()
     "Use ivy for ranger-travel instead."
     (interactive)
     (cond
@@ -1585,9 +1585,9 @@ Which means it's less likely to block up emacs. Or something.
      (t (call-interactively #'ido-find-file))))
 
   (advice-add #'ranger-travel
-              :override #'diego/ranger-travel)
+              :override #'d/ranger-travel)
 
-  (defun diego/deer (arg)
+  (defun d/deer (arg)
     (interactive "P")
     (if arg
         (deer)
@@ -1601,7 +1601,7 @@ Which means it's less likely to block up emacs. Or something.
 #+begin_src emacs-lisp
 (use-package projectile
   :general
-  (diego/leader-keys
+  (d/leader-keys
    "pg" 'projectile-vc
    "pk" 'projectile-kill-buffers
    "po" 'projectile-multi-occur
@@ -1615,16 +1615,16 @@ Which means it's less likely to block up emacs. Or something.
 *** [[https://github.com/ericdanan/counsel-projectile][counsel-projectile]]
 #+begin_src emacs-lisp
 (use-package counsel-projectile
-  :commands diego/project-find-file
+  :commands d/project-find-file
   :general
-  (diego/leader-keys
+  (d/leader-keys
    "pb" 'counsel-projectile-switch-to-buffer
    "pd" 'counsel-projectile-find-dir
    "pf" 'counsel-projectile-find-file
    "pp" 'counsel-projectile
    "ps" 'counsel-projectile-switch-project)
   :config
-  (defun diego/project-find-file ()
+  (defun d/project-find-file ()
     (interactive)
     (condition-case nil
         (counsel-git)
@@ -1635,7 +1635,7 @@ Which means it's less likely to block up emacs. Or something.
 #+begin_src emacs-lisp
 (use-package headlong
   :general
-  (diego/leader-keys "fB" 'headlong-bookmark-jump-other
+  (d/leader-keys "fB" 'headlong-bookmark-jump-other
                      "fb" 'headlong-bookmark-jump)
   :config
   (bookmark-maybe-load-default-file))
@@ -1644,14 +1644,14 @@ Which means it's less likely to block up emacs. Or something.
 ** Functions
 *** File Manipulation
 #+begin_src emacs-lisp
-(defun diego/copy-file ()
+(defun d/copy-file ()
   "Copy file to another location.
 
 Source: https://git.io/vQKES"
   (interactive)
   (call-interactively #'write-file))
 
-(defun diego/safe-erase-buffer ()
+(defun d/safe-erase-buffer ()
   "Prompt before erasing buffer.
 Source: https://git.io/vQKEd"
   (interactive)
@@ -1661,7 +1661,7 @@ Source: https://git.io/vQKEd"
         (message "Buffer erased."))
     (message "erase-buffer cancelled")))
 
-(defun download-file ()
+(defun d/download-file ()
   "Download a file from url to specified path."
   (interactive)
   (let* ((file-url (read-from-minibuffer "URL: "))
@@ -1673,31 +1673,31 @@ Source: https://git.io/vQKEd"
 #+end_src
 *** Switching
 #+begin_src emacs-lisp
-(defun diego/switch-to-scratch ()
+(defun d/switch-to-scratch ()
   "Switch to scratch buffer."
   (interactive)
   (switch-to-buffer "*scratch*"))
 
-(defun diego/switch-to-star ()
+(defun d/switch-to-star ()
   "Switch to '*' buffers."
   (interactive)
   (let ((ivy-initial-inputs-alist '((ivy-switch-buffer . "^*"))))
     (ivy-switch-buffer)))
 
-(defun diego/switch-to-customize ()
+(defun d/switch-to-customize ()
   "Switch to \"Customize\" buffers."
   (interactive)
   (let ((ivy-initial-inputs-alist '((ivy-switch-buffer . "^*customize "))))
     (ivy-switch-buffer)))
 
-(defun diego/switch-to-messages ()
+(defun d/switch-to-messages ()
   "Switch to *Messages* buffer."
   (interactive)
   (switch-to-buffer "*Messages*"))
 #+end_src
 *** Narrowing
 #+begin_src emacs-lisp
-(defun narrow-and-set-normal ()
+(defun d/narrow-and-set-normal ()
   "Narrow to the region and, if in a visual mode, set normal mode.
 
 Source: https://git.io/vQKEx"
@@ -1707,18 +1707,18 @@ Source: https://git.io/vQKEx"
       (progn (evil-normal-state nil)
              (evil-goto-first-line))))
 
-(defun narrow-to-region-or-subtree ()
+(defun d/narrow-to-region-or-subtree ()
   "Narrow to a region, if set, otherwise to an Org subtree, if present.
 
 Source: https://git.io/vQKuf"
   (interactive)
   (if (and mark-active
            (not (= (region-beginning) (region-end))))
-      (narrow-and-set-normal)
+      (d/narrow-and-set-normal)
     (if (derived-mode-p 'org-mode)
         (org-narrow-to-subtree))))
 
-(defun diego/narrow-dwim ()
+(defun d/narrow-dwim ()
   "Narrow to a thing or widen based on context.
 Attempts to follow the Do What I Mean philosophy.
 
@@ -1726,29 +1726,29 @@ Source: https://git.io/vQKuU"
   (interactive)
   (if (buffer-narrowed-p)
       (widen)
-    (narrow-to-region-or-subtree)))
+    (d/narrow-to-region-or-subtree)))
 #+end_src
 ** Bindings
 #+begin_src emacs-lisp
-(diego/leader-keys
- "b*"  'diego/switch-to-star
- "bC"  'diego/switch-to-customize
+(d/leader-keys
+ "b*"  'd/switch-to-star
+ "bC"  'd/switch-to-customize
  "bK"  'kill-buffer
- "bM"  'diego/switch-to-messages
+ "bM"  'd/switch-to-messages
  "bR"  'revert-buffer
- "bS"  'diego/switch-to-scratch
+ "bS"  'd/switch-to-scratch
  "bc"  'clone-indirect-buffer-other-window
- "be"  'diego/safe-erase-buffer
+ "be"  'd/safe-erase-buffer
  "bi"  'ibuffer
  "bk"  'kill-this-buffer
  "bm"  'kill-matching-buffers
  "bv"  'view-mode
 
- "fc"  'diego/copy-file
+ "fc"  'd/copy-file
  "fs"  'save-buffer
 
  "nf"  'narrow-to-defun
- "nn"  'diego/narrow-dwim
+ "nn"  'd/narrow-dwim
  "np"  'narrow-to-page
  "nr"  'narrow-to-region)
 #+end_src
@@ -1813,13 +1813,13 @@ Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted
 #+begin_src emacs-lisp
 (use-package flyspell
   :config
-  (defun diego/flyspell-correct-next ()
+  (defun d/flyspell-correct-next ()
     (interactive "p")
     (flyspell-goto-next-error)
     (flyspell-auto-correct-word))
 
-  (defun diego/flyspell-add-to-dictionary ()
-    "Add word at point to flyspell dictionary at `/Users/diego/.ispell_english'.
+  (defun d/flyspell-add-to-dictionary ()
+    "Add word at point to flyspell dictionary at `/Users/d/.ispell_english'.
 
 Source: http://tinyurl.com/k8g9sex"
     (interactive)
@@ -1870,17 +1870,17 @@ Source: http://tinyurl.com/k8g9sex"
     (sp-local-pair modes "'" nil :actions nil)
     (sp-local-pair modes "`" nil :actions nil))
 
-  (defmacro diego|sp-wrap-with (&rest args)
+  (defmacro d/sp-wrap-with (&rest args)
     "Make function(s) for wrapping with character using `sp-wrap-with-pair'"
     `(progn
        ,@(cl-loop for (char-name char) on args
                   by #'cddr collect
-                  (let ((fname (intern (concat "diego/sp-wrap-with-" char-name))))
+                  (let ((fname (intern (concat "d/sp-wrap-with-" char-name))))
                     `(defun ,fname (&optional arg)
                        (interactive "P")
                        (sp-wrap-with-pair ,char))))))
 
-  (diego|sp-wrap-with
+  (d/sp-wrap-with
    "paren" "("
    "curly" "{"
    "double-quote" "\""
@@ -1896,7 +1896,7 @@ Kind of makes undo's like git. Or Vim, apparently, if you're into that.
 #+begin_src emacs-lisp
 (use-package undo-tree
   :general
-  (diego/leader-keys "au" 'undo-tree-visualize)
+  (d/leader-keys "au" 'undo-tree-visualize)
   :config
   (setq undo-tree-visualizer-timestamps t))
 #+end_src
@@ -1904,7 +1904,7 @@ Kind of makes undo's like git. Or Vim, apparently, if you're into that.
 #+begin_src emacs-lisp
 (use-package unfill
   :general
-  (diego/leader-keys "xq" 'unfill-toggle)
+  (d/leader-keys "xq" 'unfill-toggle)
   ([remap fill-paragraph] 'unfill-toggle))
 #+end_src
 *** [[https://github.com/joaotavora/yasnippet][yasnippet]]
@@ -1915,7 +1915,7 @@ Freakin yasnippet. It's the best.
 #+begin_src emacs-lisp
 (use-package yasnippet
   :defer 5
-  :general (diego/leader-keys "iy" 'yas-insert-snippet)
+  :general (d/leader-keys "iy" 'yas-insert-snippet)
   :config
   (yas-global-mode 1))
 #+end_src
@@ -1926,7 +1926,7 @@ Freakin yasnippet. It's the best.
 ** Functions
 *** Move text
 #+begin_src emacs-lisp
-(defun diego/transpose-chars (arg)
+(defun d/transpose-chars (arg)
   "Move character at point forward one character.
 With prefix arg ARG, effect is to take character at point
 and drag it forward past ARG other characters (backward if ARG negative)."
@@ -1937,7 +1937,7 @@ and drag it forward past ARG other characters (backward if ARG negative)."
     (transpose-chars 1))
   (backward-char))
 
-(defun diego/backward-transpose-chars (arg)
+(defun d/backward-transpose-chars (arg)
   "Move character at point backward one character.
 With prefix arg ARG, effect is to take character at point
 and drag it backward past ARG other characters (backward if ARG negative)."
@@ -1948,7 +1948,7 @@ and drag it backward past ARG other characters (backward if ARG negative)."
     (transpose-chars -1))
   (backward-char))
 
-(defun diego/backward-transpose-words (arg)
+(defun d/backward-transpose-words (arg)
   "Interchange words around point, leaving point at end of them.
 With prefix arg ARG, effect is to take word before or around point
 and drag it forward past ARG other words (backward if ARG negative).
@@ -1959,7 +1959,7 @@ are interchanged."
       (transpose-words (- arg))
     (transpose-words -1)))
 
-(defun diego/move-line-or-region (arg)
+(defun d/move-line-or-region (arg)
   "Move line or region down one one line.
 With prefix arg ARG, effect is to take line at point and
 drag it down past ARG other lines (up if ARG negative)."
@@ -1970,9 +1970,9 @@ drag it down past ARG other lines (up if ARG negative)."
             (num (if arg arg 1)))
         (execute-kbd-macro
          (concat ":m" reg-or-lin "+" (number-to-string num) (kbd "RET") reactivate-region)))
-    (diego/backward-move-line-or-region (- arg))))
+    (d/backward-move-line-or-region (- arg))))
 
-(defun diego/backward-move-line-or-region (arg)
+(defun d/backward-move-line-or-region (arg)
   "Move line or region up one one line.
 With prefix arg ARG, effect is to take line at point and
 drag it up past ARG other lines (down if ARG negative)."
@@ -1983,12 +1983,12 @@ drag it up past ARG other lines (down if ARG negative)."
             (num (if arg (+ arg 1) 2)))
         (execute-kbd-macro
          (concat ":m" reg-or-lin "-" (number-to-string num) (kbd "RET") reactivate-region)))
-    (diego/move-line-or-region (- arg))))
+    (d/move-line-or-region (- arg))))
 
 #+end_src
 *** Align
 #+begin_src emacs-lisp
-(defun diego/align-repeat (start end regexp &optional justify-right after)
+(defun d/align-repeat (start end regexp &optional justify-right after)
   "Repeat alignment with respect to the given regular expression.
 
 If JUSTIFY-RIGHT is non nil justify to the right instead of the
@@ -2007,7 +2007,7 @@ Source: https://git.io/vQKul"
     (message "%S" complete-regexp)
     (align-regexp start end complete-regexp group 1 t)))
 
-(defmacro diego|create-align-repeat-x (&rest args)
+(defmacro d/create-align-repeat-x (&rest args)
   "Create an alignment function given name and alignment regexp.
 
 Source: https://git.io/vQKu4"
@@ -2015,13 +2015,13 @@ Source: https://git.io/vQKu4"
      ,@(cl-loop
         for (name regexp justify-right default-after) on args
         by #'cddddr collect
-        (let ((new-func (intern (concat "diego/align-repeat-" name))))
+        (let ((new-func (intern (concat "d/align-repeat-" name))))
           `(defun ,new-func (start end switch)
              (interactive "r\nP")
              (let ((after (not (eq (if switch t nil) (if ,default-after t nil)))))
-               (diego/align-repeat start end ,regexp ,justify-right after)))))))
+               (d/align-repeat start end ,regexp ,justify-right after)))))))
 
-(diego|create-align-repeat-x
+(d/create-align-repeat-x
  "comma" "," nil t
  "semicolon" ";" nil t
  "colon" ":" nil t
@@ -2034,9 +2034,7 @@ Source: https://git.io/vQKu4"
  "backslash" "\\\\" nil nil
  "single-quote" "'" nil nil)
 
-(eval-when-compile
-  (declare-function align-region "align"))
-(defun diego/align-repeat-decimal (start end)
+(defun d/align-repeat-decimal (start end)
   "Align a table of numbers on decimal points and dollar signs (both optional).
 
 Source: https://git.io/vQKu2"
@@ -2054,12 +2052,12 @@ Source: https://git.io/vQKu2"
 #+end_src
 *** Justify
 #+begin_src emacs-lisp
-(defmacro diego|justify (&rest types)
+(defmacro d/create-justify-x (&rest types)
   "Create justification function(s), one per given TYPE."
   `(progn
      ,@(cl-loop
         for type in types collect
-        (let ((func-name (intern (concat "diego/justify-" type)))
+        (let ((func-name (intern (concat "d/justify-" type)))
               (current-type type))
           `(defun ,func-name ()
              (interactive)
@@ -2071,16 +2069,17 @@ Source: https://git.io/vQKu2"
                                   (line-end-position)
                                   (intern ,current-type))))))))
 
-(diego|justify "left"
-               "right"
-               "full"
-               "center"
-               "none")
+(d/create-justify-x
+ "left"
+ "right"
+ "full"
+ "center"
+ "none")
 #+end_src
 
 *** Paragraph
 #+begin_src emacs-lisp
-(defun diego/paragraphize ()
+(defun d/paragraphize ()
   "Remove newlines from region."
   (interactive)
   (if (region-active-p)
@@ -2089,7 +2088,7 @@ Source: https://git.io/vQKu2"
 #+end_src
 *** Url
 #+begin_src emacs-lisp
-(defun diego/shorten-url-at-point ()
+(defun d/shorten-url-at-point ()
   "Shorten the url at point using the github url shortener or the TinyURL api.
 
 Source: http://tinyurl.com/l8z7vph"
@@ -2114,7 +2113,7 @@ Source: http://tinyurl.com/l8z7vph"
         (insert short-url))
     (error "No url at point.")))
 
-(defun diego/expand-url-at-point ()
+(defun d/expand-url-at-point ()
   (interactive)
   (if (thing-at-point 'url)
       (let* ((short-url (thing-at-point 'url))
@@ -2150,12 +2149,12 @@ _p_rev     match and _P_rev
 (with-eval-after-load 'hydra
   (defhydra hydra-transpose ()
     "transpose"
-    ("c" diego/transpose-chars "char")
-    ("C" diego/backward-transpose-chars "backward char")
-    ("j" diego/move-line-or-region "line/region")
-    ("k" diego/backward-move-line-or-region "backward line/region")
+    ("c" d/transpose-chars "char")
+    ("C" d/backward-transpose-chars "backward char")
+    ("j" d/move-line-or-region "line/region")
+    ("k" d/backward-move-line-or-region "backward line/region")
     ("w" transpose-words "word")
-    ("W" diego/backward-transpose-words "backward word")
+    ("W" d/backward-transpose-words "backward word")
     ("s" transpose-sexps "sexp" :exit t)))
 #+end_src
 *** Justify
@@ -2163,11 +2162,11 @@ _p_rev     match and _P_rev
 (with-eval-after-load 'hydra
   (defhydra hydra-justify (:exit t)
     "justify"
-    ("r" diego/justify-right "right")
-    ("l" diego/justify-left "left")
-    ("c" diego/justify-center "center")
-    ("f" diego/justify-full "full")
-    ("n" diego/justify-none "none")))
+    ("r" d/justify-right "right")
+    ("l" d/justify-left "left")
+    ("c" d/justify-center "center")
+    ("f" d/justify-full "full")
+    ("n" d/justify-none "none")))
 #+end_src
 *** Smartparens
 #+begin_src emacs-lisp
@@ -2186,11 +2185,11 @@ _u_nwrap  _S_lurp (back)   _[_ wrap _{_
     ("B"  sp-backward-barf-sexp)
     ("s"  sp-forward-slurp-sexp)
     ("S"  sp-backward-slurp-sexp)
-    ("("  diego/sp-wrap-with-paren)
-    ("["  diego/sp-wrap-with-bracket)
-    ("{"  diego/sp-wrap-with-curly)
-    ("\"" diego/sp-wrap-with-quote2)
-    ("'"  diego/sp-wrap-with-quote)))
+    ("("  d/sp-wrap-with-paren)
+    ("["  d/sp-wrap-with-bracket)
+    ("{"  d/sp-wrap-with-curly)
+    ("\"" d/sp-wrap-with-quote2)
+    ("'"  d/sp-wrap-with-quote)))
 #+end_src
 *** Evil-numbers
 #+begin_src emacs-lisp
@@ -2207,10 +2206,10 @@ _u_nwrap  _S_lurp (back)   _[_ wrap _{_
     "flyspell"
     ("b" flyspell-buffer "buffer")
     ("g" flyspell-goto-next-error "go to next")
-    ("a" diego/flyspell-add-to-dictionary "add to dict")
+    ("a" d/flyspell-add-to-dictionary "add to dict")
     ("n" flyspell-correct-next-word-generic "correct next generic")
     ("p" flyspell-correct-previous-word-generic "correct prev generic")
-    ("N" diego/flyspell-correct-next "correct next")
+    ("N" d/flyspell-correct-next "correct next")
     ("P" flyspell-auto-correct-previous-word "correct pref")))
 #+end_src
 ** Bindings
@@ -2224,27 +2223,27 @@ Make indent-rigidly more vimmy.
 #+end_src
 Leader keys
 #+begin_src emacs-lisp
-(diego/leader-keys
+(d/leader-keys
  "n-"  'hydra-numbers/evil-numbers/dec-at-pt
  "n="  'hydra-numbers/evil-numbers/inc-at-pt
 
  "S"   'hydra-spelling/body
 
- "xa&" 'diego/align-repeat-ampersand
- "xa'" 'diego/align-repeat-single-quote
- "xa(" 'diego/align-repeat-left-paren
- "xa)" 'diego/align-repeat-right-paren
- "xa," 'diego/align-repeat-comma
- "xa." 'diego/align-repeat-decimal
- "xa:" 'diego/align-repeat-colon
- "xa;" 'diego/align-repeat-semicolon
- "xa=" 'diego/align-repeat-equal
+ "xa&" 'd/align-repeat-ampersand
+ "xa'" 'd/align-repeat-single-quote
+ "xa(" 'd/align-repeat-left-paren
+ "xa)" 'd/align-repeat-right-paren
+ "xa," 'd/align-repeat-comma
+ "xa." 'd/align-repeat-decimal
+ "xa:" 'd/align-repeat-colon
+ "xa;" 'd/align-repeat-semicolon
+ "xa=" 'd/align-repeat-equal
  "xaa" 'align
  "xac" 'align-current
- "xam" 'diego/align-repeat-math-oper
+ "xam" 'd/align-repeat-math-oper
  "xar" 'align-regexp
- "xar" 'diego/align-repeat
- "xa|" 'diego/align-repeat-bar
+ "xar" 'd/align-repeat
+ "xa|" 'd/align-repeat-bar
 
  "xdw" 'delete-trailing-whitespace
  "xib" 'indent-buffer
@@ -2259,8 +2258,8 @@ Leader keys
 
  "xp"  'hydra-smartparens/body
 
- "xs"  'diego/shorten-url-at-point
- "xe"  'diego/expand-url-at-point
+ "xs"  'd/shorten-url-at-point
+ "xe"  'd/expand-url-at-point
 
  "im"  'insert-kbd-macro)
 #+end_src
@@ -2273,7 +2272,7 @@ Leader keys
 #+begin_src emacs-lisp
 (use-package ace-window
   :general
-  (diego/leader-keys
+  (d/leader-keys
    "\\" 'ace-window
    "wD" 'ace-delete-window
    "wS" 'ace-swap-window
@@ -2288,7 +2287,7 @@ Leader keys
 #+begin_src emacs-lisp
 (use-package avy
   :general
-  (diego/leader-keys
+  (d/leader-keys
    "jc" 'avy-goto-char-2
    "jl" 'avy-goto-line
    "jw" 'avy-goto-word-1)
@@ -2316,7 +2315,7 @@ Leader keys
              eyebrowse-switch-to-window-config-8
              eyebrowse-switch-to-window-config-9)
   :general
-  (diego/leader-keys
+  (d/leader-keys
    "es" 'eyebrowse-switch-to-window-config
    "el" 'eyebrowse-next-window-config
    "eh" 'eyebrowse-prev-window-config
@@ -2352,7 +2351,7 @@ Leader keys
 #+begin_src emacs-lisp
 (use-package dumb-jump
   :general
-  (diego/leader-keys
+  (d/leader-keys
    "jE" 'dumb-jump-go-prefer-external-other-window
    "jG" 'dumb-jump-go-other-window
    "jb" 'dumb-jump-back
@@ -2375,7 +2374,7 @@ imenu on steroids.
 
 ** Functions
 #+begin_src emacs-lisp
-(defun diego/toggle-window-split ()
+(defun d/toggle-window-split ()
   "Switch between vertical and horizontal window split.
 
 Source: http://tinyurl.com/k7s96fa"
@@ -2403,19 +2402,19 @@ Source: http://tinyurl.com/k7s96fa"
           (select-window first-win)
           (if this-win-2nd (other-window 1))))))
 
-(defun diego/split-vert-focus ()
+(defun d/split-vert-focus ()
   "Split window vertically and move focus to other window."
   (interactive)
   (split-window-right)
   (other-window 1))
 
-(defun diego/split-horz-focus ()
+(defun d/split-horz-focus ()
   "Split window horizontally and move focus to other window."
   (interactive)
   (split-window-below)
   (other-window 1))
 
-(defun diego/move-splitter-left (arg)
+(defun d/move-splitter-left (arg)
   "Move window splitter left.
 
 Source: https://git.io/vQKuS"
@@ -2425,7 +2424,7 @@ Source: https://git.io/vQKuS"
       (shrink-window-horizontally arg)
     (enlarge-window-horizontally arg)))
 
-(defun diego/move-splitter-right (arg)
+(defun d/move-splitter-right (arg)
   "Move window splitter right.
 
 Source: https://git.io/vQKu7"
@@ -2435,7 +2434,7 @@ Source: https://git.io/vQKu7"
       (enlarge-window-horizontally arg)
     (shrink-window-horizontally arg)))
 
-(defun diego/move-splitter-up (arg)
+(defun d/move-splitter-up (arg)
   "Move window splitter up.
 
 Source: https://git.io/vQKu5"
@@ -2445,7 +2444,7 @@ Source: https://git.io/vQKu5"
       (enlarge-window arg)
     (shrink-window arg)))
 
-(defun diego/move-splitter-down (arg)
+(defun d/move-splitter-down (arg)
   "Move window splitter down.
 
 Source: https://git.io/vQKuF"
@@ -2460,15 +2459,15 @@ Source: https://git.io/vQKuF"
 (with-eval-after-load 'hydra
   (defhydra hydra-splitter ()
     "splitter"
-    ("h" diego/move-splitter-left "←")
-    ("j" diego/move-splitter-down "↓")
-    ("k" diego/move-splitter-up "↑")
-    ("l" diego/move-splitter-right "→" )
+    ("h" d/move-splitter-left "←")
+    ("j" d/move-splitter-down "↓")
+    ("k" d/move-splitter-up "↑")
+    ("l" d/move-splitter-right "→" )
     ("=" balance-windows "balance")))
 #+end_src
 ** Bindings
 #+begin_src emacs-lisp
-(diego/leader-keys
+(d/leader-keys
  "jI" 'imenu-anywhere
  "jf" 'find-function
  "ji" 'imenu
@@ -2476,11 +2475,11 @@ Source: https://git.io/vQKuF"
 
  "wd" 'delete-window
  "wf" 'make-frame
- "wh" 'diego/split-horz-focus
+ "wh" 'd/split-horz-focus
  "wo" 'delete-other-windows
  "ws" 'hydra-splitter/body
- "wt" 'diego/toggle-window-split
- "wv" 'diego/split-vert-focus)
+ "wt" 'd/toggle-window-split
+ "wv" 'd/split-vert-focus)
 #+end_src
 * Git and github
 ** Packages
@@ -2492,8 +2491,8 @@ Like git, for emacs. But cooler.
 #+begin_src emacs-lisp
 (use-package magit
   :general
-  (diego/leader-keys
-   "gB" 'magit-blame-toggle
+  (d/leader-keys
+   "gB" 'd/magit-blame-toggle
    "gC" 'magit-clone
    "gL" 'magit-log-buffer-file
    "ga" 'magit-submodule-add
@@ -2509,7 +2508,7 @@ Like git, for emacs. But cooler.
         git-commit-summary-max-length 50
         git-commit-major-mode 'org-mode)
   (add-hook 'git-commit-mode-hook #'evil-insert-state)
-  (diego/setup-mode git-commit
+  (d/setup-mode git-commit
     (setq-local fill-column 72)
     (setq-local org-hide-emphasis-markers nil)))
 #+end_src
@@ -2644,7 +2643,7 @@ Like git, for emacs. But cooler.
 
 ** Functions
 #+begin_src emacs-lisp
-(defun magit-blame-toggle ()
+(defun d/magit-blame-toggle ()
   "Toggle magit-blame-mode on and off interactively.
 
 Source: https://git.io/vQKub"
@@ -2750,7 +2749,7 @@ Use a bar cursor in the minibuffer.
 *** Mode line
 **** Helpers
 #+begin_src emacs-lisp
-(defun diego/flycheck-lighter (state)
+(defun d/flycheck-lighter (state)
   "Return flycheck information for the given error type STATE.
 
 Source: https://git.io/vQKzv"
@@ -2760,19 +2759,19 @@ Source: https://git.io/vQKzv"
          (running (eq 'running flycheck-last-status-change)))
     (if (or errorp running) (format "•%s" err))))
 
-(defun propertize-active (window-active &rest arguments)
+(defun d/propertize-active (window-active &rest arguments)
   (let ((str (car arguments)))
     (cond  ((and window-active (stringp str))
             (apply #'propertize arguments) )
            ((stringp str)
             (car arguments)))))
 
-(defmacro with-window-status (&rest body)
+(defmacro d/with-window-status (&rest body)
   (declare (indent defun))
   `(let ((window-active? (powerline-selected-window-active)))
      ,@body))
 
-(defmacro with-evil-tag-color (&rest body)
+(defmacro d/with-evil-tag-color (&rest body)
   (declare (indent defun))
   `(let ((evil-tag-color
           (pcase (substring-no-properties
@@ -2786,7 +2785,7 @@ Source: https://git.io/vQKzv"
             (" O " "#B8BB26"))))
      ,@body))
 
-(defun diego/make-xpm (color height width)
+(defun d/make-xpm (color height width)
   "Create an XPM bitmap.
 
 Source: https://git.io/vQKzL"
@@ -2814,19 +2813,19 @@ Source: https://git.io/vQKzL"
                                (if (eq idx len) "\"};" "\",\n")))))
       'xpm t :ascent 'center))))
 
-(defun eyebrowse-relevant-p ()
+(defun d/eyebrowse-relevant-p ()
   (and (featurep 'eyebrowse)
        (< 1 (length (eyebrowse--get 'window-configs)))))
 
-(defun in-macro-p ()
+(defun d/in-macro-p ()
   (or defining-kbd-macro executing-kbd-macro))
 
-(defun in-evil-substitution-p ()
+(defun d/in-evil-substitution-p ()
   (or (assq 'evil-ex-substitute evil-ex-active-highlights-alist)
       (assq 'evil-ex-global-match evil-ex-active-highlights-alist)
       (assq 'evil-ex-buffer-match evil-ex-active-highlights-alist)))
 
-(defun evil-substitute-num-matches ()
+(defun d/evil-substitute-num-matches ()
   "Return the number of matches for the current evil substitution.
 
 Source: https://git.io/vQKzq"
@@ -2840,33 +2839,33 @@ Source: https://git.io/vQKzq"
 #+end_src
 **** Mode-line
 #+begin_src emacs-lisp
-(defvar diego/mode-line
+(defvar d/mode-line
   '((:eval
-     (with-evil-tag-color
-       (with-window-status
+     (d/with-evil-tag-color
+       (d/with-window-status
          (cond ((and window-active?
-                     (not (or (eyebrowse-relevant-p)
+                     (not (or (d/eyebrowse-relevant-p)
                               (bound-and-true-p anzu--state)
-                              (in-macro-p)
-                              (in-evil-substitution-p))))
-                (diego/make-xpm evil-tag-color 56 8))
+                              (d/in-macro-p)
+                              (d/in-evil-substitution-p))))
+                (d/make-xpm evil-tag-color 56 8))
                ((not window-active?)
-                (diego/make-xpm "#1D2021" 56 8))))))
+                (d/make-xpm "#1D2021" 56 8))))))
     ((:eval
-      (with-window-status
-        (with-evil-tag-color
+      (d/with-window-status
+        (d/with-evil-tag-color
           (when window-active?
-            (propertize-active
+            (d/propertize-active
              window-active?
-             (cond ((in-evil-substitution-p)
-                    (evil-substitute-num-matches))
-                   ((in-macro-p)
+             (cond ((d/in-evil-substitution-p)
+                    (d/evil-substitute-num-matches))
+                   ((d/in-macro-p)
                     (if (bound-and-true-p evil-this-macro)
                         (char-to-string evil-this-macro)
                       "Macro"))
                    ((bound-and-true-p anzu--state)
                     (anzu--update-mode-line))
-                   ((eyebrowse-relevant-p)
+                   ((d/eyebrowse-relevant-p)
                     (let* ((num (eyebrowse--get 'current-slot))
                            (tag (nth 2 (assoc num (eyebrowse--get 'window-configs)))))
                       (if (and tag (< 0 (length tag)))
@@ -2883,9 +2882,9 @@ Source: https://git.io/vQKzq"
     ;; Buffer name & recursive editing
     "%[" mode-line-buffer-identification "%] "
     ;; Remote
-    (:eval (with-window-status
+    (:eval (d/with-window-status
              (let ((host (file-remote-p default-directory 'host)))
-               (propertize-active
+               (d/propertize-active
                 window-active?
                 (cond ((and host
                             default-directory
@@ -2898,27 +2897,27 @@ Source: https://git.io/vQKzq"
                 'face
                 '(:foreground "#D3869B")))))
     ;; Line/column number
-    (:eval (with-window-status
-             (propertize-active window-active?
+    (:eval (d/with-window-status
+             (d/propertize-active window-active?
                                 "%4l:%2c  "
                                 'face '(:foreground "#A89984"))))
     ;; Major mode
     (:eval
-     (with-window-status
-       (propertize-active window-active?
+     (d/with-window-status
+       (d/propertize-active window-active?
                           (concat mode-name "  ")
                           'face '(:foreground "#83A598" :weight bold))))
     ;; Version control
     (:eval
-     (with-window-status
+     (d/with-window-status
        (when vc-mode
-         (propertize-active
+         (d/propertize-active
           window-active?
           (concat (replace-regexp-in-string "^ Git." " " vc-mode) "  ")
           'face '(:foreground "#FE8019" )))))
     ;; Flycheck
     (:eval
-     (with-window-status
+     (d/with-window-status
        (when (and (bound-and-true-p flycheck-mode)
                   (or flycheck-current-errors
                       (eq 'running flycheck-last-status-change)))
@@ -2926,22 +2925,22 @@ Source: https://git.io/vQKzq"
           (cl-loop for state in '((error . "#FB4933")
                                   (warning . "#FABD2F")
                                   (info . "#83A598"))
-                   as lighter = (diego/flycheck-lighter (car state))
+                   as lighter = (d/flycheck-lighter (car state))
                    when lighter
-                   concat (propertize-active
+                   concat (d/propertize-active
                            window-active?
                            lighter
                            'face `(:foreground ,(cdr state))))
           " "))))
     ;; Input method
     (:eval
-     (with-window-status
+     (d/with-window-status
        (when (or current-input-method
                  (and (bound-and-true-p evil-mode)
                       (bound-and-true-p evil-input-method)))
          (cond
           (current-input-method
-           (propertize-active window-active?
+           (d/propertize-active window-active?
                               (concat current-input-method-title " ")
                               'face
                               'bold))
@@ -2949,9 +2948,9 @@ Source: https://git.io/vQKzq"
            (concat (nth 3 (assoc default-input-method input-method-alist))
                    " "))))))))
 
-(setq-default mode-line-format diego/mode-line)
+(setq-default mode-line-format d/mode-line)
 (with-current-buffer "*Messages*"
-  (setq-local mode-line-format diego/mode-line))
+  (setq-local mode-line-format d/mode-line))
 #+end_src
 ** Packages
 *** [[https://github.com/larstvei/Focus][focus]]
@@ -3080,7 +3079,7 @@ Better parentheses coloring
 #+end_src
 ** Bindings
 #+begin_src emacs-lisp
-(diego/leader-keys
+(d/leader-keys
  "z" 'hydra-zoom/body)
 #+end_src
 * Modes
@@ -3123,7 +3122,7 @@ Better parentheses coloring
 
 *** Setup
 #+begin_src emacs-lisp
-(diego/setup-mode prog
+(d/setup-mode prog
   (subword-mode)
   (smartparens-strict-mode)
   (highlight-parentheses-mode 1)
@@ -3131,7 +3130,7 @@ Better parentheses coloring
   (goto-address-prog-mode)
   (fci-mode)
   (highlight-numbers-mode)
-  (rlines-mode)
+  (d/rlines-mode)
   (auto-fill-mode 1)
   (setq-local comment-auto-fill-only-comments t)
   (setq-local calc-embedded-open-mode (concat comment-start " "))
@@ -3188,7 +3187,7 @@ Pretty neat, though not entirely complete, IMO.
 #+end_src
 *** Variables
 #+begin_src emacs-lisp
-(defvar diego/python-prettify-alist
+(defvar d/python-prettify-alist
   '(("<=" . "≤")
     (">=" . "≥")
     ("!=" . "≠")
@@ -3218,7 +3217,7 @@ Pretty neat, though not entirely complete, IMO.
 #+end_src
 *** Functions
 #+begin_src emacs-lisp
-(defun diego/ipython-shell ()
+(defun d/ipython-shell ()
   "Open an ipython shell using multi-term, respecting virtualenv."
   (interactive)
   (let ((sane-term-shell-command "ipython"))
@@ -3226,7 +3225,7 @@ Pretty neat, though not entirely complete, IMO.
 #+end_src
 *** Setup
 #+begin_src emacs-lisp
-(diego/setup-mode python
+(d/setup-mode python
   (set (make-local-variable 'comment-inline-offset) 2)
   (flycheck-mode)
   (anaconda-mode)
@@ -3235,7 +3234,7 @@ Pretty neat, though not entirely complete, IMO.
   (add-to-list 'company-backends
                (company-mode/backend-with-yas 'company-anaconda))
   (setq-local prettify-symbols-alist
-              diego/python-prettify-alist))
+              d/python-prettify-alist))
 #+end_src
 ** Lisps
 *** Packages
@@ -3298,7 +3297,7 @@ Pretty neat, though not entirely complete, IMO.
 #+end_src
 *** Variables
 #+begin_src emacs-lisp
-(defvar diego/lisp-prettify-alist
+(defvar d/lisp-prettify-alist
   (prettify-utils-generate
    ("<=" "≤")
    (">=" "≥")
@@ -3317,7 +3316,7 @@ Pretty neat, though not entirely complete, IMO.
 #+end_src
 *** Functions
 #+begin_src emacs-lisp
-(defun diego/eval-surrounding-sexp (levels)
+(defun d/eval-surrounding-sexp (levels)
   "Eval sexp around point, specifying depth with LEVELS.
 
 Source: http://tinyurl.com/le6wxuo"
@@ -3326,7 +3325,7 @@ Source: http://tinyurl.com/le6wxuo"
     (sp-end-of-sexp (abs levels))
     (eval-last-sexp nil)))
 
-(defun diego/pp-eval-surrounding-sexp (levels)
+(defun d/pp-eval-surrounding-sexp (levels)
   "Replace the preceding sexp with its value.
 
 Source: http://tinyurl.com/mh5ev6x"
@@ -3336,20 +3335,20 @@ Source: http://tinyurl.com/mh5ev6x"
       (sp-end-of-sexp (abs levels))
       (pp-eval-last-sexp nil))))
 
-(defun diego/pp-macroexpand-surrounding-sexp (levels)
+(defun d/pp-macroexpand-surrounding-sexp (levels)
   (interactive "p")
   (let (pp-escape-newlines)
     (save-excursion
       (sp-end-of-sexp (abs levels))
       (pp-macroexpand-last-sexp nil))))
 
-(defun diego/eval-buffer ()
+(defun d/eval-buffer ()
   (interactive)
   (if (eq major-mode 'org-mode)
       (org-babel-execute-src-block)
     (eval-buffer)))
 
-(defun diego/eval-defun ()
+(defun d/eval-defun ()
   (interactive)
   (if  (eq major-mode 'org-mode)
       (progn
@@ -3359,7 +3358,7 @@ Source: http://tinyurl.com/mh5ev6x"
           (org-edit-src-exit)))
     (eval-defun)))
 
-(defun Fuco1/lisp-indent-function (indent-point state)
+(defun d/lisp-indent-function (indent-point state)
   "This function is the normal value of the variable `lisp-indent-function'.
 The function `calculate-lisp-indent' calls this to determine
 if the arguments of a Lisp function call should be indented specially.
@@ -3433,20 +3432,20 @@ Source: https://git.io/vQKz8"
 #+end_src
 *** Bindings
 #+begin_src emacs-lisp
-(diego/mode-leader-keys
+(d/mode-leader-keys
  :keymaps '(emacs-lisp-mode-map lisp-interaction-mode-map)
- "eb" 'diego/eval-buffer
+ "eb" 'd/eval-buffer
  "ef" 'eval-defun
  "er" 'eval-region
- "eR" 'diego/eval-and-replace
- "es" 'diego/eval-surrounding-sexp
+ "eR" 'd/eval-and-replace
+ "es" 'd/eval-surrounding-sexp
  "el" 'eval-last-sexp
- "pm" 'diego/pp-macroexpand-surrounding-sexp
- "ps" 'diego/pp-eval-surrounding-sexp)
+ "pm" 'd/pp-macroexpand-surrounding-sexp
+ "ps" 'd/pp-eval-surrounding-sexp)
  #+end_src
 *** Setup
 #+begin_src emacs-lisp
-(diego/setup-mode (lisp lisp-interaction emacs-lisp)
+(d/setup-mode (lisp lisp-interaction emacs-lisp)
   (hs-minor-mode)
   (aggressive-indent-mode)
   (push '(? . ("`" . "'")) evil-surround-pairs-alist)
@@ -3456,13 +3455,13 @@ Source: https://git.io/vQKz8"
    "C-c <down>" 'hs-show-all
    "C-c <left>" 'hs-hide-block
    "C-c <right>" 'hs-show-block)
-  (setq-local lisp-indent-function #'Fuco1/lisp-indent-function)
-  (setq-local prettify-symbols-alist diego/lisp-prettify-alist))
+  (setq-local lisp-indent-function #'d/lisp-indent-function)
+  (setq-local prettify-symbols-alist d/lisp-prettify-alist))
 #+end_src
 ** C
 *** Setup
 #+begin_src emacs-lisp
-(diego/setup-mode c
+(d/setup-mode c
   (aggressive-indent-mode))
 #+end_src
 ** Haskell
@@ -3479,7 +3478,7 @@ Source: https://git.io/vQKz8"
 #+end_src
 *** Variables
 #+begin_src emacs-lisp
-(defvar diego/haskell-prettify-alist
+(defvar d/haskell-prettify-alist
   '(("=>" . "⇒")
     ("forall" . "∀")
     ("->" . "→")
@@ -3489,8 +3488,8 @@ Source: https://git.io/vQKz8"
 #+end_src
 *** Setup
 #+begin_src emacs-lisp
-(diego/setup-mode haskell
-  (setq-local prettify-symbols-alist diego/haskell-prettify-alist))
+(d/setup-mode haskell
+  (setq-local prettify-symbols-alist d/haskell-prettify-alist))
 #+end_src
 ** Scheme
 *** Packages
@@ -3502,7 +3501,7 @@ Source: https://git.io/vQKz8"
 #+end_src
 *** Variables
 #+begin_src emacs-lisp
-(defvar diego/scheme-prettify-alist
+(defvar d/scheme-prettify-alist
   (prettify-utils-generate
    ("<=" "≤")
    (">=" "≥")
@@ -3521,7 +3520,7 @@ Source: https://git.io/vQKz8"
 #+end_src
 *** Setup
 #+begin_src emacs-lisp
-(diego/setup-mode scheme
+(d/setup-mode scheme
   (hs-minor-mode)
   (aggressive-indent-mode)
   (push '(? . ("`" . "'")) evil-surround-pairs-alist)
@@ -3532,13 +3531,13 @@ Source: https://git.io/vQKz8"
    "C-c <left>" 'hs-hide-block
    "C-c <right>" 'hs-show-block)
 
-  (setq-local prettify-symbols-alist diego/scheme-prettify-alist))
+  (setq-local prettify-symbols-alist d/scheme-prettify-alist))
 #+end_src
 ** Conf
 *** Setup
 #+begin_src emacs-lisp
-(diego/setup-mode conf
-  (diego/setup-prog-mode))
+(d/setup-mode conf
+  (d/setup-prog-mode))
 (add-to-list 'auto-mode-alist '("\\.service\\'" . conf-mode))
 #+end_src
 ** Calc
@@ -3546,7 +3545,7 @@ Source: https://git.io/vQKz8"
 (use-package calc
   :ensure nil
   :general
-  (diego/leader-keys
+  (d/leader-keys
    "ac" 'calc-dispatch)
   (emap :keymaps 'calc-mode-map
     "x" (lambda () (interactive) (counsel-M-x "^calc-")))
@@ -3580,7 +3579,7 @@ Source: https://git.io/vQKz8"
 I wanted a slightly better terminal in emacs. This seems to do the trick.
 #+begin_src emacs-lisp
 (use-package sane-term
-  :general (diego/leader-keys "at" 'sane-term-create))
+  :general (d/leader-keys "at" 'sane-term-create))
 #+end_src
 
 *** Functions
@@ -3597,7 +3596,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
             (split-string (shell-command-to-string "ghq list")
                           "\n"
                           t))
-           (current (string-remove-prefix "/home/diego/.ghq/" (eshell/pwd)))
+           (current (string-remove-prefix "/home/d/.ghq/" (eshell/pwd)))
            (current-pos (cl-position current ghq-dirs :test 'string=)))
       (cond ((string= x "next")
              (eshell/cd (concat "~/.ghq/" (nth (1+ current-pos) ghq-dirs))))
@@ -3652,7 +3651,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 
 *** Setup
 #+begin_src emacs-lisp
-(diego/setup-mode term
+(d/setup-mode term
   (setq-local yas-dont-activate-functions t)
   (local-set-key (kbd "<C-tab>") #'multi-term-next))
 #+end_src
@@ -3770,7 +3769,7 @@ Syntax highlighting for markdown files.
 #+end_src
 *** json
 #+begin_src emacs-lisp
-(diego/setup-mode json
+(d/setup-mode json
   (highlight-numbers-mode -1))
 #+end_src
 * Enhancements
@@ -3845,7 +3844,7 @@ Sorts ivy by most recently used, I think.
 SUPER nifty.
 #+begin_src emacs-lisp
 (use-package restart-emacs
-  :general (diego/leader-keys "qr" 'restart-emacs)
+  :general (d/leader-keys "qr" 'restart-emacs)
   :init
   (evil-ex-define-cmd "qr[estart]" 'restart-emacs))
 #+end_src
@@ -3857,7 +3856,7 @@ SUPER nifty.
 #+begin_src emacs-lisp
 (use-package paradox
   :general
-  (diego/leader-keys "ap" 'paradox-list-packages)
+  (d/leader-keys "ap" 'paradox-list-packages)
   (nmap :keymaps 'paradox-menu-mode-map
     "(" 'package-menu-toggle-hiding
     "?" 'package-menu-describe-package
@@ -3925,12 +3924,12 @@ I use this for reading, mostly.
 (with-eval-after-load 'hydra
   (defvar flycheck-mode nil)
   (defvar focus-mode nil)
-  (defvar diego/show-async-tangle-results nil)
+  (defvar d/show-async-tangle-results nil)
   (defhydra hydra-toggle (:color pink :exit t)
     "
 _a_ abbrev:              %-3s`abbrev-mode   _d_ debug-on-error:      %-3s`debug-on-error   _P_ prettify-symbols:      %-3s`prettify-symbols-mode
-_i_ aggressive-indent:   %-3s`aggressive-indent-mode   _l_ rlines:              %-3s`rlines-mode   _F_ focus:                 %-3s`focus-mode
-_c_ column-indicator:    %-3s`fci-mode   _p_ smartparens:         %-3s`smartparens-mode   _z_ async-tangle-results:   %-3s`diego/show-async-tangle-results
+_i_ aggressive-indent:   %-3s`aggressive-indent-mode   _l_ rlines:              %-3s`d/rlines-mode   _F_ focus:                 %-3s`focus-mode
+_c_ column-indicator:    %-3s`fci-mode   _p_ smartparens:         %-3s`smartparens-mode   _z_ async-tangle-results:   %-3s`d/show-async-tangle-results
 _f_ flycheck:            %-3s`flycheck-mode   _e_ evil-smartparens:    %-3s`evil-smartparens-mode
 _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`global-whitespace-mode
 "
@@ -3938,7 +3937,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
     ("i" aggressive-indent-mode nil)
     ("d" toggle-debug-on-error nil)
     ("c" fci-mode nil)
-    ("l" rlines-mode nil)
+    ("l" d/rlines-mode nil)
     ("p" smartparens-mode nil)
     ("P" prettify-symbols-mode nil)
     ("e" evil-smartparens-mode nil)
@@ -3946,15 +3945,15 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
     ("F" focus-mode nil)
     ("s" flyspell-mode nil)
     ("w" global-whitespace-mode nil)
-    ("z" (if diego/show-async-tangle-results
-             (setq diego/show-async-tangle-results nil)
-           (setq diego/show-async-tangle-results t)) nil)
+    ("z" (if d/show-async-tangle-results
+             (setq d/show-async-tangle-results nil)
+           (setq d/show-async-tangle-results t)) nil)
     ("q" nil "quit")))
 #+end_src
 
 *** Bindings
 #+begin_src emacs-lisp
-(diego/leader-keys
+(d/leader-keys
  "t"   'hydra-toggle/body)
 
 (with-eval-after-load 'evil
@@ -3976,7 +3975,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
   :after evil
   :config
   (setq anzu-cons-mode-line-p nil)
-  (defun diego/anzu-update-mode-line (here total)
+  (defun d/anzu-update-mode-line (here total)
     (when anzu--state
       (let ((status (cl-case anzu--state
                       (search (format "%s/%d%s"
@@ -3985,7 +3984,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
                       (replace-query (format "(%d replace)" total))
                       (replace (format "(%d/%d)" here total)))))
         status)))
-  (setq anzu-mode-line-update-function #'diego/anzu-update-mode-line))
+  (setq anzu-mode-line-update-function #'d/anzu-update-mode-line))
 #+end_src
 *** [[https://github.com/TheBB/evil-indent-plus][evil-indent-plus]]
 #+begin_quote
@@ -4010,20 +4009,20 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 #+begin_src emacs-lisp
 (use-package evil-nerd-commenter
   :commands (evilnc-comment-operator
-             diego/comment-or-uncomment-lines-inverse)
+             d/comment-or-uncomment-lines-inverse)
   :general
   (nmap
    "gc" 'evilnc-comment-operator
    "gy" 'evilnc-copy-and-comment-lines)
-  (diego/leader-keys
+  (d/leader-keys
    ";"  'evilnc-comment-operator
-   "ci" 'diego/comment-or-uncomment-lines-inverse
+   "ci" 'd/comment-or-uncomment-lines-inverse
    "cl" 'evilnc-comment-or-uncomment-lines
    "cp" 'evilnc-comment-or-uncomment-paragraphs
    "ct" 'evilnc-comment-or-uncomment-to-the-line
    "cy" 'evilnc-copy-and-comment-lines)
   :config
-  (defun diego/comment-or-uncomment-lines-inverse (&optional arg)
+  (defun d/comment-or-uncomment-lines-inverse (&optional arg)
     "Source: https://git.io/vQKza"
     (interactive "p")
     (let ((evilnc-invert-comment-line-by-line t))
@@ -4211,7 +4210,7 @@ Clackity-clack.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package speed-type
-  :general (diego/leader-keys "as" 'speed-type-text)
+  :general (d/leader-keys "as" 'speed-type-text)
   :config
   (setq speed-type--gb-url-format
         "http://www.gutenberg.org/cache/epub/%d/pg%d.txt"))
@@ -4229,7 +4228,7 @@ A speed reading mode for Emacs.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package xkcd
-  :general (diego/leader-keys "ax" 'xkcd)
+  :general (d/leader-keys "ax" 'xkcd)
   :general
   (nmap :keymaps 'xkcd-mode-map
     "j" 'xkcd-next
@@ -4251,7 +4250,7 @@ A speed reading mode for Emacs.
 (eval-when-compile
   (defvar zone-programs))
 
-(defun diego/zone-choose ()
+(defun d/zone-choose ()
   "Choose a PGM to run for `zone'.
 
 Source: http://tinyurl.com/lo96nwc"
@@ -4266,7 +4265,7 @@ Source: http://tinyurl.com/lo96nwc"
 #+end_src
 ** Bindings
 #+begin_src emacs-lisp
-(diego/leader-keys
+(d/leader-keys
  "agd" 'dunnet
  "agg" 'gomoku
  "agt" 'tetris)
@@ -4282,7 +4281,7 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+begin_src emacs-lisp
 (use-package elfeed
   :general
-  (diego/leader-keys "ae" 'elfeed)
+  (d/leader-keys "ae" 'elfeed)
   (nmap :keymaps 'elfeed-search-mode-map
     "RET" 'elfeed-search-show-entry
     "+" 'elfeed-search-tag-all
@@ -4319,7 +4318,7 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+begin_src emacs-lisp
 (use-package sunshine
   :general
-  (diego/leader-keys
+  (d/leader-keys
    "aW" 'sunshine-quick-forecast
    "aw" 'sunshine-forecast)
   :config
@@ -4332,6 +4331,6 @@ excited about file local vars.
 
 #+begin_example
 # Local Variables:
-# after-save-hook: (git-gutter diego/async-tangle-init)
+# after-save-hook: (git-gutter d/async-tangle-init)
 # End:
 #+end_example
