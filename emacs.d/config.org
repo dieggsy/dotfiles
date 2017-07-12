@@ -765,6 +765,7 @@ so I went with it.
   (d/leader-keys
    "C"   'org-capture
    "bo"  'org-iswitchb
+   "ao"  '(:ignore t :wk "org")
    "ao#" 'org-agenda-list-stuck-projects
    "ao/" 'org-occur-in-agenda-files
    "aoO" 'org-clock-out
@@ -1014,91 +1015,96 @@ Source: https://git.io/vQKEa"
 #+end_src
 **** Bindings
 #+begin_src emacs-lisp
+(d/mode-leader-keys
+ :keymaps 'org-mode-map
+ "$"  'org-archive-subtree
+ "'"  'org-edit-special
+ "."  'org-time-stamp
+ "/"  'org-sparse-tree
+ ":"  'd/org-set-tags
+ "-"  'org-decrypt-entry
+ "A"  'org-archive-subtree
+ "N"  'widen
+ "P"  'org-set-property
+ "R"  'org-refile
+ "^"  'org-sort
+ "a"  'org-agenda
+ "c"  'org-capture
+ "d"  'org-deadline
+ "g"  'counsel-org-goto
+ "G"  'counsel-org-goto-all
+ "l"  'd/org-choose-bullet-type
+ "n"  'org-narrow-to-subtree
+ "s"  'org-schedule
+
+ "i"  '(:ignore t :wk "insert")
+ "ic" 'org-table-insert-column
+ "ir" 'org-table-insert-row
+ "il" 'org-insert-link
+ "if" 'org-footnote-new
+ "id" 'org-insert-drawer
+
+ "e"  '(:ignore t :wk "eval/export")
+ "ed" 'org-export-dispatch
+ "eh" 'd/org-hugo-export
+ "es" 'd/eval-surrounding-sexp
+ "er" 'eval-region
+ "eb" 'd/eval-buffer
+ "ef" 'd/eval-defun
+
+ "b"  'org-babel-tangle
+
+ "x"  '(:ignore t :wk "text")
+ "xb" 'd/org-bold
+ "xi" 'd/org-italic
+ "xc" 'd/org-code
+ "xu" 'd/org-underline
+ "xv" 'd/org-verbatim
+ "xs" 'd/org-strike-through
+ "xr" 'd/org-clear
+ "xq" 'd/org-wrap-with-quote
+ "xx" 'org-cut-special
+ "xp" 'org-paste-special
+
+ ;; tables
+ "t"   '(:ignore t :wk "table")
+ "ta"  'org-table-align
+ "tb"  'org-table-blank-field
+ "tc"  'org-table-convert
+ "tdc" 'org-table-delete-column
+ "tdr" 'org-table-kill-row
+ "te"  'org-table-eval-formula
+ "tE"  'org-table-export
+ "th"  'org-table-previous-field
+ "tH"  'org-table-move-column-left
+ "tic" 'org-table-insert-column
+ "tih" 'org-table-insert-hline
+ "tiH" 'org-table-hline-and-move
+ "tir" 'org-table-insert-row
+ "tI"  'org-table-import
+ "tj"  'org-table-next-row
+ "tJ"  'org-table-move-row-down
+ "tK"  'org-table-move-row-up
+ "tl"  'org-table-next-field
+ "tL"  'org-table-move-column-right
+ "tn"  'org-table-create
+ "tN"  'org-table-create-with-table.el
+ "tr"  'org-table-recalculate
+ "ts"  'org-table-sort-lines
+ "ttf" 'org-table-toggle-formula-debugger
+ "tto" 'org-table-toggle-coordinate-overlays
+ "tw"  'org-table-wrap-region)
+
 (with-eval-after-load 'org
   (d/mode-leader-keys
-   :keymaps 'org-mode-map
-   "$"  'org-archive-subtree
-   "'"  'org-edit-special
-   "."  'org-time-stamp
-   "/"  'org-sparse-tree
-   ":"  'd/org-set-tags
-   "-"  'org-decrypt-entry
-   "A"  'org-archive-subtree
-   "N"  'widen
-   "P"  'org-set-property
-   "R"  'org-refile
-   "^"  'org-sort
-   "a"  'org-agenda
-   "c"  'org-capture
-   "d"  'org-deadline
-   "g"  'counsel-org-goto
-   "G"  'counsel-org-goto-all
-   "l"  'd/org-choose-bullet-type
-   "n"  'org-narrow-to-subtree
-   "s"  'org-schedule
+   :keymaps 'org-src-mode
+   :definer 'minor-mode
+   "'" 'org-edit-src-exit)
 
-   "ic" 'org-table-insert-column
-   "ir" 'org-table-insert-row
-   "il" 'org-insert-link
-   "if" 'org-footnote-new
-   "id" 'org-insert-drawer
-
-   "ed" 'org-export-dispatch
-   "eh" 'd/org-hugo-export
-   "es" 'd/eval-surrounding-sexp
-   "er" 'eval-region
-   "eb" 'd/eval-buffer
-   "ef" 'd/eval-defun
-
-   "b"  'org-babel-tangle
-   "xb" 'd/org-bold
-   "xi" 'd/org-italic
-   "xc" 'd/org-code
-   "xu" 'd/org-underline
-   "xv" 'd/org-verbatim
-   "xs" 'd/org-strike-through
-   "xr" 'd/org-clear
-   "xq" 'd/org-wrap-with-quote
-   "xx" 'org-cut-special
-   "xp" 'org-paste-special
-
-   ;; tables
-   "ta"  'org-table-align
-   "tb"  'org-table-blank-field
-   "tc"  'org-table-convert
-   "tdc" 'org-table-delete-column
-   "tdr" 'org-table-kill-row
-   "te"  'org-table-eval-formula
-   "tE"  'org-table-export
-   "th"  'org-table-previous-field
-   "tH"  'org-table-move-column-left
-   "tic" 'org-table-insert-column
-   "tih" 'org-table-insert-hline
-   "tiH" 'org-table-hline-and-move
-   "tir" 'org-table-insert-row
-   "tI"  'org-table-import
-   "tj"  'org-table-next-row
-   "tJ"  'org-table-move-row-down
-   "tK"  'org-table-move-row-up
-   "tl"  'org-table-next-field
-   "tL"  'org-table-move-column-right
-   "tn"  'org-table-create
-   "tN"  'org-table-create-with-table.el
-   "tr"  'org-table-recalculate
-   "ts"  'org-table-sort-lines
-   "ttf" 'org-table-toggle-formula-debugger
-   "tto" 'org-table-toggle-coordinate-overlays
-   "tw"  'org-table-wrap-region)
-
-(d/mode-leader-keys
- :keymaps 'org-src-mode
- :definer 'minor-mode
- "'" 'org-edit-src-exit)
-
-(d/leader-keys
- :keymaps 'org-src-mode
- :definer 'minor-mode
- "fs" 'org-edit-src-save))
+  (d/leader-keys
+   :keymaps 'org-src-mode
+   :definer 'minor-mode
+   "fs" 'org-edit-src-save))
 #+end_src
 **** Setup
 ***** Agenda
@@ -1252,43 +1258,19 @@ Supposedly better than autocomplete.
 
   (d/declare-prefix
     "a"   "applications"
-    "ao"  "org"
-    "ag"  "games"
     "b"   "buffer"
-    "c"   "comment"
-    "e"   "eyebrowse"
     "f"   "file"
-    "fp"  "pop-to-file"
-    "g"   "magit"
     "h"   "help"
     "hd"  "describe"
-    "hc"  "customize"
     "i"   "insert"
     "j"   "jump"
-    "m"   "major-mode"
     "n"   "narrow/numbers"
-    "p"   "project"
     "q"   "quit"
     "s"   "search"
-    "t"   "toggle"
     "w"   "window"
-    "x"   "text"
     "xi"  "indent"
-    "xa"  "align"
-    "xd"  "delete"
     "xl"  "lines"
-    "xm"  "multiedit"
-    "xt"  "transpose"
-    "xp"  "parentheses"
-    "xw"  "words"
-    "S"   "spelling"
-    "SPC"     "root")
-
-  (d/declare-mode-prefix org-mode
-    "i" "insert"
-    "x" "text"
-    "t" "table"
-    "e" "eval-export")
+    "SPC" "root")
 
   (d/declare-mode-prefix (emacs-lisp-mode lisp-interaction-mode)
     "e" "eval"
@@ -1298,17 +1280,18 @@ Supposedly better than autocomplete.
   (setq which-key-sort-uppercase-first nil)
 
   (d/which-key-remove-prefix
-    "ivy-"
+    "avy-"
     "counsel-"
-    "projectile-"
     "counsel-projectile-"
     "crux-"
+    "customize-"
     "d/"
+    "evil-mc-"
     "evilnc-"
-    "magit-"
-    "avy-"
     "eyebrowse-"
-    "evil-mc-"))
+    "ivy-"
+    "magit-"
+    "projectile-"))
 #+end_src
 
 *** [[https://github.com/milkypostman/powerline][powerline]]
@@ -1487,7 +1470,6 @@ Non-interactively SEARCH-STRING is the string to search."
 (use-package tldr
   :general
   (d/leader-keys "ht" 'tldr)
-  :general
   (nmap :keymaps 'tldr-mode-map
     "q" 'quit-window))
 #+end_src
@@ -1495,6 +1477,7 @@ Non-interactively SEARCH-STRING is the string to search."
 Leader bindings
 #+begin_src emacs-lisp
 (d/leader-keys
+ "hc"  '(:ignore t :wk "customize")
  "hca" 'customize-apropos
  "hcf" 'customize-face-other-window
  "hcg" 'customize-group-other-window
@@ -1603,6 +1586,7 @@ Which means it's less likely to block up emacs. Or something.
 (use-package projectile
   :general
   (d/leader-keys
+   "p"  '(:ignore t :wk "project")
    "pg" 'projectile-vc
    "pk" 'projectile-kill-buffers
    "po" 'projectile-multi-occur
@@ -2258,6 +2242,8 @@ Leader keys
  "n-"  'h/numbers/evil-numbers/dec-at-pt
  "n="  'h/numbers/evil-numbers/inc-at-pt
 
+ "x"   '(:ignore t :wk "text")
+ "xa"  '(:ignore t :wk "align")
  "xa&" 'd/align-repeat-ampersand
  "xa'" 'd/align-repeat-single-quote
  "xa(" 'd/align-repeat-left-paren
@@ -2274,7 +2260,6 @@ Leader keys
  "xar" 'd/align-repeat
  "xa|" 'd/align-repeat-bar
 
- "xdw" 'delete-trailing-whitespace
  "xib" 'indent-buffer
  "xii" 'indent-rigidly
  "xir" 'indent-region
@@ -2345,6 +2330,7 @@ Leader keys
              eyebrowse-switch-to-window-config-9)
   :general
   (d/leader-keys
+   "e"  '(:ignore t :wk "eyebrowse")
    "es" 'eyebrowse-switch-to-window-config
    "el" 'eyebrowse-next-window-config
    "eh" 'eyebrowse-prev-window-config
@@ -2360,17 +2346,7 @@ Leader keys
    "e6" 'eyebrowse-switch-to-window-config-6
    "e7" 'eyebrowse-switch-to-window-config-7
    "e8" 'eyebrowse-switch-to-window-config-8
-   "e9" 'eyebrowse-switch-to-window-config-9
-   "0" 'eyebrowse-switch-to-window-config-0
-   "1" 'eyebrowse-switch-to-window-config-1
-   "2" 'eyebrowse-switch-to-window-config-2
-   "3" 'eyebrowse-switch-to-window-config-3
-   "4" 'eyebrowse-switch-to-window-config-4
-   "5" 'eyebrowse-switch-to-window-config-5
-   "6" 'eyebrowse-switch-to-window-config-6
-   "7" 'eyebrowse-switch-to-window-config-7
-   "8" 'eyebrowse-switch-to-window-config-8
-   "9" 'eyebrowse-switch-to-window-config-9)
+   "e9" 'eyebrowse-switch-to-window-config-9)
   :config
   (setq eyebrowse-wrap-around t)
   (setq eyebrowse-new-workspace t)
@@ -2521,6 +2497,7 @@ Like git, for emacs. But cooler.
 (use-package magit
   :general
   (d/leader-keys
+   "g"  '(:ignore t :wk "magit")
    "gB" 'd/magit-blame-toggle
    "gC" 'magit-clone
    "gL" 'magit-log-buffer-file
@@ -4075,6 +4052,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
    "gy" 'evilnc-copy-and-comment-lines)
   (d/leader-keys
    ";"  'evilnc-comment-operator
+   "c"  '(:ignore t :wk "comment")
    "ci" 'd/comment-or-uncomment-lines-inverse
    "cl" 'evilnc-comment-or-uncomment-lines
    "cp" 'evilnc-comment-or-uncomment-paragraphs
@@ -4325,6 +4303,7 @@ Source: http://tinyurl.com/lo96nwc"
 ** Bindings
 #+begin_src emacs-lisp
 (d/leader-keys
+ "ag"  '(:ignore t :wk "games")
  "agd" 'dunnet
  "agg" 'gomoku
  "agt" 'tetris)
