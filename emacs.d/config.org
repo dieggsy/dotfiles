@@ -1307,7 +1307,8 @@ Supposedly better than autocomplete.
     "evilnc-"
     "magit-"
     "avy-"
-    "eyebrowse-"))
+    "eyebrowse-"
+    "evil-mc-"))
 #+end_src
 
 *** [[https://github.com/milkypostman/powerline][powerline]]
@@ -1798,6 +1799,36 @@ Dear god I hate tabs. Also, four spaces is a good indentation default.
 *** [[https://github.com/abo-abo/auto-yasnippet][auto-yasnippet]]
 #+begin_src emacs-lisp
 (use-package auto-yasnippet)
+#+end_src
+*** [[https://github.com/gabesoft/evil-mc][evil-mc]]
+#+begin_src emacs-lisp
+(use-package evil-mc
+  :general
+  (nmap
+   "gr"  '(:ignore t :wk "mc")
+   "grm" 'evil-mc-make-all-cursors
+   "gru" 'evil-mc-undo-all-cursors
+   "grs" 'evil-mc-pause-cursors
+   "grr" 'evil-mc-resume-cursors
+   "grf" 'evil-mc-make-and-goto-first-cursor
+   "grl" 'evil-mc-make-and-goto-last-cursor
+   "grh" 'evil-mc-make-cursor-here
+   "grj" 'evil-mc-make-cursor-move-next-line
+   "grk" 'evil-mc-make-cursor-move-prev-line
+   "M-n" 'evil-mc-skip-and-goto-next-cursor
+   "grN" 'evil-mc-make-and-goto-next-cursor
+   "M-p" 'evil-mc-skip-and-goto-prev-cursor
+   "grP" 'evil-mc-make-and-goto-prev-cursor
+   "C-n" 'evil-mc-skip-and-goto-next-match
+   "grn" 'evil-mc-make-and-goto-next-match
+   "C-p" 'evil-mc-skip-and-goto-prev-match
+   "grp" 'evil-mc-make-and-goto-prev-match)
+  :init
+  (setq evil-mc-key-map nil)
+  :config
+  (global-evil-mc-mode)
+  (push 'evil-smartparens-mode evil-mc-incompatible-minor-modes)
+  (push 'fci-mode evil-mc-incompatible-minor-modes))
 #+end_src
 *** [[https://github.com/hlissner/evil-multiedit][evil-multiedit]]
 #+begin_quote
