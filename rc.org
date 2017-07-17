@@ -335,7 +335,7 @@ bindsym $mod+Shift+period exec --no-startup-id i3-exit
 bindsym $mod+Shift+apostrophe kill
 
 # start rofi for windows and commands
-bindsym Mod1+space exec --no-startup-id "rofi -combi-modi window,run -show combi -modi combi"
+bindsym Mod1+space exec --no-startup-id "rofi -combi-modi window,run,drun -show combi -modi combi"
 
 # pass helper
 bindsym $mod+p exec --no-startup-id "~/.password-store/.extensions/rofi.bash"
@@ -1594,6 +1594,7 @@ pkill dropbox; dropbox start &
 
 pkill unclutter; unclutter &
 
+pkill mpd; mpd &
 # tmux kill-session -t sbcl_daemon 2>/dev/null
 # tmux new -d -s sbcl_daemon /usr/local/bin/sbcl --load ~/scriptl/scriptl-server.lisp &
 
@@ -2525,7 +2526,7 @@ except IOError:
 Tangles the files asynchronously on save.
 #+begin_example
 # Local Variables:
-# after-save-hook: (git-gutter diego/async-babel-tangle)
+# after-save-hook: (git-gutter d/async-babel-tangle)
 # org-pretty-entities: nil
 # End:
 #+end_example

@@ -228,7 +228,8 @@ except for warnings and errors.
 #+begin_src emacs-lisp
 (setq tramp-default-method "ssh"
       tramp-verbose 2
-      password-cache-expiry nil)
+      password-cache t
+      password-cache-expiry 86400)
 #+end_src
 *** Kill-ring
 Save stuff you've copied in other applications to the emacs kill-ring.
@@ -311,7 +312,7 @@ Save stuff you've copied in other applications to the emacs kill-ring.
   (when (and d/rlines-mode
              (not (minibufferp)))
     (setq display-line-numbers 'relative)
-    (setq display-line-number-width
+    (setq display-line-numbers-width
           (length
            (number-to-string
             (count-lines (point-min) (point-max)))))))
@@ -1289,6 +1290,7 @@ Supposedly better than autocomplete.
     "evil-mc-"
     "evilnc-"
     "eyebrowse-"
+    "eyebrowse-switch-to-"
     "ivy-"
     "magit-"
     "projectile-"))
@@ -1339,6 +1341,12 @@ also use these keys to quit out of the minibuffer.
 (general-define-key
  :keymaps 'universal-argument-map
  "SPC u" 'universal-argument-more)
+#+end_src
+*** Macros
+#+begin_src emacs-lisp
+(general-define-key
+ "<f11>" 'kmacro-start-macro-or-insert-counter
+ "<f12>" 'kmacro-end-or-call-macro)
 #+end_src
 *** macOS fullscreen
 A convenient full-screen binding I'm used to from iTerm.
@@ -1799,13 +1807,13 @@ Dear god I hate tabs. Also, four spaces is a good indentation default.
    "grh" 'evil-mc-make-cursor-here
    "grj" 'evil-mc-make-cursor-move-next-line
    "grk" 'evil-mc-make-cursor-move-prev-line
-   "M-n" 'evil-mc-skip-and-goto-next-cursor
+   ;; "M-n" 'evil-mc-skip-and-goto-next-cursor
    "grN" 'evil-mc-make-and-goto-next-cursor
-   "M-p" 'evil-mc-skip-and-goto-prev-cursor
+   ;; "M-p" 'evil-mc-skip-and-goto-prev-cursor
    "grP" 'evil-mc-make-and-goto-prev-cursor
-   "C-n" 'evil-mc-skip-and-goto-next-match
+   ;; "C-n" 'evil-mc-skip-and-goto-next-match
    "grn" 'evil-mc-make-and-goto-next-match
-   "C-p" 'evil-mc-skip-and-goto-prev-match
+   ;; "C-p" 'evil-mc-skip-and-goto-prev-match
    "grp" 'evil-mc-make-and-goto-prev-match)
   :init
   (setq evil-mc-key-map nil)
@@ -2329,6 +2337,16 @@ Leader keys
              eyebrowse-switch-to-window-config-8
              eyebrowse-switch-to-window-config-9)
   :general
+  ("<f10>" 'eyebrowse-switch-to-window-config-0
+   "<f1>" 'eyebrowse-switch-to-window-config-1
+   "<f2>" 'eyebrowse-switch-to-window-config-2
+   "<f3>" 'eyebrowse-switch-to-window-config-3
+   "<f4>" 'eyebrowse-switch-to-window-config-4
+   "<f5>" 'eyebrowse-switch-to-window-config-5
+   "<f6>" 'eyebrowse-switch-to-window-config-6
+   "<f7>" 'eyebrowse-switch-to-window-config-7
+   "<f8>" 'eyebrowse-switch-to-window-config-8
+   "<f9>" 'eyebrowse-switch-to-window-config-9)
   (d/leader-keys
    "e"  '(:ignore t :wk "eyebrowse")
    "es" 'eyebrowse-switch-to-window-config
@@ -2348,8 +2366,10 @@ Leader keys
    "e8" 'eyebrowse-switch-to-window-config-8
    "e9" 'eyebrowse-switch-to-window-config-9)
   :config
-  (setq eyebrowse-wrap-around t)
-  (setq eyebrowse-new-workspace t)
+  (setq eyebrowse-wrap-around t
+        eyebrowse-new-workspace t
+        eyebrowse-switch-back-and-forth t)
+
   (eyebrowse-mode))
 #+end_src
 *** [[https://github.com/jacktasia/dumb-jump][dumb-jump]]
@@ -2377,6 +2397,15 @@ imenu on steroids.
 (use-package imenu-anywhere)
 #+end_src
 
+*** [[https://github.com/syohex/emacs-zoom-window][zoom-window]]
+#+begin_src emacs-lisp
+(use-package zoom-window
+  :general
+  (d/leader-keys
+   "wz" 'zoom-window-zoom)
+  :config
+  (setq zoom-window-mode-line-color "#1D2021"))
+#+end_src
 ** Functions
 #+begin_src emacs-lisp
 (defun d/toggle-window-split ()
@@ -2693,6 +2722,7 @@ have a look. Additionally, show whitespace.
 (setq-default truncate-lines t)
 (setq whitespace-style '(face trailing tabs))
 (global-whitespace-mode)
+(setq whitespace-global-modes '(not erc-mode ses-mode))
 #+end_src
 *** Font
 Choose a font in order of preference, when available.
@@ -2848,106 +2878,107 @@ Source: https://git.io/vQKzq"
 (defvar d/mode-line
   '((:eval
      (d/with-evil-tag-color
-      (d/with-window-status
-       (cond ((and window-active?
-                   (not (or (d/eyebrowse-relevant-p)
-                            (bound-and-true-p anzu--state)
-                            (d/in-macro-p)
-                            (d/in-evil-substitution-p))))
-              (d/make-xpm evil-tag-color 56 8))
-             ((not window-active?)
-              (d/make-xpm "#1D2021" 56 8))))))
+       (d/with-window-status
+         (cond ((and window-active?
+                     (not (or (d/eyebrowse-relevant-p)
+                              (bound-and-true-p anzu--state)
+                              (d/in-macro-p)
+                              (d/in-evil-substitution-p))))
+                (d/make-xpm evil-tag-color 56 8))
+               ((not window-active?)
+                (d/make-xpm "#1D2021" 56 8))))))
     ((:eval
       (d/with-window-status
-       (d/with-evil-tag-color
-        (when window-active?
-          (propertize-active
-           (cond ((d/in-evil-substitution-p)
-                  (d/evil-substitute-num-matches))
-                 ((d/in-macro-p)
-                  (if (bound-and-true-p evil-this-macro)
-                      (char-to-string evil-this-macro)
-                    "Macro"))
-                 ((bound-and-true-p anzu--state)
-                  (anzu--update-mode-line))
-                 ((d/eyebrowse-relevant-p)
-                  (let* ((num (eyebrowse--get 'current-slot))
-                         (tag (nth 2 (assoc num (eyebrowse--get 'window-configs)))))
-                    (if (and tag (< 0 (length tag)))
-                        tag
-                      (int-to-string num)))))
-           'face
-           `(:foreground
-             "#3E3D31"
-             :weight bold
-             :background ,evil-tag-color
-             :box (:color ,evil-tag-color :line-width 14))))))))
+        (d/with-evil-tag-color
+          (when window-active?
+            (propertize-active
+             (cond ((d/in-evil-substitution-p)
+                    (d/evil-substitute-num-matches))
+                   ((d/in-macro-p)
+                    (if (bound-and-true-p evil-this-macro)
+                        (char-to-string evil-this-macro)
+                      "Macro"))
+                   ((bound-and-true-p anzu--state)
+                    (anzu--update-mode-line))
+                   ((d/eyebrowse-relevant-p)
+                    (let* ((num (eyebrowse--get 'current-slot))
+                           (tag (nth 2 (assoc num (eyebrowse--get 'window-configs)))))
+                      (if (and tag (< 0 (length tag)))
+                          tag
+                        (int-to-string num)))))
+             'face
+             `(:foreground
+               "#3E3D31"
+               :weight bold
+               :background ,evil-tag-color
+               :box (:color ,evil-tag-color :line-width 14))))))))
     ;; File modified
     " %* "
     ;; Buffer name & recursive editing
     "%[" mode-line-buffer-identification "%] "
     ;; Remote
     (:eval (d/with-window-status
-            (let ((host (file-remote-p default-directory 'host)))
-              (propertize-active
-               (cond ((and host
-                           default-directory
-                           (string= host (system-name)))
-                      (concat "@"
-                              (file-remote-p default-directory 'user)
-                              " "))
-                     ((and host default-directory)
-                      (concat "@" host " ")))
-               'face
-               '(:foreground "#D3869B")))))
+             (let ((host (file-remote-p default-directory 'host)))
+               (propertize-active
+                (cond ((and host
+                            default-directory
+                            (string= host (system-name)))
+                       (concat "@"
+                               (file-remote-p default-directory 'user)
+                               " "))
+                      ((and host default-directory)
+                       (concat "@" host " ")))
+                'face
+                '(:foreground "#D3869B")))))
     ;; Line/column number
     (:eval (d/with-window-status
-            (propertize-active "%4l:%2c  "
-                                 'face '(:foreground "#A89984"))))
+             (propertize-active "%4l:%2c  "
+                                'face '(:foreground "#A89984"))))
     ;; Major mode
     (:eval
      (d/with-window-status
-      (propertize-active
-       (concat mode-name "  ")
-       'face '(:foreground "#83A598" :weight bold))))
+       (propertize-active
+        (concat mode-name "  ")
+        'face '(:foreground "#83A598" :weight bold))))
     ;; Version control
     (:eval
      (d/with-window-status
-      (when vc-mode
-        (propertize-active
-         (concat (replace-regexp-in-string "^ Git." " " vc-mode) "  ")
-         'face '(:foreground "#FE8019" )))))
+       (when vc-mode
+         (propertize-active
+          (concat (replace-regexp-in-string "^ Git." " " vc-mode) "  ")
+          'face '(:foreground "#FE8019" )))))
     ;; Flycheck
     (:eval
      (d/with-window-status
-      (when (and (bound-and-true-p flycheck-mode)
-                 (or flycheck-current-errors
-                     (eq 'running flycheck-last-status-change)))
-        (concat
-         (cl-loop for state in '((error . "#FB4933")
-                                 (warning . "#FABD2F")
-                                 (info . "#83A598"))
-                  as lighter = (d/flycheck-lighter (car state))
-                  when lighter
-                  concat (propertize-active
-                          lighter
-                          'face `(:foreground ,(cdr state))))
-         " "))))
+       (when (and (bound-and-true-p flycheck-mode)
+                  (or flycheck-current-errors
+                      (eq 'running flycheck-last-status-change)))
+         (concat
+          (cl-loop for state in '((error . "#FB4933")
+                                  (warning . "#FABD2F")
+                                  (info . "#83A598"))
+                   as lighter = (d/flycheck-lighter (car state))
+                   when lighter
+                   concat (propertize-active
+                           lighter
+                           'face `(:foreground ,(cdr state))))
+          " "))))
     ;; Input method
     (:eval
      (d/with-window-status
-      (when (or current-input-method
-                (and (bound-and-true-p evil-mode)
-                     (bound-and-true-p evil-input-method)))
-        (cond
-         (current-input-method
-          (propertize-active
-           (concat current-input-method-title " ")
-           'face
-           'bold))
-         ((and (featurep 'evil) (bound-and-true-p evil-input-method))
-          (concat (nth 3 (assoc default-input-method input-method-alist))
-                  " "))))))))
+       (when (or current-input-method
+                 (and (bound-and-true-p evil-mode)
+                      (bound-and-true-p evil-input-method)))
+         (cond
+          (current-input-method
+           (propertize-active
+            (concat current-input-method-title " ")
+            'face
+            'bold))
+          ((and (featurep 'evil) (bound-and-true-p evil-input-method))
+           (concat (nth 3 (assoc default-input-method input-method-alist))
+                   " "))))))
+    erc-modified-channels-object))
 
 (setq-default mode-line-format d/mode-line)
 (with-current-buffer "*Messages*"
@@ -3384,6 +3415,16 @@ Source: http://tinyurl.com/mh5ev6x"
           (org-edit-src-exit)))
     (eval-defun)))
 
+(defmacro d/let (&rest clause)
+  (declare (indent defun))
+  (pcase clause
+    ((and `(,name ,vars . ,body) (guard (symbolp name)))
+     (let ((args (cl-loop for i in vars if (listp i) collect (car i) else collect i))
+           (init-vals (cl-loop for i in vars if (listp i) append (cdr i) else collect nil)))
+       `(cl-labels ((,name ,args ,@body))
+          (,name ,@init-vals))))
+    (_ `(let ,@clause))))
+
 (defun d/lisp-indent-function (indent-point state)
   "This function is the normal value of the variable `lisp-indent-function'.
 The function `calculate-lisp-indent' calls this to determine
@@ -3579,7 +3620,11 @@ Source: https://git.io/vQKz8"
   (setq calc-multiplication-has-precedence nil)
   (setq calc-symbolic-mode t))
 #+end_src
-** Shell
+** Eshell
+*** Defaults
+#+begin_src emacs-lisp
+(setq eshell-prefer-lisp-functions t)
+#+end_src
 *** Packages
 **** egp
 #+begin_src emacs-lisp
@@ -3607,10 +3652,34 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 (use-package sane-term
   :general (d/leader-keys "at" 'sane-term-create))
 #+end_src
-
 *** Functions
 #+begin_src emacs-lisp
 (with-eval-after-load 'eshell
+
+  (defun d/eshell-run (str args)
+    (eshell-do-eval
+     (eshell-parse-command
+      (string-join (append `(,str) args) " "))
+     t))
+
+  (cl-defmacro d/eshell-defun (name &rest pats &key path opts &allow-other-keys)
+    (declare (indent defun))
+    (let ((command-name (or path
+                            (concat "/usr/bin/" (symbol-name name))))
+          (pats (cl-loop for (key value) on pats by #'cddr
+                         if (and value (not (keywordp key)))
+                         append `(,key ,value)
+                         else if (not (keywordp key)) collect key)))
+      `(defun ,(intern (concat "eshell/" (symbol-name name))) (&rest args)
+         (pcase args
+           ,@(cl-loop for pattern in pats
+                      if (listp (car pattern))
+                      collect pattern
+                      else collect `('(,(car pattern))
+                                     ,(cadr pattern)))
+           (_ (d/eshell-run ,(concat command-name " "  opts)
+                            args))))))
+
   (defun eshell/clear ()
     "Custom `eshell' clear function to clear to top."
     (interactive)
@@ -3622,7 +3691,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
             (split-string (shell-command-to-string "ghq list")
                           "\n"
                           t))
-           (current (string-remove-prefix "/home/d/.ghq/" (eshell/pwd)))
+           (current (string-remove-prefix "/home/diego/.ghq/" (eshell/pwd)))
            (current-pos (cl-position current ghq-dirs :test 'string=)))
       (cond ((string= x "next")
              (eshell/cd (concat "~/.ghq/" (nth (1+ current-pos) ghq-dirs))))
@@ -3643,20 +3712,23 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
   (defun eshell/sbcl ()
     (call-interactively #'slime))
 
-  (defun eshell/git (&rest args)
-    (pcase args
-      ('("status") (magit-status))
-      ('("diff") (magit-status))
-      ('("log") (call-interactively #'magit-log-current))
-      (`("log" . ,ll) (magit-log ll))
-      (`("checkout") (call-interactively #'magit-checkout))
-      (`("checkout" ,rev) (magit-checkout rev))
-      ('("pull") (call-interactively #'magit-pull-from-upstream))))
+  (d/eshell-defun git
+    :path "/home/diego/.zplug/bin/hub"
+    :opts "-c color.ui=always"
+    ("status" (magit-status-internal (eshell/pwd)))
+    ("diff" (magit-status-internal (eshell/pwd)))
+    ("log" (call-interactively #'magit-log-current))
+    (`("log" . ,ll) (magit-log ll)))
 
-  ;; (defun eshell/pass (&rest args)
-  ;;   (pcase args
-  ;;     ('("rm") (call-interactively #'password-store-remove))
-  ;;     ('("generate" (call-interactively #'password-store-generate)))))
+  (d/eshell-defun pass
+    ("rm" (call-interactively #'password-store-remove))
+    ("generate" (call-interactively #'password-store-generate))
+    ("insert" (call-interactively #'password-store-insert))
+    ("mv" (call-interactively #'password-store-rename))
+    ("edit" (call-interactively #'password-store-edit))
+    ("cp" (call-interactively #'password-store-copy))
+    ("-c" (call-interactively #'password-store-copy))
+    (`("edit" . ,ll) (password-store-edit ll)))
 
   (defun eshell/rg (&rest args)
     (eshell-grep "rg" (push "--no-heading" args))
@@ -3674,18 +3746,16 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
                 :action (lambda (x)
                           (insert (cadr (split-string x " " t))))))))
 #+end_src
-
-*** Setup
-#+begin_src emacs-lisp
-(d/setup-mode term
-  (setq-local yas-dont-activate-functions t)
-  (local-set-key (kbd "<C-tab>") #'multi-term-next))
-#+end_src
 ** Text
 #+begin_src emacs-lisp
 (d/mode-leader-keys
  :keymap 'text-mode-map
  "f" '(:command h/flyspell/body :wk "flyspell"))
+#+end_src
+** json
+#+begin_src emacs-lisp
+(d/setup-mode json
+  (highlight-numbers-mode -1))
 #+end_src
 ** erc
 *** Packages
@@ -3976,11 +4046,6 @@ Syntax highlighting for markdown files.
            :fetcher github
            :repo "therockmandolinist/turing-machine"))
 #+end_src
-*** json
-#+begin_src emacs-lisp
-(d/setup-mode json
-  (highlight-numbers-mode -1))
-#+end_src
 * Enhancements
 ** Emacs
 *** Packages
@@ -4137,7 +4202,7 @@ I use this for reading, mostly.
             (defvar focus-mode nil)
             (defvar d/show-async-tangle-results nil))
      :color pink
-     :exit t
+     :timeout 1
      :hint nil)
     "
 _a_ abbrev:              %-3s`abbrev-mode   _d_ debug-on-error:      %-3s`debug-on-error   _P_ prettify-symbols:       %-3s`prettify-symbols-mode
