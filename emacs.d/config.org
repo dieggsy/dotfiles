@@ -3687,6 +3687,183 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
  :keymap 'text-mode-map
  "f" '(:command h/flyspell/body :wk "flyspell"))
 #+end_src
+** erc
+*** Packages
+**** [[https://github.com/leathekd/erc-hl-nicks][erc-hl-nicks]]
+#+begin_src emacs-lisp
+(use-package erc-hl-nicks
+  :quelpa (erc-hl-nicks
+           :fetcher "github"
+           :repo "therockmandolinist/erc-hl-nicks")
+  :config
+  (setq erc-hl-nicks-skip-nicks '("diegs"))
+  (push "erc-current-nick-face" erc-hl-nicks-skip-faces))
+#+end_src
+*** Setup
+#+begin_src emacs-lisp
+(use-package erc
+  :ensure nil
+  :general
+  (d/mode-leader-keys
+   :keymaps 'erc-mode-map
+   "g" (lambda () (interactive) (let ((ivy-use-virtual-buffers nil)) (erc-switch-to-buffer))))
+  (d/leader-keys
+   "ai" 'd/erc)
+  (imap :keymaps 'erc-mode-map
+    [up] 'erc-previous-command
+    [down] 'erc-next-command)
+  :config
+  (defvar d/erc-last-speaker (make-hash-table :test 'equal))
+
+  (defun d/erc-format-nick (&optional user channel-data)
+    "Like `erc-format-nick' but trim/pad nick to a fixed length.
+   - Based on xwl-erc-format-nick"
+    (when user
+      (let* ((nick (erc-server-user-nickname user))
+             (channel (buffer-name))
+             (mode (erc-get-user-mode-prefix nick))
+             (nick-was-last (string= (gethash channel d/erc-last-speaker)
+                                     nick)))
+        (when (not (gethash channel d/erc-last-speaker))
+          (puthash channel nick d/erc-last-speaker))
+        (prog1
+            (concat
+             (format
+              "%10.10s"
+              (concat
+               (when (not nick-was-last)
+                 (erc-propertize
+                  mode
+                  'face 'erc-nick-prefix-face))
+               (cond (nick-was-last
+                      (erc-propertize "↳" 'face (gethash nick erc-hl-nicks-face-table)))
+                     ((> (length nick) 10)
+                      (erc-propertize
+                       nick 'face (erc-hl-nicks-make-face nick)))
+                     (t nick))))
+             (if (and (> (length nick) 10) (not nick-was-last))
+                 (erc-propertize "…   " 'face '(:foreground "#D3869B"))
+               "    "))
+          (puthash channel nick d/erc-last-speaker)))))
+
+  (defun d/erc-format-my-nick ()
+    "Return the beginning of this user's message, correctly propertized."
+    (if erc-show-my-nick
+        (let* ((nick (erc-current-nick))
+               (channel (buffer-name))
+               (mode (erc-get-user-mode-prefix nick))
+               (nick-was-last (string= (gethash channel d/erc-last-speaker)
+                                       nick)))
+          (when (not (gethash channel d/erc-last-speaker))
+            (puthash channel nick d/erc-last-speaker))
+          (prog1
+              (concat
+               (format
+                "%10.10s"
+                (concat
+                 (when (not nick-was-last)
+                   (erc-propertize
+                    mode
+                    'face 'erc-nick-prefix-face))
+                 (cond (nick-was-last
+                        (erc-propertize "↳" 'face (gethash nick erc-hl-nicks-face-table)))
+                       ((> (length nick) 10)
+                        (erc-propertize
+                         nick 'face (erc-hl-nicks-make-face nick)))
+                       (t nick))))
+               (if (and (> (length nick) 10) (not nick-was-last))
+                   (erc-propertize "…   " 'face '(:foreground "#D3869B"))
+                 "    "))
+            (puthash channel nick d/erc-last-speaker))
+          )
+      (let ((prefix "> "))
+        (erc-propertize prefix 'font-lock-face 'erc-default-face))))
+
+  (advice-add #'erc-format-my-nick :override #'d/erc-format-my-nick)
+
+  (defun d/erc-format-privmessage (nick msg privp msgp)
+    "Format a PRIVMSG in an insertable fashion."
+    (let* ((mark-s (if msgp (if privp "*" "") "-"))
+           (mark-e (if msgp (if privp "*" "") "-"))
+           (str    (format "%s%s%s%s" mark-s nick mark-e msg))
+           (nick-face (if privp 'erc-nick-msg-face 'erc-nick-default-face))
+           (msg-face (if privp 'erc-direct-msg-face 'erc-default-face)))
+      ;; add text properties to text before the nick, the nick and after the nick
+      (erc-put-text-property 0 (length mark-s) 'font-lock-face msg-face str)
+      (erc-put-text-property (length mark-s) (+ (length mark-s) (length nick))
+                             'font-lock-face nick-face str)
+      (erc-put-text-property (+ (length mark-s) (length nick)) (length str)
+                             'font-lock-face msg-face str)
+      str))
+
+  (advice-add #'erc-format-privmessage :override #'d/erc-format-privmessage)
+
+  (setq erc-prompt "
+           ❱❱"
+        erc-fill-prefix  "              "
+        erc-notice-prefix   "              *** "
+        erc-format-nick-function 'd/erc-format-nick
+        erc-nick "diegs_"
+        erc-password (password-store-get "social/freenode")
+        erc-prompt-for-password nil
+        erc-hide-timestamps t
+        erc-input-line-position -1
+        erc-header-line-format nil
+        erc-fill-column 79
+        erc-lurker-hide-list '("JOIN" "PART" "QUIT" "NICK")
+        erc-kill-buffer-on-part t
+        erc-kill-queries-on-quit t
+        erc-kill-server-buffer-on-quit t
+        erc-rename-buffers t
+        erc-join-buffer 'bury
+        erc-track-use-faces nil
+        erc-track-priority-faces-only 'all
+        erc-track-exclude-server-buffer t
+        erc-format-query-as-channel-p t
+        erc-track-faces-priority-list '(erc-error-face
+                                        erc-current-nick-face
+                                        erc-keyword-face
+                                        erc-nick-msg-face
+                                        erc-direct-msg-face
+                                        erc-dangerous-host-face)
+        erc-autojoin-channels-alist '(("freenode.net"
+                                       "#emacs"
+                                       "#gaygeeks"
+                                       "##linux"
+                                       "#zsh"
+                                       "#python"
+                                       "##programming"
+                                       "#i3"
+                                       "#lisp"
+                                       "#chicken")))
+
+  (defadvice erc-track-find-face (around erc-track-find-face-promote-query activate)
+    (if (erc-query-buffer-p)
+        (setq ad-return-value (intern "erc-current-nick-face"))
+      ad-do-it))
+
+  (defadvice erc-track-modified-channels (around erc-track-modified-channels-promote-query activate)
+    (if (erc-query-buffer-p) (setq erc-track-priority-faces-only 'nil))
+    ad-do-it
+    (if (erc-query-buffer-p) (setq erc-track-priority-faces-only 'all)))
+
+
+  (erc-define-catalog-entry 'english 'ACTION "              * %n %a")
+
+  (d/setup-mode erc
+    (erc-hl-nicks-mode 1)
+    (smartparens-mode -1)
+    (erc-notifications-mode 1)
+    (evil-smartparens-mode -1)
+    (show-smartparens-mode -1)
+    (erc-move-to-prompt-mode 1))
+
+  (defun d/erc-to-bottom ()
+    (and (eq major-mode 'erc-mode)
+         (erc-scroll-to-bottom)))
+
+  (add-hook 'window-configuration-change-hook #'d/erc-to-bottom))
+#+end_src
 ** Misc Modes
 *** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
 #+begin_quote
