@@ -4362,6 +4362,37 @@ Draws stuff in ascii.
 #+begin_src emacs-lisp
 (use-package drawille)
 #+end_src
+*** [[https://www.gnu.org/software/emms/][emms]]
+#+begin_src emacs-lisp
+(use-package emms
+  :commands emms-smart-browse
+  :general
+  (d/leader-keys
+   "mc" 'emms-pause
+   "mb" 'emms-next
+   "mz" 'emms-previous
+   "ml" 'emms-seek-forward
+   "mh" 'emms-seek-backward)
+  :config
+  (d/setup-mode emms-browser
+    (hl-line-mode 1))
+  (require 'emms-setup)
+  (emms-all)
+  (setq emms-source-file-default-directory "~/Music/"
+        emms-player-mpd-music-directory "~/Music/"
+        emms-seek-seconds 5)
+  (require 'emms-player-mpd)
+  (add-to-list 'emms-player-list 'emms-player-mpd)
+  (emms-player-mpd-connect)
+  ;; (nmap :keymaps emms-browser-mode-map
+  ;;   "SPC" 'emms-browser-toggle-subitems)
+  ;; (defhydra h/emms (:hint nil/)
+  ;;     "
+  ;;      ⏯
+  ;;     _p_
+  ;; ")
+  )
+#+end_src
 *** [[https://github.com/johanvts/emacs-fireplace/][fireplace]]
 #+begin_quote
   A cozy fireplace for emacs.
