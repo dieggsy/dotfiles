@@ -546,8 +546,8 @@ A really nice search/completion system for emacs.
   (defalias 'ag #'counsel-ag)
   (defalias 'locate #'counsel-locate)
 
-  (defun d/counsel-yank-pop-action (s)
-    "Make consistent with evil-paste-after.
+  (define-advice counsel-yank-pop-action (:override (s) paste-after)
+    "Paste text after point, which is consistent with evil-paste-after.
 
 Source: https://git.io/vQKmf"
     (save-excursion
@@ -561,16 +561,15 @@ Source: https://git.io/vQKmf"
         (setq ivy-completion-end (point))))
     (forward-char (length s)))
 
-  (advice-add #'counsel-yank-pop-action
-              :override #'d/counsel-yank-pop-action)
-
-  (defun d/counsel-yank-pop-format-function (cand-pairs)
-    "Make counsel-yank-pop look a little more like the rest of ivy.
+  (define-advice counsel--yank-pop-format-function (:override (cand-pairs) arrow-format)
+    "Use the arrow format for counsel-yank-pop for consistency with
+ivy-format-function-arrow.
 
 Source: https://git.io/vQK0v"
     (ivy--format-function-generic
      (lambda (str)
-       (let ((temp-list (split-string (counsel--yank-pop-truncate str) "\n" t)))
+       (let ((temp-list
+              (split-string (counsel--yank-pop-truncate str) "\n" t)))
          (mapconcat 'identity
                     (append (list (concat "> " (car temp-list)))
                             (mapcar (lambda (s) (concat "  " s))
@@ -581,11 +580,7 @@ Source: https://git.io/vQK0v"
                   (split-string (counsel--yank-pop-truncate str) "\n" t)
                   "\n"))
      cand-pairs
-     counsel-yank-pop-separator))
-
-  (advice-add #'counsel--yank-pop-format-function
-              :override
-              #'d/counsel-yank-pop-format-function))
+     counsel-yank-pop-separator)))
 #+end_src
 *** [[https://github.com/Ilazki/prettify-utils.el][prettify-utils]]
 #+begin_src emacs-lisp
@@ -1568,16 +1563,13 @@ Which means it's less likely to block up emacs. Or something.
         ranger-cleanup-eagerly t
         ranger-parent-depth 0)
 
-  (defun d/ranger-travel ()
+  (define-advice ranger-travel (:override nil with-ivy)
     "Use ivy for ranger-travel instead."
     (interactive)
     (cond
      ((featurep 'ivy)
       (counsel-find-file default-directory))
      (t (call-interactively #'ido-find-file))))
-
-  (advice-add #'ranger-travel
-              :override #'d/ranger-travel)
 
   (defun d/deer (arg)
     (interactive "P")
@@ -3840,67 +3832,68 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 *** Functions
 #+begin_src emacs-lisp
 (with-eval-after-load 'erc
-  (defmacro d/make-erc-nick-format-func (name args nick cond &optional else)
-    `(defun ,(intern name) ,args
-       (if ,cond
-           (let* ((nick ,nick)
-                  (trimmed (erc-hl-nicks-trim-irc-nick nick))
-                  (server (erc-canonicalize-server-name
-                           erc-server-announced-name)))
-             (unless (gethash server d/erc-last-speaker)
-               (puthash server (make-hash-table :test 'equal) d/erc-last-speaker))
-             (let* ((channel (buffer-name))
-                    (mode (erc-get-user-mode-prefix nick))
-                    (nick-was-last (string=
-                                    (gethash channel
-                                             (gethash server d/erc-last-speaker))
-                                    nick))
-                    (long-char (if (and (> (length nick) 10)
-                                        (not nick-was-last))
-                                   (erc-propertize "…" 'face '(:foreground "#D3869B" ))
-                                 " ")))
+  (defmacro d/erc-nick-format-function-body (cond nick &optional else)
+    `(if ,cond
+         (let* ((nick ,nick)
+                (trimmed (erc-hl-nicks-trim-irc-nick nick))
+                (server (erc-canonicalize-server-name
+                         erc-server-announced-name)))
+           (unless (gethash server d/erc-last-speaker)
+             (puthash server (make-hash-table :test 'equal) d/erc-last-speaker))
+           (let* ((channel (buffer-name))
+                  (mode (erc-get-user-mode-prefix nick))
+                  (nick-was-last (string=
+                                  (gethash channel
+                                           (gethash server d/erc-last-speaker))
+                                  nick))
+                  (long-char (if (and (> (length nick) 10)
+                                      (not nick-was-last))
+                                 (erc-propertize "…" 'face '(:foreground "#D3869B" ))
+                               " ")))
 
-               (when (>= (cl-incf erc-lurker-cleanup-count)
-                         erc-lurker-cleanup-interval)
-                 (setq erc-lurker-cleanup-count 0)
-                 (erc-lurker-cleanup))
-               (unless (gethash server erc-lurker-state)
-                 (puthash server (make-hash-table :test 'equal) erc-lurker-state))
-               (puthash trimmed (current-time)
-                        (gethash server erc-lurker-state))
-               (puthash channel nick (gethash server d/erc-last-speaker))
-               (format "%10.10s%s   "
-                       (cond  (nick-was-last
-                               (erc-propertize
-                                "↳"
-                                'face
-                                (gethash trimmed erc-hl-nicks-face-table)))
-                              ((not (member trimmed erc-hl-nicks-skip-nicks))
-                               (concat
-                                (erc-propertize mode 'face 'erc-nick-prefix-face)
-                                (erc-propertize nick 'face (erc-hl-nicks-make-face trimmed))))
-                              (t
-                               (concat
-                                (erc-propertize mode 'face 'erc-nick-prefix-face)
-                                nick)))
-                       long-char)))
-         ,else)))
+             (when (>= (cl-incf erc-lurker-cleanup-count)
+                       erc-lurker-cleanup-interval)
+               (setq erc-lurker-cleanup-count 0)
+               (erc-lurker-cleanup))
+             (unless (gethash server erc-lurker-state)
+               (puthash server (make-hash-table :test 'equal) erc-lurker-state))
+             (puthash trimmed (current-time)
+                      (gethash server erc-lurker-state))
+             (puthash channel nick (gethash server d/erc-last-speaker))
+             (format "%10.10s%s   "
+                     (cond  (nick-was-last
+                             (erc-propertize
+                              "↳"
+                              'face
+                              (gethash trimmed erc-hl-nicks-face-table)))
+                            ((not (member trimmed erc-hl-nicks-skip-nicks))
+                             (concat
+                              (erc-propertize mode 'face 'erc-nick-prefix-face)
+                              (erc-propertize nick 'face (erc-hl-nicks-make-face trimmed))))
+                            (t
+                             (concat
+                              (erc-propertize mode 'face 'erc-nick-prefix-face)
+                              nick)))
+                     long-char)))
+       ,else))
 
-  (d/make-erc-nick-format-func
-   "d/erc-format-nick" (&optional user channel-data)
-   (erc-server-user-nickname user)
-   user)
+  (defun d/erc-format-nick (&optional user channel-data)
+    "Truncate nick when too long, substitute when repeated speaker, and
+update lurker status."
+    (d/erc-nick-format-function-body
+     user
+     (erc-server-user-nickname user)))
 
-  (d/make-erc-nick-format-func
-   "d/erc-format-my-nick" nil
-   (erc-current-nick)
-   erc-show-my-nick
-   (let ((prefix "> "))
-     (erc-propertize prefix 'font-lock-face 'erc-default-face)))
+  (define-advice erc-format-my-nick (:override nil truncate-substitute-lurk)
+    "Truncate nick when too long, substitute when repeated speaker, and
+update lurker status."
+    (d/erc-nick-format-function-body
+     erc-show-my-nick
+     (erc-current-nick)
+     (let ((prefix "> "))
+       (erc-propertize prefix 'font-lock-face 'erc-default-face))))
 
-  (advice-add #'erc-format-my-nick :override #'d/erc-format-my-nick)
-
-  (defun d/erc-format-privmessage (nick msg privp msgp)
+  (define-advice erc-format-privmessage (:override (nick msg privp msgp) no-brackets)
     "Remove the annoying angle brackets."
     (let* ((mark-s (if msgp (if privp "*" "") "              -"))
            (mark-e (if msgp (if privp "*" "") "- "))
@@ -3915,25 +3908,25 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
                              'font-lock-face msg-face str)
       str))
 
-  (advice-add #'erc-format-privmessage :override #'d/erc-format-privmessage)
+  (define-advice erc-track-find-face (:around (fn faces) promote-query)
+    "Promote query buffers as if everything contains current nick.
 
-  (defun d/erc-track-find-face (fn faces)
+Source: http://tinyurl.com/y8tj8vxx"
     (if (erc-query-buffer-p)
         (setq ad-return-value (intern "erc-current-nick-face"))
       (funcall fn faces)))
 
-  (advice-add #'erc-track-find-face :around #'d/erc-track-find-face)
+  (define-advice erc-track-modified-channels (:around (fn) promote-query)
+    "Promote query buffers as if everything contains current nick when
+only tracking priority faces.
 
-  (defun d/erc-track-modified-channels (fn)
+Source: http://tinyurl.com/y8tj8vxx"
     (when (erc-query-buffer-p) (setq erc-track-priority-faces-only nil))
     (funcall fn)
     (when (erc-query-buffer-p) (setq erc-track-priority-faces-only 'all)))
 
-  (advice-add #'erc-track-modified-channels :around #'d/erc-track-modified-channels)
-
-  (defun d/erc-notifications-notify (nick msg)
-    "Notify that NICK send some MSG.
-This will replace the last notification sent with this function."
+  (define-advice erc-notifications-notify (:override (nick msg) channel-title)
+    "Use channel as notification title and remove erc-fill-prefix."
     (let ((channel (buffer-name))
           (msg (string-join
                 (cdr (split-string
@@ -3948,8 +3941,6 @@ This will replace the last notification sent with this function."
                                     :body (xml-escape-string (concat nick ": " msg))
                                     :replaces-id erc-notifications-last-notification
                                     :app-icon erc-notifications-icon)))))
-
-  (advice-add #'erc-notifications-notify :override #'d/erc-notifications-notify)
 
   (defun d/erc-to-bottom ()
     (and (eq major-mode 'erc-mode)
