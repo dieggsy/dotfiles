@@ -238,6 +238,18 @@ Save stuff you've copied in other applications to the emacs kill-ring.
                     (let ((mode-hook (intern (concat (symbol-name mode)
                                                      "-mode-hook"))))
                       `(add-hook ',mode-hook #',setup-func)))))))
+
+(defmacro d/with-eval-after-load (feature &rest body)
+  (declare (indent defun))
+  `(with-eval-after-load ,feature
+     (condition-case-unless-debug err
+         (progn
+           ,@body)
+       (error
+        (display-warning 'config
+                         (format "%s %s: %s " (symbol-name ,feature) "after-load"
+                                 (error-message-string err))
+                         :error)))))
 #+end_src
 *** Other
 #+begin_src emacs-lisp
@@ -377,7 +389,7 @@ editing. So I went for it. Now I'll never go back.
 #+end_src
 **** Modes
 #+begin_src emacs-lisp
-(with-eval-after-load 'evil
+(d/with-eval-after-load 'evil
   ;; Use Emacs state in these additional modes.
   (dolist (mode '(ag-mode
                   flycheck-error-list-mode
@@ -570,7 +582,7 @@ so I went with it.
 **** Defaults
 ***** Files
 #+begin_src emacs-lisp
-(with-eval-after-load 'org
+(d/with-eval-after-load 'org
   (setq org-agenda-text-search-extra-files '(agenda-archives)
         org-agenda-files '("~/Dropbox/org/todo.org" "~/Dropbox/org/gcal.org")
         org-default-notes-file "~/Dropbox/org/todo.org"
@@ -583,7 +595,7 @@ so I went with it.
 #+end_src
 ***** Todo/agenda
 #+begin_src emacs-lisp
-(with-eval-after-load 'org
+(d/with-eval-after-load 'org
   (setq org-enforce-todo-dependencies t
         org-log-done (quote time)
         org-log-redeadline (quote time)
@@ -617,7 +629,7 @@ so I went with it.
 
 ***** Behavior/appearance
 #+begin_src emacs-lisp
-(with-eval-after-load 'org
+(d/with-eval-after-load 'org
   (setq org-insert-heading-respect-content t
         org-src-window-setup 'current-window
         org-list-demote-modify-bullet '(("-" . "*")
@@ -739,7 +751,7 @@ so I went with it.
 #+end_src
 **** Functions
 #+begin_src emacs-lisp
-(with-eval-after-load 'org
+(d/with-eval-after-load 'org
   (defmacro d/create-block-wrap (&rest blocktypes)
     `(progn
        ,@(cl-loop
@@ -948,7 +960,7 @@ Source: https://git.io/vQKEa"
 **** Keyboard Macros
 ***** TODO Turn this into an elisp function
 #+begin_src emacs-lisp
-(with-eval-after-load 'org
+(d/with-eval-after-load 'org
   (fset 'd/org-wrap-with-quote
         [?\{ ?i return ?# ?+ ?b ?e ?g ?i ?n ?_ ?q ?u ?o ?t ?e ?\C-/ ?\} ?i return
              up ?# ?+ ?e ?n ?d ?_ ?q ?u ?o ?t ?e ?\C-/ ?\{ ?j ?i ?  ?  ?\M-q
@@ -1036,7 +1048,7 @@ Source: https://git.io/vQKEa"
  "tto" 'org-table-toggle-coordinate-overlays
  "tw"  'org-table-wrap-region)
 
-(with-eval-after-load 'org
+(d/with-eval-after-load 'org
   (d/mode-leader-keys
    :keymaps 'org-src-mode
    :definer 'minor-mode
@@ -1059,7 +1071,7 @@ Source: https://git.io/vQKEa"
   "R" 'org-revert-all-org-buffers
   "RET" 'org-agenda-switch-to)
 
-(with-eval-after-load 'org-agenda
+(d/with-eval-after-load 'org-agenda
   (setq org-habit-graph-column 50))
 
 (d/setup-mode org-agenda
@@ -1076,7 +1088,7 @@ Source: https://git.io/vQKEa"
 #+end_src
 ***** Org
 #+begin_src emacs-lisp
-(with-eval-after-load 'org
+(d/with-eval-after-load 'org
   (dolist (char '("+" "-"))
     (define-key org-mode-map (kbd char)
       `(lambda ()
@@ -1464,7 +1476,7 @@ Clean up whitespace before saving files.
 Do dired actions (meaning file copying/deleting and the like) asynchronously.
 Which means it's less likely to block up emacs. Or something.
 #+begin_src emacs-lisp
-(with-eval-after-load 'dired-async
+(d/with-eval-after-load 'dired-async
   (autoload 'dired-async-mode "dired-async.el" nil t)
   (dired-async-mode 1))
 #+end_src
@@ -2087,7 +2099,7 @@ Source: http://tinyurl.com/l8z7vph"
 ** Hydras
 *** Multiedit
 #+begin_src emacs-lisp
-(with-eval-after-load 'hydra
+(d/with-eval-after-load 'hydra
   (defhydra h/multiedit (:hint nil)
     "
 multiedit:
@@ -2106,7 +2118,7 @@ _p_rev     match and _P_rev
 #+end_src
 *** Transpose
 #+begin_src emacs-lisp
-(with-eval-after-load 'hydra
+(d/with-eval-after-load 'hydra
   (defhydra h/transpose ()
     "transpose"
     ("c" d/transpose-chars "char")
@@ -2119,7 +2131,7 @@ _p_rev     match and _P_rev
 #+end_src
 *** Justify
 #+begin_src emacs-lisp
-(with-eval-after-load 'hydra
+(d/with-eval-after-load 'hydra
   (defhydra h/justify (:exit t)
     "justify"
     ("r" d/justify-right "right")
@@ -2130,7 +2142,7 @@ _p_rev     match and _P_rev
 #+end_src
 *** Smartparens
 #+begin_src emacs-lisp
-(with-eval-after-load 'hydra
+(d/with-eval-after-load 'hydra
   (defhydra h/smartparens (:hint nil)
     "
 smartparens:
@@ -2153,7 +2165,7 @@ _u_nwrap  _S_lurp (back)   _[_ wrap _{_
 #+end_src
 *** Evil-numbers
 #+begin_src emacs-lisp
-(with-eval-after-load 'hydra
+(d/with-eval-after-load 'hydra
   (defhydra h/numbers ()
     "evil-numbers"
     ("="  evil-numbers/inc-at-pt "inc")
@@ -2161,7 +2173,7 @@ _u_nwrap  _S_lurp (back)   _[_ wrap _{_
 #+end_src
 *** Spelling
 #+begin_src emacs-lisp
-(with-eval-after-load 'hydra
+(d/with-eval-after-load 'hydra
   (defhydra h/flyspell (:pre (require 'flyspell))
     "flyspell"
     ("b" flyspell-buffer "buffer")
@@ -2427,7 +2439,7 @@ Source: https://git.io/vQKuF"
 #+end_src
 ** Hydras
 #+begin_src emacs-lisp
-(with-eval-after-load 'hydra
+(d/with-eval-after-load 'hydra
   (defhydra h/splitter ()
     "splitter"
     ("h" d/move-splitter-left "←")
@@ -2635,7 +2647,7 @@ Get right to your files or the scratch buffer. No B.S.
 #+end_src
 *** Time display
 #+begin_src emacs-lisp :tangle no
-(with-eval-after-load 'time
+(d/with-eval-after-load 'time
   (setq  display-time-24hr-format t
          display-time-default-load-average nil
          display-time-format "│ %Y-%d-%m %H:%M │"
@@ -3040,7 +3052,7 @@ Better parentheses coloring
 
 ** Hydras
 #+begin_src emacs-lisp
-(with-eval-after-load 'hydra
+(d/with-eval-after-load 'hydra
   (defhydra h/zoom ()
     "zoom"
     ("=" text-scale-increase "in")
@@ -3091,7 +3103,7 @@ Better parentheses coloring
 #+end_src
 *** Hydras
 #+begin_src emacs-lisp
-(with-eval-after-load 'hydra
+(d/with-eval-after-load 'hydra
   (defhydra h/flycheck
     (:pre (progn
             (flycheck-mode 1)
@@ -3593,7 +3605,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 #+end_src
 *** Functions
 #+begin_src emacs-lisp
-(with-eval-after-load 'eshell
+(d/with-eval-after-load 'eshell
 
   (defun d/eshell-run (str args)
     (eshell-do-eval
@@ -3699,7 +3711,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 ** ERC
 *** Defaults
 #+begin_src emacs-lisp
-(with-eval-after-load 'erc
+(d/with-eval-after-load 'erc
   (setq erc-prompt "
            ❱❱"
         erc-fill-prefix  "              "
@@ -3774,13 +3786,13 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 #+end_src
 *** Variables
 #+begin_src emacs-lisp
-(with-eval-after-load 'erc
+(d/with-eval-after-load 'erc
   (defvar d/erc-last-speaker (make-hash-table :test 'equal))
   (setq erc-lurker-state (make-hash-table :test 'equal)))
 #+end_src
 *** Functions
 #+begin_src emacs-lisp
-(with-eval-after-load 'erc
+(d/with-eval-after-load 'erc
   (defmacro d/erc-nick-format-function-body (cond nick &optional else)
     `(if ,cond
          (let* ((nick ,nick)
@@ -4167,7 +4179,7 @@ I use this for reading, mostly.
 *** Hydras
 **** toggle
 #+begin_src emacs-lisp
-(with-eval-after-load 'hydra
+(d/with-eval-after-load 'hydra
   (defhydra h/toggle
     (:pre (progn
             (defvar flycheck-mode nil)
@@ -4206,7 +4218,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 (d/leader-keys
  "t"   '(:command h/toggle/body :wk "toggle"))
 
-(with-eval-after-load 'evil
+(d/with-eval-after-load 'evil
   (evil-define-key 'normal custom-mode-map
     "q" #'Custom-buffer-done)
 
