@@ -1142,7 +1142,7 @@ Source: https://git.io/vQKEa"
 (d/setup-mode org
   (setq-local prettify-symbols-alist d/org-prettify-alist)
   (prettify-symbols-mode)
-  (org-bullets-mode 1)
+  ;; (org-bullets-mode 1)
   (goto-address-mode)
   (org-indent-mode))
 #+end_src
