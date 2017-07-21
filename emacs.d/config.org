@@ -3615,7 +3615,8 @@ Source: https://git.io/vQKz8"
 ** Eshell
 *** Defaults
 #+begin_src emacs-lisp
-(setq eshell-prefer-lisp-functions t)
+(setq eshell-prefer-lisp-functions t
+      eshell-scroll-to-bottom-on-input t)
 #+end_src
 *** Packages
 **** egp
