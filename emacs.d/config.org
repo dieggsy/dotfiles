@@ -79,40 +79,12 @@ use this a fair bit so let's explicitly require it.
 (require 'cl-lib)
 #+end_src
 * Package management
-** Defaults
-*** Package-archives
-This is adds places to fetch external packages from, using ~package-install~ or
-[[#use-package][use-package]]. [[https://melpa.org/#/][Melpa]] is probably the best of these, having the biggest variety
-and most active development. It builds packages around every 4 hours or so
-directly from source.
-#+begin_src emacs-lisp :tangle no
-(add-to-list 'package-archives '("org"       . "http://orgmode.org/elpa/") t)
-(add-to-list 'package-archives '("melpa"     . "https://melpa.org/packages/"))
-(add-to-list 'package-archives '("marmalade" . "https://marmalade-repo.org/packages/"))
-#+end_src
-*** package-initialize
-Load and activate packages. I /think/ this tells Emacs about what features are
-available and where to find them.
-
-Note that this is usually in init.el, but I put it down here because it helped
-install the latest org-version without much fuss (otherwise there was a
-conflict where the built-in version was always loaded). See [[#org-mode][org-mode]] for a bit
-more info.
-#+begin_src emacs-lisp :tangle no
-(package-initialize)
-#+end_src
-*** async-bytecomp-mode
-Byte compile installed packages asynchronously, which remedies errors on
-upgrading loaded packages (or something).
+** [[https://github.com/raxod502/straight.el#getting-started][straight]]
 #+begin_src emacs-lisp
-(with-eval-after-load 'async-bytecomp
-  (async-bytecomp-package-mode 1)
-  ;; (setq async-bytecomp-allowed-packages 'all)
-  )
-#+end_src
-** Packages
-*** [[https://github.com/raxod502/straight.el#getting-started][straight]]
-#+begin_src emacs-lisp
+(setq straight-recipe-overrides '((nil (straight :host github
+                                                 :repo "raxod502/straight.el"
+                                                 :files ("straight.el")
+                                                 :branch "develop"))))
 (let ((bootstrap-file (concat user-emacs-directory "straight/bootstrap.el"))
       (bootstrap-version 2))
   (unless (file-exists-p bootstrap-file)
@@ -124,7 +96,7 @@ upgrading loaded packages (or something).
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 #+end_src
-*** [[https://github.com/jwiegley/use-package][use-package]]
+** [[https://github.com/jwiegley/use-package][use-package]]
 #+begin_quote
   A use-package declaration for simplifying your .emacs
 #+end_quote
@@ -137,9 +109,6 @@ keeping track of what's installed or not and it will ensure that any missing
 packages are installed. It's pretty neat.
 #+begin_src emacs-lisp
 (straight-use-package 'use-package)
-;; (unless (package-installed-p 'use-package)
-;;   (package-refresh-contents)
-;;   (package-install 'use-package))
 #+end_src
 I also set some variables - in particular, tell me the load time when a package
 takes more than .001 seconds, always tell me about package loading, and always
@@ -152,43 +121,6 @@ defer and ensure packages are installed unless otherwise stated.
 
 (eval-when-compile
   (require 'use-package))
-#+end_src
-*** [[https://github.com/quelpa/quelpa/][quelpa]]
-#+begin_quote
-  Build and install your Emacs Lisp packages on-the-fly directly from source
-#+end_quote
-Quelpa allows you to install packages from /anywhere/, provided the right [[https://github.com/melpa/melpa#recipe-format][melpa
-format recipe]]. It's a great way to keep up with the bleeding edge of a package
-(if melpa just isn't enough for you), install packages that aren't on melpa,
-try out a different development branch, install your fork as a package... you
-get the point.
-#+begin_src emacs-lisp :tangle no
-(setq quelpa-update-melpa-p nil)
-(unless (require 'quelpa nil t)
-  (with-temp-buffer
-    (url-insert-file-contents "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
-    (eval-buffer)))
-#+end_src
-*** [[https://github.com/quelpa/quelpa-use-package][quelpa-use-package]]
-#+begin_quote
-  Emacs quelpa handler for use-package
-#+end_quote
-Integrates use-package and quelpa for maximum fun.
-#+begin_src emacs-lisp :tangle no
-(quelpa
- '(quelpa-use-package
-   :host github
-   :repo "quelpa/quelpa-use-package"))
-(require 'quelpa-use-package)
-(quelpa-use-package-activate-advice)
-#+end_src
-** Functions
-#+begin_src emacs-lisp
-(defun d/updates ()
-  "Run `paradox-upgrade-packages' and  `quelpa-upgrade'."
-  (interactive)
-  (quelpa-upgrade)
-  (paradox-upgrade-packages))
 #+end_src
 * Core
 ** Defaults
@@ -381,8 +313,7 @@ That undersells it. The /most/ convenient key definitions in emacs.
 #+begin_src emacs-lisp
 (use-package general
   :after evil
-  :recipe (general
-           :host github
+  :recipe (:host github
            :repo "noctuid/general.el"
            :branch "buttercup")
   :config
@@ -599,8 +530,7 @@ Source: https://git.io/vQK0v"
 *** [[https://github.com/Ilazki/prettify-utils.el][prettify-utils]]
 #+begin_src emacs-lisp
 (use-package prettify-utils
-  :recipe (prettify-utils
-           :host github
+  :recipe (:host github
            :repo "Ilazki/prettify-utils.el"))
 #+end_src
 *** [[http://orgmode.org/][org-mode]]
@@ -752,8 +682,6 @@ so I went with it.
 **** Package
 #+begin_src emacs-lisp
 (use-package org
-  ;; :ensure org-plus-contrib
-  ;; :defines (org-habit-graph-column)
   :recipe (:host github
            :repo "emacsmirror/org"
            :files ("lisp/*.el" "contrib/lisp/*.el"))
@@ -3019,8 +2947,7 @@ Source: https://git.io/vQKzq"
 #+begin_src emacs-lisp
 (use-package darktooth-theme
   :demand t
-  :recipe (darktooth-theme
-           :host github
+  :recipe (:host github
            :repo "therockmandolinist/emacs-theme-darktooth"
            :upstream (:host github
                       :repo "emacsfodder/emacs-theme-darktooth")))
@@ -3837,9 +3764,10 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 **** [[https://github.com/leathekd/erc-hl-nicks][erc-hl-nicks]]
 #+begin_src emacs-lisp
 (use-package erc-hl-nicks
-  :recipe (erc-hl-nicks
-           :host github
-           :repo "therockmandolinist/erc-hl-nicks")
+  :recipe (:host github
+           :repo "therockmandolinist/erc-hl-nicks"
+           :upstream (:host github
+                      :repo "leathekd/erc-hl-nicks"))
   :config
   (setq erc-hl-nicks-skip-nicks '("diegs"))
   (push "erc-current-nick-face" erc-hl-nicks-skip-faces))
@@ -4088,10 +4016,7 @@ Syntax highlighting for markdown files.
 #+end_src
 *** [[https://github.com/therockmandolinist/turing-machine][turing-machine]]
 #+begin_src emacs-lisp
-(use-package turing-machine
-  :recipe (turing-machine
-           :host github
-           :repo "therockmandolinist/turing-machine"))
+(use-package turing-machine)
 #+end_src
 * Enhancements
 ** Emacs
@@ -4296,20 +4221,20 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 ** Evil
 *** [[https://github.com/syohex/emacs-evil-anzu][evil-anzu]]
 #+begin_src emacs-lisp
-;; (use-package evil-anzu
-;;   :after evil
-;;   :config
-;;   (setq anzu-cons-mode-line-p nil)
-;;   (defun d/anzu-update-mode-line (here total)
-;;     (when anzu--state
-;;       (let ((status (cl-case anzu--state
-;;                       (search (format "%s/%d%s"
-;;                                       (anzu--format-here-position here total)
-;;                                       total (if anzu--overflow-p "+" "")))
-;;                       (replace-query (format "(%d replace)" total))
-;;                       (replace (format "(%d/%d)" here total)))))
-;;         status)))
-;;   (setq anzu-mode-line-update-function #'d/anzu-update-mode-line))
+(use-package evil-anzu
+  :after evil
+  :config
+  (setq anzu-cons-mode-line-p nil)
+  (defun d/anzu-update-mode-line (here total)
+    (when anzu--state
+      (let ((status (cl-case anzu--state
+                      (search (format "%s/%d%s"
+                                      (anzu--format-here-position here total)
+                                      total (if anzu--overflow-p "+" "")))
+                      (replace-query (format "(%d replace)" total))
+                      (replace (format "(%d/%d)" here total)))))
+        status)))
+  (setq anzu-mode-line-update-function #'d/anzu-update-mode-line))
 #+end_src
 *** [[https://github.com/TheBB/evil-indent-plus][evil-indent-plus]]
 #+begin_quote
@@ -4360,9 +4285,10 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 #+end_quote
 #+begin_src emacs-lisp
 (use-package evil-numbers
-  :recipe (evil-numbers
-           :host github
-           :repo "therockmandolinist/evil-numbers"))
+  :recipe (:host github
+           :repo "therockmandolinist/evil-numbers"
+           :upstream (:host github
+                      :repo "cofi/evil-numbers")))
 #+end_src
 *** [[https://github.com/emacs-evil/evil-surround][evil-surround]]
 #+begin_src emacs-lisp
@@ -4527,10 +4453,6 @@ For the cold winters.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package hacker-typer
-  :recipe (hacker-typer
-           :host github
-           :repo "therockmandolinist/emacs-hacker-typer"
-           :files (:defaults "hackerman.png"))
   :config
   (setq hacker-typer-show-hackerman t)
   (setq hacker-typer-remove-comments t))

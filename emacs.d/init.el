@@ -1,8 +1,6 @@
 ;;; -*- lexical-binding: t; -*-
 ;;(package-initialize)
 (defconst emacs-start-time (current-time))
-;; (require 'package)
-;; (setq package-enable-at-startup nil)
 
 (load-file "~/.emacs.d/config.el")
 
