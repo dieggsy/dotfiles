@@ -691,7 +691,7 @@ so I went with it.
         org-confirm-elisp-link-function 'y-or-n-p
         org-tags-exclude-from-inheritance '("crypt")
         org-crypt-key "diegoamundo@protonmail.com"
-        org-confirm-elisp-link-not-regexp (concat "(\\(wiki-search"
+        org-confirm-elisp-link-not-regexp (concat "(\\(org-wiki-search"
                                                   "\\|describe-function"
                                                   "\\|describe-variable"
                                                   "\\).*?)"))
