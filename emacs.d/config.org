@@ -3750,7 +3750,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 (d/setup-mode json
   (highlight-numbers-mode -1))
 #+end_src
-** erc
+** ERC
 *** Defaults
 #+begin_src emacs-lisp
 (with-eval-after-load 'erc
@@ -3764,6 +3764,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
         erc-prompt-for-password nil
         erc-hide-timestamps t
         erc-input-line-position -1
+        erc-autojoin-timing 'ident
         erc-header-line-format nil
         erc-fill-column 79
         erc-hide-list '("353")
@@ -3928,7 +3929,9 @@ Source: http://tinyurl.com/y8tj8vxx"
 
   (define-advice erc-notifications-notify (:override (nick msg) channel-title)
     "Use channel as notification title and remove erc-fill-prefix."
-    (let ((channel (buffer-name))
+    (let ((server (erc-canonicalize-server-name
+                   erc-server-announced-name))
+          (channel (buffer-name))
           (msg (string-join
                 (cdr (split-string
                       (replace-regexp-in-string erc-fill-prefix "" msg)
@@ -3938,8 +3941,8 @@ Source: http://tinyurl.com/y8tj8vxx"
       (dbus-ignore-errors
         (setq erc-notifications-last-notification
               (notifications-notify :bus erc-notifications-bus
-                                    :title (xml-escape-string channel)
-                                    :body (xml-escape-string (concat nick ": " msg))
+                                    :title (xml-escape-string (format "%s@%s" channel server))
+                                    :body (xml-escape-string (format "%s: %s" nick msg))
                                     :replaces-id erc-notifications-last-notification
                                     :app-icon erc-notifications-icon)))))
 
