@@ -3728,7 +3728,6 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
         erc-hide-list '("353")
         erc-lurker-threshold-time (* 6 60 60)
         erc-lurker-hide-list '("JOIN" "PART" "QUIT" "NICK")
-        erc-lurker-ignore-chars erc-hl-nicks-ignore-chars
         erc-kill-buffer-on-part t
         erc-kill-queries-on-quit t
         erc-kill-server-buffer-on-quit t
@@ -3780,8 +3779,10 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
            :repo "therockmandolinist/erc-hl-nicks"
            :upstream (:host github
                       :repo "leathekd/erc-hl-nicks"))
+  :after erc
   :config
   (setq erc-hl-nicks-skip-nicks '("diegs"))
+  (setq erc-lurker-ignore-chars erc-hl-nicks-ignore-chars)
   (push "erc-current-nick-face" erc-hl-nicks-skip-faces))
 #+end_src
 *** Variables
