@@ -1,6 +1,6 @@
 ;;; -*- lexical-binding: t; -*-
 ;;(package-initialize)
-(defconst emacs-start-time (current-time))
+(defconst d/emacs-start-time (current-time))
 
 (load-file "~/.emacs.d/config.el")
 
@@ -218,13 +218,13 @@
 
 (when window-system
   (let ((elapsed (float-time (time-subtract (current-time)
-                                            emacs-start-time))))
+                                            d/emacs-start-time))))
     (message "Loading %s...done (%.3fs)" load-file-name elapsed))
 
   (add-hook 'after-init-hook
             `(lambda ()
                (let ((elapsed (float-time (time-subtract (current-time)
-                                                         emacs-start-time))))
+                                                         d/emacs-start-time))))
                  (message "Loading %s...done (%.3fs) [after-init]"
                           ,load-file-name elapsed)))
             t))
