@@ -1671,23 +1671,23 @@ else
     echo "fine" > /tmp/battery-status
 fi
 
-if [ "$bat" -gt "95" ];then
-    icon=" "
-elif [ "$bat" -gt "75" ];then
-    icon=" "
-elif [ "$bat" -gt "50" ];then
-    icon=" "
-elif [ "$bat" -gt "25" ];then
-    icon=" "
-elif [ "$bat" -lt "25" ];then
-    icon=" "
-fi
 
 if [ "$Adapt" = "on-line" ];then
-    icon=" "
+    icon=""
+elif [ "$bat" -gt "95" ];then
+    icon=""
+elif [ "$bat" -gt "75" ];then
+    icon=""
+elif [ "$bat" -gt "50" ];then
+    icon=""
+elif [ "$bat" -gt "25" ];then
+    icon=""
+elif [ "$bat" -le "25" ];then
+    icon=""
 fi
 
-echo -e "$icon $bat"
+
+echo -e "  $icon  $bat "
 #+end_src
 *** bright
 :PROPERTIES:

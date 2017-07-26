@@ -258,7 +258,7 @@ Save stuff you've copied in other applications to the emacs kill-ring.
            ,@body)
        (error
         (display-warning 'config
-                         (format "%s %s: %s " (symbol-name ,feature) "after-load"
+                         (format "%s %s: %s " (symbol-name ,feature) "eval-after-load"
                                  (error-message-string err))
                          :error)))))
 #+end_src

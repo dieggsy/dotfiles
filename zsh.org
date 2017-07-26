@@ -542,7 +542,7 @@ bindkey -M vicmd "\e" sudo-command-line
 Tangles the files asynchronously on save.
 #+begin_example
 # Local Variables:
-# after-save-hook: (git-gutter diego/async-babel-tangle)
+# after-save-hook: (git-gutter d/async-babel-tangle)
 # org-pretty-entities: nil
 # End:
 #+end_example
