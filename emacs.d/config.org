@@ -395,6 +395,7 @@ editing. So I went for it. Now I'll never go back.
   :config
   (setq evil-insert-state-cursor '(bar . 1)
         evil-emacs-state-cursor '(bar . 1)
+        evil-ex-search-vim-style-regexp t
         evil-normal-state-tag  " N "
         evil-insert-state-tag  " I "
         evil-motion-state-tag  " M "
