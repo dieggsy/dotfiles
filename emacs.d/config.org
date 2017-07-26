@@ -1,5 +1,5 @@
 #+TITLE: Emacs Init File!
-#+PROPERTY: header-args :results silent :comments link :tangle ~/dotfiles/emacs.d/config.el
+#+PROPERTY: header-args :results silent :comments link :tangle ~/dotfiles/emacs.d/init.el
 
 * Intro
 
@@ -21,6 +21,8 @@ First off, let's set lexical binding, in accordance with the
 [[https://github.com/bbatsov/emacs-lisp-style-guide#source-code-layout--organization][emacs-lisp-style-guide]].
 #+begin_src emacs-lisp :comments no
 ;;; -*- lexical-binding: t -*-
+;;(package-initialize)
+(defconst d/emacs-start-time (current-time))
 #+end_src
 
 * Contents                                                            :toc_1:
@@ -38,7 +40,7 @@ First off, let's set lexical binding, in accordance with the
 - [[#enhancements][Enhancements]]
 - [[#fun][Fun]]
 - [[#web][Web?]]
-- [[#local-vars][Local vars!]]
+- [[#finalize][Finalize]]
 
 * Initial Setup
 ** Personal Info
@@ -135,6 +137,10 @@ back if you need to.
 #+begin_src emacs-lisp
 (setq message-log-max 10000)
 #+end_src
+*** Disabled Commands
+#+begin_src emacs-lisp
+(setq disabled-command-function nil)
+#+end_src
 *** Scrolling
 Scroll one line at a time, and only scroll the current line when moving past
 right boundary.
@@ -181,6 +187,11 @@ except for warnings and errors.
 Save stuff you've copied in other applications to the emacs kill-ring.
 #+begin_src emacs-lisp
 (setq save-interprogram-paste-before-kill t)
+#+end_src
+*** Custom
+#+begin_src emacs-lisp
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
 #+end_src
 ** Functions
 *** Dotfiles
@@ -282,6 +293,16 @@ Save stuff you've copied in other applications to the emacs kill-ring.
 (defmacro d/fbound-and-true-p (name &optional args)
   `(and (fboundp #',name)
         (apply #',name ,args)))
+
+(defmacro time (name &rest body)
+  (declare (indent defun))
+  `(let ((s-time (current-time)))
+     (prog1
+         (progn
+           ,@body)
+       (message "`%s' execution took %.5f seconds."
+                ,name
+                (float-time (time-subtract (current-time) s-time))))))
 #+end_src
 ** Packages
 These are packages that I consider /absolutely essential/ to my emacs workflow,
@@ -4618,7 +4639,26 @@ Configure the Elfeed RSS reader with an Orgmode file
   (setq sunshine-location "02139,USA"
         sunshine-appid (password-store-get "api/openweathermap")))
 #+end_src
-* Local vars!
+* Finalize
+#+begin_src emacs-lisp
+(straight-declare-init-finished)
+(when (not (bufferp "*Warnings*"))
+  (message "Init succeeded.")
+  (straight-declare-init-succeeded))
+
+(when window-system
+  (let ((elapsed (float-time (time-subtract (current-time)
+                                            d/emacs-start-time))))
+    (message "Loading %s...done (%.3fs)" load-file-name elapsed))
+
+  (add-hook 'after-init-hook
+            `(lambda ()
+               (let ((elapsed (float-time (time-subtract (current-time)
+                                                         d/emacs-start-time))))
+                 (message "Loading %s...done (%.3fs) [after-init]"
+                          ,load-file-name elapsed)))
+            t))
+#+end_src
 I'll probably remove that exclamation point at some point, but right now I'm
 excited about file local vars.
 

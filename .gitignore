@@ -1,12 +1,11 @@
 *~
 \#*\#
+emacs.d/init.el
 emacs.d/var/
 !emacs.d/var/abbrev.el
 !emacs.d/var/elfeed/rmh-elfeed.org
 !emacs.d/var/eshell/alias
 emacs.d/.python-environments
-emacs.d/config.el
-emacs.d/config.elc
 emacs.d/elpa
 emacs.d/etc/*
 !emacs.d/etc/yasnippet

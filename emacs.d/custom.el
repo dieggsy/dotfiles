@@ -1,9 +1,3 @@
-;;; -*- lexical-binding: t; -*-
-;;(package-initialize)
-(defconst d/emacs-start-time (current-time))
-
-(load-file "~/.emacs.d/config.el")
-
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -207,28 +201,3 @@
  '(table-cell ((t nil)))
  '(term ((t (:inherit default))))
  '(variable-pitch ((t (:family "Open Sans")))))
-
-(put 'downcase-region 'disabled nil)
-(put 'erase-buffer 'disabled nil)
-(put 'narrow-to-page 'disabled nil)
-(put 'narrow-to-region 'disabled nil)
-(put 'set-goal-column 'disabled nil)
-(put 'upcase-region 'disabled nil)
-(put 'timer-list 'disabled nil)
-
-(when window-system
-  (let ((elapsed (float-time (time-subtract (current-time)
-                                            d/emacs-start-time))))
-    (message "Loading %s...done (%.3fs)" load-file-name elapsed))
-
-  (add-hook 'after-init-hook
-            `(lambda ()
-               (let ((elapsed (float-time (time-subtract (current-time)
-                                                         d/emacs-start-time))))
-                 (message "Loading %s...done (%.3fs) [after-init]"
-                          ,load-file-name elapsed)))
-            t))
-
-;; Local Variables:
-;; after-save-hook: (lambda () (byte-compile-file (buffer-file-name)))
-;; End:
