@@ -1430,15 +1430,6 @@ Non-interactively SEARCH-STRING is the string to search."
 #+begin_src emacs-lisp
 (use-package info+)
 #+end_src
-*** [[https://github.com/laynor/melpa-upstream-visit][melpa-upstream-visit]]
-#+begin_quote
-  A set of kludges to visit the homepage of a package hosted on elpa.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package melpa-upstream-visit
-  :config
-  (setq muv:completing-read-function 'ivy-completing-read))
-#+end_src
 *** [[https://github.com/vermiculus/sx.el/][sx]]
 #+begin_quote
   Stack Exchange for Emacs
@@ -1746,18 +1737,6 @@ Dear god I hate tabs. Also, four spaces is a good indentation default.
               tab-width 4)
 #+end_src
 ** Packages
-*** [[https://github.com/alpha22jp/atomic-chrome][atomic-chrome]]
-#+begin_quote
-  Edit text area on Chrome with Emacs using Atomic Chrome
-#+end_quote
-#+begin_src emacs-lisp
-(use-package atomic-chrome
-  :defer t
-  :config
-  (unless atomic-chrome-server-atomic-chrome
-    (atomic-chrome-start-server))
-  (setq atomic-chrome-buffer-open-style 'frame))
-#+end_src
 *** [[https://github.com/abo-abo/auto-yasnippet][auto-yasnippet]]
 #+begin_src emacs-lisp
 (use-package auto-yasnippet)
@@ -2525,18 +2504,6 @@ Like git, for emacs. But cooler.
 (use-package evil-magit
   :after magit)
 #+end_src
-*** [[https://github.com/vermiculus/magithub][magithub]]
-#+begin_quote
-   Magit interfaces for GitHub
-#+end_quote
-#+begin_src emacs-lisp
-(use-package magithub
-  :disabled t
-  :after magit
-  :config (magithub-feature-autoinject t)
-  (setq ghub-username "therockmandolinist"
-        ghub-token (password-store-get "tokens/github/master")))
-#+end_src
 *** [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]]
 #+begin_quote
   Fringe version of git-gutter.el
@@ -2984,38 +2951,6 @@ Source: https://git.io/vQKzq"
            :repo "therockmandolinist/emacs-theme-darktooth"
            :upstream (:host github
                       :repo "emacsfodder/emacs-theme-darktooth")))
-#+end_src
-*** [[https://github.com/hlissner/emacs-doom-theme][doom-theme]]
-#+begin_src emacs-lisp :tangle no
-(use-package doom-themes
-  :disabled t
-  :config
-  (load-theme 'doom-molokai t))
-#+end_src
-*** [[https://github.com/greduan/emacs-theme-gruvbox][gruvbox-theme]]
-#+begin_src emacs-lisp
-(use-package gruvbox-theme
-  :disabled t)
-#+end_src
-*** [[https://github.com/iqbalansari/emacs-emojify][emacs-emojify]]
-#+begin_quote
-  Display emojis in emacs.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package emojify)
-#+end_src
-*** [[https://github.com/lunaryorn/fancy-battery.el][fancy-battery]]
-#+begin_quote
-Display battery in Emacs Mode line
-#+end_quote
-#+begin_src emacs-lisp
-(use-package fancy-battery
-  :disabled t
-  :defer 10
-  :config
-  (fancy-battery-mode)
-  (setq fancy-battery-show-percentage t)
-  (fancy-battery-update))
 #+end_src
 *** [[https://github.com/alpaker/Fill-Column-Indicator][fill-column-indicator]]
 #+begin_quote
@@ -4498,16 +4433,6 @@ For the cold winters.
 (pure awesome)
 #+begin_src emacs-lisp
 (use-package highlight-tail)
-#+end_src
-*** [[https://github.com/TeMPOraL/nyan-mode][nyan-mode]]
-#+begin_quote
-  Nyan Cat for Emacs! Nyanyanyanyanyanyanyanyanyan!
-#+end_quote
-For show.
-#+begin_src emacs-lisp
-(use-package nyan-mode
-  :config
-  (nyan-mode))
 #+end_src
 *** [[https://github.com/rbanffy/selectric-mode][selectric-mode]]
 #+begin_quote
