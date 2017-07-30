@@ -126,10 +126,24 @@ defer and ensure packages are installed unless otherwise stated.
 #+end_src
 * Core
 ** Defaults
-*** Prompts
-Having to type "yes" can be annoying.
+*** Column
+Show the column number in the modeline, because I'm not a savage.
 #+begin_src emacs-lisp
-(defalias 'yes-or-no-p #'y-or-n-p)
+(setq column-number-mode t)
+#+end_src
+*** Custom
+#+begin_src emacs-lisp
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+#+end_src
+*** Disabled Commands
+#+begin_src emacs-lisp
+(setq disabled-command-function nil)
+#+end_src
+*** Kill-ring
+Save stuff you've copied in other applications to the emacs kill-ring.
+#+begin_src emacs-lisp
+(setq save-interprogram-paste-before-kill t)
 #+end_src
 *** Messages
 Allow more messages in ~*Messages*~ buffer so you can look at what happened waaay
@@ -137,9 +151,17 @@ back if you need to.
 #+begin_src emacs-lisp
 (setq message-log-max 10000)
 #+end_src
-*** Disabled Commands
+*** Minibuffer
+Allow editing in the minibuffer... /with/ the minibuffer. Also resize minibuffer
+windows to fit text.
 #+begin_src emacs-lisp
-(setq disabled-command-function nil)
+(setq enable-recursive-minibuffers t
+      resize-mini-windows t)
+#+end_src
+*** Prompts
+Having to type "yes" can be annoying.
+#+begin_src emacs-lisp
+(defalias 'yes-or-no-p #'y-or-n-p)
 #+end_src
 *** Scrolling
 Scroll one line at a time, and only scroll the current line when moving past
@@ -154,18 +176,6 @@ mouse in emacs.
 #+begin_src emacs-lisp :tangle no
 (setq mouse-wheel-scroll-amount '(2 ((shift) . 1) ((control) . nil))
       mouse-wheel-progressive-speed nil)
-#+end_src
-*** Minibuffer
-Allow editing in the minibuffer... /with/ the minibuffer. Also resize minibuffer
-windows to fit text.
-#+begin_src emacs-lisp
-(setq enable-recursive-minibuffers t
-      resize-mini-windows t)
-#+end_src
-*** Column
-Show the column number in the modeline, because I'm not a savage.
-#+begin_src emacs-lisp
-(setq column-number-mode t)
 #+end_src
 *** Tab
 Use tab for completion and cycling candidates (relevant for the minibuffer?).
@@ -183,55 +193,7 @@ except for warnings and errors.
       password-cache t
       password-cache-expiry 86400)
 #+end_src
-*** Kill-ring
-Save stuff you've copied in other applications to the emacs kill-ring.
-#+begin_src emacs-lisp
-(setq save-interprogram-paste-before-kill t)
-#+end_src
-*** Custom
-#+begin_src emacs-lisp
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
-#+end_src
 ** Functions
-*** Dotfiles
-#+begin_src emacs-lisp
-(defvar d/show-async-tangle-results nil)
-
-(defun d/async-tangle-init ()
-  "Asynchronously tangle config.org and and byte-compile."
-  (interactive)
-  (let ((init-tangle-start-time (current-time)))
-    (async-start
-     (lambda ()
-       ;; make async emacs aware of packages (for byte-compilation)
-       (require 'org)
-
-       ;; tangle
-       (org-babel-tangle-file
-        (expand-file-name "~/dotfiles/emacs.d/config.org")))
-     (unless d/show-async-tangle-results
-       `(lambda (result)
-          (if result
-              (message "SUCCESS: config.org successfully tangled. (%.3fs)"
-                       (float-time (time-subtract (current-time)
-                                                  ',init-tangle-start-time)))
-            (message "ERROR: config.org tangle failed.")))))))
-
-(defun d/async-babel-tangle ()
-  "Tangle org file asynchronously."
-  (interactive)
-  (let ((file (buffer-file-name)))
-    (async-start
-     `(lambda ()
-        (require 'org)
-        (org-babel-tangle-file ,file))
-     (unless d/show-async-tangle-results
-       (lambda (result)
-         (if result
-             (message "SUCCESS: successfully tangled file.")
-           (message "ERROR: tangle file failed.")))))))
-#+end_src
 *** Config helpers
 #+begin_src emacs-lisp
 (defmacro d/setup-mode (modes &rest body)
@@ -261,6 +223,45 @@ Save stuff you've copied in other applications to the emacs kill-ring.
                          (format "%s %s: %s " (symbol-name ,feature) "eval-after-load"
                                  (error-message-string err))
                          :error)))))
+#+end_src
+*** Dotfiles
+#+begin_src emacs-lisp
+(d/with-eval-after-load 'org
+  (defvar d/show-async-tangle-results nil)
+
+  (defun d/async-tangle-init ()
+    "Asynchronously tangle config.org and and byte-compile."
+    (interactive)
+    (let ((init-tangle-start-time (current-time)))
+      (async-start
+       (lambda ()
+         ;; make async emacs aware of packages (for byte-compilation)
+         (require 'org)
+
+         ;; tangle
+         (org-babel-tangle-file
+          (expand-file-name "~/dotfiles/emacs.d/init.org")))
+       (unless d/show-async-tangle-results
+         `(lambda (result)
+            (if result
+                (message "SUCCESS: init.org successfully tangled. (%.3fs)"
+                         (float-time (time-subtract (current-time)
+                                                    ',init-tangle-start-time)))
+              (message "ERROR: init.org tangle failed.")))))))
+
+  (defun d/async-babel-tangle ()
+    "Tangle org file asynchronously."
+    (interactive)
+    (let ((file (buffer-file-name)))
+      (async-start
+       `(lambda ()
+          (require 'org)
+          (org-babel-tangle-file ,file))
+       (unless d/show-async-tangle-results
+         (lambda (result)
+           (if result
+               (message "SUCCESS: successfully tangled file.")
+             (message "ERROR: tangle file failed."))))))))
 #+end_src
 *** Other
 #+begin_src emacs-lisp
@@ -1275,15 +1276,6 @@ Supposedly better than autocomplete.
 (use-package powerline)
 #+end_src
 ** Bindings
-*** Ret
-#+begin_src emacs-lisp
-(mmap "RET"
-      (general-predicate-dispatch nil
-        (thing-at-point 'url) 'goto-address-at-point
-        (d/fbound-and-true-p org-at-openable-item-p) 'org-open-at-point
-        (d/fbound-and-true-p org-at-item-checkbox-p) 'org-toggle-checkbox
-        (d/fbound-and-true-p org-in-src-block-p) 'org-babel-execute-src-block))
-#+end_src
 *** Leader
 #+begin_src emacs-lisp
 (d/leader-keys
@@ -1294,6 +1286,18 @@ Supposedly better than autocomplete.
  ":"   'eval-expression
  "r"   'repeat
  "u"   'universal-argument)
+#+end_src
+*** macOS fullscreen
+A convenient full-screen binding I'm used to from iTerm.
+#+begin_src emacs-lisp
+(when (eq system-type 'darwin)
+  (global-set-key (kbd "<s-return>") #'toggle-frame-fullscreen))
+#+end_src
+*** Macros
+#+begin_src emacs-lisp
+(general-define-key
+ "<f11>" 'kmacro-start-macro-or-insert-counter
+ "<f12>" 'kmacro-end-or-call-macro)
 #+end_src
 *** Minibuffer
 I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard, so I like to
@@ -1310,23 +1314,20 @@ also use these keys to quit out of the minibuffer.
  [escape] 'minibuffer-keyboard-quit)
 
 #+end_src
+*** Ret
+#+begin_src emacs-lisp
+(mmap "RET"
+      (general-predicate-dispatch nil
+        (thing-at-point 'url) 'goto-address-at-point
+        (d/fbound-and-true-p org-at-openable-item-p) 'org-open-at-point
+        (d/fbound-and-true-p org-at-item-checkbox-p) 'org-toggle-checkbox
+        (d/fbound-and-true-p org-in-src-block-p) 'org-babel-execute-src-block))
+#+end_src
 *** universal argument
 #+begin_src emacs-lisp
 (general-define-key
  :keymaps 'universal-argument-map
  "SPC u" 'universal-argument-more)
-#+end_src
-*** Macros
-#+begin_src emacs-lisp
-(general-define-key
- "<f11>" 'kmacro-start-macro-or-insert-counter
- "<f12>" 'kmacro-end-or-call-macro)
-#+end_src
-*** macOS fullscreen
-A convenient full-screen binding I'm used to from iTerm.
-#+begin_src emacs-lisp
-(when (eq system-type 'darwin)
-  (global-set-key (kbd "<s-return>") #'toggle-frame-fullscreen))
 #+end_src
 * Help
 ** Defaults
