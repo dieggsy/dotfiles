@@ -21,8 +21,19 @@ First off, let's set lexical binding, in accordance with the
 [[https://github.com/bbatsov/emacs-lisp-style-guide#source-code-layout--organization][emacs-lisp-style-guide]].
 #+begin_src emacs-lisp :comments no
 ;;; -*- lexical-binding: t -*-
+#+end_src
+Then we add a commented call to ~package-initialize~ because ~package.el~ is
+annoying like that.
+#+begin_src emacs-lisp
 ;;(package-initialize)
+#+end_src
+Next we define a variable for timing startup, and change ~gc-cons-threshhold~
+temporarily (only during startup). This saves me like .3 s of startup time.
+#+begin_src emacs-lisp
 (defconst d/emacs-start-time (current-time))
+(setq gc-cons-threshold 64000000)
+(add-hook 'after-init-hook (lambda ()
+                             (setq gc-cons-threshold 800000)))
 #+end_src
 
 * Contents                                                            :toc_1:
@@ -74,14 +85,38 @@ really bad self-made themes, ~org-export-async-init-file~, etc.
 
   (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/"))
 #+end_src
-** cl-lib
+** Libraries
 I'm sure this will be required by some package somewhere along the way, but I
 use this a fair bit so let's explicitly require it.
 #+begin_src emacs-lisp
 (require 'cl-lib)
 #+end_src
+** Utilities
+#+begin_src emacs-lisp
+(defmacro d/time (name &rest body)
+  (declare (indent defun))
+  `(let ((s-time (current-time)))
+     (prog1
+         (progn
+           ,@body)
+       (message "`%s' execution took %.5f seconds."
+                ,name
+                (float-time (time-subtract (current-time) s-time))))))
+
+(defmacro d/start-time (name)
+  `(defvar ,(intern (concat "d/time-" name)) (current-time)))
+
+(defmacro d/end-time (name)
+  `(message "`%s' execution took %.5f seconds."
+            ,name
+            (float-time (time-subtract (current-time) ,(intern (concat "d/time-" name))))))
+#+end_src
 * Package management
 ** [[https://github.com/raxod502/straight.el#getting-started][straight]]
+#+begin_quote
+  Next-generation, purely functional package manager for the Emacs hacker.
+#+end_quote
+
 #+begin_src emacs-lisp
 (setq straight-recipe-overrides '((nil (straight :host github
                                                  :repo "raxod502/straight.el"
@@ -294,16 +329,6 @@ except for warnings and errors.
 (defmacro d/fbound-and-true-p (name &optional args)
   `(and (fboundp #',name)
         (apply #',name ,args)))
-
-(defmacro time (name &rest body)
-  (declare (indent defun))
-  `(let ((s-time (current-time)))
-     (prog1
-         (progn
-           ,@body)
-       (message "`%s' execution took %.5f seconds."
-                ,name
-                (float-time (time-subtract (current-time) s-time))))))
 #+end_src
 ** Packages
 These are packages that I consider /absolutely essential/ to my emacs workflow,
@@ -346,7 +371,7 @@ package should fix them nicely.
 That undersells it. The /most/ convenient key definitions in emacs.
 #+begin_src emacs-lisp
 (use-package general
-  :after evil
+  :demand t
   :recipe (:host github
            :repo "noctuid/general.el"
            :branch "buttercup")
@@ -1490,7 +1515,7 @@ Clean up whitespace before saving files.
 Do dired actions (meaning file copying/deleting and the like) asynchronously.
 Which means it's less likely to block up emacs. Or something.
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'dired-async
+(d/with-eval-after-load 'dired
   (autoload 'dired-async-mode "dired-async.el" nil t)
   (dired-async-mode 1))
 #+end_src
@@ -2685,7 +2710,7 @@ Choose a font in order of preference, when available.
 #+end_src
 And use [[http://fontawesome.io/][Font Awesome]] for the unicode glyphs it supports.
 #+begin_src emacs-lisp
-(when (x-list-fonts "FontAwesome")
+(when (and window-system (x-list-fonts "FontAwesome"))
   (set-fontset-font t 'unicode "FontAwesome" nil 'prepend)))
 #+end_src
 
@@ -3992,11 +4017,6 @@ Syntax highlighting for markdown files.
 * Enhancements
 ** Emacs
 *** Packages
-**** [[https://github.com/jwiegley/use-package/blob/master/bind-key.el][bind-key]]
-#+begin_src emacs-lisp
-(use-package bind-key
-  :ensure t)
-#+end_src
 **** [[https://github.com/purcell/disable-mouse][disable-mouse]]
 #+begin_quote
   Disable the mouse in Emacs
@@ -4177,17 +4197,16 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 (d/leader-keys
  "t"   '(:command h/toggle/body :wk "toggle"))
 
-(d/with-eval-after-load 'evil
-  (evil-define-key 'normal custom-mode-map
-    "q" #'Custom-buffer-done)
+(nmap :keymaps 'custom-mode-map
+  "q" #'Custom-buffer-done)
 
-  (evil-add-hjkl-bindings occur-mode-map 'emacs
-    (kbd "/")       'evil-search-forward
-    (kbd "n")       'evil-search-next
-    (kbd "N")       'evil-search-previous
-    (kbd "C-d")     'evil-scroll-down
-    (kbd "C-u")     'evil-scroll-up
-    (kbd "C-w C-w") 'other-window))
+(evil-add-hjkl-bindings occur-mode-map 'emacs
+  (kbd "/")       'evil-search-forward
+  (kbd "n")       'evil-search-next
+  (kbd "N")       'evil-search-previous
+  (kbd "C-d")     'evil-scroll-down
+  (kbd "C-u")     'evil-scroll-up
+  (kbd "C-w C-w") 'other-window)
 #+end_src
 ** Evil
 *** [[https://github.com/syohex/emacs-evil-anzu][evil-anzu]]
@@ -4568,10 +4587,10 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+end_src
 * Finalize
 #+begin_src emacs-lisp
-(straight-declare-init-finished)
-(when (not (bufferp "*Warnings*"))
-  (message "Init succeeded.")
-  (straight-declare-init-succeeded))
+;; (straight-declare-init-finished)
+;; (when (not (bufferp "*Warnings*"))
+;;   (message "Init succeeded.")
+;;   (straight-declare-init-succeeded))
 
 (when window-system
   (let ((elapsed (float-time (time-subtract (current-time)
@@ -4586,8 +4605,6 @@ Configure the Elfeed RSS reader with an Orgmode file
                           ,load-file-name elapsed)))
             t))
 #+end_src
-I'll probably remove that exclamation point at some point, but right now I'm
-excited about file local vars.
 
 #+begin_example
 # Local Variables:
