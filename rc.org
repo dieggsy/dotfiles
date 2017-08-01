@@ -35,8 +35,9 @@ more readable in org format than in rendered markdown.
   - [[#dolphin][dolphin]]
   - [[#dropmite][dropmite]]
   - [[#ev][ev]]
-  - [[#i3blocks][i3blocks]]
+  - [[#exwm-start][exwm-start]]
   - [[#i3-exit][i3-exit]]
+  - [[#i3blocks][i3blocks]]
   - [[#masterinstall][masterinstall]]
   - [[#mbuild][mbuild]]
   - [[#ocrpdf][ocrpdf]]
@@ -1648,6 +1649,25 @@ termite --name=dropmite
 :END:
 #+begin_src sh
 emacsclient -n --eval "(let ((inhibit-message t)) (dolist (file (split-string \"$*\")) (find-file-read-only file)))" > /dev/null 2>&1
+#+end_src
+** exwm-start
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/exwm-start") :shebang "#!/bin/sh"
+:END:
+
+#+begin_src sh
+exec dbus-launch --exit-with-session emacs
+#+end_src
+** i3-exit
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3-exit") :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+message="Exit i3?"
+response=$(echo -e "Exit\nCancel" | rofi -lines 2 -width 30 -dmenu -i -mesg "$message" -p "")
+if [ "$response" = "Exit" ]; then
+    i3-msg exit
+fi
 #+end_src
 ** i3blocks
 i3blocks scripts taken from/inspired by [[https://github.com/yeungocanh/archdot/tree/master/.config/i3blocks][yeungocanh/archdot]].

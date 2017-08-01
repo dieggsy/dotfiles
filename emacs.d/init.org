@@ -219,6 +219,14 @@ Use tab for completion and cycling candidates (relevant for the minibuffer?).
       completion-cycle-threshold t
       tab-always-indent 'complete)
 #+end_src
+*** Time Display
+#+begin_src emacs-lisp
+(with-eval-after-load 'time
+  (setq  display-time-24hr-format t
+         display-time-default-load-average nil
+         display-time-format "%Y-%d-%m %H:%M "
+         display-time-load-average nil))
+#+end_src
 *** Tramp
 Use ssh by default and remember passwords for [[https://www.gnu.org/software/tramp/][tramp]]. Also make it quieter
 except for warnings and errors.
@@ -519,7 +527,8 @@ A really nice search/completion system for emacs.
   ("M-x" 'counsel-M-x
    "C-x C-f" 'counsel-find-file)
   (d/leader-keys
-   "SPC"  'counsel-M-x
+   "SPC" 'counsel-M-x
+   "aa"  'counsel-linux-app
    "ff"  'counsel-find-file
    "fj"  'counsel-file-jump
    "fl"  'counsel-locate
@@ -2382,6 +2391,104 @@ imenu on steroids.
   :config
   (setq zoom-window-mode-line-color "#1D2021"))
 #+end_src
+*** [[https://github.com/ch11ng/exwm][exwm]]
+#+begin_src emacs-lisp
+(use-package exwm
+  :demand t
+  :if (not (or (string= (getenv "XDG_CURRENT_DESKTOP") "i3")
+               (string= (getenv "XDG_CURRENT_DESKTOP") "kde")))
+  :init
+  (defmacro d/exec (cmd)
+    `(lambda () (interactive) (call-process-shell-command ,cmd)))
+  :general
+  ("M-SPC" (d/exec "rofi -combi-modi window,run,drun -show combi -modi combi")
+   "s-u" 'exwm-layout-toggle-fullscreen
+   "<XF86MonBrightnessUp>"   (d/exec "xbacklight +2")
+   "<XF86MonBrightnessDown>" (d/exec "xbacklight -2")
+   "<XF86KbdBrightnessDown>" (d/exec "kb-light -")
+   "<XF86KbdBrightnessUp>"   (d/exec "kb-light +")
+   "<XF86AudioMute>" (d/exec "amixer -D pulse sset Master toggle")
+   "<XF86AudioLowerVolume>" (d/exec "amixer -D pulse sset Master 2%-")
+   "<XF86AudioRaiseVolume>" (d/exec "amixer -D pulse sset Master 2%+"))
+  :config
+  (require 'exwm-config)
+  (exwm-config-default)
+  (exwm-input-set-simulation-keys nil)
+  (exwm-enable)
+  (defun networkmanager-dmenu ()
+    (interactive)
+    (call-process-shell-command "networkmanager_dmenu"))
+  (setq exwm-input-prefix-keys `(?\C-/
+                                 ,(elt (kbd "M-SPC") 0)
+                                 ?\s-u
+                                 XF86MonBrightnessUp
+                                 XF86MonBrightnessDown
+                                 XF86KbdBrightnessDown
+                                 XF86KbdBrightnessUp
+                                 XF86AudioMute
+                                 XF86AudioLowerVolume
+                                 XF86AudioRaiseVolume))
+  (add-to-list 'evil-insert-state-modes 'exwm-mode)
+  (add-hook 'evil-normal-state-entry-hook (lambda ()
+                                            (setq-local exwm-input-line-mode-passthrough t)))
+  (add-hook 'evil-insert-state-entry-hook (lambda ()
+                                            (setq-local exwm-input-line-mode-passthrough nil)))
+
+  (cl-defmacro d/process-for-mode-line (name &rest body &key cmd repeat fmt init &allow-other-keys)
+    (declare (indent defun))
+    (let ((body (cl-loop for (key value) on body by #'cddr
+                         if (and value (not (keywordp key)))
+                         append `(,key ,value)
+                         else if (not (keywordp key)) collect key))
+          (shell-cmd (format "while sleep %d; do %s; done" repeat cmd))
+          (filter-name (intern (concat name "-filter")))
+          (var-name (intern (concat name "-output"))))
+      `(progn
+         (defvar ,var-name (string-trim (shell-command-to-string ,cmd)))
+         (start-process-shell-command ,name nil ,shell-cmd)
+         (defun ,(intern (concat name "-filter")) (process output)
+           ,@body
+           (setq ,var-name ,(if fmt `(funcall ,fmt (string-trim output))
+                              `(string-trim output)))
+           (force-mode-line-update 'all))
+         (set-process-filter (get-process ,name) #',filter-name))))
+
+  (d/process-for-mode-line "d/ssid"
+    :cmd "iwgetid -r || echo 'None'"
+    :repeat 5)
+
+  (d/process-for-mode-line "d/battery"
+    :cmd "bat=$(acpi | cut -d \" \" -f4 | tr -d \"%,\")
+Adapt=$(acpi -a | cut -d \" \" -f3)
+
+touch /tmp/battery-status
+if [ \"$bat\" -lt 11 ] && [ \"$(</tmp/battery-status)\" != \"critically-low\" ] && [ \"$Adapt\" != \"on-line\" ]; then
+    espeak -vf4 \"Battery critically low, consider charging.\" &
+    notify-send \"Battery critically low, consider charging.\" &
+    echo \"critically-low\" > /tmp/battery-status
+else
+    echo \"fine\" > /tmp/battery-status
+fi
+
+
+if [ \"$Adapt\" = \"on-line\" ];then
+    icon=\"\"
+elif [ \"$bat\" -gt \"95\" ];then
+    icon=\"\"
+elif [ \"$bat\" -gt \"75\" ];then
+    icon=\"\"
+elif [ \"$bat\" -gt \"50\" ];then
+    icon=\"\"
+elif [ \"$bat\" -gt \"25\" ];then
+    icon=\"\"
+elif [ \"$bat\" -le \"25\" ];then
+    icon=\"\"
+fi
+
+
+echo -e \" $bat \" "
+    :repeat 30))
+#+end_src
 ** Functions
 #+begin_src emacs-lisp
 (defun d/toggle-window-split ()
@@ -2844,7 +2951,8 @@ Source: https://git.io/vQKzq"
      (d/with-evil-tag-color
        (d/with-window-status
          (cond ((and window-active?
-                     (not (or (d/eyebrowse-relevant-p)
+                     (not (or (featurep 'exwm)
+                              (d/eyebrowse-relevant-p)
                               (bound-and-true-p anzu--state)
                               (d/in-macro-p)
                               (d/in-evil-substitution-p))))
@@ -2902,7 +3010,7 @@ Source: https://git.io/vQKzq"
     (:eval
      (d/with-window-status
        (propertize-active
-        (concat mode-name "  ")
+        (concat (format-mode-line mode-name) "  ")
         'face '(:foreground "#83A598" :weight bold))))
     ;; Version control
     (:eval
@@ -2947,6 +3055,45 @@ Source: https://git.io/vQKzq"
 (setq-default mode-line-format d/mode-line)
 (with-current-buffer "*Messages*"
   (setq-local mode-line-format d/mode-line))
+
+(with-eval-after-load 'exwm
+  (display-time-mode)
+  (defvar d/mode-line-exwm
+    '("%e"
+      (:eval
+       (let* ((lhs d/mode-line)
+              (l-width (length (format-mode-line lhs)))
+              (rhs `((:eval
+                      (d/with-window-status
+                        (concat
+                         (propertize-active (concat d/ssid-output "  ")
+                                            'face '(:foreground "#B8bb26"))
+
+                         (propertize-active (concat d/battery-output "  ")
+                                            'face '(:foreground "#83a598"))
+
+                         (propertize-active (concat display-time-string "  ")
+                                            'face '(:foreground "#A89984")))))))
+              (r-width (length (format-mode-line rhs)))
+              (t-width (+ l-width r-width))
+              (pad (if (> (window-width) (+ l-width r-width))
+                       (make-string
+                        (- (window-width)
+                           (+ l-width r-width)
+                           (if eldoc-mode-line-string
+                               (+ (length eldoc-mode-line-string) 2)
+                             0)
+                           (if (eq major-mode 'exwm-mode)
+                               -1
+                             0))
+                        ?\ )
+                     "")))
+         (format-mode-line
+          (append lhs `(,pad) rhs))))))
+  (setq-default mode-line-format d/mode-line-exwm)
+  (with-current-buffer "*Messages*"
+    (setq-local mode-line-format d/mode-line-exwm)))
+
 #+end_src
 ** Packages
 *** [[https://github.com/larstvei/Focus][focus]]
@@ -4024,6 +4171,7 @@ Syntax highlighting for markdown files.
 #+begin_src emacs-lisp
 (use-package disable-mouse
   :demand  t
+  :if (not (string= (getenv "XDG_CURRENT_DESKTOP") "exwm"))
   :config
   (global-disable-mouse-mode)
   (dolist (key '([mouse-1]
