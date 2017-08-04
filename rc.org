@@ -15,6 +15,7 @@ more readable in org format than in rendered markdown.
   - [[#cvimrc][cvimrc]]
   - [[#darktooththeme-cmus][darktooth.theme (cmus)]]
   - [[#emacsclientdesktop][emacsclient.desktop]]
+  - [[#exwmdesktop][exwm.desktop]]
   - [[#git][git]]
   - [[#i3][i3]]
   - [[#initvim][init.vim]]
@@ -28,6 +29,7 @@ more readable in org format than in rendered markdown.
   - [[#ssh][ssh]]
   - [[#termite][termite]]
   - [[#tmux][tmux]]
+  - [[#xbindkeysrc][xbindkeysrc]]
   - [[#xresources][Xresources]]
   - [[#xsessionrc][xsessionrc]]
   - [[#zathurarc][zathurarc]]
@@ -35,9 +37,9 @@ more readable in org format than in rendered markdown.
   - [[#dolphin][dolphin]]
   - [[#dropmite][dropmite]]
   - [[#ev][ev]]
-  - [[#exwm-start][exwm-start]]
   - [[#i3-exit][i3-exit]]
-  - [[#i3blocks][i3blocks]]
+  - [[#i3blocksexwm-utils][i3blocks/exwm utils]]
+  - [[#i3-exit-1][i3-exit]]
   - [[#masterinstall][masterinstall]]
   - [[#mbuild][mbuild]]
   - [[#ocrpdf][ocrpdf]]
@@ -177,6 +179,17 @@ Exec=emacsclient -n %u
 Icon=emacs-icon
 Type=Application
 Terminal=false
+#+end_src
+** exwm.desktop
+#+begin_src conf
+[Desktop Entry]
+Name=EXWM
+Comment=Emacs Window Manager
+Exec=dbus-launch --exit-with-session emacs
+Type=Application
+X-LightDM-DesktopName=exwm
+DesktopNames=exwm
+Keywords=tiling;wm;windowmanager;window;manager;emacs;
 #+end_src
 ** git
 *** gitconfig
@@ -1560,6 +1573,53 @@ windows:
   - social: exec weechat
   - music: exec cmus
 #+end_src
+** xbindkeysrc
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.xbindkeysrc") :comments no
+:END:
+#+begin_src conf
+"~/bin/i3blocks/volume +"
+    XF86AudioRaiseVolume
+
+"~/bin/i3blocks/volume -"
+    XF86AudioLowerVolume
+
+"~/bin/i3blocks/volume toggle"
+    XF86AudioMute
+
+"~/bin/i3blocks/music next"
+    XF86AudioNext
+
+"~/bin/i3blocks/music prev"
+    XF86AudioPrev
+
+"~/bin/i3blocks/music toggle"
+    XF86AudioPlay
+
+"~/bin/i3blocks/bright Backlight +"
+    XF86MonBrightnessUp
+
+"~/bin/i3blocks/bright Backlight -"
+    XF86MonBrightnessDown
+
+"~/bin/i3blocks/bright Kb-light +"
+    XF86KbdBrightnessUp
+
+"~/bin/i3blocks/bright Kb-light -"
+    XF86KbdBrightnessDown
+
+"scrot -s ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
+    XF86LaunchB
+
+ "scrot -ub ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
+    shift + XF86LaunchB
+
+ "scrot ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
+    XF86LaunchA
+
+ "rofi -combi-modi window,run,drun -show combi -modi combi"
+    alt + space
+#+end_src
 ** Xresources
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.Xresources")
@@ -1608,6 +1668,10 @@ xset r rate 300 50
 setxkbmap dvorak
 setxkbmap -option 'ctrl:nocaps'
 xcape -e 'Control_L=Escape'
+
+if [ "$XDG_CURRENT_DESKTOP" = "exwm" ]; then
+    pkill xbindkeys; xbindkeys &
+fi
 #+end_src
 ** zathurarc
 :PROPERTIES:
@@ -1650,14 +1714,6 @@ termite --name=dropmite
 #+begin_src sh
 emacsclient -n --eval "(let ((inhibit-message t)) (dolist (file (split-string \"$*\")) (find-file-read-only file)))" > /dev/null 2>&1
 #+end_src
-** exwm-start
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/exwm-start") :shebang "#!/bin/sh"
-:END:
-
-#+begin_src sh
-exec dbus-launch --exit-with-session emacs
-#+end_src
 ** i3-exit
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3-exit") :shebang "#!/usr/bin/env bash"
@@ -1669,7 +1725,7 @@ if [ "$response" = "Exit" ]; then
     i3-msg exit
 fi
 #+end_src
-** i3blocks
+** i3blocks/exwm utils
 i3blocks scripts taken from/inspired by [[https://github.com/yeungocanh/archdot/tree/master/.config/i3blocks][yeungocanh/archdot]].
 *** battery
 :PROPERTIES:
@@ -1714,36 +1770,52 @@ echo -e "  $icon  $bat "
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/bright") :shebang "#!/bin/bash"
 :END:
 #+begin_src sh
-mode="$(<~/bin/i3blocks/brightness.txt)"
+if [ "$XDG_CURRENT_DESKTOP" = "exwm" ]; then
+    mode="$1"
+else
+    mode="$(<~/bin/i3blocks/brightness.txt)"
+fi
 
-if [ "$BLOCK_BUTTON" = "1" ] && [ "$mode" = "screen" ]; then
-    pkill -RTMIN+1 i3blocks
-    echo "backlight" > ~/bin/i3blocks/brightness.txt
-    mode="screen"
-    brightness="$(kb-light)"
-    printf "    %.0f " "$brightness"
-elif [ "$BLOCK_BUTTON" = "1" ] && [ "$mode" = "backlight" ]; then
-    pkill -RTMIN+1 i3blocks
-    echo "screen" > ~/bin/i3blocks/brightness.txt
-    mode="backlight"
-    brightness="$(xbacklight)"
-    printf "    %.0f " "$brightness"
-elif [ "$mode" = "screen" ]; then
-    if [ "$BLOCK_BUTTON" = "5" ]; then
+if [ "$mode" = "Backlight" ]; then
+    brightness=$(xbacklight -get)
+    multiple=$(printf %.0f $(echo "scale=2; $brightness / 5" | bc))
+    brightness=$((($multiple * 5)))
+    if [ "$XDG_CURRENT_DESKTOP" = "exwm" ] && [ "$2" = "+" ];then
+        brightness=$((($brightness + 5)))
+        xbacklight -set $brightness > /dev/null 2>&1
+    elif [ "$XDG_CURRENT_DESKTOP" = "exwm" ] && [ "$2" = "-" ];then
+        brightness=$((($brightness - 5)))
+        xbacklight -set $brightness > /dev/null 2>&1
+    elif  [ "$BLOCK_BUTTON" = "1" ]; then
+        pkill -RTMIN+1 i3blocks
+        echo "Kb-light" > ~/bin/i3blocks/brightness.txt
+        mode="Backlight"
+    elif [ "$BLOCK_BUTTON"= "5" ]; then
         xbacklight +2 > /dev/null 2>&1
     elif [ "$BLOCK_BUTTON" = "4" ]; then
         xbacklight -2 > /dev/null 2>&1
     fi
-    brightness="$(xbacklight)"
-    printf "    %.0f " "$brightness"
-elif [ "$mode" = "backlight" ]; then
-    if [ "$BLOCK_BUTTON" = "5" ]; then
+elif [ "$mode" = "Kb-light" ]; then
+    if [ "$XDG_CURRENT_DESKTOP" = "exwm" ] && [ "$2" = "+" ];then
+        kb-light + > /dev/null 2>&1
+    elif [ "$XDG_CURRENT_DESKTOP" = "exwm" ] && [ "$2" = "-" ];then
+        kb-light - > /dev/null 2>&1
+    elif [ "$BLOCK_BUTTON" = "1" ]; then
+        pkill -RTMIN+1 i3blocks
+        echo "Backlight" > ~/bin/i3blocks/brightness.txt
+        mode="Kb-light"
+    elif [ "$BLOCK_BUTTON" = "5" ]; then
         kb-light + > /dev/null 2>&1
     elif [ "$BLOCK_BUTTON" = "4" ]; then
         kb-light - > /dev/null 2>&1
     fi
     brightness="$(kb-light)"
-    printf "    %.0f " "$brightness"
+fi
+
+if [ "$XDG_CURRENT_DESKTOP" = "exwm" ]; then
+    emacsclient --eval "(message \"$mode: $brightness\")"
+else
+    echo "    $brightness"
 fi
 #+end_src
 *** date
@@ -1802,11 +1874,11 @@ echo "    $layout "
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/music") :shebang "#!/bin/bash"
 :END:
 #+begin_src sh
-if [ "$BLOCK_BUTTON" = "1" ]; then
+if [ "$1" = "toggle" ] || [ "$BLOCK_BUTTON" = "1" ]; then
     playerctl-cmus play-pause
-elif [ "$BLOCK_BUTTON" = "5" ]; then
+elif [ "$1" = "next" ] || [ "$BLOCK_BUTTON" = "5" ]; then
     playerctl-cmus next
-elif [ "$BLOCK_BUTTON" = "4" ]; then
+elif [ "$1" = "prev" ] || [ "$BLOCK_BUTTON" = "4" ]; then
     playerctl-cmus previous
 fi
 
@@ -1833,7 +1905,9 @@ elif [ -n "$cmus" ]; then
     icon="▶"
 fi
 
-if [ -n "$artist" ] && [ -n "$title" ]; then
+if [ "$XDG_CURRENT_DESKTOP" = "exwm" ]; then
+    emacsclient --eval "(message \"Current track: $artist - $title\")"
+elif [ -n "$artist" ] && [ -n "$title" ]; then
     echo -e " $icon $artist - $title "
     echo -e " $icon $title "
 fi
@@ -1843,19 +1917,22 @@ fi
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/volume") :shebang "#!/bin/bash"
 :END:
 #+begin_src sh
-
-if [ "$BLOCK_BUTTON" = "1" ]; then
+if [ "$1" = "toggle" ] || [ "$BLOCK_BUTTON" = "1" ]; then
     amixer -D pulse sset Master toggle > /dev/null 2>&1
-elif [ "$BLOCK_BUTTON" = "5" ]; then
-    amixer -D pulse sset Master 2%+ > /dev/null 2>&1
-elif [ "$BLOCK_BUTTON" = "4" ]; then
-    amixer -D pulse sset Master 2%- > /dev/null 2>&1
+elif [ "$1" = "+" ] || [ "$BLOCK_BUTTON" = "5" ]; then
+    amixer -D pulse sset Master 5%+ > /dev/null 2>&1
+elif [ "$1" = "-" ] || [ "$BLOCK_BUTTON" = "4" ]; then
+    amixer -D pulse sset Master 5%- > /dev/null 2>&1
 fi
 
 Vol=$(amixer -D pulse get Master | grep "Left: Playback" | awk '{print $5}' | tr -d "[ %]")
 Mute=$(amixer -D pulse get Master | grep "Left: Playback" | awk '{print $6}' | tr -d "[-]")
 
-if [ "$Vol" = "0" ] || [ "$Mute" = "off" ]; then
+if [ "$XDG_CURRENT_DESKTOP" = "exwm" ] && [ "$Mute" = "on" ]; then
+    emacsclient --eval "(message \"Volume: Mute\")"
+elif [ "$XDG_CURRENT_DESKTOP" = "exwm" ]; then
+    emacsclient --eval "(message \"Volume: $Vol\")"
+elif [ "$Vol" = "0" ] || [ "$Mute" = "off" ]; then
     echo -ne "    $Vol "
 elif [ "$Vol" -ge "50" ];then
     echo -ne "    $Vol "
