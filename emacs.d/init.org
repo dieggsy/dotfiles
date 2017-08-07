@@ -45,6 +45,7 @@ temporarily (only during startup). This saves me like .3 s of startup time.
 - [[#files-and-buffers][Files and Buffers]]
 - [[#editing][Editing]]
 - [[#navigation][Navigation]]
+- [[#exwm][EXWM]]
 - [[#git-and-github][Git and github]]
 - [[#appearance][Appearance]]
 - [[#modes][Modes]]
@@ -2391,104 +2392,6 @@ imenu on steroids.
   :config
   (setq zoom-window-mode-line-color "#1D2021"))
 #+end_src
-*** [[https://github.com/ch11ng/exwm][exwm]]
-#+begin_src emacs-lisp
-(use-package exwm
-  :demand t
-  :if (not (or (string= (getenv "XDG_CURRENT_DESKTOP") "i3")
-               (string= (getenv "XDG_CURRENT_DESKTOP") "kde")))
-  :init
-  (defmacro d/exec (cmd)
-    `(lambda () (interactive) (call-process-shell-command ,cmd)))
-  :general
-  ("M-SPC" (d/exec "rofi -combi-modi window,run,drun -show combi -modi combi")
-   "s-u" 'exwm-layout-toggle-fullscreen
-   "<XF86MonBrightnessUp>"   (d/exec "xbacklight +2")
-   "<XF86MonBrightnessDown>" (d/exec "xbacklight -2")
-   "<XF86KbdBrightnessDown>" (d/exec "kb-light -")
-   "<XF86KbdBrightnessUp>"   (d/exec "kb-light +")
-   "<XF86AudioMute>" (d/exec "amixer -D pulse sset Master toggle")
-   "<XF86AudioLowerVolume>" (d/exec "amixer -D pulse sset Master 2%-")
-   "<XF86AudioRaiseVolume>" (d/exec "amixer -D pulse sset Master 2%+"))
-  :config
-  (require 'exwm-config)
-  (exwm-config-default)
-  (exwm-input-set-simulation-keys nil)
-  (exwm-enable)
-  (defun networkmanager-dmenu ()
-    (interactive)
-    (call-process-shell-command "networkmanager_dmenu"))
-  (setq exwm-input-prefix-keys `(?\C-/
-                                 ,(elt (kbd "M-SPC") 0)
-                                 ?\s-u
-                                 XF86MonBrightnessUp
-                                 XF86MonBrightnessDown
-                                 XF86KbdBrightnessDown
-                                 XF86KbdBrightnessUp
-                                 XF86AudioMute
-                                 XF86AudioLowerVolume
-                                 XF86AudioRaiseVolume))
-  (add-to-list 'evil-insert-state-modes 'exwm-mode)
-  (add-hook 'evil-normal-state-entry-hook (lambda ()
-                                            (setq-local exwm-input-line-mode-passthrough t)))
-  (add-hook 'evil-insert-state-entry-hook (lambda ()
-                                            (setq-local exwm-input-line-mode-passthrough nil)))
-
-  (cl-defmacro d/process-for-mode-line (name &rest body &key cmd repeat fmt init &allow-other-keys)
-    (declare (indent defun))
-    (let ((body (cl-loop for (key value) on body by #'cddr
-                         if (and value (not (keywordp key)))
-                         append `(,key ,value)
-                         else if (not (keywordp key)) collect key))
-          (shell-cmd (format "while sleep %d; do %s; done" repeat cmd))
-          (filter-name (intern (concat name "-filter")))
-          (var-name (intern (concat name "-output"))))
-      `(progn
-         (defvar ,var-name (string-trim (shell-command-to-string ,cmd)))
-         (start-process-shell-command ,name nil ,shell-cmd)
-         (defun ,(intern (concat name "-filter")) (process output)
-           ,@body
-           (setq ,var-name ,(if fmt `(funcall ,fmt (string-trim output))
-                              `(string-trim output)))
-           (force-mode-line-update 'all))
-         (set-process-filter (get-process ,name) #',filter-name))))
-
-  (d/process-for-mode-line "d/ssid"
-    :cmd "iwgetid -r || echo 'None'"
-    :repeat 5)
-
-  (d/process-for-mode-line "d/battery"
-    :cmd "bat=$(acpi | cut -d \" \" -f4 | tr -d \"%,\")
-Adapt=$(acpi -a | cut -d \" \" -f3)
-
-touch /tmp/battery-status
-if [ \"$bat\" -lt 11 ] && [ \"$(</tmp/battery-status)\" != \"critically-low\" ] && [ \"$Adapt\" != \"on-line\" ]; then
-    espeak -vf4 \"Battery critically low, consider charging.\" &
-    notify-send \"Battery critically low, consider charging.\" &
-    echo \"critically-low\" > /tmp/battery-status
-else
-    echo \"fine\" > /tmp/battery-status
-fi
-
-
-if [ \"$Adapt\" = \"on-line\" ];then
-    icon=\"\"
-elif [ \"$bat\" -gt \"95\" ];then
-    icon=\"\"
-elif [ \"$bat\" -gt \"75\" ];then
-    icon=\"\"
-elif [ \"$bat\" -gt \"50\" ];then
-    icon=\"\"
-elif [ \"$bat\" -gt \"25\" ];then
-    icon=\"\"
-elif [ \"$bat\" -le \"25\" ];then
-    icon=\"\"
-fi
-
-
-echo -e \" $bat \" "
-    :repeat 30))
-#+end_src
 ** Functions
 #+begin_src emacs-lisp
 (defun d/toggle-window-split ()
@@ -2597,6 +2500,143 @@ Source: https://git.io/vQKuF"
  "ws" 'h/splitter/body
  "wt" 'd/toggle-window-split
  "wv" 'd/split-vert-focus)
+#+end_src
+* EXWM
+** Startup
+#+begin_src emacs-lisp
+(use-package exwm
+  :demand t
+  :if (string= (getenv "XDG_CURRENT_DESKTOP") "exwm")
+  :config
+  (add-hook 'exwm-update-class-hook
+            (lambda ()
+              (exwm-workspace-rename-buffer exwm-class-name)))
+  (exwm-input-set-key (kbd "s-r") #'exwm-reset)
+  (exwm-input-set-key (kbd "s-w") #'exwm-workspace-switch)
+  (dotimes (i 10)
+    (exwm-input-set-key (kbd (format "s-%d" (if (= 9 i) 0 (1+ i))))
+                        `(lambda ()
+                           (interactive)
+                           (exwm-workspace-switch-create ,i))))
+  (setq exwm-workspace-index-map (lambda (i) (number-to-string (1+ i))))
+  (exwm-enable)
+
+  (setenv "INSIDE_EMACS" "1")
+
+  (setq window-divider-default-right-width 1)
+  (setq window-divider-default-bottom-width 1)
+
+  (window-divider-mode)
+
+  (setq windmove-wrap-around t)
+
+  ;; (pinentry-start)
+
+
+  (add-to-list 'evil-insert-state-modes 'exwm-mode)
+
+  (add-hook 'evil-normal-state-entry-hook (lambda ()
+                                            (setq-local exwm-input-line-mode-passthrough t)))
+  (add-hook 'evil-insert-state-entry-hook (lambda ()
+                                            (setq-local exwm-input-line-mode-passthrough nil)))
+
+  (add-hook 'exwm-floating-setup-hook (lambda () (setq-local mode-line-format nil))))
+#+end_src
+** Functions
+#+begin_src emacs-lisp
+(d/with-eval-after-load 'exwm
+  (defmacro d/exwm-define-key (&rest bindings)
+    (declare (indent defun))
+    (let ((keys (cl-loop for (key func) on bindings
+                         by #'cddr
+                         collect (elt (kbd key) 0))))
+
+      `(progn
+         (setq exwm-input-prefix-keys ',keys)
+         (general-define-key ,@bindings))))
+
+  (cl-defmacro d/exec (cmd &key pre post)
+    `(lambda () (interactive) ,pre (call-process-shell-command ,cmd) ,post))
+
+  (cl-defmacro d/exwm-mode-line-process (name &rest body &key cmd repeat fmt init &allow-other-keys)
+    (declare (indent defun))
+    (let ((body (cl-loop for (key value) on body by #'cddr
+                         if (and value (not (keywordp key)))
+                         append `(,key ,value)
+                         else if (not (keywordp key)) collect key))
+          (shell-cmd (format "while sleep %d; do %s; done" repeat cmd))
+          (filter-name (intern (concat name "-filter")))
+          (var-name (intern name)))
+      `(progn
+         (defvar ,var-name (string-trim (shell-command-to-string ,cmd)))
+         (start-process-shell-command ,name nil ,shell-cmd)
+         (defun ,(intern (concat name "-filter")) (process output)
+           ,@body
+           (setq ,var-name ,(if fmt `(funcall ,fmt (string-trim output))
+                              `(string-trim output)))
+           (force-mode-line-update 'all))
+         (set-process-filter (get-process ,name) #',filter-name)))))
+#+end_src
+** Processes
+#+begin_src emacs-lisp
+(d/with-eval-after-load 'exwm
+
+  (setq d/mute
+        (string= (string-trim
+                  (shell-command-to-string "amixer -D pulse get Master \
+| grep \"Left: Playback\" \
+| awk '{print $6}' \
+| tr -d \"[-]\""))
+                 "off"))
+
+  (setq d/kb-layout (string-trim
+                     (shell-command-to-string
+                      "layout=$(setxkbmap -query | grep layout | cut -d' ' -f6)
+
+if [ \"$layout\" = \"us\" ]; then
+    echo 'QW'
+elif [ \"$layout\" = \"dvorak\" ]; then
+     echo 'DV'
+fi")))
+
+  (d/exwm-mode-line-process "d/ssid"
+    :cmd "iwgetid -r || echo 'None'"
+    :repeat 5)
+
+  (d/exwm-mode-line-process "d/battery"
+    :cmd "bat=$(acpi | cut -d \" \" -f4 | tr -d \"%,\")
+Adapt=$(acpi -a | cut -d \" \" -f3)
+
+touch /tmp/battery-status
+if [ \"$bat\" -lt 11 ] && [ \"$(</tmp/battery-status)\" != \"critically-low\" ] && [ \"$Adapt\" != \"on-line\" ]; then
+    espeak -vf4 \"Battery critically low, consider charging.\" &
+    notify-send \"Battery critically low, consider charging.\" &
+    echo \"critically-low\" > /tmp/battery-status
+else
+    echo \"fine\" > /tmp/battery-status
+fi
+
+echo -e \" $bat \""
+    :repeat 30))
+#+end_src
+** Bindings
+#+begin_src emacs-lisp
+(d/with-eval-after-load 'exwm
+  (d/exwm-define-key
+    "s-u" 'exwm-layout-toggle-fullscreen
+    "s-s" 'evil-window-right
+    "s-h" 'evil-window-left
+    "s-t" 'evil-window-down
+    "s-n" 'evil-window-up
+
+    "s-<right>" 'evil-window-right
+    "s-<left>" 'evil-window-left
+    "s-<down>" 'evil-window-down
+    "s-<up>" 'evil-window-up
+
+    "s-p" 'password-store-copy)
+
+  (add-to-list 'exwm-input-prefix-keys ?\C-/))
 #+end_src
 * Git and github
 ** Packages
@@ -3055,9 +3095,34 @@ Source: https://git.io/vQKzq"
 (setq-default mode-line-format d/mode-line)
 (with-current-buffer "*Messages*"
   (setq-local mode-line-format d/mode-line))
-
-(with-eval-after-load 'exwm
+#+end_src
+**** EXWM mode-line
+#+begin_src emacs-lisp
+(d/with-eval-after-load 'exwm
   (display-time-mode)
+
+  (defvar d/ssid-keymap
+    (let ((map (make-sparse-keymap)))
+      (define-key map [mode-line mouse-1] (lambda ()
+                                            (interactive)
+                                            (call-process-shell-command "networkmanager_dmenu")))
+      map))
+
+  (defvar d/kb-layout-keymap
+    (let ((map (make-sparse-keymap)))
+      (define-key map [mode-line mouse-1] (lambda ()
+                                            (interactive)
+                                            (pcase d/kb-layout
+                                              ("DV"
+                                               (setq d/kb-layout "QW")
+                                               (call-process-shell-command "setxkbmap us")
+                                               (force-mode-line-update 'all))
+                                              ("QW"
+                                               (setq d/kb-layout "DV")
+                                               (call-process-shell-command "setxkbmap dvorak")
+                                               (force-mode-line-update 'all)))))
+      map))
+
   (defvar d/mode-line-exwm
     '("%e"
       (:eval
@@ -3066,10 +3131,16 @@ Source: https://git.io/vQKzq"
               (rhs `((:eval
                       (d/with-window-status
                         (concat
-                         (propertize-active (concat d/ssid-output "  ")
-                                            'face '(:foreground "#B8bb26"))
+                         (when d/mute
+                           (propertize-active "M  " 'face '(:foreground "#FB4933")))
+                         (propertize-active (concat d/kb-layout "  ")
+                                            'face '(:foreground "#D3869B")
+                                            'local-map d/kb-layout-keymap)
+                         (propertize-active (concat d/ssid "  ")
+                                            'face '(:foreground "#B8bb26")
+                                            'local-map d/ssid-keymap)
 
-                         (propertize-active (concat d/battery-output "  ")
+                         (propertize-active (concat d/battery "  ")
                                             'face '(:foreground "#83a598"))
 
                          (propertize-active (concat display-time-string "  ")
@@ -3093,7 +3164,6 @@ Source: https://git.io/vQKzq"
   (setq-default mode-line-format d/mode-line-exwm)
   (with-current-buffer "*Messages*"
     (setq-local mode-line-format d/mode-line-exwm)))
-
 #+end_src
 ** Packages
 *** [[https://github.com/larstvei/Focus][focus]]
@@ -3148,7 +3218,6 @@ Source: https://git.io/vQKzq"
   (add-hook 'company-completion-finished-hook 'company-maybe-turn-on-fci)
   (add-hook 'company-completion-cancelled-hook 'company-maybe-turn-on-fci))
 #+end_src
-
 *** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers]]
 #+begin_quote
   Emacs minor mode to highlight each source code identifier uniquely based on its name
@@ -4441,7 +4510,9 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
   :after evil-surround
   :config
   (add-hook 'org-mode-hook 'embrace-org-mode-hook)
-  (evil-embrace-enable-evil-surround-integration))
+  (evil-embrace-enable-evil-surround-integration)
+  (d/with-eval-after-load 'exwm
+    (setq evil-embrace-show-help-p nil)))
 #+end_src
 ** Org
 *** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
