@@ -535,7 +535,7 @@ A really nice search/completion system for emacs.
         counsel-org-goto-separator ": "
         counsel-org-goto-face-style 'org
         counsel-org-goto-display-todo t
-        counsel-grep-base-command "grep -nEi '%s' %s"
+        counsel-grep-base-command "rg -i -M 120 --no-heading --line-number --color never '%s' %s"
         counsel-find-file-ignore-regexp (concat "\\(\\`\\.\\)"
                                                 "\\|\\(\\.elc$\\)"
                                                 "\\|\\(.pyc$\\)")
