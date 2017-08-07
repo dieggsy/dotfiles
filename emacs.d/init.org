@@ -2984,31 +2984,33 @@ Source: https://git.io/vQKzq"
                 (d/make-xpm evil-tag-color 56 8))
                ((not window-active?)
                 (d/make-xpm "#1D2021" 56 8))))))
-    ((:eval
-      (d/with-window-status
-        (d/with-evil-tag-color
-          (when window-active?
-            (propertize-active
-             (cond ((d/in-evil-substitution-p)
-                    (d/evil-substitute-num-matches))
-                   ((d/in-macro-p)
-                    (if (bound-and-true-p evil-this-macro)
-                        (char-to-string evil-this-macro)
-                      "Macro"))
-                   ((bound-and-true-p anzu--state)
-                    (anzu--update-mode-line))
-                   ((d/eyebrowse-relevant-p)
-                    (let* ((num (eyebrowse--get 'current-slot))
-                           (tag (nth 2 (assoc num (eyebrowse--get 'window-configs)))))
-                      (if (and tag (< 0 (length tag)))
-                          tag
-                        (int-to-string num)))))
-             'face
-             `(:foreground
-               "#3E3D31"
-               :weight bold
-               :background ,evil-tag-color
-               :box (:color ,evil-tag-color :line-width 14))))))))
+    (:eval
+     (d/with-window-status
+       (d/with-evil-tag-color
+         (when window-active?
+           (propertize-active
+            (cond ((d/in-evil-substitution-p)
+                   (d/evil-substitute-num-matches))
+                  ((d/in-macro-p)
+                   (if (bound-and-true-p evil-this-macro)
+                       (char-to-string evil-this-macro)
+                     "Macro"))
+                  ((bound-and-true-p anzu--state)
+                   (anzu--update-mode-line))
+                  ((featurep 'exwm)
+                   (number-to-string (1+ exwm-workspace-current-index)))
+                  ((d/eyebrowse-relevant-p)
+                   (let* ((num (eyebrowse--get 'current-slot))
+                          (tag (nth 2 (assoc num (eyebrowse--get 'window-configs)))))
+                     (if (and tag (< 0 (length tag)))
+                         tag
+                       (int-to-string num)))))
+            'face
+            `(:foreground
+              "#3E3D31"
+              :weight bold
+              :background ,evil-tag-color
+              :box (:color ,evil-tag-color :line-width 14)))))))
     ;; File modified
     " %* "
     ;; Buffer name & recursive editing
@@ -3029,8 +3031,9 @@ Source: https://git.io/vQKzq"
                 '(:foreground "#D3869B")))))
     ;; Line/column number
     (:eval (d/with-window-status
-             (propertize-active "%4l:%2c  "
-                                'face '(:foreground "#A89984"))))
+             (unless (eq major-mode 'exwm-mode)
+               (propertize-active "%4l:%2c  "
+                                  'face '(:foreground "#A89984")))))
     ;; Major mode
     (:eval
      (d/with-window-status
