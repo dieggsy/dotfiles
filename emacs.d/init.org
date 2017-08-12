@@ -55,11 +55,6 @@ temporarily (only during startup). This saves me like .3 s of startup time.
 - [[#finalize][Finalize]]
 
 * Initial Setup
-** Personal Info
-#+begin_src emacs-lisp
-(setq user-full-name "Diego A. Mundo"
-      user-mail-address "diegoamundo@gmail.com")
-#+end_src
 ** Server
 Start server if not already running. You can do this with ~emacs --daemon~ or
 even automate it with ~brew services start emacs~ on macOS, but I usually just
@@ -213,7 +208,7 @@ right boundary.
 #+end_src
 Smoother mouse scrolling, which is now irrelevant to me since I've disabled the
 mouse in emacs.
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (setq mouse-wheel-scroll-amount '(2 ((shift) . 1) ((control) . nil))
       mouse-wheel-progressive-speed nil)
 #+end_src
@@ -426,6 +421,8 @@ editing. So I went for it. Now I'll never go back.
 
   (evil-ex-define-cmd "dtw" #'delete-trailing-whitespace)
   (evil-ex-define-cmd "buffers" #'ibuffer)
+
+  (add-hook 'edebug-mode-hook #'evil-normalize-keymaps)
 
   (evil-mode 1))
 #+end_src
@@ -3914,7 +3911,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
         erc-fill-prefix  "              "
         erc-notice-prefix   "              *** "
         erc-format-nick-function 'd/erc-format-nick
-        erc-nick "diegs_"
+        erc-nick "dieggsy"
         erc-password (password-store-get "social/freenode")
         erc-prompt-for-password nil
         erc-hide-timestamps t

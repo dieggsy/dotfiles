@@ -2426,7 +2426,7 @@ A script to search all files using [[https://github.com/BurntSushi/ripgrep][ripg
 #+begin_src sh
 ~/.zplug/bin/rg --files 2>/dev/null \
     | LC_ALL=C sort \
-    | awk -v len=86 '{ if (length($0) > len) print "..." substr($0, length($0)-len, length($0)); else print; }' \
+    | awk -v len=85 '{ if (length($0) > len) print "..." substr($0, length($0)-len, length($0)); else print; }' \
     | rofi -dmenu -i -width 50 -levenshtein-sort -matching regex -p '[files] '\
     | xargs -d '\n' xdg-open
 
