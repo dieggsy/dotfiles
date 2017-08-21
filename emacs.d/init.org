@@ -2568,7 +2568,45 @@ Source: https://git.io/vQKuF"
            (setq ,var-name ,(if fmt `(funcall ,fmt (string-trim output))
                               `(string-trim output)))
            (force-mode-line-update 'all))
-         (set-process-filter (get-process ,name) #',filter-name)))))
+         (set-process-filter (get-process ,name) #',filter-name))))
+
+  (defun d/swap-window-right ()
+    (interactive)
+    (let* ((buff (current-buffer))
+           (win (windmove-find-other-window 'right))
+           (o-buff (window-buffer win)))
+      (set-window-buffer win buff)
+      (set-window-buffer (selected-window) o-buff)
+      (windmove-right)))
+
+  (defun d/swap-window-left ()
+    (interactive)
+    (let* ((buff (current-buffer))
+           (win (windmove-find-other-window 'left))
+           (o-buff (window-buffer win)))
+      (set-window-buffer win buff)
+      (set-window-buffer (selected-window) o-buff)
+      (windmove-left)))
+
+  (defun d/swap-window-down ()
+    (interactive)
+    (let* ((buff (current-buffer))
+           (win (windmove-find-other-window 'down))
+           (o-buff (window-buffer win)))
+      (set-window-buffer win buff)
+      (set-window-buffer (selected-window) o-buff)
+      (windmove-down)))
+
+  (defun d/swap-window-up ()
+    (interactive)
+    (let* ((buff (current-buffer))
+           (win (windmove-find-other-window 'up))
+           (o-buff (window-buffer win)))
+      (set-window-buffer win buff)
+      (set-window-buffer (selected-window) o-buff)
+      (windmove-up))))
+
+
 #+end_src
 ** Processes
 #+begin_src emacs-lisp
@@ -2626,6 +2664,16 @@ echo -e \" $bat \""
     "s-<left>" 'evil-window-left
     "s-<down>" 'evil-window-down
     "s-<up>" 'evil-window-up
+
+    "s-S" 'd/swap-window-right
+    "s-H" 'd/swap-window-left
+    "s-T" 'd/swap-window-down
+    "s-N" 'd/swap-window-up
+
+    "s-S-<right>" 'd/swap-window-right
+    "s-S-<left>" 'd/swap-window-left
+    "s-S-<down>" 'd/swap-window-down
+    "s-S-<up>" 'd/swap-window-up
 
     "s-p" 'password-store-copy)
 
