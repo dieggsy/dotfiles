@@ -348,7 +348,7 @@ alias decryptdir="gpg-zip -d"
 alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head"
 which hub > /dev/null && alias git=hub
 [ "$(uname)" = "Linux" ] && compdef hub=git
-[ "$(uname)" = "Linux" ] && which nautilus > /dev/null && alias nautilus="nautilus > /dev/null 2>&1"
+[ "$(uname)" = "Linux" ] && which nautilus > /dev/null && alias nautilus="nautilus &> /dev/null"
 alias gls='gls -X --group-directories-first --color=always'
 alias ls='exa --group-directories-first --sort=extension'
 alias glst="gls -t"
@@ -376,8 +376,8 @@ alias wiki="wiki -w 80"
 edit () {
     emacsclient -n $@
     if (( $+commands[i3-msg] )); then
-        i3-msg '[instance="dropmite"] move scratchpad' > /dev/null 2>&1
-        i3-msg '[title="emacs@Ragnarok"] focus' > /dev/null 2>&1
+        i3-msg '[instance="dropmite"] move scratchpad' &> /dev/null
+        i3-msg '[title="emacs@Ragnarok"] focus' &> /dev/null
     fi
 }
 
@@ -396,7 +396,7 @@ alias calc="noglob calc"
 
 erg () { emacsclient -n $(rg -n $1 |
                               peco --prompt="[erg]" |
-                              awk -F\: '{print "+"$2,$1}') > /dev/null 2>&1}
+                              awk -F\: '{print "+"$2,$1}') &> /dev/null}
 
 cpg () {
     if [ "$1" = "next" ]; then
