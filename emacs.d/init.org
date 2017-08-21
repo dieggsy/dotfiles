@@ -3778,6 +3778,27 @@ Source: https://git.io/vQKz8"
    ("not" "¬")
    ("->" "→")))
 #+end_src
+*** Functions
+#+begin_src emacs-lisp
+(defun d/geiser-eval-surrounding-sexp (levels)
+  "Eval sexp around point, specifying depth with LEVELS.
+
+Source: http://tinyurl.com/le6wxuo"
+  (interactive "p")
+  (save-excursion
+    (sp-end-of-sexp (abs levels))
+    (geiser-eval-last-sexp nil)))
+#+end_src
+*** Bindings
+#+begin_src emacs-lisp
+(d/mode-leader-keys
+ :keymaps 'scheme-mode-map
+ "eb" 'geiser-eval-buffer
+ "ef" 'geiser-eval-definition
+ "er" 'geiser-eval-region
+ "el" 'geiser-eval-last-sexp
+ "es" 'd/geiser-eval-surrounding-sexp)
+#+end_src
 *** Setup
 #+begin_src emacs-lisp
 (d/setup-mode scheme
@@ -3792,6 +3813,9 @@ Source: https://git.io/vQKz8"
    "C-c <right>" 'hs-show-block)
 
   (setq-local prettify-symbols-alist d/scheme-prettify-alist))
+
+(font-lock-add-keywords 'scheme-mode '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)) t)
+(font-lock-add-keywords 'geiser-repl-mode '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)) t)
 #+end_src
 ** Conf
 *** Setup
