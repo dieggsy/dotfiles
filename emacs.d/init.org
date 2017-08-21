@@ -3962,7 +3962,29 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
       (ivy-read "[ps] "
                 ps
                 :action (lambda (x)
-                          (insert (cadr (split-string x " " t))))))))
+                          (insert (cadr (split-string x " " t)))))))
+
+  (defun eshell/cool-peco-history ()
+    (interactive)
+    (let ((history
+           (cl-remove-duplicates
+            (d/let loop ((index 0))
+              (if (= index eshell-history-size)
+                  (list (eshell-get-history index))
+                (cons (eshell-get-history index) (loop (1+ index)))))
+            :from-end t
+            :test #'string=)))
+      (ivy-read "[history] "
+                history
+                :action (lambda (x)
+                          (insert x))))))
+#+end_src
+*** Bindings
+#+begin_src emacs-lisp
+(d/setup-mode eshell
+  (imap :keymaps 'eshell-mode-map
+    "C-p" 'eshell/cool-peco-ps
+    "C-r" 'eshell/cool-peco-history))
 #+end_src
 ** Text
 #+begin_src emacs-lisp
