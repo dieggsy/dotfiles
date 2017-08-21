@@ -3876,7 +3876,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
     (`("edit" . ,ll) (password-store-edit ll)))
 
   (defun eshell/rg (&rest args)
-    (eshell-grep "rg" (push "--no-heading" args))
+    (eshell-grep "rg" (append '("--no-heading" "-M" "120") args))
     (other-window 1))
 
   (defun eshell/cool-peco-ps ()

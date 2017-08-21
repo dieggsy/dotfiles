@@ -363,7 +363,7 @@ alias printers="lpstat -p | awk '{print $2}'"
 alias resetb="source ~/.zshrc"
 alias resetwifi="networksetup -setairportpower en0 off; sleep 2;"\
 "networksetup -setairportpower en0 on"
-alias rg="rg -i -g '!archive-contents' --colors 'line:style:bold' --colors 'path:style:bold'"
+alias rg="rg -M 200 -i -g '!archive-contents' --colors 'line:style:bold' --colors 'path:style:bold'"
 alias rtv='PAGER=text-pager rtv --enable-media'
 alias sbcl="rlwrap -irc sbcl"
 alias starwars="telnet towel.blinkenlights.nl" # heh
