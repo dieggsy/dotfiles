@@ -169,7 +169,7 @@ I know, it probably doesn't make sense to keep my gitconfig here.
 **** user
 #+begin_src conf
 [user]
-    name = therockmandolinist
+    name = dieggsy
     email = diegoamundo@protonmail.com
     signingkey = AEAC5CE8E1F933F0
 #+end_src

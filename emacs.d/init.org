@@ -3975,8 +3975,8 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
                       :repo "leathekd/erc-hl-nicks"))
   :after erc
   :config
-  (setq erc-hl-nicks-skip-nicks '("diegs"))
-  (setq erc-lurker-ignore-chars erc-hl-nicks-ignore-chars)
+  (setq erc-hl-nicks-skip-nicks '("diegs" "dieggsy")
+        erc-lurker-ignore-chars erc-hl-nicks-ignore-chars)
   (push "erc-current-nick-face" erc-hl-nicks-skip-faces))
 #+end_src
 *** Variables
