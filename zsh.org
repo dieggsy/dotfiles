@@ -298,7 +298,7 @@ kwm="koekeishiya/formulae/kwm"
 khd="koekeishiya/formulae/khd"
 
 # Python
-export python3version=3.6.1
+export python3version=3.6.2
 export python2version=2.7.13
 
 export SURFRAW_text_browser=/usr/local/bin/lynx
