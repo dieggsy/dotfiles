@@ -1224,8 +1224,7 @@ set recolor-lightcolor "#282828"
 :END:
 #+begin_src sh
 #+begin_src sh
-XDG_CURRENT_DESKTOP=kde
-/usr/bin/dolphin "$@"
+XDG_CURRENT_DESKTOP=kde /usr/bin/dolphin "$@"
 #+end_src
 ** dropmite
 :PROPERTIES:
@@ -1404,9 +1403,9 @@ elif [ "$1" = "prev" ] || [ "$BLOCK_BUTTON" = "4" ]; then
     playerctl-cmus previous
 fi
 
-spotify=$(ps axc | grep 'spotify')
+spotify=$(pgrep -x 'spotify')
 spotplaying="$([ -n "$spotify" ] && pacmd list-sink-inputs | grep -B16 'application.name = "spotify"' | head -1 | awk '{print $2}')"
-cmus=$(ps axc | grep 'cmus')
+cmus=$(pgrep -x 'cmus')
 cmusplaying="$([ -n "$cmus" ] && cmus-remote -Q | head -1 | awk '{print $2}')"
 
 if [ -n "$spotify" ] && [ "$spotplaying" = "RUNNING" ]; then
@@ -1909,8 +1908,7 @@ Wrapper script around ~/usr/bin/spotify~ to fix UI scaling in i3wm.
 :header-args+:  :tangle (when (eq system-type 'gnu/linux) "~/bin/systemsettings5") :shebang "#!/usr/bin/env bash"
 :END:
 #+begin_src sh
-XDG_CURRENT_DESKTOP=kde
-/usr/bin/systemsettings5 "$@"
+XDG_CURRENT_DESKTOP=kde /usr/bin/systemsettings5 "$@"
 #+end_src
 ** text-pager
 :PROPERTIES:

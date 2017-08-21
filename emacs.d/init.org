@@ -714,7 +714,7 @@ so I went with it.
         org-pretty-entities t
         org-image-actual-width 500)
 
-  (mapc (lambda (arg) (setcdr arg (list (downcase (nth 1 arg)))))
+  (mapc (lambda (arg) (setcdr arg (list (downcase (cadr arg)))))
         org-structure-template-alist)
 
   (add-to-list 'org-structure-template-alist
