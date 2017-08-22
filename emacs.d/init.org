@@ -2552,20 +2552,16 @@ Source: https://git.io/vQKuF"
   (cl-defmacro d/exec (cmd &key pre post)
     `(lambda () (interactive) ,pre (call-process-shell-command ,cmd) ,post))
 
-  (cl-defmacro d/exwm-mode-line-process (name &rest body &key cmd repeat fmt init &allow-other-keys)
+  (cl-defmacro d/exwm-mode-line-process (name &key filter-body cmd repeat fmt)
     (declare (indent defun))
-    (let ((body (cl-loop for (key value) on body by #'cddr
-                         if (and value (not (keywordp key)))
-                         append `(,key ,value)
-                         else if (not (keywordp key)) collect key))
-          (shell-cmd (format "while sleep %d; do %s; done" repeat cmd))
+    (let ((shell-cmd (format "while sleep %d; do %s; done" repeat cmd))
           (filter-name (intern (concat name "-filter")))
           (var-name (intern name)))
       `(progn
          (defvar ,var-name (string-trim (shell-command-to-string ,cmd)))
          (start-process-shell-command ,name nil ,shell-cmd)
          (defun ,(intern (concat name "-filter")) (process output)
-           ,@body
+           filter-body
            (setq ,var-name ,(if fmt `(funcall ,fmt (string-trim output))
                               `(string-trim output)))
            (force-mode-line-update 'all))
@@ -3915,21 +3911,18 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 *** Functions
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'eshell
-
   (defun d/eshell-run (str args)
     (eshell-do-eval
      (eshell-parse-command
       (string-join (append `(,str) args) " "))
      t))
 
-  (cl-defmacro d/eshell-defun (name &rest pats &key path opts &allow-other-keys)
+  (cl-defmacro d/eshell-defun (name keys &rest pats)
     (declare (indent defun))
-    (let ((command-name (or path
-                            (concat "/usr/bin/" (symbol-name name))))
-          (pats (cl-loop for (key value) on pats by #'cddr
-                         if (and value (not (keywordp key)))
-                         append `(,key ,value)
-                         else if (not (keywordp key)) collect key)))
+    (let* ((path (plist-get keys :path))
+          (opts (plist-get keys :opts))
+          (command-name (or path
+                            (concat "/usr/bin/" (symbol-name name)))))
       `(defun ,(intern (concat "eshell/" (symbol-name name))) (&rest args)
          (pcase args
            ,@(cl-loop for pattern in pats
@@ -3973,14 +3966,14 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
     (call-interactively #'slime))
 
   (d/eshell-defun git
-    :path "/home/diego/.zplug/bin/hub"
-    :opts "-c color.ui=always"
+    (:path "/home/diego/.zplug/bin/hub"
+     :opts "-c color.ui=always")
     ("status" (magit-status-internal (eshell/pwd)))
     ("diff" (magit-status-internal (eshell/pwd)))
     ("log" (call-interactively #'magit-log-current))
     (`("log" . ,ll) (magit-log ll)))
 
-  (d/eshell-defun pass
+  (d/eshell-defun pass ()
     ("rm" (call-interactively #'password-store-remove))
     ("generate" (call-interactively #'password-store-generate))
     ("insert" (call-interactively #'password-store-insert))
