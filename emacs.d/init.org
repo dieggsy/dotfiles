@@ -2655,6 +2655,11 @@ echo -e \" $bat \""
 (d/with-eval-after-load 'exwm
   (d/exwm-define-key
     "s-u" 'exwm-layout-toggle-fullscreen
+
+    "s-&" (lambda (command)
+            (interactive (list (read-shell-command "$ ")))
+            (start-process-shell-command command nil command))
+
     "s-s" 'evil-window-right
     "s-h" 'evil-window-left
     "s-t" 'evil-window-down
