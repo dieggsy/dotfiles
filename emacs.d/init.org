@@ -39,20 +39,19 @@ temporarily (only during startup). This saves me like .3 s of startup time.
 * Contents                                                            :toc_1:
 - [[#intro][Intro]]
 - [[#initial-setup][Initial Setup]]
-- [[#package-management][Package management]]
+- [[#preface][Preface]]
 - [[#core][Core]]
 - [[#help][Help]]
-- [[#files-and-buffers][Files and Buffers]]
+- [[#filesbuffers][Files/Buffers]]
 - [[#editing][Editing]]
 - [[#navigation][Navigation]]
-- [[#exwm][EXWM]]
-- [[#git-and-github][Git and github]]
 - [[#appearance][Appearance]]
-- [[#lang][Lang]]
-- [[#modes][Modes]]
+- [[#dev][Dev]]
+- [[#tools][Tools]]
 - [[#enhancements][Enhancements]]
 - [[#fun][Fun]]
-- [[#web][Web?]]
+- [[#web-services][Web services]]
+- [[#exwm][EXWM]]
 - [[#finalize][Finalize]]
 
 * Initial Setup
@@ -132,13 +131,15 @@ use this a fair bit so let's explicitly require it.
          (progn
            ,@body)
        (error
-        (display-warning 'config
-                         (format "%s %s: %s " (symbol-name ,feature) "eval-after-load"
-                                 (error-message-string err))
-                         :error)))))
+        (display-warning
+         'init
+         (format "%s eval-after-load: %s "
+                 (symbol-name ,feature)
+                 (error-message-string err))
+         :error)))))
 #+end_src
-* Package management
-** [[https://github.com/raxod502/straight.el#getting-started][straight]]
+** Package management
+*** [[https://github.com/raxod502/straight.el#getting-started][straight]]
 #+begin_quote
   Next-generation, purely functional package manager for the Emacs hacker.
 #+end_quote
@@ -159,7 +160,7 @@ use this a fair bit so let's explicitly require it.
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 #+end_src
-** [[https://github.com/jwiegley/use-package][use-package]]
+*** [[https://github.com/jwiegley/use-package][use-package]]
 #+begin_quote
   A use-package declaration for simplifying your .emacs
 #+end_quote
@@ -184,6 +185,52 @@ defer and ensure packages are installed unless otherwise stated.
 
 (eval-when-compile
   (require 'use-package))
+#+end_src
+* Preface
+** Packages
+*** [[https://github.com/tarsius/no-littering/][no-littering]]
+#+begin_quote
+  Help keeping ~/.emacs.d clean
+#+end_quote
+Usually, a bunch of crap is kept in your ~.emacs.d~ folder by both built-in emacs
+features and external packages. This package sets up a convention to store
+everything in either ~.emacs.d/var~ or ~.emacs.d/etc~.
+#+begin_src emacs-lisp
+(use-package no-littering
+  :demand t
+  :config
+  (savehist-mode 1)
+  (add-to-list 'savehist-additional-variables 'kill-ring)
+  (save-place-mode 1)
+  (setq auto-save-file-name-transforms
+        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
+#+end_src
+*** [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]]
+#+begin_quote
+  Make Emacs use the $PATH set up by the user's shell
+#+end_quote
+If you've ever had issues where emacs doesn't find your executables, this
+package should fix them nicely.
+#+begin_src emacs-lisp
+(use-package exec-path-from-shell
+  :defer 5
+  :config
+  (setq exec-path-from-shell-check-startup-files nil)
+  (exec-path-from-shell-initialize))
+#+end_src
+*** [[https://github.com/Ilazki/prettify-utils.el][prettify-utils]]
+#+begin_src emacs-lisp
+(use-package prettify-utils
+  :recipe (:host github
+           :repo "Ilazki/prettify-utils.el"))
+#+end_src
+*** [[https://github.com/abo-abo/hydra][hydra]]
+#+begin_quote
+  make Emacs bindings that stick around
+#+end_quote
+#+begin_src emacs-lisp
+(use-package hydra
+  :config)
 #+end_src
 * Core
 ** Defaults
@@ -324,36 +371,6 @@ except for warnings and errors.
 These are packages that I consider /absolutely essential/ to my emacs workflow,
 or that enhance emacs at a deeper level than any regular mode. Or, I just had
 to load them before other things.
-*** [[https://github.com/tarsius/no-littering/][no-littering]]
-#+begin_quote
-  Help keeping ~/.emacs.d clean
-#+end_quote
-Usually, a bunch of crap is kept in your ~.emacs.d~ folder by both built-in emacs
-features and external packages. This package sets up a convention to store
-everything in either ~.emacs.d/var~ or ~.emacs.d/etc~.
-#+begin_src emacs-lisp
-(use-package no-littering
-  :demand t
-  :config
-  (savehist-mode 1)
-  (add-to-list 'savehist-additional-variables 'kill-ring)
-  (save-place-mode 1)
-  (setq auto-save-file-name-transforms
-        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
-#+end_src
-*** [[https://github.com/purcell/exec-path-from-shell][exec-path-from-shell]]
-#+begin_quote
-  Make Emacs use the $PATH set up by the user's shell
-#+end_quote
-If you've ever had issues where emacs doesn't find your executables, this
-package should fix them nicely.
-#+begin_src emacs-lisp
-(use-package exec-path-from-shell
-  :defer 5
-  :config
-  (setq exec-path-from-shell-check-startup-files nil)
-  (exec-path-from-shell-initialize))
-#+end_src
 *** [[https://github.com/noctuid/general.el][general]]
 #+begin_quote
   More convenient key definitions in emacs
@@ -579,12 +596,6 @@ Source: https://git.io/vQK0v"
                   "\n"))
      cand-pairs
      counsel-yank-pop-separator)))
-#+end_src
-*** [[https://github.com/Ilazki/prettify-utils.el][prettify-utils]]
-#+begin_src emacs-lisp
-(use-package prettify-utils
-  :recipe (:host github
-           :repo "Ilazki/prettify-utils.el"))
 #+end_src
 *** [[http://orgmode.org/][org-mode]]
 #+begin_quote
@@ -1144,155 +1155,6 @@ Source: https://git.io/vQKEa"
   (goto-address-mode)
   (org-indent-mode))
 #+end_src
-*** [[https://github.com/abo-abo/hydra][hydra]]
-#+begin_quote
-  make Emacs bindings that stick around
-#+end_quote
-#+begin_src emacs-lisp
-(use-package hydra
-  :config)
-#+end_src
-*** [[https://github.com/bbatsov/crux][crux]]
-#+begin_quote
-  A Collection of Ridiculously Useful eXtensions for Emacs
-#+end_quote
-#+begin_src emacs-lisp
-(use-package crux
-  :defer 5
-  :general
-  (d/leader-keys
-   "TAB" 'crux-switch-to-previous-buffer
-   "fd" 'crux-delete-file-and-buffer
-   "fr" 'crux-rename-file-and-buffer
-   "br" 'crux-sudo-edit )
-  :commands (crux-with-region-or-line
-             crux-with-region-or-buffer
-             crux-switch-to-previous-buffer
-             crux-rename-file-and-buffer)
-  :config
-  (crux-with-region-or-line eval-region)
-  (crux-with-region-or-buffer indent-region)
-  (crux-with-region-or-buffer untabify)
-  (crux-with-region-or-buffer tabify)
-  (crux-with-region-or-buffer fill-region))
-#+end_src
-
-*** [[https://github.com/company-mode/company-mode][company-mode]]
-#+begin_quote
-  Modular in-buffer completion framework for Emacs
-#+end_quote
-Supposedly better than autocomplete.
-#+begin_src emacs-lisp
-(use-package company
-  :defer 5
-  :general
-  (:keymaps 'company-active-map
-   [tab] 'company-complete-common-or-cycle)
-  :init
-  (setq company-idle-delay 0.3
-        company-minimum-prefix-length 1
-        company-selection-wrap-around t
-        company-dabbrev-char-regexp "\\sw\\|\\s_\\|[-_]")
-  :config
-  (defun company-mode/backend-with-yas (backend)
-    "Source: https://git.io/vQKE6"
-    (if (and (listp backend) (member 'company-yasnippet backend))
-        backend
-      (append (if (consp backend) backend (list backend))
-              '(:with company-yasnippet))))
-  (setq company-backends (mapcar #'company-mode/backend-with-yas
-                                 company-backends))
-  (global-company-mode t))
-#+end_src
-
-*** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
-#+begin_quote
-  Emacs package that displays available keybindings in popup
-#+end_quote
-#+begin_src emacs-lisp
-(use-package which-key
-  :defer 10
-  :general
-  (d/leader-keys
-   "hk" 'which-key-show-top-level)
-  :config
-  (which-key-mode)
-
-  (defmacro d/declare-prefix (&rest body)
-    (declare (indent defun))
-    `(which-key-add-key-based-replacements
-       ,@(cl-loop
-          for (prefix name) on body
-          by #'cddr
-          while name
-          append `(,(concat "SPC " prefix) ,name
-                   ,(concat "C-SPC " prefix) ,name))))
-
-  (defmacro d/declare-mode-prefix (modes &rest body)
-    (declare (indent defun))
-    (let ((modes (if (listp modes) modes (list modes))))
-      `(progn
-         ,@(cl-loop
-            for mode in modes collect
-            `(which-key-add-major-mode-key-based-replacements ',mode
-               ,@(cl-loop
-                  for (prefix name) on body
-                  by #'cddr
-                  while name
-                  append `(,(concat ", " prefix) ,name
-                           ,(concat "C-, " prefix) ,name)))))))
-
-  (defmacro d/which-key-remove-prefix (&rest body)
-    (declare (indent defun))
-    `(progn
-       ,@(cl-loop for regexp in body collect
-                  `(push '((nil . ,(concat regexp "\\(.+\\)")) . (nil . "\\1"))
-                         which-key-replacement-alist))))
-
-
-  (d/declare-prefix
-    "a"   "applications"
-    "b"   "buffer"
-    "f"   "file"
-    "h"   "help"
-    "hd"  "describe"
-    "i"   "insert"
-    "j"   "jump"
-    "n"   "narrow/numbers"
-    "q"   "quit"
-    "s"   "search"
-    "w"   "window"
-    "xi"  "indent"
-    "xl"  "lines"
-    "SPC" "root")
-
-  (d/declare-mode-prefix (emacs-lisp-mode lisp-interaction-mode)
-    "e" "eval"
-    "p" "pp")
-
-  (setq which-key-sort-order 'which-key-key-order-alpha)
-  (setq which-key-sort-uppercase-first nil)
-
-  (d/which-key-remove-prefix
-    "avy-"
-    "counsel-"
-    "counsel-projectile-"
-    "crux-"
-    "customize-"
-    "d/"
-    "evil-mc-"
-    "evilnc-"
-    "eyebrowse-"
-    "eyebrowse-switch-to-"
-    "ivy-"
-    "magit-"
-    "projectile-"))
-#+end_src
-
-*** [[https://github.com/milkypostman/powerline][powerline]]
-#+begin_src emacs-lisp
-(use-package powerline)
-#+end_src
 ** Bindings
 *** Leader
 #+begin_src emacs-lisp
@@ -1348,10 +1210,6 @@ also use these keys to quit out of the minibuffer.
  "SPC u" 'universal-argument-more)
 #+end_src
 * Help
-** Defaults
-#+begin_src emacs-lisp
-(add-hook 'help-mode-hook #'goto-address-mode)
-#+end_src
 ** Packages
 *** [[https://github.com/abo-abo/define-word][define-word]]
 #+begin_quote
@@ -1487,7 +1345,11 @@ Leader bindings
  "hs"  'system-name
  "hv"  'version)
 #+end_src
-* Files and Buffers
+** Setup
+#+begin_src emacs-lisp
+(add-hook 'help-mode-hook #'goto-address-mode)
+#+end_src
+* Files/Buffers
 ** Defaults
 If a frame is already open, use it to open files.
 #+begin_src emacs-lisp
@@ -1756,12 +1618,40 @@ Dear god I hate tabs. Also, four spaces is a good indentation default.
 (setq-default indent-tabs-mode nil
               tab-width 4)
 #+end_src
-** Packages
-*** [[https://github.com/abo-abo/auto-yasnippet][auto-yasnippet]]
+** Tools
+*** Packages
+**** [[https://github.com/abo-abo/auto-yasnippet][auto-yasnippet]]
 #+begin_src emacs-lisp
 (use-package auto-yasnippet)
 #+end_src
-*** [[https://github.com/gabesoft/evil-mc][evil-mc]]
+**** [[https://github.com/company-mode/company-mode][company-mode]]
+#+begin_quote
+  Modular in-buffer completion framework for Emacs
+#+end_quote
+Supposedly better than autocomplete.
+#+begin_src emacs-lisp
+(use-package company
+  :defer 5
+  :general
+  (:keymaps 'company-active-map
+   [tab] 'company-complete-common-or-cycle)
+  :init
+  (setq company-idle-delay 0.3
+        company-minimum-prefix-length 1
+        company-selection-wrap-around t
+        company-dabbrev-char-regexp "\\sw\\|\\s_\\|[-_]")
+  :config
+  (defun company-mode/backend-with-yas (backend)
+    "Source: https://git.io/vQKE6"
+    (if (and (listp backend) (member 'company-yasnippet backend))
+        backend
+      (append (if (consp backend) backend (list backend))
+              '(:with company-yasnippet))))
+  (setq company-backends (mapcar #'company-mode/backend-with-yas
+                                 company-backends))
+  (global-company-mode t))
+#+end_src
+**** [[https://github.com/gabesoft/evil-mc][evil-mc]]
 #+begin_src emacs-lisp
 (use-package evil-mc
   :general
@@ -1791,7 +1681,7 @@ Dear god I hate tabs. Also, four spaces is a good indentation default.
   (push 'evil-smartparens-mode evil-mc-incompatible-minor-modes)
   (push 'fci-mode evil-mc-incompatible-minor-modes))
 #+end_src
-*** [[https://github.com/hlissner/evil-multiedit][evil-multiedit]]
+**** [[https://github.com/hlissner/evil-multiedit][evil-multiedit]]
 #+begin_quote
   Multiple cursors for evil-mode, based on iedit
 #+end_quote
@@ -1800,7 +1690,7 @@ Dear god I hate tabs. Also, four spaces is a good indentation default.
   :config
   (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match))
 #+end_src
-*** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
+**** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
 Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted/flyspell-correct][d12frosted/flyspell-correct]]
 #+begin_src emacs-lisp
 (use-package flyspell
@@ -1829,18 +1719,18 @@ Source: http://tinyurl.com/k8g9sex"
 (use-package flyspell-correct-ivy
   :after flyspell)
 #+end_src
-*** [[https://github.com/syohex/emacs-fontawesome][fontawesome]]
+**** [[https://github.com/syohex/emacs-fontawesome][fontawesome]]
 #+begin_src emacs-lisp
 (use-package fontawesome)
 #+end_src
-*** [[https://github.com/nflath/hungry-delete][hungry-delete]]
+**** [[https://github.com/nflath/hungry-delete][hungry-delete]]
 #+begin_src emacs-lisp
 (use-package hungry-delete
   :defer 5
   :config
   (global-hungry-delete-mode))
 #+end_src
-*** [[https://github.com/Fuco1/smartparens][smartparens]]
+**** [[https://github.com/Fuco1/smartparens][smartparens]]
 #+begin_quote
   Minor mode for Emacs that deals with parens pairs and tries to be smart about
   it.
@@ -1883,7 +1773,7 @@ Source: http://tinyurl.com/k8g9sex"
   :config
   (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
 #+end_src
-*** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
+**** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
 Kind of makes undo's like git. Or Vim, apparently, if you're into that.
 #+begin_src emacs-lisp
 (use-package undo-tree
@@ -1892,14 +1782,14 @@ Kind of makes undo's like git. Or Vim, apparently, if you're into that.
   :config
   (setq undo-tree-visualizer-timestamps t))
 #+end_src
-*** [[https://github.com/purcell/unfill][unfill]]
+**** [[https://github.com/purcell/unfill][unfill]]
 #+begin_src emacs-lisp
 (use-package unfill
   :general
   (d/leader-keys "xq" 'unfill-toggle)
   ([remap fill-paragraph] 'unfill-toggle))
 #+end_src
-*** [[https://github.com/joaotavora/yasnippet][yasnippet]]
+**** [[https://github.com/joaotavora/yasnippet][yasnippet]]
 #+begin_quote
   A template system for Emacs
 #+end_quote
@@ -1911,12 +1801,12 @@ Freakin yasnippet. It's the best.
   :config
   (yas-global-mode 1))
 #+end_src
-**** [[https://github.com/haskell/haskell-snippets][haskell-snippets]]
+***** [[https://github.com/haskell/haskell-snippets][haskell-snippets]]
 #+begin_src emacs-lisp
 (use-package haskell-snippets)
 #+end_src
-** Functions
-*** Move text
+*** Functions
+**** Move text
 #+begin_src emacs-lisp
 (defun d/transpose-chars (arg)
   "Move character at point forward one character.
@@ -1978,7 +1868,7 @@ drag it up past ARG other lines (down if ARG negative)."
     (d/move-line-or-region (- arg))))
 
 #+end_src
-*** Align
+**** Align
 #+begin_src emacs-lisp
 (defun d/align-repeat (start end regexp &optional justify-right after)
   "Repeat alignment with respect to the given regular expression.
@@ -2042,7 +1932,7 @@ Source: https://git.io/vQKu2"
 
 
 #+end_src
-*** Justify
+**** Justify
 #+begin_src emacs-lisp
 (defmacro d/create-justify-x (&rest types)
   "Create justification function(s), one per given TYPE."
@@ -2069,7 +1959,7 @@ Source: https://git.io/vQKu2"
  "none")
 #+end_src
 
-*** Paragraph
+**** Paragraph
 #+begin_src emacs-lisp
 (defun d/paragraphize ()
   "Remove newlines from region."
@@ -2078,7 +1968,7 @@ Source: https://git.io/vQKu2"
       (flush-lines "^$" (region-beginning) (region-end))
     (message "No region active.")))
 #+end_src
-*** Url
+**** Url
 #+begin_src emacs-lisp
 (defun d/shorten-url-at-point ()
   "Shorten the url at point using the github url shortener or the TinyURL api.
@@ -2116,8 +2006,8 @@ Source: http://tinyurl.com/l8z7vph"
         (insert long-url))
     (error "No url at point.")))
 #+end_src
-** Hydras
-*** Multiedit
+*** Hydras
+**** Multiedit
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
   (defhydra h/multiedit (:hint nil)
@@ -2136,7 +2026,7 @@ _p_rev     match and _P_rev
     ("P"   evil-multiedit-match-and-prev)
     ("q"   evil-multiedit-abort :exit t)))
 #+end_src
-*** Transpose
+**** Transpose
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
   (defhydra h/transpose ()
@@ -2149,7 +2039,7 @@ _p_rev     match and _P_rev
     ("W" d/backward-transpose-words "backward word")
     ("s" transpose-sexps "sexp" :exit t)))
 #+end_src
-*** Justify
+**** Justify
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
   (defhydra h/justify (:exit t)
@@ -2160,7 +2050,7 @@ _p_rev     match and _P_rev
     ("f" d/justify-full "full")
     ("n" d/justify-none "none")))
 #+end_src
-*** Smartparens
+**** Smartparens
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
   (defhydra h/smartparens (:hint nil)
@@ -2183,7 +2073,7 @@ _u_nwrap  _S_lurp (back)   _[_ wrap _{_
     ("\"" d/sp-wrap-with-quote2)
     ("'"  d/sp-wrap-with-quote)))
 #+end_src
-*** Evil-numbers
+**** Evil-numbers
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
   (defhydra h/numbers ()
@@ -2191,7 +2081,7 @@ _u_nwrap  _S_lurp (back)   _[_ wrap _{_
     ("="  evil-numbers/inc-at-pt "inc")
     ("-" evil-numbers/dec-at-pt "dec")))
 #+end_src
-*** Spelling
+**** Spelling
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
   (defhydra h/flyspell (:pre (require 'flyspell))
@@ -2203,6 +2093,61 @@ _u_nwrap  _S_lurp (back)   _[_ wrap _{_
     ("p" flyspell-correct-previous-word-generic "correct prev generic")
     ("N" d/flyspell-correct-next "correct next")
     ("P" flyspell-auto-correct-previous-word "correct pref")))
+#+end_src
+** Modes
+*** [[https://github.com/Kitware/CMake][cmake-mode]]
+#+begin_src emacs-lisp
+(use-package cmake-mode)
+#+end_src
+*** conf-mode
+#+begin_src emacs-lisp
+(d/setup-mode conf
+  (d/setup-prog-mode))
+(add-to-list 'auto-mode-alist '("\\.service\\'" . conf-mode))
+#+end_src
+*** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
+#+begin_quote
+  Major mode for editing comma/char separated values
+#+end_quote
+Eh, wanted to try a simpler way of editing csv files. (Excel and Numbers both
+kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
+#+begin_src emacs-lisp
+(use-package csv-mode
+  :mode "\\.csv\\'"
+  :config
+  (add-hook 'csv-mode-hook #'csv-align-fields))
+#+end_src
+*** [[https://github.com/joshwnj/json-mode][json-mode]]
+#+begin_quote
+  Major mode for editing JSON files with emacs
+#+end_quote
+#+begin_src emacs-lisp
+(use-package json-mode
+  :mode "\\.json\\'")
+
+(d/setup-mode json
+  (highlight-numbers-mode -1))
+#+end_src
+*** [[http://jblevins.org/projects/markdown-mode/][markdown-mode]]
+Syntax highlighting for markdown files.
+#+begin_src emacs-lisp
+(use-package markdown-mode
+  :mode "\\.md\\'"
+  :config)
+#+end_src
+*** text-mode
+#+begin_src emacs-lisp
+(d/mode-leader-keys
+ :keymap 'text-mode-map
+ "f" '(:command h/flyspell/body :wk "flyspell"))
+#+end_src
+*** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
+#+begin_quote
+  The emacs major mode for editing files in the YAML data serialization format.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package yaml-mode
+  :mode "\\.yml\\'")
 #+end_src
 ** Bindings
 Make indent-rigidly more vimmy.
@@ -2255,6 +2200,88 @@ Leader keys
  "im"  'insert-kbd-macro)
 #+end_src
 * Navigation
+** Functions
+#+begin_src emacs-lisp
+(defun d/toggle-window-split ()
+  "Switch between vertical and horizontal window split.
+
+Source: http://tinyurl.com/k7s96fa"
+  (interactive)
+  (if (= (count-windows) 2)
+      (let* ((this-win-buffer (window-buffer))
+             (next-win-buffer (window-buffer (next-window)))
+             (this-win-edges (window-edges (selected-window)))
+             (next-win-edges (window-edges (next-window)))
+             (this-win-2nd (not (and (<= (car this-win-edges)
+                                         (car next-win-edges))
+                                     (<= (cadr this-win-edges)
+                                         (cadr next-win-edges)))))
+             (splitter
+              (if (= (car this-win-edges)
+                     (car (window-edges (next-window))))
+                  #'split-window-horizontally
+                #'split-window-vertically)))
+        (delete-other-windows)
+        (let ((first-win (selected-window)))
+          (funcall splitter)
+          (if this-win-2nd (other-window 1))
+          (set-window-buffer (selected-window) this-win-buffer)
+          (set-window-buffer (next-window) next-win-buffer)
+          (select-window first-win)
+          (if this-win-2nd (other-window 1))))))
+
+(defun d/split-vert-focus ()
+  "Split window vertically and move focus to other window."
+  (interactive)
+  (split-window-right)
+  (other-window 1))
+
+(defun d/split-horz-focus ()
+  "Split window horizontally and move focus to other window."
+  (interactive)
+  (split-window-below)
+  (other-window 1))
+
+(defun d/move-splitter-left (arg)
+  "Move window splitter left.
+
+Source: https://git.io/vQKuS"
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'right))
+      (shrink-window-horizontally arg)
+    (enlarge-window-horizontally arg)))
+
+(defun d/move-splitter-right (arg)
+  "Move window splitter right.
+
+Source: https://git.io/vQKu7"
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'right))
+      (enlarge-window-horizontally arg)
+    (shrink-window-horizontally arg)))
+
+(defun d/move-splitter-up (arg)
+  "Move window splitter up.
+
+Source: https://git.io/vQKu5"
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'up))
+      (enlarge-window arg)
+    (shrink-window arg)))
+
+(defun d/move-splitter-down (arg)
+  "Move window splitter down.
+
+Source: https://git.io/vQKuF"
+  (interactive "p")
+  (if (let ((windmove-wrap-around))
+        (windmove-find-other-window 'up))
+      (shrink-window arg)
+    (enlarge-window arg)))
+#+end_src
 ** Packages
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
 #+begin_quote
@@ -2385,88 +2412,6 @@ imenu on steroids.
   :config
   (setq zoom-window-mode-line-color "#1D2021"))
 #+end_src
-** Functions
-#+begin_src emacs-lisp
-(defun d/toggle-window-split ()
-  "Switch between vertical and horizontal window split.
-
-Source: http://tinyurl.com/k7s96fa"
-  (interactive)
-  (if (= (count-windows) 2)
-      (let* ((this-win-buffer (window-buffer))
-             (next-win-buffer (window-buffer (next-window)))
-             (this-win-edges (window-edges (selected-window)))
-             (next-win-edges (window-edges (next-window)))
-             (this-win-2nd (not (and (<= (car this-win-edges)
-                                         (car next-win-edges))
-                                     (<= (cadr this-win-edges)
-                                         (cadr next-win-edges)))))
-             (splitter
-              (if (= (car this-win-edges)
-                     (car (window-edges (next-window))))
-                  #'split-window-horizontally
-                #'split-window-vertically)))
-        (delete-other-windows)
-        (let ((first-win (selected-window)))
-          (funcall splitter)
-          (if this-win-2nd (other-window 1))
-          (set-window-buffer (selected-window) this-win-buffer)
-          (set-window-buffer (next-window) next-win-buffer)
-          (select-window first-win)
-          (if this-win-2nd (other-window 1))))))
-
-(defun d/split-vert-focus ()
-  "Split window vertically and move focus to other window."
-  (interactive)
-  (split-window-right)
-  (other-window 1))
-
-(defun d/split-horz-focus ()
-  "Split window horizontally and move focus to other window."
-  (interactive)
-  (split-window-below)
-  (other-window 1))
-
-(defun d/move-splitter-left (arg)
-  "Move window splitter left.
-
-Source: https://git.io/vQKuS"
-  (interactive "p")
-  (if (let ((windmove-wrap-around))
-        (windmove-find-other-window 'right))
-      (shrink-window-horizontally arg)
-    (enlarge-window-horizontally arg)))
-
-(defun d/move-splitter-right (arg)
-  "Move window splitter right.
-
-Source: https://git.io/vQKu7"
-  (interactive "p")
-  (if (let ((windmove-wrap-around))
-        (windmove-find-other-window 'right))
-      (enlarge-window-horizontally arg)
-    (shrink-window-horizontally arg)))
-
-(defun d/move-splitter-up (arg)
-  "Move window splitter up.
-
-Source: https://git.io/vQKu5"
-  (interactive "p")
-  (if (let ((windmove-wrap-around))
-        (windmove-find-other-window 'up))
-      (enlarge-window arg)
-    (shrink-window arg)))
-
-(defun d/move-splitter-down (arg)
-  "Move window splitter down.
-
-Source: https://git.io/vQKuF"
-  (interactive "p")
-  (if (let ((windmove-wrap-around))
-        (windmove-find-other-window 'up))
-      (shrink-window arg)
-    (enlarge-window arg)))
-#+end_src
 ** Hydras
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
@@ -2493,350 +2438,6 @@ Source: https://git.io/vQKuF"
  "ws" 'h/splitter/body
  "wt" 'd/toggle-window-split
  "wv" 'd/split-vert-focus)
-#+end_src
-* EXWM
-** Startup
-#+begin_src emacs-lisp
-(use-package exwm
-  :demand t
-  :if (string= (getenv "XDG_CURRENT_DESKTOP") "exwm")
-  :config
-  (add-hook 'exwm-update-class-hook
-            (lambda ()
-              (exwm-workspace-rename-buffer exwm-class-name)))
-  (exwm-input-set-key (kbd "s-r") #'exwm-reset)
-  (exwm-input-set-key (kbd "s-w") #'exwm-workspace-switch)
-  (dotimes (i 10)
-    (exwm-input-set-key (kbd (format "s-%d" (if (= 9 i) 0 (1+ i))))
-                        `(lambda ()
-                           (interactive)
-                           (exwm-workspace-switch-create ,i))))
-  (setq exwm-workspace-index-map (lambda (i) (number-to-string (1+ i))))
-  (exwm-enable)
-
-  (setenv "INSIDE_EMACS" "1")
-
-  (setq window-divider-default-right-width 1)
-  (setq window-divider-default-bottom-width 1)
-
-  (window-divider-mode)
-
-  (setq windmove-wrap-around t)
-
-  ;; (pinentry-start)
-
-
-  (add-to-list 'evil-insert-state-modes 'exwm-mode)
-
-  (add-hook 'evil-normal-state-entry-hook (lambda ()
-                                            (setq-local exwm-input-line-mode-passthrough t)))
-  (add-hook 'evil-insert-state-entry-hook (lambda ()
-                                            (setq-local exwm-input-line-mode-passthrough nil)))
-
-  (add-hook 'exwm-floating-setup-hook (lambda () (setq-local mode-line-format nil))))
-#+end_src
-** Functions
-#+begin_src emacs-lisp
-(d/with-eval-after-load 'exwm
-  (defmacro d/exwm-define-key (&rest bindings)
-    (declare (indent defun))
-    (let ((keys (cl-loop for (key func) on bindings
-                         by #'cddr
-                         collect (elt (kbd key) 0))))
-
-      `(progn
-         (setq exwm-input-prefix-keys ',keys)
-         (general-define-key ,@bindings))))
-
-  (cl-defmacro d/exec (cmd &key pre post)
-    `(lambda () (interactive) ,pre (call-process-shell-command ,cmd) ,post))
-
-  (cl-defmacro d/exwm-mode-line-process (name &key filter-body cmd repeat fmt)
-    (declare (indent defun))
-    (let ((shell-cmd (format "while sleep %d; do %s; done" repeat cmd))
-          (filter-name (intern (concat name "-filter")))
-          (var-name (intern name)))
-      `(progn
-         (defvar ,var-name (string-trim (shell-command-to-string ,cmd)))
-         (start-process-shell-command ,name nil ,shell-cmd)
-         (defun ,(intern (concat name "-filter")) (process output)
-           filter-body
-           (setq ,var-name ,(if fmt `(funcall ,fmt (string-trim output))
-                              `(string-trim output)))
-           (force-mode-line-update 'all))
-         (set-process-filter (get-process ,name) #',filter-name))))
-
-  (defun d/swap-window-right ()
-    (interactive)
-    (let* ((buff (current-buffer))
-           (win (windmove-find-other-window 'right))
-           (o-buff (window-buffer win)))
-      (set-window-buffer win buff)
-      (set-window-buffer (selected-window) o-buff)
-      (windmove-right)))
-
-  (defun d/swap-window-left ()
-    (interactive)
-    (let* ((buff (current-buffer))
-           (win (windmove-find-other-window 'left))
-           (o-buff (window-buffer win)))
-      (set-window-buffer win buff)
-      (set-window-buffer (selected-window) o-buff)
-      (windmove-left)))
-
-  (defun d/swap-window-down ()
-    (interactive)
-    (let* ((buff (current-buffer))
-           (win (windmove-find-other-window 'down))
-           (o-buff (window-buffer win)))
-      (set-window-buffer win buff)
-      (set-window-buffer (selected-window) o-buff)
-      (windmove-down)))
-
-  (defun d/swap-window-up ()
-    (interactive)
-    (let* ((buff (current-buffer))
-           (win (windmove-find-other-window 'up))
-           (o-buff (window-buffer win)))
-      (set-window-buffer win buff)
-      (set-window-buffer (selected-window) o-buff)
-      (windmove-up))))
-#+end_src
-** Processes
-#+begin_src emacs-lisp
-(d/with-eval-after-load 'exwm
-
-  (setq d/mute
-        (string= (string-trim
-                  (shell-command-to-string "amixer -D pulse get Master \
-| grep \"Left: Playback\" \
-| awk '{print $6}' \
-| tr -d \"[-]\""))
-                 "off"))
-
-  (setq d/kb-layout (string-trim
-                     (shell-command-to-string
-                      "layout=$(setxkbmap -query | grep layout | cut -d' ' -f6)
-
-if [ \"$layout\" = \"us\" ]; then
-    echo 'QW'
-elif [ \"$layout\" = \"dvorak\" ]; then
-     echo 'DV'
-fi")))
-
-  (d/exwm-mode-line-process "d/ssid"
-    :cmd "iwgetid -r || echo 'None'"
-    :repeat 5)
-
-  (d/exwm-mode-line-process "d/battery"
-    :cmd "bat=$(acpi | cut -d \" \" -f4 | tr -d \"%,\")
-Adapt=$(acpi -a | cut -d \" \" -f3)
-
-touch /tmp/battery-status
-if [ \"$bat\" -lt 11 ] && [ \"$(</tmp/battery-status)\" != \"critically-low\" ] && [ \"$Adapt\" != \"on-line\" ]; then
-    espeak -vf4 \"Battery critically low, consider charging.\" &
-    notify-send \"Battery critically low, consider charging.\" &
-    echo \"critically-low\" > /tmp/battery-status
-else
-    echo \"fine\" > /tmp/battery-status
-fi
-
-echo -e \" $bat \""
-    :repeat 30))
-#+end_src
-** Bindings
-#+begin_src emacs-lisp
-(d/with-eval-after-load 'exwm
-  (d/exwm-define-key
-    "s-u" 'exwm-layout-toggle-fullscreen
-
-    "s-&" (lambda (command)
-            (interactive (list (read-shell-command "$ ")))
-            (start-process-shell-command command nil command))
-
-    "s-s" 'evil-window-right
-    "s-h" 'evil-window-left
-    "s-t" 'evil-window-down
-    "s-n" 'evil-window-up
-
-    "s-<right>" 'evil-window-right
-    "s-<left>" 'evil-window-left
-    "s-<down>" 'evil-window-down
-    "s-<up>" 'evil-window-up
-
-    "s-S" 'd/swap-window-right
-    "s-H" 'd/swap-window-left
-    "s-T" 'd/swap-window-down
-    "s-N" 'd/swap-window-up
-
-    "s-S-<right>" 'd/swap-window-right
-    "s-S-<left>" 'd/swap-window-left
-    "s-S-<down>" 'd/swap-window-down
-    "s-S-<up>" 'd/swap-window-up
-
-    "s-p" 'password-store-copy)
-
-  (add-to-list 'exwm-input-prefix-keys ?\C-/))
-#+end_src
-* Git and github
-** Packages
-*** [[https://github.com/magit/magit][magit]]
-#+begin_quote
-  It's Magit! A Git Porcelain inside Emacs.
-#+end_quote
-Like git, for emacs. But cooler.
-#+begin_src emacs-lisp
-(use-package magit
-  :general
-  (d/leader-keys
-   "g"  '(:ignore t :wk "magit")
-   "gB" 'd/magit-blame-toggle
-   "gC" 'magit-clone
-   "gL" 'magit-log-buffer-file
-   "ga" 'magit-submodule-add
-   "gb" 'magit-branch
-   "gc" 'magit-checkout
-   "gf" 'magit-find-file
-   "gl" 'magit-log-all
-   "gs" 'magit-status)
-  :defines (magit-diff-use-overlays)
-  :config
-  (setq magit-diff-use-overlays nil
-        auto-revert-check-vc-info t
-        git-commit-summary-max-length 50
-        git-commit-major-mode 'org-mode)
-  (add-hook 'git-commit-mode-hook #'evil-insert-state)
-  (d/setup-mode git-commit
-    (setq-local fill-column 72)
-    (setq-local org-hide-emphasis-markers nil)))
-#+end_src
-*** [[https://github.com/emacs-evil/evil-magit][evil-magit]]
-#+begin_quote
-  Black magic or evil keys for magit
-#+end_quote
-#+begin_src emacs-lisp
-(use-package evil-magit
-  :after magit)
-#+end_src
-*** [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]]
-#+begin_quote
-  Fringe version of git-gutter.el
-#+end_quote
-#+begin_src emacs-lisp
-(use-package git-gutter-fringe
-  :demand t
-  :commands fringe-helper-define
-  :config
-  (global-git-gutter-mode)
-  (add-hook 'focus-in-hook #'git-gutter:update-all-windows)
-  (fringe-helper-define 'git-gutter-fr:modified nil
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX")
-  (fringe-helper-define 'git-gutter-fr:added nil
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX")
-  (fringe-helper-define 'git-gutter-fr:deleted nil
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"
-    "....XXXX"))
-#+end_src
-
-*** [[https://github.com/defunkt/gist.el][gist]]
-#+begin_src emacs-lisp
-(use-package gist
-  :config
-  (let ((gh-vals (cdar gh-profile-alist)))
-    (setf gh-vals (plist-put gh-vals :username "therockmandolinist")
-          gh-vals (plist-put gh-vals :token (password-store-get "tokens/github/gist")))))
-#+end_src
-
-** Functions
-#+begin_src emacs-lisp
-(defun d/magit-blame-toggle ()
-  "Toggle magit-blame-mode on and off interactively.
-
-Source: https://git.io/vQKub"
-  (interactive)
-  (if (and (boundp 'magit-blame-mode) magit-blame-mode)
-      (magit-blame-quit)
-    (call-interactively 'magit-blame)))
 #+end_src
 * Appearance
 ** Defaults
@@ -2933,8 +2534,106 @@ Use a bar cursor in the minibuffer.
 (add-hook 'minibuffer-setup-hook
           (lambda () (setq-local cursor-type '(bar . 1))))
 #+end_src
-*** Mode line
-**** Helpers
+** Packages
+*** [[https://github.com/larstvei/Focus][focus]]
+#+begin_quote
+  Dim the font color of text in surrounding paragraphs
+#+end_quote
+#+begin_src emacs-lisp
+(use-package focus)
+#+end_src
+*** [[http://git.savannah.gnu.org/cgit/emacs/elpa.git/tree/packages/rainbow-mode/rainbow-mode.el][rainbow-mode]]
+#+begin_quote
+  Colorize color names in buffers
+#+end_quote
+#+begin_src emacs-lisp
+(use-package rainbow-mode
+  :config
+  (setq rainbow-x-colors-major-mode-list '(c-mode c++-mode java-mode))
+  (add-hook 'help-mode-hook #'rainbow-mode))
+#+end_src
+*** [[https://github.com/therockmandolinist/emacs-theme-darktooth][darktooth-theme]]
+#+begin_quote
+  An Emacs 24 theme remixed from gruvbox
+#+end_quote
+(my fork)
+#+begin_src emacs-lisp
+(use-package darktooth-theme
+  :demand t
+  :recipe (:host github
+           :repo "therockmandolinist/emacs-theme-darktooth"
+           :upstream (:host github
+                      :repo "emacsfodder/emacs-theme-darktooth")))
+#+end_src
+*** [[https://github.com/alpaker/Fill-Column-Indicator][fill-column-indicator]]
+#+begin_quote
+  An Emacs minor mode that graphically indicates the fill column.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package fill-column-indicator
+  :init
+  (setq-default fci-rule-column 79)
+  (defvar-local company-fci-mode-on-p nil)
+
+  (defun company-turn-off-fci (&rest _ignore)
+    (when (boundp 'fci-mode)
+      (setq company-fci-mode-on-p fci-mode)
+      (when fci-mode (fci-mode -1))))
+
+  (defun company-maybe-turn-on-fci (&rest _ignore)
+    (when company-fci-mode-on-p (fci-mode 1)))
+
+  (add-hook 'company-completion-started-hook 'company-turn-off-fci)
+  (add-hook 'company-completion-finished-hook 'company-maybe-turn-on-fci)
+  (add-hook 'company-completion-cancelled-hook 'company-maybe-turn-on-fci))
+#+end_src
+*** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers]]
+#+begin_quote
+  Emacs minor mode to highlight each source code identifier uniquely based on its name
+#+end_quote
+#+begin_src emacs-lisp
+(use-package color-identifiers-mode)
+#+end_src
+*** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]
+#+begin_quote
+  Highlight numbers in source code
+#+end_quote
+Neat-o
+#+begin_src emacs-lisp
+(use-package highlight-numbers)
+#+end_src
+*** [[https://github.com/tsdh/highlight-parentheses.el][highlight-parentheses]]
+#+begin_quote
+  Emacs: highlight surrounding parentheses
+#+end_quote
+#+begin_src emacs-lisp
+(use-package highlight-parentheses)
+#+end_src
+*** [[https://github.com/milkypostman/powerline][powerline]]
+#+begin_src emacs-lisp
+(use-package powerline)
+#+end_src
+*** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
+Better parentheses coloring
+#+begin_src emacs-lisp
+(use-package rainbow-delimiters)
+#+end_src
+** Hydras
+#+begin_src emacs-lisp
+(d/with-eval-after-load 'hydra
+  (defhydra h/zoom ()
+    "zoom"
+    ("=" text-scale-increase "in")
+    ("-" text-scale-decrease "out")
+    ("0" (text-scale-adjust 0) "reset")))
+#+end_src
+** Bindings
+#+begin_src emacs-lisp
+(d/leader-keys
+ "z" '(:command h/zoom/body :wk "zoom"))
+#+end_src
+** Mode line
+*** Helpers
 #+begin_src emacs-lisp
 (defun d/flycheck-lighter (state)
   "Return flycheck information for the given error type STATE.
@@ -3024,7 +2723,7 @@ Source: https://git.io/vQKzq"
         (format "%s matches" (how-many pattern (car range) (cdr range)))
       " ... ")))
 #+end_src
-**** Mode-line
+*** Mode-line
 #+begin_src emacs-lisp
 (defvar d/mode-line
   '((:eval
@@ -3139,7 +2838,7 @@ Source: https://git.io/vQKzq"
 (with-current-buffer "*Messages*"
   (setq-local mode-line-format d/mode-line))
 #+end_src
-**** EXWM mode-line
+*** EXWM mode-line
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'exwm
   (display-time-mode)
@@ -3208,115 +2907,97 @@ Source: https://git.io/vQKzq"
   (with-current-buffer "*Messages*"
     (setq-local mode-line-format d/mode-line-exwm)))
 #+end_src
-** Packages
-*** [[https://github.com/larstvei/Focus][focus]]
+* Dev
+** Prog
+*** Packages
+**** [[https://github.com/Malabarba/aggressive-indent-mode/][aggressive-indent]]
 #+begin_quote
-  Dim the font color of text in surrounding paragraphs
+  Emacs minor mode that keeps your code always indented. More reliable than electric-indent-mode.
 #+end_quote
 #+begin_src emacs-lisp
-(use-package focus)
+(use-package aggressive-indent)
 #+end_src
-*** [[http://git.savannah.gnu.org/cgit/emacs/elpa.git/tree/packages/rainbow-mode/rainbow-mode.el][rainbow-mode]]
+**** [[https://github.com/flycheck/flycheck][flycheck]]
 #+begin_quote
-  Colorize color names in buffers
+  On the fly syntax checking for GNU Emacs
 #+end_quote
 #+begin_src emacs-lisp
-(use-package rainbow-mode
+(use-package flycheck
   :config
-  (setq rainbow-x-colors-major-mode-list '(c-mode c++-mode java-mode))
-  (add-hook 'help-mode-hook #'rainbow-mode))
+  (setq flycheck-completing-read-function 'ivy-completing-read)
+  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+    (vector #b00000000
+            #b10000000
+            #b11000000
+            #b11100000
+            #b11110000
+            #b11111000
+            #b11111100
+            #b11111110
+            #b11111111
+            #b11111110
+            #b11111100
+            #b11111000
+            #b11110000
+            #b11100000
+            #b11000000
+            #b10000000
+            #b00000000)))
 #+end_src
-*** [[https://github.com/therockmandolinist/emacs-theme-darktooth][darktooth-theme]]
-#+begin_quote
-  An Emacs 24 theme remixed from gruvbox
-#+end_quote
-(my fork)
-#+begin_src emacs-lisp
-(use-package darktooth-theme
-  :demand t
-  :recipe (:host github
-           :repo "therockmandolinist/emacs-theme-darktooth"
-           :upstream (:host github
-                      :repo "emacsfodder/emacs-theme-darktooth")))
-#+end_src
-*** [[https://github.com/alpaker/Fill-Column-Indicator][fill-column-indicator]]
-#+begin_quote
-  An Emacs minor mode that graphically indicates the fill column.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package fill-column-indicator
-  :init
-  (setq-default fci-rule-column 79)
-  (defvar-local company-fci-mode-on-p nil)
-
-  (defun company-turn-off-fci (&rest _ignore)
-    (when (boundp 'fci-mode)
-      (setq company-fci-mode-on-p fci-mode)
-      (when fci-mode (fci-mode -1))))
-
-  (defun company-maybe-turn-on-fci (&rest _ignore)
-    (when company-fci-mode-on-p (fci-mode 1)))
-
-  (add-hook 'company-completion-started-hook 'company-turn-off-fci)
-  (add-hook 'company-completion-finished-hook 'company-maybe-turn-on-fci)
-  (add-hook 'company-completion-cancelled-hook 'company-maybe-turn-on-fci))
-#+end_src
-*** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers]]
-#+begin_quote
-  Emacs minor mode to highlight each source code identifier uniquely based on its name
-#+end_quote
-#+begin_src emacs-lisp
-(use-package color-identifiers-mode)
-#+end_src
-
-*** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]
-#+begin_quote
-  Highlight numbers in source code
-#+end_quote
-Neat-o
-#+begin_src emacs-lisp
-(use-package highlight-numbers)
-#+end_src
-
-*** [[https://github.com/tsdh/highlight-parentheses.el][highlight-parentheses]]
-#+begin_quote
-  Emacs: highlight surrounding parentheses
-#+end_quote
-#+begin_src emacs-lisp
-(use-package highlight-parentheses)
-#+end_src
-
-*** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
-Better parentheses coloring
-#+begin_src emacs-lisp
-(use-package rainbow-delimiters)
-#+end_src
-
-** Hydras
+*** Hydras
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
-  (defhydra h/zoom ()
-    "zoom"
-    ("=" text-scale-increase "in")
-    ("-" text-scale-decrease "out")
-    ("0" (text-scale-adjust 0) "reset")))
+  (defhydra h/flycheck
+    (:pre (progn
+            (flycheck-mode 1)
+            (setq hydra-lv t)
+            (flycheck-list-errors))
+     :post (progn
+             (setq hydra-lv nil)
+             (quit-windows-on "*Flycheck errors*"))
+     :hint nil)
+    "Errors"
+    ("f"  flycheck-error-list-set-filter                            "Filter")
+    ("j"  flycheck-next-error                                       "Next")
+    ("k"  flycheck-previous-error                                   "Previous")
+    ("gg" flycheck-first-error                                      "First")
+    ("G"  (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
+    ("q"  nil)))
 #+end_src
-** Bindings
+*** Bindings
 #+begin_src emacs-lisp
-(d/leader-keys
- "z" '(:command h/zoom/body :wk "zoom"))
+(d/mode-leader-keys
+ :keymaps 'prog-mode-map
+ "f" '(:command h/flycheck/body :wk "flycheck"))
 #+end_src
-* Lang
-** Python
-*** Packages
-**** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]
+*** Setup
+#+begin_src emacs-lisp
+(d/setup-mode prog
+  (subword-mode)
+  (smartparens-strict-mode)
+  (highlight-parentheses-mode 1)
+  (rainbow-delimiters-mode)
+  (goto-address-prog-mode)
+  (fci-mode)
+  (highlight-numbers-mode)
+  (display-line-numbers-mode)
+  (auto-fill-mode 1)
+  (setq-local comment-auto-fill-only-comments t)
+  (setq-local calc-embedded-open-mode (concat comment-start " "))
+  (setq-local calc-embedded-close-mode (concat comment-end "\n"))
+  (hl-line-mode 1))
+#+end_src
+** Lang
+*** Python
+**** Packages
+***** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]
 #+begin_quote
   Code navigation, documentation lookup and completion for Python.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package anaconda-mode)
 #+end_src
-**** [[https://github.com/proofit404/company-anaconda][company-anaconda]]
+***** [[https://github.com/proofit404/company-anaconda][company-anaconda]]
 #+begin_quote
   Anaconda backend for company-mode.
 #+end_quote
@@ -3324,7 +3005,14 @@ Better parentheses coloring
 (use-package company-anaconda
   :after company)
 #+end_src
-**** [[https://github.com/proofit404/pyenv-mode][pyenv-mode]]
+***** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
+#+begin_quote
+  Jupyter and IPython 2.x/3.x notebook client in Emacs
+#+end_quote
+#+begin_src emacs-lisp
+(use-package ein)
+#+end_src
+***** [[https://github.com/proofit404/pyenv-mode][pyenv-mode]]
 #+begin_quote
   Integrate pyenv with python-mode.
 #+end_quote
@@ -3333,13 +3021,13 @@ Better parentheses coloring
   :config
   (pyenv-mode))
 #+end_src
-**** [[https://github.com/ssbb/pyenv-mode-auto][pyenv-mode-auto]]
+***** [[https://github.com/ssbb/pyenv-mode-auto][pyenv-mode-auto]]
 #+begin_src emacs-lisp
 (use-package pyenv-mode-auto
   :after pyenv-mode)
 #+end_src
 
-**** [[https://github.com/naiquevin/sphinx-doc.el][sphinx-doc]]
+***** [[https://github.com/naiquevin/sphinx-doc.el][sphinx-doc]]
 #+begin_quote
    Generate Sphinx friendly docstrings for Python functions in Emacs
 #+end_quote
@@ -3348,14 +3036,14 @@ Pretty neat, though not entirely complete, IMO.
 (use-package sphinx-doc)
 #+end_src
 
-**** [[https://github.com/JorisE/yapfify][yapfify]]
+***** [[https://github.com/JorisE/yapfify][yapfify]]
 #+begin_quote
   Yapf for Emacs
 #+end_quote
 #+begin_src emacs-lisp
 (use-package yapfify)
 #+end_src
-*** Variables
+**** Variables
 #+begin_src emacs-lisp
 (defvar d/python-prettify-alist
   '(("<=" . "≤")
@@ -3385,7 +3073,7 @@ Pretty neat, though not entirely complete, IMO.
     ("^" . "⊻")
     ("**" . "^")))
 #+end_src
-*** Functions
+**** Functions
 #+begin_src emacs-lisp
 (defun d/ipython-shell ()
   "Open an ipython shell using multi-term, respecting virtualenv."
@@ -3393,7 +3081,7 @@ Pretty neat, though not entirely complete, IMO.
   (let ((sane-term-shell-command "ipython"))
     (sane-term-create)))
 #+end_src
-*** Setup
+**** Setup
 #+begin_src emacs-lisp
 (d/setup-mode python
   (set (make-local-variable 'comment-inline-offset) 2)
@@ -3406,9 +3094,9 @@ Pretty neat, though not entirely complete, IMO.
   (setq-local prettify-symbols-alist
               d/python-prettify-alist))
 #+end_src
-** Lisps
-*** Packages
-**** [[https://github.com/slime/slime][slime]]
+*** Lisps
+**** Packages
+***** [[https://github.com/slime/slime][slime]]
 #+begin_quote
   The Superior Lisp Interaction Mode for Emacs
 #+end_quote
@@ -3425,7 +3113,7 @@ Pretty neat, though not entirely complete, IMO.
 (use-package slime-company
   :after slime)
 #+end_src
-**** [[https://github.com/tkf/emacs-request][request]]
+***** [[https://github.com/tkf/emacs-request][request]]
 #+begin_quote
   Easy HTTP request for Emacs Lisp
 #+end_quote
@@ -3435,7 +3123,7 @@ Pretty neat, though not entirely complete, IMO.
 (use-package request-deferred)
 #+end_src
 
-**** [[https://github.com/magnars/s.el][s]]
+***** [[https://github.com/magnars/s.el][s]]
 #+begin_quote
   The long lost Emacs string manipulation library.
 #+end_quote
@@ -3443,29 +3131,29 @@ Pretty neat, though not entirely complete, IMO.
 (use-package s)
 #+end_src
 
-**** [[https://github.com/magnars/dash.el][dash]]
+***** [[https://github.com/magnars/dash.el][dash]]
 #+begin_quote
   A modern list library for Emacs
 #+end_quote
 #+begin_src emacs-lisp
 (use-package dash)
 #+end_src
-**** [[https://github.com/rejeep/f.el][f]]
+***** [[https://github.com/rejeep/f.el][f]]
 #+begin_src emacs-lisp
 (use-package f)
 #+end_src
-**** [[https://github.com/purcell/flycheck-package][flycheck-package]]
+***** [[https://github.com/purcell/flycheck-package][flycheck-package]]
 #+begin_src emacs-lisp
 (use-package flycheck-package
   :after flycheck
   :config
   (flycheck-package-setup))
 #+end_src
-**** [[https://github.com/Wilfred/suggest.el][suggest]]
+***** [[https://github.com/Wilfred/suggest.el][suggest]]
 #+begin_src emacs-lisp
 (use-package suggest)
 #+end_src
-*** Variables
+**** Variables
 #+begin_src emacs-lisp
 (defvar d/lisp-prettify-alist
   (prettify-utils-generate
@@ -3484,7 +3172,7 @@ Pretty neat, though not entirely complete, IMO.
    ("not" "¬")
    ("nil" "∅")))
 #+end_src
-*** Functions
+**** Functions
 #+begin_src emacs-lisp
 (defun d/eval-surrounding-sexp (levels)
   "Eval sexp around point, specifying depth with LEVELS.
@@ -3610,7 +3298,7 @@ Source: https://git.io/vQKz8"
               (method
                (funcall method indent-point state))))))))
 #+end_src
-*** Bindings
+**** Bindings
 #+begin_src emacs-lisp
 (d/mode-leader-keys
  :keymaps '(emacs-lisp-mode-map lisp-interaction-mode-map)
@@ -3623,7 +3311,7 @@ Source: https://git.io/vQKz8"
  "pm" 'd/pp-macroexpand-surrounding-sexp
  "ps" 'd/pp-eval-surrounding-sexp)
  #+end_src
-*** Setup
+**** Setup
 #+begin_src emacs-lisp
 (d/setup-mode (lisp lisp-interaction emacs-lisp)
   (hs-minor-mode)
@@ -3638,15 +3326,15 @@ Source: https://git.io/vQKz8"
   (setq-local lisp-indent-function #'d/lisp-indent-function)
   (setq-local prettify-symbols-alist d/lisp-prettify-alist))
 #+end_src
-** C
-*** Setup
+*** C
+**** Setup
 #+begin_src emacs-lisp
 (d/setup-mode c
   (aggressive-indent-mode))
 #+end_src
-** Haskell
-*** Packages
-**** [[https://github.com/haskell/haskell-mode][haskell-mode]]
+*** Haskell
+**** Packages
+***** [[https://github.com/haskell/haskell-mode][haskell-mode]]
 #+begin_src emacs-lisp
 (use-package haskell-mode
   :mode "\\.hs\\'"
@@ -3656,7 +3344,7 @@ Source: https://git.io/vQKz8"
         haskell-indentation-ifte-offset 4))
 
 #+end_src
-*** Variables
+**** Variables
 #+begin_src emacs-lisp
 (defvar d/haskell-prettify-alist
   '(("=>" . "⇒")
@@ -3666,20 +3354,20 @@ Source: https://git.io/vQKz8"
     ("not" . "¬")
     ("lambda" . "λ")))
 #+end_src
-*** Setup
+**** Setup
 #+begin_src emacs-lisp
 (d/setup-mode haskell
   (setq-local prettify-symbols-alist d/haskell-prettify-alist))
 #+end_src
-** Scheme
-*** Packages
-**** [[https://github.com/jaor/geiser][geiser]]
+*** Scheme
+**** Packages
+***** [[https://github.com/jaor/geiser][geiser]]
 #+begin_src emacs-lisp
 (use-package geiser
   :config
   (setq geiser-active-implementations '(chicken)))
 #+end_src
-*** Variables
+**** Variables
 #+begin_src emacs-lisp
 (defvar d/scheme-prettify-alist
   (prettify-utils-generate
@@ -3698,7 +3386,7 @@ Source: https://git.io/vQKz8"
    ("not" "¬")
    ("->" "→")))
 #+end_src
-*** Functions
+**** Functions
 #+begin_src emacs-lisp
 (defun d/geiser-eval-surrounding-sexp (levels)
   "Eval sexp around point, specifying depth with LEVELS.
@@ -3709,7 +3397,7 @@ Source: http://tinyurl.com/le6wxuo"
     (sp-end-of-sexp (abs levels))
     (geiser-eval-last-sexp nil)))
 #+end_src
-*** Bindings
+**** Bindings
 #+begin_src emacs-lisp
 (d/mode-leader-keys
  :keymaps 'scheme-mode-map
@@ -3719,7 +3407,7 @@ Source: http://tinyurl.com/le6wxuo"
  "el" 'geiser-eval-last-sexp
  "es" 'd/geiser-eval-surrounding-sexp)
 #+end_src
-*** Setup
+**** Setup
 #+begin_src emacs-lisp
 (d/setup-mode scheme
   (hs-minor-mode)
@@ -3737,130 +3425,172 @@ Source: http://tinyurl.com/le6wxuo"
 (font-lock-add-keywords 'scheme-mode '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)) t)
 (font-lock-add-keywords 'geiser-repl-mode '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)) t)
 #+end_src
-** Misc
-*** [[https://github.com/clojure-emacs/clojure-mode][clojure-mode]]
-#+begin_quote
-  Emacs support for the Clojure(Script) programming language
-#+end_quote
-#+begin_src emacs-lisp
-(use-package clojure-mode)
-#+end_src
-*** [[https://github.com/defunkt/coffee-mode][coffee-mode]]
-#+begin_quote
-  Emacs Major Mode for CoffeeScript
-#+end_quote
-#+begin_src emacs-lisp
-(use-package coffee-mode
-  :mode "\\.coffee\\'")
-#+end_src
-*** [[https://github.com/immerrr/lua-mode][lua-mode]]
-#+begin_quote
-  Emacs major mode for editing Lua
-#+end_quote
-#+begin_src emacs-lisp
-(use-package lua-mode)
-#+end_src
-*** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]]
+*** Misc
+**** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]]
 #+begin_quote
   Enables syntax highlighting for .vimrc/_vimrc files
 #+end_quote
 #+begin_src emacs-lisp
 (use-package vimrc-mode)
 #+end_src
-*** [[https://github.com/fxbois/web-mode][web-mode]]
+**** [[https://github.com/fxbois/web-mode][web-mode]]
 #+begin_src emacs-lisp
 (use-package web-mode
   :mode ("\\.html?\\'" "\\.xml\\'" "\\.launch\\'")
   :config
   (setq web-mode-markup-indent-offset 2))
 #+end_src
-* Modes
-** Prog
+** VCS
 *** Packages
-**** [[https://github.com/Malabarba/aggressive-indent-mode/][aggressive-indent]]
+**** [[https://github.com/magit/magit][magit]]
 #+begin_quote
-  Emacs minor mode that keeps your code always indented. More reliable than electric-indent-mode.
+  It's Magit! A Git Porcelain inside Emacs.
 #+end_quote
+Like git, for emacs. But cooler.
 #+begin_src emacs-lisp
-(use-package aggressive-indent)
-#+end_src
-**** [[https://github.com/flycheck/flycheck][flycheck]]
-#+begin_quote
-  On the fly syntax checking for GNU Emacs
-#+end_quote
-#+begin_src emacs-lisp
-(use-package flycheck
+(use-package magit
+  :general
+  (d/leader-keys
+   "g"  '(:ignore t :wk "magit")
+   "gB" 'd/magit-blame-toggle
+   "gC" 'magit-clone
+   "gL" 'magit-log-buffer-file
+   "ga" 'magit-submodule-add
+   "gb" 'magit-branch
+   "gc" 'magit-checkout
+   "gf" 'magit-find-file
+   "gl" 'magit-log-all
+   "gs" 'magit-status)
+  :defines (magit-diff-use-overlays)
   :config
-  (setq flycheck-completing-read-function 'ivy-completing-read)
-  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
-    (vector #b00000000
-            #b10000000
-            #b11000000
-            #b11100000
-            #b11110000
-            #b11111000
-            #b11111100
-            #b11111110
-            #b11111111
-            #b11111110
-            #b11111100
-            #b11111000
-            #b11110000
-            #b11100000
-            #b11000000
-            #b10000000
-            #b00000000)))
+  (setq magit-diff-use-overlays nil
+        auto-revert-check-vc-info t
+        git-commit-summary-max-length 50
+        git-commit-major-mode 'org-mode)
+  (add-hook 'git-commit-mode-hook #'evil-insert-state)
+  (d/setup-mode git-commit
+    (setq-local fill-column 72)
+    (setq-local org-hide-emphasis-markers nil)))
 #+end_src
-*** Hydras
+**** [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]]
+#+begin_quote
+  Fringe version of git-gutter.el
+#+end_quote
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'hydra
-  (defhydra h/flycheck
-    (:pre (progn
-            (flycheck-mode 1)
-            (setq hydra-lv t)
-            (flycheck-list-errors))
-     :post (progn
-             (setq hydra-lv nil)
-             (quit-windows-on "*Flycheck errors*"))
-     :hint nil)
-    "Errors"
-    ("f"  flycheck-error-list-set-filter                            "Filter")
-    ("j"  flycheck-next-error                                       "Next")
-    ("k"  flycheck-previous-error                                   "Previous")
-    ("gg" flycheck-first-error                                      "First")
-    ("G"  (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
-    ("q"  nil)))
+(use-package git-gutter-fringe
+  :demand t
+  :commands fringe-helper-define
+  :config
+  (global-git-gutter-mode)
+  (add-hook 'focus-in-hook #'git-gutter:update-all-windows)
+  (fringe-helper-define 'git-gutter-fr:modified nil
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX")
+  (fringe-helper-define 'git-gutter-fr:added nil
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX")
+  (fringe-helper-define 'git-gutter-fr:deleted nil
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"
+    "....XXXX"))
 #+end_src
-*** Bindings
+**** [[https://github.com/defunkt/gist.el][gist]]
 #+begin_src emacs-lisp
-(d/mode-leader-keys
- :keymaps 'prog-mode-map
- "f" '(:command h/flycheck/body :wk "flycheck"))
+(use-package gist
+  :config
+  (let ((gh-vals (cdar gh-profile-alist)))
+    (setf gh-vals (plist-put gh-vals :username "therockmandolinist")
+          gh-vals (plist-put gh-vals :token (password-store-get "tokens/github/gist")))))
 #+end_src
-*** Setup
+*** Functions
 #+begin_src emacs-lisp
-(d/setup-mode prog
-  (subword-mode)
-  (smartparens-strict-mode)
-  (highlight-parentheses-mode 1)
-  (rainbow-delimiters-mode)
-  (goto-address-prog-mode)
-  (fci-mode)
-  (highlight-numbers-mode)
-  (display-line-numbers-mode)
-  (auto-fill-mode 1)
-  (setq-local comment-auto-fill-only-comments t)
-  (setq-local calc-embedded-open-mode (concat comment-start " "))
-  (setq-local calc-embedded-close-mode (concat comment-end "\n"))
-  (hl-line-mode 1))
+(defun d/magit-blame-toggle ()
+  "Toggle magit-blame-mode on and off interactively.
+
+Source: https://git.io/vQKub"
+  (interactive)
+  (if (and (boundp 'magit-blame-mode) magit-blame-mode)
+      (magit-blame-quit)
+    (call-interactively 'magit-blame)))
 #+end_src
-** Conf
-*** Setup
-#+begin_src emacs-lisp
-(d/setup-mode conf
-  (d/setup-prog-mode))
-(add-to-list 'auto-mode-alist '("\\.service\\'" . conf-mode))
-#+end_src
+* Tools
 ** Calc
 #+begin_src emacs-lisp
 (use-package calc
@@ -4020,278 +3750,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
     "C-p" 'eshell/cool-peco-ps
     "C-r" 'eshell/cool-peco-history))
 #+end_src
-** Text
-#+begin_src emacs-lisp
-(d/mode-leader-keys
- :keymap 'text-mode-map
- "f" '(:command h/flyspell/body :wk "flyspell"))
-#+end_src
-** json
-#+begin_src emacs-lisp
-(d/setup-mode json
-  (highlight-numbers-mode -1))
-#+end_src
-** ERC
-*** Defaults
-#+begin_src emacs-lisp
-(d/with-eval-after-load 'erc
-  (setq erc-prompt "
-           ❱❱"
-        erc-fill-prefix  "              "
-        erc-notice-prefix   "              *** "
-        erc-format-nick-function 'd/erc-format-nick
-        erc-nick "dieggsy"
-        erc-password (password-store-get "social/freenode")
-        erc-prompt-for-password nil
-        erc-hide-timestamps t
-        erc-input-line-position -1
-        erc-autojoin-timing 'ident
-        erc-header-line-format nil
-        erc-fill-column 79
-        erc-hide-list '("353")
-        erc-lurker-threshold-time (* 6 60 60)
-        erc-lurker-hide-list '("JOIN" "PART" "QUIT" "NICK")
-        erc-kill-buffer-on-part t
-        erc-kill-queries-on-quit t
-        erc-kill-server-buffer-on-quit t
-        erc-rename-buffers t
-        erc-join-buffer 'bury
-        erc-track-use-faces nil
-        erc-track-priority-faces-only 'all
-        erc-track-exclude-server-buffer t
-        erc-format-query-as-channel-p t
-        erc-track-faces-priority-list '(erc-error-face
-                                        erc-current-nick-face
-                                        erc-keyword-face
-                                        erc-nick-msg-face
-                                        erc-direct-msg-face
-                                        erc-dangerous-host-face)
-        erc-autojoin-channels-alist '(("freenode.net"
-                                       "#emacs"
-                                       "#gaygeeks"
-                                       "##linux"
-                                       "#zsh"
-                                       "#python"
-                                       "##programming"
-                                       "#i3"
-                                       "#lisp"
-                                       "#chicken")))
-
-  (erc-define-catalog-entry 'english 'ACTION "         *    %n %a"))
-#+end_src
-*** Packages
-#+begin_src emacs-lisp
-(use-package erc
-  :ensure nil
-  :general
-  (d/mode-leader-keys
-   :keymaps 'erc-mode-map
-   "g" (lambda () (interactive) (let ((ivy-use-virtual-buffers nil)) (erc-switch-to-buffer))))
-  (d/leader-keys
-   "ai" 'd/erc)
-  (imap :keymaps 'erc-mode-map
-    [up] 'erc-previous-command
-    [down] 'erc-next-command)
-  :config
-  (add-hook 'window-configuration-change-hook #'d/erc-to-bottom))
-#+end_src
-**** [[https://github.com/leathekd/erc-hl-nicks][erc-hl-nicks]]
-#+begin_src emacs-lisp
-(use-package erc-hl-nicks
-  :recipe (:host github
-           :repo "therockmandolinist/erc-hl-nicks"
-           :upstream (:host github
-                      :repo "leathekd/erc-hl-nicks"))
-  :after erc
-  :config
-  (setq erc-hl-nicks-skip-nicks '("diegs" "dieggsy")
-        erc-lurker-ignore-chars erc-hl-nicks-ignore-chars)
-  (push "erc-current-nick-face" erc-hl-nicks-skip-faces))
-#+end_src
-*** Variables
-#+begin_src emacs-lisp
-(d/with-eval-after-load 'erc
-  (defvar d/erc-last-speaker (make-hash-table :test 'equal))
-  (setq erc-lurker-state (make-hash-table :test 'equal)))
-#+end_src
-*** Functions
-#+begin_src emacs-lisp
-(d/with-eval-after-load 'erc
-  (defmacro d/erc-nick-format-function-body (cond nick &optional else)
-    `(if ,cond
-         (let* ((nick ,nick)
-                (trimmed (erc-hl-nicks-trim-irc-nick nick))
-                (server (erc-canonicalize-server-name
-                         erc-server-announced-name)))
-           (unless (gethash server d/erc-last-speaker)
-             (puthash server (make-hash-table :test 'equal) d/erc-last-speaker))
-           (let* ((channel (buffer-name))
-                  (mode (erc-get-user-mode-prefix nick))
-                  (nick-was-last (string=
-                                  (gethash channel
-                                           (gethash server d/erc-last-speaker))
-                                  nick))
-                  (long-char (if (and (> (length nick) 10)
-                                      (not nick-was-last))
-                                 (erc-propertize "…" 'face '(:foreground "#D3869B" ))
-                               " ")))
-
-             (when (>= (cl-incf erc-lurker-cleanup-count)
-                       erc-lurker-cleanup-interval)
-               (setq erc-lurker-cleanup-count 0)
-               (erc-lurker-cleanup))
-             (unless (gethash server erc-lurker-state)
-               (puthash server (make-hash-table :test 'equal) erc-lurker-state))
-             (puthash trimmed (current-time)
-                      (gethash server erc-lurker-state))
-             (puthash channel nick (gethash server d/erc-last-speaker))
-             (format "%10.10s%s   "
-                     (cond  (nick-was-last
-                             (erc-propertize
-                              "↳"
-                              'face
-                              (gethash trimmed erc-hl-nicks-face-table)))
-                            ((not (member trimmed erc-hl-nicks-skip-nicks))
-                             (concat
-                              (erc-propertize mode 'face 'erc-nick-prefix-face)
-                              (erc-propertize nick 'face (erc-hl-nicks-make-face trimmed))))
-                            (t
-                             (concat
-                              (erc-propertize mode 'face 'erc-nick-prefix-face)
-                              nick)))
-                     long-char)))
-       ,else))
-
-  (defun d/erc-format-nick (&optional user channel-data)
-    "Truncate nick when too long, substitute when repeated speaker, and
-update lurker status."
-    (d/erc-nick-format-function-body
-     user
-     (erc-server-user-nickname user)))
-
-  (define-advice erc-format-my-nick (:override nil truncate-substitute-lurk)
-    "Truncate nick when too long, substitute when repeated speaker, and
-update lurker status."
-    (d/erc-nick-format-function-body
-     erc-show-my-nick
-     (erc-current-nick)
-     (let ((prefix "> "))
-       (erc-propertize prefix 'font-lock-face 'erc-default-face))))
-
-  (define-advice erc-format-privmessage (:override (nick msg privp msgp) no-brackets)
-    "Remove the annoying angle brackets."
-    (let* ((mark-s (if msgp (if privp "*" "") "              -"))
-           (mark-e (if msgp (if privp "*" "") "- "))
-           (str    (format "%s%s%s%s" mark-s nick mark-e msg))
-           (nick-face (if privp 'erc-nick-msg-face 'erc-nick-default-face))
-           (msg-face (if privp 'erc-direct-msg-face 'erc-default-face)))
-      ;; add text properties to text before the nick, the nick and after the nick
-      (erc-put-text-property 0 (length mark-s) 'font-lock-face msg-face str)
-      (erc-put-text-property (length mark-s) (+ (length mark-s) (length nick))
-                             'font-lock-face nick-face str)
-      (erc-put-text-property (+ (length mark-s) (length nick)) (length str)
-                             'font-lock-face msg-face str)
-      str))
-
-  (define-advice erc-track-find-face (:around (fn faces) promote-query)
-    "Promote query buffers as if everything contains current nick.
-
-Source: http://tinyurl.com/y8tj8vxx"
-    (if (erc-query-buffer-p)
-        (setq ad-return-value (intern "erc-current-nick-face"))
-      (funcall fn faces)))
-
-  (define-advice erc-track-modified-channels (:around (fn) promote-query)
-    "Promote query buffers as if everything contains current nick when
-only tracking priority faces.
-
-Source: http://tinyurl.com/y8tj8vxx"
-    (when (erc-query-buffer-p) (setq erc-track-priority-faces-only nil))
-    (funcall fn)
-    (when (erc-query-buffer-p) (setq erc-track-priority-faces-only 'all)))
-
-  (define-advice erc-notifications-notify (:override (nick msg) channel-title)
-    "Use channel as notification title and remove erc-fill-prefix."
-    (let ((server (erc-canonicalize-server-name
-                   erc-server-announced-name))
-          (channel (buffer-name))
-          (msg (string-join
-                (cdr (split-string
-                      (replace-regexp-in-string erc-fill-prefix "" msg)
-                      " "
-                      t
-                      " ")) " ")))
-      (dbus-ignore-errors
-        (setq erc-notifications-last-notification
-              (notifications-notify :bus erc-notifications-bus
-                                    :title (xml-escape-string (format "%s@%s" channel server))
-                                    :body (xml-escape-string (format "%s: %s" nick msg))
-                                    :replaces-id erc-notifications-last-notification
-                                    :app-icon erc-notifications-icon)))))
-
-  (defun d/erc-to-bottom ()
-    (and (eq major-mode 'erc-mode)
-         (erc-scroll-to-bottom))))
-#+end_src
-*** Setup
-#+begin_src emacs-lisp
-(d/setup-mode erc
-  (erc-hl-nicks-mode 1)
-  (smartparens-mode -1)
-  (erc-stamp-mode -1)
-  (erc-notifications-mode 1)
-  (evil-smartparens-mode -1)
-  (show-smartparens-mode -1)
-  (erc-move-to-prompt-mode 1))
-#+end_src
-** Misc
-*** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
-#+begin_quote
-  Major mode for editing comma/char separated values
-#+end_quote
-Eh, wanted to try a simpler way of editing csv files. (Excel and Numbers both
-kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
-#+begin_src emacs-lisp
-(use-package csv-mode
-  :mode "\\.csv\\'"
-  :config
-  (add-hook 'csv-mode-hook #'csv-align-fields))
-#+end_src
-*** [[https://github.com/Kitware/CMake][cmake-mode]]
-#+begin_src emacs-lisp
-(use-package cmake-mode)
-#+end_src
-*** [[http://jblevins.org/projects/markdown-mode/][markdown-mode]]
-Syntax highlighting for markdown files.
-#+begin_src emacs-lisp
-(use-package markdown-mode
-  :mode "\\.md\\'"
-  :config)
-#+end_src
-*** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
-#+begin_quote
-  The emacs major mode for editing files in the YAML data serialization format.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package yaml-mode
-  :mode "\\.yml\\'")
-#+end_src
-*** [[https://github.com/joshwnj/json-mode][json-mode]]
-#+begin_quote
-  Major mode for editing JSON files with emacs
-#+end_quote
-#+begin_src emacs-lisp
-(use-package json-mode
-  :mode "\\.json\\'")
-#+end_src
-*** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
-#+begin_quote
-  Jupyter and IPython 2.x/3.x notebook client in Emacs
-#+end_quote
-#+begin_src emacs-lisp
-(use-package ein)
-#+end_src
-*** [[https://github.com/politza/pdf-tools][pdf-tools]]
+** [[https://github.com/politza/pdf-tools][pdf-tools]]
 #+begin_quote
   Emacs support library for PDF files.
 #+end_quote
@@ -4313,13 +3772,45 @@ Syntax highlighting for markdown files.
 ;;   :config
 ;;   (pdf-tools-install))
 #+end_src
-*** [[https://github.com/therockmandolinist/turing-machine][turing-machine]]
+** [[https://github.com/therockmandolinist/turing-machine][turing-machine]]
 #+begin_src emacs-lisp
 (use-package turing-machine)
 #+end_src
 * Enhancements
 ** Emacs
 *** Packages
+**** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
+#+begin_quote
+  Cursor stays vertically centered.
+#+end_quote
+I use this for reading, mostly.
+#+begin_src emacs-lisp
+(use-package centered-cursor-mode)
+#+end_src
+**** [[https://github.com/bbatsov/crux][crux]]
+#+begin_quote
+  A Collection of Ridiculously Useful eXtensions for Emacs
+#+end_quote
+#+begin_src emacs-lisp
+(use-package crux
+  :defer 5
+  :general
+  (d/leader-keys
+   "TAB" 'crux-switch-to-previous-buffer
+   "fd" 'crux-delete-file-and-buffer
+   "fr" 'crux-rename-file-and-buffer
+   "br" 'crux-sudo-edit )
+  :commands (crux-with-region-or-line
+             crux-with-region-or-buffer
+             crux-switch-to-previous-buffer
+             crux-rename-file-and-buffer)
+  :config
+  (crux-with-region-or-line eval-region)
+  (crux-with-region-or-buffer indent-region)
+  (crux-with-region-or-buffer untabify)
+  (crux-with-region-or-buffer tabify)
+  (crux-with-region-or-buffer fill-region))
+#+end_src
 **** [[https://github.com/purcell/disable-mouse][disable-mouse]]
 #+begin_quote
   Disable the mouse in Emacs
@@ -4353,6 +3844,109 @@ Syntax highlighting for markdown files.
     (define-key evil-motion-state-map key #'ignore)))
 #+end_src
 
+**** [[https://github.com/Silex/elmacro][elmacro]]
+**** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
+#+begin_quote
+  Emacs package that displays available keybindings in popup
+#+end_quote
+#+begin_src emacs-lisp
+(use-package which-key
+  :defer 10
+  :general
+  (d/leader-keys
+   "hk" 'which-key-show-top-level)
+  :config
+  (which-key-mode)
+
+  (defmacro d/declare-prefix (&rest body)
+    (declare (indent defun))
+    `(which-key-add-key-based-replacements
+       ,@(cl-loop
+          for (prefix name) on body
+          by #'cddr
+          while name
+          append `(,(concat "SPC " prefix) ,name
+                   ,(concat "C-SPC " prefix) ,name))))
+
+  (defmacro d/declare-mode-prefix (modes &rest body)
+    (declare (indent defun))
+    (let ((modes (if (listp modes) modes (list modes))))
+      `(progn
+         ,@(cl-loop
+            for mode in modes collect
+            `(which-key-add-major-mode-key-based-replacements ',mode
+               ,@(cl-loop
+                  for (prefix name) on body
+                  by #'cddr
+                  while name
+                  append `(,(concat ", " prefix) ,name
+                           ,(concat "C-, " prefix) ,name)))))))
+
+  (defmacro d/which-key-remove-prefix (&rest body)
+    (declare (indent defun))
+    `(progn
+       ,@(cl-loop for regexp in body collect
+                  `(push '((nil . ,(concat regexp "\\(.+\\)")) . (nil . "\\1"))
+                         which-key-replacement-alist))))
+
+
+  (d/declare-prefix
+    "a"   "applications"
+    "b"   "buffer"
+    "f"   "file"
+    "h"   "help"
+    "hd"  "describe"
+    "i"   "insert"
+    "j"   "jump"
+    "n"   "narrow/numbers"
+    "q"   "quit"
+    "s"   "search"
+    "w"   "window"
+    "xi"  "indent"
+    "xl"  "lines"
+    "SPC" "root")
+
+  (d/declare-mode-prefix (emacs-lisp-mode lisp-interaction-mode)
+    "e" "eval"
+    "p" "pp")
+
+  (setq which-key-sort-order 'which-key-key-order-alpha)
+  (setq which-key-sort-uppercase-first nil)
+
+  (d/which-key-remove-prefix
+    "avy-"
+    "counsel-"
+    "counsel-projectile-"
+    "crux-"
+    "customize-"
+    "d/"
+    "evil-mc-"
+    "evilnc-"
+    "eyebrowse-"
+    "eyebrowse-switch-to-"
+    "ivy-"
+    "magit-"
+    "projectile-"))
+#+end_src
+#+begin_quote
+  Package to display keyboard macros or latest interactive commands as emacs lisp.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package elmacro
+  :disabled t
+  :defer 10
+  :config
+  (elmacro-mode))
+#+end_src
+**** [[https://github.com/jschaf/esup][esup]]
+#+begin_quote
+  ESUP - Emacs Start Up Profiler
+#+end_quote
+#+begin_src emacs-lisp
+(use-package esup
+  :config
+  (setq esup-insignificant-time 0.001))
+#+end_src
 **** [[https://github.com/lewang/flx][flx]]
 #+begin_quote
   Fuzzy matching for Emacs ... a la Sublime Text.
@@ -4360,13 +3954,11 @@ Syntax highlighting for markdown files.
 #+begin_src emacs-lisp
 (use-package flx)
 #+end_src
-**** [[https://github.com/nonsequitur/smex][smex]]
-#+begin_quote
-  A smart M-x enhancement for Emacs.
-#+end_quote
-Sorts ivy by most recently used, I think.
+**** [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store]]
 #+begin_src emacs-lisp
-(use-package smex)
+(use-package password-store
+  :config
+  (setq password-store-password-length 20))
 #+end_src
 **** [[https://github.com/Fanael/persistent-scratch][persistent-scratch]]
 #+begin_quote
@@ -4389,75 +3981,13 @@ SUPER nifty.
   :init
   (evil-ex-define-cmd "qr[estart]" 'restart-emacs))
 #+end_src
-**** [[https://github.com/Malabarba/paradox][paradox]]
+**** [[https://github.com/nonsequitur/smex][smex]]
 #+begin_quote
-  Project for modernizing Emacs' Package Menu. With package ratings, usage
-  statistics, customizability, and more.
+  A smart M-x enhancement for Emacs.
 #+end_quote
+Sorts ivy by most recently used, I think.
 #+begin_src emacs-lisp
-(use-package paradox
-  :general
-  (d/leader-keys "ap" 'paradox-list-packages)
-  (nmap :keymaps 'paradox-menu-mode-map
-    "(" 'package-menu-toggle-hiding
-    "?" 'package-menu-describe-package
-    "F" 'package-menu-filter
-    "RET" 'paradox-push-button
-    "S*" 'paradox-sort-by-★
-    "Sp" 'paradox-sort-by-package
-    "Ss" 'paradox-sort-by-status
-    "TAB" 'forward-button
-    "U" 'package-menu-mark-upgrades
-    "d" 'package-menu-mark-delete
-    "f" 'hydra-paradox-filter/body
-    "i" 'package-menu-mark-install
-    "q" 'paradox-quit-and-close
-    "r" 'package-menu-refresh
-    "u" 'package-menu-mark-unmark
-    "vh" 'paradox-menu-visit-homepage
-    "vl" 'paradox-menu-view-commit-list
-    "x" 'paradox-menu-execute
-    "~" 'package-menu-mark-obsolete-for-deletion
-    [backtab] 'backward-button)
-  :config
-  (setq paradox-execute-asynchronously t
-        paradox-github-token (password-store-get "tokens/github/paradox")
-        paradox-automatically-star nil))
-#+end_src
-
-**** [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store]]
-#+begin_src emacs-lisp
-(use-package password-store
-  :config
-  (setq password-store-password-length 20))
-#+end_src
-**** [[https://github.com/jschaf/esup][esup]]
-#+begin_quote
-  ESUP - Emacs Start Up Profiler
-#+end_quote
-#+begin_src emacs-lisp
-(use-package esup
-  :config
-  (setq esup-insignificant-time 0.001))
-#+end_src
-**** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
-#+begin_quote
-  Cursor stays vertically centered.
-#+end_quote
-I use this for reading, mostly.
-#+begin_src emacs-lisp
-(use-package centered-cursor-mode)
-#+end_src
-**** [[https://github.com/Silex/elmacro][elmacro]]
-#+begin_quote
-  Package to display keyboard macros or latest interactive commands as emacs lisp.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package elmacro
-  :disabled t
-  :defer 10
-  :config
-  (elmacro-mode))
+(use-package smex)
 #+end_src
 *** Hydras
 **** toggle
@@ -4539,6 +4069,14 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
   :after evil
   :config
   (evil-indent-plus-default-bindings))
+#+end_src
+*** [[https://github.com/emacs-evil/evil-magit][evil-magit]]
+#+begin_quote
+  Black magic or evil keys for magit
+#+end_quote
+#+begin_src emacs-lisp
+(use-package evil-magit
+  :after magit)
 #+end_src
 *** [[https://github.com/redguardtoo/evil-matchit][evil-matchit]]
 #+begin_src emacs-lisp
@@ -4836,8 +4374,220 @@ Source: http://tinyurl.com/lo96nwc"
  "agg" 'gomoku
  "agt" 'tetris)
 #+end_src
+* Web services
+** ERC
+*** Defaults
+#+begin_src emacs-lisp
+(d/with-eval-after-load 'erc
+  (setq erc-prompt "
+           ❱❱"
+        erc-fill-prefix  "              "
+        erc-notice-prefix   "              *** "
+        erc-format-nick-function 'd/erc-format-nick
+        erc-nick "dieggsy"
+        erc-password (password-store-get "social/freenode")
+        erc-prompt-for-password nil
+        erc-hide-timestamps t
+        erc-input-line-position -1
+        erc-autojoin-timing 'ident
+        erc-header-line-format nil
+        erc-fill-column 79
+        erc-hide-list '("353")
+        erc-lurker-threshold-time (* 6 60 60)
+        erc-lurker-hide-list '("JOIN" "PART" "QUIT" "NICK")
+        erc-kill-buffer-on-part t
+        erc-kill-queries-on-quit t
+        erc-kill-server-buffer-on-quit t
+        erc-rename-buffers t
+        erc-join-buffer 'bury
+        erc-track-use-faces nil
+        erc-track-priority-faces-only 'all
+        erc-track-exclude-server-buffer t
+        erc-format-query-as-channel-p t
+        erc-track-faces-priority-list '(erc-error-face
+                                        erc-current-nick-face
+                                        erc-keyword-face
+                                        erc-nick-msg-face
+                                        erc-direct-msg-face
+                                        erc-dangerous-host-face)
+        erc-autojoin-channels-alist '(("freenode.net"
+                                       "#emacs"
+                                       "#gaygeeks"
+                                       "##linux"
+                                       "#zsh"
+                                       "#python"
+                                       "##programming"
+                                       "#i3"
+                                       "#lisp"
+                                       "#chicken")))
 
-* Web?
+  (erc-define-catalog-entry 'english 'ACTION "         *    %n %a"))
+#+end_src
+*** Packages
+#+begin_src emacs-lisp
+(use-package erc
+  :ensure nil
+  :general
+  (d/mode-leader-keys
+   :keymaps 'erc-mode-map
+   "g" (lambda () (interactive) (let ((ivy-use-virtual-buffers nil)) (erc-switch-to-buffer))))
+  (d/leader-keys
+   "ai" 'd/erc)
+  (imap :keymaps 'erc-mode-map
+    [up] 'erc-previous-command
+    [down] 'erc-next-command)
+  :config
+  (add-hook 'window-configuration-change-hook #'d/erc-to-bottom))
+#+end_src
+**** [[https://github.com/leathekd/erc-hl-nicks][erc-hl-nicks]]
+#+begin_src emacs-lisp
+(use-package erc-hl-nicks
+  :recipe (:host github
+           :repo "therockmandolinist/erc-hl-nicks"
+           :upstream (:host github
+                      :repo "leathekd/erc-hl-nicks"))
+  :after erc
+  :config
+  (setq erc-hl-nicks-skip-nicks '("diegs" "dieggsy")
+        erc-lurker-ignore-chars erc-hl-nicks-ignore-chars)
+  (push "erc-current-nick-face" erc-hl-nicks-skip-faces))
+#+end_src
+*** Variables
+#+begin_src emacs-lisp
+(d/with-eval-after-load 'erc
+  (defvar d/erc-last-speaker (make-hash-table :test 'equal))
+  (setq erc-lurker-state (make-hash-table :test 'equal)))
+#+end_src
+*** Functions
+#+begin_src emacs-lisp
+(d/with-eval-after-load 'erc
+  (defmacro d/erc-nick-format-function-body (cond nick &optional else)
+    `(if ,cond
+         (let* ((nick ,nick)
+                (trimmed (erc-hl-nicks-trim-irc-nick nick))
+                (server (erc-canonicalize-server-name
+                         erc-server-announced-name)))
+           (unless (gethash server d/erc-last-speaker)
+             (puthash server (make-hash-table :test 'equal) d/erc-last-speaker))
+           (let* ((channel (buffer-name))
+                  (mode (erc-get-user-mode-prefix nick))
+                  (nick-was-last (string=
+                                  (gethash channel
+                                           (gethash server d/erc-last-speaker))
+                                  nick))
+                  (long-char (if (and (> (length nick) 10)
+                                      (not nick-was-last))
+                                 (erc-propertize "…" 'face '(:foreground "#D3869B" ))
+                               " ")))
+
+             (when (>= (cl-incf erc-lurker-cleanup-count)
+                       erc-lurker-cleanup-interval)
+               (setq erc-lurker-cleanup-count 0)
+               (erc-lurker-cleanup))
+             (unless (gethash server erc-lurker-state)
+               (puthash server (make-hash-table :test 'equal) erc-lurker-state))
+             (puthash trimmed (current-time)
+                      (gethash server erc-lurker-state))
+             (puthash channel nick (gethash server d/erc-last-speaker))
+             (format "%10.10s%s   "
+                     (cond  (nick-was-last
+                             (erc-propertize
+                              "↳"
+                              'face
+                              (gethash trimmed erc-hl-nicks-face-table)))
+                            ((not (member trimmed erc-hl-nicks-skip-nicks))
+                             (concat
+                              (erc-propertize mode 'face 'erc-nick-prefix-face)
+                              (erc-propertize nick 'face (erc-hl-nicks-make-face trimmed))))
+                            (t
+                             (concat
+                              (erc-propertize mode 'face 'erc-nick-prefix-face)
+                              nick)))
+                     long-char)))
+       ,else))
+
+  (defun d/erc-format-nick (&optional user channel-data)
+    "Truncate nick when too long, substitute when repeated speaker, and
+update lurker status."
+    (d/erc-nick-format-function-body
+     user
+     (erc-server-user-nickname user)))
+
+  (define-advice erc-format-my-nick (:override nil truncate-substitute-lurk)
+    "Truncate nick when too long, substitute when repeated speaker, and
+update lurker status."
+    (d/erc-nick-format-function-body
+     erc-show-my-nick
+     (erc-current-nick)
+     (let ((prefix "> "))
+       (erc-propertize prefix 'font-lock-face 'erc-default-face))))
+
+  (define-advice erc-format-privmessage (:override (nick msg privp msgp) no-brackets)
+    "Remove the annoying angle brackets."
+    (let* ((mark-s (if msgp (if privp "*" "") "              -"))
+           (mark-e (if msgp (if privp "*" "") "- "))
+           (str    (format "%s%s%s%s" mark-s nick mark-e msg))
+           (nick-face (if privp 'erc-nick-msg-face 'erc-nick-default-face))
+           (msg-face (if privp 'erc-direct-msg-face 'erc-default-face)))
+      ;; add text properties to text before the nick, the nick and after the nick
+      (erc-put-text-property 0 (length mark-s) 'font-lock-face msg-face str)
+      (erc-put-text-property (length mark-s) (+ (length mark-s) (length nick))
+                             'font-lock-face nick-face str)
+      (erc-put-text-property (+ (length mark-s) (length nick)) (length str)
+                             'font-lock-face msg-face str)
+      str))
+
+  (define-advice erc-track-find-face (:around (fn faces) promote-query)
+    "Promote query buffers as if everything contains current nick.
+
+Source: http://tinyurl.com/y8tj8vxx"
+    (if (erc-query-buffer-p)
+        (setq ad-return-value (intern "erc-current-nick-face"))
+      (funcall fn faces)))
+
+  (define-advice erc-track-modified-channels (:around (fn) promote-query)
+    "Promote query buffers as if everything contains current nick when
+only tracking priority faces.
+
+Source: http://tinyurl.com/y8tj8vxx"
+    (when (erc-query-buffer-p) (setq erc-track-priority-faces-only nil))
+    (funcall fn)
+    (when (erc-query-buffer-p) (setq erc-track-priority-faces-only 'all)))
+
+  (define-advice erc-notifications-notify (:override (nick msg) channel-title)
+    "Use channel as notification title and remove erc-fill-prefix."
+    (let ((server (erc-canonicalize-server-name
+                   erc-server-announced-name))
+          (channel (buffer-name))
+          (msg (string-join
+                (cdr (split-string
+                      (replace-regexp-in-string erc-fill-prefix "" msg)
+                      " "
+                      t
+                      " ")) " ")))
+      (dbus-ignore-errors
+        (setq erc-notifications-last-notification
+              (notifications-notify :bus erc-notifications-bus
+                                    :title (xml-escape-string (format "%s@%s" channel server))
+                                    :body (xml-escape-string (format "%s: %s" nick msg))
+                                    :replaces-id erc-notifications-last-notification
+                                    :app-icon erc-notifications-icon)))))
+
+  (defun d/erc-to-bottom ()
+    (and (eq major-mode 'erc-mode)
+         (erc-scroll-to-bottom))))
+#+end_src
+*** Setup
+#+begin_src emacs-lisp
+(d/setup-mode erc
+  (erc-hl-nicks-mode 1)
+  (smartparens-mode -1)
+  (erc-stamp-mode -1)
+  (erc-notifications-mode 1)
+  (evil-smartparens-mode -1)
+  (show-smartparens-mode -1)
+  (erc-move-to-prompt-mode 1))
+#+end_src
 ** Packages
 *** [[https://github.com/skeeto/elfeed][elfeed]]
 #+begin_quote
@@ -4890,6 +4640,190 @@ Configure the Elfeed RSS reader with an Orgmode file
   :config
   (setq sunshine-location "02139,USA"
         sunshine-appid (password-store-get "api/openweathermap")))
+#+end_src
+* EXWM
+** Startup
+#+begin_src emacs-lisp
+(use-package exwm
+  :demand t
+  :if (string= (getenv "XDG_CURRENT_DESKTOP") "exwm")
+  :config
+  (add-hook 'exwm-update-class-hook
+            (lambda ()
+              (exwm-workspace-rename-buffer exwm-class-name)))
+  (exwm-input-set-key (kbd "s-r") #'exwm-reset)
+  (exwm-input-set-key (kbd "s-w") #'exwm-workspace-switch)
+  (dotimes (i 10)
+    (exwm-input-set-key (kbd (format "s-%d" (if (= 9 i) 0 (1+ i))))
+                        `(lambda ()
+                           (interactive)
+                           (exwm-workspace-switch-create ,i))))
+  (setq exwm-workspace-index-map (lambda (i) (number-to-string (1+ i))))
+  (exwm-enable)
+
+  (setenv "INSIDE_EMACS" "1")
+
+  (setq window-divider-default-right-width 1)
+  (setq window-divider-default-bottom-width 1)
+
+  (window-divider-mode)
+
+  (setq windmove-wrap-around t)
+
+  ;; (pinentry-start)
+
+
+  (add-to-list 'evil-insert-state-modes 'exwm-mode)
+
+  (add-hook 'evil-normal-state-entry-hook (lambda ()
+                                            (setq-local exwm-input-line-mode-passthrough t)))
+  (add-hook 'evil-insert-state-entry-hook (lambda ()
+                                            (setq-local exwm-input-line-mode-passthrough nil)))
+
+  (add-hook 'exwm-floating-setup-hook (lambda () (setq-local mode-line-format nil))))
+#+end_src
+** Functions
+#+begin_src emacs-lisp
+(d/with-eval-after-load 'exwm
+  (defmacro d/exwm-define-key (&rest bindings)
+    (declare (indent defun))
+    (let ((keys (cl-loop for (key func) on bindings
+                         by #'cddr
+                         collect (elt (kbd key) 0))))
+
+      `(progn
+         (setq exwm-input-prefix-keys ',keys)
+         (general-define-key ,@bindings))))
+
+  (cl-defmacro d/exec (cmd &key pre post)
+    `(lambda () (interactive) ,pre (call-process-shell-command ,cmd) ,post))
+
+  (cl-defmacro d/exwm-mode-line-process (name &key filter-body cmd repeat fmt)
+    (declare (indent defun))
+    (let ((shell-cmd (format "while sleep %d; do %s; done" repeat cmd))
+          (filter-name (intern (concat name "-filter")))
+          (var-name (intern name)))
+      `(progn
+         (defvar ,var-name (string-trim (shell-command-to-string ,cmd)))
+         (start-process-shell-command ,name nil ,shell-cmd)
+         (defun ,(intern (concat name "-filter")) (process output)
+           filter-body
+           (setq ,var-name ,(if fmt `(funcall ,fmt (string-trim output))
+                              `(string-trim output)))
+           (force-mode-line-update 'all))
+         (set-process-filter (get-process ,name) #',filter-name))))
+
+  (defun d/swap-window-right ()
+    (interactive)
+    (let* ((buff (current-buffer))
+           (win (windmove-find-other-window 'right))
+           (o-buff (window-buffer win)))
+      (set-window-buffer win buff)
+      (set-window-buffer (selected-window) o-buff)
+      (windmove-right)))
+
+  (defun d/swap-window-left ()
+    (interactive)
+    (let* ((buff (current-buffer))
+           (win (windmove-find-other-window 'left))
+           (o-buff (window-buffer win)))
+      (set-window-buffer win buff)
+      (set-window-buffer (selected-window) o-buff)
+      (windmove-left)))
+
+  (defun d/swap-window-down ()
+    (interactive)
+    (let* ((buff (current-buffer))
+           (win (windmove-find-other-window 'down))
+           (o-buff (window-buffer win)))
+      (set-window-buffer win buff)
+      (set-window-buffer (selected-window) o-buff)
+      (windmove-down)))
+
+  (defun d/swap-window-up ()
+    (interactive)
+    (let* ((buff (current-buffer))
+           (win (windmove-find-other-window 'up))
+           (o-buff (window-buffer win)))
+      (set-window-buffer win buff)
+      (set-window-buffer (selected-window) o-buff)
+      (windmove-up))))
+#+end_src
+** Processes
+#+begin_src emacs-lisp
+(d/with-eval-after-load 'exwm
+
+  (setq d/mute
+        (string= (string-trim
+                  (shell-command-to-string "amixer -D pulse get Master \
+| grep \"Left: Playback\" \
+| awk '{print $6}' \
+| tr -d \"[-]\""))
+                 "off"))
+
+  (setq d/kb-layout (string-trim
+                     (shell-command-to-string
+                      "layout=$(setxkbmap -query | grep layout | cut -d' ' -f6)
+
+if [ \"$layout\" = \"us\" ]; then
+    echo 'QW'
+elif [ \"$layout\" = \"dvorak\" ]; then
+     echo 'DV'
+fi")))
+
+  (d/exwm-mode-line-process "d/ssid"
+    :cmd "iwgetid -r || echo 'None'"
+    :repeat 5)
+
+  (d/exwm-mode-line-process "d/battery"
+    :cmd "bat=$(acpi | cut -d \" \" -f4 | tr -d \"%,\")
+Adapt=$(acpi -a | cut -d \" \" -f3)
+
+touch /tmp/battery-status
+if [ \"$bat\" -lt 11 ] && [ \"$(</tmp/battery-status)\" != \"critically-low\" ] && [ \"$Adapt\" != \"on-line\" ]; then
+    espeak -vf4 \"Battery critically low, consider charging.\" &
+    notify-send \"Battery critically low, consider charging.\" &
+    echo \"critically-low\" > /tmp/battery-status
+else
+    echo \"fine\" > /tmp/battery-status
+fi
+
+echo -e \" $bat \""
+    :repeat 30))
+#+end_src
+** Bindings
+#+begin_src emacs-lisp
+(d/with-eval-after-load 'exwm
+  (d/exwm-define-key
+    "s-u" 'exwm-layout-toggle-fullscreen
+
+    "s-&" (lambda (command)
+            (interactive (list (read-shell-command "$ ")))
+            (start-process-shell-command command nil command))
+
+    "s-s" 'evil-window-right
+    "s-h" 'evil-window-left
+    "s-t" 'evil-window-down
+    "s-n" 'evil-window-up
+
+    "s-<right>" 'evil-window-right
+    "s-<left>" 'evil-window-left
+    "s-<down>" 'evil-window-down
+    "s-<up>" 'evil-window-up
+
+    "s-S" 'd/swap-window-right
+    "s-H" 'd/swap-window-left
+    "s-T" 'd/swap-window-down
+    "s-N" 'd/swap-window-up
+
+    "s-S-<right>" 'd/swap-window-right
+    "s-S-<left>" 'd/swap-window-left
+    "s-S-<down>" 'd/swap-window-down
+    "s-S-<up>" 'd/swap-window-up
+
+    "s-p" 'password-store-copy)
+
+  (add-to-list 'exwm-input-prefix-keys ?\C-/))
 #+end_src
 * Finalize
 #+begin_src emacs-lisp
