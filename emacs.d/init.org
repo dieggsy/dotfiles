@@ -87,8 +87,9 @@ I'm sure this will be required by some package somewhere along the way, but I
 use this a fair bit so let's explicitly require it.
 #+begin_src emacs-lisp
 (require 'cl-lib)
+(require 'subr-x)
 #+end_src
-** Utilities
+** Init utilities
 #+begin_src emacs-lisp
 (defmacro d/time (name &rest body)
   (declare (indent defun))
@@ -107,6 +108,34 @@ use this a fair bit so let's explicitly require it.
   `(message "`%s' execution took %.5f seconds."
             ,name
             (float-time (time-subtract (current-time) ,(intern (concat "d/time-" name))))))
+
+(defmacro d/setup-mode (modes &rest body)
+  "Create a setup function for MODES and add it to relevant hook(s)."
+  (declare (indent defun))
+  (let ((modes (if (listp modes) modes (list modes))))
+    (let ((setup-func
+           (intern (concat "d/setup-"
+                           (symbol-name (car modes))
+                           "-mode"))))
+      `(progn
+         (defun ,setup-func ()
+           ,@body)
+         ,@(cl-loop for mode in modes collect
+                    (let ((mode-hook (intern (concat (symbol-name mode)
+                                                     "-mode-hook"))))
+                      `(add-hook ',mode-hook #',setup-func)))))))
+
+(defmacro d/with-eval-after-load (feature &rest body)
+  (declare (indent defun))
+  `(with-eval-after-load ,feature
+     (condition-case-unless-debug err
+         (progn
+           ,@body)
+       (error
+        (display-warning 'config
+                         (format "%s %s: %s " (symbol-name ,feature) "eval-after-load"
+                                 (error-message-string err))
+                         :error)))))
 #+end_src
 * Package management
 ** [[https://github.com/raxod502/straight.el#getting-started][straight]]
@@ -239,36 +268,6 @@ except for warnings and errors.
       password-cache-expiry 86400)
 #+end_src
 ** Functions
-*** Config helpers
-#+begin_src emacs-lisp
-(defmacro d/setup-mode (modes &rest body)
-  "Create a setup function for MODES and add it to relevant hook(s)."
-  (declare (indent defun))
-  (let ((modes (if (listp modes) modes (list modes))))
-    (let ((setup-func
-           (intern (concat "d/setup-"
-                           (symbol-name (car modes))
-                           "-mode"))))
-      `(progn
-         (defun ,setup-func ()
-           ,@body)
-         ,@(cl-loop for mode in modes collect
-                    (let ((mode-hook (intern (concat (symbol-name mode)
-                                                     "-mode-hook"))))
-                      `(add-hook ',mode-hook #',setup-func)))))))
-
-(defmacro d/with-eval-after-load (feature &rest body)
-  (declare (indent defun))
-  `(with-eval-after-load ,feature
-     (condition-case-unless-debug err
-         (progn
-           ,@body)
-       (error
-        (display-warning 'config
-                         (format "%s %s: %s " (symbol-name ,feature) "eval-after-load"
-                                 (error-message-string err))
-                         :error)))))
-#+end_src
 *** Dotfiles
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'org
