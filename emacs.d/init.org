@@ -48,6 +48,7 @@ temporarily (only during startup). This saves me like .3 s of startup time.
 - [[#exwm][EXWM]]
 - [[#git-and-github][Git and github]]
 - [[#appearance][Appearance]]
+- [[#lang][Lang]]
 - [[#modes][Modes]]
 - [[#enhancements][Enhancements]]
 - [[#fun][Fun]]
@@ -2605,8 +2606,6 @@ Source: https://git.io/vQKuF"
       (set-window-buffer win buff)
       (set-window-buffer (selected-window) o-buff)
       (windmove-up))))
-
-
 #+end_src
 ** Processes
 #+begin_src emacs-lisp
@@ -3312,86 +3311,7 @@ Better parentheses coloring
 (d/leader-keys
  "z" '(:command h/zoom/body :wk "zoom"))
 #+end_src
-* Modes
-** Prog
-*** Packages
-**** [[https://github.com/Malabarba/aggressive-indent-mode/][aggressive-indent]]
-#+begin_quote
-  Emacs minor mode that keeps your code always indented. More reliable than electric-indent-mode.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package aggressive-indent)
-#+end_src
-**** [[https://github.com/flycheck/flycheck][flycheck]]
-#+begin_quote
-  On the fly syntax checking for GNU Emacs
-#+end_quote
-#+begin_src emacs-lisp
-(use-package flycheck
-  :config
-  (setq flycheck-completing-read-function 'ivy-completing-read)
-  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
-    (vector #b00000000
-            #b10000000
-            #b11000000
-            #b11100000
-            #b11110000
-            #b11111000
-            #b11111100
-            #b11111110
-            #b11111111
-            #b11111110
-            #b11111100
-            #b11111000
-            #b11110000
-            #b11100000
-            #b11000000
-            #b10000000
-            #b00000000)))
-#+end_src
-*** Hydras
-#+begin_src emacs-lisp
-(d/with-eval-after-load 'hydra
-  (defhydra h/flycheck
-    (:pre (progn
-            (flycheck-mode 1)
-            (setq hydra-lv t)
-            (flycheck-list-errors))
-     :post (progn
-             (setq hydra-lv nil)
-             (quit-windows-on "*Flycheck errors*"))
-     :hint nil)
-    "Errors"
-    ("f"  flycheck-error-list-set-filter                            "Filter")
-    ("j"  flycheck-next-error                                       "Next")
-    ("k"  flycheck-previous-error                                   "Previous")
-    ("gg" flycheck-first-error                                      "First")
-    ("G"  (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
-    ("q"  nil)))
-#+end_src
-*** Bindings
-#+begin_src emacs-lisp
-(d/mode-leader-keys
- :keymaps 'prog-mode-map
- "f" '(:command h/flycheck/body :wk "flycheck"))
-#+end_src
-*** Setup
-#+begin_src emacs-lisp
-(d/setup-mode prog
-  (subword-mode)
-  (smartparens-strict-mode)
-  (highlight-parentheses-mode 1)
-  (rainbow-delimiters-mode)
-  (goto-address-prog-mode)
-  (fci-mode)
-  (highlight-numbers-mode)
-  (display-line-numbers-mode)
-  (auto-fill-mode 1)
-  (setq-local comment-auto-fill-only-comments t)
-  (setq-local calc-embedded-open-mode (concat comment-start " "))
-  (setq-local calc-embedded-close-mode (concat comment-end "\n"))
-  (hl-line-mode 1))
-#+end_src
+* Lang
 ** Python
 *** Packages
 **** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]
@@ -3822,6 +3742,123 @@ Source: http://tinyurl.com/le6wxuo"
 (font-lock-add-keywords 'scheme-mode '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)) t)
 (font-lock-add-keywords 'geiser-repl-mode '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)) t)
 #+end_src
+** Misc
+*** [[https://github.com/clojure-emacs/clojure-mode][clojure-mode]]
+#+begin_quote
+  Emacs support for the Clojure(Script) programming language
+#+end_quote
+#+begin_src emacs-lisp
+(use-package clojure-mode)
+#+end_src
+*** [[https://github.com/defunkt/coffee-mode][coffee-mode]]
+#+begin_quote
+  Emacs Major Mode for CoffeeScript
+#+end_quote
+#+begin_src emacs-lisp
+(use-package coffee-mode
+  :mode "\\.coffee\\'")
+#+end_src
+*** [[https://github.com/immerrr/lua-mode][lua-mode]]
+#+begin_quote
+  Emacs major mode for editing Lua
+#+end_quote
+#+begin_src emacs-lisp
+(use-package lua-mode)
+#+end_src
+*** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]]
+#+begin_quote
+  Enables syntax highlighting for .vimrc/_vimrc files
+#+end_quote
+#+begin_src emacs-lisp
+(use-package vimrc-mode)
+#+end_src
+*** [[https://github.com/fxbois/web-mode][web-mode]]
+#+begin_src emacs-lisp
+(use-package web-mode
+  :mode ("\\.html?\\'" "\\.xml\\'" "\\.launch\\'")
+  :config
+  (setq web-mode-markup-indent-offset 2))
+#+end_src
+* Modes
+** Prog
+*** Packages
+**** [[https://github.com/Malabarba/aggressive-indent-mode/][aggressive-indent]]
+#+begin_quote
+  Emacs minor mode that keeps your code always indented. More reliable than electric-indent-mode.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package aggressive-indent)
+#+end_src
+**** [[https://github.com/flycheck/flycheck][flycheck]]
+#+begin_quote
+  On the fly syntax checking for GNU Emacs
+#+end_quote
+#+begin_src emacs-lisp
+(use-package flycheck
+  :config
+  (setq flycheck-completing-read-function 'ivy-completing-read)
+  (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
+    (vector #b00000000
+            #b10000000
+            #b11000000
+            #b11100000
+            #b11110000
+            #b11111000
+            #b11111100
+            #b11111110
+            #b11111111
+            #b11111110
+            #b11111100
+            #b11111000
+            #b11110000
+            #b11100000
+            #b11000000
+            #b10000000
+            #b00000000)))
+#+end_src
+*** Hydras
+#+begin_src emacs-lisp
+(d/with-eval-after-load 'hydra
+  (defhydra h/flycheck
+    (:pre (progn
+            (flycheck-mode 1)
+            (setq hydra-lv t)
+            (flycheck-list-errors))
+     :post (progn
+             (setq hydra-lv nil)
+             (quit-windows-on "*Flycheck errors*"))
+     :hint nil)
+    "Errors"
+    ("f"  flycheck-error-list-set-filter                            "Filter")
+    ("j"  flycheck-next-error                                       "Next")
+    ("k"  flycheck-previous-error                                   "Previous")
+    ("gg" flycheck-first-error                                      "First")
+    ("G"  (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
+    ("q"  nil)))
+#+end_src
+*** Bindings
+#+begin_src emacs-lisp
+(d/mode-leader-keys
+ :keymaps 'prog-mode-map
+ "f" '(:command h/flycheck/body :wk "flycheck"))
+#+end_src
+*** Setup
+#+begin_src emacs-lisp
+(d/setup-mode prog
+  (subword-mode)
+  (smartparens-strict-mode)
+  (highlight-parentheses-mode 1)
+  (rainbow-delimiters-mode)
+  (goto-address-prog-mode)
+  (fci-mode)
+  (highlight-numbers-mode)
+  (display-line-numbers-mode)
+  (auto-fill-mode 1)
+  (setq-local comment-auto-fill-only-comments t)
+  (setq-local calc-embedded-open-mode (concat comment-start " "))
+  (setq-local calc-embedded-close-mode (concat comment-end "\n"))
+  (hl-line-mode 1))
+#+end_src
 ** Conf
 *** Setup
 #+begin_src emacs-lisp
@@ -4215,7 +4252,7 @@ Source: http://tinyurl.com/y8tj8vxx"
   (show-smartparens-mode -1)
   (erc-move-to-prompt-mode 1))
 #+end_src
-** Misc Modes
+** Misc
 *** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
 #+begin_quote
   Major mode for editing comma/char separated values
@@ -4247,13 +4284,6 @@ Syntax highlighting for markdown files.
 (use-package yaml-mode
   :mode "\\.yml\\'")
 #+end_src
-*** [[https://github.com/clojure-emacs/clojure-mode][clojure-mode]]
-#+begin_quote
-  Emacs support for the Clojure(Script) programming language
-#+end_quote
-#+begin_src emacs-lisp
-(use-package clojure-mode)
-#+end_src
 *** [[https://github.com/joshwnj/json-mode][json-mode]]
 #+begin_quote
   Major mode for editing JSON files with emacs
@@ -4262,14 +4292,6 @@ Syntax highlighting for markdown files.
 (use-package json-mode
   :mode "\\.json\\'")
 #+end_src
-*** [[https://github.com/defunkt/coffee-mode][coffee-mode]]
-#+begin_quote
-  Emacs Major Mode for CoffeeScript
-#+end_quote
-#+begin_src emacs-lisp
-(use-package coffee-mode
-  :mode "\\.coffee\\'")
-#+end_src
 *** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
 #+begin_quote
   Jupyter and IPython 2.x/3.x notebook client in Emacs
@@ -4277,21 +4299,6 @@ Syntax highlighting for markdown files.
 #+begin_src emacs-lisp
 (use-package ein)
 #+end_src
-*** [[https://github.com/immerrr/lua-mode][lua-mode]]
-#+begin_quote
-  Emacs major mode for editing Lua
-#+end_quote
-#+begin_src emacs-lisp
-(use-package lua-mode)
-#+end_src
-*** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]]
-#+begin_quote
-  Enables syntax highlighting for .vimrc/_vimrc files
-#+end_quote
-#+begin_src emacs-lisp
-(use-package vimrc-mode)
-#+end_src
-
 *** [[https://github.com/politza/pdf-tools][pdf-tools]]
 #+begin_quote
   Emacs support library for PDF files.
@@ -4313,13 +4320,6 @@ Syntax highlighting for markdown files.
 ;;     "+" 'pdf-view-enlarg)
 ;;   :config
 ;;   (pdf-tools-install))
-#+end_src
-*** [[https://github.com/fxbois/web-mode][web-mode]]
-#+begin_src emacs-lisp
-(use-package web-mode
-  :mode ("\\.html?\\'" "\\.xml\\'" "\\.launch\\'")
-  :config
-  (setq web-mode-markup-indent-offset 2))
 #+end_src
 *** [[https://github.com/therockmandolinist/turing-machine][turing-machine]]
 #+begin_src emacs-lisp
@@ -4901,11 +4901,6 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+end_src
 * Finalize
 #+begin_src emacs-lisp
-;; (straight-declare-init-finished)
-;; (when (not (bufferp "*Warnings*"))
-;;   (message "Init succeeded.")
-;;   (straight-declare-init-succeeded))
-
 (when window-system
   (let ((elapsed (float-time (time-subtract (current-time)
                                             d/emacs-start-time))))
