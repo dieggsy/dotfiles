@@ -513,13 +513,13 @@ bindsym XF86KbdBrightnessDown exec kb-light - && pkill -RTMIN+2 i3blocks
 bindsym XF86KbdBrightnessUp exec kb-light + && pkill -RTMIN+2 i3blocks
 
 # Screen brightness
-bindsym XF86MonBrightnessUp exec xbacklight +2 && pkill -RTMIN+2 i3blocks
-bindsym XF86MonBrightnessDown exec xbacklight -2 && pkill -RTMIN+2 i3blocks
+bindsym XF86MonBrightnessUp exec ~/bin/i3blocks/bright Backlight + && pkill -RTMIN+2 i3blocks
+bindsym XF86MonBrightnessDown exec ~/bin/i3blocks/bright Backlight - && pkill -RTMIN+2 i3blocks
 
 # Audio controls
 bindsym XF86AudioMute exec amixer -D pulse sset Master toggle && pkill -RTMIN+3 i3blocks
-bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 2%- && pkill -RTMIN+3 i3blocks
-bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 2%+ && pkill -RTMIN+3 i3blocks
+bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 5%- && pkill -RTMIN+3 i3blocks
+bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+ && pkill -RTMIN+3 i3blocks
 
 # Media controls
 bindsym XF86AudioPrev exec playerctl-cmus previous && pkill -RTMIN+1 i3blocks
@@ -1301,42 +1301,34 @@ if [ "$mode" = "Backlight" ]; then
     brightness=$(xbacklight -get)
     multiple=$(printf %.0f $(echo "scale=2; $brightness / 5" | bc))
     brightness=$((($multiple * 5)))
-    if [ "$XDG_CURRENT_DESKTOP" = "exwm" ] && [ "$2" = "+" ];then
+    if [ "$2" = "+" ] || [ "$BLOCK_BUTTON" = "5" ]; then
         brightness=$((($brightness + 5)))
         xbacklight -set $brightness > /dev/null 2>&1
-    elif [ "$XDG_CURRENT_DESKTOP" = "exwm" ] && [ "$2" = "-" ];then
+    elif [ "$2" = "-" ] || [ "$BLOCK_BUTTON" = "4" ]; then
         brightness=$((($brightness - 5)))
         xbacklight -set $brightness > /dev/null 2>&1
     elif  [ "$BLOCK_BUTTON" = "1" ]; then
-        pkill -RTMIN+1 i3blocks
         echo "Kb-light" > ~/bin/i3blocks/brightness.txt
-        mode="Backlight"
-    elif [ "$BLOCK_BUTTON"= "5" ]; then
-        xbacklight +2 > /dev/null 2>&1
-    elif [ "$BLOCK_BUTTON" = "4" ]; then
-        xbacklight -2 > /dev/null 2>&1
+        pkill -RTMIN+2 i3blocks
+        # mode="Backlight"
     fi
+    echo "    $brightness"
 elif [ "$mode" = "Kb-light" ]; then
-    if [ "$XDG_CURRENT_DESKTOP" = "exwm" ] && [ "$2" = "+" ];then
+    if [ "$2" = "+" ] || [ "$BLOCK_BUTTON" = "5" ];then
         kb-light + > /dev/null 2>&1
-    elif [ "$XDG_CURRENT_DESKTOP" = "exwm" ] && [ "$2" = "-" ];then
+    elif [ "$2" = "-" ] || [ "$BLOCK_BUTTON" = "4" ];then
         kb-light - > /dev/null 2>&1
     elif [ "$BLOCK_BUTTON" = "1" ]; then
-        pkill -RTMIN+1 i3blocks
         echo "Backlight" > ~/bin/i3blocks/brightness.txt
-        mode="Kb-light"
-    elif [ "$BLOCK_BUTTON" = "5" ]; then
-        kb-light + > /dev/null 2>&1
-    elif [ "$BLOCK_BUTTON" = "4" ]; then
-        kb-light - > /dev/null 2>&1
+        pkill -RTMIN+2 i3blocks
+        # mode="Kb-light"
     fi
     brightness="$(kb-light)"
+    echo "    $brightness"
 fi
 
 if [ "$XDG_CURRENT_DESKTOP" = "exwm" ]; then
     emacsclient --eval "(message \"$mode: $brightness\")"
-else
-    echo "    $brightness"
 fi
 #+end_src
 *** date
@@ -1449,8 +1441,10 @@ fi
 Vol=$(amixer -D pulse get Master | grep "Left: Playback" | awk '{print $5}' | tr -d "[ %]")
 Mute=$(amixer -D pulse get Master | grep "Left: Playback" | awk '{print $6}' | tr -d "[-]")
 
-if [ "$XDG_CURRENT_DESKTOP" = "exwm" ] && [ "$Mute" = "on" ]; then
-    emacsclient --eval "(message \"Volume: Mute\")"
+if [ "$XDG_CURRENT_DESKTOP" = "exwm" ] && [ "$1" = "toggle" ] && [ "$Mute" = "off" ]; then
+    emacsclient --eval "(progn (setq d/mute t) (force-mode-line-update 'all))"
+elif [ "$XDG_CURRENT_DESKTOP" = "exwm" ] && [ "$1" = "toggle" ] && [ "$Mute" = "on" ]; then
+    emacsclient --eval "(progn (setq d/mute nil) (force-mode-line-update 'all))"
 elif [ "$XDG_CURRENT_DESKTOP" = "exwm" ]; then
     emacsclient --eval "(message \"Volume: $Vol\")"
 elif [ "$Vol" = "0" ] || [ "$Mute" = "off" ]; then
