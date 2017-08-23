@@ -1358,6 +1358,10 @@ Leader bindings
 #+end_src
 * Files/Buffers
 ** Defaults
+How to uniquify buffer names.
+#+begin_src emacs-lisp
+(setq uniquify-buffer-name-style 'forward)
+#+end_src
 If a frame is already open, use it to open files.
 #+begin_src emacs-lisp
 (setq ns-pop-up-frames nil)
