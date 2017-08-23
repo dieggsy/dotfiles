@@ -1354,7 +1354,9 @@ Leader bindings
 #+end_src
 ** Setup
 #+begin_src emacs-lisp
-(add-hook 'help-mode-hook #'goto-address-mode)
+(d/setup-mode help
+  (goto-address-mode)
+  (rainbow-mode))
 #+end_src
 * Files/Buffers
 ** Defaults
@@ -2455,8 +2457,7 @@ imenu on steroids.
 *** Startup
 Get right to your files or the scratch buffer. No B.S.
 #+begin_src emacs-lisp
-(setq inhibit-splash-screen t
-      inhibit-startup-screen t
+(setq inhibit-startup-screen t
       inhibit-startup-echo-area-message t)
 #+end_src
 *** Time display
@@ -2556,8 +2557,7 @@ Use a bar cursor in the minibuffer.
 #+begin_src emacs-lisp
 (use-package rainbow-mode
   :config
-  (setq rainbow-x-colors-major-mode-list '(c-mode c++-mode java-mode))
-  (add-hook 'help-mode-hook #'rainbow-mode))
+  (setq rainbow-x-colors-major-mode-list '(c-mode c++-mode java-mode)))
 #+end_src
 *** [[https://github.com/therockmandolinist/emacs-theme-darktooth][darktooth-theme]]
 #+begin_quote
