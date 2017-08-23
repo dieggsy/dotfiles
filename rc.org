@@ -1172,6 +1172,13 @@ Emacs.fontBackend: xft, x
 Emacs.font: iosevka term-9.5
 Emacs.FontBackend: x
 Emacs*geometry: 105x41
+Emacs.menuBar: off
+Emacs.toolBar: off
+Emacs.verticalScrollBars: off
+Emacs.cursorBlink: off
+Emacs.background: #282828
+Emacs.mode-line.attributeForeground: #EBDBB2
+Emacs.mode-line.attributeBackground: #1D2021
 #+end_src
 ** xsessionrc
 :PROPERTIES:

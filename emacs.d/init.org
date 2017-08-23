@@ -2460,12 +2460,8 @@ Get right to your files or the scratch buffer. No B.S.
 Turn off gui elements that I never use. Gui emacs is great, but I still prefer
 text-based interaction thank you very much.
 #+begin_src emacs-lisp
-(menu-bar-mode 0)
-(tool-bar-mode 0)
-(scroll-bar-mode 0)
 (setq custom-raised-buttons nil
       use-dialog-box nil)
-(blink-cursor-mode 0)
 #+end_src
 *** Buffer display
 I don't want line-wrapping madness, just tell me there's more to see and I'll
