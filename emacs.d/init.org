@@ -556,9 +556,10 @@ A really nice search/completion system for emacs.
         counsel-org-goto-face-style 'org
         counsel-org-goto-display-todo t
         counsel-grep-base-command "rg -i -M 120 --no-heading --line-number --color never '%s' %s"
-        counsel-find-file-ignore-regexp (concat "\\(\\`\\.\\)"
-                                                "\\|\\(\\.elc$\\)"
-                                                "\\|\\(.pyc$\\)")
+        counsel-find-file-ignore-regexp (rx (or (group string-start (char ".#"))
+                                                (group (char "~#") string-end)
+                                                (group ".elc" string-end)
+                                                (group ".pyc" string-end)))
         counsel-yank-pop-separator "
   ─────────────────────────
 ")
@@ -707,10 +708,12 @@ so I went with it.
         org-confirm-elisp-link-function 'y-or-n-p
         org-tags-exclude-from-inheritance '("crypt")
         org-crypt-key "diegoamundo@protonmail.com"
-        org-confirm-elisp-link-not-regexp (concat "(\\(org-wiki-search"
-                                                  "\\|describe-function"
-                                                  "\\|describe-variable"
-                                                  "\\).*?)"))
+        org-confirm-elisp-link-not-regexp (rx "("
+                                              (or "org-wiki-search"
+                                                  "describe-function"
+                                                  "describe-variable")
+                                              (minimal-match (0+ nonl))
+                                              ")"))
   (org-babel-do-load-languages
    'org-babel-load-languages
    '((python . t)
