@@ -1387,6 +1387,11 @@ Which means it's less likely to block up emacs. Or something.
   (autoload 'dired-async-mode "dired-async.el" nil t)
   (dired-async-mode 1))
 #+end_src
+Backup
+#+begin_src emacs-lisp
+(setq version-control t
+      delete-old-versions t)
+#+end_src
 ** Packages
 *** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
 #+begin_quote
