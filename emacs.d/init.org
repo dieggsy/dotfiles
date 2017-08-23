@@ -368,7 +368,7 @@ except for warnings and errors.
       (setq display-line-numbers t)
     (setq display-line-numbers 'relative)))
 
-(d/efine (:macro d/fbound-and-true? name &optional args)
+(defun  d/fbound-and-true? (name &optional args)
   `(and (fboundp #',name)
         (apply #',name ,args)))
 #+end_src
@@ -944,7 +944,7 @@ Source: https://git.io/vQKEa"
         (?B (org-cycle-list-bullet 8))
         (_ (org-cycle-list-bullet (char-to-string char))))))
 
-  (d/efine (org-at-openable-item?)
+  (defun d/org-at-openable-item? ()
     (when (eq major-mode 'org-mode)
       (let* ((context (org-element-lineage
                        (org-element-context)
@@ -2740,7 +2740,7 @@ Source: https://git.io/vQKzq"
 #+end_src
 *** Mode-line
 #+begin_src emacs-lisp
-(d/efine mode-line
+(defvar d/mode-line
   '((:eval
      (d/with-evil-tag-color
        (d/with-window-status
