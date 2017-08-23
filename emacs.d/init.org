@@ -276,6 +276,11 @@ Having to type "yes" can be annoying.
 #+begin_src emacs-lisp
 (defalias 'yes-or-no-p #'y-or-n-p)
 #+end_src
+*** Scratch
+#+begin_src emacs-lisp
+(setq initial-scratch-message ""
+      initial-major-mode 'emacs-lisp-mode)
+#+end_src
 *** Scrolling
 Scroll one line at a time, and only scroll the current line when moving past
 right boundary.
@@ -3297,7 +3302,7 @@ Source: https://git.io/vQKz8"
 **** Bindings
 #+begin_src emacs-lisp
 (d/mode-leader-keys
- :keymaps '(emacs-lisp-mode-map lisp-interaction-mode-map)
+ :keymaps 'emacs-lisp-mode-map
  "eb" 'd/eval-buffer
  "ef" 'eval-defun
  "er" 'eval-region
@@ -3309,7 +3314,7 @@ Source: https://git.io/vQKz8"
  #+end_src
 **** Setup
 #+begin_src emacs-lisp
-(d/setup-mode (lisp lisp-interaction emacs-lisp)
+(d/setup-mode (lisp emacs-lisp)
   (hs-minor-mode)
   (aggressive-indent-mode)
   (push '(? . ("`" . "'")) evil-surround-pairs-alist)
@@ -3902,7 +3907,7 @@ I use this for reading, mostly.
     "xl"  "lines"
     "SPC" "root")
 
-  (d/declare-mode-prefix (emacs-lisp-mode lisp-interaction-mode)
+  (d/declare-mode-prefix emacs-lisp-mode
     "e" "eval"
     "p" "pp")
 
