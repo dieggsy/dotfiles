@@ -654,6 +654,7 @@ so I went with it.
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'org
   (setq org-enforce-todo-dependencies t
+        org-enforce-todo-checkbox-dependencies t
         org-log-done (quote time)
         org-log-redeadline (quote time)
         org-log-reschedule (quote time)
@@ -687,7 +688,9 @@ so I went with it.
 ***** Behavior/appearance
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'org
-  (setq org-insert-heading-respect-content t
+  (setq org-startup-indented t
+        org-catch-invisible-edits 'error
+        org-insert-heading-respect-content t
         org-src-window-setup 'current-window
         org-list-demote-modify-bullet '(("-" . "*")
                                         ("*" . "+"))
@@ -1157,8 +1160,7 @@ Source: https://git.io/vQKEa"
   (setq-local prettify-symbols-alist d/org-prettify-alist)
   (prettify-symbols-mode)
   ;; (org-bullets-mode 1)
-  (goto-address-mode)
-  (org-indent-mode))
+  (goto-address-mode))
 #+end_src
 ** Bindings
 *** Leader
