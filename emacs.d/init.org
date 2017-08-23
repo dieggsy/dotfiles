@@ -2015,7 +2015,7 @@ Source: http://tinyurl.com/l8z7vph"
 **** Multiedit
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
-  (defhydra h/multiedit (:hint nil)
+  (defhydra d/multiedit (:hint nil)
     "
 multiedit:
 _r_estore  _t_oggle/restrict  match _a_ll
@@ -2034,7 +2034,7 @@ _p_rev     match and _P_rev
 **** Transpose
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
-  (defhydra h/transpose ()
+  (defhydra d/transpose ()
     "transpose"
     ("c" d/transpose-chars "char")
     ("C" d/backward-transpose-chars "backward char")
@@ -2047,7 +2047,7 @@ _p_rev     match and _P_rev
 **** Justify
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
-  (defhydra h/justify (:exit t)
+  (defhydra d/justify (:exit t)
     "justify"
     ("r" d/justify-right "right")
     ("l" d/justify-left "left")
@@ -2058,7 +2058,7 @@ _p_rev     match and _P_rev
 **** Smartparens
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
-  (defhydra h/smartparens (:hint nil)
+  (defhydra d/smartparens (:hint nil)
     "
 smartparens:
 _r_ewrap  _s_lurp             _(_
@@ -2081,7 +2081,7 @@ _u_nwrap  _S_lurp (back)   _[_ wrap _{_
 **** Evil-numbers
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
-  (defhydra h/numbers ()
+  (defhydra d/numbers ()
     "evil-numbers"
     ("="  evil-numbers/inc-at-pt "inc")
     ("-" evil-numbers/dec-at-pt "dec")))
@@ -2089,7 +2089,7 @@ _u_nwrap  _S_lurp (back)   _[_ wrap _{_
 **** Spelling
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
-  (defhydra h/flyspell (:pre (require 'flyspell))
+  (defhydra d/flyspell (:pre (require 'flyspell))
     "flyspell"
     ("b" flyspell-buffer "buffer")
     ("j" flyspell-goto-next-error "next")
@@ -2144,7 +2144,7 @@ Syntax highlighting for markdown files.
 #+begin_src emacs-lisp
 (d/mode-leader-keys
  :keymap 'text-mode-map
- "f" '(:command h/flyspell/body :wk "flyspell"))
+ "f" '(:command d/flyspell/body :wk "flyspell"))
 #+end_src
 *** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
 #+begin_quote
@@ -2166,8 +2166,8 @@ Make indent-rigidly more vimmy.
 Leader keys
 #+begin_src emacs-lisp
 (d/leader-keys
- "n-"  'h/numbers/evil-numbers/dec-at-pt
- "n="  'h/numbers/evil-numbers/inc-at-pt
+ "n-"  'd/numbers/evil-numbers/dec-at-pt
+ "n="  'd/numbers/evil-numbers/inc-at-pt
 
  "x"   '(:ignore t :wk "text")
  "xa"  '(:ignore t :wk "align")
@@ -2190,14 +2190,14 @@ Leader keys
  "xib" 'indent-buffer
  "xii" 'indent-rigidly
  "xir" 'indent-region
- "xj"  '(:command h/justify/body :wk "justify")
+ "xj"  '(:command d/justify/body :wk "justify")
  "xls" 'sort-lines
- "xt"  '(:command h/transpose/body :wk "transpose")
+ "xt"  '(:command d/transpose/body :wk "transpose")
  "xc" 'count-words
 
- "xm"  '(:command h/multiedit/body :wk "multiedit")
+ "xm"  '(:command d/multiedit/body :wk "multiedit")
 
- "xp"  '(:command h/smartparens/body :wk "smartparens")
+ "xp"  '(:command d/smartparens/body :wk "smartparens")
 
  "xs"  'd/shorten-url-at-point
  "xe"  'd/expand-url-at-point
@@ -2420,7 +2420,7 @@ imenu on steroids.
 ** Hydras
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
-  (defhydra h/splitter ()
+  (defhydra d/splitter ()
     "splitter"
     ("h" d/move-splitter-left "←")
     ("j" d/move-splitter-down "↓")
@@ -2440,7 +2440,7 @@ imenu on steroids.
  "wf" 'make-frame
  "wh" 'd/split-horz-focus
  "wo" 'delete-other-windows
- "ws" 'h/splitter/body
+ "ws" 'd/splitter/body
  "wt" 'd/toggle-window-split
  "wv" 'd/split-vert-focus)
 #+end_src
@@ -2622,7 +2622,7 @@ Better parentheses coloring
 ** Hydras
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
-  (defhydra h/zoom ()
+  (defhydra d/zoom ()
     "zoom"
     ("=" text-scale-increase "in")
     ("-" text-scale-decrease "out")
@@ -2631,7 +2631,7 @@ Better parentheses coloring
 ** Bindings
 #+begin_src emacs-lisp
 (d/leader-keys
- "z" '(:command h/zoom/body :wk "zoom"))
+ "z" '(:command d/zoom/body :wk "zoom"))
 #+end_src
 ** Mode line
 *** Helpers
@@ -2726,7 +2726,7 @@ Source: https://git.io/vQKzq"
 #+end_src
 *** Mode-line
 #+begin_src emacs-lisp
-(defvar d/mode-line
+(d/efine mode-line
   '((:eval
      (d/with-evil-tag-color
        (d/with-window-status
@@ -2948,7 +2948,7 @@ Source: https://git.io/vQKzq"
 *** Hydras
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
-  (defhydra h/flycheck
+  (defhydra d/flycheck
     (:pre (progn
             (flycheck-mode 1)
             (setq hydra-lv t)
@@ -2969,7 +2969,7 @@ Source: https://git.io/vQKzq"
 #+begin_src emacs-lisp
 (d/mode-leader-keys
  :keymaps 'prog-mode-map
- "f" '(:command h/flycheck/body :wk "flycheck"))
+ "f" '(:command d/flycheck/body :wk "flycheck"))
 #+end_src
 *** Setup
 #+begin_src emacs-lisp
@@ -3994,7 +3994,7 @@ Sorts ivy by most recently used, I think.
 **** toggle
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
-  (defhydra h/toggle
+  (defhydra d/toggle
     (:pre (progn
             (defvar flycheck-mode nil)
             (defvar focus-mode nil)
@@ -4030,7 +4030,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 *** Bindings
 #+begin_src emacs-lisp
 (d/leader-keys
- "t"   '(:command h/toggle/body :wk "toggle"))
+ "t"   '(:command d/toggle/body :wk "toggle"))
 
 (nmap :keymaps 'custom-mode-map
   "q" #'Custom-buffer-done)
