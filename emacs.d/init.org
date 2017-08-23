@@ -368,7 +368,7 @@ except for warnings and errors.
       (setq display-line-numbers t)
     (setq display-line-numbers 'relative)))
 
-(defmacro d/fbound-and-true-p (name &optional args)
+(d/efine (:macro d/fbound-and-true? name &optional args)
   `(and (fboundp #',name)
         (apply #',name ,args)))
 #+end_src
@@ -941,7 +941,7 @@ Source: https://git.io/vQKEa"
         (?B (org-cycle-list-bullet 8))
         (_ (org-cycle-list-bullet (char-to-string char))))))
 
-  (defun org-at-openable-item-p ()
+  (d/efine (org-at-openable-item?)
     (when (eq major-mode 'org-mode)
       (let* ((context (org-element-lineage
                        (org-element-context)
@@ -1206,9 +1206,9 @@ also use these keys to quit out of the minibuffer.
 (mmap "RET"
       (general-predicate-dispatch nil
         (thing-at-point 'url) 'goto-address-at-point
-        (d/fbound-and-true-p org-at-openable-item-p) 'org-open-at-point
-        (d/fbound-and-true-p org-at-item-checkbox-p) 'org-toggle-checkbox
-        (d/fbound-and-true-p org-in-src-block-p) 'org-babel-execute-src-block))
+        (d/fbound-and-true? d/org-at-openable-item?) 'org-open-at-point
+        (d/fbound-and-true? org-at-item-checkbox-p) 'org-toggle-checkbox
+        (d/fbound-and-true? org-in-src-block-p) 'org-babel-execute-src-block))
 #+end_src
 *** universal argument
 #+begin_src emacs-lisp
@@ -2711,14 +2711,14 @@ Source: https://git.io/vQKzL"
                                (if (eq idx len) "\"};" "\",\n")))))
       'xpm t :ascent 'center))))
 
-(defun d/eyebrowse-relevant-p ()
+(defun d/eyebrowse-relevant? ()
   (and (featurep 'eyebrowse)
        (< 1 (length (eyebrowse--get 'window-configs)))))
 
-(defun d/in-macro-p ()
+(defun d/in-macro? ()
   (or defining-kbd-macro executing-kbd-macro))
 
-(defun d/in-evil-substitution-p ()
+(defun d/in-evil-substitution? ()
   (or (assq 'evil-ex-substitute evil-ex-active-highlights-alist)
       (assq 'evil-ex-global-match evil-ex-active-highlights-alist)
       (assq 'evil-ex-buffer-match evil-ex-active-highlights-alist)))
@@ -2743,10 +2743,10 @@ Source: https://git.io/vQKzq"
        (d/with-window-status
          (cond ((and window-active?
                      (not (or (featurep 'exwm)
-                              (d/eyebrowse-relevant-p)
+                              (d/eyebrowse-relevant?)
                               (bound-and-true-p anzu--state)
-                              (d/in-macro-p)
-                              (d/in-evil-substitution-p))))
+                              (d/in-macro?)
+                              (d/in-evil-substitution?))))
                 (d/make-xpm evil-tag-color 56 8))
                ((not window-active?)
                 (d/make-xpm "#1D2021" 56 8))))))
@@ -2755,9 +2755,9 @@ Source: https://git.io/vQKzq"
        (d/with-evil-tag-color
          (when window-active?
            (propertize-active
-            (cond ((d/in-evil-substitution-p)
+            (cond ((d/in-evil-substitution?)
                    (d/evil-substitute-num-matches))
-                  ((d/in-macro-p)
+                  ((d/in-macro?)
                    (if (bound-and-true-p evil-this-macro)
                        (char-to-string evil-this-macro)
                      "Macro"))
@@ -2765,7 +2765,7 @@ Source: https://git.io/vQKzq"
                    (anzu--update-mode-line))
                   ((featurep 'exwm)
                    (number-to-string (1+ exwm-workspace-current-index)))
-                  ((d/eyebrowse-relevant-p)
+                  ((d/eyebrowse-relevant?)
                    (let* ((num (eyebrowse--get 'current-slot))
                           (tag (nth 2 (assoc num (eyebrowse--get 'window-configs)))))
                      (if (and tag (< 0 (length tag)))
