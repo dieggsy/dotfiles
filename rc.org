@@ -1192,7 +1192,7 @@ pkill mpd; mpd &
 # tmux kill-session -t sbcl_daemon 2>/dev/null
 # tmux new -d -s sbcl_daemon /usr/local/bin/sbcl --load ~/scriptl/scriptl-server.lisp &
 
-pkill xautolock; xautolock -time 5 -locker '/usr/local/bin/lock -gpf Iosevka-Term -- scrot -z' -detectsleep &
+pkill xautolock; xautolock -corners 0000 -time 5 -locker '/usr/local/bin/lock -gpf Iosevka-Term -- scrot -z' -detectsleep &
 # xautolock -time 7 -locker 'systemctl suspend' &
 
 # xset s off
