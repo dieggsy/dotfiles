@@ -145,7 +145,7 @@ use this a fair bit so let's explicitly require it.
 #+end_quote
 
 #+begin_src emacs-lisp
-(setq straight-recipe-overrides '((nil (straight :host github
+(defvar straight-recipe-overrides '((nil (straight :host github
                                                  :repo "raxod502/straight.el"
                                                  :files ("straight.el")
                                                  :branch "develop"))))
