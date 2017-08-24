@@ -3610,7 +3610,7 @@ Like git, for emacs. But cooler.
 
 Source: https://git.io/vQKub"
   (interactive)
-  (if (and (boundp 'magit-blame-mode) magit-blame-mode)
+  (if (bound-and-true-p magit-blame-mode)
       (magit-blame-quit)
     (call-interactively 'magit-blame)))
 #+end_src
