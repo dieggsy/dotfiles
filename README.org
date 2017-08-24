@@ -26,7 +26,7 @@ A zsh configuration that is partially [[https://github.com/zplug/zplug][zplug]] 
 from prezto and oh-my-zsh where not using an actual plugin.
 *** [[./rc.org][rc.org]] - dotfiles and scripts
 A bunch of less complex or one-off configuration files and scripts I like to
-keep handy, including configurations for [[https://github.com/therockmandolinist/dotfiles/blob/master/rc.org#tmux][tmux]] and [[https://github.com/therockmandolinist/dotfiles/blob/master/rc.org#i3][i3]] as well as a [[https://github.com/therockmandolinist/dotfiles/blob/master/rc.org#darktooththeme-cmus][cmus theme]],
+keep handy, including configurations for [[https://github.com/dieggsy/dotfiles/blob/master/rc.org#tmux][tmux]] and [[https://github.com/dieggsy/dotfiles/blob/master/rc.org#i3][i3]] as well as a [[https://github.com/dieggsy/dotfiles/blob/master/rc.org#darktooththeme-cmus][cmus theme]],
 among others. Some are my own but a lot of these are taken from or based on
 config files from the internet. I'll pin down the sources one day.
 *** [[./org-tangle][org-tangle]] - install script

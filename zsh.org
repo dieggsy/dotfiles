@@ -221,7 +221,7 @@ zplug "peco/peco", as:command, from:gh-r
 #+end_src
 **** cool-peco
 #+begin_src sh
-zplug "therockmandolinist/cool-peco"
+zplug "dieggsy/cool-peco"
 #+end_src
 **** rg
 #+begin_src sh

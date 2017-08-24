@@ -2569,7 +2569,7 @@ Use a bar cursor in the minibuffer.
   :config
   (setq rainbow-x-colors-major-mode-list '(c-mode c++-mode java-mode)))
 #+end_src
-*** [[https://github.com/therockmandolinist/emacs-theme-darktooth][darktooth-theme]]
+*** [[https://github.com/dieggsy/emacs-theme-darktooth][darktooth-theme]]
 #+begin_quote
   An Emacs 24 theme remixed from gruvbox
 #+end_quote
@@ -2578,7 +2578,7 @@ Use a bar cursor in the minibuffer.
 (use-package darktooth-theme
   :demand t
   :recipe (:host github
-           :repo "therockmandolinist/emacs-theme-darktooth"
+           :repo "dieggsy/emacs-theme-darktooth"
            :upstream (:host github
                       :repo "emacsfodder/emacs-theme-darktooth")))
 #+end_src
@@ -3593,7 +3593,7 @@ Like git, for emacs. But cooler.
 (use-package gist
   :config
   (let ((gh-vals (cdar gh-profile-alist)))
-    (setf gh-vals (plist-put gh-vals :username "therockmandolinist")
+    (setf gh-vals (plist-put gh-vals :username "dieggsy")
           gh-vals (plist-put gh-vals :token (password-store-get "tokens/github/gist")))))
 #+end_src
 *** Functions
@@ -3789,7 +3789,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 ;;   :config
 ;;   (pdf-tools-install))
 #+end_src
-** [[https://github.com/therockmandolinist/turing-machine][turing-machine]]
+** [[https://github.com/dieggsy/turing-machine][turing-machine]]
 #+begin_src emacs-lisp
 (use-package turing-machine)
 #+end_src
@@ -4128,14 +4128,14 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
     (let ((evilnc-invert-comment-line-by-line t))
       (evilnc-comment-or-uncomment-lines arg))))
 #+end_src
-*** [[https://github.com/therockmandolinist/evil-numbers][evil-numbers]]
+*** [[https://github.com/dieggsy/evil-numbers][evil-numbers]]
 #+begin_quote
   Increment and decrement numbers in Emacs
 #+end_quote
 #+begin_src emacs-lisp
 (use-package evil-numbers
   :recipe (:host github
-           :repo "therockmandolinist/evil-numbers"
+           :repo "dieggsy/evil-numbers"
            :upstream (:host github
                       :repo "cofi/evil-numbers")))
 #+end_src
@@ -4298,7 +4298,7 @@ For the cold winters.
     "=" 'fireplace-up
     "*" 'fireplace-toggle-smoke))
 #+end_src
-*** [[https://github.com/therockmandolinist/emacs-hacker-typer][hacker-typer]]
+*** [[https://github.com/dieggsy/emacs-hacker-typer][hacker-typer]]
 #+begin_quote
   A customizable implementation of http://hackertyper.com in emacs.
 #+end_quote
@@ -4460,7 +4460,7 @@ Source: http://tinyurl.com/lo96nwc"
 #+begin_src emacs-lisp
 (use-package erc-hl-nicks
   :recipe (:host github
-           :repo "therockmandolinist/erc-hl-nicks"
+           :repo "dieggsy/erc-hl-nicks"
            :upstream (:host github
                       :repo "leathekd/erc-hl-nicks"))
   :after erc
