@@ -514,7 +514,9 @@ A really nice search/completion system for emacs.
         ivy-initial-inputs-alist '((man . "^"))
         ivy-switch-buffer-faces-alist '((dired-mode . ivy-subdir))
         recentf-max-saved-items 50
-        ivy-use-selectable-prompt t))
+        ivy-use-selectable-prompt t
+        ivy-switch-buffer-faces-alist '((dired-mode . ivy-subdir)
+                                        (ranger-mode . ivy-subdir))))
 
 (use-package ivy-hydra)
 #+end_src
