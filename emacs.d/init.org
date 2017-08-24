@@ -1414,7 +1414,9 @@ Backup
 *** [[https://www.emacswiki.org/emacs/dired%252b.el][dired+]]
 #+begin_src emacs-lisp
 (use-package dired+
-  :after ranger)
+  :after dired
+  :config
+  (diredp-toggle-find-file-reuse-dir 1))
 #+end_src
 
 *** [[https://github.com/ralesi/ranger.el][ranger]]
