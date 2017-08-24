@@ -29,8 +29,6 @@ more readable in org format than in rendered markdown.
   - [[#xsessionrc][xsessionrc]]
   - [[#zathurarc][zathurarc]]
 - [[#scripts][Scripts]]
-  - [[#dolphin][dolphin]]
-  - [[#dropmite][dropmite]]
   - [[#i3-exit][i3-exit]]
   - [[#i3blocksexwm-utils][i3blocks/exwm utils]]
   - [[#masterinstall][masterinstall]]
@@ -42,10 +40,9 @@ more readable in org format than in rendered markdown.
   - [[#rofi-files][rofi-files]]
   - [[#scriptl][scriptl]]
   - [[#spectrum_ls][spectrum_ls]]
-  - [[#spotify][spotify]]
-  - [[#systemsettings5][systemsettings5]]
   - [[#text-pager][text-pager]]
   - [[#updates][updates]]
+  - [[#wrappers][wrappers]]
 - [[#local-vars][Local vars]]
 
 * Config
@@ -1225,23 +1222,6 @@ set recolor-darkcolor "#fDf4c1"
 set recolor-lightcolor "#282828"
 #+end_src
 * Scripts
-** dolphin
-:PROPERTIES:
-:header-args+:  :tangle (when (eq system-type 'gnu/linux) "~/bin/dolphin") :shebang "#!/usr/bin/env bash"
-:END:
-#+begin_src sh
-#+begin_src sh
-XDG_CURRENT_DESKTOP=kde /usr/bin/dolphin "$@"
-#+end_src
-** dropmite
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/dropmite") :shebang "#!/usr/bin/env bash"
-:END:
-A wrapper to open termite with the name "dropmite," used by i3wm to make it my
-floating terminal.
-#+begin_src sh
-termite --name=dropmite
-#+end_src
 ** i3-exit
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3-exit") :shebang "#!/usr/bin/env bash"
@@ -1626,7 +1606,7 @@ if [[ -z $1 ]]; then
 elif [[ -z $2 ]]; then
     echo "No output file provided"
 else
-    echo "Converting pdf to png..."
+    echo "Converting pdf to tif..."
     \gs -dNOPAUSE -q -r500 \
         -sDEVICE=tiffg4 \
         -dBATCH \
@@ -1834,7 +1814,7 @@ A script to search all files using [[https://github.com/BurntSushi/ripgrep][ripg
 :PROPERTIES:
 :header-args+: :tangle ~/scriptl/scriptl-server.lisp
 :END:
-#+begin_src lisp
+#+begin_src lisp :tangle no
 (ql:quickload :swank)
 (ql:quickload :scriptl)
 (ql:quickload :dbus)
@@ -1856,7 +1836,7 @@ A script to search all files using [[https://github.com/BurntSushi/ripgrep][ripg
 :header-args+: :tangle ~/scriptl/scripts.lisp
 :END:
 **** kb-light
-#+begin_src lisp
+#+begin_src lisp :tangle no
 (scriptl-script
  kb-light (&optional up-down)
  :path #P"/home/diego/scriptl/"
@@ -1895,21 +1875,6 @@ else;
         print -P -- "$code: %F{$code}$code%f"
     done
 fi
-#+end_src
-** spotify
-:PROPERTIES:
-:header-args+:  :tangle (when (eq system-type 'gnu/linux) "~/bin/spotify") :shebang "#!/usr/bin/env bash"
-:END:
-Wrapper script around ~/usr/bin/spotify~ to fix UI scaling in i3wm.
-#+begin_src sh
-/usr/bin/spotify --force-device-scale-factor=2 > /dev/null 2>&1 &
-#+end_src
-** systemsettings5
-:PROPERTIES:
-:header-args+:  :tangle (when (eq system-type 'gnu/linux) "~/bin/systemsettings5") :shebang "#!/usr/bin/env bash"
-:END:
-#+begin_src sh
-XDG_CURRENT_DESKTOP=kde /usr/bin/systemsettings5 "$@"
 #+end_src
 ** text-pager
 :PROPERTIES:
@@ -2003,6 +1968,39 @@ echo -e "\e[1;34mDone"
 
 pyenv global $globalpython # Set python version back to original
 fi
+#+end_src
+** wrappers
+*** dolphin
+:PROPERTIES:
+:header-args+:  :tangle (when (eq system-type 'gnu/linux) "~/bin/dolphin") :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+#+begin_src sh
+XDG_CURRENT_DESKTOP=kde /usr/bin/dolphin "$@"
+#+end_src
+*** dropmite
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/dropmite") :shebang "#!/usr/bin/env bash"
+:END:
+A wrapper to open termite with the name "dropmite," used by i3wm to make it my
+floating terminal.
+#+begin_src sh
+termite --name=dropmite
+#+end_src
+*** spotify
+:PROPERTIES:
+:header-args+:  :tangle (when (eq system-type 'gnu/linux) "~/bin/spotify") :shebang "#!/usr/bin/env bash"
+:END:
+Wrapper script around ~/usr/bin/spotify~ to fix UI scaling in i3wm.
+#+begin_src sh
+/usr/bin/spotify --force-device-scale-factor=2 > /dev/null 2>&1 &
+#+end_src
+*** systemsettings5
+:PROPERTIES:
+:header-args+:  :tangle (when (eq system-type 'gnu/linux) "~/bin/systemsettings5") :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+XDG_CURRENT_DESKTOP=kde /usr/bin/systemsettings5 "$@"
 #+end_src
 * Local vars
 Tangles the files asynchronously on save.
