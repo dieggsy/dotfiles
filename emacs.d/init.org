@@ -565,7 +565,6 @@ A really nice search/completion system for emacs.
   ─────────────────────────
 ")
   (counsel-mode 1)
-  (defalias 'ag #'counsel-ag)
   (defalias 'locate #'counsel-locate)
 
   (define-advice counsel-yank-pop-action (:override (s) paste-after)
