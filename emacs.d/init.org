@@ -16,26 +16,6 @@ itself, hence the [[#dotfile-handling][dotfile handling]] functions and [[#local
 the optional ~COMPILE~ argument of ~org-babel-load-file~ wasn't working for me, so
 there's that.
 :END:
-
-First off, let's set lexical binding, in accordance with the
-[[https://github.com/bbatsov/emacs-lisp-style-guide#source-code-layout--organization][emacs-lisp-style-guide]].
-#+begin_src emacs-lisp :comments no
-;;; -*- lexical-binding: t -*-
-#+end_src
-Then we add a commented call to ~package-initialize~ because ~package.el~ is
-annoying like that.
-#+begin_src emacs-lisp
-;;(package-initialize)
-#+end_src
-Next we define a variable for timing startup, and change ~gc-cons-threshhold~
-temporarily (only during startup). This saves me like .3 s of startup time.
-#+begin_src emacs-lisp
-(defconst d/emacs-start-time (current-time))
-(setq gc-cons-threshold 64000000)
-(add-hook 'after-init-hook (lambda ()
-                             (setq gc-cons-threshold 800000)))
-#+end_src
-
 * Contents                                                            :toc_1:
 - [[#intro][Intro]]
 - [[#initial-setup][Initial Setup]]
@@ -55,6 +35,25 @@ temporarily (only during startup). This saves me like .3 s of startup time.
 - [[#finalize][Finalize]]
 
 * Initial Setup
+** Lexical binding
+In accordance with the [[https://github.com/bbatsov/emacs-lisp-style-guide#source-code-layout--organization][emacs-lisp-style-guide]].
+#+begin_src emacs-lisp :comments no
+;;; -*- lexical-binding: t -*-
+#+end_src
+** package-initialize
+~package.el~ is annoying like that.
+#+begin_src emacs-lisp
+;;(package-initialize)
+#+end_src
+** Startup time
+Next we define a variable for timing startup, and change ~gc-cons-threshhold~
+temporarily (only during startup). This saves me like .3 s of startup time.
+#+begin_src emacs-lisp
+(defconst d/emacs-start-time (current-time))
+(setq gc-cons-threshold 64000000)
+(add-hook 'after-init-hook (lambda ()
+                             (setq gc-cons-threshold 800000)))
+#+end_src
 ** Server
 Start server if not already running. You can do this with ~emacs --daemon~ or
 even automate it with ~brew services start emacs~ on macOS, but I usually just
@@ -3652,15 +3651,6 @@ Source: https://git.io/vQKub"
 (use-package eshell-z
   :after eshell)
 #+end_src
-**** [[https://github.com/adamrt/sane-term][sane-term]]
-#+begin_quote
-  Cycle through terms in emacs
-#+end_quote
-I wanted a slightly better terminal in emacs. This seems to do the trick.
-#+begin_src emacs-lisp
-(use-package sane-term
-  :general (d/leader-keys "at" 'sane-term-create))
-#+end_src
 *** Functions
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'eshell
@@ -3799,6 +3789,15 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 ** [[https://github.com/dieggsy/turing-machine][turing-machine]]
 #+begin_src emacs-lisp
 (use-package turing-machine)
+#+end_src
+** [[https://github.com/adamrt/sane-term][sane-term]]
+#+begin_quote
+  Cycle through terms in emacs
+#+end_quote
+I wanted a slightly better terminal in emacs. This seems to do the trick.
+#+begin_src emacs-lisp
+(use-package sane-term
+  :general (d/leader-keys "at" 'sane-term-create))
 #+end_src
 * Enhancements
 ** Emacs
