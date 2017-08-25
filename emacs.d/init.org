@@ -255,8 +255,13 @@ Save stuff you've copied in other applications to the emacs kill-ring.
 #+end_src
 *** Line Numbers
 #+begin_src emacs-lisp
-(setq display-line-numbers-type 'relative)
-(add-hook 'display-line-numbers-mode-hook (lambda () (setq display-line-numbers-width (length (number-to-string (count-lines (point-min) (point-max)))))))
+(setq display-line-numbers-type 'relative
+      display-line-numbers-width-start t
+      display-line-numbers-grow-only t)
+(add-hook 'display-line-numbers-mode-hook (lambda ()
+                                            (setq display-line-numbers-width
+                                                  (length (number-to-string
+                                                           (count-lines (point-min) (point-max)))))))
 #+end_src
 *** Messages
 Allow more messages in ~*Messages*~ buffer so you can look at what happened waaay
