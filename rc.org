@@ -1765,7 +1765,7 @@ name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.password-store/.extensions/rofi.bash") :shebang "#!/usr/bin/env bash"
 :END:
 #+begin_src sh
-name=$(~/.zplug/bin/rg -g "*.gpg" "$HOME/.password-store" --files \
+name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
            | sed 's@'"$HOME"'/\.password-store/\(.\+\?\)\.gpg@\1@' \
            | sort \
            | rofi -dmenu -i -p "[pass] " -width 30)
@@ -1802,7 +1802,7 @@ fi
 :END:
 A script to search all files using [[https://github.com/BurntSushi/ripgrep][ripgrep]] and [[https://github.com/DaveDavenport/rofi][rofi]].
 #+begin_src sh
-~/.zplug/bin/rg --files 2>/dev/null \
+rg --files 2>/dev/null \
     | LC_ALL=C sort \
     | awk -v len=85 '{ if (length($0) > len) print "..." substr($0, length($0)-len, length($0)); else print; }' \
     | rofi -dmenu -i -width 50 -levenshtein-sort -matching regex -p '[files] '\
