@@ -180,8 +180,7 @@ defer and ensure packages are installed unless otherwise stated.
 (setq use-package-minimum-reported-time .001
       use-package-verbose t
       use-package-always-defer t
-      use-package-always-ensure t
-      use-package-always-defer-install t)
+      use-package-always-ensure t)
 
 (eval-when-compile
   (require 'use-package))
