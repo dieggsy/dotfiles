@@ -3643,9 +3643,12 @@ Source: https://git.io/vQKub"
 ** Eshell
 *** Built-in
 #+begin_src emacs-lisp
-(setq eshell-prefer-lisp-functions t
-      eshell-scroll-to-bottom-on-input t
-      eshell-banner-message "")
+(use-package eshell
+  :ensure nil
+  :config
+  (setq eshell-prefer-lisp-functions t
+        eshell-scroll-to-bottom-on-input t
+        eshell-banner-message ""))
 #+end_src
 *** Packages
 **** egp
