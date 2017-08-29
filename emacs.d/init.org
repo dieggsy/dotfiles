@@ -1406,6 +1406,10 @@ Backup
 (setq version-control t
       delete-old-versions t)
 #+end_src
+Executable
+#+begin_src emacs-lisp
+(add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
+#+end_src
 ** Packages
 *** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
 #+begin_quote
