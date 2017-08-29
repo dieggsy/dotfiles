@@ -1226,6 +1226,11 @@ also use these keys to quit out of the minibuffer.
  "SPC u" 'universal-argument-more)
 #+end_src
 * Help
+** Defaults
+#+begin_src emacs-lisp
+(d/with-eval-after-load 'man
+  (setq Man-notify-method 'aggressive))
+#+end_src
 ** Packages
 *** [[https://github.com/abo-abo/define-word][define-word]]
 #+begin_quote
