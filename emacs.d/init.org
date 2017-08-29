@@ -516,7 +516,6 @@ A really nice search/completion system for emacs.
         ivy-count-format ""
         ivy-extra-directories nil; '("../") ; ignore current folder and parent dir
         ivy-initial-inputs-alist '((man . "^"))
-        ivy-switch-buffer-faces-alist '((dired-mode . ivy-subdir))
         recentf-max-saved-items 50
         ivy-use-selectable-prompt t
         ivy-switch-buffer-faces-alist '((dired-mode . ivy-subdir)
@@ -3642,7 +3641,7 @@ Source: https://git.io/vQKub"
   (setq calc-symbolic-mode t))
 #+end_src
 ** Eshell
-*** Defaults
+*** Built-in
 #+begin_src emacs-lisp
 (setq eshell-prefer-lisp-functions t
       eshell-scroll-to-bottom-on-input t
@@ -3678,9 +3677,9 @@ Source: https://git.io/vQKub"
   (cl-defmacro d/eshell-defun (name keys &rest pats)
     (declare (indent defun))
     (let* ((path (plist-get keys :path))
-          (opts (plist-get keys :opts))
-          (command-name (or path
-                            (concat "/usr/bin/" (symbol-name name)))))
+           (opts (plist-get keys :opts))
+           (command-name (or path
+                             (concat "/usr/bin/" (symbol-name name)))))
       `(defun ,(intern (concat "eshell/" (symbol-name name))) (&rest args)
          (pcase args
            ,@(cl-loop for pattern in pats
@@ -3763,8 +3762,8 @@ Source: https://git.io/vQKub"
            (cl-remove-duplicates
             (d/let loop ((index 0))
               (if (= index eshell-history-size)
-                  (list (eshell-get-history index))
-                (cons (eshell-get-history index) (loop (1+ index)))))
+                  (list (string-trim (eshell-get-history index)))
+                (cons (string-trim (eshell-get-history index)) (loop (1+ index)))))
             :from-end t
             :test #'string=)))
       (ivy-read "[history] "
@@ -3772,7 +3771,7 @@ Source: https://git.io/vQKub"
                 :action (lambda (x)
                           (insert x))))))
 #+end_src
-*** Bindings
+*** Setup
 #+begin_src emacs-lisp
 (d/setup-mode eshell
   (imap :keymaps 'eshell-mode-map
