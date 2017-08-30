@@ -3402,7 +3402,9 @@ Source: https://git.io/vQKz8"
 #+begin_src emacs-lisp
 (use-package geiser
   :config
-  (setq geiser-active-implementations '(chicken)))
+  (setq geiser-active-implementations '(chicken)
+        geiser-debug-jump-to-debug-p nil
+        geiser-debug-show-debug-p nil))
 #+end_src
 **** Variables
 #+begin_src emacs-lisp
