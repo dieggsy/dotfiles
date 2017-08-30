@@ -4420,10 +4420,9 @@ Source: http://tinyurl.com/lo96nwc"
 *** Defaults
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'erc
-  (setq erc-prompt "
-           ❱❱"
-        erc-fill-prefix  "              "
-        erc-notice-prefix   "              *** "
+  (setq erc-prompt "\n            ❱❱"
+        erc-fill-prefix  "          \t";"              "
+        erc-notice-prefix   "          \t*** "
         erc-format-nick-function 'd/erc-format-nick
         erc-nick "dieggsy"
         erc-password (password-store-get "social/freenode")
@@ -4462,7 +4461,7 @@ Source: http://tinyurl.com/lo96nwc"
                                        "#lisp"
                                        "#chicken")))
 
-  (erc-define-catalog-entry 'english 'ACTION "         *    %n %a"))
+  (erc-define-catalog-entry 'english 'ACTION "         *\t%n %a"))
 #+end_src
 *** Packages
 #+begin_src emacs-lisp
@@ -4519,7 +4518,7 @@ Source: http://tinyurl.com/lo96nwc"
                   (long-char (if (and (> (length nick) 10)
                                       (not nick-was-last))
                                  (erc-propertize "…" 'face '(:foreground "#D3869B" ))
-                               " ")))
+                               "")))
 
              (when (>= (cl-incf erc-lurker-cleanup-count)
                        erc-lurker-cleanup-interval)
@@ -4530,7 +4529,7 @@ Source: http://tinyurl.com/lo96nwc"
              (puthash trimmed (current-time)
                       (gethash server erc-lurker-state))
              (puthash channel nick (gethash server d/erc-last-speaker))
-             (format "%10.10s%s   "
+             (format "%10.10s%s	"
                      (cond  (nick-was-last
                              (erc-propertize
                               "↳"
@@ -4565,7 +4564,7 @@ update lurker status."
 
   (define-advice erc-format-privmessage (:override (nick msg privp msgp) no-brackets)
     "Remove the annoying angle brackets."
-    (let* ((mark-s (if msgp (if privp "*" "") "              -"))
+    (let* ((mark-s (if msgp (if privp "*" "") "          \t-"))
            (mark-e (if msgp (if privp "*" "") "- "))
            (str    (format "%s%s%s%s" mark-s nick mark-e msg))
            (nick-face (if privp 'erc-nick-msg-face 'erc-nick-default-face))
@@ -4623,6 +4622,7 @@ Source: http://tinyurl.com/y8tj8vxx"
 (d/setup-mode erc
   (erc-hl-nicks-mode 1)
   (smartparens-mode -1)
+  (setq tab-width 5)
   (erc-stamp-mode -1)
   (erc-notifications-mode 1)
   (evil-smartparens-mode -1)
