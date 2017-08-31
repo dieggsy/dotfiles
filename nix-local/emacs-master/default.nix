@@ -1,8 +1,8 @@
 { stdenv, lib, fetchurl, ncurses, xlibsWrapper, libXaw, libXpm, Xaw3d
-, pkgconfig, gettext, libXft, dbus, libpng, libjpeg, libungif
+, pkgconfig, gettext, libXft, dbus, libpng, libjpeg, giflib
 , libtiff, librsvg, gconf, libxml2, imagemagick, gnutls, libselinux
 , alsaLib, cairo, acl, gpm, AppKit, CoreWLAN, Kerberos, GSS, ImageIO
-, autoconf, texinfo
+, autoconf, texinfo, systemd
 , withX ? !stdenv.isDarwin
 , withGTK2 ? false, gtk2 ? null
 , withGTK3 ? true, gtk3 ? null, gsettings_desktop_schemas ? null
@@ -27,13 +27,15 @@ let
 in
 
 stdenv.mkDerivation rec {
-  name = "emacsHEAD";
-  version = "head";
+  name = "emacs-${version}";
+  version = "master";
   versionModifier = "";
+
+  builder = ./builder.sh;
 
   src = builtins.filterSource (path: type:
     type != "directory" || baseNameOf path != ".git")
-      ~/.ghq/git.savannah.gnu.org/emacs;
+      ~/dotfiles/emacs.d/master;
   # src = fetchgit {
   #   url = "git://git.savannah.gnu.org/emacs";
   #   rev = "7553e0f490e1f9a51c330816f7372da735091e8f";
@@ -47,10 +49,10 @@ stdenv.mkDerivation rec {
     ++ lib.optional (withX && (withGTK3 || withXwidgets)) wrapGAppsHook;
 
   buildInputs =
-    [ ncurses gconf libxml2 gnutls alsaLib acl gpm gettext autoconf automake texinfo]
+    [ ncurses gconf libxml2 gnutls alsaLib acl gpm gettext autoconf automake texinfo systemd ]
     ++ lib.optionals stdenv.isLinux [ dbus libselinux ]
     ++ lib.optionals withX
-      [ xlibsWrapper libXaw Xaw3d libXpm libpng libjpeg libungif libtiff librsvg libXft
+      [ xlibsWrapper libXaw Xaw3d libXpm libpng libjpeg giflib libtiff librsvg libXft
         imagemagick gconf ]
     ++ lib.optional (withX && withGTK2) gtk2
     ++ lib.optionals (withX && withGTK3) [ gtk3 gsettings_desktop_schemas ]
@@ -81,13 +83,7 @@ stdenv.mkDerivation rec {
     done
   '';
 
-  makeFlags = ["prefix=$out"];
-
   installTargets = "tags install";
-
-  preInstall = ''
-    mkdir -p $out/bin
-'';
 
   postInstall = ''
     mkdir -p $out/share/emacs/site-lisp
