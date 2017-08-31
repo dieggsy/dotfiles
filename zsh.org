@@ -432,6 +432,8 @@ echo "$startup_time"
 if [[ "$SHLVL" -eq 1 && ! -o LOGIN && -s "${ZDOTDIR:-$HOME}/.zprofile" ]]; then
     source "${ZDOTDIR:-$HOME}/.zprofile"
 fi
+
+source ~/.nix-profile/etc/profile.d/nix.sh
 #+end_src
 ** Path
 #+begin_src sh
@@ -468,6 +470,7 @@ export WWW_HOME='https://duckduckgo.com'
 export RTV_EDITOR='emacsclient -t'
 export RTV_URLVIEWER='urlview'
 
+export LOCALE_ARCHIVE="$(readlink ~/.nix-profile/lib/locale)/locale-archive"
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
     export EDITOR='vim'

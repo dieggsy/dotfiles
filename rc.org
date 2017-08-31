@@ -11,6 +11,7 @@ more readable in org format than in rendered markdown.
 - [[#intro][Intro]]
 - [[#config][Config]]
   - [[#cvimrc][cvimrc]]
+  - [[#confignix][config.nix]]
   - [[#darktooththeme-cmus][darktooth.theme (cmus)]]
   - [[#emacsclientdesktop][emacsclient.desktop]]
   - [[#exwmdesktop][exwm.desktop]]
@@ -66,6 +67,39 @@ let blacklists = ['*://inbox.google.com/*']
 
 map J nextTab
 map K previousTab
+#+end_src
+** config.nix
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.config/nixpkgs/config.nix")
+:END:
+#+begin_src nix
+{ pkgs }: {
+
+  packageOverrides = super: let self = super.pkgs; in with self; rec {
+
+    emacsHEAD = super.callPackage ~/dotfiles/nix-local/emacsHEAD {
+      # use override to enable additional features
+      libXaw = pkgs.xorg.libXaw;
+      Xaw3d = null;
+      gconf = null;
+      alsaLib = null;
+      acl = null;
+      gpm = null;
+      inherit (pkgs.darwin.apple_sdk.frameworks) AppKit CoreWLAN GSS Kerberos ImageIO;
+    };
+
+    rustRegistry = super.callPackage ~/dotfiles/nix-local/rust-packages.nix { };
+
+    ripgrep = super.callPackage ~/dotfiles/nix-local/ripgrep.nix {};
+
+    exa = super.callPackage ~/dotfiles/nix-local/exa.nix {};
+
+  };
+
+  allowUnfree = true;
+  allowBroken = true;
+
+}
 #+end_src
 ** darktooth.theme (cmus)
 :PROPERTIES:
