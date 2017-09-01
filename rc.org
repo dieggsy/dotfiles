@@ -70,34 +70,46 @@ map K previousTab
 #+end_src
 ** config.nix
 :PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.config/nixpkgs/config.nix")
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.config/nixpkgs/config.nix") :comments no
 :END:
 #+begin_src nix
 { pkgs }: {
 
   packageOverrides = super: let self = super.pkgs; in with self; rec {
 
-    emacsHEAD = super.callPackage ~/dotfiles/nix-local/emacsHEAD {
+    # Packages
+    emacs-master = super.callPackage ~/dotfiles/nix-local/emacs-master {
       # use override to enable additional features
       libXaw = pkgs.xorg.libXaw;
       Xaw3d = null;
       gconf = null;
       alsaLib = null;
-      acl = null;
-      gpm = null;
       inherit (pkgs.darwin.apple_sdk.frameworks) AppKit CoreWLAN GSS Kerberos ImageIO;
     };
 
-    rustRegistry = super.callPackage ~/dotfiles/nix-local/rust-packages.nix { };
 
     ripgrep = super.callPackage ~/dotfiles/nix-local/ripgrep.nix {};
 
     exa = super.callPackage ~/dotfiles/nix-local/exa.nix {};
 
+    peco-master = super.callPackage ~/dotfiles/nix-local/peco.nix {};
+
+    iosevka = super.callPackage ~/dotfiles/nix-local/iosevka.nix {};
+
+    # hub = super.callPackage ~/dotfiles/nix-local/hub.nix {};
+
+    # Dependencies
+    rustRegistry = super.callPackage ~/dotfiles/nix-local/deps/rust-packages.nix {};
+
+    libotf = super.callPackage ~/dotfiles/nix-local/deps/libotf.nix {};
+
+    otfcc = super.callPackage ~/dotfiles/nix-local/deps/otfcc.nix {};
+
+
   };
 
+
   allowUnfree = true;
-  allowBroken = true;
 
 }
 #+end_src
