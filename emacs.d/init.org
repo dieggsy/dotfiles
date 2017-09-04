@@ -561,13 +561,11 @@ A really nice search/completion system for emacs.
         counsel-org-goto-face-style 'org
         counsel-org-goto-display-todo t
         counsel-grep-base-command "rg -i -M 120 --no-heading --line-number --color never '%s' %s"
+        counsel-yank-pop-separator "\n─────────────────────────\n"
         counsel-find-file-ignore-regexp (rx (or (group string-start (char ".#"))
                                                 (group (char "~#") string-end)
                                                 (group ".elc" string-end)
-                                                (group ".pyc" string-end)))
-        counsel-yank-pop-separator "
-  ─────────────────────────
-")
+                                                (group ".pyc" string-end))))
   (counsel-mode 1)
   (defalias 'locate #'counsel-locate)
 
