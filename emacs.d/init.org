@@ -3462,8 +3462,11 @@ Source: http://tinyurl.com/le6wxuo"
 (font-lock-add-keywords 'scheme-mode '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)) t)
 (font-lock-add-keywords 'geiser-repl-mode '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)) t)
 #+end_src
-*** Misc
-**** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]]
+*** nix-mode
+#+begin_src emacs-lisp
+(use-package nix-mode)
+#+end_src
+*** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]]
 #+begin_quote
   Enables syntax highlighting for .vimrc/_vimrc files
 #+end_quote
