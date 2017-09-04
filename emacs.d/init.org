@@ -2606,8 +2606,6 @@ Use a bar cursor in the minibuffer.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package fill-column-indicator
-  :recipe (:host github
-           :repo "shaleh/Fill-Column-Indicator")
   :init
   (setq-default fci-rule-column 79)
   (defvar-local company-fci-mode-on-p nil)
