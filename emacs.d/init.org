@@ -1432,6 +1432,13 @@ Executable
   (diredp-toggle-find-file-reuse-dir 1))
 #+end_src
 
+*** [[https://github.com/emacsmirror/dired-du][dired-du]]
+#+begin_src emacs-lisp
+(use-package dired-du
+  :recipe (:host github :repo "emacsmirror/dired-du")
+  :config
+  (setq dired-du-size-format t))
+#+end_src
 *** [[https://github.com/ralesi/ranger.el][ranger]]
 #+begin_quote
   Bringing the goodness of ranger to dired!
