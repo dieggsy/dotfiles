@@ -84,10 +84,8 @@ map K previousTab
       libXaw = pkgs.xorg.libXaw;
       Xaw3d = null;
       gconf = null;
-      alsaLib = null;
       inherit (pkgs.darwin.apple_sdk.frameworks) AppKit CoreWLAN GSS Kerberos ImageIO;
     };
-
 
     ripgrep = super.callPackage ~/dotfiles/nix-local/ripgrep.nix {};
 
@@ -106,9 +104,7 @@ map K previousTab
 
     otfcc = super.callPackage ~/dotfiles/nix-local/deps/otfcc.nix {};
 
-
   };
-
 
   allowUnfree = true;
 
@@ -1161,7 +1157,7 @@ windows:
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.xbindkeysrc") :comments no
 :END:
-#+begin_src conf
+#+begin_src conf-unix
 "~/bin/i3blocks/volume +"
     XF86AudioRaiseVolume
 
@@ -1861,7 +1857,7 @@ fi
 :END:
 A script to search all files using [[https://github.com/BurntSushi/ripgrep][ripgrep]] and [[https://github.com/DaveDavenport/rofi][rofi]].
 #+begin_src sh
-rg --files 2>/dev/null \
+rg -a --files 2>/dev/null \
     | LC_ALL=C sort \
     | awk -v len=85 '{ if (length($0) > len) print "..." substr($0, length($0)-len, length($0)); else print; }' \
     | rofi -dmenu -i -width 50 -levenshtein-sort -matching regex -p '[files] '\

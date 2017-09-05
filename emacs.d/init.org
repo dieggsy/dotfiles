@@ -2528,12 +2528,12 @@ Choose a font in order of preference, when available.
          (set-face-attribute 'default t :font "Consolas-11"))
         ((x-list-fonts "Menlo")
          (add-to-list 'default-frame-alist '(font . "Menlo-11"))
-         (set-face-attribute 'default t :font "Menlo-11")))
+         (set-face-attribute 'default t :font "Menlo-11"))))
 #+end_src
 And use [[http://fontawesome.io/][Font Awesome]] for the unicode glyphs it supports.
 #+begin_src emacs-lisp
 (when (and window-system (x-list-fonts "FontAwesome"))
-  (set-fontset-font t 'unicode "FontAwesome" nil 'prepend)))
+  (set-fontset-font t 'unicode "FontAwesome" nil 'prepend))
 #+end_src
 
 :NOTES:
@@ -3471,7 +3471,7 @@ Source: http://tinyurl.com/le6wxuo"
 #+begin_src emacs-lisp
 (use-package vimrc-mode)
 #+end_src
-**** [[https://github.com/fxbois/web-mode][web-mode]]
+*** [[https://github.com/fxbois/web-mode][web-mode]]
 #+begin_src emacs-lisp
 (use-package web-mode
   :mode ("\\.html?\\'" "\\.xml\\'" "\\.launch\\'")
