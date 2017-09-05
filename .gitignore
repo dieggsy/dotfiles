@@ -17,3 +17,4 @@ emacs.d/srecode-map.el
 emacs.d/tramp
 emacs.d/straight/
 nvim/bundle/
+emacs.d/master/
