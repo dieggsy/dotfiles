@@ -15,6 +15,7 @@ more readable in org format than in rendered markdown.
   - [[#darktooththeme-cmus][darktooth.theme (cmus)]]
   - [[#emacsclientdesktop][emacsclient.desktop]]
   - [[#exwmdesktop][exwm.desktop]]
+  - [[#fontsconf][fonts.conf]]
   - [[#git][git]]
   - [[#i3][i3]]
   - [[#initvim][init.vim]]
@@ -195,6 +196,17 @@ Type=Application
 X-LightDM-DesktopName=exwm
 DesktopNames=exwm
 Keywords=tiling;wm;windowmanager;window;manager;emacs;
+#+end_src
+** fonts.conf
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.config/fontconfig/fonts.conf") :comments no
+:END:
+#+begin_src xml
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+  <dir>~/.nix-profile/share/fonts</dir>
+</fontconfig>
 #+end_src
 ** git
 *** gitconfig
@@ -1200,7 +1212,7 @@ windows:
 Xft.antialias: 1
 Xft.hinting: 1
 Xft.rgba: rgb
-Xft.hinstyle: hintfull
+Xft.hintstyle: hintslight
 Xft.dpi: 184
 
 rofi.color-enabled: true
@@ -1211,10 +1223,9 @@ rofi.color-active: #282828, #B8BB26, #282828, #3c3836, #B8BB26
 rofi.color-urgent: #282828, #FB4933, #282828, #3c3836, #FB4933
 rofi.width: 40
 
-Emacs.fontBackend: xft, x
-Emacs.font: iosevka term-9.5
-Emacs.FontBackend: x
-Emacs*geometry: 105x41
+Emacs.fontBackend: xft
+Emacs.font: Iosevka Term-9.5:weight=book
+Emacs.geometry: 105x41
 Emacs.menuBar: off
 Emacs.toolBar: off
 Emacs.verticalScrollBars: off
