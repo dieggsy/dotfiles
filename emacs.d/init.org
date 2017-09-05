@@ -471,6 +471,7 @@ editing. So I went for it. Now I'll never go back.
 
   (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
   (setq evil-emacs-state-modes (delq 'Custom-mode evil-emacs-state-modes))
+  (setq evil-emacs-state-modes (delq 'completion-list-mode evil-emacs-state-modes))
   (setq evil-insert-state-modes (delq 'term-mode evil-insert-state-modes))
 
   ;; Use insert state in these additional modes.
@@ -1214,6 +1215,9 @@ also use these keys to quit out of the minibuffer.
         (d/fbound-and-true? d/org-at-openable-item?) 'org-open-at-point
         (d/fbound-and-true? org-at-item-checkbox-p) 'org-toggle-checkbox
         (d/fbound-and-true? org-in-src-block-p) 'org-babel-execute-src-block))
+
+(mmap :keymaps 'completion-list-mode-map
+  "RET" 'choose-completion)
 #+end_src
 *** universal argument
 #+begin_src emacs-lisp
