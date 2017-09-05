@@ -2,7 +2,7 @@
 , pkgconfig, gettext, libXft, dbus, libpng, libjpeg, giflib
 , libtiff, librsvg, gconf, libxml2, imagemagick, gnutls, libselinux
 , alsaLib, cairo, acl, gpm, AppKit, CoreWLAN, Kerberos, GSS, ImageIO
-, autoconf, texinfo, systemd, libotf
+, autoconf, texinfo, systemd, libotf, m17n_lib, m17n_db
 , withX ? !stdenv.isDarwin
 , withGTK2 ? false, gtk2 ? null
 , withGTK3 ? true, gtk3 ? null, gsettings_desktop_schemas ? null
@@ -50,7 +50,7 @@ stdenv.mkDerivation rec {
 
   buildInputs =
     [ ncurses gconf libxml2 gnutls alsaLib acl gpm gettext autoconf automake
-      texinfo systemd libotf ]
+      texinfo systemd libotf m17n_lib m17n_db ]
     ++ lib.optionals stdenv.isLinux [ dbus libselinux ]
     ++ lib.optionals withX
       [ xlibsWrapper libXaw Xaw3d libXpm libpng libjpeg giflib libtiff librsvg libXft
@@ -64,14 +64,14 @@ stdenv.mkDerivation rec {
 
   hardeningDisable = [ "format" ];
 
-  # configureFlags = [ "--with-modules" ] ++
-  #  (if stdenv.isDarwin
-  #     then [ "--with-ns" "--disable-ns-self-contained" ]
-  #   else if withX
-  #     then [ "--with-x-toolkit=${toolkit}" "--with-xft" ]
-  #     else [ "--with-x=no" "--with-xpm=no" "--with-jpeg=no" "--with-png=no"
-  #            "--with-gif=no" "--with-tiff=no" ])
-  #   ++ lib.optional withXwidgets "--with-xwidgets";
+  configureFlags = [ "--with-modules" ] ++
+   (if stdenv.isDarwin
+      then [ "--with-ns" "--disable-ns-self-contained" ]
+    else if withX
+      then [ "--with-x-toolkit=${toolkit}" "--with-xft" ]
+      else [ "--with-x=no" "--with-xpm=no" "--with-jpeg=no" "--with-png=no"
+             "--with-gif=no" "--with-tiff=no" ])
+    ++ lib.optional withXwidgets "--with-xwidgets";
 
   preConfigure = lib.optionalString srcRepo ''
     ./autogen.sh
