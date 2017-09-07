@@ -486,7 +486,7 @@ export LESS='-g-i-M-R-S-w-z-4'
 
 [[ -n "$GTK_MODULES" ]] && export GTK_MODULES="$GTK_MODULES:s/pantheon-filechooser-module//"
 
-export XDG_DATA_DIRS=$HOME/.nix-profile/share:$XDG_DATA_DIRS
+export XDG_DATA_DIRS=$HOME/.nix-profile/share:$HOME/.local/share:/usr/local/share:/usr/share/:/var/lib/snapd/desktop
 #+end_src
 * zprofile
 :PROPERTIES:
