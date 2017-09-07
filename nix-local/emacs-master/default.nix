@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchurl, ncurses, xlibsWrapper, libXaw, libXpm, Xaw3d
+{ stdenv, lib, fetchgit, ncurses, xlibsWrapper, libXaw, libXpm, Xaw3d
 , pkgconfig, gettext, libXft, dbus, libpng, libjpeg, giflib
 , libtiff, librsvg, gconf, libxml2, imagemagick, gnutls, libselinux
 , alsaLib, cairo, acl, gpm, AppKit, CoreWLAN, Kerberos, GSS, ImageIO
@@ -33,14 +33,11 @@ stdenv.mkDerivation rec {
 
   builder = ./builder.sh;
 
-  src = builtins.filterSource (path: type:
-    type != "directory" || baseNameOf path != ".git")
-      ~/dotfiles/emacs.d/master;
-  # src = fetchgit {
-  #   url = "git://git.savannah.gnu.org/emacs";
-  #   rev = "7553e0f490e1f9a51c330816f7372da735091e8f";
-  #   sha256 = "1mnf2622nbhx2sjaapcviw0b61va8dd8nr75v5in6rviww43v2z8";
-  # };
+  src = fetchgit {
+    "url" = "git://git.sv.gnu.org/emacs.git";
+    "rev" = "93bab0fe55df0f94144f5a12132639e831961848";
+    "sha256" = "08krpxmn4p96dn40zkaa5ci2ilbfzc1gf0s5qiw3lxw2pdgyyg10";
+    };
 
   patches = (lib.optional stdenv.isDarwin ./at-fdcwd.patch);
 
