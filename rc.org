@@ -95,7 +95,13 @@ map K previousTab
 
     iosevka = super.callPackage ~/dotfiles/nix-local/iosevka.nix {};
 
-    # hub = super.callPackage ~/dotfiles/nix-local/hub.nix {};
+    hub = super.callPackage ~/dotfiles/nix-local/hub.nix {
+      inherit (darwin) Security;
+    };
+
+    pass-git-helper = super.callPackage ~/dotfiles/nix-local/pass-git-helper.nix {
+      inherit (python3Packages) setuptools;
+    };
 
     # Dependencies
     rustRegistry = super.callPackage ~/dotfiles/nix-local/deps/rust-packages.nix {};
@@ -241,7 +247,7 @@ I know, it probably doesn't make sense to keep my gitconfig here.
 **** credential
 #+begin_src conf
 [credential]
-    helper = /usr/local/bin/pass-git-helper
+    helper = /home/diego/.nix-profile/bin/pass-git-helper
 #+end_src
 **** gpg
 #+begin_src conf
