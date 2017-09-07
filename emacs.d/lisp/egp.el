@@ -33,9 +33,13 @@
 (require 'eshell)
 (require 'em-ls)
 
-(defgroup epe nil
+(defgroup egp nil
   "Eshell git prompt"
   :group 'eshell-prompt)
+
+(defcustom egp-prompt-symbol "λ"
+  "Prompt symbol."
+  :group 'egp)
 
 (defface egp-remote-face
   '((t (:foreground "#D3869B")))
@@ -50,6 +54,11 @@
 (defface egp-root-face
   '((t (:inherit eshell-ls-unreadable-face)))
   "Face of sudo symbol in prompt."
+  :group 'egp)
+
+(defface egp-symbol-face
+  '((t (:foreground "#DD6F48")))
+  "Face of prompt symbol."
   :group 'egp)
 
 (defun egp-fish-path (path max-len)
@@ -187,7 +196,7 @@ length of PATH (sans directory slashes) down to MAX-LEN."
 ;;;###autoload
 (defun egp-theme ()
   "A eshell-prompt lambda theme with directory shrinking."
-  (setq eshell-prompt-regexp "^.* [#]*")
+  (setq eshell-prompt-regexp "^[^#\nλ]* λ[#]* ")
   (propertize
    (concat
     (let ((host (file-remote-p default-directory 'host)))
@@ -201,6 +210,8 @@ length of PATH (sans directory slashes) down to MAX-LEN."
        'egp-remote-face))
     (egp-get-git-status)
     (propertize (egp-fish-path (eshell/pwd) 0) 'face 'egp-dir-face)
+    " "
+    (propertize egp-prompt-symbol 'face 'egp-symbol-face)
     (propertize (if (= (user-uid) 0) "#" "") 'face 'egp-root-face)
     " ")
    'read-only t
