@@ -1,4 +1,4 @@
-{ stdenv, fetchgit, go, Security }:
+{ stdenv, fetchgit, go, Security, bundler, ruby, groff }:
 
 stdenv.mkDerivation rec {
   name = "hub-${version}";
@@ -10,10 +10,9 @@ stdenv.mkDerivation rec {
     sha256 = "07sz1i6zxx2g36ayhjp1vjw523ckk5b0cr8b80s1qhar2d2hkibd";
   };
 
+  buildInputs = [ go bundler ruby groff ] ++ stdenv.lib.optional stdenv.isDarwin Security;
 
-  buildInputs = [ go ] ++ stdenv.lib.optional stdenv.isDarwin Security;
-
-  phases = [ "unpackPhase" "buildPhase" "installPhase" ];
+  phases = [ "unpackPhase" "buildPhase" "installPhase" "fixupPhase" ];
 
   buildPhase = ''
     patchShebangs .
@@ -21,11 +20,7 @@ stdenv.mkDerivation rec {
   '';
 
   installPhase = ''
-    mkdir -p "$out/bin"
-    cp bin/hub "$out/bin/"
-
-    mkdir -p "$out/share/man/man1"
-    cp "man/hub.1" "$out/share/man/man1/"
+    make install prefix=$out
 
     mkdir -p "$out/share/zsh/site-functions"
     cp "etc/hub.zsh_completion" "$out/share/zsh/site-functions/_hub"
