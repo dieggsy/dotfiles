@@ -1216,8 +1216,9 @@ also use these keys to quit out of the minibuffer.
         (d/fbound-and-true? org-at-item-checkbox-p) 'org-toggle-checkbox
         (d/fbound-and-true? org-in-src-block-p) 'org-babel-execute-src-block))
 
-(mmap :keymaps 'completion-list-mode-map
-  "RET" 'choose-completion)
+(nmap :keymaps 'completion-list-mode-map
+  "RET" 'choose-completion
+  "q" 'quit-window)
 #+end_src
 *** universal argument
 #+begin_src emacs-lisp
@@ -3513,6 +3514,7 @@ Like git, for emacs. But cooler.
   :defines (magit-diff-use-overlays)
   :config
   (setq magit-diff-use-overlays nil
+        magit-diff-refine-hunk t
         auto-revert-check-vc-info t
         git-commit-summary-max-length 50
         git-commit-major-mode 'org-mode)
@@ -3739,7 +3741,7 @@ Source: https://git.io/vQKub"
     (call-interactively #'slime))
 
   (d/eshell-defun git
-    (:path "/home/diego/.zplug/bin/hub"
+    (:path "/home/diego/.nix-profile/bin/hub"
      :opts "-c color.ui=always")
     ("status" (magit-status-internal (eshell/pwd)))
     ("diff" (magit-status-internal (eshell/pwd)))
@@ -4471,7 +4473,8 @@ Source: http://tinyurl.com/lo96nwc"
                                        "##programming"
                                        "#i3"
                                        "#lisp"
-                                       "#chicken")))
+                                       "#chicken"
+                                       "#nixos")))
 
   (erc-define-catalog-entry 'english 'ACTION "         *\t%n %a"))
 #+end_src
