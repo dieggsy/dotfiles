@@ -103,6 +103,9 @@ map K previousTab
       inherit (python3Packages) setuptools;
     };
 
+    termite = super.callPackage ~/dotfiles/nix-local/termite.nix {
+      vte = gnome3.vte-ng;
+    };
     # Dependencies
     rustRegistry = super.callPackage ~/dotfiles/nix-local/deps/rust-packages.nix {};
 
