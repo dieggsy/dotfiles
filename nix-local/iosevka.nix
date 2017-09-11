@@ -7,8 +7,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     "owner" = "be5invis";
     "repo" = "iosevka";
-    "rev" = "10da567e714b930d25840c22450fcfb074e31ae4";
-    "sha256" = "0xp72hj1jg350kk4qn7h8n6c5f63nlwzmcn0dlx9w0lafsqfwkff";
+    "rev" = "6f7868bb2e41f5a6d7552ad5bf5ec6e6579c2653";
+    "sha256" = "030c83hmpbwbciqlciz7v63is72h0yfzv6srniwy3z10drysbghr";
   };
 
   buildInputs = [ otfcc nodejs-8_x gnumake ttfautohint ];

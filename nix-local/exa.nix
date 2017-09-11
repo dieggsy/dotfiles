@@ -29,8 +29,8 @@ in buildRustPackage rec {
   src = fetchFromGitHub {
     owner = "ogham";
     repo = "exa";
-    rev = "3405db1f4b62b474ab26f6da2a80856aec519ec5";
-    sha256 = "0v3vjn15ri96x5x3m8r52wfigmra0sa3rn0zcqfc0aj3m1xjy43l";
+    rev = "265f93f7cd9b4560af64b606075a623b3fdf2105";
+    sha256 = "111vnxr0vnnjjl1hisdr0yj6xcg36aagfa0hn1jcis3lr2fh3q4b";
   };
 
   nativeBuildInputs = [ cmake pkgconfig perl ];
