@@ -1,5 +1,4 @@
 #!emacs --script
-;; [[file:~/dotfiles/rc.org::*org-tangle][org-tangle:1]]
 (require 'subr-x)
 (require 'org)
 
@@ -100,4 +99,3 @@
        (message "~/.vim exists, not symlinking."))
       (t (make-symbolic-link (dotfiles-file "vim/") (expand-file-name "~/.vim") t)))
 (setq argv nil)
-;; org-tangle:1 ends here
