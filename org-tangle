@@ -5,7 +5,7 @@
 ;;; Helper functions
 (defvar specified-files (cdddr command-line-args))
 
-(defvar default-files '("rc.org" "zsh.org" "emacs.d/config.org"))
+(defvar default-files '("rc.org" "zsh.org" "emacs.d/init.org"))
 
 (defvar confirm-install nil)
 
