@@ -3474,7 +3474,51 @@ Source: http://tinyurl.com/le6wxuo"
 #+end_src
 *** nix-mode
 #+begin_src emacs-lisp
-(use-package nix-mode)
+(use-package nix-mode
+  :config
+  (defun d/nix-update-fetchgit ()
+    (interactive)
+    (cl-flet ((re
+               (prop-name)
+               (concat (rx "{" (minimal-match (0+ anything)) (opt "\""))
+                       prop-name
+                       (rx (opt "\"") (opt " ") "=" (opt " ") "\""
+                           (group (1+ nonl)) "\";" (minimal-match (0+ anything)) "};"))))
+      (let* ((pos (re-search-forward
+                   (rx "=" (opt " ") (group (or "fetchgit" "fetchFromGitHub")))
+                   nil
+                   t))
+             (type (and pos
+                        (match-string 1)))
+             (buff-file (buffer-file-name) )
+             (url (cond ((string= type "fetchgit")
+                         (and (save-excursion (re-search-forward (re "url") nil t))
+                              (match-string 1)))
+                        ((string= type "fetchFromGitHub")
+                         (concat
+                          "https://github.com/"
+                          (and (save-excursion (re-search-forward (re "owner")))
+                               (match-string 1))
+                          "/"
+                          (and (save-excursion (re-search-forward (re "repo")))
+                               (match-string 1)))))))
+        (when url
+          (make-process
+           :name "nix-prefetch-git"
+           :command `("nix-prefetch-git" ,url "--quiet" "--fetch-submodules")
+           :filter
+           `(lambda (process output)
+              (let* ((json-vals (json-read-from-string output))
+                     (rev (alist-get 'rev json-vals))
+                     (sha (alist-get 'sha256 json-vals)))
+                (with-current-buffer (find-file-noselect ,buff-file)
+                  (goto-char ,pos)
+                  (save-excursion
+                    (and (re-search-forward ,(re "rev") nil t)
+                         (replace-match rev nil nil nil 1)))
+                  (and (re-search-forward ,(re "sha256") nil t)
+                       (replace-match sha nil nil nil 1))
+                  (d/nix-update-fetchgit))))))))))
 #+end_src
 *** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]]
 #+begin_quote
