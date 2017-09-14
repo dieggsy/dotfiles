@@ -3862,6 +3862,11 @@ Source: https://git.io/vQKub"
 ;;   :config
 ;;   (pdf-tools-install))
 #+end_src
+** nov.el
+#+begin_src emacs-lisp
+(use-package nov
+  :mode "\\.epub\\'")
+#+end_src
 ** [[https://github.com/dieggsy/turing-machine][turing-machine]]
 #+begin_src emacs-lisp
 (use-package turing-machine)
