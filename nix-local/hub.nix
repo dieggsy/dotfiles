@@ -12,24 +12,16 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ go bundler ruby groff ] ++ stdenv.lib.optional stdenv.isDarwin Security;
 
-  phases = [ "unpackPhase" "buildPhase" "installPhase" "fixupPhase" ];
-
-  buildPhase = ''
+  preInstall = ''
     patchShebangs .
-    sh script/build
   '';
 
-  installPhase = ''
-    make install prefix=$out
-
+  postInstall = ''
     mkdir -p "$out/share/zsh/site-functions"
     cp "etc/hub.zsh_completion" "$out/share/zsh/site-functions/_hub"
 
     mkdir -p "$out/etc/bash_completion.d"
     cp "etc/hub.bash_completion.sh" "$out/etc/bash_completion.d/"
-
-# Should we also install provided git-hooks?
-# ?
   '';
 
   meta = with stdenv.lib; {
