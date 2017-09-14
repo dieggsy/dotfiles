@@ -12,7 +12,7 @@ more readable in org format than in rendered markdown.
 - [[#config][Config]]
   - [[#cvimrc][cvimrc]]
   - [[#confignix][config.nix]]
-  - [[#darktooththeme-cmus][darktooth.theme (cmus)]]
+  - [[#darktooththeme][darktooth.theme]]
   - [[#emacsclientdesktop][emacsclient.desktop]]
   - [[#exwmdesktop][exwm.desktop]]
   - [[#fontsconf][fonts.conf]]
@@ -118,7 +118,7 @@ map K previousTab
 
 }
 #+end_src
-** darktooth.theme (cmus)
+** darktooth.theme
 :PROPERTIES:
 :header-args+: :tangle ~/.config/cmus/darktooth.theme
 :END:

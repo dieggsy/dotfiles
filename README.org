@@ -44,7 +44,7 @@ Clone the repo to =~/dotfiles= (or wherever you'd like, but make sure the folder
 remains named ~dotfiles~)
 
 *NOTE:* The following will overwrite existing dotfiles/scripts, so be pretty damn
-sure (you can also use the ~--ask~ flag).
+sure.
 
 *** Full
 Use provided script to install dotfiles and scripts.
@@ -72,8 +72,6 @@ For example, say you want my emacs config, and /just/ my tmux and i3 configs fro
 #+begin_src sh
 ./org-tangle emacs.d/config.org tmux i3
 #+end_src
-At any point you can put in the ~--ask~ flag, and you will be prompted before
-files or headings after that flag are tangled.
 
 *Note:* Ideally for all of this to work optimally, there should be no ambiguity
 between heading names in ~rc.org~. I'm working on it, but let me know if you spot
