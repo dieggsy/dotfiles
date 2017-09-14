@@ -471,7 +471,6 @@ editing. So I went for it. Now I'll never go back.
 
   (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
   (setq evil-emacs-state-modes (delq 'Custom-mode evil-emacs-state-modes))
-  (setq evil-emacs-state-modes (delq 'completion-list-mode evil-emacs-state-modes))
   (setq evil-insert-state-modes (delq 'term-mode evil-insert-state-modes))
 
   ;; Use insert state in these additional modes.
@@ -1216,9 +1215,6 @@ also use these keys to quit out of the minibuffer.
         (d/fbound-and-true? org-at-item-checkbox-p) 'org-toggle-checkbox
         (d/fbound-and-true? org-in-src-block-p) 'org-babel-execute-src-block))
 
-(nmap :keymaps 'completion-list-mode-map
-  "RET" 'choose-completion
-  "q" 'quit-window)
 #+end_src
 *** universal argument
 #+begin_src emacs-lisp
@@ -4149,6 +4145,13 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
   (kbd "C-d")     'evil-scroll-down
   (kbd "C-u")     'evil-scroll-up
   (kbd "C-w C-w") 'other-window)
+
+(evil-add-hjkl-bindings proced-mode-map 'emacs
+  (kbd "/") 'evil-ex-search-forward
+  (kbd "K") 'proced-send-signal)
+
+(evil-add-hjkl-bindings completion-list-mode-map 'emacs
+  (kbd "/") 'evil-ex-search-forward)
 #+end_src
 ** Evil
 *** [[https://github.com/syohex/emacs-evil-anzu][evil-anzu]]
