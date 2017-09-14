@@ -2663,6 +2663,10 @@ Better parentheses coloring
 #+begin_src emacs-lisp
 (use-package rainbow-delimiters)
 #+end_src
+*** xterm-color
+#+begin_src emacs-lisp
+(use-package xterm-color)
+#+end_src
 ** Hydras
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
