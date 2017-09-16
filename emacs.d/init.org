@@ -460,17 +460,16 @@ editing. So I went for it. Now I'll never go back.
   (dolist (mode '(ag-mode
                   flycheck-error-list-mode
                   git-rebase-mode
-                  eshell-mode
                   calc-mode
                   calc-trail-mode
                   sunshine-mode
                   term-mode
                   notmuch-tree-mode
-                  profiler-report-mode))
+                  profiler-report-mode
+                  process-menu-mode))
     (add-to-list 'evil-emacs-state-modes mode))
 
   (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
-  (setq evil-emacs-state-modes (delq 'Custom-mode evil-emacs-state-modes))
   (setq evil-insert-state-modes (delq 'term-mode evil-insert-state-modes))
 
   ;; Use insert state in these additional modes.
@@ -4142,8 +4141,11 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 (d/leader-keys
  "t"   '(:command d/toggle/body :wk "toggle"))
 
-(nmap :keymaps 'custom-mode-map
-  "q" #'Custom-buffer-done)
+(evil-add-hjkl-bindings Custom-mode-map 'emacs
+  "/" #'evil-search-forward)
+
+(evil-add-hjkl-bindings 'process-menu-mode 'emacs
+  "/" #'evil-search-forward)
 
 (evil-add-hjkl-bindings occur-mode-map 'emacs
   (kbd "/")       'evil-search-forward
