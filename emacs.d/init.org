@@ -372,7 +372,7 @@ except for warnings and errors.
       (setq display-line-numbers t)
     (setq display-line-numbers 'relative)))
 
-(defun  d/fbound-and-true? (name &optional args)
+(defmacro d/fbound-and-true? (name &optional args)
   `(and (fboundp #',name)
         (apply #',name ,args)))
 #+end_src
