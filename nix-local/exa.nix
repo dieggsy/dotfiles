@@ -24,13 +24,13 @@ in buildRustPackage rec {
   name = "exa-${version}";
   version = "0.7.0";
 
-  depsSha256 = "035z421ffwms5ac9an63mkagw4v0wjjzjkxzjfwjjrjqwvb0ymr5";
+  depsSha256 = "09s8k1klrlwhhqlc7l255a123642gpdii3x3hkkpvh7r5v6qdkhx";
 
   src = fetchFromGitHub {
     owner = "ogham";
     repo = "exa";
-    rev = "265f93f7cd9b4560af64b606075a623b3fdf2105";
-    sha256 = "111vnxr0vnnjjl1hisdr0yj6xcg36aagfa0hn1jcis3lr2fh3q4b";
+    rev = "734579576a19e746286a1cf255c33eb9d17d8699";
+    sha256 = "010z67zdd8nln6rpj59ji2pdvqcga8hagwvn5lamjc86d0v1ac71";
   };
 
   nativeBuildInputs = [ cmake pkgconfig perl ];

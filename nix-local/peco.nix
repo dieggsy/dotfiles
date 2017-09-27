@@ -30,8 +30,8 @@ go-pdebug = fetchgit {
 };
 errors = fetchgit {
   "url"= "git://github.com/pkg/errors";
-  "rev"= "c605e284fe17294bda444b34710735b29d1a9d90";
-  "sha256"= "1izjk4msnc6wn1mclg0ypa6i31zfwb1r3032k8q4jfbd57hp0bz6";
+  "rev"= "2b3a18b5f0fb6b4f9190549597d3f962c02bc5eb";
+  "sha256"= "07fd392kqyaj7fnl4sgzy7fcs0sw4jx3mx2khhgk64n9j9i37l59";
   "fetchSubmodules"= true;
 };
 
