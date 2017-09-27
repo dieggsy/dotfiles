@@ -3895,6 +3895,45 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
   :general (d/leader-keys "at" 'sane-term-create))
 #+end_src
 * Enhancements
+** Dired
+*** Packages
+**** dired-avfs
+#+begin_src emacs-lisp
+(use-package dired-avfs
+  :after dired)
+#+end_src
+**** dired-open
+#+begin_src emacs-lisp
+(use-package dired-open
+  :after dired)
+#+end_src
+**** dired-subtree
+#+begin_src emacs-lisp
+(use-package dired-subtree
+  :after dired
+  :general
+  (nmap :keymaps 'dired-mode-map
+    "TAB" 'dired-subtree-toggle))
+#+end_src
+**** dired-collpase
+#+begin_src emacs-lisp
+(use-package dired-collapse
+  :after dired)
+#+end_src
+**** dired-k
+#+begin_src emacs-lisp
+(use-package dired-k
+  :after dired
+  :config
+  (setq dired-k-style 'git))
+#+end_src
+**** dired-rainbow
+#+begin_src emacs-lisp
+(use-package dired-rainbow
+  :after dired
+  :config
+  (dired-rainbow-define-chmod executable-unix "#B8BB26" "-[rw-]+x.*"))
+#+end_src
 ** Emacs
 *** Packages
 **** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
