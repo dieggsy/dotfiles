@@ -370,7 +370,7 @@ bindsym $mod+Shift+period exec --no-startup-id i3-exit
 bindsym $mod+Shift+apostrophe kill
 
 # start rofi for windows and commands
-bindsym Mod1+space exec --no-startup-id "rofi -combi-modi window,run,drun -show combi -modi combi"
+bindsym Mod1+space exec --no-startup-id "rofi -combi-modi window,run,drun -show combi -modi combi -display-combi ''"
 
 # pass helper
 bindsym $mod+p exec --no-startup-id "~/.password-store/.extensions/rofi.bash"
@@ -1221,9 +1221,13 @@ Xft.dpi: 184
 
 rofi.color-enabled: true
 rofi.font: iosevka term, fontawesome 20
-rofi.color-window: #282828, #fdf4c1, #fdf4c1
+rofi.scroll-method: 1
+rofi.padding: 20
+rofi.line-padding: 10
+rofi.lines: 10
+rofi.color-window: #282828, #fdf4c1, #282828
 rofi.color-normal: #282828, #fdf4c1, #282828, #3c3836, #fdf4c1
-rofi.color-active: #282828, #B8BB26, #282828, #3c3836, #B8BB26
+rofi.color-active: #282828, #DD6f48, #282828, #3c3836, #DD6f48
 rofi.color-urgent: #282828, #FB4933, #282828, #3c3836, #FB4933
 rofi.width: 40
 
@@ -1724,7 +1728,7 @@ name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
 name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
            | sed 's@'"$HOME"'/\.password-store/\(.\+\?\)\.gpg@\1@' \
            | sort \
-           | rofi -dmenu -i -p "[pass] " -width 30)
+           | rofi -dmenu -i -p "[pass]" -width 30)
 
 pass -c $name
 #+end_src
@@ -1761,7 +1765,7 @@ A script to search all files using [[https://github.com/BurntSushi/ripgrep][ripg
 rg -a --files 2>/dev/null \
     | LC_ALL=C sort \
     | awk -v len=85 '{ if (length($0) > len) print "..." substr($0, length($0)-len, length($0)); else print; }' \
-    | rofi -dmenu -i -width 50 -levenshtein-sort -matching regex -p '[files] '\
+    | rofi -dmenu -i -width 50 -levenshtein-sort -matching regex -p '[files]'\
     | xargs -d '\n' xdg-open
 
 #+end_src
