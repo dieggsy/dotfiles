@@ -546,6 +546,7 @@ A really nice search/completion system for emacs.
    "SPC" 'counsel-M-x
    "aa"  'counsel-linux-app
    "ff"  'counsel-find-file
+   "fF"  'find-file-other-window
    "fj"  'counsel-file-jump
    "fl"  'counsel-locate
    "hdF" 'counsel-describe-face
