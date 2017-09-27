@@ -447,7 +447,8 @@ editing. So I went for it. Now I'll never go back.
         evil-operator-state-tag " O ")
 
   (evil-ex-define-cmd "dtw" #'delete-trailing-whitespace)
-  (evil-ex-define-cmd "buffers" #'ibuffer)
+  (evil-ex-define-cmd "buffers" (lambda () (interactive) (ibuffer t)))
+  ;; (evil-ex-define-cmd "buffers" #'ibuffer)
 
   (add-hook 'edebug-mode-hook #'evil-normalize-keymaps)
 
