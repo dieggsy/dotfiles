@@ -47,7 +47,7 @@ function prompt_sorin_pwd {
 
 setopt prompt_subst
 
-PROMPT='${$(git_status)}%F{7}$(prompt_sorin_pwd)%f%b %F{166}λ '
+PROMPT='${$(git_status)}%F{7}$(prompt_sorin_pwd)%f%b %F{166}λ%f '
 #+end_src
 *** Cursor
 Changes the cursor depending on whether in insert or normal mode (I use vi
