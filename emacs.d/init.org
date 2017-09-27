@@ -452,6 +452,10 @@ editing. So I went for it. Now I'll never go back.
 
   (add-hook 'edebug-mode-hook #'evil-normalize-keymaps)
 
+  (d/with-eval-after-load 'image-mode
+    (defvar image-mode-map)
+    (evil-make-overriding-map image-mode-map 'normal))
+
   (evil-mode 1))
 #+end_src
 **** Modes
