@@ -522,6 +522,7 @@ A really nice search/completion system for emacs.
         recentf-max-saved-items 50
         ivy-use-selectable-prompt t
         ivy-switch-buffer-faces-alist '((dired-mode . ivy-subdir)
+                                        (wdired-mode . ivy-subdir)
                                         (ranger-mode . ivy-subdir))))
 
 (use-package ivy-hydra)
