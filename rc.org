@@ -94,10 +94,6 @@ map K previousTab
 
     iosevka = super.callPackage ~/dotfiles/nix-local/iosevka.nix {};
 
-    hub = super.callPackage ~/dotfiles/nix-local/hub.nix {
-      inherit (darwin) Security;
-    };
-
     pass-git-helper = super.callPackage ~/dotfiles/nix-local/pass-git-helper.nix {
       inherit (python3Packages) setuptools;
     };
