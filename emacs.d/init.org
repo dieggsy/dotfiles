@@ -485,7 +485,7 @@ A really nice search/completion system for emacs.
   (:keymaps 'ivy-minibuffer-map
    [escape] 'keyboard-escape-quit
    "C-/" 'keyboard-escape-quit
-   [S-return] 'ivy-dispatching-done
+   [S-return] 'ivy-dispatching-done-hydra
    [C-return] 'ivy-immediate-done
    "C-j" 'ivy-next-line
    "C-k" 'ivy-previous-line
@@ -502,7 +502,7 @@ A really nice search/completion system for emacs.
 
   (setq ivy-re-builders-alist '((swiper . ivy--regex-plus)
                                 (t . ivy--regex-ignore-order)))
-  (setq ivy-format-function 'ivy-format-function-arrow ; DAT NICE ARROW THOUGH aosenuth
+  (setq ivy-format-function 'ivy-format-function-line
         projectile-completion-system 'ivy
         ivy-use-virtual-buffers t ; Show recent files
         ivy-count-format ""
@@ -514,7 +514,8 @@ A really nice search/completion system for emacs.
                                         (wdired-mode . ivy-subdir)
                                         (ranger-mode . ivy-subdir))))
 
-(use-package ivy-hydra)
+(use-package ivy-hydra
+  :after ivy)
 #+end_src
 **** swiper
 #+begin_src emacs-lisp
@@ -579,26 +580,27 @@ Source: https://git.io/vQKmf"
         (setq ivy-completion-end (point))))
     (forward-char (length s)))
 
-  (define-advice counsel--yank-pop-format-function (:override (cand-pairs) arrow-format)
-    "Use the arrow format for counsel-yank-pop for consistency with
-ivy-format-function-arrow.
+  ;; (define-advice counsel--yank-pop-format-function (:override (cand-pairs) arrow-format)
+  ;;     "Use the arrow format for counsel-yank-pop for consistency with
+  ;; ivy-format-function-arrow.
 
-Source: https://git.io/vQK0v"
-    (ivy--format-function-generic
-     (lambda (str)
-       (let ((temp-list
-              (split-string (counsel--yank-pop-truncate str) "\n" t)))
-         (mapconcat 'identity
-                    (append (list (concat "> " (car temp-list)))
-                            (mapcar (lambda (s) (concat "  " s))
-                                    (cdr temp-list)))
-                    "\n")))
-     (lambda (str)
-       (mapconcat (lambda (s) (concat "  " s))
-                  (split-string (counsel--yank-pop-truncate str) "\n" t)
-                  "\n"))
-     cand-pairs
-     counsel-yank-pop-separator)))
+  ;; Source: https://git.io/vQK0v"
+  ;;     (ivy--format-function-generic
+  ;;      (lambda (str)
+  ;;        (let ((temp-list
+  ;;               (split-string (counsel--yank-pop-truncate str) "\n" t)))
+  ;;          (mapconcat 'identity
+  ;;                     (append (list (concat "> " (car temp-list)))
+  ;;                             (mapcar (lambda (s) (concat "  " s))
+  ;;                                     (cdr temp-list)))
+  ;;                     "\n")))
+  ;;      (lambda (str)
+  ;;        (mapconcat (lambda (s) (concat "  " s))
+  ;;                   (split-string (counsel--yank-pop-truncate str) "\n" t)
+  ;;                   "\n"))
+  ;;      cand-pairs
+  ;;      counsel-yank-pop-separator))
+  )
 #+end_src
 *** [[http://orgmode.org/][org-mode]]
 #+begin_quote
