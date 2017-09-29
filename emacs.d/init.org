@@ -450,32 +450,21 @@ editing. So I went for it. Now I'll never go back.
   (evil-ex-define-cmd "buffers" (lambda () (interactive) (ibuffer t)))
   ;; (evil-ex-define-cmd "buffers" #'ibuffer)
 
-  (add-hook 'edebug-mode-hook #'evil-normalize-keymaps)
-
-  (d/with-eval-after-load 'image-mode
-    (defvar image-mode-map)
-    (evil-make-overriding-map image-mode-map 'normal))
-
   (evil-mode 1))
 #+end_src
 **** Modes
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'evil
   ;; Use Emacs state in these additional modes.
-  (dolist (mode '(ag-mode
-                  flycheck-error-list-mode
+  (dolist (mode '(flycheck-error-list-mode
                   git-rebase-mode
                   calc-mode
                   calc-trail-mode
-                  sunshine-mode
-                  term-mode
-                  notmuch-tree-mode
-                  profiler-report-mode
-                  process-menu-mode))
+                  sunshine-mode))
     (add-to-list 'evil-emacs-state-modes mode))
 
-  (setq evil-emacs-state-modes (delq 'ibuffer-mode evil-emacs-state-modes))
-  (setq evil-insert-state-modes (delq 'term-mode evil-insert-state-modes))
+  (dolist (mode '(ibuffer-mode Custom-mode))
+    (setq evil-emacs-state-modes (delq mode evil-emacs-state-modes)))
 
   ;; Use insert state in these additional modes.
   (dolist (mode '(magit-log-edit-mode org-capture-mode))
@@ -4182,35 +4171,9 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
            (setq d/show-async-tangle-results t)) nil)
     ("q" nil)))
 #+end_src
-
-*** Bindings
-#+begin_src emacs-lisp
-(d/leader-keys
- "t"   '(:command d/toggle/body :wk "toggle"))
-
-(evil-add-hjkl-bindings Custom-mode-map 'emacs
-  "/" #'evil-search-forward)
-
-(evil-add-hjkl-bindings 'process-menu-mode 'emacs
-  "/" #'evil-search-forward)
-
-(evil-add-hjkl-bindings occur-mode-map 'emacs
-  (kbd "/")       'evil-search-forward
-  (kbd "n")       'evil-search-next
-  (kbd "N")       'evil-search-previous
-  (kbd "C-d")     'evil-scroll-down
-  (kbd "C-u")     'evil-scroll-up
-  (kbd "C-w C-w") 'other-window)
-
-(evil-add-hjkl-bindings proced-mode-map 'emacs
-  (kbd "/") 'evil-ex-search-forward
-  (kbd "K") 'proced-send-signal)
-
-(evil-add-hjkl-bindings completion-list-mode-map 'emacs
-  (kbd "/") 'evil-ex-search-forward)
-#+end_src
 ** Evil
-*** [[https://github.com/syohex/emacs-evil-anzu][evil-anzu]]
+*** Packages
+**** [[https://github.com/syohex/emacs-evil-anzu][evil-anzu]]
 #+begin_src emacs-lisp
 (use-package evil-anzu
   :after evil
@@ -4227,7 +4190,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
         status)))
   (setq anzu-mode-line-update-function #'d/anzu-update-mode-line))
 #+end_src
-*** [[https://github.com/TheBB/evil-indent-plus][evil-indent-plus]]
+**** [[https://github.com/TheBB/evil-indent-plus][evil-indent-plus]]
 #+begin_quote
   Better indent textobjects for evil
 #+end_quote
@@ -4237,7 +4200,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
   :config
   (evil-indent-plus-default-bindings))
 #+end_src
-*** [[https://github.com/emacs-evil/evil-magit][evil-magit]]
+**** [[https://github.com/emacs-evil/evil-magit][evil-magit]]
 #+begin_quote
   Black magic or evil keys for magit
 #+end_quote
@@ -4245,13 +4208,13 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 (use-package evil-magit
   :after magit)
 #+end_src
-*** [[https://github.com/redguardtoo/evil-matchit][evil-matchit]]
+**** [[https://github.com/redguardtoo/evil-matchit][evil-matchit]]
 #+begin_src emacs-lisp
 (use-package evil-matchit
   :after evil
   :config (global-evil-matchit-mode 1))
 #+end_src
-*** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
+**** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
 #+begin_quote
   Comment/uncomment lines efficiently. Like Nerd Commenter in Vim
 #+end_quote
@@ -4278,7 +4241,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
     (let ((evilnc-invert-comment-line-by-line t))
       (evilnc-comment-or-uncomment-lines arg))))
 #+end_src
-*** [[https://github.com/dieggsy/evil-numbers][evil-numbers]]
+**** [[https://github.com/dieggsy/evil-numbers][evil-numbers]]
 #+begin_quote
   Increment and decrement numbers in Emacs
 #+end_quote
@@ -4289,14 +4252,14 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
            :upstream (:host github
                       :repo "cofi/evil-numbers")))
 #+end_src
-*** [[https://github.com/emacs-evil/evil-surround][evil-surround]]
+**** [[https://github.com/emacs-evil/evil-surround][evil-surround]]
 #+begin_src emacs-lisp
 (use-package evil-surround
   :after evil
   :config
   (global-evil-surround-mode 1))
 #+end_src
-*** [[https://github.com/cute-jumper/evil-embrace.el][evil-embrace]]
+**** [[https://github.com/cute-jumper/evil-embrace.el][evil-embrace]]
 #+begin_src emacs-lisp
 (use-package evil-embrace
   :after evil-surround
@@ -4305,6 +4268,41 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
   (evil-embrace-enable-evil-surround-integration)
   (d/with-eval-after-load 'exwm
     (setq evil-embrace-show-help-p nil)))
+#+end_src
+*** Bindings
+#+begin_src emacs-lisp
+(d/leader-keys
+ "t"   '(:command d/toggle/body :wk "toggle"))
+
+(nmap :keymaps 'custom-mode-map
+  "q" #'Custom-buffer-done)
+
+(evil-add-hjkl-bindings occur-mode-map 'emacs
+  (kbd "/")       'evil-search-forward
+  (kbd "n")       'evil-search-next
+  (kbd "N")       'evil-search-previous
+  (kbd "C-d")     'evil-scroll-down
+  (kbd "C-u")     'evil-scroll-up
+  (kbd "C-w C-w") 'other-window)
+
+(evil-add-hjkl-bindings proced-mode-map 'emacs
+  (kbd "/") 'evil-ex-search-forward
+  (kbd "K") 'proced-send-signal)
+
+(evil-add-hjkl-bindings completion-list-mode-map 'emacs
+  (kbd "/") 'evil-ex-search-forward)
+
+(add-hook 'edebug-mode-hook #'evil-normalize-keymaps)
+
+(d/with-eval-after-load 'image-mode
+  (defvar image-mode-map)
+  (evil-make-overriding-map image-mode-map 'normal))
+
+(evil-make-overriding-map process-menu-mode-map 'normal)
+
+(with-eval-after-load 'profiler
+  (defvar profiler-report-mode-map)
+  (evil-make-overriding-map profiler-report-mode-map 'normal))
 #+end_src
 ** Org
 *** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
