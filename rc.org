@@ -1958,6 +1958,13 @@ Wrapper script around ~/usr/bin/spotify~ to fix UI scaling in i3wm.
 #+begin_src sh
 XDG_CURRENT_DESKTOP=kde /usr/bin/systemsettings5 "$@"
 #+end_src
+*** play-dvd
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/play-dvd") :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+vlc dvd://
+#+end_src
 * Local vars
 Tangles the files asynchronously on save.
 #+begin_example
