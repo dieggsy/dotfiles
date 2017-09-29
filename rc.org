@@ -43,6 +43,7 @@ more readable in org format than in rendered markdown.
   - [[#spectrum_ls][spectrum_ls]]
   - [[#text-pager][text-pager]]
   - [[#updates][updates]]
+  - [[#wmsh][wm.sh]]
   - [[#wrappers][wrappers]]
 - [[#local-vars][Local vars]]
 
@@ -590,6 +591,24 @@ bindsym XF86LaunchA exec "scrot ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
 **** Startup Programs/Commands
 #+begin_src conf
 # exec --no-startup-id nm-applet
+#+end_src
+**** Plasma Integration
+#+begin_src conf :tangle no
+## Plasma Integration
+# Try to kill the wallpaper set by Plasma (it takes up the entire workspace and hides everythiing)
+exec --no-startup-id wmctrl -c Plasma
+for_window [title="Desktop — Plasma"] kill; floating enable; border none
+
+## Avoid tiling popups, dropdown windows from plasma
+# for the first time, manually resize them, i3 will remember the setting for floating windows
+for_window [class="plasmashell"] floating enable;
+for_window [class="Plasma"] floating enable; border none
+for_window [title="plasma-desktop"] floating enable; border none
+for_window [title="win7"] floating enable; border none
+for_window [class="krunner"] floating enable; border none
+for_window [class="Kmix"] floating enable; border none
+for_window [class="Klipper"] floating enable; border none
+for_window [class="Plasmoidviewer"] floating enable; border none
 #+end_src
 *** i3blocks
 :PROPERTIES:
@@ -1925,6 +1944,13 @@ echo -e "\e[1;34mDone"
 
 pyenv global $globalpython # Set python version back to original
 fi
+#+end_src
+** wm.sh
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.config/plasma-workspace/env/wm.sh")
+:END:
+#+begin_src sh :tangle no
+export KDEWM=/usr/bin/i3
 #+end_src
 ** wrappers
 *** dolphin
