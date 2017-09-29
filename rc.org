@@ -526,8 +526,9 @@ bar {
     status_command i3blocks
     position top
     tray_output none
-    font pango:Iosevka Term, FontAwesome 8.5
+    font pango:Iosevka Term, FontAwesome 9
     strip_workspace_numbers yes
+    # mode hide
     colors {
         background #282828
         statusline #fdf4c1
