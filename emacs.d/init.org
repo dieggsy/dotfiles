@@ -1211,7 +1211,6 @@ also use these keys to quit out of the minibuffer.
         (d/fbound-and-true? d/org-at-openable-item?) 'org-open-at-point
         (d/fbound-and-true? org-at-item-checkbox-p) 'org-toggle-checkbox
         (d/fbound-and-true? org-in-src-block-p) 'org-babel-execute-src-block))
-
 #+end_src
 *** universal argument
 #+begin_src emacs-lisp
@@ -3165,7 +3164,6 @@ Pretty neat, though not entirely complete, IMO.
 
 (use-package request-deferred)
 #+end_src
-
 ***** [[https://github.com/magnars/s.el][s]]
 #+begin_quote
   The long lost Emacs string manipulation library.
@@ -3911,20 +3909,6 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 (use-package dired-collapse
   :after dired)
 #+end_src
-**** dired-k
-#+begin_src emacs-lisp
-(use-package dired-k
-  :after dired
-  :config
-  (setq dired-k-style 'git))
-#+end_src
-**** dired-rainbow
-#+begin_src emacs-lisp
-(use-package dired-rainbow
-  :after dired
-  :config
-  (dired-rainbow-define-chmod executable-unix "#B8BB26" "-[rw-]+x.*"))
-#+end_src
 ** Emacs
 *** Packages
 **** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
@@ -4498,8 +4482,8 @@ A speed reading mode for Emacs.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package xkcd
-  :general (d/leader-keys "ax" 'xkcd)
   :general
+  (d/leader-keys "ax" 'xkcd)
   (nmap :keymaps 'xkcd-mode-map
     "j" 'xkcd-next
     "h" 'xkcd-prev
