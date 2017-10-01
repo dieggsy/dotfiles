@@ -1,37 +1,20 @@
-
 { stdenv, fetchFromGitHub, rustPlatform, cmake, perl, pkgconfig, zlib }:
 
 with rustPlatform;
 
-let
-  # check for updates
-  zoneinfo_compiled = fetchFromGitHub {
-    owner = "rust-datetime";
-    repo = "zoneinfo-compiled";
-    rev = "f56921ea5e9f7cf065b1480ff270a1757c1f742f";
-    sha256 = "1xmw7c5f5n45lkxnyxp4llfv1bnqhc876w98165ccdbbiylfkw26";
-  };
-  cargoPatch = ''
-    # use non-git dependencies
-    patch Cargo.toml <<EOF
-    46c46
-    < git = "https://github.com/rust-datetime/zoneinfo-compiled.git"
-    ---
-    > path = "${zoneinfo_compiled}"
-    EOF
-  '';
-in buildRustPackage rec {
+buildRustPackage rec {
   name = "exa-${version}";
-  version = "0.7.0";
+  version = "0.8.0";
 
-  depsSha256 = "09s8k1klrlwhhqlc7l255a123642gpdii3x3hkkpvh7r5v6qdkhx";
 
   src = fetchFromGitHub {
     owner = "ogham";
     repo = "exa";
-    rev = "734579576a19e746286a1cf255c33eb9d17d8699";
-    sha256 = "010z67zdd8nln6rpj59ji2pdvqcga8hagwvn5lamjc86d0v1ac71";
+    rev = "547ceda15b4acff640c3fa24705d0ceaf9321b2b";
+    sha256 = "1piin1cxhml8w76hlmzbq3lxzbxg444pa1b7r30p84578hx27aly";
   };
+
+  depsSha256 = "0yz41prkjs5rmvdhr9k58a52l7hvwy5mfg8rcpsq4ybgf601lja2";
 
   nativeBuildInputs = [ cmake pkgconfig perl ];
   buildInputs = [ zlib ];
@@ -39,13 +22,9 @@ in buildRustPackage rec {
   # Some tests fail, but Travis ensures a proper build
   doCheck = false;
 
-  cargoUpdateHook = ''
-    ${cargoPatch}
-  '';
-  cargoDepsHook = ''
-    pushd $sourceRoot
-    ${cargoPatch}
-    popd
+  preFixup = ''
+    mkdir -p "$out/man/man1"
+    cp "$src/contrib/man/exa.1" "$out/man/man1"
   '';
 
   meta = with stdenv.lib; {
