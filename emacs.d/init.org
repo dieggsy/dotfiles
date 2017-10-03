@@ -2573,6 +2573,11 @@ Use a bar cursor in the minibuffer.
 (add-hook 'minibuffer-setup-hook
           (lambda () (setq-local cursor-type '(bar . 1))))
 #+end_src
+*** Margin
+#+begin_src emacs-lisp
+(setq-default left-margin-width 1)
+(setq-default right-margin-width 1)
+#+end_src
 ** Packages
 *** [[https://github.com/larstvei/Focus][focus]]
 #+begin_quote
