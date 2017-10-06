@@ -335,7 +335,7 @@ which hub > /dev/null && alias git=hub
 [ "$(uname)" = "Linux" ] && compdef hub=git
 [ "$(uname)" = "Linux" ] && which nautilus > /dev/null && alias nautilus="nautilus &> /dev/null"
 alias gls='gls -X --group-directories-first --color=always'
-alias ls='exa --group-directories-first --sort=extension'
+alias ls='LS_COLORS="" exa --group-directories-first --sort=extension'
 alias glst="gls -t"
 if [ -d /Applications/Mathematica.app ]; then
     alias mathematica='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
