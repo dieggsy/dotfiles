@@ -3642,6 +3642,36 @@ Source: http://tinyurl.com/le6wxuo"
   (setq web-mode-markup-indent-offset 2))
 #+end_src
 ** VCS
+*** Functions
+#+begin_src emacs-lisp
+(defun d/magit-blame-toggle ()
+  "Toggle magit-blame-mode on and off interactively.
+
+Source: https://git.io/vQKub"
+  (interactive)
+  (if (bound-and-true-p magit-blame-mode)
+      (magit-blame-quit)
+    (call-interactively 'magit-blame)))
+
+(defun gitlab-snippet (&optional public)
+  (interactive "P")
+  (require 'request)
+  (let ((title (read-from-minibuffer "Snippet title: "))
+        (file-name (buffer-name))
+        (content (if (region-active-p)
+                     (buffer-substring (region-beginning) (region-end))
+                   (buffer-string)))
+        (visibility (if public "public" "private"))
+        (token (password-store-get "tokens/gitlab/master")))
+    (request
+     "https://gitlab.com/api/v4/snippets"
+     :type "POST"
+     :data `(("title" . ,title)
+             ("file_name" . ,file-name)
+             ("content" . ,content)
+             ("visibility" . ,visibility))
+     :headers `(("PRIVATE-TOKEN" . ,token)))))
+#+end_src
 *** Packages
 **** [[https://github.com/magit/magit][magit]]
 #+begin_quote
@@ -3662,10 +3692,8 @@ Like git, for emacs. But cooler.
    "gf" 'magit-find-file
    "gl" 'magit-log-all
    "gs" 'magit-status)
-  :defines (magit-diff-use-overlays)
   :config
-  (setq magit-diff-use-overlays nil
-        magit-diff-refine-hunk t
+  (setq magit-diff-refine-hunk t
         auto-revert-check-vc-info t
         git-commit-summary-max-length 50
         git-commit-major-mode 'org-mode)
@@ -3780,17 +3808,6 @@ Like git, for emacs. But cooler.
   (let ((gh-vals (cdar gh-profile-alist)))
     (setf gh-vals (plist-put gh-vals :username "dieggsy")
           gh-vals (plist-put gh-vals :token (password-store-get "tokens/github/gist")))))
-#+end_src
-*** Functions
-#+begin_src emacs-lisp
-(defun d/magit-blame-toggle ()
-  "Toggle magit-blame-mode on and off interactively.
-
-Source: https://git.io/vQKub"
-  (interactive)
-  (if (bound-and-true-p magit-blame-mode)
-      (magit-blame-quit)
-    (call-interactively 'magit-blame)))
 #+end_src
 * Tools
 ** Calc
