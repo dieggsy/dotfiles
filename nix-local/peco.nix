@@ -3,8 +3,8 @@
 let
   go-flags = fetchgit {
     url = "git://github.com/jessevdk/go-flags";
-    rev = "6cf8f02b4ae8ba723ddc64dcfd403e530c06d927";
-    sha256 = "1wxyywnx4jynjkyagvcaypbiaq27w0sw3jzmcfgmrfkhi0763sh8";
+    rev = "f88afde2fa19a30cf50ba4b05b3d13bc6bae3079";
+    sha256 = "15mvh5ah5483wdbc9s3iw9xh2svc9l3wnjaacr38ksj5cyzxhcx5";
   };
   go-runewidth = fetchgit {
     url = "git://github.com/mattn/go-runewidth";
@@ -13,8 +13,8 @@ let
   };
   termbox-go = fetchgit {
     url = "git://github.com/nsf/termbox-go";
-    rev = "4ed959e0540971545eddb8c75514973d670cf739";
-    sha256 = "1vx64i1mg660if3wwm81p4b7lzxfb3qbr39i7misdyld3fc486p9";
+    rev = "d51f2f6d6ccb97dd83ed04ae2f79c34234851f39";
+    sha256 = "1rbrw2kjjr8pys15nhbf70wma4xc6pvxfa074ad63acnpnjpxyn6";
   };
 google-btree = fetchgit {
   "url"= "git://github.com/google/btree";
@@ -41,8 +41,8 @@ in stdenv.mkDerivation rec {
 
   src = fetchgit {
     url = "git://github.com/peco/peco";
-    rev = "7b7749376ff732b10c2a2f70252dad41081ca23a";
-    sha256 = "079lx0a6lwa94gczv0j9ppys33a3ig6vpah8gv4b8sg6md2ww13s";
+    rev = "1403c233d2ffa8c29154db0d38eefa1cff0fe119";
+    sha256 = "0jlp2dkjfqfq7ihxqnbskamg7z8bm2pbnq30pxxn99vdzsv27mjq";
   };
 
   buildInputs = [ go ];
