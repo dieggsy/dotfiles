@@ -1407,13 +1407,6 @@ Clean up whitespace before saving files.
 #+begin_src emacs-lisp
 (add-hook 'before-save-hook #'whitespace-cleanup)
 #+end_src
-Do dired actions (meaning file copying/deleting and the like) asynchronously.
-Which means it's less likely to block up emacs. Or something.
-#+begin_src emacs-lisp
-(d/with-eval-after-load 'dired
-  (autoload 'dired-async-mode "dired-async.el" nil t)
-  (dired-async-mode 1))
-#+end_src
 Backup
 #+begin_src emacs-lisp
 (setq version-control t
@@ -1423,7 +1416,7 @@ Executable
 #+begin_src emacs-lisp
 (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
 #+end_src
-** Packages
+** External Packages
 *** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
 #+begin_quote
   Make Emacs' delete-by-moving-to-trash do what you expect it to do on OS X.
@@ -1441,8 +1434,12 @@ Executable
 #+begin_src emacs-lisp
 (use-package dired+
   :after dired
+  :init
+  (setq diredp-hide-details-initially-flag nil
+        diredp-ignore-compressed-flag nil)
   :config
-  (diredp-toggle-find-file-reuse-dir 1))
+  ;; (diredp-toggle-find-file-reuse-dir 1)
+  )
 #+end_src
 
 *** [[https://github.com/emacsmirror/dired-du][dired-du]]
@@ -1459,6 +1456,7 @@ Executable
 #+begin_src emacs-lisp
 (use-package ranger
   :commands d/deer
+  :disabled
   :general
   (d/leader-keys
    "ad" 'd/deer
@@ -1539,9 +1537,95 @@ Executable
   :config
   (bookmark-maybe-load-default-file))
 #+end_src
+** Built-in
+*** Dired
+#+begin_src emacs-lisp
+(use-package dired
+  :ensure nil
+  :commands dired-here
+  :general
+  (d/leader-keys
+   "ad" 'dired-here)
+  :config
+  (setq dired-listing-switches "-lGXhA --group-directories-first"
+        dired-dwim-target t
+        dired-omit-files (rx string-start "." (1+ nonl) string-end)
+        dired-clean-confirm-killing-deleted-buffers nil)
+  (dired-async-mode 1)
 
+  (nmap :keymaps 'dired-mode-map
+    ;; "q" 'dired-quit
+    "h" 'dired-up-directory ;; 'diredp-up-directory-reuse-dir-buffer
+    "l" 'dired-open-file ;; 'diredp-find-file-reuse-dir-buffer
+    "j" 'dired-next-line
+    "k" 'dired-previous-line
+    "r" 'dired-do-rename
+    "R" 'dired-do-redisplay
+    "n" 'evil-ex-search-next
+    "N" 'evil-ex-search-previous
+    "t" '(:ignore t :wk "toggle")
+    "th" '(:command dired-omit-mode :wk "hidden")
+    "td" '(:command dired-du-mode :wk "du")
+    "tw" '(:command dired-toggle-read-only :wk "wdired"))
+
+  (d/leader-keys
+   :keymaps 'wdired-mode-map
+   "fs" 'wdired-finish-edit)
+
+  (defun dired-quit ()
+    (interactive)
+    (let* ((prev-buffers (buffer-list))
+           (nondired-pos (cl-position-if
+                          (lambda (buf)
+                            (with-current-buffer buf
+                              (not
+                               (eq major-mode 'dired-mode))))
+                          prev-buffers)))
+
+      (set-window-prev-buffers nil (nthcdr nondired-pos prev-buffers))
+      (quit-window)))
+
+  (defun dired-here (arg)
+    (interactive "P")
+    (if arg
+        (dired default-directory)
+      (dired-other-window default-directory)))
+
+  (define-advice dired-up-directory (:around (fn &optional other-window) preserve-quit-restore)
+    (let ((last-quit-restore (window-parameter nil 'quit-restore))
+          (prev-buffers (window-prev-buffers)))
+      (funcall fn other-window)
+      (set-window-parameter nil 'quit-restore (append
+                                               (cl-subseq last-quit-restore 0 3)
+                                               `(,(current-buffer))))
+      (set-window-prev-buffers nil prev-buffers)))
+
+  (define-advice dired-open-file (:around (fn &optional other-window) preserve-quit-restore)
+    (let ((last-quit-restore (window-parameter nil 'quit-restore))
+          (prev-buffers (window-prev-buffers)))
+      (funcall fn other-window)
+      (set-window-parameter nil 'quit-restore (append
+                                               (cl-subseq last-quit-restore 0 3)
+                                               `(,(current-buffer))))
+      (set-window-prev-buffers nil prev-buffers)))
+
+
+  (define-advice dired-find-alternate-file (:around (fn) preserve-quit-restore)
+    (let ((last-quit-restore (window-parameter nil 'quit-restore))
+          (prev-buffers (window-prev-buffers)))
+      (funcall fn)
+      (set-window-parameter nil 'quit-restore (append
+                                               (cl-subseq last-quit-restore 0 3)
+                                               `(,(current-buffer))))
+      (set-window-prev-buffers nil prev-buffers))))
+
+(d/setup-mode dired
+  (hl-line-mode 1)
+  ;; (dired-collapse-mode)
+  (dired-omit-mode))
+#+end_src
 ** Functions
-*** File Manipulation
+*** File/Buffer Manipulation
 #+begin_src emacs-lisp
 (defun d/copy-file ()
   "Copy file to another location.
