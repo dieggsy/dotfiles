@@ -86,112 +86,75 @@ length of PATH (sans directory slashes) down to MAX-LEN."
             components (cdr components)))
     (concat str (cl-reduce (lambda (a b) (concat a "/" b)) components))))
 
-(defun egp-git-status (&rest args)
-  (shell-command-to-string
-   (concat "/usr/bin/git status " (string-join args " "))))
 
-(defun egp-search-all (string &rest substrings)
-  (let ((count 0))
-    (dolist (substr substrings)
-      (cl-incf count (cl-loop
-                      for i = 0 then (1+ j)
-                      for counter = 0 then (1+ counter)
-                      as j = (string-match substr string i)
-                      when (not j)
-                      return counter)))
-    count))
-
-(defun egp-stylize (color symbol str)
-  (propertize (concat symbol (when str (format "%s" str)))
-              'face
-              `(:foreground ,color)))
-
-(defun egp-get-branch (git-status)
-  (cond ((string= git-status "") nil)
-        ((string-match "no branch" git-status)
-         (let ((commit (shell-command-to-string
-                        "/usr/bin/git rev-parse --short HEAD")))
-           (egp-stylize "#B8BB26" nil (concat ":"
-                                              (substring commit 0 (1- (length commit)))))))
-        (t
-         (egp-stylize "#B8BB26"  nil (substring git-status
-                                                (+ (string-match "## " git-status) 3)
-                                                (or (string-match "\\.\\.\\." git-status)
-                                                    (string-match "\n" git-status)))))))
-
-
-(defun egp-get-ahead-behind (git-status)
-  (let* ((first-line (substring git-status 0 (string-match "\n" git-status)))
-         (ahead (string-match "ahead" first-line))
-         (behind (string-match "behind" first-line)))
-    (cond ((and ahead behind)
-           (concat
-            (egp-stylize "#d3869b" "↑" (substring first-line
-                                                  (+ 6 ahead)
-                                                  (string-match "," first-line)))
-            (egp-stylize "#d3869b" "↓" (substring first-line
-                                                  (+ 7 behnd)
-                                                  (string-match "]" first-line)))))
-          (ahead
-           (egp-stylize "#d3869b" "↑" (substring first-line
-                                                 (+ 6 ahead)
-                                                 (cl-search "]" first-line))))
-          (behind
-           (egp-stylize "#d3869b" "↓" (substring first-line
-                                                 (+ 7 behind)
-                                                 (cl-search "]" first-line)))))))
-
-(defun egp-get-staged (git-status)
-  (let ((num (+ (egp-search-all git-status
-                                "\nA  "
-                                "\nM  "))))
-    (when (/= num 0)
-      (egp-stylize "#83A598"  "●" num))))
-
-(defun egp-get-modified (git-status)
-  (let ((num (+ (egp-search-all git-status
-                                "\n M "
-                                "\nAM "
-                                "\n T "))))
-    (when (/= num 0)
-      (egp-stylize "#FB4933"  "✚" num))))
-
-(defun egp-get-conflicts (git-status)
-  (let ((num (+ (egp-search-all git-status
-                                "\nDD "
-                                "\nAU "
-                                "\nUD "
-                                "\nUA "
-                                "\nDU "
-                                "\nAA "
-                                "\nUU "))))
-    (when (/= num 0)
-      (egp-stylize "#FB4933"   "✖" num))))
-
-(defun egp-get-dirty (git-status)
-  (when (string-match  "\n\\?\\? " git-status)
-    "…"))
+(defun egp-stylize (color symbol &optional num)
+  (if (or (not num) (and num (not (zerop num))))
+      (propertize (concat symbol (when num (format "%s" num)))
+                  'face
+                  `(:foreground ,color))
+    ""))
 
 (defun egp-get-git-status ()
-  (let ((status (egp-git-status "--porcelain" "-b" "2>" "/dev/null")))
-    (when (not (string= status ""))
-      (let ((branch (egp-get-branch status))
-            (ahead-behind (egp-get-ahead-behind status))
-            (staged (egp-get-staged status))
-            (conflicts (egp-get-conflicts status))
-            (modified (egp-get-modified status))
-            (dirty (egp-get-dirty status)))
-        (concat "("
-                branch
-                ahead-behind
-                "|"
-                (if (or staged conflicts modified dirty)
-                    (concat staged
-                            conflicts
-                            modified
-                            dirty)
-                  (egp-stylize "#B8BB26"  "✓" nil))
-                ")")))))
+  (let ((status (shell-command-to-string "git status --porcelain -b 2> /dev/null")))
+    (when (not (string-empty-p status))
+      (let* ((split (split-string status "\n" t))
+             (first-line (car split))
+             (branch
+              (if (string-match-p "(no branch)" first-line)
+                  (string-append
+                   ":"
+                   (string-trim-right
+                    (shell-command-to-string "git rev-parse --short HEAD")))
+                (car (split-string
+                      (cadr (split-string first-line " " t))
+                      "\\."
+                      t))))
+             (ahead-behind-pos (cl-position (string-to-char "[") first-line))
+             (ahead-pos (and ahead-behind-pos
+                             (string-match-p "ahead"
+                                             first-line
+                                             ahead-behind-pos)))
+             (behind-pos (and ahead-behind-pos
+                              (string-match-p "behind"
+                                              first-line
+                                              ahead-behind-pos)))
+             (ahead (if ahead-pos
+                        (string-to-number (substring first-line
+                                                     (+ ahead-pos 6)
+                                                     (+ ahead-pos 7)))))
+             (behind (if behind-pos
+                         (string-to-number (substring first-line
+                                                      (+ behind-pos 7)
+                                                      (+ behind-pos 8)))
+                       0))
+             (files (cdr split))
+             (status-list (mapcar (lambda (str)
+                                    (substring str 0 2))
+                                  files))
+             (staged (cl-count (lambda (str)
+                                 (member str '(" M" " D" "AM" " T")))
+                               status-list))
+             (dirty (member "??" status-list))
+             (modified (cl-count (lambda (str)
+                                   (member str '(" M" " D" "AM" " T")))
+                                 status-list))
+             (conflicts (cl-count (lambda (str)
+                                    (member str '("DD" "AU" "UD" "DU" "AA" "UU")))
+                                  status-list)))
+        (format "(%s%s%s|%s%s%s%s%s)"
+                (egp-stylize "#B8BB26" branch)
+                (egp-stylize "#D3869B" "↑" ahead)
+                (egp-stylize "#D3869B" "↓" behind)
+                (egp-stylize "#83A598" "●" staged)
+                (egp-stylize "#FB4933" "✖" conflicts)
+                (egp-stylize "#FB4933" "✚" modified)
+                (if dirty "…" "")
+                (if (and (zerop staged)
+                         (zerop conflicts)
+                         (zerop modified)
+                         (not dirty))
+                    (egp-stylize "#B8BB26" "✓")
+                  ""))))))
 
 ;;;###autoload
 (defun egp-theme ()
