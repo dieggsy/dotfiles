@@ -2474,6 +2474,7 @@ imenu on steroids.
  "jf" 'find-function
  "ji" 'imenu
  "jv" 'find-variable
+ "jj" 'find-library
 
  "wd" 'delete-window
  "wf" 'make-frame
