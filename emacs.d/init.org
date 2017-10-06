@@ -37,12 +37,12 @@ there's that.
 * Initial Setup
 ** Lexical binding
 In accordance with the [[https://github.com/bbatsov/emacs-lisp-style-guide#source-code-layout--organization][emacs-lisp-style-guide]].
-#+begin_src emacs-lisp :comments no
+#+begin_src emacs-lisp :comments no :cond-case no :padline no
 ;;; -*- lexical-binding: t -*-
 #+end_src
 ** package-initialize
 ~package.el~ is annoying like that.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :comments no :cond-case no :padline no
 ;;(package-initialize)
 #+end_src
 ** Startup time
@@ -337,6 +337,26 @@ except for warnings and errors.
        (lambda ()
          ;; make async emacs aware of packages (for byte-compilation)
          (require 'org)
+
+         ;; Selectively condition-case some blocks
+         (defvar d/src-params)
+
+         (define-advice org-babel-tangle-single-block
+             (:before (block-counter &optional only-this-block))
+           (setq d/src-params (nth 2 (org-babel-get-src-block-info))))
+
+         (defun d/org-wrap-with-condition-case ()
+           (let ((src-text (buffer-string)))
+             (unless (or (string= (alist-get :cond-case d/src-params) "no")
+                         (string-prefix-p "(use-package" src-text)
+                         (string-prefix-p "(d/with-eval-after-load" src-text))
+               (beginning-of-buffer)
+               (insert
+                "(condition-case-unless-debug err\n    (progn\n")
+               (end-of-buffer)
+               (insert ")\n  (error (display-warning 'init (format \"init.el: %s\" (error-message-string err)))))"))))
+
+         (add-hook 'org-babel-tangle-body-hook #'d/org-wrap-with-condition-case)
 
          ;; tangle
          (org-babel-tangle-file
