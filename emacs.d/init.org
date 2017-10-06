@@ -4706,11 +4706,12 @@ Source: http://tinyurl.com/lo96nwc"
                                        "#i3"
                                        "#lisp"
                                        "#chicken"
-                                       "#nixos")))
+                                       "#nixos"))
+        erc-log-channels-directory (no-littering-expand-var-file-name "erc/logs"))
 
   (erc-define-catalog-entry 'english 'ACTION "         *\t%n %a"))
 #+end_src
-*** Packages
+*** Builtin
 #+begin_src emacs-lisp
 (use-package erc
   :ensure nil
@@ -4724,8 +4725,10 @@ Source: http://tinyurl.com/lo96nwc"
     [up] 'erc-previous-command
     [down] 'erc-next-command)
   :config
-  (add-hook 'window-configuration-change-hook #'d/erc-to-bottom))
+  (add-hook 'window-configuration-change-hook #'d/erc-to-bottom)
+  (add-hook 'erc-insert-post-hook #'erc-save-buffer-in-logs))
 #+end_src
+*** Packages
 **** [[https://github.com/leathekd/erc-hl-nicks][erc-hl-nicks]]
 #+begin_src emacs-lisp
 (use-package erc-hl-nicks
@@ -4872,6 +4875,7 @@ Source: http://tinyurl.com/y8tj8vxx"
   (setq tab-width 5)
   (erc-stamp-mode -1)
   (erc-notifications-mode 1)
+  (erc-log-mode 1)
   (evil-smartparens-mode -1)
   (show-smartparens-mode -1)
   (erc-move-to-prompt-mode 1))
