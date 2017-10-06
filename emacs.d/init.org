@@ -3707,8 +3707,7 @@ Source: https://git.io/vQKub"
   :ensure nil
   :config
   (setq eshell-prefer-lisp-functions t
-        eshell-scroll-to-bottom-on-input t
-        eshell-banner-message ""))
+        eshell-scroll-to-bottom-on-input t))
 #+end_src
 *** Packages
 **** egp
@@ -3757,7 +3756,14 @@ Source: https://git.io/vQKub"
     "Custom `eshell' clear function to clear to top."
     (interactive)
     (let ((inhibit-read-only t))
-      (erase-buffer)))
+      (erase-buffer)
+      (remove-overlays (point-min) (point-max))))
+
+  (defun eshell-clear-keystroke ()
+    "Allow for keystrokes to invoke eshell/clear."
+    (interactive)
+    (eshell/clear)
+    (eshell-emit-prompt))
 
   (defun eshell/cpg (&optional x)
     (let* ((ghq-dirs
@@ -3838,8 +3844,10 @@ Source: https://git.io/vQKub"
 #+begin_src emacs-lisp
 (d/setup-mode eshell
   (imap :keymaps 'eshell-mode-map
-    "C-p" 'eshell/cool-peco-ps
-    "C-r" 'eshell/cool-peco-history))
+    "C-p" (general-predicate-dispatch nil
+            (eshell-point-within-input-p) 'eshell/cool-peco-ps)
+    "C-r" 'eshell/cool-peco-history
+    "C-l" 'eshell-clear-keystroke))
 #+end_src
 ** Term
 #+begin_src emacs-lisp
