@@ -3611,7 +3611,8 @@ Source: http://tinyurl.com/le6wxuo"
         (when url
           (make-process
            :name "nix-prefetch-git"
-           :command `("nix-prefetch-git" ,url "--quiet" "--fetch-submodules")
+           :command `("nix-prefetch-git" ,url "--fetch-submodules")
+           :stderr (get-buffer-create "*nix-prefetch-git*")
            :filter
            `(lambda (process output)
               (let* ((json-vals (json-read-from-string output))
