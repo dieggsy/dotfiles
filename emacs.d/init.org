@@ -4017,6 +4017,7 @@ Like git, for emacs. But cooler.
 I wanted a slightly better terminal in emacs. This seems to do the trick.
 #+begin_src emacs-lisp
 (use-package sane-term
+  :after term
   :general (d/leader-keys "at" 'sane-term-create))
 #+end_src
 * Enhancements
