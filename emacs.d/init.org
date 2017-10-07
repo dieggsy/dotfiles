@@ -3830,7 +3830,8 @@ Like git, for emacs. But cooler.
   :ensure nil
   :config
   (setq eshell-prefer-lisp-functions t
-        eshell-scroll-to-bottom-on-input t))
+        eshell-scroll-to-bottom-on-input t
+        eshell-hist-ignoredups t))
 #+end_src
 *** Packages
 **** egp
@@ -3933,8 +3934,7 @@ Like git, for emacs. But cooler.
     (`("edit" . ,ll) (password-store-edit ll)))
 
   (defun eshell/rg (&rest args)
-    (eshell-grep "rg" (append '("--no-heading" "-M" "120") args))
-    (other-window 1))
+    (eshell-grep "rg" (append '("--no-heading" "-M" "120") args) t))
 
   (defun eshell/cool-peco-ps ()
     (interactive)

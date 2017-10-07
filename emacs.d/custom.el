@@ -17,7 +17,10 @@
  '(doc-view-resolution 300)
  '(eshell-modules-list
    (quote
-    (eshell-alias eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-rebind eshell-script eshell-smart eshell-term eshell-tramp eshell-unix)))
+    (eshell-alias eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-smart eshell-term eshell-tramp eshell-unix)))
+ '(eshell-visual-commands
+   (quote
+    ("htop" "cmus" "vi" "screen" "top" "less" "more" "lynx" "ncftp" "pine" "tin" "trn" "elm")))
  '(fci-rule-color "#504945")
  '(fill-column 79)
  '(focus-mode-to-thing
