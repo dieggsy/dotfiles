@@ -2516,15 +2516,15 @@ Source: https://git.io/vQKuF"
 
   (eyebrowse-mode))
 #+end_src
-*** [[https://github.com/roman/golden-ratio][golden-ratio]]
+*** [[https://github.com/cyrus-and/zoom][zoom]]
 #+begin_src emacs-lisp
-(use-package golden-ratio
-  :after exwm
+(use-package zoom-mode
+  :demand t
+  :recipe (:host github
+           :repo "cyrus-and/zoom")
   :config
-  (define-advice select-window (:after (window &optional no-record) golden-ratio-resize-window)
-    (golden-ratio)
-    nil)
-  (golden-ratio-mode))
+  (setq zoom-size '(0.618 . 0.618))
+  (zoom-mode t))
 #+end_src
 *** [[https://github.com/jacktasia/dumb-jump][dumb-jump]]
 #+begin_src emacs-lisp
