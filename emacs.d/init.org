@@ -1620,7 +1620,7 @@ Executable
 
 (d/setup-mode dired
   (hl-line-mode 1)
-  ;; (dired-collapse-mode)
+  (dired-collapse-mode)
   (dired-omit-mode))
 #+end_src
 ** Functions
