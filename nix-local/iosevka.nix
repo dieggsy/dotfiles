@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   name = "iosevka-${version}";
-  version = "1.13.3";
+  version = "master";
 
   src = fetchFromGitHub {
     "owner" = "be5invis";

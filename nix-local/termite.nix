@@ -3,9 +3,9 @@
 }:
 
 let
-  version = "12-68b92d37";
+  version = "master";
   termite = stdenv.mkDerivation {
-    name = "termite-${version}";
+  name = "termite-${version}";
 
   src = fetchgit {
     url = "https://github.com/thestinger/termite";

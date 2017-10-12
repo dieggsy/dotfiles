@@ -4,17 +4,17 @@ with rustPlatform;
 
 buildRustPackage rec {
   name = "exa-${version}";
-  version = "0.8.0";
+  version = "master";
 
 
   src = fetchFromGitHub {
     owner = "ogham";
     repo = "exa";
-    rev = "547ceda15b4acff640c3fa24705d0ceaf9321b2b";
-    sha256 = "1piin1cxhml8w76hlmzbq3lxzbxg444pa1b7r30p84578hx27aly";
+    rev = "8123122fac316486581d4dec938281b91565ca33";
+    sha256 = "1p2m487ifd2iplzkq0ngfjy54yid7n6yd14w8fcxfdk87idb6shm";
   };
 
-  depsSha256 = "0yz41prkjs5rmvdhr9k58a52l7hvwy5mfg8rcpsq4ybgf601lja2";
+  depsSha256 = "1b79m6f2hfm6j7cwf42xahzpyviivy57zgbsclr1f1a3d7vv9cfr";
 
   nativeBuildInputs = [ cmake pkgconfig perl ];
   buildInputs = [ zlib ];

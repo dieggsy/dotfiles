@@ -2,7 +2,7 @@
 
 stdenv.mkDerivation rec {
   name = "pass-git-helper-${version}";
-  version = "0.5-dev";
+  version = "master";
 
   src = fetchFromGitHub {
     owner = "languitar";

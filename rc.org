@@ -87,26 +87,28 @@ map K previousTab
       inherit (pkgs.darwin.apple_sdk.frameworks) AppKit CoreWLAN GSS Kerberos ImageIO;
     };
 
-    ripgrep = super.callPackage ~/dotfiles/nix-local/ripgrep.nix {};
+    ripgrep-master = super.callPackage ~/dotfiles/nix-local/ripgrep.nix {};
 
-    exa = super.callPackage ~/dotfiles/nix-local/exa.nix {};
+    exa-master = super.callPackage ~/dotfiles/nix-local/exa.nix {};
 
     peco-master = super.callPackage ~/dotfiles/nix-local/peco.nix {};
 
-    iosevka = super.callPackage ~/dotfiles/nix-local/iosevka.nix {};
+    iosevka-master = super.callPackage ~/dotfiles/nix-local/iosevka.nix {};
 
+    pass-git-helper-master = super.callPackage ~/dotfiles/nix-local/pass-git-helper.nix {
+      inherit (python3Packages) setuptools;
+    };
+
+    termite-master = super.callPackage ~/dotfiles/nix-local/termite.nix {
+      vte = gnome3.vte-ng;
+    };
+
+    # Options and overrides
     polybar = super.polybar.override {
       i3GapsSupport = true;
       githubSupport = true;
     };
 
-    pass-git-helper = super.callPackage ~/dotfiles/nix-local/pass-git-helper.nix {
-      inherit (python3Packages) setuptools;
-    };
-
-    termite = super.callPackage ~/dotfiles/nix-local/termite.nix {
-      vte = gnome3.vte-ng;
-    };
     # Dependencies
     rustRegistry = super.callPackage ~/dotfiles/nix-local/deps/rust-packages.nix {};
 
