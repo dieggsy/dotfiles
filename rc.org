@@ -215,6 +215,24 @@ Keywords=tiling;wm;windowmanager;window;manager;emacs;
 <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
 <fontconfig>
   <dir>~/.nix-profile/share/fonts</dir>
+  <alias>
+    <family>Iosevka Term</family>
+    <default>
+      <family>monospace</family>
+    </default>
+    <prefer>
+      <family>FontAwesome</family>
+    </prefer>
+  </alias>
+  <match>
+    <test compare="eq" name="family">
+      <string>sans-serif</string>
+    </test>
+    <test compare="eq" name="family">
+      <string>monospace</string>
+    </test>
+    <edit mode="delete" name="family"/>
+  </match>
 </fontconfig>
 #+end_src
 ** git
