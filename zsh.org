@@ -271,7 +271,7 @@ bindkey '^F' cool-peco-all-funcs
 #+end_src
 ** Vars
 #+begin_src sh
- [ -z $TMUX ] && [ -z $INSIDE_EMACS ] && [ "$(uname)" = "Linux" ] && export TERM=xterm-256color
+ [ -z $TMUX ] && [ -z $INSIDE_EMACS ] && [ "$(uname)" = "Linux" ] && export TERM=xterm-24bit
 
 # some ls colors i've gotten used to
 export LS_COLORS='di=0;94:ex=0;92:ln=0;36'

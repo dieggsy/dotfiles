@@ -30,6 +30,7 @@ more readable in org format than in rendered markdown.
   - [[#xresources][Xresources]]
   - [[#xsessionrc][xsessionrc]]
   - [[#zathurarc][zathurarc]]
+  - [[#xterm-24bitterminfo][xterm-24bit.terminfo]]
 - [[#scripts][Scripts]]
   - [[#i3-exit][i3-exit]]
   - [[#i3blocksexwm-utils][i3blocks/exwm utils]]
@@ -1686,6 +1687,22 @@ set statusbar-fg "#fdf4c1"
 set first-page-column 1
 set recolor-darkcolor "#fDf4c1"
 set recolor-lightcolor "#282828"
+#+end_src
+** xterm-24bit.terminfo
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/xterm-24bit.terminfo")
+:END:
+#+begin_src text :comments no
+# Use colon separators.
+xterm-24bit|xterm with 24-bit direct color mode,
+  use=xterm-256color,
+  setb24=\E[48:2:%p1%{65536}%/%d:%p1%{256}%/%{255}%&%d:%p1%{255}%&%dm,
+  setf24=\E[38:2:%p1%{65536}%/%d:%p1%{256}%/%{255}%&%d:%p1%{255}%&%dm,
+# Use semicolon separators.
+xterm-24bits|xterm with 24-bit direct color mode,
+  use=xterm-256color,
+  setb24=\E[48;2;%p1%{65536}%/%d;%p1%{256}%/%{255}%&%d;%p1%{255}%&%dm,
+  setf24=\E[38;2;%p1%{65536}%/%d;%p1%{256}%/%{255}%&%d;%p1%{255}%&%dm,
 #+end_src
 * Scripts
 ** i3-exit
