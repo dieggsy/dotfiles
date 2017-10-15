@@ -1628,6 +1628,13 @@ Executable
   (dired-collapse-mode)
   (dired-omit-mode))
 #+end_src
+*** Ibuffer
+#+begin_src emacs-lisp
+(use-package ibuffer
+  :init
+  (d/setup-mode ibuffer
+    (ibuffer-switch-to-saved-filter-groups "Default")))
+#+end_src
 ** Functions
 *** File/Buffer Manipulation
 #+begin_src emacs-lisp
