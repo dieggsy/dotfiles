@@ -483,7 +483,9 @@ editing. So I went for it. Now I'll never go back.
                   sunshine-mode))
     (add-to-list 'evil-emacs-state-modes mode))
 
-  (dolist (mode '(ibuffer-mode Custom-mode))
+  (dolist (mode '(ibuffer-mode
+                  Custom-mode
+                  proced-mode))
     (setq evil-emacs-state-modes (delq mode evil-emacs-state-modes)))
 
   ;; Use insert state in these additional modes.
@@ -4407,10 +4409,6 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
   (kbd "C-u")     'evil-scroll-up
   (kbd "C-w C-w") 'other-window)
 
-(evil-add-hjkl-bindings proced-mode-map 'emacs
-  (kbd "/") 'evil-ex-search-forward
-  (kbd "K") 'proced-send-signal)
-
 (evil-add-hjkl-bindings completion-list-mode-map 'emacs
   (kbd "/") 'evil-ex-search-forward)
 
@@ -4425,6 +4423,14 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 (with-eval-after-load 'profiler
   (defvar profiler-report-mode-map)
   (evil-make-overriding-map profiler-report-mode-map 'normal))
+
+(d/with-eval-after-load 'proced
+  (defvar proced-mode-map)
+  (evil-make-overriding-map proced-mode-map 'normal))
+
+(evil-add-hjkl-bindings proced-mode-map 'normal
+  "n" 'evil-ex-search-next
+  "K" 'proced-send-signal)
 #+end_src
 ** Org
 *** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
