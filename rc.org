@@ -592,12 +592,12 @@ new_window pixel 1
 **** Bindings
 #+begin_src conf
 # Keyboard brightness
-bindsym XF86KbdBrightnessDown exec kb-light - && pkill -RTMIN+2 i3blocks
-bindsym XF86KbdBrightnessUp exec kb-light + && pkill -RTMIN+2 i3blocks
+bindsym XF86KbdBrightnessDown exec kb-light -
+bindsym XF86KbdBrightnessUp exec kb-light +
 
 # Screen brightness
-bindsym XF86MonBrightnessUp exec ~/bin/i3blocks/bright Backlight + && pkill -RTMIN+2 i3blocks
-bindsym XF86MonBrightnessDown exec ~/bin/i3blocks/bright Backlight - && pkill -RTMIN+2 i3blocks
+bindsym XF86MonBrightnessUp exec ~/bin/i3blocks/screen + && pkill -RTMIN+2 i3blocks
+bindsym XF86MonBrightnessDown exec ~/bin/i3blocks/screen - && pkill -RTMIN+2 i3blocks
 
 # Audio controls
 bindsym XF86AudioMute exec amixer -D pulse sset Master toggle && pkill -RTMIN+3 i3blocks
@@ -642,40 +642,32 @@ for_window [class="Plasmoidviewer"] floating enable; border none
 :END:
 #+begin_src conf
 separator=false
-# separator_block_width=7
 border_top=0
 border_left=0
 border_right=0
 border_bottom=2
-
-# [focused window]
-# command=xtitle -s -t 75 -f "  %s\n"
-# interval=persist
+command=~/bin/i3blocks/$BLOCK_NAME
 
 [music]
-command=~/bin/i3blocks/music
 interval=5
 signal=1
 border=#FE8019
 
 [layout]
-command=~/bin/i3blocks/layout
 interval=once
 border=#8EC07C
 
-[Vol]
-command=~/bin/i3blocks/volume
+[volume]
 interval=once
 signal=3
-
 border=#FB4933
-[Brightness]
-command=~/bin/i3blocks/bright
-interval=once
+
+[screen]
+interval=5
 signal=2
 border=#FABD2F
 
-[Disk]
+[disk]
 label=  
 command=~/bin/i3blocks/disk /
 interval=30
@@ -683,19 +675,17 @@ border=#D3869B
 
 [wifi]
 label=  
-command=~/bin/i3blocks/wifi
 interval=2
 border=#B8bb26
 
-[Bat]
-command=~/bin/i3blocks/battery
+[battery]
 interval=30
 border=#83A598
 
-[Time]
-command=~/bin/i3blocks/date
+[date]
 interval=10
 border=#A89984
+# border=#DD6F48
 #+end_src
 *** i3status
 :PROPERTIES:
@@ -1774,50 +1764,23 @@ fi
 
 echo -e "  $icon  $bat "
 #+end_src
-*** bright
+*** screen
 :PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/bright") :shebang "#!/bin/bash"
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/screen") :shebang "#!/bin/bash"
 :END:
 #+begin_src sh
-if [ "$XDG_CURRENT_DESKTOP" = "exwm" ]; then
-    mode="$1"
-else
-    mode="$(<~/bin/i3blocks/brightness.txt)"
+brightness=$(xbacklight -get)
+multiple=$(printf %.0f $(echo "scale=2; $brightness / 5" | bc))
+brightness=$((($multiple * 5)))
+if [ "$1" = "+" ]; then
+    brightness=$((($brightness + 5)))
+    xbacklight -set $brightness > /dev/null 2>&1
+elif [ "$1" = "-" ]; then
+    brightness=$((($brightness - 5)))
+    xbacklight -set $brightness > /dev/null 2>&1
 fi
 
-if [ "$mode" = "Backlight" ]; then
-    brightness=$(xbacklight -get)
-    multiple=$(printf %.0f $(echo "scale=2; $brightness / 5" | bc))
-    brightness=$((($multiple * 5)))
-    if [ "$2" = "+" ] || [ "$BLOCK_BUTTON" = "5" ]; then
-        brightness=$((($brightness + 5)))
-        xbacklight -set $brightness > /dev/null 2>&1
-    elif [ "$2" = "-" ] || [ "$BLOCK_BUTTON" = "4" ]; then
-        brightness=$((($brightness - 5)))
-        xbacklight -set $brightness > /dev/null 2>&1
-    elif  [ "$BLOCK_BUTTON" = "1" ]; then
-        echo "Kb-light" > ~/bin/i3blocks/brightness.txt
-        pkill -RTMIN+2 i3blocks
-        # mode="Backlight"
-    fi
-    echo "    $brightness"
-elif [ "$mode" = "Kb-light" ]; then
-    if [ "$2" = "+" ] || [ "$BLOCK_BUTTON" = "5" ];then
-        kb-light + > /dev/null 2>&1
-    elif [ "$2" = "-" ] || [ "$BLOCK_BUTTON" = "4" ];then
-        kb-light - > /dev/null 2>&1
-    elif [ "$BLOCK_BUTTON" = "1" ]; then
-        echo "Backlight" > ~/bin/i3blocks/brightness.txt
-        pkill -RTMIN+2 i3blocks
-        # mode="Kb-light"
-    fi
-    brightness="$(kb-light)"
-    echo "    $brightness"
-fi
-
-if [ "$XDG_CURRENT_DESKTOP" = "exwm" ]; then
-    emacsclient --eval "(message \"$mode: $brightness\")"
-fi
+echo "    $brightness"
 #+end_src
 *** date
 :PROPERTIES:
