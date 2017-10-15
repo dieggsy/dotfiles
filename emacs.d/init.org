@@ -1192,6 +1192,8 @@ Source: https://git.io/vQKEa"
  "qf" 'delete-frame
  "qq" 'save-buffers-kill-emacs
 
+ "t"   '(:command d/toggle/body :wk "toggle")
+
  "&"   'async-shell-command
  ":"   'eval-expression
  "r"   'repeat
@@ -1240,12 +1242,7 @@ also use these keys to quit out of the minibuffer.
  "SPC u" 'universal-argument-more)
 #+end_src
 * Help
-** Defaults
-#+begin_src emacs-lisp
-(d/with-eval-after-load 'man
-  (setq Man-notify-method 'aggressive))
-#+end_src
-** Packages
+** External Packages
 *** [[https://github.com/abo-abo/define-word][define-word]]
 #+begin_quote
   Display the definition of word at point in Emacs
@@ -1358,6 +1355,15 @@ Non-interactively SEARCH-STRING is the string to search."
   (nmap :keymaps 'tldr-mode-map
     "q" 'quit-window))
 #+end_src
+** Builtin
+#+begin_src emacs-lisp
+(use-package man
+  :general
+  (d/leader-keys
+   "hm" 'man)
+  :config
+  (setq Man-notify-method 'aggressive))
+#+end_src
 ** Bindings
 Leader bindings
 #+begin_src emacs-lisp
@@ -1375,7 +1381,6 @@ Leader bindings
  "hdp" 'describe-package
  "hds" 'describe-symbol
  "hdt" 'describe-theme
- "hm"  'man
  "hn"  'view-emacs-news
  "hs"  'system-name
  "hv"  'version)
@@ -1548,12 +1553,6 @@ Executable
   (d/leader-keys
    "ad" 'dired-here)
   :config
-  (setq dired-listing-switches "-lGXhA --group-directories-first"
-        dired-dwim-target t
-        dired-omit-files (rx string-start "." (1+ nonl) string-end)
-        dired-clean-confirm-killing-deleted-buffers nil)
-  (dired-async-mode 1)
-
   (nmap :keymaps 'dired-mode-map
     ;; "q" 'dired-quit
     "h" 'dired-up-directory ;; 'diredp-up-directory-reuse-dir-buffer
@@ -1568,6 +1567,12 @@ Executable
     "th" '(:command dired-omit-mode :wk "hidden")
     "td" '(:command dired-du-mode :wk "du")
     "tw" '(:command dired-toggle-read-only :wk "wdired"))
+
+  (setq dired-listing-switches "-lGXhA --group-directories-first"
+        dired-dwim-target t
+        dired-omit-files (rx string-start "." (1+ nonl) string-end)
+        dired-clean-confirm-killing-deleted-buffers nil)
+  (dired-async-mode 1)
 
   (d/leader-keys
    :keymaps 'wdired-mode-map
@@ -3829,12 +3834,19 @@ Like git, for emacs. But cooler.
 #+begin_src emacs-lisp
 (use-package eshell
   :ensure nil
+  :init
+  (d/setup-mode eshell
+    (imap :keymaps 'eshell-mode-map
+      "C-p" (general-predicate-dispatch nil
+              (eshell-point-within-input-p) 'eshell/cool-peco-ps)
+      "C-r" 'eshell/cool-peco-history
+      "C-l" 'eshell-clear-keystroke))
   :config
   (setq eshell-prefer-lisp-functions t
         eshell-scroll-to-bottom-on-input t
         eshell-hist-ignoredups t))
 #+end_src
-*** Packages
+*** External Packages
 **** egp
 #+begin_src emacs-lisp
 (use-package egp
@@ -3963,15 +3975,6 @@ Like git, for emacs. But cooler.
                 history
                 :action (lambda (x)
                           (insert x))))))
-#+end_src
-*** Setup
-#+begin_src emacs-lisp
-(d/setup-mode eshell
-  (imap :keymaps 'eshell-mode-map
-    "C-p" (general-predicate-dispatch nil
-            (eshell-point-within-input-p) 'eshell/cool-peco-ps)
-    "C-r" 'eshell/cool-peco-history
-    "C-l" 'eshell-clear-keystroke))
 #+end_src
 ** Term
 #+begin_src emacs-lisp
@@ -4395,9 +4398,6 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 #+end_src
 *** Bindings
 #+begin_src emacs-lisp
-(d/leader-keys
- "t"   '(:command d/toggle/body :wk "toggle"))
-
 (nmap :keymaps 'custom-mode-map
   "q" #'Custom-buffer-done)
 

@@ -79,8 +79,8 @@ map K previousTab
 
   packageOverrides = super: let self = super.pkgs; in with self; rec {
 
-    # Packages
-    emacs-master = super.callPackage ~/dotfiles/nix-local/emacs-master {
+    # Packages from source
+    emacs-master = super.callPackage ~/dotfiles/nix-local/emacs {
       # use override to enable additional features
       libXaw = pkgs.xorg.libXaw;
       Xaw3d = null;
