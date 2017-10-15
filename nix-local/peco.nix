@@ -13,8 +13,8 @@ let
   };
   termbox-go = fetchgit {
     url = "git://github.com/nsf/termbox-go";
-    rev = "d51f2f6d6ccb97dd83ed04ae2f79c34234851f39";
-    sha256 = "1rbrw2kjjr8pys15nhbf70wma4xc6pvxfa074ad63acnpnjpxyn6";
+    rev = "10cefba34bc5e7a6e5df0836a42513c28a10e074";
+    sha256 = "05jy6dpva2a1xfsv3yajavbx41gx8hhh5k3k901dnk0118hnyd0w";
   };
 google-btree = fetchgit {
   "url"= "git://github.com/google/btree";

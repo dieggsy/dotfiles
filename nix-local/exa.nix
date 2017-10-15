@@ -9,11 +9,11 @@ buildRustPackage rec {
   src = fetchFromGitHub {
     owner = "ogham";
     repo = "exa";
-    rev = "8123122fac316486581d4dec938281b91565ca33";
-    sha256 = "1p2m487ifd2iplzkq0ngfjy54yid7n6yd14w8fcxfdk87idb6shm";
+    rev = "0eb796629402938289726e07cf7ffa5263967b4d";
+    sha256 = "06z57j6xb1vsxfqb7ql4kgl5188hrapmfd0hxvw5kvfndcqbqgj7";
   };
 
-  depsSha256 = "1b79m6f2hfm6j7cwf42xahzpyviivy57zgbsclr1f1a3d7vv9cfr";
+  depsSha256 = "1zi1amr5fs8kxsirkxd45p9da2mf51wczxxzxhry5kig25bac0x1";
 
   nativeBuildInputs = [ cmake pkgconfig perl ];
   buildInputs = [ zlib ];

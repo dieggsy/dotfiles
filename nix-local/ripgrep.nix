@@ -9,8 +9,8 @@ buildRustPackage rec {
   src = fetchFromGitHub {
     owner = "BurntSushi";
     repo = "ripgrep";
-    rev = "e7c06b92fb996adcbc40d1f025e29c44de5383e8";
-    sha256 = "1gshqx71p6mdbhs37wrp35rd3rlis7mmmvmamrhmxiamki2s2hc0";
+    rev = "a98156e71cc2aefd2d3e18c76c6d09cc1ef8c5ac";
+    sha256 = "16nmbrl07p0cpmv5lfi8b8kss2c3ynnrjrjqz0mp5qp935r1lh62";
   };
 
   depsSha256 = "1g2qm9mdnh79iqwldywa0h81nvxvv3wdpvxns60f4nw9iqz6a7pm";
