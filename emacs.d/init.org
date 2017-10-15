@@ -438,7 +438,7 @@ editing. So I went for it. Now I'll never go back.
 (use-package evil
   :demand t
   :general
-  (nmap
+  (:keymaps 'normal
    "S-SPC" 'org-agenda-list
    "-" 'negative-argument
    "\\" 'evil-window-next
@@ -1809,7 +1809,7 @@ Supposedly better than autocomplete.
 #+begin_src emacs-lisp
 (use-package evil-mc
   :general
-  (nmap
+  (:keymaps 'normal
    "gr"  '(:ignore t :wk "mc")
    "grm" 'evil-mc-make-all-cursors
    "gru" 'evil-mc-undo-all-cursors
@@ -4350,7 +4350,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
   :commands (evilnc-comment-operator
              d/comment-or-uncomment-lines-inverse)
   :general
-  (nmap
+  (:keymaps 'normal
    "gc" 'evilnc-comment-operator
    "gy" 'evilnc-copy-and-comment-lines)
   (d/leader-keys
