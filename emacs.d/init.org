@@ -2581,10 +2581,10 @@ imenu on steroids.
 #+begin_src emacs-lisp
 (d/leader-keys
  "jI" 'imenu-anywhere
- "jf" 'find-function
+ "jf" 'find-function-other-window
  "ji" 'imenu
- "jv" 'find-variable
- "jj" 'find-library
+ "jv" 'find-variable-other-window
+ "jj" 'find-library-other-window
 
  "wd" 'delete-window
  "wf" 'make-frame
