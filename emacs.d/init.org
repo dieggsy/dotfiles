@@ -4331,7 +4331,10 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 #+end_quote
 #+begin_src emacs-lisp
 (use-package evil-magit
-  :after magit)
+  :after magit
+  :config
+  (nmap :keymaps 'magit-mode-map
+    "/" 'evil-ex-search-forward))
 #+end_src
 **** [[https://github.com/redguardtoo/evil-matchit][evil-matchit]]
 #+begin_src emacs-lisp
