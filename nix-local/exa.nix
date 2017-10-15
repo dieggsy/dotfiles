@@ -4,8 +4,7 @@ with rustPlatform;
 
 buildRustPackage rec {
   name = "exa-${version}";
-  version = "master";
-
+  version = "0.8.0";
 
   src = fetchFromGitHub {
     owner = "ogham";

@@ -90,7 +90,7 @@ map K previousTab
 
     ripgrep-master = super.callPackage ~/dotfiles/nix-local/ripgrep.nix {};
 
-    exa-master = super.callPackage ~/dotfiles/nix-local/exa.nix {};
+    exa = super.callPackage ~/dotfiles/nix-local/exa.nix {};
 
     peco-master = super.callPackage ~/dotfiles/nix-local/peco.nix {};
 
