@@ -323,6 +323,10 @@ except for warnings and errors.
       password-cache t
       password-cache-expiry 86400)
 #+end_src
+*** EPA
+#+begin_src emacs-lisp
+(setq epa-pinentry-mode 'loopback)
+#+end_src
 ** Functions
 *** Dotfiles
 #+begin_src emacs-lisp
