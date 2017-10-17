@@ -1309,31 +1309,32 @@ except:
 #         writer = csv.writer(f)
 #         writer.writerows(rows)
 #+end_src
-** ssh
+** ssh                                                             ::crypt:
 :PROPERTIES:
 :header-args+: :tangle ~/.ssh/config
 :END:
-#+begin_src conf
-Host athena
-    HostName athena.dialup.mit.edu
-    User dmundo
-    ForwardX11Trusted yes
+-----BEGIN PGP MESSAGE-----
 
-Host racecar
-     HostName 192.168.0.34
-     User racecar
-     ForwardX11 yes
-#Default GitHub
-Host github.com
-    HostName github.com
-    User git
-    IdentityFile ~/.ssh/id_rsa
-
-Host github-MIT
-    HostName github.com
-    User git
-    IdentityFile ~/.ssh/id_rsa_MIT
-#+end_src
+hQIMAx+NH7hU/QhIARAAlw9aoXHmjzQZPHpRREwE0gTk/QNWjHvKF76r+cq0or9s
+ddYdj46IZkD3GKwJFHduXtYLO9erq6IDy/VghCoJaiFgVR4K+DLs6JIlv2aPwL96
+Uy35gonA+kqFPcLbnQiyF1p5QBcAj0ygRZfk+teftDRM8GhsE+W591io0nYY6McE
+snUV8QvPR1+Y1GRHaWJjTHrwqcMSie9cLTmeWLQvgcKN0MsYqG41wxBixKnh7p+O
++v5AGbQ7OptU3KA1ZA+AhPAE587MDMuJOveVOaQvU25xSfj4VmTL8pAyhAcNMMCY
+0Dc65/2qRzBNXg9LHVIiyjh64kOeZ36hjC5+mY8HsU5Fj1Xg1GKjrKBO+ayB82nm
+A0zUJc7kFRsTLqiLqmWeufAktcowKuyBEu4xdI4KSAnn70YgvS/3XAPS3M85QU3T
+0pYlF4FWyfryrLO3oRS/c5C0PNji0C6I4bGuqqEpyoo1V5OKyvkjAoWY2K6nBh6l
+kf4BSpjeCxt8yPj7/1Tl5a4ZeJGwRgf5Tru276fSA1TkCiiyJunMs1IwlSSSiCTo
+LsXHuKBZ6P+pwv2zLcyUT5wNu60O9TnfHzdBymgnzdRtLlQ5Y9t5oP4Pe193ejrP
+sYIWEJ7MMoISdKTgX1S6yqYsC543DhgOA1DB+rAYpuBnAaX3BmOwFHL2ifUVf6TS
+wGEB7Tcvofv3ZNUSGl3l1KHJpUhbmbeJBDdKODnJy4J2ohwvwRHkOMhdmSA6EWf7
+EqqKOPssH+q/7PMc/IdgW/7PIVIKCzGOCIwanHApJE0N6CR0G1/ejQ/djHMhXnhq
+RbsjpKYiUCqQkq1VnL6Rg8+9/QW+rDi7F1Uh4kpj0SjaJd9/Vbcayqt9J356QHmr
+hqik9XTnNtbnFltRpdqLmagfhkssQjlNPfNGqQxdMxmOlq9ewJpC5myo4wGTeLgu
+2xsQdHvERFwbnFTzzajPXZua3KyEdRv9IZEwVDGI7FPjN2Jb2R4x09/PlKKmxTmA
+0EpiAa0It5PCa18pKZw7FTh4edluWyst3fJiVlpFVmJ7r3GofvfTEmvARuofuD/8
+5uil
+=iqyP
+-----END PGP MESSAGE-----
 ** termite
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.config/termite/config")
