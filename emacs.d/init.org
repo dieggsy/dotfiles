@@ -412,7 +412,7 @@ That undersells it. The /most/ convenient key definitions in emacs.
            :repo "noctuid/general.el"
            :branch "buttercup")
   :config
-  (general-evil-setup t t)
+  (general-evil-setup t)
 
   (general-create-definer
    d/mode-leader-keys
@@ -438,8 +438,7 @@ editing. So I went for it. Now I'll never go back.
 (use-package evil
   :demand t
   :general
-  (:keymaps 'normal
-   "S-SPC" 'org-agenda-list
+  (nmap
    "-" 'negative-argument
    "\\" 'evil-window-next
    "C-_" 'keyboard-quit
@@ -1162,9 +1161,9 @@ Source: https://git.io/vQKEa"
 #+end_src
 ***** Capture
 #+begin_src emacs-lisp
-(imap :keymaps 'org-capture-mode-mop
+(imap org-capture-mode-mop
   "C-d" 'd/org-agenda-toggle-date)
-(nmap :keymaps 'org-capture-mode-map
+(nmap org-capture-mode-map
   "C-d" 'd/org-agenda-toggle-date)
 #+end_src
 ***** Org
@@ -1350,7 +1349,7 @@ Non-interactively SEARCH-STRING is the string to search."
 (use-package tldr
   :general
   (d/leader-keys "ht" 'tldr)
-  (nmap :keymaps 'tldr-mode-map
+  (nmap tldr-mode-map
     "q" 'quit-window))
 #+end_src
 ** Builtin
@@ -1551,7 +1550,7 @@ Executable
   (d/leader-keys
    "ad" 'dired-here)
   :config
-  (nmap :keymaps 'dired-mode-map
+  (nmap dired-mode-map
     ;; "q" 'dired-quit
     "h" 'dired-up-directory ;; 'diredp-up-directory-reuse-dir-buffer
     "l" 'dired-open-file ;; 'diredp-find-file-reuse-dir-buffer
@@ -1814,7 +1813,7 @@ Supposedly better than autocomplete.
 #+begin_src emacs-lisp
 (use-package evil-mc
   :general
-  (:keymaps 'normal
+  (nmap
    "gr"  '(:ignore t :wk "mc")
    "grm" 'evil-mc-make-all-cursors
    "gru" 'evil-mc-undo-all-cursors
@@ -3266,7 +3265,7 @@ Pretty neat, though not entirely complete, IMO.
 #+begin_src emacs-lisp
 (use-package slime
   :general
-  (imap :keymaps 'slime-repl-mode-map
+  (imap slime-repl-mode-map
     [up] 'slime-repl-previous-input
     [down] 'slime-repl-next-input)
   :config
@@ -3828,7 +3827,7 @@ Like git, for emacs. But cooler.
   :general
   (d/leader-keys
    "ac" 'calc-dispatch)
-  (emap :keymaps 'calc-mode-map
+  (emap calc-mode-map
     "x" (lambda () (interactive) (counsel-M-x "^calc-")))
   :config
   (setq calc-multiplication-has-precedence nil)
@@ -3841,7 +3840,7 @@ Like git, for emacs. But cooler.
   :ensure nil
   :init
   (d/setup-mode eshell
-    (imap :keymaps 'eshell-mode-map
+    (imap eshell-mode-map
       "C-p" (general-predicate-dispatch nil
               (eshell-point-within-input-p) 'eshell/cool-peco-ps)
       "C-r" 'eshell/cool-peco-history
@@ -3997,7 +3996,7 @@ Like git, for emacs. But cooler.
 ;;   ;; :defer-install t
 ;;   :defer 10
 ;;   :general
-;;   (nmap :keymaps 'pdf-view-mode-map
+;;   (nmap pdf-view-mode-map
 ;;     "s" 'pdf-view-fit-width-to-window
 ;;     "a" 'pdf-view-fit-height-to-window
 ;;     "/" 'isearch-forward
@@ -4047,7 +4046,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 (use-package dired-subtree
   :after dired
   :general
-  (nmap :keymaps 'dired-mode-map
+  (nmap dired-mode-map
     "TAB" 'dired-subtree-toggle))
 #+end_src
 **** dired-collpase
@@ -4340,8 +4339,10 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 (use-package evil-magit
   :after magit
   :config
-  (nmap :keymaps 'magit-mode-map
-    "/" 'evil-ex-search-forward))
+  (nmap magit-mode-map
+        "/" 'evil-ex-search-forward
+        "n" 'evil-ex-search-next
+        "N" 'evil-ex-search-previous))
 #+end_src
 **** [[https://github.com/redguardtoo/evil-matchit][evil-matchit]]
 #+begin_src emacs-lisp
@@ -4358,7 +4359,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
   :commands (evilnc-comment-operator
              d/comment-or-uncomment-lines-inverse)
   :general
-  (:keymaps 'normal
+  (nmap
    "gc" 'evilnc-comment-operator
    "gy" 'evilnc-copy-and-comment-lines)
   (d/leader-keys
@@ -4406,7 +4407,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 #+end_src
 *** Bindings
 #+begin_src emacs-lisp
-(nmap :keymaps 'custom-mode-map
+(nmap custom-mode-map
   "q" #'Custom-buffer-done)
 
 (evil-add-hjkl-bindings occur-mode-map 'emacs
@@ -4575,7 +4576,7 @@ For the cold winters.
 (use-package fireplace
   :config
   :general
-  (nmap :keymaps 'fireplace-mode-map
+  (nmap fireplace-mode-map
     "q" 'fireplace-off
     "Q" 'fireplace-off
     "-" 'fireplace-down
@@ -4634,7 +4635,7 @@ A speed reading mode for Emacs.
 (use-package xkcd
   :general
   (d/leader-keys "ax" 'xkcd)
-  (nmap :keymaps 'xkcd-mode-map
+  (nmap xkcd-mode-map
     "j" 'xkcd-next
     "h" 'xkcd-prev
     "k" 'xkcd-prev
@@ -4735,7 +4736,7 @@ Source: http://tinyurl.com/lo96nwc"
    "g" (lambda () (interactive) (let ((ivy-use-virtual-buffers nil)) (erc-switch-to-buffer))))
   (d/leader-keys
    "ai" 'd/erc)
-  (imap :keymaps 'erc-mode-map
+  (imap erc-mode-map
     [up] 'erc-previous-command
     [down] 'erc-next-command)
   :config
@@ -4904,7 +4905,7 @@ Configure the Elfeed RSS reader with an Orgmode file
 (use-package elfeed
   :general
   (d/leader-keys "ae" 'elfeed)
-  (nmap :keymaps 'elfeed-search-mode-map
+  (nmap elfeed-search-mode-map
     "RET" 'elfeed-search-show-entry
     "+" 'elfeed-search-tag-all
     "-" 'elfeed-search-untag-all
@@ -4918,7 +4919,7 @@ Configure the Elfeed RSS reader with an Orgmode file
     "u" 'elfeed-search-tag-all-unread
     "y" 'elfeed-search-yank
     "U" 'elfeed-update)
-  (nmap :keymaps 'elfeed-show-mode-map
+  (nmap elfeed-show-mode-map
     "+" 'elfeed-show-tag
     "-" 'elfeed-show-untag
     "P" 'elfeed-show-play-enclosure
