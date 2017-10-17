@@ -233,15 +233,15 @@ package should fix them nicely.
 #+end_src
 * Core
 ** Defaults
-*** Column
-Show the column number in the modeline, because I'm not a savage.
-#+begin_src emacs-lisp
-(setq column-number-mode t)
-#+end_src
 *** Custom
 #+begin_src emacs-lisp
 (setq custom-file "~/.emacs.d/custom.el")
 (load custom-file)
+#+end_src
+*** Column
+Show the column number in the modeline, because I'm not a savage.
+#+begin_src emacs-lisp
+(setq column-number-mode t)
 #+end_src
 *** Disabled Commands
 #+begin_src emacs-lisp
@@ -398,8 +398,7 @@ except for warnings and errors.
 #+end_src
 ** Packages
 These are packages that I consider /absolutely essential/ to my emacs workflow,
-or that enhance emacs at a deeper level than any regular mode. Or, I just had
-to load them before other things.
+or that enhance emacs at a deeper level than any regular mode.
 *** [[https://github.com/noctuid/general.el][general]]
 #+begin_quote
   More convenient key definitions in emacs
@@ -431,9 +430,8 @@ That undersells it. The /most/ convenient key definitions in emacs.
   The extensible vi layer for Emacs.
 #+end_quote
 I really like Vim bindings. I originally learned Emacs bindings but there was
-something really appealing about the simplicity and power of Vim bindings/modal
-editing. So I went for it. Now I'll never go back.
-**** Package
+something really appealing about the simplicity and power of modal editing. So
+I went for it. Now I'll never go back.
 #+begin_src emacs-lisp
 (use-package evil
   :demand t
@@ -441,6 +439,7 @@ editing. So I went for it. Now I'll never go back.
   (nmap
    "-" 'negative-argument
    "\\" 'evil-window-next
+   ;; Basically C-[ for a Dvorak keyboard (_ is for terminal).
    "C-_" 'keyboard-quit
    "C-/"  'keyboard-quit
    [escape]  'keyboard-quit)
@@ -654,6 +653,53 @@ I actually don't think I tried the former option, but the latter simply worked
 so I went with it.
 :END:
 
+**** Package
+#+begin_src emacs-lisp
+(use-package org
+  :recipe (:host github
+           :repo "emacsmirror/org"
+           :files ("lisp/*.el" "contrib/lisp/*.el"))
+  :general
+  (nmap org-mode-map
+    "<" 'org-metaleft
+    ">" 'org-metaright
+    "gh" 'outline-up-heading
+    "gl" 'outline-next-visible-heading
+    "gj" 'org-forward-heading-same-level
+    "gk" 'org-backward-heading-same-level
+    "gt" 'org-todo
+    "ga" 'org-archive-subtree
+    "M-l" 'org-metaright
+    "M-h" 'org-metaleft
+    "M-k" 'org-metaup
+    "M-j" 'org-metadown
+    "M-L" 'org-shiftmetaright
+    "M-H" 'org-shiftmetaleft
+    "M-K" 'org-shiftmetaup
+    "M-J" 'org-shiftmetadown)
+  (d/leader-keys
+   "C"   'org-capture
+   "bo"  'org-iswitchb
+   "ao"  '(:ignore t :wk "org")
+   "ao#" 'org-agenda-list-stuck-projects
+   "ao/" 'org-occur-in-agenda-files
+   "aoO" 'org-clock-out
+   "aoa" 'org-agenda-list
+   "aoe" 'org-store-agenda-views
+   "aol" 'org-store-link
+   "aom" 'org-store-tags-view
+   "aoo" 'org-agenda
+   "aos" 'org-search-view
+   "aot" 'org-todo-list )
+  :init
+  (setq org-list-allow-alphabetical t)
+  :config
+  (require 'ox-extra)
+  (ox-extras-activate '(ignore-headlines))
+  (d/with-eval-after-load 'org-crypt
+    (org-crypt-use-before-save-magic))
+  (require 'org-mobile))
+#+end_src
 **** Defaults
 ***** Files
 #+begin_src emacs-lisp
@@ -673,9 +719,9 @@ so I went with it.
 (d/with-eval-after-load 'org
   (setq org-enforce-todo-dependencies t
         org-enforce-todo-checkbox-dependencies t
-        org-log-done (quote time)
-        org-log-redeadline (quote time)
-        org-log-reschedule (quote time)
+        org-log-done 'time
+        org-log-redeadline 'time
+        org-log-reschedule 'time
         org-agenda-skip-scheduled-if-done t
         org-agenda-skip-deadline-if-done t
         org-agenda-hide-tags-regexp ".*"
@@ -770,53 +816,6 @@ so I went with it.
   (add-to-list 'org-latex-packages-alist '("" "listings"))
   (add-to-list 'org-latex-packages-alist '("" "color"))
   (add-to-list 'org-latex-packages-alist '("" "tabularx")))
-#+end_src
-**** Package
-#+begin_src emacs-lisp
-(use-package org
-  :recipe (:host github
-           :repo "emacsmirror/org"
-           :files ("lisp/*.el" "contrib/lisp/*.el"))
-  :general
-  (nmap :keymaps 'org-mode-map
-    "<" 'org-metaleft
-    ">" 'org-metaright
-    "gh" 'outline-up-heading
-    "gl" 'outline-next-visible-heading
-    "gj" 'org-forward-heading-same-level
-    "gk" 'org-backward-heading-same-level
-    "gt" 'org-todo
-    "ga" 'org-archive-subtree
-    "M-l" 'org-metaright
-    "M-h" 'org-metaleft
-    "M-k" 'org-metaup
-    "M-j" 'org-metadown
-    "M-L" 'org-shiftmetaright
-    "M-H" 'org-shiftmetaleft
-    "M-K" 'org-shiftmetaup
-    "M-J" 'org-shiftmetadown)
-  (d/leader-keys
-   "C"   'org-capture
-   "bo"  'org-iswitchb
-   "ao"  '(:ignore t :wk "org")
-   "ao#" 'org-agenda-list-stuck-projects
-   "ao/" 'org-occur-in-agenda-files
-   "aoO" 'org-clock-out
-   "aoa" 'org-agenda-list
-   "aoe" 'org-store-agenda-views
-   "aol" 'org-store-link
-   "aom" 'org-store-tags-view
-   "aoo" 'org-agenda
-   "aos" 'org-search-view
-   "aot" 'org-todo-list )
-  :init
-  (setq org-list-allow-alphabetical t)
-  :config
-  (require 'ox-extra)
-  (ox-extras-activate '(ignore-headlines))
-  (require 'org-crypt)
-  (org-crypt-use-before-save-magic)
-  (require 'org-mobile))
 #+end_src
 **** Variables
 #+begin_src emacs-lisp
@@ -1353,6 +1352,7 @@ Non-interactively SEARCH-STRING is the string to search."
     "q" 'quit-window))
 #+end_src
 ** Builtin
+*** Man
 #+begin_src emacs-lisp
 (use-package man
   :general
@@ -3478,12 +3478,6 @@ Source: https://git.io/vQKz8"
   (hs-minor-mode)
   (aggressive-indent-mode)
   (push '(? . ("`" . "'")) evil-surround-pairs-alist)
-  (general-define-key
-   :keymaps 'local
-   "C-c <up>" 'hs-hide-all
-   "C-c <down>" 'hs-show-all
-   "C-c <left>" 'hs-hide-block
-   "C-c <right>" 'hs-show-block)
   (setq-local lisp-indent-function #'d/lisp-indent-function)
   (setq-local prettify-symbols-alist d/lisp-prettify-alist))
 #+end_src
@@ -3576,13 +3570,6 @@ Source: http://tinyurl.com/le6wxuo"
   (hs-minor-mode)
   (aggressive-indent-mode)
   (push '(? . ("`" . "'")) evil-surround-pairs-alist)
-  (general-define-key
-   :keymaps 'local
-   "C-c <up>" 'hs-hide-all
-   "C-c <down>" 'hs-show-all
-   "C-c <left>" 'hs-hide-block
-   "C-c <right>" 'hs-show-block)
-
   (setq-local prettify-symbols-alist d/scheme-prettify-alist))
 
 (font-lock-add-keywords 'scheme-mode '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)) t)
