@@ -121,7 +121,8 @@ length of PATH (sans directory slashes) down to MAX-LEN."
              (ahead (if ahead-pos
                         (string-to-number (substring first-line
                                                      (+ ahead-pos 6)
-                                                     (+ ahead-pos 7)))))
+                                                     (+ ahead-pos 7)))
+                      0))
              (behind (if behind-pos
                          (string-to-number (substring first-line
                                                       (+ behind-pos 7)
