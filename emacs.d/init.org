@@ -329,59 +329,30 @@ except for warnings and errors.
 (d/with-eval-after-load 'org
   (defvar d/show-async-tangle-results nil)
 
-  (defun d/async-tangle-init ()
-    "Asynchronously tangle config.org and and byte-compile."
+  (defvar d/async-babel-tangle-decrypt nil)
+
+  (defun d/async-babel-tangle (&optional decrypt)
+    "Tangle org file asynchronously."
     (interactive)
-    (let ((init-tangle-start-time (current-time)))
+    (let ((init-tangle-start-time (current-time))
+          (file (buffer-file-name))
+          (async-quiet-switch "-q"))
       (async-start
-       (lambda ()
-         ;; make async emacs aware of packages (for byte-compilation)
-         (require 'org)
-
-         ;; Selectively condition-case some blocks
-         (defvar d/src-params)
-
-         (define-advice org-babel-tangle-single-block
-             (:before (block-counter &optional only-this-block))
-           (setq d/src-params (nth 2 (org-babel-get-src-block-info))))
-
-         (defun d/org-wrap-with-condition-case ()
-           (let ((src-text (buffer-string)))
-             (unless (or (string= (alist-get :cond-case d/src-params) "no")
-                         (string-prefix-p "(use-package" src-text)
-                         (string-prefix-p "(d/with-eval-after-load" src-text))
-               (beginning-of-buffer)
-               (insert
-                "(condition-case-unless-debug err\n    (progn\n")
-               (end-of-buffer)
-               (insert ")\n  (error (display-warning 'init (format \"init.el: %s\" (error-message-string err)))))"))))
-
-         (add-hook 'org-babel-tangle-body-hook #'d/org-wrap-with-condition-case)
-
-         ;; tangle
-         (org-babel-tangle-file
-          (expand-file-name "~/dotfiles/emacs.d/init.org")))
+       `(lambda ()
+          (require 'org)
+          (when ,d/async-babel-tangle-decrypt
+            (require 'org-crypt)
+            (org-crypt-use-before-save-magic)
+            (add-hook 'org-babel-pre-tangle-hook 'org-decrypt-entries)
+            (remove-hook 'org-babel-pre-tangle-hook 'save-buffer))
+          (org-babel-tangle-file ,file))
        (unless d/show-async-tangle-results
          `(lambda (result)
             (if result
                 (message "SUCCESS: init.org successfully tangled. (%.3fs)"
                          (float-time (time-subtract (current-time)
                                                     ',init-tangle-start-time)))
-              (message "ERROR: init.org tangle failed.")))))))
-
-  (defun d/async-babel-tangle ()
-    "Tangle org file asynchronously."
-    (interactive)
-    (let ((file (buffer-file-name)))
-      (async-start
-       `(lambda ()
-          (require 'org)
-          (org-babel-tangle-file ,file))
-       (unless d/show-async-tangle-results
-         (lambda (result)
-           (if result
-               (message "SUCCESS: successfully tangled file.")
-             (message "ERROR: tangle file failed."))))))))
+              (message "ERROR: init.org tangle failed."))))))))
 #+end_src
 *** Other
 #+begin_src emacs-lisp
@@ -5104,6 +5075,6 @@ echo -e \" $bat \""
 
 #+begin_example
 # Local Variables:
-# after-save-hook: (git-gutter d/async-tangle-init)
+# after-save-hook: (git-gutter d/async-babel-tangle)
 # End:
 #+end_example

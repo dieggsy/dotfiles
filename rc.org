@@ -2379,5 +2379,6 @@ Tangles the files asynchronously on save.
 # Local Variables:
 # after-save-hook: (git-gutter d/async-babel-tangle)
 # org-pretty-entities: nil
+# d/async-babel-tangle-decrypt: t
 # End:
 #+end_example

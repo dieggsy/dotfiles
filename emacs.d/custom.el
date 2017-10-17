@@ -177,7 +177,8 @@
        (rainbow-mode 1)))))
  '(safe-local-variable-values
    (quote
-    ((auto-save-mode)
+    ((d/async-babel-tangle-decrypt . t)
+     (auto-save-mode)
      (org-tags-match-list-sublevels)
      (org-src-fontify-natively)
      (org-log-done)
@@ -188,7 +189,6 @@
                        (buffer-file-name)))
      (after-save-hook lambda nil
                       (org-beamer-export-to-pdf t))
-     (after-save-hook git-gutter d/async-tangle-init)
      (after-save-hook git-gutter d/async-babel-tangle)
      (org-pretty-entities))))
  '(send-mail-function (quote smtpmail-send-it))
