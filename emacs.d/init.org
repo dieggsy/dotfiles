@@ -468,28 +468,6 @@ I went for it. Now I'll never go back.
 
   (evil-mode 1))
 #+end_src
-**** Modes
-#+begin_src emacs-lisp
-(d/with-eval-after-load 'evil
-  ;; Use Emacs state in these additional modes.
-  (dolist (mode '(flycheck-error-list-mode
-                  git-rebase-mode
-                  calc-mode
-                  calc-trail-mode
-                  sunshine-mode))
-    (add-to-list 'evil-emacs-state-modes mode))
-
-  (dolist (mode '(ibuffer-mode
-                  Custom-mode
-                  proced-mode))
-    (setq evil-emacs-state-modes (delq mode evil-emacs-state-modes)))
-
-  ;; Use insert state in these additional modes.
-  (dolist (mode '(magit-log-edit-mode org-capture-mode))
-    (add-to-list 'evil-insert-state-modes mode))
-
-  (add-to-list 'evil-buffer-regexps '("\\*Flycheck")))
-#+end_src
 *** [[https://github.com/abo-abo/swiper][ivy]]
 #+begin_quote
   Ivy - a generic completion frontend for Emacs, Swiper - isearch with an
@@ -4418,20 +4396,6 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
   (kbd "/") 'evil-ex-search-forward)
 
 (add-hook 'edebug-mode-hook #'evil-normalize-keymaps)
-
-(d/with-eval-after-load 'image-mode
-  (defvar image-mode-map)
-  (evil-make-overriding-map image-mode-map 'normal))
-
-(evil-make-overriding-map process-menu-mode-map 'normal)
-
-(with-eval-after-load 'profiler
-  (defvar profiler-report-mode-map)
-  (evil-make-overriding-map profiler-report-mode-map 'normal))
-
-(d/with-eval-after-load 'proced
-  (defvar proced-mode-map)
-  (evil-make-overriding-map proced-mode-map 'normal))
 
 (evil-add-hjkl-bindings proced-mode-map 'normal
   "n" 'evil-ex-search-next
