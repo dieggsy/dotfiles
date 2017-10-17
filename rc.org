@@ -393,7 +393,7 @@ bindsym $mod+Shift+period exec --no-startup-id i3-exit
 bindsym $mod+Shift+apostrophe kill
 
 # start rofi for windows and commands
-bindsym Mod1+space exec --no-startup-id "rofi -combi-modi window,run,drun -show combi -modi combi -display-combi ''"
+bindsym Mod1+space exec --no-startup-id "rofi -combi-modi window,drun -show combi -modi combi -display-combi ''"
 
 # pass helper
 bindsym $mod+p exec --no-startup-id "~/.password-store/.extensions/rofi.bash"
