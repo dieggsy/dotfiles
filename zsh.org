@@ -274,7 +274,7 @@ bindkey '^F' cool-peco-all-funcs
  [ -z $TMUX ] && [ -z $INSIDE_EMACS ] && [ "$(uname)" = "Linux" ] && export TERM=xterm-24bit
 
 # some ls colors i've gotten used to
-export LS_COLORS='di=0;94:ex=0;92:ln=0;36'
+export LS_COLORS='di=1;34:ex=1;32:ln=0;36'
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 # kwm/khd
@@ -334,9 +334,8 @@ alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r 
 which hub > /dev/null && alias git=hub
 [ "$(uname)" = "Linux" ] && compdef hub=git
 [ "$(uname)" = "Linux" ] && which nautilus > /dev/null && alias nautilus="nautilus &> /dev/null"
-alias gls='gls -X --group-directories-first --color=always'
-alias ls='LS_COLORS="" exa --group-directories-first --sort=extension'
-alias glst="gls -t"
+alias ls='ls -X --group-directories-first --color=always'
+alias xa='exa --group-directories-first --sort=extension'
 if [ -d /Applications/Mathematica.app ]; then
     alias mathematica='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
 fi
