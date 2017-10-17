@@ -196,6 +196,9 @@ Type=Application
 Terminal=false
 #+end_src
 ** exwm.desktop
+:PROPERTIES:
+:header-args+: :tangle /sudo::/usr/share/xsessions/exwm.desktop
+:END:
 #+begin_src conf
 [Desktop Entry]
 Name=EXWM
