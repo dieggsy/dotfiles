@@ -439,6 +439,7 @@ export GOROOT=/usr/lib/go-1.8
 
 export PYENV_ROOT="$HOME/.pyenv"
 path=(
+    $HOME/.nix-profile/bin
     $HOME/.cargo/bin
     $PYENV_ROOT/bin
     $HOME/bin
