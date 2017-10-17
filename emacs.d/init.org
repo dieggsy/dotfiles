@@ -1419,18 +1419,6 @@ Executable
   (setq delete-by-moving-to-trash t))
 #+end_src
 
-*** [[https://www.emacswiki.org/emacs/dired%252b.el][dired+]]
-#+begin_src emacs-lisp
-(use-package dired+
-  :after dired
-  :init
-  (setq diredp-hide-details-initially-flag nil
-        diredp-ignore-compressed-flag nil)
-  :config
-  ;; (diredp-toggle-find-file-reuse-dir 1)
-  )
-#+end_src
-
 *** [[https://github.com/emacsmirror/dired-du][dired-du]]
 #+begin_src emacs-lisp
 (use-package dired-du
@@ -4027,6 +4015,12 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 #+begin_src emacs-lisp
 (use-package dired-collapse
   :after dired)
+#+end_src
+**** [[https://github.com/purcell/diredfl][diredfl]]
+#+begin_src emacs-lisp
+(use-package diredfl
+  :after dired
+  :config)
 #+end_src
 ** Emacs
 *** Packages
