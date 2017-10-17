@@ -431,6 +431,9 @@ for_window [window_role="task_dialog"] floating enable
 
 for_window [window_type="dialog"] floating enable
 for_window [window_type="menu"] floating enable
+
+for_window [class="pinentry"] floating enable
+for_window [class="Pinentry"] floating enable
 #+end_src
 **** Focus
 #+begin_src conf
