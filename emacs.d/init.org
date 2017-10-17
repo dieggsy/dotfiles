@@ -2536,12 +2536,13 @@ Source: https://git.io/vQKuF"
 #+end_src
 *** [[https://github.com/cyrus-and/zoom][zoom]]
 #+begin_src emacs-lisp
-(use-package zoom-mode
+(use-package zoom
   :demand t
-  :recipe (:host github
-           :repo "cyrus-and/zoom")
   :config
-  (setq zoom-size '(0.618 . 0.618))
+  (setq zoom-size '(0.618 . 0.618)
+        zoom-ignored-buffer-names '(" *which-key*"
+                                    "*Calculator*"
+                                    "*Calc Trail*"))
   (zoom-mode t))
 #+end_src
 *** [[https://github.com/jacktasia/dumb-jump][dumb-jump]]
