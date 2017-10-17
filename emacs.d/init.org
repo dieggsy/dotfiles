@@ -1094,7 +1094,7 @@ Source: https://git.io/vQKEa"
 **** Setup
 ***** Agenda
 #+begin_src emacs-lisp
-(general-define-key :keymaps 'org-agenda-mode-map
+(general-def org-agenda-mode-map
   "j" 'org-agenda-next-line
   "k" 'org-agenda-previous-line
   "n" 'org-agenda-next-date-line
@@ -2259,7 +2259,7 @@ Syntax highlighting for markdown files.
 ** Bindings
 Make indent-rigidly more vimmy.
 #+begin_src emacs-lisp
-(general-define-key :keymaps 'indent-rigidly-map
+(general-def indent-rigidly-map
   "h" 'indent-rigidly-left
   "l" 'indent-rigidly-right
   "H" 'indent-rigidly-left-to-tab-stop
