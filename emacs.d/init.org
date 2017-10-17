@@ -1361,6 +1361,14 @@ Non-interactively SEARCH-STRING is the string to search."
   :config
   (setq Man-notify-method 'aggressive))
 #+end_src
+*** Info
+#+begin_src emacs-lisp
+(use-package Info
+  :ensure nil
+  :config
+  (nmap Info-mode-map
+    "i" Info-mode-map))
+#+end_src
 ** Bindings
 Leader bindings
 #+begin_src emacs-lisp
