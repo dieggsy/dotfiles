@@ -107,21 +107,18 @@ use this a fair bit so let's explicitly require it.
             ,name
             (float-time (time-subtract (current-time) ,(intern (concat "d/time-" name))))))
 
-(defmacro d/setup-mode (modes &rest body)
-  "Create a setup function for MODES and add it to relevant hook(s)."
+(defmacro d/setup-hook (hooks &rest body)
+  "Create a setup function for HOOKS and add it to relevant hook(s)."
   (declare (indent defun))
-  (let ((modes (if (listp modes) modes (list modes))))
-    (let ((setup-func
-           (intern (concat "d/setup-"
-                           (symbol-name (car modes))
-                           "-mode"))))
+  (let ((hooks (if (listp hooks) hooks (list hooks))))
+    (let ((setup-func (intern (concat "d/setup-" (symbol-name (car hooks))))))
       `(progn
          (defun ,setup-func ()
            ,@body)
-         ,@(cl-loop for mode in modes collect
-                    (let ((mode-hook (intern (concat (symbol-name mode)
-                                                     "-mode-hook"))))
-                      `(add-hook ',mode-hook #',setup-func)))))))
+         ,@(cl-loop for hook in hooks collect
+                    (let ((hook-name (intern (concat (symbol-name hook)
+                                                     "-hook"))))
+                      `(add-hook ',hook-name #',setup-func)))))))
 
 (defmacro d/with-eval-after-load (feature &rest body)
   (declare (indent defun))
@@ -1106,7 +1103,7 @@ Source: https://git.io/vQKEa"
 (d/with-eval-after-load 'org-agenda
   (setq org-habit-graph-column 50))
 
-(d/setup-mode org-agenda
+(d/setup-hook org-agenda-mode
   (setq-local prettify-symbols-alist d/org-prettify-alist)
   (prettify-symbols-mode))
 
@@ -1128,7 +1125,7 @@ Source: https://git.io/vQKEa"
          (d/org-insert-list-leader-or-self ,char))))
   (setq org-bullets-bullet-list '("•")))
 
-(d/setup-mode org
+(d/setup-hook org-mode
   (setq-local prettify-symbols-alist d/org-prettify-alist)
   (prettify-symbols-mode)
   ;; (org-bullets-mode 1)
@@ -1345,7 +1342,7 @@ Leader bindings
 #+end_src
 ** Setup
 #+begin_src emacs-lisp
-(d/setup-mode help
+(d/setup-hook help-mode
   (goto-address-mode)
   (rainbow-mode))
 #+end_src
@@ -1571,7 +1568,7 @@ Executable
                                                `(,(current-buffer))))
       (set-window-prev-buffers nil prev-buffers))))
 
-(d/setup-mode dired
+(d/setup-hook dired-mode
   (hl-line-mode 1)
   (dired-collapse-mode)
   (dired-omit-mode))
@@ -1580,7 +1577,7 @@ Executable
 #+begin_src emacs-lisp
 (use-package ibuffer
   :init
-  (d/setup-mode ibuffer
+  (d/setup-hook ibuffer-mode
     (ibuffer-switch-to-saved-filter-groups "Default")))
 #+end_src
 ** Functions
@@ -2208,7 +2205,7 @@ _u_nwrap  _S_lurp (back)   _[_ wrap _{_
 #+end_src
 *** conf-mode
 #+begin_src emacs-lisp
-(d/setup-mode conf
+(d/setup-hook conf-mode
   (d/setup-prog-mode))
 (add-to-list 'auto-mode-alist '("\\.service\\'" . conf-mode))
 #+end_src
@@ -2232,7 +2229,7 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
 (use-package json-mode
   :mode "\\.json\\'")
 
-(d/setup-mode json
+(d/setup-hook json-mode
   (highlight-numbers-mode -1))
 #+end_src
 *** [[http://jblevins.org/projects/markdown-mode/][markdown-mode]]
@@ -3084,7 +3081,7 @@ Source: https://git.io/vQKzq"
 #+end_src
 *** Setup
 #+begin_src emacs-lisp
-(d/setup-mode prog
+(d/setup-hook prog-mode
   (subword-mode)
   (smartparens-strict-mode)
   (highlight-parentheses-mode 1)
@@ -3195,7 +3192,7 @@ Pretty neat, though not entirely complete, IMO.
 #+end_src
 **** Setup
 #+begin_src emacs-lisp
-(d/setup-mode python
+(d/setup-hook python-mode
   (set (make-local-variable 'comment-inline-offset) 2)
   (flycheck-mode)
   (anaconda-mode)
@@ -3424,7 +3421,7 @@ Source: https://git.io/vQKz8"
  #+end_src
 **** Setup
 #+begin_src emacs-lisp
-(d/setup-mode (lisp emacs-lisp)
+(d/setup-hook (lisp-mode emacs-lisp-mode)
   (hs-minor-mode)
   (aggressive-indent-mode)
   (push '(? . ("`" . "'")) evil-surround-pairs-alist)
@@ -3434,7 +3431,7 @@ Source: https://git.io/vQKz8"
 *** C
 **** Setup
 #+begin_src emacs-lisp
-(d/setup-mode c
+(d/setup-hook c-mode
   (aggressive-indent-mode))
 #+end_src
 *** Haskell
@@ -3461,7 +3458,7 @@ Source: https://git.io/vQKz8"
 #+end_src
 **** Setup
 #+begin_src emacs-lisp
-(d/setup-mode haskell
+(d/setup-hook haskell-mode
   (setq-local prettify-symbols-alist d/haskell-prettify-alist))
 #+end_src
 *** Scheme
@@ -3516,7 +3513,7 @@ Source: http://tinyurl.com/le6wxuo"
 #+end_src
 **** Setup
 #+begin_src emacs-lisp
-(d/setup-mode scheme
+(d/setup-hook scheme-mode
   (hs-minor-mode)
   (aggressive-indent-mode)
   (push '(? . ("`" . "'")) evil-surround-pairs-alist)
@@ -3644,10 +3641,11 @@ Like git, for emacs. But cooler.
         auto-revert-check-vc-info t
         git-commit-summary-max-length 50
         git-commit-major-mode 'org-mode)
-  (add-hook 'git-commit-mode-hook #'evil-insert-state)
-  (d/setup-mode git-commit
+  (d/setup-hook git-commit-mode
+    (evil-insert-state)
     (setq-local fill-column 72)
-    (setq-local org-hide-emphasis-markers nil)))
+    (setq-local org-hide-emphasis-markers nil)
+    (setq-local org-pretty-entities nil)))
 #+end_src
 **** [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]]
 #+begin_quote
@@ -3776,7 +3774,7 @@ Like git, for emacs. But cooler.
 (use-package eshell
   :ensure nil
   :init
-  (d/setup-mode eshell
+  (d/setup-hook eshell-mode
     (imap eshell-mode-map
       "C-p" (general-predicate-dispatch nil
               (eshell-point-within-input-p) 'eshell/cool-peco-ps)
@@ -4477,7 +4475,7 @@ Draws stuff in ascii.
    "ml" 'emms-seek-forward
    "mh" 'emms-seek-backward)
   :config
-  (d/setup-mode emms-browser
+  (d/setup-hook emms-browser-mode
     (hl-line-mode 1))
   (require 'emms-setup)
   (emms-all)
@@ -4813,7 +4811,7 @@ Source: http://tinyurl.com/y8tj8vxx"
 #+end_src
 *** Setup
 #+begin_src emacs-lisp
-(d/setup-mode erc
+(d/setup-hook erc-mode
   (erc-hl-nicks-mode 1)
   (smartparens-mode -1)
   (setq tab-width 5)
