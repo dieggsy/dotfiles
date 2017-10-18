@@ -95,67 +95,68 @@ length of PATH (sans directory slashes) down to MAX-LEN."
     ""))
 
 (defun egp-get-git-status ()
-  (let ((status (shell-command-to-string "git status --porcelain -b 2> /dev/null")))
-    (when (not (string-empty-p status))
-      (let* ((split (split-string status "\n" t))
-             (first-line (car split))
-             (branch
-              (if (string-match-p "(no branch)" first-line)
-                  (string-append
-                   ":"
-                   (string-trim-right
-                    (shell-command-to-string "git rev-parse --short HEAD")))
-                (car (split-string
-                      (cadr (split-string first-line " " t))
-                      "\\."
-                      t))))
-             (ahead-behind-pos (cl-position (string-to-char "[") first-line))
-             (ahead-pos (and ahead-behind-pos
-                             (string-match-p "ahead"
-                                             first-line
-                                             ahead-behind-pos)))
-             (behind-pos (and ahead-behind-pos
-                              (string-match-p "behind"
-                                              first-line
-                                              ahead-behind-pos)))
-             (ahead (if ahead-pos
-                        (string-to-number (substring first-line
-                                                     (+ ahead-pos 6)
-                                                     (+ ahead-pos 7)))
-                      0))
-             (behind (if behind-pos
-                         (string-to-number (substring first-line
-                                                      (+ behind-pos 7)
-                                                      (+ behind-pos 8)))
-                       0))
-             (files (cdr split))
-             (status-list (mapcar (lambda (str)
-                                    (substring str 0 2))
-                                  files))
-             (staged (cl-count (lambda (str)
-                                 (member str '(" M" " D" "AM" " T")))
-                               status-list))
-             (dirty (member "??" status-list))
-             (modified (cl-count (lambda (str)
+  (unless (file-remote-p default-directory)
+    (let ((status (shell-command-to-string "git status --porcelain -b 2> /dev/null")))
+      (when (not (string-empty-p status))
+        (let* ((split (split-string status "\n" t))
+               (first-line (car split))
+               (branch
+                (if (string-match-p "(no branch)" first-line)
+                    (string-append
+                     ":"
+                     (string-trim-right
+                      (shell-command-to-string "git rev-parse --short HEAD")))
+                  (car (split-string
+                        (cadr (split-string first-line " " t))
+                        "\\."
+                        t))))
+               (ahead-behind-pos (cl-position (string-to-char "[") first-line))
+               (ahead-pos (and ahead-behind-pos
+                               (string-match-p "ahead"
+                                               first-line
+                                               ahead-behind-pos)))
+               (behind-pos (and ahead-behind-pos
+                                (string-match-p "behind"
+                                                first-line
+                                                ahead-behind-pos)))
+               (ahead (if ahead-pos
+                          (string-to-number (substring first-line
+                                                       (+ ahead-pos 6)
+                                                       (+ ahead-pos 7)))
+                        0))
+               (behind (if behind-pos
+                           (string-to-number (substring first-line
+                                                        (+ behind-pos 7)
+                                                        (+ behind-pos 8)))
+                         0))
+               (files (cdr split))
+               (status-list (mapcar (lambda (str)
+                                      (substring str 0 2))
+                                    files))
+               (staged (cl-count (lambda (str)
                                    (member str '(" M" " D" "AM" " T")))
                                  status-list))
-             (conflicts (cl-count (lambda (str)
-                                    (member str '("DD" "AU" "UD" "DU" "AA" "UU")))
-                                  status-list)))
-        (format "(%s%s%s|%s%s%s%s%s)"
-                (egp-stylize "#B8BB26" branch)
-                (egp-stylize "#D3869B" "↑" ahead)
-                (egp-stylize "#D3869B" "↓" behind)
-                (egp-stylize "#83A598" "●" staged)
-                (egp-stylize "#FB4933" "✖" conflicts)
-                (egp-stylize "#FB4933" "✚" modified)
-                (if dirty "…" "")
-                (if (and (zerop staged)
-                         (zerop conflicts)
-                         (zerop modified)
-                         (not dirty))
-                    (egp-stylize "#B8BB26" "✓")
-                  ""))))))
+               (dirty (member "??" status-list))
+               (modified (cl-count (lambda (str)
+                                     (member str '(" M" " D" "AM" " T")))
+                                   status-list))
+               (conflicts (cl-count (lambda (str)
+                                      (member str '("DD" "AU" "UD" "DU" "AA" "UU")))
+                                    status-list)))
+          (format "(%s%s%s|%s%s%s%s%s)"
+                  (egp-stylize "#B8BB26" branch)
+                  (egp-stylize "#D3869B" "↑" ahead)
+                  (egp-stylize "#D3869B" "↓" behind)
+                  (egp-stylize "#83A598" "●" staged)
+                  (egp-stylize "#FB4933" "✖" conflicts)
+                  (egp-stylize "#FB4933" "✚" modified)
+                  (if dirty "…" "")
+                  (if (and (zerop staged)
+                           (zerop conflicts)
+                           (zerop modified)
+                           (not dirty))
+                      (egp-stylize "#B8BB26" "✓")
+                    "")))))))
 
 ;;;###autoload
 (defun egp-theme ()
