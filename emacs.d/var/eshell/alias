@@ -1,21 +1,21 @@
-alias edit find-file-other-window
-alias xa exa --group-directories-first --sort=extension --color=always
-alias config find-file ~/dotfiles/config/emacs.d/config.org
-alias printers lpstat -p | awk '{print $2}'
-alias pep8 pep8 --first --ignore=E129,W503,E226
-alias history-stat history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head
-alias decryptdir gpg-zip -d
-alias decrypt gpg2 -d
-alias gpg gpg2
-alias lockdir gpg-zip -c
-alias encryptdir gpg-zip --encrypt
-alias pep8 pep8 --first --ignore=E129,W503,E226
-alias toshredsyousay shred -zvun 10
-alias encrypt gpg2 --armor --encrypt
-alias def d/define-word
-alias - cd -
-alias ...... ../../../../..
-alias ..... ../../../..
-alias .... ../../..
+alias e find-file-other-window $1
+alias d dired-here
+alias ev view-file $1
 alias ... ../..
-alias ev view-file
+alias .... ../../..
+alias ..... ../../../..
+alias ...... ../../../../..
+alias - cd -
+alias def d/define-word $1
+alias encrypt gpg2 --armor --encrypt $*
+alias toshredsyousay shred -zvun 10 $*
+alias encryptdir gpg-zip --encrypt $*
+alias lockdir gpg-zip -c $*
+alias gpg gpg2 $*
+alias decrypt gpg2 -d $*
+alias decryptdir gpg-zip -d $*
+alias history-stat history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r | head
+alias pep8 pep8 --first --ignore=E129,W503,E226 $*
+alias printers lpstat -p | awk '{print $2}'
+alias xa exa --group-directories-first --sort=extension --color=always $*
+alias edit find-file-other-window $1
