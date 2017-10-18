@@ -133,21 +133,25 @@ length of PATH (sans directory slashes) down to MAX-LEN."
                (status-list (mapcar (lambda (str)
                                       (substring str 0 2))
                                     files))
-               (staged (cl-count-if (lambda (str)
-                                      (or
-                                       (string-prefix-p "A" str)
-                                       (string-prefix-p "M" str)))
-                                    status-list))
-               (dirty (member "??" status-list))
-               (modified (cl-count-if
-                          (lambda (str)
-                            (message "HEY: %s" str)
-                            (member str '(" M" " D" "AM" " T")))
-                          status-list))
+               (staged (cl-count-if
+                        (lambda (str)
+                          (string-match-p
+                           "^\\(?:A[ DM]\\|C[ DM]\\|D[ M]\\|M[ DM]\\|R[ DM]\\)$"
+                           str))
+                        status-list))
                (conflicts (cl-count-if
                            (lambda (str)
-                             (member str '("DD" "AU" "UD" "DU" "AA" "UU")))
-                           status-list)))
+                             (string-match-p
+                              "^\\(?:A[AU]\\|D[DU]\\|U[ADU]\\)$"
+                              str))
+                           status-list))
+               (modified (cl-count-if
+                          (lambda (str)
+                            (string-match-p
+                             "^\\(?: [DM]\\|A[DM]\\|C[DM]\\|M[DM]\\|R[DM]\\)$"
+                             str))
+                          status-list))
+               (dirty (member "??" status-list)))
           (format "(%s%s%s|%s%s%s%s%s)"
                   (egp-stylize "#B8BB26" branch)
                   (egp-stylize "#D3869B" "↑" ahead)
