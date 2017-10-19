@@ -16,24 +16,24 @@ let
     rev = "10cefba34bc5e7a6e5df0836a42513c28a10e074";
     sha256 = "05jy6dpva2a1xfsv3yajavbx41gx8hhh5k3k901dnk0118hnyd0w";
   };
-google-btree = fetchgit {
-  "url"= "git://github.com/google/btree";
-  "rev"= "316fb6d3f031ae8f4d457c6c5186b9e3ded70435";
-  "sha256"= "1fyj10cy2d37mpfk73hjfjwpsgpnmdzf2mrkkvzyx0d41sf46xfd";
-  "fetchSubmodules" = true;
-};
-go-pdebug = fetchgit {
-  "url" = "git://github.com/lestrrat/go-pdebug";
-  "rev" = "2e6eaaa5717f81bda41d27070d3c966f40a1e75f";
-  "sha256" = "05dx1f1yln47nazyi50zix82xbnyva3hily4gh5gaz021h01npax";
-  "fetchSubmodules" = true;
-};
-errors = fetchgit {
-  "url"= "git://github.com/pkg/errors";
-  "rev"= "2b3a18b5f0fb6b4f9190549597d3f962c02bc5eb";
-  "sha256"= "07fd392kqyaj7fnl4sgzy7fcs0sw4jx3mx2khhgk64n9j9i37l59";
-  "fetchSubmodules"= true;
-};
+  google-btree = fetchgit {
+    "url"= "git://github.com/google/btree";
+    "rev"= "316fb6d3f031ae8f4d457c6c5186b9e3ded70435";
+    "sha256"= "1fyj10cy2d37mpfk73hjfjwpsgpnmdzf2mrkkvzyx0d41sf46xfd";
+    "fetchSubmodules" = true;
+  };
+  go-pdebug = fetchgit {
+    "url" = "git://github.com/lestrrat/go-pdebug";
+    "rev" = "2e6eaaa5717f81bda41d27070d3c966f40a1e75f";
+    "sha256" = "05dx1f1yln47nazyi50zix82xbnyva3hily4gh5gaz021h01npax";
+    "fetchSubmodules" = true;
+  };
+  errors = fetchgit {
+    "url"= "git://github.com/pkg/errors";
+    "rev"= "2b3a18b5f0fb6b4f9190549597d3f962c02bc5eb";
+    "sha256"= "07fd392kqyaj7fnl4sgzy7fcs0sw4jx3mx2khhgk64n9j9i37l59";
+    "fetchSubmodules"= true;
+  };
 
 in stdenv.mkDerivation rec {
   name = "peco-${version}";
