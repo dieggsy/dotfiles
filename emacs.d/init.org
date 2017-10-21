@@ -1504,8 +1504,8 @@ Executable
   :config
   (nmap dired-mode-map
     ;; "q" 'dired-quit
-    "h" 'dired-up-directory ;; 'diredp-up-directory-reuse-dir-buffer
-    "l" 'dired-open-file ;; 'diredp-find-file-reuse-dir-buffer
+    "h" 'dired-up-directory
+    "l" 'dired-open-file
     "j" 'dired-next-line
     "k" 'dired-previous-line
     "r" 'dired-do-rename
@@ -1521,7 +1521,9 @@ Executable
         dired-dwim-target t
         dired-omit-files (rx string-start "." (1+ nonl) string-end)
         dired-clean-confirm-killing-deleted-buffers nil)
-  (dired-async-mode 1)
+
+  (with-eval-after-load 'dired-async
+    (dired-async-mode 1))
 
   (d/leader-keys
    :keymaps 'wdired-mode-map
@@ -1540,7 +1542,7 @@ Executable
       (set-window-prev-buffers nil (nthcdr nondired-pos prev-buffers))
       (quit-window)))
 
-  (defun dired-here (arg)
+  (defun dired-here (&optional arg)
     (interactive "P")
     (if arg
         (dired default-directory)
