@@ -3781,8 +3781,14 @@ Like git, for emacs. But cooler.
               (eshell-point-within-input-p) 'eshell/cool-peco-ps)
       "C-r" 'eshell/cool-peco-history
       "C-l" 'eshell-clear-keystroke))
+  (d/setup-hook eshell-directory-change
+    (if (file-remote-p default-directory)
+        (setq-local company-idle-delay nil)
+      (setq-local company-idle-delay 0.3)))
   :config
-  (setq eshell-prefer-lisp-functions t
+  (setq eshell-buffer-maximum-lines 20000
+        eshell-history-size 350
+        eshell-prefer-lisp-functions t
         eshell-scroll-to-bottom-on-input t
         eshell-hist-ignoredups t))
 #+end_src
