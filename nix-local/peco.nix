@@ -30,8 +30,8 @@ let
   };
   errors = fetchgit {
     "url"= "git://github.com/pkg/errors";
-    "rev"= "2b3a18b5f0fb6b4f9190549597d3f962c02bc5eb";
-    "sha256"= "07fd392kqyaj7fnl4sgzy7fcs0sw4jx3mx2khhgk64n9j9i37l59";
+    "rev"= "f15c970de5b76fac0b59abb32d62c17cc7bed265";
+    "sha256"= "18jihrffhfsjvz3rkanlhq9xjcdxkqilmflnijc64s7y7lijlbfm";
     "fetchSubmodules"= true;
   };
 

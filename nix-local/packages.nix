@@ -1,20 +1,25 @@
 # Install with nix-env -f my-packages.nix -i
-# Remove/install with nix-env -f my-packages.nix -i
+# Remove/install with nix-env -f my-packages.nix -ir
 with import <nixpkgs> {};
 [ acpi
+  avfs
   cava
-  chicken
+  clang
   detox
   emacs-master
   exa
   font-awesome
   ghq
   gimp
+  git
   glibc-locales
+  gnupg
   google-chrome-beta
   htop
   hub
-  iosevka
+  i3-gaps
+  i3blocks-gaps
+  iosevka-master
   libotf
   mpv
   ncdu
@@ -29,17 +34,19 @@ with import <nixpkgs> {};
   password-store
   peco-master
   playerctl
-  ripgrep
+  ripgrep-master
   rlwrap
   rofi
   rtv
   sbcl
+  termite-master
   tmux
   ttfautohint
   unclutter
-  vim
   vlc
   xbacklight
   xcape
   youtube-dl
-  zathura-with-plugins ]
+  zathura-with-plugins
+  zsh
+  zsh-completions ]
