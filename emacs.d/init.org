@@ -3529,50 +3529,133 @@ Source: http://tinyurl.com/le6wxuo"
 #+begin_src emacs-lisp
 (use-package nix-mode
   :config
-  (defun d/nix-update-fetchgit ()
+  (defmacro d/nix-update-helper (search get-url)
+    `(save-excursion
+       (beginning-of-buffer)
+       (d/let lop ((bound
+                    (re-search-forward
+                     (rx "=" (opt " ") ,search (opt " ") "{" (group (minimal-match (0+ anything))) "}")
+                     nil
+                     'noerror)))
+         (if (not bound)
+             '()
+           (cons
+            (progn
+              (goto-char (match-beginning 1))
+              (list
+               (save-excursion
+                 ,get-url)
+               (save-excursion
+                 (and
+                  (re-search-forward "\"?rev\"?[ ]*?=[ ]*?\"\\(.*\\)\""
+                                     bound)
+                  (list (match-beginning 1)
+                        (match-end 1))))
+               (save-excursion
+                 (and
+                  (re-search-forward "\"?sha256\"?[ ]*?=[ ]*?\"\\(.*\\)\""
+                                     bound)
+                  (list (match-beginning 1)
+                        (match-end 1))))))
+            (lop (re-search-forward
+                  (rx "=" (opt " ") ,search (opt " ") "{" (group (minimal-match (0+ anything))) "}")
+                  nil
+                  'noerror)))))))
+
+  (cl-defun d/nix-update-fetchgit (&optional (file (buffer-file-name)))
     (interactive)
-    (cl-flet ((re
-               (prop-name)
-               (concat (rx "{" (minimal-match (0+ anything)) (opt "\""))
-                       prop-name
-                       (rx (opt "\"") (opt " ") "=" (opt " ") "\""
-                           (group (1+ nonl)) "\";" (minimal-match (0+ anything)) "};"))))
-      (let* ((pos (re-search-forward
-                   (rx "=" (opt " ") (group (or "fetchgit" "fetchFromGitHub")))
-                   nil
-                   t))
-             (type (and pos
-                        (match-string 1)))
-             (buff-file (buffer-file-name) )
-             (url (cond ((string= type "fetchgit")
-                         (and (save-excursion (re-search-forward (re "url") nil t))
-                              (match-string 1)))
-                        ((string= type "fetchFromGitHub")
-                         (concat
-                          "https://github.com/"
-                          (and (save-excursion (re-search-forward (re "owner")))
-                               (match-string 1))
-                          "/"
-                          (and (save-excursion (re-search-forward (re "repo")))
-                               (match-string 1)))))))
-        (when url
-          (make-process
-           :name "nix-prefetch-git"
-           :command `("nix-prefetch-git" ,url "--fetch-submodules")
-           :stderr (get-buffer-create "*nix-prefetch-git*")
-           :filter
-           `(lambda (process output)
-              (let* ((json-vals (json-read-from-string output))
-                     (rev (alist-get 'rev json-vals))
-                     (sha (alist-get 'sha256 json-vals)))
-                (with-current-buffer (find-file-noselect ,buff-file)
-                  (goto-char ,pos)
-                  (save-excursion
-                    (and (re-search-forward ,(re "rev") nil t)
-                         (replace-match rev nil nil nil 1)))
-                  (and (re-search-forward ,(re "sha256") nil t)
-                       (replace-match sha nil nil nil 1))
-                  (d/nix-update-fetchgit))))))))))
+    (let ((visited-p (get-file-buffer file))
+          (file-buffer (find-file-noselect file)))
+      (with-current-buffer file-buffer
+        (let* ((git-urls
+                (d/nix-update-helper
+                 "fetchgit"
+                 (and
+                  (re-search-forward "\"?url\"?[ ]*?=[ ]*?\"\\(.*\\)\"" bound)
+                  (match-string-no-properties 1))))
+               (github-urls
+                (d/nix-update-helper
+                 "fetchFromGitHub"
+                 (concat
+                  "https://github.com/"
+                  (and
+                   (save-excursion (re-search-forward "\"?owner\"?[ ]*?=[ ]*?\"\\(.*\\)\"" bound)
+                                   (match-string-no-properties 1)))
+                  "/"
+                  (and
+                   (save-excursion (re-search-forward "\"?repo\"?[ ]*?=[ ]*?\"\\(.*\\)\"" bound)
+                                   (match-string-no-properties 1))))))
+               (all-urls (append git-urls github-urls)))
+          (dolist (repo all-urls)
+            (let ((url (car repo))
+                  (rev-bounds (cadr repo))
+                  (sha-bounds (caddr repo)))
+              (make-process
+               :name (format "nix-prefetch-git: %s" url)
+               :command `("nix-prefetch-git" ,url "--fetch-submodules")
+               :stderr (get-buffer-create "*nix-prefetch-stderr*")
+               :filter
+               `(lambda (process output)
+                  (let* ((json-vals (json-read-from-string output))
+                         (rev (alist-get 'rev json-vals))
+                         (sha (alist-get 'sha256 json-vals)))
+                    (let ((visited-p (get-file-buffer ,file))
+                          (file-buffer (find-file-noselect ,file)))
+                      (with-current-buffer file-buffer
+                        (unless highlight-changes-mode
+                          (highlight-changes-mode))
+                        (save-excursion
+                          (unless (string= (apply #'buffer-substring-no-properties
+                                                  ',rev-bounds)
+                                           rev)
+                            (apply #'delete-region ',rev-bounds)
+                            (goto-char (car ',rev-bounds))
+                            (insert rev))
+                          (unless (string= (apply #'buffer-substring-no-properties
+                                                  ',sha-bounds)
+                                           sha)
+                            (apply #'delete-region ',sha-bounds)
+                            (goto-char (car ',sha-bounds))
+                            (insert sha)))
+                        (save-buffer))
+                      (unless visited-p
+                        (kill-buffer file-buffer)))))))))
+        (unless visited-p
+          (kill-buffer file-buffer)))))
+
+  (defun d/nix-update-my-packages ()
+    (interactive)
+    (make-process
+     :name "d/nix-update-my-packages"
+     :command '("nix-env" "-q")
+     :connection-type 'pipe
+     :filter
+     (lambda (process output)
+       (let ((prog-mode-hook nil)
+             (output (format " %s " (string-trim output)))
+             (buffer-open (get-file-buffer "~/dotfiles/nix-local/packages.nix"))
+             (inhibit-modification-hooks t))
+         (with-current-buffer
+             (find-file-noselect "~/dotfiles/nix-local/packages.nix")
+           (save-excursion
+             (goto-char (point-min))
+             (and (re-search-forward (rx "[" (group (minimal-match (0+ anything))) "]") nil t)
+                  (replace-match output ;; (format " %s " (string-trim output))
+                                 nil nil nil 1))
+             (goto-char (point-min))
+             (while (re-search-forward "\\(-[.0-9-]+\\(-dev\\)?\\)\\_>" nil t)
+               (replace-match "" nil nil nil 1))
+             (indent-region (point-min) (point-max)))
+           (save-buffer)
+           (unless buffer-open
+             (kill-this-buffer))))))
+    (let ((nix-files (split-string (shell-command-to-string "grep -lrP 'fetchgit|fetchFromGitHub' ~/dotfiles/nix-local")
+                                   "\n"
+                                   'omit-nulls)))
+      (dolist (file nix-files)
+        (d/nix-update-fetchgit file)))))
+
+
 #+end_src
 *** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]]
 #+begin_quote
