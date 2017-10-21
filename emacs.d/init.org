@@ -1495,6 +1495,12 @@ Executable
   :general
   (d/leader-keys
    "ad" 'dired-here)
+  :init
+  (d/setup-hook dired-mode
+    (hl-line-mode 1)
+    (dired-collapse-mode)
+    (dired-omit-mode)
+    (diredfl-mode))
   :config
   (nmap dired-mode-map
     ;; "q" 'dired-quit
@@ -1568,10 +1574,7 @@ Executable
                                                `(,(current-buffer))))
       (set-window-prev-buffers nil prev-buffers))))
 
-(d/setup-hook dired-mode
-  (hl-line-mode 1)
-  (dired-collapse-mode)
-  (dired-omit-mode))
+
 #+end_src
 *** Ibuffer
 #+begin_src emacs-lisp
