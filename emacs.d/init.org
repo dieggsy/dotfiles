@@ -3996,6 +3996,12 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
   :init
   (setq diredfl-ignore-compressed-flag nil))
 #+end_src
+**** dired-rainbow
+#+begin_src emacs-lisp
+(use-package dired-rainbow
+  :after dired
+  :config
+  (dired-rainbow-define-chmod executable-unix "#B8BB26" "-[rw-]+x.*"))
 #+end_src
 ** Emacs
 *** Packages
