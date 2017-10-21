@@ -3993,7 +3993,9 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 #+begin_src emacs-lisp
 (use-package diredfl
   :after dired
-  :config)
+  :init
+  (setq diredfl-ignore-compressed-flag nil))
+#+end_src
 #+end_src
 ** Emacs
 *** Packages
