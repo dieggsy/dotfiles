@@ -1294,7 +1294,7 @@ pkill dropbox; dropbox start &
 
 pkill unclutter; unclutter &
 
-pkill mpd; mpd &
+# pkill mpd; mpd &
 # tmux kill-session -t sbcl_daemon 2>/dev/null
 # tmux new -d -s sbcl_daemon /usr/local/bin/sbcl --load ~/scriptl/scriptl-server.lisp &
 
