@@ -3091,7 +3091,7 @@ Source: https://git.io/vQKzq"
   (rainbow-delimiters-mode)
   (goto-address-prog-mode)
   (display-line-numbers-mode)
-  (fci-mode)
+  ;; (fci-mode)
   (highlight-numbers-mode)
   (auto-fill-mode 1)
   (setq-local comment-auto-fill-only-comments t)
