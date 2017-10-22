@@ -104,6 +104,8 @@ map K previousTab
       vte = gnome3.vte-ng;
     };
 
+    chicken = super.callPackage ~/dotfiles/nix-local/chicken.nix {};
+
     # Options and overrides
     polybar = super.polybar.override {
       i3GapsSupport = true;
