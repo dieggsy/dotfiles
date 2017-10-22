@@ -433,9 +433,6 @@ source ~/.nix-profile/etc/profile.d/nix.sh
 #+end_src
 ** Path
 #+begin_src sh
-export GOPATH="$HOME/go"
-export GOROOT=/usr/lib/go-1.8
-
 export PYENV_ROOT="$HOME/.pyenv"
 path=(
     $HOME/.nix-profile/bin
@@ -446,8 +443,6 @@ path=(
     $HOME/.local/bin
     /usr/local/{bin,sbin}
     $path
-    $GOPATH/bin
-    $GOROOT/bin
 )
 
 fpath=(
