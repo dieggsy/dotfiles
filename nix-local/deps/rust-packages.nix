@@ -12,8 +12,8 @@ stdenv.mkDerivation {
   src = fetchFromGitHub {
     owner = "rust-lang";
     repo = "crates.io-index";
-    rev = "9b5d8d7d3a33a256f5741588658b002369ff0505";
-    sha256 = "17v2wr3hkmfr1y3hk73ndbdwkcmvscba5p90q99gfh1np0w8m9pk";
+    rev = "8133a11bb388bcc1e3fc47ababea50bb46da25b3";
+    sha256 = "1blais6ap1lisgp5k8nfkniya09zdw4vvfc55q14gvvyak2vqdiw";
   };
   phases = [ "unpackPhase" "installPhase" ];
   installPhase = ''

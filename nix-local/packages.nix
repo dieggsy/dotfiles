@@ -8,13 +8,11 @@ with import <nixpkgs> {};
   detox
   emacs-master
   exa
-  font-awesome
   ghq
   gimp
   git
   glibc-locales
   gnupg
-  google-chrome-beta
   htop
   hub
   i3-gaps
@@ -29,7 +27,6 @@ with import <nixpkgs> {};
   nix-prefetch-git
   nodejs
   otfcc
-  parallel
   pass-git-helper
   password-store
   peco-master
