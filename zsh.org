@@ -447,9 +447,10 @@ path=(
 
 fpath=(
     /usr/share/zsh/site-functions/
+    ~/.nix-profile/share/zsh/site-functions/
     $fpath
 )
-export MANPATH=":$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/man/"
+# export MANPATH=":$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/man/"
 typeset -gU path manpath cdpath fpath
 #+end_src
 ** Variables
