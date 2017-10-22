@@ -435,10 +435,10 @@ source ~/.nix-profile/etc/profile.d/nix.sh
 #+begin_src sh
 export PYENV_ROOT="$HOME/.pyenv"
 path=(
+    $HOME/bin
     $HOME/.nix-profile/bin
     $HOME/.cargo/bin
     $PYENV_ROOT/bin
-    $HOME/bin
     $HOME/scriptl
     $HOME/.local/bin
     /usr/local/{bin,sbin}
