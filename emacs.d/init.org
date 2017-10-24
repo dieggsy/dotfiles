@@ -1506,7 +1506,7 @@ Executable
     (diredfl-mode))
   :config
   (nmap dired-mode-map
-    ;; "q" 'dired-quit
+    "q" 'dired-quit
     "h" 'dired-up-directory
     "l" 'dired-open-file
     "j" 'dired-next-line
@@ -1534,16 +1534,10 @@ Executable
 
   (defun dired-quit ()
     (interactive)
-    (let* ((prev-buffers (buffer-list))
-           (nondired-pos (cl-position-if
-                          (lambda (buf)
-                            (with-current-buffer buf
-                              (not
-                               (eq major-mode 'dired-mode))))
-                          prev-buffers)))
-
-      (set-window-prev-buffers nil (nthcdr nondired-pos prev-buffers))
-      (quit-window)))
+    (while (eq major-mode 'dired-mode)
+      (quit-window))
+    (when d/dired-close-window
+      (delete-window)))
 
   (defun dired-here (&optional arg)
     (interactive "P")
@@ -1551,35 +1545,13 @@ Executable
         (dired default-directory)
       (dired-other-window default-directory)))
 
-  (define-advice dired-up-directory (:around (fn &optional other-window) preserve-quit-restore)
-    (let ((last-quit-restore (window-parameter nil 'quit-restore))
-          (prev-buffers (window-prev-buffers)))
-      (funcall fn other-window)
-      (set-window-parameter nil 'quit-restore (append
-                                               (cl-subseq last-quit-restore 0 3)
-                                               `(,(current-buffer))))
-      (set-window-prev-buffers nil prev-buffers)))
+  (defvar d/dired-close-window nil)
 
-  (define-advice dired-open-file (:around (fn &optional other-window) preserve-quit-restore)
-    (let ((last-quit-restore (window-parameter nil 'quit-restore))
-          (prev-buffers (window-prev-buffers)))
-      (funcall fn other-window)
-      (set-window-parameter nil 'quit-restore (append
-                                               (cl-subseq last-quit-restore 0 3)
-                                               `(,(current-buffer))))
-      (set-window-prev-buffers nil prev-buffers)))
-
-
-  (define-advice dired-find-alternate-file (:around (fn) preserve-quit-restore)
-    (let ((last-quit-restore (window-parameter nil 'quit-restore))
-          (prev-buffers (window-prev-buffers)))
-      (funcall fn)
-      (set-window-parameter nil 'quit-restore (append
-                                               (cl-subseq last-quit-restore 0 3)
-                                               `(,(current-buffer))))
-      (set-window-prev-buffers nil prev-buffers))))
-
-
+  (define-advice dired-other-window
+      (:before (dirname &optional switches) other-window-exists)
+    (if (= (length (window-list)) 1)
+        (setq d/dired-close-window t)
+      (setq d/dired-close-window nil))))
 #+end_src
 *** Ibuffer
 #+begin_src emacs-lisp
