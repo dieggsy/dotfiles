@@ -177,7 +177,8 @@
        (rainbow-mode 1)))))
  '(safe-local-variable-values
    (quote
-    ((d/async-babel-tangle-decrypt . t)
+    ((column-enforce-mode)
+     (d/async-babel-tangle-decrypt . t)
      (auto-save-mode)
      (org-tags-match-list-sublevels)
      (org-src-fontify-natively)
