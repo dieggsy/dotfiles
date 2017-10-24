@@ -20,8 +20,8 @@ stdenv.mkDerivation {
     sha256 = "12b9gaa9lqh39lj1v4wm48f6z8ww3jdkvc5bh9gqqvn6kd2wwnk0";
   };
 
-  buildFlags = "PLATFORM=${platform} PREFIX=$(out) VARDIR=$(out)/var/lib";
-  installFlags = "PLATFORM=${platform} PREFIX=$(out) VARDIR=$(out)/var/lib";
+  buildFlags = "PLATFORM=${platform} PREFIX=$(out) VARDIR=$(out)/lib";
+  installFlags = "PLATFORM=${platform} PREFIX=$(out) VARDIR=$(out)/lib";
 
   buildInputs = [ makeWrapper ];
 

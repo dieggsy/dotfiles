@@ -13,7 +13,7 @@ buildRustPackage rec {
     sha256 = "0s10b5c0kbi0x7avymia93k5w48jmha43d68wjgn94wcl2qpgbaf";
   };
 
-  depsSha256 = "1g2qm9mdnh79iqwldywa0h81nvxvv3wdpvxns60f4nw9iqz6a7pm";
+  depsSha256 = "0jaz4zbq40kx8srfg9qzgcfgpia7d51kh0n0hiax0740p9yrhyrz";
 
   preFixup = ''
     mkdir -p "$out/man/man1"

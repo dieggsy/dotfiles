@@ -4,17 +4,19 @@ with import <nixpkgs> {};
 [ acpi
   avfs
   cava
-  clang
+  chicken
+  llvmPackages.clang-unwrapped
+  cmus
   detox
   emacs-master
   exa
   ghq
   gimp
-  git
-  glibc-locales
+  gitMinimal
+  glibcLocales
   gnupg
   htop
-  hub
+  gitAndTools.hub
   i3-gaps
   i3blocks-gaps
   iosevka-master
@@ -25,10 +27,11 @@ with import <nixpkgs> {};
   networkmanager_dmenu
   nix
   nix-prefetch-git
-  nodejs
+  nodejs-8_x
   otfcc
-  pass-git-helper
-  password-store
+  pandoc
+  pass-git-helper-master
+  pass
   peco-master
   playerctl
   ripgrep-master
@@ -41,9 +44,9 @@ with import <nixpkgs> {};
   ttfautohint
   unclutter
   vlc
-  xbacklight
+  xorg.xbacklight
   xcape
   youtube-dl
-  zathura-with-plugins
+  zathura
   zsh
   zsh-completions ]
