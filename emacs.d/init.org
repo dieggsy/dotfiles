@@ -3981,11 +3981,17 @@ Like git, for emacs. But cooler.
                   (list (string-trim (eshell-get-history index)))
                 (cons (string-trim (eshell-get-history index)) (loop (1+ index)))))
             :from-end t
-            :test #'string=)))
+            :test #'string=))
+          (input (let* ((beg (save-excursion (eshell-bol)))
+                        (end (save-excursion (end-of-line) (point))))
+                   (buffer-substring-no-properties beg end))))
       (ivy-read "[history] "
                 history
                 :action (lambda (x)
-                          (insert x))))))
+                          (end-of-line)
+                          (eshell-kill-input)
+                          (insert x))
+                :initial-input input))))
 #+end_src
 ** Term
 #+begin_src emacs-lisp
