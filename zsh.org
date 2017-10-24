@@ -457,9 +457,8 @@ typeset -gU path manpath cdpath fpath
 #+begin_src sh
 export PYTHONSTARTUP=$HOME/.pythonrc.py
 
-export CHICKEN_REPOSITORY=~/.local/lib/chicken
+export CHICKEN_REPOSITORY=~/.local/lib/chicken/8
 
-export WWW_HOME='https://duckduckgo.com'
 export RTV_EDITOR='emacsclient -t'
 export RTV_URLVIEWER='urlview'
 
