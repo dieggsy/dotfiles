@@ -4869,11 +4869,12 @@ Source: http://tinyurl.com/y8tj8vxx"
                    erc-server-announced-name))
           (channel (buffer-name))
           (msg (string-join
-                (cdr (split-string
-                      (replace-regexp-in-string erc-fill-prefix "" msg)
-                      " "
-                      t
-                      " ")) " ")))
+                (split-string
+                 (replace-regexp-in-string erc-fill-prefix "" msg)
+                 nil
+                 t
+                 " ")
+                " ")))
       (dbus-ignore-errors
         (setq erc-notifications-last-notification
               (notifications-notify
