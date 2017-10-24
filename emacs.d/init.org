@@ -2648,27 +2648,14 @@ Use a bar cursor in the minibuffer.
            :upstream (:host github
                       :repo "emacsfodder/emacs-theme-darktooth")))
 #+end_src
-*** [[https://github.com/alpaker/Fill-Column-Indicator][fill-column-indicator]]
+*** [[https://github.com/jordonbiondo/column-enforce-mode][column-enforce-mode]]
 #+begin_quote
-  An Emacs minor mode that graphically indicates the fill column.
+  Highlight text that extends beyond a certain column.
 #+end_quote
 #+begin_src emacs-lisp
-(use-package fill-column-indicator
+(use-package column-enforce-mode
   :init
-  (setq-default fci-rule-column 79)
-  (defvar-local company-fci-mode-on-p nil)
-
-  (defun company-turn-off-fci (&rest _ignore)
-    (when (boundp 'fci-mode)
-      (setq company-fci-mode-on-p fci-mode)
-      (when fci-mode (fci-mode -1))))
-
-  (defun company-maybe-turn-on-fci (&rest _ignore)
-    (when company-fci-mode-on-p (fci-mode 1)))
-
-  (add-hook 'company-completion-started-hook 'company-turn-off-fci)
-  (add-hook 'company-completion-finished-hook 'company-maybe-turn-on-fci)
-  (add-hook 'company-completion-cancelled-hook 'company-maybe-turn-on-fci))
+  (setq-default column-enforce-column 79))
 #+end_src
 *** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers]]
 #+begin_quote
@@ -3066,7 +3053,7 @@ Source: https://git.io/vQKzq"
   (rainbow-delimiters-mode)
   (goto-address-prog-mode)
   (display-line-numbers-mode)
-  ;; (fci-mode)
+  (column-enforce-mode)
   (highlight-numbers-mode)
   (auto-fill-mode 1)
   (setq-local comment-auto-fill-only-comments t)
