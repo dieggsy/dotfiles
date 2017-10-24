@@ -385,8 +385,8 @@ That undersells it. The /most/ convenient key definitions in emacs.
   :config
   (general-evil-setup t)
 
-  ;; (dolist (func '(imap emap iemap nmap vmap nvmap omap mmap rmap otomap itomap tomap))
-  ;;   (put (intern "general-" (symbol-name func)) 'lisp-indent-function 'defun))
+  (dolist (func '(imap emap iemap nmap vmap nvmap omap mmap rmap otomap itomap tomap))
+    (put (intern (concat "general-" (symbol-name func))) 'lisp-indent-function 'defun))
 
   (general-create-definer
    d/mode-leader-keys
@@ -2919,24 +2919,26 @@ Source: https://git.io/vQKzq"
 
   (defvar d/ssid-keymap
     (let ((map (make-sparse-keymap)))
-      (define-key map [mode-line mouse-1] (lambda ()
-                                            (interactive)
-                                            (call-process-shell-command "networkmanager_dmenu")))
+      (define-key map [mode-line mouse-1]
+        (lambda ()
+          (interactive)
+          (call-process-shell-command "networkmanager_dmenu")))
       map))
 
   (defvar d/kb-layout-keymap
     (let ((map (make-sparse-keymap)))
-      (define-key map [mode-line mouse-1] (lambda ()
-                                            (interactive)
-                                            (pcase d/kb-layout
-                                              ("DV"
-                                               (setq d/kb-layout "QW")
-                                               (call-process-shell-command "setxkbmap us")
-                                               (force-mode-line-update 'all))
-                                              ("QW"
-                                               (setq d/kb-layout "DV")
-                                               (call-process-shell-command "setxkbmap dvorak")
-                                               (force-mode-line-update 'all)))))
+      (define-key map [mode-line mouse-1]
+        (lambda ()
+          (interactive)
+          (pcase d/kb-layout
+            ("DV"
+             (setq d/kb-layout "QW")
+             (call-process-shell-command "setxkbmap us")
+             (force-mode-line-update 'all))
+            ("QW"
+             (setq d/kb-layout "DV")
+             (call-process-shell-command "setxkbmap dvorak")
+             (force-mode-line-update 'all)))))
       map))
 
   (defvar d/mode-line-exwm
@@ -3492,12 +3494,15 @@ Source: http://tinyurl.com/le6wxuo"
 (use-package nix-mode
   :commands (d/nix-update-fetchgit d/nix-update-my-packages)
   :config
+  (require 'hilit-chg)
+
   (defmacro d/nix-update-helper (search get-url)
     `(save-excursion
        (beginning-of-buffer)
        (d/let lop ((bound
                     (re-search-forward
-                     (rx "=" (opt " ") ,search (opt " ") "{" (group (minimal-match (0+ anything))) "}")
+                     (rx "=" (opt " ") ,search (opt " ") "{"
+                         (group (minimal-match (0+ anything))) "}")
                      nil
                      'noerror)))
          (if (not bound)
@@ -3521,13 +3526,13 @@ Source: http://tinyurl.com/le6wxuo"
                   (list (match-beginning 1)
                         (match-end 1))))))
             (lop (re-search-forward
-                  (rx "=" (opt " ") ,search (opt " ") "{" (group (minimal-match (0+ anything))) "}")
+                  (rx "=" (opt " ") ,search (opt " ") "{"
+                      (group (minimal-match (0+ anything))) "}")
                   nil
                   'noerror)))))))
 
   (cl-defun d/nix-update-fetchgit (&optional (file (buffer-file-name)))
     (interactive)
-    (require 'hilit-chg)
     (let ((visited-p (get-file-buffer file))
           (file-buffer (find-file-noselect file)))
       (with-current-buffer file-buffer
@@ -3543,12 +3548,14 @@ Source: http://tinyurl.com/le6wxuo"
                  (concat
                   "https://github.com/"
                   (and
-                   (save-excursion (re-search-forward "\"?owner\"?[ ]*?=[ ]*?\"\\(.*\\)\"" bound)
-                                   (match-string-no-properties 1)))
+                   (save-excursion
+                     (re-search-forward "\"?owner\"?[ ]*?=[ ]*?\"\\(.*\\)\"" bound)
+                     (match-string-no-properties 1)))
                   "/"
                   (and
-                   (save-excursion (re-search-forward "\"?repo\"?[ ]*?=[ ]*?\"\\(.*\\)\"" bound)
-                                   (match-string-no-properties 1))))))
+                   (save-excursion
+                     (re-search-forward "\"?repo\"?[ ]*?=[ ]*?\"\\(.*\\)\"" bound)
+                     (match-string-no-properties 1))))))
                (all-urls (append git-urls github-urls)))
           (dolist (repo all-urls)
             (let ((url (car repo))
@@ -3569,15 +3576,17 @@ Source: http://tinyurl.com/le6wxuo"
                         (unless highlight-changes-mode
                           (highlight-changes-mode))
                         (save-excursion
-                          (unless (string= (apply #'buffer-substring-no-properties
-                                                  ',rev-bounds)
-                                           rev)
+                          (unless (string=
+                                   (apply #'buffer-substring-no-properties
+                                          ',rev-bounds)
+                                   rev)
                             (apply #'delete-region ',rev-bounds)
                             (goto-char (car ',rev-bounds))
                             (insert rev))
-                          (unless (string= (apply #'buffer-substring-no-properties
-                                                  ',sha-bounds)
-                                           sha)
+                          (unless (string=
+                                   (apply #'buffer-substring-no-properties
+                                          ',sha-bounds)
+                                   sha)
                             (apply #'delete-region ',sha-bounds)
                             (goto-char (car ',sha-bounds))
                             (insert sha)))
@@ -3827,8 +3836,8 @@ Like git, for emacs. But cooler.
   (d/setup-hook eshell-mode
     (imap eshell-mode-map
       "C-p" (general-predicate-dispatch nil
-              (eshell-point-within-input-p) 'eshell/cool-peco-ps)
-      "C-r" 'eshell/cool-peco-history
+              (eshell-point-within-input-p) 'eshell/ivy-ps)
+      "C-r" 'eshell/ivy-history
       "C-l" 'eshell-clear-keystroke))
   (d/setup-hook eshell-directory-change
     (if (file-remote-p default-directory)
@@ -3944,7 +3953,7 @@ Like git, for emacs. But cooler.
   (defun eshell/rg (&rest args)
     (eshell-grep "rg" (append '("--no-heading" "-M" "120") args) t))
 
-  (defun eshell/cool-peco-ps ()
+  (defun eshell/ivy-ps ()
     (interactive)
     (let ((ps  (split-string
                 (shell-command-to-string
@@ -3956,7 +3965,7 @@ Like git, for emacs. But cooler.
                 :action (lambda (x)
                           (insert (cadr (split-string x " " t)))))))
 
-  (defun eshell/cool-peco-history ()
+  (defun eshell/ivy-history ()
     (interactive)
     (let ((history
            (cl-remove-duplicates
@@ -4766,10 +4775,11 @@ Source: http://tinyurl.com/lo96nwc"
                                   (gethash channel
                                            (gethash server d/erc-last-speaker))
                                   nick))
-                  (long-char (if (and (> (length nick) 10)
-                                      (not nick-was-last))
-                                 (erc-propertize "…" 'face '(:foreground "#D3869B" ))
-                               "")))
+                  (long-char
+                   (if (and (> (length nick) 10)
+                            (not nick-was-last))
+                       (erc-propertize "…" 'face '(:foreground "#D3869B" ))
+                     "")))
 
              (when (>= (cl-incf erc-lurker-cleanup-count)
                        erc-lurker-cleanup-interval)
@@ -4781,19 +4791,19 @@ Source: http://tinyurl.com/lo96nwc"
                       (gethash server erc-lurker-state))
              (puthash channel nick (gethash server d/erc-last-speaker))
              (format "%10.10s%s	"
-                     (cond  (nick-was-last
-                             (erc-propertize
-                              "↳"
-                              'face
-                              (gethash trimmed erc-hl-nicks-face-table)))
-                            ((not (member trimmed erc-hl-nicks-skip-nicks))
-                             (concat
-                              (erc-propertize mode 'face 'erc-nick-prefix-face)
-                              (erc-propertize nick 'face (erc-hl-nicks-make-face trimmed))))
-                            (t
-                             (concat
-                              (erc-propertize mode 'face 'erc-nick-prefix-face)
-                              nick)))
+                     (cond (nick-was-last
+                            (erc-propertize
+                             "↳"
+                             'face
+                             (gethash trimmed erc-hl-nicks-face-table)))
+                           ((not (member trimmed erc-hl-nicks-skip-nicks))
+                            (concat
+                             (erc-propertize mode 'face 'erc-nick-prefix-face)
+                             (erc-propertize nick 'face (erc-hl-nicks-make-face trimmed))))
+                           (t
+                            (concat
+                             (erc-propertize mode 'face 'erc-nick-prefix-face)
+                             nick)))
                      long-char)))
        ,else))
 
@@ -4813,14 +4823,15 @@ update lurker status."
      (let ((prefix "> "))
        (erc-propertize prefix 'font-lock-face 'erc-default-face))))
 
-  (define-advice erc-format-privmessage (:override (nick msg privp msgp) no-brackets)
+  (define-advice erc-format-privmessage
+      (:override (nick msg privp msgp) no-brackets)
     "Remove the annoying angle brackets."
     (let* ((mark-s (if msgp (if privp "*" "") "          \t-"))
            (mark-e (if msgp (if privp "*" "") "- "))
            (str    (format "%s%s%s%s" mark-s nick mark-e msg))
            (nick-face (if privp 'erc-nick-msg-face 'erc-nick-default-face))
            (msg-face (if privp 'erc-direct-msg-face 'erc-default-face)))
-      ;; add text properties to text before the nick, the nick and after the nick
+      ;; add text properties to text before the nick, nick and after nick
       (erc-put-text-property 0 (length mark-s) 'font-lock-face msg-face str)
       (erc-put-text-property (length mark-s) (+ (length mark-s) (length nick))
                              'font-lock-face nick-face str)
@@ -4858,11 +4869,12 @@ Source: http://tinyurl.com/y8tj8vxx"
                       " ")) " ")))
       (dbus-ignore-errors
         (setq erc-notifications-last-notification
-              (notifications-notify :bus erc-notifications-bus
-                                    :title (xml-escape-string (format "%s@%s" channel server))
-                                    :body (xml-escape-string (format "%s: %s" nick msg))
-                                    :replaces-id erc-notifications-last-notification
-                                    :app-icon erc-notifications-icon)))))
+              (notifications-notify
+               :bus erc-notifications-bus
+               :title (xml-escape-string (format "%s@%s" channel server))
+               :body (xml-escape-string (format "%s: %s" nick msg))
+               :replaces-id erc-notifications-last-notification
+               :app-icon erc-notifications-icon)))))
 
   (defun d/erc-to-bottom ()
     (and (eq major-mode 'erc-mode)
@@ -4999,7 +5011,7 @@ Configure the Elfeed RSS reader with an Orgmode file
       `(progn
          (defvar ,var-name (string-trim (shell-command-to-string ,cmd)))
          (start-process-shell-command ,name nil ,shell-cmd)
-         (defun ,(intern (concat name "-filter")) (process output)
+         (defun ,filter-name (process output)
            filter-body
            (setq ,var-name ,(if fmt `(funcall ,fmt (string-trim output))
                               `(string-trim output)))
