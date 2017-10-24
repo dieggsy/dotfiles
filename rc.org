@@ -1609,62 +1609,15 @@ sudo dselect update
 sudo dpkg --set-selections < /tmp/apt/package.list
 sudo apt-get dselect-upgrade -y
 #+end_src
-**** golang
-#+begin_src sh :tangle (when (eq system-type 'gnu/linux) "~/bin/masterinstall")
-sudo add-apt-repository ppa:ubuntu-lxc/lxd-stable
-sudo apt-get update
-sudo apt-get install golang
-go get github.com/motemen/ghq
+*** nix
+#+begin_src sh :tangle (when (eq system-type 'gnu/linx) "~/bin/masterinstall")
+curl https://nixos.org/nix/install | sh
+nix-env -f ~/dotfiles/nix-local/packages.nix -i
 #+end_src
-**** stack
-#+begin_src sh :tangle (when (eq system-type 'gnu/linux) "~/bin/masterinstall")
-curl -sSL https://get.haskellstack.org/ | sh
-#+end_src
-**** pyenv
+*** pyenv
 #+begin_src sh :tangle (when (eq system-type 'gnu/linux) "~/bin/masterinstall")
 curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
 pyenv update
-#+end_src
-**** Iosevka
-***** nodejs
-#+begin_src sh
-curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -
-sudo apt-get install -y nodejs
-#+end_src
-***** ttfautohint
-#+begin_src sh
-sudo apt-get install ttfautohint
-#+end_src
-***** premake5
-#+begin_src sh
-wget https://github.com/premake/premake-core/releases/download/v5.0.0-alpha11/premake-5.0.0-alpha11-linux.tar.gz
-tar -xf premake-5.0.0-alpha11-linux.tar.gz
-sudo cp premake5 /usr/local/bin/premake5
-#+end_src
-***** otfcc
-#+begin_src sh
-ghq get caryll/otfcc
-cd ~/.ghq/github.com/caryll/otfcc
-premake5 gmake
-cd build/make
-make config=release_x64
-cd ../../
-cd bin/release-x64
-mv otfccbuild /usr/local/bin # or wherever
-mv otfccdump /usr/local/bin # or wherever
-#+end_src
-***** Iosevka
-#+begin_src sh
-ghq get be5invis/iosevka
-cd ~/.ghq/github.com/be5invis/iosevka
-npm install
-make custom-config set=input design='v-l-tailed v-i-hooky v-a-singlestorey v-zero-dotted v-asterisk-low v-g-singlestorey v-brace-straight'
-make custom-config set=term design='v-l-tailed v-i-hooky v-a-singlestorey v-zero-dotted v-asterisk-low v-g-singlestorey v-brace-straight term'
-make custom set=input
-make custom set=term
-mv dist/iosevka-input ~/.local/share/fonts/
-mv dist/iosevka-term ~/.local/share/fonts/
-fc-cache -f -v
 #+end_src
 *** Python versions
 #+begin_src sh
