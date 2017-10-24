@@ -80,7 +80,7 @@ if [ "$(uname)" = "Darwin" ]; then
         fi
     }
     zle -N zle-keymap-select
-elif [ -z "$INSIDE_EMACS" ]; then
+elif [ -z "$INSIDE_EMACS" ] && [ -n "$DISPLAY" ]; then
     # Modal cursor color for vi's insert/normal modes.
     # http://stackoverflow.com/questions/30985436/
     # https://bbs.archlinux.org/viewtopic.php?id=95078
