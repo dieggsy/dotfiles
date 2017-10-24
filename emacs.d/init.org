@@ -385,6 +385,9 @@ That undersells it. The /most/ convenient key definitions in emacs.
   :config
   (general-evil-setup t)
 
+  ;; (dolist (func '(imap emap iemap nmap vmap nvmap omap mmap rmap otomap itomap tomap))
+  ;;   (put (intern "general-" (symbol-name func)) 'lisp-indent-function 'defun))
+
   (general-create-definer
    d/mode-leader-keys
    :states '(emacs normal visual motion insert)
