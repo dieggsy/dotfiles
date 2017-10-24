@@ -3598,33 +3598,40 @@ Source: http://tinyurl.com/le6wxuo"
 
   (defun d/nix-update-my-packages ()
     (interactive)
-    (make-process
-     :name "d/nix-update-my-packages"
-     :command '("nix-env" "-q")
-     :connection-type 'pipe
-     :filter
-     (lambda (process output)
-       (let ((prog-mode-hook nil)
-             (output (format " %s " (string-trim output)))
-             (buffer-open (get-file-buffer "~/dotfiles/nix-local/packages.nix"))
-             (inhibit-modification-hooks t))
-         (with-current-buffer
-             (find-file-noselect "~/dotfiles/nix-local/packages.nix")
-           (save-excursion
-             (goto-char (point-min))
-             (and (re-search-forward (rx "[" (group (minimal-match (0+ anything))) "]") nil t)
-                  (replace-match output ;; (format " %s " (string-trim output))
-                                 nil nil nil 1))
-             (goto-char (point-min))
-             (while (re-search-forward "\\(-[.0-9-]+\\(-dev\\)?\\)\\_>" nil t)
-               (replace-match "" nil nil nil 1))
-             (indent-region (point-min) (point-max)))
-           (save-buffer)
-           (unless buffer-open
-             (kill-this-buffer))))))
-    (let ((nix-files (split-string (shell-command-to-string "grep -lrP 'fetchgit|fetchFromGitHub' ~/dotfiles/nix-local")
-                                   "\n"
-                                   'omit-nulls)))
+    (cl-flet ((d/nix-update-filter
+               (process output)
+               (let ((prog-mode-hook nil)
+                     (output (format " %s " (string-trim output)))
+                     (visited-p (get-file-buffer
+                                 "~/dotfiles/nix-local/packages.nix"))
+                     (inhibit-modification-hooks t))
+                 (with-current-buffer
+                     (find-file-noselect "~/dotfiles/nix-local/packages.nix")
+                   (save-excursion
+                     (goto-char (point-min))
+                     (and (re-search-forward
+                           (rx "[" (group (minimal-match (0+ anything))) "]") nil t)
+                          (replace-match output nil nil nil 1))
+                     (indent-region (point-min) (point-max)))
+                   (save-buffer)
+                   (unless visited-p
+                     (kill-this-buffer))))))
+      (let ((proc (start-process-shell-command
+                   "d/nix-update-my-packages"
+                   "test"
+                   (concat "echo \"$("
+                           "nix-env -qaP "
+                           "| grep -P \"$(nix-env -q | tr '\r\n' '|' | sed 's/|$//; s/|/| /g;')\" "
+                           "| awk '!seen[$2]++ {print $1}' "
+                           "| sed 's/^nixpkgs\\.//'"
+                           ")\""))))
+        (set-process-filter proc #'d/nix-update-filter)))
+    (let ((nix-files
+           (split-string
+            (shell-command-to-string
+             "grep -lrP 'fetchgit|fetchFromGitHub' ~/dotfiles/nix-local")
+            "\n"
+            'omit-nulls)))
       (dolist (file nix-files)
         (d/nix-update-fetchgit file)))))
 
