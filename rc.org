@@ -14,7 +14,6 @@ more readable in org format than in rendered markdown.
   - [[#confignix][config.nix]]
   - [[#darktooththeme][darktooth.theme]]
   - [[#emacsclientdesktop][emacsclient.desktop]]
-  - [[#exwmdesktop][exwm.desktop]]
   - [[#fontsconf][fonts.conf]]
   - [[#git][git]]
   - [[#i3][i3]]
@@ -196,20 +195,6 @@ Exec=emacsclient -n %u
 Icon=emacs-icon
 Type=Application
 Terminal=false
-#+end_src
-** exwm.desktop
-:PROPERTIES:
-:header-args+: :tangle /sudo::/usr/share/xsessions/exwm.desktop
-:END:
-#+begin_src conf
-[Desktop Entry]
-Name=EXWM
-Comment=Emacs Window Manager
-Exec=dbus-launch --exit-with-session emacs
-Type=Application
-X-LightDM-DesktopName=exwm
-DesktopNames=exwm
-Keywords=tiling;wm;windowmanager;window;manager;emacs;
 #+end_src
 ** fonts.conf
 :PROPERTIES:
