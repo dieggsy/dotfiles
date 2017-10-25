@@ -1318,7 +1318,7 @@ set recolor-lightcolor "#282828"
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/xterm-24bit.terminfo")
 :END:
-#+begin_src text :comments no
+#+begin_src text :comments no :tangle no
 # Use colon separators.
 xterm-24bit|xterm with 24-bit direct color mode,
   use=xterm-256color,
