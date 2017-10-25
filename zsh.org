@@ -437,11 +437,8 @@ export PYENV_ROOT="$HOME/.pyenv"
 path=(
     $HOME/bin
     $HOME/.nix-profile/bin
-    $HOME/.cargo/bin
     $PYENV_ROOT/bin
-    $HOME/scriptl
     $HOME/.local/bin
-    /usr/local/{bin,sbin}
     $path
 )
 
