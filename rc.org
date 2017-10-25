@@ -855,6 +855,7 @@ include "~/.nano/*.nanorc"
 [dmenu]
 dmenu_command = rofi
 p = [Networks]
+l = 10
 rofi_highlight=True
 # # Note that dmenu_command can contain arguments as well like `rofi -width 30`
 # # Rofi and dmenu are set to case insensitive by default `-i`
