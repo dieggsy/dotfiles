@@ -9,6 +9,7 @@ with import <nixpkgs> {};
   detox
   emacs-master
   exa
+  font-awesome-ttf
   ghq
   gimp
   gitMinimal
@@ -31,6 +32,7 @@ with import <nixpkgs> {};
   pandoc
   pass-git-helper-master
   pass
+  peco
   playerctl
   ripgrep-master
   rlwrap
