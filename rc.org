@@ -32,6 +32,8 @@ more readable in org format than in rendered markdown.
   - [[#zathurarc][zathurarc]]
   - [[#xterm-24bitterminfo][xterm-24bit.terminfo]]
 - [[#scripts][Scripts]]
+  - [[#erc-rofi][erc-rofi]]
+  - [[#eshell-focus][eshell-focus]]
   - [[#i3-exit-rofi][i3-exit-rofi]]
   - [[#i3exit][i3exit]]
   - [[#fancylock][fancylock]]
@@ -826,7 +828,8 @@ exec --no-startup-id emacs
 # for_window [title="^emacs@Ragnarok$"] move scratchpad;
 # bindsym $mod+space [title="^emacs@Ragnarok$"] scratchpad show
 
-bindsym $mod+Return exec --no-startup-id termite
+bindsym $mod+Return exec --no-startup-id ~/bin/eshell-focus
+bindsym $mod+e exec --no-startup-id ~/bin/erc-rofi
 
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="bubble"] floating enable
@@ -1772,6 +1775,25 @@ xterm-24bits|xterm with 24-bit direct color mode,
   setf24=\E[38;2;%p1%{65536}%/%d;%p1%{256}%/%{255}%&%d;%p1%{255}%&%dm,
 #+end_src
 * Scripts
+** erc-rofi
+:PROPERTIES:
+:header-args+: :tangle ~/bin/erc-rofi :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+this=$(emacsclient --eval "(format \"%s\" (mapcar #'buffer-name (cl-remove-if-not (lambda (buf) (with-current-buffer buf (eq major-mode 'erc-mode))) (buffer-list)))))" | sed 's/"//g;s/[()]//g;s/ /\n/g' | rofi -dmenu -p '[erc] ')
+echo $this
+emacsclient -e "(switch-to-buffer \"$this\")"
+i3-msg '[title=".emacs-wrapped@Ragnarok"] focus'
+#+end_src
+** eshell-focus
+:PROPERTIES:
+:header-args+: :tangle ~/bin/eshell-focus :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+# emacsclient -e "(eshell-frame)"
+emacsclient -e '(eshell) '
+i3-msg '[title=".emacs-wrapped@Ragnarok"] focus'
+#+end_src
 ** i3-exit-rofi
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3-exit-rofi") :shebang "#!/usr/bin/env bash"
