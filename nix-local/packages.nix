@@ -4,7 +4,6 @@ with import <nixpkgs> {};
 [ acpi
   avfs
   cava
-  chicken
   llvmPackages.clang-unwrapped
   cmus
   detox
