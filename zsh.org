@@ -492,7 +492,6 @@ if [ "$(uname)" = "Darwin" ]; then
     else
         eval $(gpg-agent --daemon --write-env-file ~/.gnupg/.gpg-agent-info)
     fi
-    export GOROOT=/usr/local/Cellar/go/1.8/libexec
 fi
 #+end_src
 * Modules
