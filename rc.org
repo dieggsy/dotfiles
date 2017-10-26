@@ -844,6 +844,10 @@ for_window [class="Pinentry"] floating enable
 for_window [class="Blueman-manager"] floating enable
 for_window [class="Blueman-manager"] resize set 1000 700
 for_window [class="Blueman-manager"] move position center
+
+for_window [class="Pcmanfm"] floating enable
+for_window [class="Pcmanfm"] resize set 1500 1000
+for_window [class="Pcmanfm"] move position center
 #+end_src
 **** Focus
 #+begin_src conf
