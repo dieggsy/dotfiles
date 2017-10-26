@@ -1284,11 +1284,19 @@ windows:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.Xresources")
 :END:
 #+begin_src conf-xdefaults
+#if __has_include(".extend.Xresources")
+#include ".extend.Xresources"
+#endif
+
+Xft.dpi: 184
 Xft.antialias: 1
 Xft.hinting: 1
 Xft.rgba: rgb
+Xft.autohint: false
 Xft.hintstyle: hintslight
-Xft.dpi: 184
+Xft.lcdfilter: lcddefault
+
+Xcursor.size: 64
 
 rofi.color-enabled: true
 rofi.font: iosevka term, fontawesome 20
