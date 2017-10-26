@@ -373,7 +373,7 @@ bindsym $mod+Shift+p restart
 
 # exit i3 (logs you out of your X session)
 # bindsym $mod+Shift+period exec --no-startup-id "i3-nagbar -t warning -f 'Iosevka Term' -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
-bindsym $mod+Shift+period exec --no-startup-id i3-exit
+bindsym $mod+Shift+period exec --no-startup-id ~/bin/i3-exit-rofi
 #+end_src
 **** Rofi
 #+begin_src conf
@@ -583,8 +583,8 @@ new_window pixel 1
 **** Bindings
 #+begin_src conf
 # Keyboard brightness
-bindsym XF86KbdBrightnessDown exec kb-light -
-bindsym XF86KbdBrightnessUp exec kb-light +
+bindsym XF86KbdBrightnessDown exec ~/bin/kb-light -
+bindsym XF86KbdBrightnessUp exec ~/bin/kb-light +
 
 # Screen brightness
 bindsym XF86MonBrightnessUp exec ~/bin/i3blocks/screen + && pkill -RTMIN+2 i3blocks
