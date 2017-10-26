@@ -399,17 +399,12 @@ bindsym $mod+shift+plus sticky toggle
 
 # Floating editor
 exec --no-startup-id emacs
-for_window [title="^emacs@Ragnarok$"] floating enable;
-for_window [title="^emacs@Ragnarok$"] sticky enable;
-for_window [title="^emacs@Ragnarok$"] move scratchpad;
-bindsym $mod+space [title="^emacs@Ragnarok$"] scratchpad show
+# for_window [title="^emacs@Ragnarok$"] floating enable;
+# for_window [title="^emacs@Ragnarok$"] sticky enable;
+# for_window [title="^emacs@Ragnarok$"] move scratchpad;
+# bindsym $mod+space [title="^emacs@Ragnarok$"] scratchpad show
 
-# Floating terminal
-exec --no-startup-id termite --name=dropmite
-for_window [instance="dropmite"] floating enable;
-for_window [instance="dropmite"] sticky enable;
-for_window [instance="dropmite"] move scratchpad; [instance="dropmite"] scratchpad show; resize set 2446 585; move absolute position 59px 95px; move scratchpad
-bindsym $mod+Return [instance="dropmite"] scratchpad show
+bindsym $mod+Return exec --no-startup-id termite
 
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="bubble"] floating enable
@@ -1981,15 +1976,6 @@ export KDEWM=/usr/bin/i3
 #+begin_src sh
 #+begin_src sh
 XDG_CURRENT_DESKTOP=kde /usr/bin/dolphin "$@"
-#+end_src
-*** dropmite
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/dropmite") :shebang "#!/usr/bin/env bash"
-:END:
-A wrapper to open termite with the name "dropmite," used by i3wm to make it my
-floating terminal.
-#+begin_src sh
-termite --name=dropmite
 #+end_src
 *** spotify
 :PROPERTIES:
