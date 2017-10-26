@@ -3854,7 +3854,7 @@ Like git, for emacs. But cooler.
       (setq-local company-idle-delay 0.3)))
   :config
   (setq eshell-buffer-maximum-lines 20000
-        eshell-history-size 350
+        eshell-history-size 1000
         eshell-prefer-lisp-functions t
         eshell-scroll-to-bottom-on-input t
         eshell-hist-ignoredups t))
