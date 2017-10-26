@@ -155,6 +155,8 @@ use this a fair bit so let's explicitly require it.
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
+(straight-register-package
+  '(seq :repo "https://git.savannah.gnu.org/git/emacs/elpa.git" :files ("packages/seq/*.el")))
 #+end_src
 *** [[https://github.com/jwiegley/use-package][use-package]]
 #+begin_quote
