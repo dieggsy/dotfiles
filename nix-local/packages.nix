@@ -32,7 +32,6 @@ with import <nixpkgs> {};
   pandoc
   pass-git-helper-master
   pass
-  peco-master
   playerctl
   ripgrep-master
   rlwrap
