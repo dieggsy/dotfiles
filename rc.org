@@ -420,6 +420,10 @@ for_window [window_type="menu"] floating enable
 
 for_window [class="pinentry"] floating enable
 for_window [class="Pinentry"] floating enable
+
+for_window [class="Blueman-manager"] floating enable
+for_window [class="Blueman-manager"] resize set 1000 700
+for_window [class="Blueman-manager"] move position center
 #+end_src
 **** Focus
 #+begin_src conf
