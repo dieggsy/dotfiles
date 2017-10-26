@@ -482,7 +482,7 @@ bindsym $mod+Shift+space floating toggle
 **** Workspaces
 #+begin_src conf
 # switch to workspace
-workspace_layout tabbed
+# workspace_layout tabbed
 bindsym $mod+1 workspace 1
 bindsym $mod+2 workspace 2
 bindsym $mod+3 workspace 3
