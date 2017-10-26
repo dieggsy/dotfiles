@@ -30,7 +30,9 @@ more readable in org format than in rendered markdown.
   - [[#zathurarc][zathurarc]]
   - [[#xterm-24bitterminfo][xterm-24bit.terminfo]]
 - [[#scripts][Scripts]]
-  - [[#i3-exit][i3-exit]]
+  - [[#i3-exit-rofi][i3-exit-rofi]]
+  - [[#i3exit][i3exit]]
+  - [[#fancylock][fancylock]]
   - [[#i3blocksexwm-utils][i3blocks/exwm utils]]
   - [[#masterinstall][masterinstall]]
   - [[#ocrpdf][ocrpdf]]
@@ -1344,16 +1346,61 @@ xterm-24bits|xterm with 24-bit direct color mode,
   setf24=\E[38;2;%p1%{65536}%/%d;%p1%{256}%/%{255}%&%d;%p1%{255}%&%dm,
 #+end_src
 * Scripts
-** i3-exit
+** i3-exit-rofi
 :PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3-exit") :shebang "#!/usr/bin/env bash"
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3-exit-rofi") :shebang "#!/usr/bin/env bash"
 :END:
 #+begin_src sh
-message="Exit i3?"
-response=$(echo -e "Exit\nCancel" | rofi -lines 2 -width 30 -dmenu -i -mesg "$message" -p "")
-if [ "$response" = "Exit" ]; then
-    i3-msg exit
+# message="Exit i3?"
+response=$(echo -e "exit\nlock\nsuspend\nhibernate\nreboot\nshutdown" | rofi -l 6 -width 30 -dmenu -i -p "")
+if [ -n "$response" ]; then
+    ~/bin/i3exit $response
 fi
+#+end_src
+** i3exit
+:PROPERTIES:
+:header-args+: :tangle ~/bin/i3exit :shebang "#!/bin/sh"
+:END:
+#+begin_src sh
+[[ $(cat /proc/1/comm) == "systemd" ]] && logind=systemctl || logind=loginctl
+
+case "$1" in
+    lock)
+        ~/bin/fancylock
+        ;;
+    exit)
+        i3-msg exit
+        ;;
+    switch_user)
+        dm-tool switch-to-greeter
+        ;;
+    suspend)
+        ~/bin/fancylock && $logind suspend
+        ;;
+    hibernate)
+        ~/bin/fancylock && $logind hibernate
+        ;;
+    reboot)
+        $logind reboot
+        ;;
+    shutdown)
+        $logind poweroff
+        ;;
+    ,*)
+        echo "== ! i3exit: missing or invalid argument ! =="
+        echo "Try again with: lock | logout | switch_user | suspend | hibernate | reboot | shutdown"
+        exit 2
+esac
+
+exit 0
+
+#+end_src
+** fancylock
+:PROPERTIES:
+:header-args+: :tangle ~/bin/fancylock :shebang "#!/usr/bin/env bash"
+:END:
+#+begin_src sh
+i3lock-fancy -gpf Iosevka-Term -- scrot -z
 #+end_src
 ** i3blocks/exwm utils
 i3blocks scripts taken from/inspired by [[https://github.com/yeungocanh/archdot/tree/master/.config/i3blocks][yeungocanh/archdot]].
