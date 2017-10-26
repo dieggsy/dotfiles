@@ -27,7 +27,6 @@ more readable in org format than in rendered markdown.
   - [[#tmux][tmux]]
   - [[#xbindkeysrc][xbindkeysrc]]
   - [[#xresources][Xresources]]
-  - [[#xsessionrc][xsessionrc]]
   - [[#zathurarc][zathurarc]]
   - [[#xterm-24bitterminfo][xterm-24bit.terminfo]]
 - [[#scripts][Scripts]]
@@ -608,6 +607,18 @@ bindsym XF86LaunchA exec "scrot ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
 **** Startup Programs/Commands
 #+begin_src conf
 # exec --no-startup-id nm-applet
+exec --no-startup-id dropbox
+exec --no-startup-id unclutter
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec --no-startup-id nitrogen --restore; sleep 1; compton -b
+# exec --no-startup-id blueman
+exec --no-startup-id xautolock -corners ---- -time 5 -locker ~/bin/fancylock
+
+exec --no-startup-id xset r rate 300 50
+
+exec --no-startup-id setxkbmap dvorak
+exec --no-startup-id "setxkbmap -option 'ctrl:nocaps'"
+exec --no-startup-id "xcape -e 'Control_L=Escape'"
 #+end_src
 **** Plasma Integration
 #+begin_src conf :tangle no
@@ -1268,35 +1279,6 @@ Emacs.background: #282828
 Emacs.mode-line.attributeForeground: #EBDBB2
 Emacs.mode-line.attributeBackground: #1D2021
 Emacs.mode-line.attributeBox: nil
-#+end_src
-** xsessionrc
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.xsessionrc") :shebang "#!/bin/bash"
-:END:
-#+begin_src sh
-feh --bg-fill '/home/diego/Pictures/darkbrown.jpg' &
-
-pkill dropbox; dropbox start &
-
-pkill unclutter; unclutter &
-
-# pkill mpd; mpd &
-# tmux kill-session -t sbcl_daemon 2>/dev/null
-# tmux new -d -s sbcl_daemon /usr/local/bin/sbcl --load ~/scriptl/scriptl-server.lisp &
-
-pkill xautolock; xautolock -corners ---- -time 5 -locker '/usr/local/bin/lock -gpf Iosevka-Term -- scrot -z' -detectsleep &
-# xautolock -time 7 -locker 'systemctl suspend' &
-
-# xset s off
-xset r rate 300 50
-
-setxkbmap dvorak
-setxkbmap -option 'ctrl:nocaps'
-xcape -e 'Control_L=Escape'
-
-if [ "$XDG_CURRENT_DESKTOP" = "exwm" ]; then
-    pkill xbindkeys; xbindkeys &
-fi
 #+end_src
 ** zathurarc
 :PROPERTIES:
