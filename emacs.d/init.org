@@ -468,8 +468,6 @@ A really nice search/completion system for emacs.
    "-" 'ivy-resume
    "bb" 'ivy-switch-buffer
    "bB" 'ivy-switch-buffer-other-window)
-  :init
-  (setq ivy-do-completion-in-region nil)
   :config
   (ivy-mode 1)
 
@@ -482,6 +480,7 @@ A really nice search/completion system for emacs.
         ivy-extra-directories nil; '("../") ; ignore current folder and parent dir
         recentf-max-saved-items 50
         ivy-use-selectable-prompt t
+        ivy-display-functions-alist nil
         ivy-switch-buffer-faces-alist '((dired-mode . ivy-subdir)
                                         (wdired-mode . ivy-subdir)
                                         (ranger-mode . ivy-subdir))))
@@ -1720,7 +1719,10 @@ Supposedly better than autocomplete.
   :defer 5
   :general
   (:keymaps 'company-active-map
-   [tab] 'company-complete-common-or-cycle)
+   [tab] (general-predicate-dispatch nil
+           (not (eq major-mode 'eshell-mode)) 'company-complete-common-or-cycle)
+   "<right>" (general-predicate-dispatch nil
+               (eq major-mode 'eshell-mode) 'company-complete-common))
   :init
   (setq company-idle-delay 0.3
         company-minimum-prefix-length 1
@@ -3843,11 +3845,14 @@ Like git, for emacs. But cooler.
   :ensure nil
   :init
   (d/setup-hook eshell-mode
-    (imap eshell-mode-map
-      "C-p" (general-predicate-dispatch nil
-              (eshell-point-within-input-p) 'eshell/ivy-ps)
+    (require 'company)
+    (imap :keymaps 'eshell-mode-map
+      [remap eshell-pcomplete] 'completion-at-point
+      "C-p" '(general-predicate-dispatch nil
+               (eshell-point-within-input-p) 'eshell/ivy-ps)
       "C-r" 'eshell/ivy-history
-      "C-l" 'eshell-clear-keystroke))
+      "C-l" 'eshell-clear-keystroke)
+    (fish-completion-eshell-toggle)
     (setq-local company-frontends '(company-preview-frontend))
     (setq-local company-backends '(company-eshell)))
   (d/setup-hook eshell-directory-change
@@ -3877,6 +3882,25 @@ Like git, for emacs. But cooler.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package eshell-z
+  :after eshell)
+#+end_src
+**** [[https://github.com/Ambrevar/emacs-fish-completion][emacs-fish-completion]]
+#+begin_src emacs-lisp
+(use-package emacs-fish-completion
+  :after eshell
+  :recipe (:host github
+           :repo "ambrevar/emacs-fish-completion")
+  :config
+  (fish-completion-eshell-global-toggle))
+#+end_src
+**** [[https://github.com/leoliu/pcmpl-git-el][pcmpl-git]]
+#+begin_src emacs-lisp
+(use-package pcmpl-git
+  :after eshell)
+#+end_src
+**** [[https://github.com/thierryvolpiatto/pcomplete-extension][pcomplete-extension]]
+#+begin_src emacs-lisp
+(use-package pcomplete-extension
   :after eshell)
 #+end_src
 *** Functions
