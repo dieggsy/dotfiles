@@ -3848,6 +3848,8 @@ Like git, for emacs. But cooler.
               (eshell-point-within-input-p) 'eshell/ivy-ps)
       "C-r" 'eshell/ivy-history
       "C-l" 'eshell-clear-keystroke))
+    (setq-local company-frontends '(company-preview-frontend))
+    (setq-local company-backends '(company-eshell)))
   (d/setup-hook eshell-directory-change
     (if (file-remote-p default-directory)
         (setq-local company-idle-delay nil)
@@ -3994,6 +3996,45 @@ Like git, for emacs. But cooler.
                           (eshell-kill-input)
                           (insert x))
                 :initial-input input))))
+#+end_src
+*** Company
+#+begin_src emacs-lisp
+(d/with-eval-after-load 'eshell
+  (defun company-eshell-candidates (prefix)
+    (let* ((history
+            (cl-remove-duplicates
+             (mapcar (lambda (str)
+                       (string-trim (substring-no-properties str)))
+                     (cl-remove-if #'not (ring-elements eshell-history-ring)))
+             :from-end t
+             :test #'string=))
+           (most-similar (cl-find-if
+                          (lambda (str)
+                            (string-prefix-p prefix str))
+                          history)))
+      (when most-similar
+        `(,most-similar))))
+
+  (defun company-eshell--prefix ()
+    (let ((prefix
+           (string-trim-left
+            (buffer-substring-no-properties
+             (save-excursion
+               (beginning-of-line)
+               (eshell-skip-prompt)
+               (point))
+             (save-excursion (end-of-line) (point))))))
+      (if (not (string-empty-p prefix))
+          prefix
+        'stop)))
+
+  (defun company-eshell (command &optional arg &rest ignored)
+    (interactive (list 'interactive))
+    (cl-case command
+      (interactive (company-begin-backend 'company-eshell))
+      (prefix (and (eq major-mode 'eshell-mode)
+                   (company-eshell--prefix)))
+      (candidates (company-eshell-candidates arg)))))
 #+end_src
 ** Term
 #+begin_src emacs-lisp
