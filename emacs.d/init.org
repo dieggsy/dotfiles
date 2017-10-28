@@ -1141,7 +1141,7 @@ Source: https://git.io/vQKEa"
  "qf" 'delete-frame
  "qq" 'save-buffers-kill-emacs
 
- "t"   '(:command d/toggle/body :wk "toggle")
+ "t"   '(:def d/toggle/body :wk "toggle")
 
  "&"   'async-shell-command
  ":"   'eval-expression
@@ -1517,9 +1517,9 @@ Executable
     "n" 'evil-ex-search-next
     "N" 'evil-ex-search-previous
     "t" '(:ignore t :wk "toggle")
-    "th" '(:command dired-omit-mode :wk "hidden")
-    "td" '(:command dired-du-mode :wk "du")
-    "tw" '(:command dired-toggle-read-only :wk "wdired"))
+    "th" '(:def dired-omit-mode :wk "hidden")
+    "td" '(:def dired-du-mode :wk "du")
+    "tw" '(:def dired-toggle-read-only :wk "wdired"))
 
   (setq dired-listing-switches "-lGXhA --group-directories-first"
         dired-dwim-target t
@@ -2227,7 +2227,7 @@ Syntax highlighting for markdown files.
 #+begin_src emacs-lisp
 (d/mode-leader-keys
  :keymap 'text-mode-map
- "f" '(:command d/flyspell/body :wk "flyspell"))
+ "f" '(:def d/flyspell/body :wk "flyspell"))
 #+end_src
 *** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
 #+begin_quote
@@ -2273,14 +2273,14 @@ Leader keys
  "xib" 'indent-buffer
  "xii" 'indent-rigidly
  "xir" 'indent-region
- "xj"  '(:command d/justify/body :wk "justify")
+ "xj"  '(:def d/justify/body :wk "justify")
  "xls" 'sort-lines
- "xt"  '(:command d/transpose/body :wk "transpose")
+ "xt"  '(:def d/transpose/body :wk "transpose")
  "xc" 'count-words
 
- "xm"  '(:command d/multiedit/body :wk "multiedit")
+ "xm"  '(:def d/multiedit/body :wk "multiedit")
 
- "xp"  '(:command d/smartparens/body :wk "smartparens")
+ "xp"  '(:def d/smartparens/body :wk "smartparens")
 
  "xs"  'd/shorten-url-at-point
  "xe"  'd/expand-url-at-point
@@ -2708,7 +2708,7 @@ Better parentheses coloring
 ** Bindings
 #+begin_src emacs-lisp
 (d/leader-keys
- "z" '(:command d/zoom/body :wk "zoom"))
+ "z" '(:def d/zoom/body :wk "zoom"))
 #+end_src
 ** Mode line
 *** Helpers
@@ -3048,7 +3048,7 @@ Source: https://git.io/vQKzq"
 #+begin_src emacs-lisp
 (d/mode-leader-keys
  :keymaps 'prog-mode-map
- "f" '(:command d/flycheck/body :wk "flycheck"))
+ "f" '(:def d/flycheck/body :wk "flycheck"))
 #+end_src
 *** Setup
 #+begin_src emacs-lisp
