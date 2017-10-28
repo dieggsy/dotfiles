@@ -2842,7 +2842,7 @@ Source: https://git.io/vQKzq"
               "#3E3D31"
               :weight bold
               :background ,evil-tag-color
-              :box (:color ,evil-tag-color :line-width 14)))))))
+              :box (:color ,evil-tag-color :line-width 19)))))))
     ;; File modified
     " %* "
     ;; Buffer name & recursive editing
