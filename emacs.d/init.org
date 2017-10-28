@@ -4310,14 +4310,14 @@ Sorts ivy by most recently used, I think.
     "
 _a_ abbrev:              %-3s`abbrev-mode   _d_ debug-on-error:      %-3s`debug-on-error   _P_ prettify-symbols:       %-3s`prettify-symbols-mode
 _i_ aggressive-indent:   %-3s`aggressive-indent-mode   _l_ rlines:              %-3s`display-line-numbers-mode   _F_ focus:                  %-3s`focus-mode
-_c_ column-indicator:    %-3s`fci-mode   _p_ smartparens:         %-3s`smartparens-mode   _z_ async-tangle-results:   %-3s`d/show-async-tangle-results
+_c_ column-indicator:    %-3s`column-enforce-mode   _p_ smartparens:         %-3s`smartparens-mode   _z_ async-tangle-results:   %-3s`d/show-async-tangle-results
 _f_ flycheck:            %-3s`flycheck-mode   _e_ evil-smartparens:    %-3s`evil-smartparens-mode
 _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`global-whitespace-mode
 "
     ("a" abbrev-mode nil)
     ("i" aggressive-indent-mode nil)
     ("d" toggle-debug-on-error nil)
-    ("c" fci-mode nil)
+    ("c" column-enforce-mode nil)
     ("l" display-line-numbers-mode nil)
     ("p" smartparens-mode nil)
     ("P" prettify-symbols-mode nil)
