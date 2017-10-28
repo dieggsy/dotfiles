@@ -4004,10 +4004,9 @@ Like git, for emacs. But cooler.
     (interactive)
     (let ((history
            (cl-remove-duplicates
-            (d/let loop ((index 0))
-              (if (= index eshell-history-size)
-                  (list (string-trim (eshell-get-history index)))
-                (cons (string-trim (eshell-get-history index)) (loop (1+ index)))))
+            (mapcar (lambda (str)
+                      (string-trim (substring-no-properties str)))
+                    (cl-remove-if #'not (ring-elements eshell-history-ring)))
             :from-end t
             :test #'string=))
           (input (let* ((beg (save-excursion (eshell-bol)))
