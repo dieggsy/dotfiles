@@ -474,7 +474,6 @@ A really nice search/completion system for emacs.
   (setq ivy-re-builders-alist '((swiper . ivy--regex-plus)
                                 (t . ivy--regex-ignore-order)))
   (setq ivy-format-function 'ivy-format-function-line
-        projectile-completion-system 'ivy
         ivy-use-virtual-buffers t ; Show recent files
         ivy-count-format ""
         ivy-extra-directories nil; '("../") ; ignore current folder and parent dir
@@ -1458,7 +1457,8 @@ Executable
    "pr" 'projectil-recentf)
   :config
   (setq projectile-globally-ignored-files '("TAGS" ".DS_Store")
-        projectile-ignored-projects '("/usr/local"))
+        projectile-ignored-projects '("/usr/local")
+        projectile-completion-system 'ivy)
   (projectile-mode))
 #+end_src
 
@@ -3933,7 +3933,7 @@ Like git, for emacs. But cooler.
     (interactive)
     (let ((inhibit-read-only t))
       (erase-buffer)
-      (remove-overlays (point-min) (point-max))))
+      (delete-all-overlays)))
 
   (defun eshell-clear-keystroke ()
     "Allow for keystrokes to invoke eshell/clear."
@@ -3968,14 +3968,14 @@ Like git, for emacs. But cooler.
     (call-interactively #'slime))
 
   (d/eshell-defun git
-    (:path "/home/diego/.nix-profile/bin/hub"
+    (:path "~/.nix-profile/bin/hub"
      :opts "-c color.ui=always")
     ("status" (magit-status-internal (eshell/pwd)))
     ("diff" (magit-status-internal (eshell/pwd)))
     ("log" (call-interactively #'magit-log-current))
     (`("log" . ,ll) (magit-log ll)))
 
-  (d/eshell-defun pass ()
+  (d/eshell-defun pass (:path "~/.nix-profile/bin/pass")
     ("rm" (call-interactively #'password-store-remove))
     ("generate" (call-interactively #'password-store-generate))
     ("insert" (call-interactively #'password-store-insert))
