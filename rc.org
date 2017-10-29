@@ -83,6 +83,58 @@ map K previousTab
 
   packageOverrides = super: let self = super.pkgs; in with self; rec {
 
+    myPackages = super.buildEnv {
+      name = "my-packages";
+      paths = [
+        avfs
+        acpi
+        cava
+        clang
+        cmus
+        detox
+        emacs-master
+        exa
+        font-awesome-ttf
+        ghq
+        gimp
+        gitAndTools.gitFull
+        gitAndTools.hub
+        glibcLocales
+        gnupg
+        htop
+        i3-gaps
+        i3blocks-gaps
+        iosevka-master
+        libreoffice
+        mpv
+        ncdu
+        neovim
+        networkmanager_dmenu
+        nix
+        nix-prefetch-git
+        pandoc
+        pass
+        pass-git-helper-master
+        peco
+        playerctl
+        ripgrep
+        rlwrap
+        rofi
+        rtv
+        sbcl
+        termite-master
+        tmux
+        unclutter
+        vlc
+        xcape
+        xorg.xbacklight
+        youtube-dl
+        zathura
+        zsh
+        zsh-completions
+      ] ;
+    };
+
     # Packages from source
     emacs-master = super.callPackage ~/dotfiles/nix-local/emacs {
       # use override to enable additional features

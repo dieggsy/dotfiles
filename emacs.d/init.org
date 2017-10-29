@@ -3602,34 +3602,6 @@ Source: http://tinyurl.com/le6wxuo"
 
   (defun d/nix-update-my-packages ()
     (interactive)
-    (cl-flet ((d/nix-update-filter
-               (process output)
-               (let ((prog-mode-hook nil)
-                     (output (format " %s " (string-trim output)))
-                     (visited-p (get-file-buffer
-                                 "~/dotfiles/nix-local/packages.nix"))
-                     (inhibit-modification-hooks t))
-                 (with-current-buffer
-                     (find-file-noselect "~/dotfiles/nix-local/packages.nix")
-                   (save-excursion
-                     (goto-char (point-min))
-                     (and (re-search-forward
-                           (rx "[" (group (minimal-match (0+ anything))) "]") nil t)
-                          (replace-match output nil nil nil 1))
-                     (indent-region (point-min) (point-max)))
-                   (save-buffer)
-                   (unless visited-p
-                     (kill-this-buffer))))))
-      (let ((proc (start-process-shell-command
-                   "d/nix-update-my-packages"
-                   "test"
-                   (concat "echo \"$("
-                           "nix-env -qaP "
-                           "| grep -P \"$(nix-env -q | tr '\r\n' '|' | sed 's/|$//; s/|/| /g;')\" "
-                           "| awk '!seen[$2]++ {print $1}' "
-                           "| sed 's/^nixpkgs\\.//'"
-                           ")\""))))
-        (set-process-filter proc #'d/nix-update-filter)))
     (let ((nix-files
            (split-string
             (shell-command-to-string
@@ -3638,8 +3610,6 @@ Source: http://tinyurl.com/le6wxuo"
             'omit-nulls)))
       (dolist (file nix-files)
         (d/nix-update-fetchgit file)))))
-
-
 #+end_src
 *** [[https://github.com/mcandre/vimrc-mode][vimrc-mode]]
 #+begin_quote
