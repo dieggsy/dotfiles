@@ -92,10 +92,6 @@ map K previousTab
       inherit (pkgs.darwin.apple_sdk.frameworks) AppKit CoreWLAN GSS Kerberos ImageIO;
     };
 
-    ripgrep-master = super.callPackage ~/dotfiles/nix-local/ripgrep.nix {};
-
-    exa = super.callPackage ~/dotfiles/nix-local/exa.nix {};
-
     iosevka-master = super.callPackage ~/dotfiles/nix-local/iosevka.nix {};
 
     pass-git-helper-master = super.callPackage ~/dotfiles/nix-local/pass-git-helper.nix {
@@ -113,8 +109,6 @@ map K previousTab
     };
 
     # Dependencies
-    rustRegistry = super.callPackage ~/dotfiles/nix-local/deps/rust-packages.nix {};
-
     libotf = super.callPackage ~/dotfiles/nix-local/deps/libotf.nix {};
 
     otfcc = super.callPackage ~/dotfiles/nix-local/deps/otfcc.nix {};
