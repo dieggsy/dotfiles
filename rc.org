@@ -1080,7 +1080,7 @@ bindsym XF86LaunchA exec "scrot ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
 **** Startup Programs/Commands
 #+begin_src conf
 # exec --no-startup-id nm-applet
-exec --no-startup-id dropbox
+exec --no-startup-id dropbox-cli start
 exec --no-startup-id unclutter
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id nitrogen --restore; # sleep 1; compton -b
