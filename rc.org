@@ -1815,24 +1815,6 @@ fi
 
 echo -e "  $icon  $bat "
 #+end_src
-*** screen
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/screen") :shebang "#!/bin/bash"
-:END:
-#+begin_src sh
-brightness=$(xbacklight -get)
-multiple=$(printf %.0f $(echo "scale=2; $brightness / 5" | bc))
-brightness=$((($multiple * 5)))
-if [ "$1" = "+" ]; then
-    brightness=$((($brightness + 5)))
-    xbacklight -set $brightness > /dev/null 2>&1
-elif [ "$1" = "-" ]; then
-    brightness=$((($brightness - 5)))
-    xbacklight -set $brightness > /dev/null 2>&1
-fi
-
-echo "    $brightness"
-#+end_src
 *** date
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/date") :shebang "#!/bin/bash"
@@ -1926,6 +1908,24 @@ elif [ -n "$artist" ] && [ -n "$title" ]; then
     echo -e " $icon $artist - $title "
     echo -e " $icon $title "
 fi
+#+end_src
+*** screen
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/screen") :shebang "#!/bin/bash"
+:END:
+#+begin_src sh
+brightness=$(xbacklight -get)
+multiple=$(printf %.0f $(echo "scale=2; $brightness / 5" | bc))
+brightness=$((($multiple * 5)))
+if [ "$1" = "+" ]; then
+    brightness=$((($brightness + 5)))
+    xbacklight -set $brightness > /dev/null 2>&1
+elif [ "$1" = "-" ]; then
+    brightness=$((($brightness - 5)))
+    xbacklight -set $brightness > /dev/null 2>&1
+fi
+
+echo "    $brightness"
 #+end_src
 *** volume
 :PROPERTIES:

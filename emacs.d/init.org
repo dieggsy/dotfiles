@@ -3823,11 +3823,11 @@ Like git, for emacs. But cooler.
       "G" 'end-of-buffer)
     (fish-completion-eshell-toggle)
     (setq-local company-frontends '(company-preview-frontend))
-    (setq-local company-backends '(company-eshell)))
   (d/setup-hook eshell-directory-change
     (if (file-remote-p default-directory)
         (setq-local company-idle-delay nil)
       (setq-local company-idle-delay 0.3)))
+    (setq-local company-backends '(company-eshell-autosuggest)))
   :config
   (setq eshell-buffer-maximum-lines 20000
         eshell-history-size 1000
@@ -3989,10 +3989,10 @@ Like git, for emacs. But cooler.
                           (insert x))
                 :initial-input input))))
 #+end_src
-*** Company
+*** History autosuggest
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'eshell
-  (defun company-eshell-candidates (prefix)
+  (defun company-eshell-autosuggest-candidates (prefix)
     (let* ((history
             (cl-remove-duplicates
              (mapcar (lambda (str)
@@ -4007,26 +4007,24 @@ Like git, for emacs. But cooler.
       (when most-similar
         `(,most-similar))))
 
-  (defun company-eshell--prefix ()
+  (defun company-eshell-autosuggest--prefix ()
     (let ((prefix
            (string-trim-left
             (buffer-substring-no-properties
              (save-excursion
-               (beginning-of-line)
-               (eshell-skip-prompt)
-               (point))
+               (eshell-bol))
              (save-excursion (end-of-line) (point))))))
       (if (not (string-empty-p prefix))
           prefix
         'stop)))
 
-  (defun company-eshell (command &optional arg &rest ignored)
+  (defun company-eshell-autosuggest (command &optional arg &rest ignored)
     (interactive (list 'interactive))
     (cl-case command
       (interactive (company-begin-backend 'company-eshell))
       (prefix (and (eq major-mode 'eshell-mode)
-                   (company-eshell--prefix)))
-      (candidates (company-eshell-candidates arg)))))
+                   (company-eshell-autosuggest--prefix)))
+      (candidates (company-eshell-autosuggest-candidates arg)))))
 #+end_src
 ** Term
 #+begin_src emacs-lisp
