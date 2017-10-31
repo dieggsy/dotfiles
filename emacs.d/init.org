@@ -1496,7 +1496,11 @@ Executable
     (hl-line-mode 1)
     (dired-collapse-mode)
     (dired-omit-mode)
-    (diredfl-mode))
+    (diredfl-mode)
+    (setq-local prettify-symbols-alist d/dired-prettify-alist)
+    (prettify-symbols-mode))
+  (defvar d/dired-prettify-alist
+    '(("->" . "→")))
   :config
   (nmap dired-mode-map
     "q" 'dired-quit
