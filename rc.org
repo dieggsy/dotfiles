@@ -1122,6 +1122,10 @@ border_right=0
 border_bottom=2
 command=~/bin/i3blocks/$BLOCK_NAME
 
+[dropbox]
+interval=2
+border=#3FD7E5
+
 [music]
 interval=5
 signal=1
@@ -1842,6 +1846,16 @@ if [ -z "$1" ];then
 else
     # echo -e " $Disk "
     echo -e " $Short "
+fi
+#+end_src
+*** dropbox
+:PROPERTIES:
+:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/dropbox") :shebang "#!/bin/bash"
+:END:
+#+begin_src sh
+status=$(dropbox-cli status)
+if [ ! "$status" = "Up to date" ]; then
+    echo "  $status"
 fi
 #+end_src
 *** layout
