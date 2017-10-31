@@ -3822,7 +3822,7 @@ Like git, for emacs. But cooler.
       "C-p" '(general-predicate-dispatch nil
                (eshell-point-within-input-p) 'eshell/ivy-ps)
       "C-r" 'eshell/ivy-history
-      "C-l" 'eshell-clear-keystroke)
+      "C-c C-l" 'eshell-clear-keystroke)
     (fish-completion-eshell-toggle)
     (setq-local company-frontends '(company-preview-frontend))
     (setq-local company-backends '(company-eshell)))
