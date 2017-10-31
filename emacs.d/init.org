@@ -3823,6 +3823,8 @@ Like git, for emacs. But cooler.
                (eshell-point-within-input-p) 'eshell/ivy-ps)
       "C-r" 'eshell/ivy-history
       "C-c C-l" 'eshell-clear-keystroke)
+    (nmap :keymaps 'eshell-mode-map
+      "G" 'end-of-buffer)
     (fish-completion-eshell-toggle)
     (setq-local company-frontends '(company-preview-frontend))
     (setq-local company-backends '(company-eshell)))
