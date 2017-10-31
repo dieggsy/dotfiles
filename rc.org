@@ -10,7 +10,6 @@ more readable in org format than in rendered markdown.
 * Contents                                                              :toc:
 - [[#intro][Intro]]
 - [[#config][Config]]
-  - [[#cvimrc][cvimrc]]
   - [[#confignix][config.nix]]
   - [[#comptonconf][compton.conf]]
   - [[#darktooththeme][darktooth.theme]]
@@ -19,7 +18,6 @@ more readable in org format than in rendered markdown.
   - [[#git][git]]
   - [[#i3][i3]]
   - [[#initvim][init.vim]]
-  - [[#nanorc][nanorc]]
   - [[#networkmanager_dmenu][networkmanager_dmenu]]
   - [[#peco][peco]]
   - [[#pythonrcpy][pythonrc.py]]
@@ -56,27 +54,6 @@ more readable in org format than in rendered markdown.
 - [[#local-vars][Local vars]]
 
 * Config
-** cvimrc
-:PROPERTIES:
-:header-args+: :tangle ~/.cvimrc :comments no
-:END:
-Config for [[https://github.com/1995eaton/chromium-vim][cvim]].
-#+begin_src vimrc
-let configpath='/Users/diego/.cvimrc'
-set localconfig
-set smoothscroll
-set noautofocus
-
-let defaultengine = "duckduckgo"
-let hintcharacters = "aoeuidhtns"
-let homedirectory = "/Users/diego"
-let searchlimit = 9
-
-let blacklists = ['*://inbox.google.com/*']
-
-map J nextTab
-map K previousTab
-#+end_src
 ** config.nix
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.config/nixpkgs/config.nix") :comments no
@@ -1184,90 +1161,6 @@ interval=10
 border=#A89984
 # border=#DD6F48
 #+end_src
-*** i3status
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.config/i3status/config")
-:END:
-#+begin_src conf
-# i3status configuration file.
-# see "man i3status" for documentation.
-
-# It is important that this file is edited as UTF-8.
-# The following line should contain a sharp s:
-# ß
-# If the above line is not correctly displayed, fix your editor first!
-
-general {
-colors = true
-interval = 5
-color_good='#b8bb26'
-color_bad='#fb4933'
-color_degraded='#fabd2f'
-}
-
-# order += "ipv6"
-order += "disk /"
-# order += "run_watch DHCP"
-# order += "run_watch VPN"
-order += "wireless _first_"
-# order += "ethernet _first_"
-order+= "volume master"
-order += "battery 0"
-# order += "load"
-order += "tztime local"
-
-wireless _first_ {
-# format_up = "  %essid %ip"
-format_up = "  %essid"
-format_down = " None"
-}
-
-ethernet _first_ {
-# if you use %speed, i3status requires root privileges
-format_up = "E: %ip (%speed)"
-format_down = "E: down"
-}
-
-battery 0 {
-# format = "%status  %percentage %remaining"
-format = "%status  %percentage"
-status_chr = ""
-status_bat = ""
-status_full = ""
-integer_battery_capacity=true
-last_full_capacity = true
-threshold_type = time
-low_threshold = 10
-hide_seconds = true
-# format = " %status %percentage %remaining"
-}
-
-run_watch DHCP {
-pidfile = "/var/run/dhclient*.pid"
-}
-
-run_watch VPN {
-pidfile = "/var/run/vpnc/pid"
-}
-
-tztime local {
-format = "  %Y-%m-%d %H:%M"
-}
-
-load {
-format = "%1min"
-}
-
-disk "/" {
-format = "  %avail"
-}
-
-volume master {
-format = " %volume"
-format_muted = "  %volume"
-device = "pulse:1"
-}
-#+end_src
 ** init.vim
 :PROPERTIES:
 :header-args+: :tangle ~/.config/nvim/init.vim :comments no
@@ -1342,14 +1235,6 @@ set background=dark
 let g:lightline = {
     \ 'colorscheme' : 'gruvbox',
     \ }
-#+end_src
-** nanorc
-:PROPERTIES:
-:header-args+: :tangle ~/.nanorc
-:END:
-Lol
-#+begin_src conf
-include "~/.nano/*.nanorc"
 #+end_src
 ** networkmanager_dmenu
 :PROPERTIES:

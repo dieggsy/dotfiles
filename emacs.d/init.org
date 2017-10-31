@@ -99,14 +99,6 @@ use this a fair bit so let's explicitly require it.
                 ,name
                 (float-time (time-subtract (current-time) s-time))))))
 
-(defmacro d/start-time (name)
-  `(defvar ,(intern (concat "d/time-" name)) (current-time)))
-
-(defmacro d/end-time (name)
-  `(message "`%s' execution took %.5f seconds."
-            ,name
-            (float-time (time-subtract (current-time) ,(intern (concat "d/time-" name))))))
-
 (defmacro d/setup-hook (hooks &rest body)
   "Create a setup function for HOOKS and add it to relevant hook(s)."
   (declare (indent defun))
