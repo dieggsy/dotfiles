@@ -1655,7 +1655,8 @@ Source: https://git.io/vQKuU"
  "bC" 'd/switch-to-customize
  "bK" 'kill-buffer
  "bM" 'd/switch-to-messages
- "bR" 'revert-buffer
+ "br" 'revert-buffer
+ "bR" 'rename-buffer
  "bS" 'd/switch-to-scratch
  "bc" 'clone-indirect-buffer-other-window
  "be" 'd/safe-erase-buffer
@@ -4139,7 +4140,7 @@ I use this for reading, mostly.
    "TAB" 'crux-switch-to-previous-buffer
    "fd" 'crux-delete-file-and-buffer
    "fr" 'crux-rename-file-and-buffer
-   "br" 'crux-sudo-edit )
+   "bs" 'crux-sudo-edit)
   :commands (crux-with-region-or-line
              crux-with-region-or-buffer
              crux-switch-to-previous-buffer
