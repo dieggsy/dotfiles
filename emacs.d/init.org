@@ -4025,6 +4025,11 @@ directory to make multiple eshell windows easier."
 (use-package dired-avfs
   :after dired)
 #+end_src
+**** dired-collpase
+#+begin_src emacs-lisp
+(use-package dired-collapse
+  :after dired)
+#+end_src
 **** dired-git
 #+begin_src emacs-lisp
 (use-package dired-git
@@ -4036,6 +4041,13 @@ directory to make multiple eshell windows easier."
 (use-package dired-open
   :after dired)
 #+end_src
+**** dired-rainbow
+#+begin_src emacs-lisp
+(use-package dired-rainbow
+  :after dired
+  :config
+  (dired-rainbow-define-chmod executable-unix "#B8BB26" "-[rw-]+x.*"))
+#+end_src
 **** dired-subtree
 #+begin_src emacs-lisp
 (use-package dired-subtree
@@ -4045,24 +4057,12 @@ directory to make multiple eshell windows easier."
   (nmap dired-mode-map
     "TAB" 'dired-subtree-toggle))
 #+end_src
-**** dired-collpase
-#+begin_src emacs-lisp
-(use-package dired-collapse
-  :after dired)
-#+end_src
 **** [[https://github.com/purcell/diredfl][diredfl]]
 #+begin_src emacs-lisp
 (use-package diredfl
   :after dired
   :init
   (setq diredfl-ignore-compressed-flag nil))
-#+end_src
-**** dired-rainbow
-#+begin_src emacs-lisp
-(use-package dired-rainbow
-  :after dired
-  :config
-  (dired-rainbow-define-chmod executable-unix "#B8BB26" "-[rw-]+x.*"))
 #+end_src
 ** Emacs
 *** Packages
