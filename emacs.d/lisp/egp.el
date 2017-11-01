@@ -101,15 +101,17 @@ length of PATH (sans directory slashes) down to MAX-LEN."
         (let* ((split (split-string status "\n" t))
                (first-line (car split))
                (branch
-                (if (string-match-p "(no branch)" first-line)
-                    (string-append
-                     ":"
-                     (string-trim-right
-                      (shell-command-to-string "git rev-parse --short HEAD")))
-                  (car (split-string
-                        (cadr (split-string first-line " " t))
-                        "\\."
-                        t))))
+                (cond ((string-match-p "(no branch)" first-line)
+                       (string-append
+                        ":"
+                        (string-trim-right
+                         (shell-command-to-string "git rev-parse --short HEAD"))))
+                      ((string-match-p "No commits yet" first-line)
+                       "master")
+                      (t (car (split-string
+                               (cadr (split-string first-line " " t))
+                               "\\."
+                               t)))))
                (ahead-behind-pos (cl-position (string-to-char "[") first-line))
                (ahead-pos (and ahead-behind-pos
                                (string-match-p "ahead"
