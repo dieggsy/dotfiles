@@ -1825,7 +1825,7 @@ echo -e "  $icon  $bat "
 :END:
 #+begin_src sh
 if [ "$BLOCK_BUTTON" = "1" ]; then
-    notify-send "$(cal -h | head -n-1 | cut -c -20)"
+    notify-send "$(cal --color=never | head -n-1 | cut -c -20)"
 fi
 echo -e "    $(date +%F\ %R) "
 echo -e "    $(date +%R) "
