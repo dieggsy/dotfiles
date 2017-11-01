@@ -1505,7 +1505,7 @@ Executable
     '(("->" . "→")))
   :config
   (nmap dired-mode-map
-    "q" 'dired-quit
+    "q" 'd/dired-quit
     "h" 'dired-up-directory
     "l" 'dired-open-file
     "j" 'dired-next-line
@@ -1513,11 +1513,7 @@ Executable
     "r" 'dired-do-rename
     "R" 'dired-do-redisplay
     "n" 'evil-ex-search-next
-    "N" 'evil-ex-search-previous
-    "t" '(:ignore t :wk "toggle")
-    "th" '(:def dired-omit-mode :wk "hidden")
-    "td" '(:def dired-du-mode :wk "du")
-    "tw" '(:def dired-toggle-read-only :wk "wdired"))
+    "N" 'evil-ex-search-previous)
 
   (setq dired-listing-switches "-lGXhA --group-directories-first"
         dired-dwim-target t
@@ -1531,12 +1527,14 @@ Executable
    :keymaps 'wdired-mode-map
    "fs" 'wdired-finish-edit)
 
-  (defun dired-quit ()
+  (defun d/dired-quit ()
     (interactive)
     (while (eq major-mode 'dired-mode)
       (quit-window))
-    (when d/dired-close-window
-      (delete-window)))
+    (when (and d/dired-close-window
+               (eq major-mode 'dired-mode))
+      (delete-window))
+    (setq d/dired-close-window nil))
 
   (defun dired-here (&optional arg)
     (interactive "P")
@@ -4099,6 +4097,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 #+begin_src emacs-lisp
 (use-package dired-subtree
   :after dired
+  :disabled
   :general
   (nmap dired-mode-map
     "TAB" 'dired-subtree-toggle))
