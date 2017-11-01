@@ -191,7 +191,8 @@
      (after-save-hook lambda nil
                       (org-beamer-export-to-pdf t))
      (after-save-hook git-gutter d/async-babel-tangle)
-     (org-pretty-entities))))
+     (org-pretty-entities)
+     (after-save-hook org-hugo-export-subtree-to-md-after-save))))
  '(send-mail-function (quote smtpmail-send-it))
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#073642" 0.2))
  '(smtpmail-smtp-server "smtp.gmail.com")
