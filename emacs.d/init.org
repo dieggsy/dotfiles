@@ -3812,7 +3812,6 @@ Like git, for emacs. But cooler.
   :ensure nil
   :init
   (d/setup-hook eshell-mode
-    (require 'company)
     (imap :keymaps 'eshell-mode-map
       [remap eshell-pcomplete] 'completion-at-point
       "C-p" '(general-predicate-dispatch nil
@@ -3822,18 +3821,26 @@ Like git, for emacs. But cooler.
     (nmap :keymaps 'eshell-mode-map
       "G" 'end-of-buffer)
     (fish-completion-eshell-toggle)
-    (setq-local company-frontends '(company-preview-frontend))
-  (d/setup-hook eshell-directory-change
-    (if (file-remote-p default-directory)
-        (setq-local company-idle-delay nil)
-      (setq-local company-idle-delay 0.3)))
-    (setq-local company-backends '(company-eshell-autosuggest)))
+    (with-eval-after-load 'company
+      (setq-local company-frontends '(company-preview-frontend))
+      (setq-local company-backends '(eshell-autosuggest))))
   :config
+  (d/setup-hook eshell-directory-change
+    (cond ((and (file-remote-p default-directory)
+                (not (file-remote-p (ring-ref eshell-last-dir-ring 0))))
+           (eshell/alias "ls"))
+          ((and (not (file-remote-p default-directory))
+                (file-remote-p (ring-ref eshell-last-dir-ring 0)))
+           (eshell/alias "ls" "exa --group-directories-first --sort=extension --color=always $*"))))
+  (d/setup-hook eshell-post-command
+    (eshell-save-some-history))
+  (setenv "PAGER" "cat")
   (setq eshell-buffer-maximum-lines 20000
         eshell-history-size 1000
-        eshell-prefer-lisp-functions t
-        eshell-scroll-to-bottom-on-input t
-        eshell-hist-ignoredups t))
+        eshell-error-if-no-glob t
+        eshell-scroll-to-bottom-on-input 'this
+        eshell-hist-ignoredups t
+        eshell-destroy-buffer-when-process-dies t))
 #+end_src
 *** External Packages
 **** egp
@@ -3872,9 +3879,32 @@ Like git, for emacs. But cooler.
 (use-package pcomplete-extension
   :after eshell)
 #+end_src
+**** [[https://github.com/dieggsy/company-eshell-autosuggest][company-eshell-autosuggest]]
+#+begin_src emacs-lisp
+(use-package eshell-autosuggest
+  :recipe (:host github
+           :repo "dieggsy/eshell-autosuggest"))
+#+end_src
 *** Functions
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'eshell
+  (defun d/eshell-here ()
+    "Opens up a new shell in the directory associated with the
+current buffer's file. The eshell is renamed to match that
+directory to make multiple eshell windows easier."
+    (interactive)
+    (let* ((parent (if (buffer-file-name)
+                       (file-name-directory (buffer-file-name))
+                     default-directory))
+           (height (/ (window-total-height) 3))
+           (name   (car (last (split-string parent "/" t)))))
+      (split-window-vertically (- height))
+      (other-window 1)
+      (eshell 'new)
+      (rename-buffer (concat "*eshell: " name "*") 'unique)
+      (insert (concat "ls"))
+      (eshell-send-input)))
+
   (defun d/eshell-run (str args)
     (eshell-do-eval
      (eshell-parse-command
@@ -3972,12 +4002,10 @@ Like git, for emacs. But cooler.
   (defun eshell/ivy-history ()
     (interactive)
     (let ((history
-           (cl-remove-duplicates
+           (delete-dups
             (mapcar (lambda (str)
                       (string-trim (substring-no-properties str)))
-                    (cl-remove-if #'not (ring-elements eshell-history-ring)))
-            :from-end t
-            :test #'string=))
+                    (ring-elements eshell-history-ring))))
           (input (let* ((beg (save-excursion (eshell-bol)))
                         (end (save-excursion (end-of-line) (point))))
                    (buffer-substring-no-properties beg end))))
@@ -3988,91 +4016,6 @@ Like git, for emacs. But cooler.
                           (eshell-kill-input)
                           (insert x))
                 :initial-input input))))
-#+end_src
-*** History autosuggest
-#+begin_src emacs-lisp
-(d/with-eval-after-load 'eshell
-  (defun company-eshell-autosuggest-candidates (prefix)
-    (let* ((history
-            (cl-remove-duplicates
-             (mapcar (lambda (str)
-                       (string-trim (substring-no-properties str)))
-                     (cl-remove-if #'not (ring-elements eshell-history-ring)))
-             :from-end t
-             :test #'string=))
-           (most-similar (cl-find-if
-                          (lambda (str)
-                            (string-prefix-p prefix str))
-                          history)))
-      (when most-similar
-        `(,most-similar))))
-
-  (defun company-eshell-autosuggest--prefix ()
-    (let ((prefix
-           (string-trim-left
-            (buffer-substring-no-properties
-             (save-excursion
-               (eshell-bol))
-             (save-excursion (end-of-line) (point))))))
-      (if (not (string-empty-p prefix))
-          prefix
-        'stop)))
-
-  (defun company-eshell-autosuggest (command &optional arg &rest ignored)
-    (interactive (list 'interactive))
-    (cl-case command
-      (interactive (company-begin-backend 'company-eshell))
-      (prefix (and (eq major-mode 'eshell-mode)
-                   (company-eshell-autosuggest--prefix)))
-      (candidates (company-eshell-autosuggest-candidates arg)))))
-#+end_src
-** Term
-#+begin_src emacs-lisp
-(use-package term
-  :ensure nil
-  :config
-  (load-file (locate-user-emacs-file "lisp/term-256color-override.el")))
-#+end_src
-** [[https://github.com/politza/pdf-tools][pdf-tools]]
-#+begin_quote
-  Emacs support library for PDF files.
-#+end_quote
-#+begin_src emacs-lisp
-;; (use-package pdf-tools
-;;   ;; :defer-install t
-;;   :defer 10
-;;   :general
-;;   (nmap pdf-view-mode-map
-;;     "s" 'pdf-view-fit-width-to-window
-;;     "a" 'pdf-view-fit-height-to-window
-;;     "/" 'isearch-forward
-;;     "J" 'pdf-view-next-page
-;;     "K" 'pdf-view-previous-page
-;;     "j" 'pdf-view-next-line-or-next-page
-;;     "k" 'pdf-view-previou-line-or-previous-page
-;;     "-" 'pdf-view-shrink
-;;     "+" 'pdf-view-enlarg)
-;;   :config
-;;   (pdf-tools-install))
-#+end_src
-** nov.el
-#+begin_src emacs-lisp
-(use-package nov
-  :mode "\\.epub\\'")
-#+end_src
-** [[https://github.com/dieggsy/turing-machine][turing-machine]]
-#+begin_src emacs-lisp
-(use-package turing-machine)
-#+end_src
-** [[https://github.com/adamrt/sane-term][sane-term]]
-#+begin_quote
-  Cycle through terms in emacs
-#+end_quote
-I wanted a slightly better terminal in emacs. This seems to do the trick.
-#+begin_src emacs-lisp
-(use-package sane-term
-  :after term
-  :general (d/leader-keys "at" 'sane-term-create))
 #+end_src
 * Enhancements
 ** Dired
