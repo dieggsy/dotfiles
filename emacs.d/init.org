@@ -4017,6 +4017,54 @@ directory to make multiple eshell windows easier."
                           (insert x))
                 :initial-input input))))
 #+end_src
+** Term
+#+begin_src emacs-lisp
+(use-package term
+  :ensure nil
+  :config
+  (load-file (locate-user-emacs-file "lisp/term-256color-override.el")))
+#+end_src
+** [[https://github.com/politza/pdf-tools][pdf-tools]]
+#+begin_quote
+  Emacs support library for PDF files.
+#+end_quote
+#+begin_src emacs-lisp
+;; (use-package pdf-tools
+;;   ;; :defer-install t
+;;   :defer 10
+;;   :general
+;;   (nmap pdf-view-mode-map
+;;     "s" 'pdf-view-fit-width-to-window
+;;     "a" 'pdf-view-fit-height-to-window
+;;     "/" 'isearch-forward
+;;     "J" 'pdf-view-next-page
+;;     "K" 'pdf-view-previous-page
+;;     "j" 'pdf-view-next-line-or-next-page
+;;     "k" 'pdf-view-previou-line-or-previous-page
+;;     "-" 'pdf-view-shrink
+;;     "+" 'pdf-view-enlarg)
+;;   :config
+;;   (pdf-tools-install))
+#+end_src
+** nov.el
+#+begin_src emacs-lisp
+(use-package nov
+  :mode "\\.epub\\'")
+#+end_src
+** [[https://github.com/dieggsy/turing-machine][turing-machine]]
+#+begin_src emacs-lisp
+(use-package turing-machine)
+#+end_src
+** [[https://github.com/adamrt/sane-term][sane-term]]
+#+begin_quote
+  Cycle through terms in emacs
+#+end_quote
+I wanted a slightly better terminal in emacs. This seems to do the trick.
+#+begin_src emacs-lisp
+(use-package sane-term
+  :after term
+  :general (d/leader-keys "at" 'sane-term-create))
+#+end_src
 * Enhancements
 ** Dired
 *** Packages
