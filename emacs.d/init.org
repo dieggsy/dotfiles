@@ -3392,7 +3392,8 @@ Source: https://git.io/vQKz8"
 (d/setup-hook (lisp-mode emacs-lisp-mode)
   (hs-minor-mode)
   (aggressive-indent-mode)
-  (push '(? . ("`" . "'")) evil-surround-pairs-alist)
+  (with-eval-after-load 'evil-surround
+    (push '(? . ("`" . "'")) evil-surround-pairs-alist))
   (setq-local lisp-indent-function #'d/lisp-indent-function)
   (setq-local prettify-symbols-alist d/lisp-prettify-alist))
 #+end_src
@@ -3484,7 +3485,8 @@ Source: http://tinyurl.com/le6wxuo"
 (d/setup-hook scheme-mode
   (hs-minor-mode)
   (aggressive-indent-mode)
-  (push '(? . ("`" . "'")) evil-surround-pairs-alist)
+  (d/with-eval-after-load 'evil-surround
+    (push '(? . ("`" . "'")) evil-surround-pairs-alist))
   (setq-local prettify-symbols-alist d/scheme-prettify-alist))
 
 (font-lock-add-keywords 'scheme-mode '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)) t)
@@ -4445,7 +4447,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 **** [[https://github.com/emacs-evil/evil-surround][evil-surround]]
 #+begin_src emacs-lisp
 (use-package evil-surround
-  :after evil
+  :defer 10
   :config
   (global-evil-surround-mode 1))
 #+end_src
