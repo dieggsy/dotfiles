@@ -1578,15 +1578,20 @@ Source: https://git.io/vQKEd"
         (message "Buffer erased."))
     (message "erase-buffer cancelled")))
 
-(defun d/download-file ()
+(defun d/download-file (&optional url name)
   "Download a file from url to specified path."
   (interactive)
-  (let* ((file-url (read-from-minibuffer "URL: "))
+  (let* ((file-url (or url (read-from-minibuffer "URL: ")))
          (file-name
-          (read-from-minibuffer "File : "
-                                (concat default-directory
-                                        (file-name-nondirectory file-url)))))
+          (or name
+              (counsel-find-file
+               (file-name-nondirectory file-url)))))
     (url-copy-file file-url file-name)))
+
+(defun d/gpl-me ()
+  (interactive)
+  (d/download-file "https://www.gnu.org/licenses/gpl-3.0.md"
+                   (concat default-directory "LICENSE.md")))
 #+end_src
 *** Switching
 #+begin_src emacs-lisp
