@@ -19,6 +19,7 @@ aosnetuh
   - [[#path][Path]]
   - [[#variables][Variables]]
 - [[#zprofile][zprofile]]
+  - [[#path-1][Path]]
 - [[#modules][Modules]]
   - [[#sudo][sudo]]
 - [[#local-vars][Local vars]]
@@ -493,6 +494,25 @@ if [ "$(uname)" = "Darwin" ]; then
         eval $(gpg-agent --daemon --write-env-file ~/.gnupg/.gpg-agent-info)
     fi
 fi
+#+end_src
+** Path
+#+begin_src sh
+export PYENV_ROOT="$HOME/.pyenv"
+path=(
+    $HOME/bin
+    $HOME/.nix-profile/bin
+    $PYENV_ROOT/bin
+    $HOME/.local/bin
+    $path
+)
+
+fpath=(
+    /usr/share/zsh/site-functions/
+    ~/.nix-profile/share/zsh/site-functions/
+    $fpath
+)
+# export MANPATH=":$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/share/man/"
+typeset -gU path manpath cdpath fpath
 #+end_src
 * Modules
 ** sudo
