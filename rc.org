@@ -835,7 +835,7 @@ bindsym $mod+shift+minus scratchpad show
 bindsym $mod+shift+plus sticky toggle
 
 # Floating editor
-exec --no-startup-id emacs
+exec --no-startup-id zsh -c emacs
 # for_window [title="^emacs@Ragnarok$"] floating enable;
 # for_window [title="^emacs@Ragnarok$"] sticky enable;
 # for_window [title="^emacs@Ragnarok$"] move scratchpad;
