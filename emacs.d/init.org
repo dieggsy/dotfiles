@@ -1813,7 +1813,9 @@ Source: http://tinyurl.com/k8g9sex"
                              (cl-caddr word)
                              (cl-caddr word)
                              current-location)))))
-
+#+end_src
+**** [[https://github.com/d12frosted/flyspell-correct][flyspell-correct-ivy]]
+#+begin_src emacs-lisp
 (use-package flyspell-correct-ivy
   :after flyspell)
 #+end_src
@@ -1895,7 +1897,9 @@ Source: http://tinyurl.com/k8g9sex"
    "curly" "{"
    "double-quote" "\""
    "single-quote" "'"))
-
+#+end_src
+**** [[https://github.com/expez/evil-smartparens][evil-smartparens]]
+#+begin_src emacs-lisp
 (use-package evil-smartparens
   :after smartparens
   :config
@@ -2732,7 +2736,7 @@ Better parentheses coloring
 #+begin_src emacs-lisp
 (use-package rainbow-delimiters)
 #+end_src
-*** xterm-color
+*** [[https://github.com/atomontage/xterm-color][xterm-color]]
 #+begin_src emacs-lisp
 (use-package xterm-color)
 #+end_src
@@ -3229,7 +3233,9 @@ Pretty neat, though not entirely complete, IMO.
   :config
   (setq inferior-lisp-program "/usr/local/bin/sbcl")
   (setq slime-contribs '(slime-fancy slime-company)))
-
+#+end_src
+***** [[https://github.com/anwyn/slime-company][slime-company]]
+#+begin_src emacs-lisp
 (use-package slime-company
   :after slime)
 #+end_src
@@ -3540,7 +3546,7 @@ Source: http://tinyurl.com/le6wxuo"
 (font-lock-add-keywords 'scheme-mode '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)) t)
 (font-lock-add-keywords 'geiser-repl-mode '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)) t)
 #+end_src
-*** nix-mode
+*** [[https://github.com/NixOS/nix-mode][nix-mode]]
 #+begin_src emacs-lisp
 (use-package nix-mode
   :commands (d/nix-update-fetchgit d/nix-update-my-packages)
@@ -4104,7 +4110,7 @@ directory to make multiple eshell windows easier."
 ;;   :config
 ;;   (pdf-tools-install))
 #+end_src
-** nov.el
+** [[https://github.com/wasamasa/nov.el][nov.el]]
 #+begin_src emacs-lisp
 (use-package nov
   :mode "\\.epub\\'")
@@ -4122,35 +4128,30 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 * Enhancements
 ** Dired
 *** Packages
-**** dired-avfs
+**** [[https://github.com/Fuco1/dired-hacks][dired-hacks]]
+***** dired-avfs
 #+begin_src emacs-lisp
 (use-package dired-avfs
   :after dired)
 #+end_src
-**** dired-collpase
-#+begin_src emacs-lisp
-(use-package dired-collapse
-  :after dired)
-#+end_src
-**** dired-git
-#+begin_src emacs-lisp
-(use-package dired-git
-  :ensure nil
-  :after dired)
-#+end_src
-**** dired-open
+***** dired-open
 #+begin_src emacs-lisp
 (use-package dired-open
   :after dired)
 #+end_src
-**** dired-rainbow
+***** dired-rainbow
 #+begin_src emacs-lisp
 (use-package dired-rainbow
   :after dired
   :config
   (dired-rainbow-define-chmod executable-unix "#B8BB26" "-[rw-]+x.*"))
 #+end_src
-**** dired-subtree
+***** dired-collpase
+#+begin_src emacs-lisp
+(use-package dired-collapse
+  :after dired)
+#+end_src
+***** dired-subtree
 #+begin_src emacs-lisp
 (use-package dired-subtree
   :after dired
@@ -4158,6 +4159,12 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
   :general
   (nmap dired-mode-map
     "TAB" 'dired-subtree-toggle))
+#+end_src
+**** dired-git
+#+begin_src emacs-lisp
+(use-package dired-git
+  :ensure nil
+  :after dired)
 #+end_src
 **** [[https://github.com/purcell/diredfl][diredfl]]
 #+begin_src emacs-lisp
@@ -4234,6 +4241,13 @@ I use this for reading, mostly.
 #+end_src
 
 **** [[https://github.com/Silex/elmacro][elmacro]]
+#+begin_src emacs-lisp
+(use-package elmacro
+  :disabled t
+  :defer 10
+  :config
+  (elmacro-mode))
+#+end_src
 **** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 #+begin_quote
   Emacs package that displays available keybindings in popup
@@ -4320,13 +4334,6 @@ I use this for reading, mostly.
 #+begin_quote
   Package to display keyboard macros or latest interactive commands as emacs lisp.
 #+end_quote
-#+begin_src emacs-lisp
-(use-package elmacro
-  :disabled t
-  :defer 10
-  :config
-  (elmacro-mode))
-#+end_src
 **** [[https://github.com/jschaf/esup][esup]]
 #+begin_quote
   ESUP - Emacs Start Up Profiler
@@ -4596,6 +4603,11 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 *** [[https://github.com/larstvei/ox-gfm][ox-gfm]]
 #+begin_src emacs-lisp
 (use-package ox-gfm
+  :after ox)
+#+end_src
+*** [[https://github.com/kaushalmodi/ox-hugo][ox-hugo]]
+#+begin_src emacs-lisp
+(use-package ox-hugo
   :after ox)
 #+end_src
 ** Elfeed
@@ -5050,7 +5062,7 @@ Configure the Elfeed RSS reader with an Orgmode file
   (setq sunshine-location "02139,USA"
         sunshine-appid (password-store-get "api/openweathermap")))
 #+end_src
-* EXWM
+* [[https://github.com/ch11ng/exwm][EXWM]]
 ** Startup
 #+begin_src emacs-lisp
 (use-package exwm
