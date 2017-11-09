@@ -2,11 +2,11 @@
 
 stdenv.mkDerivation rec {
   name = "otfcc-${version}";
-  version = "0.9.5";
+  version = "0.9.6";
 
   src = fetchurl {
     url = "https://github.com/caryll/otfcc/archive/v${version}.tar.gz";
-    sha256= "12iwn6xd8p8721i75493x148r71qffbkk5ibjzaryi4l3lxblqy1";
+    sha256= "0hlm0xvqzmrzxi5navnynv3c8hm37zflzv6z2y2lh8g2h8nvpq81";
   };
 
   nativeBuildInputs = [ unzip premake5 ];

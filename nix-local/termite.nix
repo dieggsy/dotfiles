@@ -9,8 +9,8 @@ let
 
   src = fetchgit {
     url = "https://github.com/thestinger/termite";
-    rev = "285f4d77a379666dc02c1a817d79582dcfb523f2";
-    sha256 = "028z20dblpyssd35ld1r7w1nr12q55gxkr58z1ccy22v6kd6p9m8";
+    rev = "1f9ab29f74e6e4aded1941d53a19495f5460ad87";
+    sha256 = "1lw6mxgj67zrmmqih6ms5y0a2rk327smgsz20hcgg18sxss2gya5";
     fetchSubmodules = true;
   };
 
