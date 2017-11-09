@@ -1742,6 +1742,13 @@ Supposedly better than autocomplete.
                                  company-backends))
   (global-company-mode t))
 #+end_src
+**** [[https://github.com/company-mode/company-statistics][company-statistics]]
+#+begin_src emacs-lisp
+(use-package company-statistics
+  :after company
+  :config
+  (company-statistics-mode))
+#+end_src
 **** [[https://github.com/gabesoft/evil-mc][evil-mc]]
 #+begin_src emacs-lisp
 (use-package evil-mc
