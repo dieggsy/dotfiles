@@ -3746,7 +3746,7 @@ Like git, for emacs. But cooler.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package git-gutter-fringe
-  :demand t
+  :defer 5
   :commands fringe-helper-define
   :config
   (global-git-gutter-mode)
@@ -4446,7 +4446,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 #+end_quote
 #+begin_src emacs-lisp
 (use-package evil-indent-plus
-  :after evil
+  :defer 10
   :config
   (evil-indent-plus-default-bindings))
 #+end_src
@@ -4462,7 +4462,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 **** [[https://github.com/redguardtoo/evil-matchit][evil-matchit]]
 #+begin_src emacs-lisp
 (use-package evil-matchit
-  :after evil
+  :defer 10
   :config (global-evil-matchit-mode 1))
 #+end_src
 **** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
