@@ -69,7 +69,6 @@ more readable in org format than in rendered markdown.
         avfs
         acpi
         cava
-        clang
         cmus
         detox
         emacs-master
@@ -86,7 +85,6 @@ more readable in org format than in rendered markdown.
         i3blocks-gaps
         iosevka-master
         libreoffice
-        mpv
         ncdu
         neovim
         networkmanager_dmenu
