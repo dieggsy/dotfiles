@@ -1828,6 +1828,36 @@ Source: http://tinyurl.com/k8g9sex"
   :config
   (global-hungry-delete-mode))
 #+end_src
+**** [[https://github.com/abo-abo/lispy][lispy]]
+#+begin_quote
+  short and sweet LISP editing
+#+end_quote
+#+begin_src emacs-lisp
+(use-package lispy
+  :defer 5)
+#+end_src
+**** [[https://github.com/noctuid/lispyville][lispyville]]
+#+begin_quote
+  lispy + evil = lispyville
+#+end_quote
+#+begin_src emacs-lisp
+(use-package lispyville
+  :init
+  (add-hook 'lispy-mode-hook #'lispyville-mode)
+  (defvar lispyville-key-theme
+    '(operators
+      c-w
+      escape
+      additional-movement
+      additional
+      mark
+      mark-toggle
+      slurp/barf-cp))
+  :after lispy
+  :config
+  (lispy-define-key lispy-mode-map "v" #'lispyville-toggle-mark-type)
+  (setq lispyville-barf-stay-with-closing t))
+#+end_src
 **** [[https://github.com/Fuco1/smartparens][smartparens]]
 #+begin_quote
   Minor mode for Emacs that deals with parens pairs and tries to be smart about
@@ -3405,10 +3435,15 @@ Source: https://git.io/vQKz8"
 (d/setup-hook (lisp-mode emacs-lisp-mode)
   (hs-minor-mode)
   (aggressive-indent-mode)
+  (smartparens-mode -1)
+  (smartparens-strict-mode -1)
+  (evil-smartparens-mode -1)
+  (lispy-mode)
   (with-eval-after-load 'evil-surround
     (push '(? . ("`" . "'")) evil-surround-pairs-alist))
   (setq-local lisp-indent-function #'d/lisp-indent-function)
   (setq-local prettify-symbols-alist d/lisp-prettify-alist))
+
 #+end_src
 *** C
 **** Setup
