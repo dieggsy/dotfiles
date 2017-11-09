@@ -4110,10 +4110,6 @@ directory to make multiple eshell windows easier."
 (use-package nov
   :mode "\\.epub\\'")
 #+end_src
-** [[https://github.com/dieggsy/turing-machine][turing-machine]]
-#+begin_src emacs-lisp
-(use-package turing-machine)
-#+end_src
 ** [[https://github.com/adamrt/sane-term][sane-term]]
 #+begin_quote
   Cycle through terms in emacs
@@ -4726,6 +4722,10 @@ A speed reading mode for Emacs.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package spray)
+#+end_src
+*** [[https://github.com/dieggsy/turing-machine][turing-machine]]
+#+begin_src emacs-lisp
+(use-package turing-machine)
 #+end_src
 *** [[https://github.com/vibhavp/emacs-xkcd][xkcd]]
 #+begin_quote
