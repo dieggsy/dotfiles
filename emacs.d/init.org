@@ -3870,7 +3870,6 @@ Like git, for emacs. But cooler.
       "C-c C-l" 'eshell-clear-keystroke)
     (nmap :keymaps 'eshell-mode-map
       "G" 'end-of-buffer)
-    (fish-completion-eshell-toggle)
     (with-eval-after-load 'company
       (setq-local company-frontends '(company-preview-frontend))
       (setq-local company-backends '(company-eshell-autosuggest))))
@@ -3917,7 +3916,7 @@ Like git, for emacs. But cooler.
   :recipe (:host github
            :repo "ambrevar/emacs-fish-completion")
   :config
-  (fish-completion-eshell-global-toggle))
+  (global-fish-completion-mode))
 #+end_src
 **** [[https://github.com/leoliu/pcmpl-git-el][pcmpl-git]]
 #+begin_src emacs-lisp
