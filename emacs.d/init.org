@@ -3873,7 +3873,7 @@ Like git, for emacs. But cooler.
     (fish-completion-eshell-toggle)
     (with-eval-after-load 'company
       (setq-local company-frontends '(company-preview-frontend))
-      (setq-local company-backends '(eshell-autosuggest))))
+      (setq-local company-backends '(company-eshell-autosuggest))))
   :config
   (d/setup-hook eshell-directory-change
     (cond ((and (file-remote-p default-directory)
@@ -3931,9 +3931,9 @@ Like git, for emacs. But cooler.
 #+end_src
 **** [[https://github.com/dieggsy/company-eshell-autosuggest][company-eshell-autosuggest]]
 #+begin_src emacs-lisp
-(use-package eshell-autosuggest
+(use-package company-eshell-autosuggest
   :recipe (:host github
-           :repo "dieggsy/eshell-autosuggest"))
+           :repo "dieggsy/company-eshell-autosuggest"))
 #+end_src
 *** Functions
 #+begin_src emacs-lisp
