@@ -3278,6 +3278,12 @@ Pretty neat, though not entirely complete, IMO.
 #+begin_src emacs-lisp
 (use-package suggest)
 #+end_src
+***** [[https://github.com/dieggsy/difflib.el][difflib.el]]
+#+begin_src emacs-lisp
+(use-package difflib
+  :recipe (:host github
+           :repo "dieggsy/difflib.el"))
+#+end_src
 **** Variables
 #+begin_src emacs-lisp
 (defvar d/lisp-prettify-alist
