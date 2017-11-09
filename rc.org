@@ -822,10 +822,10 @@ bindsym $mod+Shift+apostrophe kill
 bindsym Mod1+space exec --no-startup-id "rofi -combi-modi window,drun -show combi -modi combi -display-combi ''"
 
 # pass helper
-bindsym $mod+p exec --no-startup-id "~/.password-store/.extensions/rofi.bash"
+bindsym $mod+p exec --no-startup-id ~/.password-store/.extensions/rofi.bash
 
 # File finder with ripgrep
-bindsym $mod+f exec --no-startup-id "~/bin/rofi-files"
+bindsym $mod+f exec --no-startup-id ~/bin/rofi-files
 #+end_src
 **** Windows/scratchpad
 #+begin_src conf
@@ -1035,9 +1035,9 @@ bindsym XF86AudioLowerVolume exec amixer -D pulse sset Master 5%- && pkill -RTMI
 bindsym XF86AudioRaiseVolume exec amixer -D pulse sset Master 5%+ && pkill -RTMIN+3 i3blocks
 
 # Media controls
-bindsym XF86AudioPrev exec playerctl-cmus previous && pkill -RTMIN+1 i3blocks
-bindsym XF86AudioNext exec playerctl-cmus next && pkill -RTMIN+1 i3blocks
-bindsym XF86AudioPlay exec playerctl-cmus play-pause && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioPrev exec ~/bin/playerctl-cmus previous && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioNext exec ~/bin/playerctl-cmus next && pkill -RTMIN+1 i3blocks
+bindsym XF86AudioPlay exec ~/bin/playerctl-cmus play-pause && pkill -RTMIN+1 i3blocks
 
 # Screenshot
 bindsym --release XF86LaunchB exec "scrot -s ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png"
