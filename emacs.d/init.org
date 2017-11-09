@@ -3842,6 +3842,16 @@ Like git, for emacs. But cooler.
           gh-vals (plist-put gh-vals :token (password-store-get "tokens/github/gist")))))
 #+end_src
 * Tools
+** Proced
+#+begin_src emacs-lisp
+(use-package proced
+  :ensure nil
+  :init
+  (d/setup-hook proced-mode
+    (proced-toggle-auto-update 1))
+  :config
+  (setq proced-auto-update-interval 2))
+#+end_src
 ** Calc
 #+begin_src emacs-lisp
 (use-package calc
