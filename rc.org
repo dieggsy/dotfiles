@@ -1268,7 +1268,7 @@ rofi_highlight=True
 
 [editor]
 terminal = termite
-gui_if_available = False
+gui_if_available = True
 # terminal = <name of terminal program>
 # gui_if_available = <True or False>
 #+end_src
