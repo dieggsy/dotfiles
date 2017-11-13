@@ -1476,8 +1476,8 @@ Executable
     (diredfl-mode)
     (setq-local prettify-symbols-alist d/dired-prettify-alist)
     (prettify-symbols-mode))
-  (d/setup-hook dired-after-readin
-    (dired-git-status))
+  ;; (d/setup-hook dired-after-readin
+  ;;   (dired-git-status))
   (defvar d/dired-prettify-alist
     '(("->" . "→")))
   :config
@@ -4196,6 +4196,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 #+begin_src emacs-lisp
 (use-package dired-git
   :ensure nil
+  :disabled
   :after dired)
 #+end_src
 **** [[https://github.com/purcell/diredfl][diredfl]]
