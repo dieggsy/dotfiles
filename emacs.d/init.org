@@ -1471,15 +1471,6 @@ Executable
       (error (counsel-projectile-find-file)))))
 #+end_src
 
-*** [[https://github.com/abo-abo/headlong][headlong]]
-#+begin_src emacs-lisp
-(use-package headlong
-  :general
-  (d/leader-keys "fB" 'headlong-bookmark-jump-other
-                     "fb" 'headlong-bookmark-jump)
-  :config
-  (bookmark-maybe-load-default-file))
-#+end_src
 ** Built-in
 *** Dired
 #+begin_src emacs-lisp
@@ -1554,6 +1545,14 @@ Executable
   :init
   (d/setup-hook ibuffer-mode
     (ibuffer-switch-to-saved-filter-groups "Default")))
+#+end_src
+*** bookmark
+#+begin_src emacs-lisp
+(use-package bookmark
+  :ensure nil
+  :general
+  (d/leader-keys "fB" 'bookmark-jump-other-window
+                 "fb" 'bookmark-jump))
 #+end_src
 ** Functions
 *** File/Buffer Manipulation
