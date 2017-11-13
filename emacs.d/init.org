@@ -802,7 +802,7 @@ so I went with it.
    "underline" ?_
    "verbatim" ?=
    "strike-through" ?+
-   "clear" ? )
+   "clear" ?\s)
 
   (defun d/org-agenda-toggle-date (current-line)
     "Toggle `SCHEDULED' and `DEADLINE' tag in the capture buffer.
@@ -1459,7 +1459,7 @@ Executable
 #+end_src
 
 ** Built-in
-*** Dired
+*** dired
 #+begin_src emacs-lisp
 (use-package dired
   :ensure nil
@@ -1526,7 +1526,7 @@ Executable
         (setq d/dired-close-window t)
       (setq d/dired-close-window nil))))
 #+end_src
-*** Ibuffer
+*** ibuffer
 #+begin_src emacs-lisp
 (use-package ibuffer
   :init
@@ -2475,6 +2475,21 @@ Source: https://git.io/vQKuF"
   :config
   (setq avy-keys (string-to-list "aoeuidhtns")))
 #+end_src
+*** [[https://github.com/jacktasia/dumb-jump][dumb-jump]]
+#+begin_src emacs-lisp
+(use-package dumb-jump
+  :general
+  (d/leader-keys
+   "jE" 'dumb-jump-go-prefer-external-other-window
+   "jG" 'dumb-jump-go-other-window
+   "jb" 'dumb-jump-back
+   "je" 'dumb-jump-go-prefer-external
+   "jg" 'dumb-jump-go)
+  :config
+  (setq dumb-jump-selector 'ivy
+        dumb-jump-prefer-searcher 'rg))
+#+end_src
+
 *** [[https://github.com/wasamasa/eyebrowse][eyebrowse]]
 #+begin_src emacs-lisp
 (use-package eyebrowse
@@ -2531,30 +2546,6 @@ Source: https://git.io/vQKuF"
 
   (eyebrowse-mode))
 #+end_src
-*** [[https://github.com/cyrus-and/zoom][zoom]]
-#+begin_src emacs-lisp
-(use-package zoom
-  :config
-  (setq zoom-size '(0.618 . 0.618)
-        zoom-ignored-buffer-names '(" *which-key*"
-                                    "*Calculator*"
-                                    "*Calc Trail*")))
-#+end_src
-*** [[https://github.com/jacktasia/dumb-jump][dumb-jump]]
-#+begin_src emacs-lisp
-(use-package dumb-jump
-  :general
-  (d/leader-keys
-   "jE" 'dumb-jump-go-prefer-external-other-window
-   "jG" 'dumb-jump-go-other-window
-   "jb" 'dumb-jump-back
-   "je" 'dumb-jump-go-prefer-external
-   "jg" 'dumb-jump-go)
-  :config
-  (setq dumb-jump-selector 'ivy
-        dumb-jump-prefer-searcher 'rg))
-#+end_src
-
 *** [[https://github.com/vspinu/imenu-anywhere][imenu-anywhere]]
 #+begin_quote
   ido/ivy/helm imenu tag selection across buffers with the same mode/project
@@ -2564,7 +2555,15 @@ imenu on steroids.
 #+begin_src emacs-lisp
 (use-package imenu-anywhere)
 #+end_src
-
+*** [[https://github.com/cyrus-and/zoom][zoom]]
+#+begin_src emacs-lisp
+(use-package zoom
+  :config
+  (setq zoom-size '(0.618 . 0.618)
+        zoom-ignored-buffer-names '(" *which-key*"
+                                    "*Calculator*"
+                                    "*Calc Trail*")))
+#+end_src
 *** [[https://github.com/syohex/emacs-zoom-window][zoom-window]]
 #+begin_src emacs-lisp
 (use-package zoom-window
@@ -3486,7 +3485,6 @@ Source: https://git.io/vQKz8"
     (push '(? . ("`" . "'")) evil-surround-pairs-alist))
   (setq-local lisp-indent-function #'d/lisp-indent-function)
   (setq-local prettify-symbols-alist d/lisp-prettify-alist))
-
 #+end_src
 *** C
 **** Setup

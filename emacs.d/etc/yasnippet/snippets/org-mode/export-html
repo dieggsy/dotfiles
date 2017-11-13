@@ -2,6 +2,6 @@
 # name: export html
 # key: <h
 # --
-#+begin_eport html
+#+begin_export html
 $0
 #+end_export
