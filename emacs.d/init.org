@@ -3878,6 +3878,7 @@ Like git, for emacs. But cooler.
       "G" 'end-of-buffer)
     (fish-completion-mode)
     (with-eval-after-load 'company
+      (setq-local company-idle-delay 0)
       (setq-local company-frontends '(company-preview-frontend))
       (setq-local company-backends '(company-eshell-autosuggest))))
   :config
@@ -3896,7 +3897,8 @@ Like git, for emacs. But cooler.
         eshell-error-if-no-glob t
         eshell-scroll-to-bottom-on-input 'this
         eshell-hist-ignoredups t
-        eshell-destroy-buffer-when-process-dies t))
+        eshell-destroy-buffer-when-process-dies t
+        eshell-bad-command-tolerance 1.0e+INF))
 #+end_src
 *** External Packages
 **** egp
