@@ -4134,6 +4134,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 ***** dired-avfs
 #+begin_src emacs-lisp
 (use-package dired-avfs
+  :disabled
   :after dired)
 #+end_src
 ***** dired-open
