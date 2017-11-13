@@ -1820,7 +1820,46 @@ Source: http://tinyurl.com/k8g9sex"
 #+end_quote
 #+begin_src emacs-lisp
 (use-package lispy
-  :defer 5)
+  :defer 5
+  :init (add-hook 'lispy-mode-hook #'d/lispy-fontify-headlines)
+  :general
+  (general-define-key :keymaps 'lispy-mode-map-lispy
+    [tab] (general-predicate-dispatch nil
+            (save-excursion (beginning-of-line) (looking-at lispy-outline))
+            'd/lispy-cycle))
+  :config
+  (defun d/lispy-cycle ()
+    (interactive)
+    (save-excursion (beginning-of-line) (lispy-tab)))
+
+  (defun d/lispy-fontify-headlines ()
+    (interactive)
+    "Calculate heading regexps for font-lock mode."
+    (let* ((heading-1-regexp ";;\\* \\(.*\\)")
+           (heading-2-regexp ";;\\*\\* \\(.*\\)")
+           (heading-3-regexp ";;\\*\\*\\* \\(.*\\)")
+           (heading-4-regexp ";;\\*\\*\\*\\* \\(.*\\)")
+           (heading-5-regexp ";;\\*\\*\\*\\*\\* \\(.*\\)")
+           (heading-6-regexp ";;\\*\\*\\*\\*\\*\\* \\(.*\\)")
+           (heading-7-regexp ";;\\*\\*\\*\\*\\*\\*\\* \\(.*\\)")
+           (heading-8-regexp ";;\\*\\*\\*\\*\\*\\*\\*\\* \\(.*\\)"))
+      (font-lock-add-keywords
+       nil
+       `((,heading-1-regexp 1 'org-level-1 t)
+         (,heading-2-regexp 1 'org-level-2 t)
+         (,heading-3-regexp 1 'org-level-3 t)
+         (,heading-4-regexp 1 'org-level-4 t)
+         (,heading-5-regexp 1 'org-level-5 t)
+         (,heading-6-regexp 1 'org-level-6 t)
+         (,heading-7-regexp 1 'org-level-7 t)
+         (,heading-8-regexp 1 'org-level-8 t)))
+      (if (fboundp #'font-lock-flush)
+          (font-lock-flush)
+        ;; Copied from Emacs 25 font-lock.el, changed to call
+        ;; `jit-lock-refontify' directly
+        (and font-lock-mode
+             font-lock-fontified
+             (jit-lock-refontify))))))
 #+end_src
 **** [[https://github.com/noctuid/lispyville][lispyville]]
 #+begin_quote
