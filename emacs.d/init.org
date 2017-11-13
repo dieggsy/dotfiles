@@ -3975,11 +3975,6 @@ Like git, for emacs. But cooler.
 (use-package pcmpl-git
   :after eshell)
 #+end_src
-**** [[https://github.com/thierryvolpiatto/pcomplete-extension][pcomplete-extension]]
-#+begin_src emacs-lisp
-(use-package pcomplete-extension
-  :after eshell)
-#+end_src
 **** [[https://github.com/dieggsy/company-eshell-autosuggest][company-eshell-autosuggest]]
 #+begin_src emacs-lisp
 (use-package company-eshell-autosuggest
