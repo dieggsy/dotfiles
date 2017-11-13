@@ -1,0 +1,4 @@
+#name: directory
+#key: dir
+# --
+(directory ${1:directory}${2: show-dotfiles?})

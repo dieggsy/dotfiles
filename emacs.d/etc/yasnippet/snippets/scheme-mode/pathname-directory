@@ -1,0 +1,5 @@
+#name: pathname-directory
+#key: pathname-directory
+#key: pnd
+# --
+(pathname-directory $0)

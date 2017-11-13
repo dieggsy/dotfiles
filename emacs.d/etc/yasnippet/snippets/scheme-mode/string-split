@@ -1,0 +1,5 @@
+#name: split-string
+#key: split-string
+#key: ss
+# --
+(string-split ${1:string}${2: delimiter}${3: keep-empty})

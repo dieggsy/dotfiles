@@ -1,0 +1,5 @@
+#name: pathname-file
+#key: pathname-file
+#key: pnf
+# --
+(pathname-file $0)

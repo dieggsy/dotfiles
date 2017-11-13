@@ -1,0 +1,4 @@
+#name: number-to-string
+#key: nts
+# --
+(number->string $0)

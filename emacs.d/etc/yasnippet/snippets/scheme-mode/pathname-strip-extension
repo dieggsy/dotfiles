@@ -1,0 +1,5 @@
+#name: pathname-strip-extension
+#key: pathname-strip-extension
+#key: pnse
+# --
+(pathname-strip-extension $0)

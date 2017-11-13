@@ -1,0 +1,5 @@
+#contributor: Xah Lee (XahLee.org)
+#name: map
+#key: map
+# --
+(map ${1:function} $0)

@@ -1,0 +1,5 @@
+#name: create-directory
+#key: create-directory
+#key: mkdir
+# --
+(create-directory ${1:directory}${2: parents})

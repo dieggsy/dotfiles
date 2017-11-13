@@ -1,0 +1,5 @@
+#name: path-name-extension
+#key: path-name-extension
+#key: pne
+# --
+(pathname-extension ${1:filename})

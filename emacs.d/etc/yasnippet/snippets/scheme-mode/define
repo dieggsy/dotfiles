@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: define
+# key: def
+# --
+(define ${1:var} ${2:(${3:func})} $0)

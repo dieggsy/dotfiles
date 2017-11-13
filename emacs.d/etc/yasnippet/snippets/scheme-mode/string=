@@ -1,0 +1,4 @@
+#name: str=
+#key: str=
+# --
+(string= $0)

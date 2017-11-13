@@ -1,0 +1,5 @@
+#name: delete-directory
+#key: delete-directory
+#key: dd
+# --
+(delete-directory ${1:diretory}${2: recursive})
