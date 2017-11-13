@@ -148,11 +148,7 @@ eval "$(pyenv init -)"
 #+end_src
 *** [[https://github.com/nvbn/thefuck][thefuck]]
 #+begin_src sh
-# if which thefuck > /dev/null; then eval $(thefuck --alias); fi
-fuck() {
-    eval "$( command thefuck --alias )"
-    $(thefuck $(fc -ln -1 | tail -n 1)); fc -R "$@"
-}
+alias fuck='$(thefuck $(fc -ln -1 | tail -n 1)); fc -R "$@"'
 #+end_src
 *** [[https://github.com/zplug/zplug][zplug]] start
 #+begin_src sh
