@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: ascii
+# key: <A
+# --
+#+ASCII: $0

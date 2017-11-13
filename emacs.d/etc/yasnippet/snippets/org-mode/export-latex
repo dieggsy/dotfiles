@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: export latex
+# key: <l
+# --
+#+begin_export latex
+$0
+#+end_export

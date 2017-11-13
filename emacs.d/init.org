@@ -745,18 +745,6 @@ so I went with it.
         org-pretty-entities nil
         org-image-actual-width 500)
 
-  ;; (mapc (lambda (arg) (setcdr arg (list (downcase (cadr arg)))))
-  ;;       org-structure-template-alist)
-
-  ;; (add-to-list 'org-structure-template-alist
-  ;;              (list "sel" (concat "#+begin_src emacs-lisp\n"
-  ;;                                  "?\n"
-  ;;                                  "#+end_src")))
-  ;; (add-to-list 'org-structure-template-alist
-  ;;              (list "sp" (concat "#+begin_src python"
-  ;;                                 "?\n"
-  ;;                                 "#+end_src")))
-
   ;; latex
   (setq org-latex-listings t)
   (add-to-list 'org-latex-packages-alist '("" "listings"))
