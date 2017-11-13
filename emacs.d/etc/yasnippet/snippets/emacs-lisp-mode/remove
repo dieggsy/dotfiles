@@ -1,0 +1,4 @@
+# name: remove
+# key: rem
+# --
+(remove ${1:elt} $0)
