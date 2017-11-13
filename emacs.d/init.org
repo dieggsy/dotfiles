@@ -1958,6 +1958,10 @@ Freakin yasnippet. It's the best.
   :defer 5
   :general (d/leader-keys "iy" 'yas-insert-snippet)
   :config
+  (general-def yas-minor-mode-map
+    "SPC" yas-maybe-expand
+    "S-SPC" (lambda () (interactive) (insert " ")))
+  (setq yas-key-syntaxes (remove "w" yas-key-syntaxes))
   (yas-global-mode 1))
 #+end_src
 ***** [[https://github.com/haskell/haskell-snippets][haskell-snippets]]
