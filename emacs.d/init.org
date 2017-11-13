@@ -1707,6 +1707,11 @@ Supposedly better than autocomplete.
   (:keymaps 'company-active-map
    [tab] (general-predicate-dispatch nil
            (not (eq major-mode 'eshell-mode)) 'company-complete-common-or-cycle)
+   [return] (general-predicate-dispatch nil
+              (not (eq major-mode 'eshell-mode)) 'company-complete-selection)
+   "RET" (general-predicate-dispatch nil
+           (not (eq major-mode 'eshell-mode)) 'company-complete-selection)
+   "<S-return>" 'company-complete-selection
    "<right>" (general-predicate-dispatch nil
                (eq major-mode 'eshell-mode) 'company-complete-common))
   :init
