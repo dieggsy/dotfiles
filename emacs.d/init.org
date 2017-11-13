@@ -742,7 +742,7 @@ so I went with it.
         org-startup-with-inline-images t
         org-ellipsis " "
         org-highlight-latex-and-related '(latex)
-        org-pretty-entities t
+        org-pretty-entities nil
         org-image-actual-width 500)
 
   (mapc (lambda (arg) (setcdr arg (list (downcase (cadr arg)))))
@@ -1100,8 +1100,7 @@ Source: https://git.io/vQKEa"
   (setq org-habit-graph-column 50))
 
 (d/setup-hook org-agenda-mode
-  (setq-local prettify-symbols-alist d/org-prettify-alist)
-  (prettify-symbols-mode))
+  (setq-local prettify-symbols-alist d/org-prettify-alist))
 
 #+end_src
 ***** Capture
@@ -1123,8 +1122,6 @@ Source: https://git.io/vQKEa"
 
 (d/setup-hook org-mode
   (setq-local prettify-symbols-alist d/org-prettify-alist)
-  (prettify-symbols-mode)
-  ;; (org-bullets-mode 1)
   (goto-address-mode))
 #+end_src
 ** Bindings
