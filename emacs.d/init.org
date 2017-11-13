@@ -4550,6 +4550,7 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 #+begin_src emacs-lisp
 (use-package ox-pandoc
   :after ox
+  :disabled
   :if (executable-find "pandoc")
   :config
   ;; default options for all output formats
