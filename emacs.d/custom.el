@@ -19,6 +19,9 @@
  '(eshell-modules-list
    (quote
     (eshell-alias eshell-basic eshell-cmpl eshell-dirs eshell-glob eshell-hist eshell-ls eshell-pred eshell-prompt eshell-script eshell-term eshell-tramp eshell-unix)))
+ '(eshell-output-filter-functions
+   (quote
+    (eshell-truncate-buffer eshell-postoutput-scroll-to-bottom eshell-handle-control-codes eshell-handle-ansi-color eshell-watch-for-password-prompt)))
  '(eshell-visual-commands
    (quote
     ("htop" "cmus" "vi" "screen" "top" "less" "more" "lynx" "ncftp" "pine" "tin" "trn" "elm" "alsamixer" "nmtui" "nmtui-connect" "nmtui-edit" "nmtui-hostname")))
