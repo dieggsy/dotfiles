@@ -3949,7 +3949,6 @@ Like git, for emacs. But cooler.
   (setenv "PAGER" "cat")
   (setq eshell-buffer-maximum-lines 20000
         eshell-history-size 1000
-        eshell-error-if-no-glob t
         eshell-scroll-to-bottom-on-input 'this
         eshell-hist-ignoredups t
         eshell-destroy-buffer-when-process-dies t
