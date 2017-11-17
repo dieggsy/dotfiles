@@ -1433,8 +1433,18 @@ Executable
    "po" 'projectile-multi-occur
    "pr" 'projectil-recentf)
   :config
+  (defun d/maybe-ignore-project (root)
+    (cond ((file-remote-p root)
+           t)
+          ((string-prefix-p (expand-file-name "~/dotfiles/emacs.d/straight") root)
+           (let ((default-directory root))
+             (not (string-match-p (regexp-quote "github.com/dieggsy")
+                                  (shell-command-to-string "git config --get remote.origin.url")))))
+          (t nil)))
+
   (setq projectile-globally-ignored-files '("TAGS" ".DS_Store")
         projectile-ignored-projects '("/usr/local")
+        projectile-ignored-project-function #'d/maybe-ignore-project
         projectile-completion-system 'ivy)
   (projectile-mode))
 #+end_src
