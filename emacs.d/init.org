@@ -463,6 +463,14 @@ A really nice search/completion system for emacs.
   :config
   (ivy-mode 1)
 
+  (defun d/ignore-dired-buffers (buf)
+    (when (get-buffer buf)
+      (with-current-buffer buf
+        (when (eq major-mode 'dired-mode)
+          t))))
+
+  (add-hook 'ivy-ignore-buffers 'd/ignore-dired-buffers)
+
   (setq ivy-re-builders-alist '((swiper . ivy--regex-plus)
                                 (t . ivy--regex-ignore-order)))
   (setq ivy-format-function 'ivy-format-function-line
