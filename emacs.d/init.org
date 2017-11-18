@@ -4053,23 +4053,6 @@ directory to make multiple eshell windows easier."
     (eshell/clear)
     (eshell-emit-prompt))
 
-  (defun eshell/cpg (&optional x)
-    (let* ((ghq-dirs
-            (split-string (shell-command-to-string "ghq list")
-                          "\n"
-                          t))
-           (current (string-remove-prefix "/home/diego/.ghq/" (eshell/pwd)))
-           (current-pos (cl-position current ghq-dirs :test 'string=)))
-      (cond ((string= x "next")
-             (eshell/cd (concat "~/.ghq/" (nth (1+ current-pos) ghq-dirs))))
-            ((string= x "prev")
-             (eshell/cd (concat "~/.ghq/" (nth (1- current-pos) ghq-dirs))))
-            (t
-             (ivy-read "[cpg] "
-                       ghq-dirs
-                       :action (lambda (x)
-                                 (eshell/cd (concat "~/.ghq/" x))))))))
-
   (defun eshell/cpwd ()
     (kill-new (eshell/pwd)))
 
