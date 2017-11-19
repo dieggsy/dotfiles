@@ -3801,7 +3801,8 @@ Like git, for emacs. But cooler.
    "gc" 'magit-checkout
    "gf" 'magit-find-file
    "gl" 'magit-log-all
-   "gs" 'magit-status)
+   "gs" 'magit-status
+   "gp" 'magit-file-popup)
   :config
   (setq magit-diff-refine-hunk t
         auto-revert-check-vc-info t
