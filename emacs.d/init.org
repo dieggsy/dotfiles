@@ -1559,6 +1559,14 @@ Executable
 *** ibuffer
 #+begin_src emacs-lisp
 (use-package ibuffer
+  :general
+  (:keymaps 'ibuffer-mode-map
+   "TAB" 'ibuffer-toggle-filter-group
+   "<backtab>" 'ibuffer-toggle-filter-group)
+  (:keymaps 'ibuffer-mode-filter-group-map
+   "J" 'ibuffer-forward-filter-group
+   "K" 'ibuffer-backward-filter-group
+   "RET" 'ibuffer-toggle-marks)
   :init
   (d/setup-hook ibuffer-mode
     (ibuffer-switch-to-saved-filter-groups "Default")))
