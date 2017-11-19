@@ -79,7 +79,6 @@ more readable in org format than in rendered markdown.
         gitAndTools.gitFull
         gitAndTools.hub
         glibcLocales
-        gnupg
         htop
         i3-gaps
         i3blocks-gaps
