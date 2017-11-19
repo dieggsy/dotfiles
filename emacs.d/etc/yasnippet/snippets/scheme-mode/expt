@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: expt
+# key: expt
+# --
+(expt $1 $0)
