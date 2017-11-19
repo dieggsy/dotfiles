@@ -4141,6 +4141,8 @@ directory to make multiple eshell windows easier."
 (use-package term
   :ensure nil
   :config
+  (when (not (directory-files-recursively "/usr/share/terminfo/" "eterm-256color"))
+    (shell-command (concat "tic " (locate-user-emacs-file "lisp/eterm-256color.ti"))))
   (load-file (locate-user-emacs-file "lisp/term-256color-override.el")))
 #+end_src
 ** [[https://github.com/politza/pdf-tools][pdf-tools]]
