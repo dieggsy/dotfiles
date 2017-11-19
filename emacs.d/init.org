@@ -464,13 +464,23 @@ A really nice search/completion system for emacs.
   :config
   (ivy-mode 1)
 
-  (defun d/ignore-dired-buffers (buf)
-    (when (get-buffer buf)
-      (with-current-buffer buf
-        (when (eq major-mode 'dired-mode)
-          t))))
+  (defun d/ignore-dired-buffers (str)
+    "Return non-nil if STR names a Dired buffer.
+This function is intended for use with `ivy-ignore-buffers'."
+    (let ((buf (get-buffer str)))
+      (and buf (eq (buffer-local-value 'major-mode buf) 'dired-mode))))
 
-  (add-hook 'ivy-ignore-buffers 'd/ignore-dired-buffers)
+  (add-to-list 'ivy-ignore-buffers #'d/ignore-dired-buffers)
+
+  (defun d/ivy-dired-transformer (str)
+  (let ((buf (get-buffer str))
+        (str (ivy-switch-buffer-transformer str)))
+    (if (and buf (eq (buffer-local-value 'major-mode buf) 'dired-mode))
+        (concat (propertize "Dired: " 'face (get-text-property 0 'face str))
+                str)
+      str)))
+
+  (ivy-set-display-transformer 'ivy-switch-buffer 'd/ivy-dired-transformer)
 
   (setq ivy-re-builders-alist '((swiper . ivy--regex-plus)
                                 (t . ivy--regex-ignore-order)))
