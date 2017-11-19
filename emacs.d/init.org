@@ -3612,6 +3612,10 @@ Source: http://tinyurl.com/le6wxuo"
 (d/setup-hook scheme-mode
   (hs-minor-mode)
   (aggressive-indent-mode)
+  (smartparens-mode -1)
+  (smartparens-strict-mode -1)
+  (evil-smartparens-mode -1)
+  (lispy-mode)
   (d/with-eval-after-load 'evil-surround
     (push '(? . ("`" . "'")) evil-surround-pairs-alist))
   (setq-local prettify-symbols-alist d/scheme-prettify-alist))
