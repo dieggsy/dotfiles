@@ -2923,9 +2923,9 @@ Source: https://git.io/vQKzq"
                               (bound-and-true-p anzu--state)
                               (d/in-macro?)
                               (d/in-evil-substitution?))))
-                (d/make-xpm evil-tag-color 66 8))
+                (d/make-xpm evil-tag-color 56 8))
                ((not window-active?)
-                (d/make-xpm "#1D2021" 66 8))))))
+                (d/make-xpm "#1D2021" 56 8))))))
     (:eval
      (d/with-window-status
        (d/with-evil-tag-color
@@ -2952,7 +2952,7 @@ Source: https://git.io/vQKzq"
               "#3E3D31"
               :weight bold
               :background ,evil-tag-color
-              :box (:color ,evil-tag-color :line-width 19)))))))
+              :box (:color ,evil-tag-color :line-width 14)))))))
     ;; File modified
     " %* "
     ;; Buffer name & recursive editing
