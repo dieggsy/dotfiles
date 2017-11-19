@@ -1917,8 +1917,6 @@ Source: http://tinyurl.com/k8g9sex"
       escape
       additional-movement
       additional
-      mark
-      mark-toggle
       slurp/barf-cp))
   :after lispy
   :config
