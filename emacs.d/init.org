@@ -16,6 +16,7 @@ itself, hence the [[#dotfile-handling][dotfile handling]] functions and [[#local
 the optional ~COMPILE~ argument of ~org-babel-load-file~ wasn't working for me, so
 there's that.
 :END:
+
 * Contents                                                            :toc_1:
 - [[#intro][Intro]]
 - [[#initial-setup][Initial Setup]]
@@ -1113,6 +1114,7 @@ Source: https://git.io/vQKEa"
       `(lambda ()
          (interactive)
          (d/org-insert-list-leader-or-self ,char))))
+
   (setq org-bullets-bullet-list '("•")))
 
 (d/setup-hook org-mode
@@ -3929,6 +3931,7 @@ Like git, for emacs. But cooler.
 #+begin_src emacs-lisp
 (use-package eshell
   :ensure nil
+  :commands d/eshell-here
   :init
   (d/setup-hook eshell-mode
     (imap :keymaps 'eshell-mode-map
@@ -4024,20 +4027,19 @@ directory to make multiple eshell windows easier."
       (string-join (append `(,str) args) " "))
      t))
 
-  (cl-defmacro d/eshell-defun (name keys &rest pats)
+  (cl-defmacro d/eshell-defun (name &rest patterns &key cmd opts &allow-other-keys)
     (declare (indent defun))
-    (let* ((path (plist-get keys :path))
-           (opts (plist-get keys :opts))
-           (command-name (or path
-                             (concat "/usr/bin/" (symbol-name name)))))
+    (cl-remf patterns :cmd)
+    (cl-remf patterns :opts)
+    (let* ((cmd (or cmd (symbol-name name))))
       `(defun ,(intern (concat "eshell/" (symbol-name name))) (&rest args)
          (pcase args
-           ,@(cl-loop for pattern in pats
+           ,@(cl-loop for pattern in patterns
                       if (listp (car pattern))
                       collect pattern
                       else collect `('(,(car pattern))
                                      ,(cadr pattern)))
-           (_ (d/eshell-run ,(concat command-name " "  opts)
+           (_ (d/eshell-run ,(concat cmd " "  opts)
                             args))))))
 
   (defun eshell/clear ()
@@ -4063,14 +4065,14 @@ directory to make multiple eshell windows easier."
     (call-interactively #'slime))
 
   (d/eshell-defun git
-    (:path "~/.nix-profile/bin/hub"
-     :opts "-c color.ui=always")
+    :cmd "hub"
+    :opts "-c color.ui=always"
     ("status" (magit-status-internal (eshell/pwd)))
     ("diff" (magit-status-internal (eshell/pwd)))
     ("log" (call-interactively #'magit-log-current))
     (`("log" . ,ll) (magit-log ll)))
 
-  (d/eshell-defun pass (:path "~/.nix-profile/bin/pass")
+  (d/eshell-defun pass
     ("rm" (call-interactively #'password-store-remove))
     ("generate" (call-interactively #'password-store-generate))
     ("insert" (call-interactively #'password-store-insert))
@@ -4085,11 +4087,11 @@ directory to make multiple eshell windows easier."
 
   (defun eshell/ivy-ps ()
     (interactive)
-    (let ((ps  (split-string
-                (shell-command-to-string
-                 "ps axco user,pid,%cpu,%mem,start,time,command")
-                "\n"
-                t)))
+    (let ((ps (split-string
+               (shell-command-to-string
+                "ps axco user,pid,%cpu,%mem,start,time,command")
+               "\n"
+               t)))
       (ivy-read "[ps] "
                 ps
                 :action (lambda (x)

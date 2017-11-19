@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: loop
-# key: loop
-# --
-(cl-loop $0)
