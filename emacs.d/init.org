@@ -303,7 +303,7 @@ Use tab for completion and cycling candidates (relevant for the minibuffer?).
          display-time-load-average nil))
 #+end_src
 *** Tramp
-Use ssh by default and remember passwords for [[https://www.gnu.org/software/tramp/][tramp]]. Also make it quieter
+Use ssh by default and remember passwords for [[https://www.gnu.org/software/tramp/][tramp]]. Also make tramp quieter
 except for warnings and errors.
 #+begin_src emacs-lisp
 (setq tramp-default-method "ssh"
@@ -400,12 +400,12 @@ I went for it. Now I'll never go back.
   :demand t
   :general
   (nmap
-   "-" 'negative-argument
-   "\\" 'evil-window-next
-   ;; Basically C-[ for a Dvorak keyboard (_ is for terminal).
-   "C-_" 'keyboard-quit
-   "C-/"  'keyboard-quit
-   [escape]  'keyboard-quit)
+    "-" 'negative-argument
+    "\\" 'evil-window-next
+    ;; Basically C-[ for a Dvorak keyboard (_ is for terminal).
+    "C-_" 'keyboard-quit
+    "C-/"  'keyboard-quit
+    [escape]  'keyboard-quit)
   (:states '(insert replace visual)
    "C-_" 'evil-normal-state
    "C-/" 'evil-normal-state)
@@ -809,7 +809,7 @@ Source: https://git.io/vQK0I"
           (and (search-forward "SCHEDULED:" search-limit t)
                (replace-match "DEADLINE:"))))))
 
-  (defun d/org-insert-list-leader-or-self (char)
+  (defun d/org-insert-list-item-or-self (char)
     "If on column 0, insert space-padded CHAR; otherwise insert CHAR.
 
 This has the effect of automatically creating a properly indented list
@@ -817,8 +817,8 @@ leader; like hyphen, asterisk, or plus sign; without having to use
 list-specific key maps.
 
 Source: https://git.io/vQK0s"
-    (if (= (current-column) 0)
-        (insert (concat " " char " "))
+    (if (bolp)
+        (insert (concat char " "))
       (insert char)))
 
   (defun d/org-swap-tags (tags)
@@ -1030,7 +1030,7 @@ Source: https://git.io/vQKEa"
     (define-key org-mode-map (kbd char)
       `(lambda ()
          (interactive)
-         (d/org-insert-list-leader-or-self ,char))))
+         (d/org-insert-list-item-or-self ,char))))
 
   (setq org-bullets-bullet-list '("•")))
 
@@ -3718,7 +3718,6 @@ Like git, for emacs. But cooler.
         git-commit-summary-max-length 50
         git-commit-major-mode 'org-mode)
   (d/setup-hook git-commit-mode
-    (evil-insert-state)
     (setq-local fill-column 72)
     (setq-local org-hide-emphasis-markers nil)
     (setq-local org-pretty-entities nil)))
