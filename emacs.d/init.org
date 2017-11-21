@@ -678,16 +678,14 @@ But really, it's life.
           ("g" "Google calendar" entry
            (file "~/Dropbox/org/gcal.org") "* %?\n\n%^T"))))
 #+end_src
-
-***** Behavior/appearance
+***** Behavior
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'org
   (setq org-startup-indented t
         org-catch-invisible-edits 'error
         org-insert-heading-respect-content t
         org-src-window-setup 'current-window
-        org-list-demote-modify-bullet '(("-" . "*")
-                                        ("*" . "+"))
+        org-list-demote-modify-bullet '(("-" . "*") ("*" . "+"))
         org-export-in-background t
         org-confirm-babel-evaluate nil
         org-src-tab-acts-natively t
@@ -717,23 +715,28 @@ But really, it's life.
      (lisp . t)
      (C . t)
      (scheme . t)))
+#+end_src
+***** Appearance
+#+begin_src emacs-lisp
+;; appearance
+(setq org-src-fontify-natively t
+      org-src-preserve-indentation nil
+      org-edit-src-content-indentation 0
+      org-fontify-quote-and-verse-blocks t
+      org-hide-emphasis-markers nil
+      org-startup-with-inline-images t
+      org-ellipsis " "
+      org-highlight-latex-and-related '(latex)
+      org-pretty-entities nil
+      org-hide-leading-stars-before-indent-mode t
+      org-fontify-done-headline t
+      org-image-actual-width 500)
 
-  ;; appearance
-  (setq org-src-fontify-natively t
-        org-src-preserve-indentation t
-        org-fontify-quote-and-verse-blocks t
-        org-hide-emphasis-markers t
-        org-startup-with-inline-images t
-        org-ellipsis " "
-        org-highlight-latex-and-related '(latex)
-        org-pretty-entities nil
-        org-image-actual-width 500)
-
-  ;; latex
-  (setq org-latex-listings t)
-  (add-to-list 'org-latex-packages-alist '("" "listings"))
-  (add-to-list 'org-latex-packages-alist '("" "color"))
-  (add-to-list 'org-latex-packages-alist '("" "tabularx")))
+;; latex
+(setq org-latex-listings t)
+(add-to-list 'org-latex-packages-alist '("" "listings"))
+(add-to-list 'org-latex-packages-alist '("" "color"))
+(add-to-list 'org-latex-packages-alist '("" "tabularx")))
 #+end_src
 **** Variables
 #+begin_src emacs-lisp
