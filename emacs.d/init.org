@@ -370,9 +370,6 @@ That undersells it. The /most/ convenient key definitions in emacs.
 #+begin_src emacs-lisp
 (use-package general
   :demand t
-  :recipe (:host github
-           :repo "noctuid/general.el"
-           :branch "buttercup")
   :config
   (general-evil-setup t)
 
