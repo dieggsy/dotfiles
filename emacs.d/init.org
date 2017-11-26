@@ -728,7 +728,7 @@ But really, it's life.
       org-ellipsis " "
       org-highlight-latex-and-related '(latex)
       org-pretty-entities nil
-      org-hide-leading-stars-before-indent-mode t
+      org-hide-leading-stars t
       org-fontify-done-headline t
       org-image-actual-width 500)
 
