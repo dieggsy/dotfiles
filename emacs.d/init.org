@@ -3932,6 +3932,13 @@ Like git, for emacs. But cooler.
   :recipe (:host github
            :repo "dieggsy/company-eshell-autosuggest"))
 #+end_src
+**** [[https://github.com/dieggsy/eshell-thefuck][eshell-thefuck]]
+#+begin_src emacs-lisp
+(use-package eshell-thefuck
+  :recipe (:host github
+           :repo "dieggsy/eshell-thefuck")
+  :after eshell)
+#+end_src
 *** Functions
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'eshell
