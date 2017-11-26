@@ -331,8 +331,8 @@ alias history-stat="history 0 | awk '{print \$2}' | sort | uniq -c | sort -n -r 
 which hub > /dev/null && alias git=hub
 [ "$(uname)" = "Linux" ] && compdef hub=git
 [ "$(uname)" = "Linux" ] && which nautilus > /dev/null && alias nautilus="nautilus &> /dev/null"
-alias ls='ls -X --group-directories-first --color=always'
-alias xa='exa --group-directories-first --sort=extension'
+# alias ls='ls -X --group-directories-first --color=always'
+alias ls='exa --group-directories-first --sort=extension'
 if [ -d /Applications/Mathematica.app ]; then
     alias mathematica='/Applications/Mathematica.app/Contents/MacOS/WolframKernel'
 fi
