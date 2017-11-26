@@ -432,6 +432,7 @@ source ~/.nix-profile/etc/profile.d/nix.sh
 #+begin_src sh
 export PYENV_ROOT="$HOME/.pyenv"
 path=(
+    $HOME/.evm/bin
     $HOME/bin
     $HOME/.nix-profile/bin
     $PYENV_ROOT/bin
@@ -495,6 +496,7 @@ fi
 #+begin_src sh
 export PYENV_ROOT="$HOME/.pyenv"
 path=(
+    $HOME/.evm/bin
     $HOME/bin
     $HOME/.nix-profile/bin
     $PYENV_ROOT/bin
