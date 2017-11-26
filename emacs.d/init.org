@@ -1186,6 +1186,10 @@ Non-interactively SEARCH-STRING is the string to search."
 #+begin_src emacs-lisp
 (use-package google-translate)
 #+end_src
+*** [[https://github.com/Wilfred/helpful][helpful]]
+#+begin_src emacs-lisp
+(use-package helpful)
+#+end_src
 *** [[https://www.emacswiki.org/emacs/info+.el][info+]]
 #+begin_quote
   Extensions to info.el.
