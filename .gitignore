@@ -18,3 +18,4 @@ emacs.d/tramp
 emacs.d/straight/
 nvim/bundle/
 emacs.d/master/
+emacs.d/.cask/
