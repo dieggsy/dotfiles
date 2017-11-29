@@ -33,7 +33,7 @@
     (comint-mode erc-mode eshell-mode geiser-repl-mode gud-mode inferior-apl-mode inferior-caml-mode inferior-emacs-lisp-mode inferior-j-mode inferior-python-mode inferior-scheme-mode inferior-sml-mode internal-ange-ftp-mode magit-log-edit-mode org-capture-mode prolog-inferior-mode reb-mode shell-mode slime-repl-mode term-mode wdired-mode git-commit-mode)))
  '(evil-motion-state-modes
    (quote
-    (apropos-mode Buffer-menu-mode calendar-mode color-theme-mode command-history-mode compilation-mode dictionary-mode ert-results-mode help-mode Man-mode speedbar-mode undo-tree-visualizer-mode woman-mode)))
+    (apropos-mode Buffer-menu-mode calendar-mode color-theme-mode command-history-mode compilation-mode dictionary-mode ert-results-mode help-mode Man-mode speedbar-mode undo-tree-visualizer-mode woman-mode helpful-mode elisp-refs-mode)))
  '(evil-overriding-maps
    (quote
     ((Buffer-menu-mode-map)
