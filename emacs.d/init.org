@@ -1894,6 +1894,7 @@ Source: http://tinyurl.com/k8g9sex"
 Kind of makes undo's like git. Or Vim, apparently, if you're into that.
 #+begin_src emacs-lisp
 (use-package undo-tree
+  :hook (org-mode . undo-tree-mode)
   :general
   (d/leader-keys "au" 'undo-tree-visualize)
   :config
