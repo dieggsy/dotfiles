@@ -1786,7 +1786,7 @@ Source: http://tinyurl.com/k8g9sex"
 #+begin_src emacs-lisp
 (use-package lispy
   :defer 5
-  :init (add-hook 'lispy-mode-hook #'d/lispy-fontify-headlines)
+  :hook (lispy-mode . d/lispy-fontify-headlines)
   :general
   (general-define-key :keymaps 'lispy-mode-map-lispy
     [tab] (general-predicate-dispatch nil
@@ -1832,8 +1832,8 @@ Source: http://tinyurl.com/k8g9sex"
 #+end_quote
 #+begin_src emacs-lisp
 (use-package lispyville
+  :hook (lispy-mode . lispyville-mode)
   :init
-  (add-hook 'lispy-mode-hook #'lispyville-mode)
   (defvar lispyville-key-theme
     '(operators
       c-w
@@ -1854,12 +1854,12 @@ Source: http://tinyurl.com/k8g9sex"
 #+begin_src emacs-lisp
 (use-package smartparens
   :defer 5
+  :hook ((eval-expression-minibuffer-setup . smartparens-strict-mode)
+         (eval-expression-minibuffer-setup . show-smartparens-mode))
   :config
   (require 'smartparens-config)
   (smartparens-global-mode)
   (show-smartparens-global-mode)
-  (add-hook 'eval-expression-minibuffer-setup-hook #'smartparens-strict-mode)
-  (add-hook 'eval-expression-minibuffer-setup-hook #'show-smartparens-mode)
   (let ((modes '(text-mode
                  org-mode
                  markdown-mode
@@ -1888,8 +1888,7 @@ Source: http://tinyurl.com/k8g9sex"
 #+begin_src emacs-lisp
 (use-package evil-smartparens
   :after smartparens
-  :config
-  (add-hook 'smartparens-enabled-hook #'evil-smartparens-mode))
+  :hook (smartparens-enabled . evil-smartparens-mode))
 #+end_src
 **** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
 Kind of makes undo's like git. Or Vim, apparently, if you're into that.
@@ -3746,9 +3745,9 @@ Like git, for emacs. But cooler.
 (use-package git-gutter-fringe
   :defer 5
   :commands fringe-helper-define
+  :hook (focus-in . git-gutter:update-all-windows)
   :config
   (global-git-gutter-mode)
-  (add-hook 'focus-in-hook #'git-gutter:update-all-windows)
   (fringe-helper-define 'git-gutter-fr:modified nil
     "....XXXX"
     "....XXXX"
@@ -4502,8 +4501,8 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 #+begin_src emacs-lisp
 (use-package evil-embrace
   :after evil-surround
+  :hook (org-mode . embrace-org-mode-hook)
   :config
-  (add-hook 'org-mode-hook 'embrace-org-mode-hook)
   (evil-embrace-enable-evil-surround-integration)
   (d/with-eval-after-load 'exwm
     (setq evil-embrace-show-help-p nil)))
@@ -4574,8 +4573,7 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 #+begin_src emacs-lisp
 (use-package toc-org
   :after org
-  :config
-  (add-hook 'org-mode-hook #'toc-org-enable))
+  :hook (org-mode . toc-org-enable))
 #+end_src
 *** [[https://github.com/myuhe/org-gcal.el][org-gcal]]
 #+begin_quote
