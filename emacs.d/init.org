@@ -302,6 +302,11 @@ Use tab for completion and cycling candidates (relevant for the minibuffer?).
          display-time-format "%Y-%d-%m %H:%M "
          display-time-load-average nil))
 #+end_src
+*** Battery
+#+begin_src emacs-lisp
+(with-eval-after-load 'battery
+  (setq battery-mode-line-format "%p"))
+#+end_src
 *** Tramp
 Use ssh by default and remember passwords for [[https://www.gnu.org/software/tramp/][tramp]]. Also make tramp quieter
 except for warnings and errors.
