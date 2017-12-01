@@ -1369,6 +1369,13 @@ Executable
    "J" 'ibuffer-forward-filter-group
    "K" 'ibuffer-backward-filter-group
    "RET" 'ibuffer-toggle-marks)
+  :custom
+  (ibuffer-saved-filter-groups
+   '(("Default"
+      ("Dired"
+       (mode . dired-mode))
+      ("ERC"
+       (mode . erc-mode)))))
   :init
   (d/setup-hook ibuffer-mode
     (ibuffer-switch-to-saved-filter-groups "Default")))
@@ -1805,6 +1812,10 @@ Source: http://tinyurl.com/k8g9sex"
   :hook (((prog-mode conf-mode eval-expression-minibuffer-setup) . turn-on-smartparens-strict-mode)
          (eshell-mode . smartparens-mode)
          (eval-expression-minibuffer-setup . show-smartparens-mode))
+  :custom
+  (sp-ignore-modes-list '(scheme-mode
+                          emacs-lisp-mode
+                          lisp-mode))
   :config
   (require 'smartparens-config)
   (smartparens-global-mode)
