@@ -35,8 +35,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     "url" = "git://git.sv.gnu.org/emacs.git";
-    "rev" = "a7b7b85567f766ff510a5eaaaf32dbbbec15efd0";
-    "sha256" = "0s18fzfbnd3n8gi4z89280ls9nywzypfdj5pg5mvdh0xl6d4zx38";
+    "rev" = "c643e0c3ac7f18e35bdb1450c571036ff4932341";
+    "sha256" = "15g8bn6spa47x91varys2i9kh0jpk85cqmldpxamlga1j3isr2pq";
     };
 
   patches = (lib.optional stdenv.isDarwin ./at-fdcwd.patch);
