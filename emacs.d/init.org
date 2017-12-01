@@ -427,11 +427,11 @@ I went for it. Now I'll never go back.
    "C-_" 'evil-normal-state
    "C-/" 'evil-normal-state)
   (vmap [escape] 'keyboard-quit)
-  :init
-  (setq evil-want-C-u-scroll t
-        evil-want-fine-undo t
-        evil-search-module 'evil-search
-        evil-lookup-func (lambda () (man (thing-at-point 'word))))
+  :custom
+  (evil-want-C-u-scroll t)
+  (evil-want-fine-undo t)
+  (evil-search-module 'evil-search)
+  (evil-lookup-func (lambda () (man (thing-at-point 'word))))
   :config
   (setq evil-insert-state-cursor '(bar . 1)
         evil-emacs-state-cursor '(bar . 1)
@@ -638,8 +638,8 @@ But really, it's life.
    "aoo" 'org-agenda
    "aos" 'org-search-view
    "aot" 'org-todo-list )
-  :init
-  (setq org-list-allow-alphabetical t)
+  :custom
+  (org-list-allow-alphabetical t)
   :config
   (require 'ox-extra)
   (ox-extras-activate '(ignore-headlines))
@@ -1639,11 +1639,11 @@ Supposedly better than autocomplete.
    "<S-return>" 'company-complete-selection
    "<right>" (general-predicate-dispatch nil
                (eq major-mode 'eshell-mode) 'company-complete-common))
-  :init
-  (setq company-idle-delay 0.3
-        company-minimum-prefix-length 1
-        company-selection-wrap-around t
-        company-dabbrev-char-regexp "\\sw\\|\\s_\\|[-_]")
+  :custom
+  (company-idle-delay 0.3)
+  (company-minimum-prefix-length 1)
+  (company-selection-wrap-around t)
+  (company-dabbrev-char-regexp "\\sw\\|\\s_\\|[-_]")
   :config
   (defun company-mode/backend-with-yas (backend)
     "Source: https://git.io/vQKE6"
@@ -1797,14 +1797,13 @@ Source: http://tinyurl.com/k8g9sex"
 #+begin_src emacs-lisp
 (use-package lispyville
   :hook (lispy-mode . lispyville-mode)
-  :init
-  (defvar lispyville-key-theme
-    '(operators
-      c-w
-      escape
-      additional-movement
-      additional
-      slurp/barf-cp))
+  :custom
+  (lispyville-key-theme '(operators
+                          c-w
+                          escape
+                          additional-movement
+                          additional
+                          slurp/barf-cp))
   :after lispy
   :config
   (lispy-define-key lispy-mode-map "v" #'lispyville-toggle-mark-type)
@@ -2655,8 +2654,8 @@ Use a bar cursor in the minibuffer.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package column-enforce-mode
-  :init
-  (setq-default column-enforce-column 79))
+  :custom
+  (column-enforce-column 79))
 #+end_src
 *** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers]]
 #+begin_quote
@@ -4122,8 +4121,8 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 #+begin_src emacs-lisp
 (use-package diredfl
   :after dired
-  :init
-  (setq diredfl-ignore-compressed-flag nil))
+  :custom
+  (diredfl-ignore-compressed-flag nil))
 #+end_src
 ** Emacs
 *** Packages
