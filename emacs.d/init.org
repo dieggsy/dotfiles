@@ -1018,7 +1018,6 @@ Source: https://git.io/vQKEa"
 
 (d/setup-hook org-agenda-mode
   (setq-local prettify-symbols-alist d/org-prettify-alist))
-
 #+end_src
 ***** Capture
 #+begin_src emacs-lisp
@@ -1098,7 +1097,25 @@ also use these keys to quit out of the minibuffer.
  "SPC u" 'universal-argument-more)
 #+end_src
 * Help
-** External Packages
+** Built-in
+*** Man
+#+begin_src emacs-lisp
+(use-package man
+  :general
+  (d/leader-keys
+   "hm" 'man)
+  :config
+  (setq Man-notify-method 'aggressive))
+#+end_src
+*** Info
+#+begin_src emacs-lisp
+(use-package Info
+  :ensure nil
+  :config
+  (nmap Info-mode-map
+    "i" Info-mode-map))
+#+end_src
+** Packages
 *** [[https://github.com/abo-abo/define-word][define-word]]
 #+begin_quote
   Display the definition of word at point in Emacs
@@ -1215,24 +1232,6 @@ Non-interactively SEARCH-STRING is the string to search."
   (nmap tldr-mode-map
     "q" 'quit-window))
 #+end_src
-** Builtin
-*** Man
-#+begin_src emacs-lisp
-(use-package man
-  :general
-  (d/leader-keys
-   "hm" 'man)
-  :config
-  (setq Man-notify-method 'aggressive))
-#+end_src
-*** Info
-#+begin_src emacs-lisp
-(use-package Info
-  :ensure nil
-  :config
-  (nmap Info-mode-map
-    "i" Info-mode-map))
-#+end_src
 ** Bindings
 Leader bindings
 #+begin_src emacs-lisp
@@ -1289,75 +1288,6 @@ Backup
 Executable
 #+begin_src emacs-lisp
 (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
-#+end_src
-** External Packages
-*** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
-#+begin_quote
-  Make Emacs' delete-by-moving-to-trash do what you expect it to do on OS X.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package osx-trash
-  :defer 5
-  :if (eq system-type 'darwin)
-  :config
-  (osx-trash-setup)
-  (setq delete-by-moving-to-trash t))
-#+end_src
-
-*** [[https://github.com/emacsmirror/dired-du][dired-du]]
-#+begin_src emacs-lisp
-(use-package dired-du
-  :recipe (:host github :repo "emacsmirror/dired-du")
-  :config
-  (setq dired-du-size-format t))
-#+end_src
-*** [[https://github.com/bbatsov/projectile][projectile]]
-#+begin_quote
-  Project Interaction Library for Emacs
-#+end_quote
-#+begin_src emacs-lisp
-(use-package projectile
-  :general
-  (d/leader-keys
-   "p"  '(:ignore t :wk "project")
-   "pg" 'projectile-vc
-   "pk" 'projectile-kill-buffers
-   "po" 'projectile-multi-occur
-   "pr" 'projectil-recentf)
-  :config
-  (defun d/maybe-ignore-project (root)
-    (cond ((file-remote-p root)
-           t)
-          ((string-prefix-p (expand-file-name "~/dotfiles/emacs.d/straight") root)
-           (let ((default-directory root))
-             (not (string-match-p (regexp-quote "github.com/dieggsy")
-                                  (shell-command-to-string "git config --get remote.origin.url")))))
-          (t nil)))
-
-  (setq projectile-globally-ignored-files '("TAGS" ".DS_Store")
-        projectile-ignored-projects '("/usr/local")
-        projectile-ignored-project-function #'d/maybe-ignore-project
-        projectile-completion-system 'ivy)
-  (projectile-mode))
-#+end_src
-
-*** [[https://github.com/ericdanan/counsel-projectile][counsel-projectile]]
-#+begin_src emacs-lisp
-(use-package counsel-projectile
-  :commands d/project-find-file
-  :general
-  (d/leader-keys
-   "pb" 'counsel-projectile-switch-to-buffer
-   "pd" 'counsel-projectile-find-dir
-   "pf" 'counsel-projectile-find-file
-   "pp" 'counsel-projectile
-   "ps" 'counsel-projectile-switch-project)
-  :config
-  (defun d/project-find-file ()
-    (interactive)
-    (condition-case nil
-        (counsel-git)
-      (error (counsel-projectile-find-file)))))
 #+end_src
 
 ** Built-in
@@ -1450,6 +1380,75 @@ Executable
   :general
   (d/leader-keys "fB" 'bookmark-jump-other-window
                  "fb" 'bookmark-jump))
+#+end_src
+** Packages
+*** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
+#+begin_quote
+  Make Emacs' delete-by-moving-to-trash do what you expect it to do on OS X.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package osx-trash
+  :defer 5
+  :if (eq system-type 'darwin)
+  :config
+  (osx-trash-setup)
+  (setq delete-by-moving-to-trash t))
+#+end_src
+
+*** [[https://github.com/emacsmirror/dired-du][dired-du]]
+#+begin_src emacs-lisp
+(use-package dired-du
+  :recipe (:host github :repo "emacsmirror/dired-du")
+  :config
+  (setq dired-du-size-format t))
+#+end_src
+*** [[https://github.com/bbatsov/projectile][projectile]]
+#+begin_quote
+  Project Interaction Library for Emacs
+#+end_quote
+#+begin_src emacs-lisp
+(use-package projectile
+  :general
+  (d/leader-keys
+   "p"  '(:ignore t :wk "project")
+   "pg" 'projectile-vc
+   "pk" 'projectile-kill-buffers
+   "po" 'projectile-multi-occur
+   "pr" 'projectil-recentf)
+  :config
+  (defun d/maybe-ignore-project (root)
+    (cond ((file-remote-p root)
+           t)
+          ((string-prefix-p (expand-file-name "~/dotfiles/emacs.d/straight") root)
+           (let ((default-directory root))
+             (not (string-match-p (regexp-quote "github.com/dieggsy")
+                                  (shell-command-to-string "git config --get remote.origin.url")))))
+          (t nil)))
+
+  (setq projectile-globally-ignored-files '("TAGS" ".DS_Store")
+        projectile-ignored-projects '("/usr/local")
+        projectile-ignored-project-function #'d/maybe-ignore-project
+        projectile-completion-system 'ivy)
+  (projectile-mode))
+#+end_src
+
+*** [[https://github.com/ericdanan/counsel-projectile][counsel-projectile]]
+#+begin_src emacs-lisp
+(use-package counsel-projectile
+  :commands d/project-find-file
+  :general
+  (d/leader-keys
+   "pb" 'counsel-projectile-switch-to-buffer
+   "pd" 'counsel-projectile-find-dir
+   "pf" 'counsel-projectile-find-file
+   "pp" 'counsel-projectile
+   "ps" 'counsel-projectile-switch-project)
+  :config
+  (defun d/project-find-file ()
+    (interactive)
+    (condition-case nil
+        (counsel-git)
+      (error (counsel-projectile-find-file)))))
 #+end_src
 ** Functions
 *** File/Buffer Manipulation
@@ -3176,8 +3175,7 @@ Pretty neat, though not entirely complete, IMO.
   (require 'company)
   (add-to-list 'company-backends
                (company-mode/backend-with-yas 'company-anaconda))
-  (setq-local prettify-symbols-alist
-              d/python-prettify-alist))
+  (setq-local prettify-symbols-alist d/python-prettify-alist))
 #+end_src
 *** Lisps
 **** Packages
@@ -3854,7 +3852,7 @@ Like git, for emacs. But cooler.
       "C-p" '(general-predicate-dispatch nil
                (eshell-point-within-input-p) 'eshell/ivy-ps)
       "C-r" 'eshell/ivy-history
-      "C-c C-l" 'eshell-clear-keystroke)
+      "C-c C-l" 'd/eshell-clear-keystroke)
     (nmap :keymaps 'eshell-mode-map
       "G" 'end-of-buffer)
     (fish-completion-mode)
@@ -3880,7 +3878,7 @@ Like git, for emacs. But cooler.
         eshell-destroy-buffer-when-process-dies t
         eshell-bad-command-tolerance 1.0e+INF))
 #+end_src
-*** External Packages
+*** Packages
 **** egp
 #+begin_src emacs-lisp
 (use-package egp
@@ -3971,7 +3969,7 @@ directory to make multiple eshell windows easier."
       (erase-buffer)
       (delete-all-overlays)))
 
-  (defun eshell-clear-keystroke ()
+  (defun d/eshell-clear-keystroke ()
     "Allow for keystrokes to invoke eshell/clear."
     (interactive)
     (eshell/clear)
@@ -4796,7 +4794,7 @@ Source: http://tinyurl.com/lo96nwc"
 
   (erc-define-catalog-entry 'english 'ACTION "         *\t%n %a"))
 #+end_src
-*** Builtin
+*** Built-in
 #+begin_src emacs-lisp
 (use-package erc
   :ensure nil
@@ -4865,7 +4863,7 @@ Source: http://tinyurl.com/lo96nwc"
              (puthash trimmed (current-time)
                       (gethash server erc-lurker-state))
              (puthash channel nick (gethash server d/erc-last-speaker))
-             (format "%10.10s%s	"
+             (format "%10.10s%s\t"
                      (cond (nick-was-last
                             (erc-propertize
                              "↳"
