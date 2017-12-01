@@ -2667,6 +2667,14 @@ Use a bar cursor in the minibuffer.
   :custom
   (column-enforce-column 79))
 #+end_src
+*** [[https://github.com/dieggsy/eterm-256color][eterm-256color]]
+#+begin_src emacs-lisp
+(use-package eterm-256color
+  :recipe (:host github
+           :repo "dieggsy/eterm-256color"
+           :files ("eterm-256color.el" "eterm-256color.ti"))
+  :hook (term-mode . eterm-256color-mode))
+#+end_src
 *** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers]]
 #+begin_quote
   Emacs minor mode to highlight each source code identifier uniquely based on its name
