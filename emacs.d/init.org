@@ -1239,11 +1239,6 @@ Leader bindings
  "hs"  'system-name
  "hv"  'version)
 #+end_src
-** Setup
-#+begin_src emacs-lisp
-(d/setup-hook help-mode
-  (rainbow-mode))
-#+end_src
 * Files/Buffers
 ** Defaults
 How to uniquify buffer names.
@@ -1288,9 +1283,7 @@ Executable
   :init
   (d/setup-hook dired-mode
     (hl-line-mode 1)
-    (dired-collapse-mode)
     (dired-omit-mode)
-    (diredfl-mode)
     (setq-local prettify-symbols-alist d/dired-prettify-alist)
     (prettify-symbols-mode))
   ;; (d/setup-hook dired-after-readin
@@ -1720,7 +1713,8 @@ Source: http://tinyurl.com/k8g9sex"
 #+begin_src emacs-lisp
 (use-package lispy
   :defer 5
-  :hook (lispy-mode . d/lispy-fontify-headlines)
+  :hook ((lispy-mode . d/lispy-fontify-headlines)
+         ((emacs-lisp-mode lisp-mode scheme-mode) . lispy-mode))
   :general
   (general-define-key :keymaps 'lispy-mode-map-lispy
     [tab] (general-predicate-dispatch nil
@@ -1787,7 +1781,8 @@ Source: http://tinyurl.com/k8g9sex"
 #+begin_src emacs-lisp
 (use-package smartparens
   :defer 5
-  :hook ((eval-expression-minibuffer-setup . smartparens-strict-mode)
+  :hook (((prog-mode conf-mode eval-expression-minibuffer-setup) . turn-on-smartparens-strict-mode)
+         (eshell-mode . smartparens-mode)
          (eval-expression-minibuffer-setup . show-smartparens-mode))
   :config
   (require 'smartparens-config)
@@ -2179,9 +2174,6 @@ kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
 #+begin_src emacs-lisp
 (use-package json-mode
   :mode "\\.json\\'")
-
-(d/setup-hook json-mode
-  (highlight-numbers-mode -1))
 #+end_src
 *** [[http://jblevins.org/projects/markdown-mode/][markdown-mode]]
 Syntax highlighting for markdown files.
@@ -2358,14 +2350,14 @@ Source: https://git.io/vQKuF"
 (use-package goto-addr
   :ensure nil
   :hook (((help-mode org-mode) . goto-address-mode)
-         (prog-mode . goto-address-prog-mode)))
+         ((prog-mode conf-mode) . goto-address-prog-mode)))
 #+end_src
 *** display-line-numbers
 #+begin_src emacs-lisp
 (use-package display-line-numbers
   :if (version<= "26" emacs-version)
   :ensure nil
-  :hook (prog-mode . display-line-numbers-mode)
+  :hook ((prog-mode conf-mode) . display-line-numbers-mode)
   :custom
   (display-line-numbers-type 'relative)
   (display-line-numbers-width-start t)
@@ -2643,6 +2635,7 @@ Use a bar cursor in the minibuffer.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package rainbow-mode
+  :hook help-mode
   :config
   (setq rainbow-x-colors-major-mode-list '(c-mode c++-mode java-mode)))
 #+end_src
@@ -2665,6 +2658,7 @@ Use a bar cursor in the minibuffer.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package column-enforce-mode
+  :hook (prog-mode conf-mode)
   :custom
   (column-enforce-column 79))
 #+end_src
@@ -2689,14 +2683,17 @@ Use a bar cursor in the minibuffer.
 #+end_quote
 Neat-o
 #+begin_src emacs-lisp
-(use-package highlight-numbers)
+(use-package highlight-numbers
+  :hook (((prog-mode conf-mode) . highlight-numbers-mode)
+         (json-mode . highlight-numbers--turn-off)))
 #+end_src
 *** [[https://github.com/tsdh/highlight-parentheses.el][highlight-parentheses]]
 #+begin_quote
   Emacs: highlight surrounding parentheses
 #+end_quote
 #+begin_src emacs-lisp
-(use-package highlight-parentheses)
+(use-package highlight-parentheses
+  :hook ((prog-mode conf-mode) . highlight-parentheses-mode))
 #+end_src
 *** [[https://github.com/milkypostman/powerline][powerline]]
 #+begin_src emacs-lisp
@@ -2705,7 +2702,8 @@ Neat-o
 *** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
 Better parentheses coloring
 #+begin_src emacs-lisp
-(use-package rainbow-delimiters)
+(use-package rainbow-delimiters
+  :hook ((prog-mode conf-mode) . rainbow-delimiters-mode))
 #+end_src
 *** [[https://github.com/atomontage/xterm-color][xterm-color]]
 #+begin_src emacs-lisp
@@ -3010,7 +3008,8 @@ Source: https://git.io/vQKzq"
   Emacs minor mode that keeps your code always indented. More reliable than electric-indent-mode.
 #+end_quote
 #+begin_src emacs-lisp
-(use-package aggressive-indent)
+(use-package aggressive-indent
+  :hook ((lisp-mode emacs-lisp-mode c-mode scheme-mode) . aggressive-indent-mode))
 #+end_src
 **** [[https://github.com/flycheck/flycheck][flycheck]]
 #+begin_quote
@@ -3018,6 +3017,7 @@ Source: https://git.io/vQKzq"
 #+end_quote
 #+begin_src emacs-lisp
 (use-package flycheck
+  :hook (python-mode . flycheck-mode)
   :config
   (setq flycheck-completing-read-function 'ivy-completing-read)
   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
@@ -3069,15 +3069,8 @@ Source: https://git.io/vQKzq"
 #+begin_src emacs-lisp
 (d/setup-hook prog-mode
   (subword-mode)
-  (smartparens-strict-mode)
-  (highlight-parentheses-mode 1)
-  (rainbow-delimiters-mode)
-  (column-enforce-mode)
-  (highlight-numbers-mode)
   (auto-fill-mode 1)
   (setq-local comment-auto-fill-only-comments t)
-  (setq-local calc-embedded-open-mode (concat comment-start " "))
-  (setq-local calc-embedded-close-mode (concat comment-end "\n"))
   (hl-line-mode 1))
 #+end_src
 ** Lang
@@ -3088,7 +3081,9 @@ Source: https://git.io/vQKzq"
   Code navigation, documentation lookup and completion for Python.
 #+end_quote
 #+begin_src emacs-lisp
-(use-package anaconda-mode)
+(use-package anaconda-mode
+  :hook (python-mode
+         (python-mode . anaconda-eldoc-mode)))
 #+end_src
 ***** [[https://github.com/proofit404/company-anaconda][company-anaconda]]
 #+begin_quote
@@ -3178,9 +3173,6 @@ Pretty neat, though not entirely complete, IMO.
 #+begin_src emacs-lisp
 (d/setup-hook python-mode
   (set (make-local-variable 'comment-inline-offset) 2)
-  (flycheck-mode)
-  (anaconda-mode)
-  (anaconda-eldoc-mode)
   (require 'company)
   (add-to-list 'company-backends
                (company-mode/backend-with-yas 'company-anaconda))
@@ -3414,21 +3406,10 @@ Source: https://git.io/vQKz8"
 #+begin_src emacs-lisp
 (d/setup-hook (lisp-mode emacs-lisp-mode)
   (hs-minor-mode)
-  (aggressive-indent-mode)
-  (smartparens-mode -1)
-  (smartparens-strict-mode -1)
-  (evil-smartparens-mode -1)
-  (lispy-mode)
   (with-eval-after-load 'evil-surround
     (push '(? . ("`" . "'")) evil-surround-pairs-alist))
   (setq-local lisp-indent-function #'d/lisp-indent-function)
   (setq-local prettify-symbols-alist d/lisp-prettify-alist))
-#+end_src
-*** C
-**** Setup
-#+begin_src emacs-lisp
-(d/setup-hook c-mode
-  (aggressive-indent-mode))
 #+end_src
 *** Haskell
 **** Packages
@@ -3511,11 +3492,6 @@ Source: http://tinyurl.com/le6wxuo"
 #+begin_src emacs-lisp
 (d/setup-hook scheme-mode
   (hs-minor-mode)
-  (aggressive-indent-mode)
-  (smartparens-mode -1)
-  (smartparens-strict-mode -1)
-  (evil-smartparens-mode -1)
-  (lispy-mode)
   (d/with-eval-after-load 'evil-surround
     (push '(? . ("`" . "'")) evil-surround-pairs-alist))
   (setq-local prettify-symbols-alist d/scheme-prettify-alist))
@@ -3839,6 +3815,7 @@ Like git, for emacs. But cooler.
 #+begin_src emacs-lisp
 (use-package calc
   :ensure nil
+  :hook (prog-mode . d/calc-embedded-set-open-close)
   :general
   (d/leader-keys
    "ac" 'calc-dispatch)
@@ -3846,7 +3823,10 @@ Like git, for emacs. But cooler.
     "x" (lambda () (interactive) (counsel-M-x "^calc-")))
   :config
   (setq calc-multiplication-has-precedence nil)
-  (setq calc-symbolic-mode t))
+  (setq calc-symbolic-mode t)
+  (defun d/calc-embedded-set-open-close ()
+    (setq-local calc-embedded-open-mode (concat comment-start " "))
+    (setq-local calc-embedded-close-mode (concat comment-end "\n"))))
 #+end_src
 ** Eshell
 *** Built-in
@@ -3864,7 +3844,6 @@ Like git, for emacs. But cooler.
       "C-c C-l" 'd/eshell-clear-keystroke)
     (nmap :keymaps 'eshell-mode-map
       "G" 'end-of-buffer)
-    (fish-completion-mode)
     (with-eval-after-load 'company
       (setq-local company-idle-delay 0)
       (setq-local company-frontends '(company-preview-frontend))
@@ -3910,7 +3889,8 @@ Like git, for emacs. But cooler.
 (use-package emacs-fish-completion
   :after eshell
   :recipe (:host github
-           :repo "ambrevar/emacs-fish-completion"))
+           :repo "ambrevar/emacs-fish-completion")
+  :hook (eshell-mode . fish-completion-mode))
 #+end_src
 **** [[https://github.com/leoliu/pcmpl-git-el][pcmpl-git]]
 #+begin_src emacs-lisp
@@ -4115,6 +4095,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 ***** dired-collpase
 #+begin_src emacs-lisp
 (use-package dired-collapse
+  :hook (dired-mode . dired-collapse-mode)
   :after dired)
 #+end_src
 ***** dired-subtree
@@ -4137,6 +4118,7 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 #+begin_src emacs-lisp
 (use-package diredfl
   :after dired
+  :hook (dired-mode . diredfl-mode)
   :custom
   (diredfl-ignore-compressed-flag nil))
 #+end_src
