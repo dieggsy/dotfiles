@@ -244,12 +244,6 @@ Save stuff you've copied in other applications to the emacs kill-ring.
 #+begin_src emacs-lisp
 (setq save-interprogram-paste-before-kill t)
 #+end_src
-*** Line Numbers
-#+begin_src emacs-lisp
-(setq display-line-numbers-type 'relative
-      display-line-numbers-width-start t
-      display-line-numbers-grow-only t)
-#+end_src
 *** Messages
 Allow more messages in ~*Messages*~ buffer so you can look at what happened waaay
 back if you need to.
@@ -353,13 +347,6 @@ except for warnings and errors.
 #+end_src
 *** Other
 #+begin_src emacs-lisp
-(defun d/toggle-rlines ()
-  "Toggle relative line numbers."
-  (interactive)
-  (if (eq display-line-numbers 'relative)
-      (setq display-line-numbers t)
-    (setq display-line-numbers 'relative)))
-
 (defmacro d/fbound-and-true? (name &optional args)
   `(and (fboundp #',name)
         (apply #',name ,args)))
@@ -2367,6 +2354,24 @@ Source: https://git.io/vQKuF"
       (shrink-window arg)
     (enlarge-window arg)))
 #+end_src
+*** display-line-numbers
+#+begin_src emacs-lisp
+(use-package display-line-numbers
+  :if (version<= "26" emacs-version)
+  :ensure nil
+  :hook (prog-mode . display-line-numbers-mode)
+  :custom
+  (display-line-numbers-type 'relative)
+  (display-line-numbers-width-start t)
+  (display-line-numbers-grow-only t)
+  :config
+  (defun d/toggle-rlines ()
+    "Toggle relative line numbers."
+    (interactive)
+    (if (eq display-line-numbers 'relative)
+        (setq display-line-numbers t)
+      (setq display-line-numbers 'relative))))
+#+end_src
 ** Packages
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
 #+begin_quote
@@ -3054,7 +3059,6 @@ Source: https://git.io/vQKzq"
   (highlight-parentheses-mode 1)
   (rainbow-delimiters-mode)
   (goto-address-prog-mode)
-  (display-line-numbers-mode)
   (column-enforce-mode)
   (highlight-numbers-mode)
   (auto-fill-mode 1)
