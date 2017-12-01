@@ -3962,27 +3962,6 @@ directory to make multiple eshell windows easier."
       (insert (concat "ls"))
       (eshell-send-input)))
 
-  (defun d/eshell-run (str args)
-    (eshell-do-eval
-     (eshell-parse-command
-      (string-join (append `(,str) args) " "))
-     t))
-
-  (cl-defmacro d/eshell-defun (name &rest patterns &key cmd opts &allow-other-keys)
-    (declare (indent defun))
-    (cl-remf patterns :cmd)
-    (cl-remf patterns :opts)
-    (let* ((cmd (or cmd (symbol-name name))))
-      `(defun ,(intern (concat "eshell/" (symbol-name name))) (&rest args)
-         (pcase args
-           ,@(cl-loop for pattern in patterns
-                      if (listp (car pattern))
-                      collect pattern
-                      else collect `('(,(car pattern))
-                                     ,(cadr pattern)))
-           (_ (d/eshell-run ,(concat cmd " "  opts)
-                            args))))))
-
   (defun eshell/clear ()
     "Custom `eshell' clear function to clear to top."
     (interactive)
@@ -4004,24 +3983,6 @@ directory to make multiple eshell windows easier."
 
   (defun eshell/sbcl ()
     (call-interactively #'slime))
-
-  (d/eshell-defun git
-    :cmd "hub"
-    :opts "-c color.ui=always"
-    ("status" (magit-status-internal (eshell/pwd)))
-    ("diff" (magit-status-internal (eshell/pwd)))
-    ("log" (call-interactively #'magit-log-current))
-    (`("log" . ,ll) (magit-log ll)))
-
-  (d/eshell-defun pass
-    ("rm" (call-interactively #'password-store-remove))
-    ("generate" (call-interactively #'password-store-generate))
-    ("insert" (call-interactively #'password-store-insert))
-    ("mv" (call-interactively #'password-store-rename))
-    ("edit" (call-interactively #'password-store-edit))
-    ("cp" (call-interactively #'password-store-copy))
-    ("-c" (call-interactively #'password-store-copy))
-    (`("edit" . ,ll) (password-store-edit ll)))
 
   (defun eshell/rg (&rest args)
     (eshell-grep "rg" (append '("--no-heading" "-M" "120") args) t))
