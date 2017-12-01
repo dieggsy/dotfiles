@@ -1,79 +1,110 @@
+;;; eterm-256color.el --- Customizable 256 colors for term. -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2017 Diego A. Mundo
+;; Author: Diego A. Mundo <diegoamundo@gmail.com>
+;; URL: http://github.com/dieggsy/eterm-256color
+;; Git-Repository: git://github.com/dieggsy/eterm-256color
+;; Created: 2017-11-01
+;; Version: 0.1.0
+;; Keywords: faces
+;; Package-Requires: ((emacs "25") (xterm-color "1.6"))
+
+;; This file is not part of GNU Emacs.
+
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+;;; Commentary:
+
+;; Adds 256 color handling to term/ansi-term by adding 247 customizable faces
+;; to ansi-term-color-vector and overriding term-handle-colors-array to handle
+;; additional escape sequences.
+
+;;; Code:
 (require 'cl-lib)
 (require 'xterm-color)
+(require 'term)
 
-(defface term-color-light-black
+(defgroup eterm-256color nil
+  "256colors for term."
+  :group 'term)
+
+(defgroup eterm-256color-faces nil
+  "Faces for eterm-256color"
+  :group 'eterm-256color)
+
+(defface eterm-256color-light-black
   '((t :foreground "#686868" :background "#686868"))
   "Face used to render black color code."
-  :group 'term)
+  :group 'eterm-256color-faces)
 
-(defface term-color-light-red
+(defface eterm-256color-light-red
   '((t :foreground "#fb4933" :background "#fb4933"))
   "Face used to render black color code."
-  :group 'term)
+  :group 'eterm-256color-faces)
 
-(defface term-color-light-green
+(defface eterm-256color-light-green
   '((t :foreground "#b8bb26" :background "#b8bb26"))
   "Face used to render black color code."
-  :group 'term)
+  :group 'eterm-256color-faces)
 
-(defface term-color-light-yellow
+(defface eterm-256color-light-yellow
   '((t :foreground "#fabd2f" :background "#fabd2f"))
   "Face used to render black color code."
-  :group 'term)
+  :group 'eterm-256color-faces)
 
-(defface term-color-light-blue
+(defface eterm-256color-light-blue
   '((t :foreground "#83a598" :background "#83a598"))
   "Face used to render black color code."
-  :group 'term)
+  :group 'eterm-256color-faces)
 
-(defface term-color-light-magenta
+(defface eterm-256color-light-magenta
   '((t :foreground "#d3869b" :background "#d3869b"))
   "Face used to render black color code."
-  :group 'term)
+  :group 'eterm-256color-faces)
 
-(defface term-color-light-cyan
+(defface eterm-256color-light-cyan
   '((t :foreground "#3fd7e5" :background "#3fd7e5"))
   "Face used to render black color code."
-  :group 'term)
+  :group 'eterm-256color-faces)
 
-(defface term-color-light-white
+(defface eterm-256color-light-white
   '((t :foreground "#fdf4c1" :background "#fdf4c1"))
   "Face used to render black color code."
-  :group 'term)
+  :group 'eterm-256color-faces)
 
-(defmacro term-256-color-define (number color)
-  `(defface ,(intern (concat "term-color-" (number-to-string number)))
+(defmacro eterm-256color--define (number color)
+  "Define a face using COLOR for 256 color NUMBER."
+  `(defface ,(intern (concat "eterm-256color-" (number-to-string number)))
      '((t :foreground ,color :background ,color))
-     (format "Color %s" ,number)))
+     (format "Color %s" ,number)
+     :group 'eterm-256color-faces))
 
-(setq ansi-term-color-vector
-      (vconcat
-       [term
-        term-color-black
-        term-color-red
-        term-color-green
-        term-color-yellow
-        term-color-blue
-        term-color-magenta
-        term-color-cyan
-        term-color-white
-        term-color-light-black
-        term-color-light-red
-        term-color-light-green
-        term-color-light-yellow
-        term-color-light-blue
-        term-color-light-magenta
-        term-color-light-cyan
-        term-color-light-white]
-       (cl-loop for j = 16 then (+ j 1)
-                while (<= j 255)
-                do (eval `(term-256-color-define ,j ,(xterm-color--256 j)))
-                collect (intern (concat "term-color-" (number-to-string j))))))
+(dolist (j (number-sequence 16 255))
+  (eval `(eterm-256color--define ,j ,(xterm-color--256 j))))
 
-(defvar term-ansi-disable-bold t)
+(defcustom eterm-256color-disable-bold t
+  "Disable bold colors in eterm-256color.
 
+Bold colors will be rendered as bright instead."
+  :group 'eterm-256color
+  :type 'boolean)
 
-(define-advice term-handle-colors-array (:override (parameter) 256-colors)
+(defvar term-terminal-previous-parameter)
+(defvar term-terminal-previous-parameter-2 -1)
+
+(defun eterm-256color-handle-colors (parameter)
+  "Handle additional 256 color and bright color sequences specified by PARAMETER."
   (cond
    ;; 256
    ((and (= term-terminal-previous-parameter 5)
@@ -177,11 +208,11 @@
               :inverse-video term-ansi-current-reverse))
 
       (when (and term-ansi-current-bold
-                 (not term-ansi-disable-bold))
+                 (not eterm-256color-disable-bold))
         (setq term-current-face
               `(,term-current-face :inherit term-bold)))
 
-      (when (and term-ansi-disable-bold term-ansi-current-bold)
+      (when (and eterm-256color-disable-bold term-ansi-current-bold)
         (let ((pos (cl-position
                     (plist-get term-current-face :foreground)
                     (mapcar (lambda (face) (face-foreground face nil 'default))
@@ -201,8 +232,54 @@
   ;; FIXME: shouldn't we set term-ansi-face-already-done to t here?  --Stef
   (setq term-ansi-face-already-done nil))
 
-(setq term-termcap-format
-  "%s%s:li#%d:co#%d:cl=\\E[H\\E[J:cd=\\E[J:bs:am:xn:cm=\\E[%%i%%d;%%dH\
+(defun eterm-256color--maybe-tic ()
+  "If eterm-256color isn't a term type, tic eterm-256color.ti."
+  (when (not (directory-files-recursively "/usr/share/terminfo/" "eterm-256color"))
+    (let ((package-path (or load-file-name buffer-file-name)))
+      (when (or (not package-path)
+                (not (equal (file-name-nondirectory package-path)
+                            "eterm-256color.el")))
+        (setq package-path (locate-library "eterm-256color.el")))
+      (start-process-shell-command
+       "eterm-256color (tic)"
+       nil
+       (format "tic %s"
+               (expand-file-name
+                "eterm-256color.ti"
+                (file-name-directory package-path)))))))
+
+;;;###autoload
+(define-minor-mode eterm-256color-mode
+  "Minor mode that adds 256color support to term/ansi-term."
+  :init-value nil
+  :group 'eterm-256color
+  (if eterm-256color-mode
+      (progn
+        (eterm-256color--maybe-tic)
+        (setq-local ansi-term-color-vector
+                    (vconcat
+                     [term
+                      term-color-black
+                      term-color-red
+                      term-color-green
+                      term-color-yellow
+                      term-color-blue
+                      term-color-magenta
+                      term-color-cyan
+                      term-color-white
+                      eterm-256color-light-black
+                      eterm-256color-light-red
+                      eterm-256color-light-green
+                      eterm-256color-light-yellow
+                      eterm-256color-light-blue
+                      eterm-256color-light-magenta
+                      eterm-256color-light-cyan
+                      eterm-256color-light-white]
+                     (mapcar (lambda (j) (intern (concat "eterm-256color-" (number-to-string j))))
+                             (number-sequence 16 255))))
+        (setq-local term-term-name "eterm-256color")
+        (setq-local term-termcap-format
+                    "%s%s:li#%d:co#%d:cl=\\E[H\\E[J:cd=\\E[J:bs:am:xn:cm=\\E[%%i%%d;%%dH\
 :nd=\\E[C:up=\\E[A:ce=\\E[K:ho=\\E[H:pt\
 :al=\\E[L:dl=\\E[M:DL=\\E[%%dM:AL=\\E[%%dL:cs=\\E[%%i%%d;%%dr:sf=^J\
 :dc=\\E[P:DC=\\E[%%dP:IC=\\E[%%d@:im=\\E[4h:ei=\\E[4l:mi:\
@@ -212,5 +289,9 @@
 :mk=\\E[8m:cb=\\E[1K:op=\\E[39;49m:Co#256:pa#32767:AB=\\E[48;5;%%dm:AF=\\E[38;5;%%dm:cr=^M\
 :bl=^G:do=^J:le=^H:ta=^I:se=\\E[27m:ue=\\E[24m\
 :kb=^?:kD=^[[3~:sc=\\E7:rc=\\E8:r1=\\Ec:")
+        (advice-add 'term-handle-colors-array :override #'eterm-256color-handle-colors))
+    (advice-remove 'term-handle-colors-array #'eterm-256color-handle-colors)))
 
-(setq term-term-name "eterm-256color")
+(provide 'eterm-256color)
+
+;;; eterm-256color.el ends here
