@@ -4056,15 +4056,6 @@ directory to make multiple eshell windows easier."
                           (insert x))
                 :initial-input input))))
 #+end_src
-** Term
-#+begin_src emacs-lisp
-(use-package term
-  :ensure nil
-  :config
-  (when (not (directory-files-recursively "/usr/share/terminfo/" "eterm-256color"))
-    (shell-command (concat "tic " (locate-user-emacs-file "lisp/eterm-256color.ti"))))
-  (load-file (locate-user-emacs-file "lisp/term-256color-override.el")))
-#+end_src
 ** [[https://github.com/politza/pdf-tools][pdf-tools]]
 #+begin_quote
   Emacs support library for PDF files.
