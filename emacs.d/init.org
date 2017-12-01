@@ -267,20 +267,6 @@ Having to type "yes" can be annoying.
 (setq initial-scratch-message ""
       initial-major-mode 'emacs-lisp-mode)
 #+end_src
-*** Scrolling
-Scroll one line at a time, and only scroll the current line when moving past
-right boundary.
-#+begin_src emacs-lisp
-(setq scroll-step 1
-      scroll-conservatively 10000
-      auto-hscroll-mode 'current-line)
-#+end_src
-Smoother mouse scrolling, which is now irrelevant to me since I've disabled the
-mouse in emacs.
-#+begin_src emacs-lisp
-(setq mouse-wheel-scroll-amount '(2 ((shift) . 1) ((control) . nil))
-      mouse-wheel-progressive-speed nil)
-#+end_src
 *** Tab
 Use tab for completion and cycling candidates (relevant for the minibuffer?).
 #+begin_src emacs-lisp
@@ -2269,6 +2255,21 @@ Leader keys
  "im"  'insert-kbd-macro)
 #+end_src
 * Navigation
+** Defaults
+*** Scrolling
+Scroll one line at a time, and only scroll the current line when moving past
+right boundary.
+#+begin_src emacs-lisp
+(setq scroll-step 1
+      scroll-conservatively 10000
+      auto-hscroll-mode 'current-line)
+#+end_src
+Smoother mouse scrolling, which is now irrelevant to me since I've disabled the
+mouse in emacs.
+#+begin_src emacs-lisp
+(setq mouse-wheel-scroll-amount '(2 ((shift) . 1) ((control) . nil))
+      mouse-wheel-progressive-speed nil)
+#+end_src
 ** Functions
 #+begin_src emacs-lisp
 (defun d/toggle-window-split ()
