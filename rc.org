@@ -1587,7 +1587,7 @@ windows:
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.xbindkeysrc") :comments no
 :END:
-#+begin_src conf-unix
+#+begin_src conf-unix :tangle no
 "~/bin/i3blocks/volume +"
     XF86AudioRaiseVolume
 
