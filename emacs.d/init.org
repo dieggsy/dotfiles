@@ -1326,47 +1326,6 @@ Executable
   :config
   (setq dired-du-size-format t))
 #+end_src
-*** [[https://github.com/ralesi/ranger.el][ranger]]
-#+begin_quote
-  Bringing the goodness of ranger to dired!
-#+end_quote
-#+begin_src emacs-lisp
-(use-package ranger
-  :commands d/deer
-  :disabled
-  :general
-  (d/leader-keys
-   "ad" 'd/deer
-   "ar" 'ranger)
-  :init
-  (require 'bookmark)
-  :config
-  (ranger-override-dired-mode t)
-  (setq ranger-show-literal nil
-        ranger-show-hidden nil
-        ranger-cleanup-eagerly t
-        ranger-parent-depth 0
-        ranger-modify-header nil)
-
-  (define-advice ranger-travel (:override nil with-ivy)
-    "Use ivy for ranger-travel instead."
-    (interactive)
-    (cond
-     ((featurep 'ivy)
-      (counsel-find-file default-directory))
-     (t (call-interactively #'ido-find-file))))
-
-  (define-advice ranger-toggle-mark (:after nil next-file)
-    (interactive)
-    (ranger-next-file 1))
-
-  (defun d/deer (arg)
-    (interactive "P")
-    (if arg
-        (deer)
-      (deer-jump-other-window))))
-#+end_src
-
 *** [[https://github.com/bbatsov/projectile][projectile]]
 #+begin_quote
   Project Interaction Library for Emacs
