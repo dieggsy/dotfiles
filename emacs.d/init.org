@@ -3870,8 +3870,8 @@ Like git, for emacs. But cooler.
   (d/setup-hook eshell-mode
     (imap :keymaps 'eshell-mode-map
       [remap eshell-pcomplete] 'completion-at-point
-      "C-p" '(general-predicate-dispatch nil
-               (eshell-point-within-input-p) 'eshell/ivy-ps)
+      "C-p" (general-predicate-dispatch nil
+              (eshell-point-within-input-p (point)) 'eshell/ivy-ps)
       "C-r" 'eshell/ivy-history
       "C-c C-l" 'd/eshell-clear-keystroke)
     (nmap :keymaps 'eshell-mode-map
