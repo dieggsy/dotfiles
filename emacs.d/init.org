@@ -1039,8 +1039,7 @@ Source: https://git.io/vQKEa"
   (setq org-bullets-bullet-list '("•")))
 
 (d/setup-hook org-mode
-  (setq-local prettify-symbols-alist d/org-prettify-alist)
-  (goto-address-mode))
+  (setq-local prettify-symbols-alist d/org-prettify-alist))
 #+end_src
 ** Bindings
 *** Leader
@@ -1258,7 +1257,6 @@ Leader bindings
 ** Setup
 #+begin_src emacs-lisp
 (d/setup-hook help-mode
-  (goto-address-mode)
   (rainbow-mode))
 #+end_src
 * Files/Buffers
@@ -2354,6 +2352,14 @@ Source: https://git.io/vQKuF"
       (shrink-window arg)
     (enlarge-window arg)))
 #+end_src
+** Bulit-in
+*** goto-addr
+#+begin_src emacs-lisp
+(use-package goto-addr
+  :ensure nil
+  :hook (((help-mode org-mode) . goto-address-mode)
+         (prog-mode . goto-address-prog-mode)))
+#+end_src
 *** display-line-numbers
 #+begin_src emacs-lisp
 (use-package display-line-numbers
@@ -3058,7 +3064,6 @@ Source: https://git.io/vQKzq"
   (smartparens-strict-mode)
   (highlight-parentheses-mode 1)
   (rainbow-delimiters-mode)
-  (goto-address-prog-mode)
   (column-enforce-mode)
   (highlight-numbers-mode)
   (auto-fill-mode 1)
