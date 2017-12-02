@@ -19,8 +19,8 @@ aware (Linux or Darwin).
 ** Files
 *** [[./emacs.d/config.org][emacs.d/config.org]] - emacs config
 An emacs configuration based largely on [[https://github.com/jwiegley/use-package][use-package]], [[https://github.com/emacs-evil/evil][evil-mode]], and [[https://github.com/abo-abo/swiper][ivy]], with
-inspiration and code from [[https://github.com/syl20bnr/spacemacs][spacemacs]] and others' configs. The tangled file
-~config.el~ is loaded by [[./emacs.d/init.el][init.el]].
+inspiration and code from [[https://github.com/syl20bnr/spacemacs][spacemacs]] and others' configs. The file is tangled to
+~init.el~ on save.
 *** [[./zsh.org][zsh.org]] - zsh config
 A zsh configuration that is partially [[https://github.com/zplug/zplug][zplug]] based, with inspiration and code
 from prezto and oh-my-zsh where not using an actual plugin.
