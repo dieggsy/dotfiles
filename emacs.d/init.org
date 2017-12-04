@@ -2696,7 +2696,14 @@ Use a bar cursor in the minibuffer.
   Dim the font color of text in surrounding paragraphs
 #+end_quote
 #+begin_src emacs-lisp
-(use-package focus)
+(use-package focus
+  :config
+  (define-advice focus-get-thing (:override () d/fix)
+    (or focus-current-thing
+        (let* ((modes (mapcar 'car focus-mode-to-thing))
+               (mode  (or (cl-find major-mode modes)
+                          (focus-any 'derived-mode-p modes))))
+          (if mode (cdr (assoc mode focus-mode-to-thing)) 'sentence)))))
 #+end_src
 *** [[http://git.savannah.gnu.org/cgit/emacs/elpa.git/tree/packages/rainbow-mode/rainbow-mode.el][rainbow-mode]]
 #+begin_quote
