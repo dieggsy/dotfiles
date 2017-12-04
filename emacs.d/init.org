@@ -1884,23 +1884,7 @@ Source: http://tinyurl.com/k8g9sex"
                  minibuffer-inactive-mode
                  html-mode)))
     (sp-local-pair modes "'" nil :actions nil)
-    (sp-local-pair modes "`" nil :actions nil))
-
-  (defmacro d/sp-wrap-with (&rest args)
-    "Make function(s) for wrapping with character using `sp-wrap-with-pair'"
-    `(progn
-       ,@(cl-loop for (char-name char) on args
-                  by #'cddr collect
-                  (let ((fname (intern (concat "d/sp-wrap-with-" char-name))))
-                    `(defun ,fname (&optional arg)
-                       (interactive "P")
-                       (sp-wrap-with-pair ,char))))))
-
-  (d/sp-wrap-with
-   "paren" "("
-   "curly" "{"
-   "double-quote" "\""
-   "single-quote" "'"))
+    (sp-local-pair modes "`" nil :actions nil)))
 #+end_src
 **** [[https://github.com/expez/evil-smartparens][evil-smartparens]]
 #+begin_src emacs-lisp
@@ -2196,9 +2180,9 @@ _p_rev     match and _P_rev
   (defhydra d/smartparens (:hint nil)
     "
 smartparens:
-_r_ewrap  _s_lurp             _(_
-_u_nwrap  _S_lurp (back)   _[_ wrap _{_
-        _b_arf             _'_  _\"_
+_r_ewrap  _s_lurp
+_u_nwrap  _S_lurp (back)
+        _b_arf
         _B_arf (back)
 "
     ("r"  sp-rewrap-sexp)
@@ -2206,12 +2190,7 @@ _u_nwrap  _S_lurp (back)   _[_ wrap _{_
     ("b"  sp-forward-barf-sexp)
     ("B"  sp-backward-barf-sexp)
     ("s"  sp-forward-slurp-sexp)
-    ("S"  sp-backward-slurp-sexp)
-    ("("  d/sp-wrap-with-paren)
-    ("["  d/sp-wrap-with-bracket)
-    ("{"  d/sp-wrap-with-curly)
-    ("\"" d/sp-wrap-with-quote2)
-    ("'"  d/sp-wrap-with-quote)))
+    ("S"  sp-backward-slurp-sexp)))
 #+end_src
 **** Evil-numbers
 #+begin_src emacs-lisp
