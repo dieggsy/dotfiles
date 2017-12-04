@@ -1129,7 +1129,6 @@ also use these keys to quit out of the minibuffer.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package define-word
-  :commands d/define-word
   :general
   (d/leader-keys "sw" 'd/define-word)
   :config
@@ -1161,7 +1160,6 @@ also use these keys to quit out of the minibuffer.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package google-this
-  :commands ddg-this-search
   :general
   (d/leader-keys
    "sd" 'ddg-this-search
@@ -1297,7 +1295,6 @@ Executable
 #+begin_src emacs-lisp
 (use-package dired
   :ensure nil
-  :commands d/dired-here
   :general
   (d/leader-keys
    "ad" 'd/dired-here)
@@ -1447,7 +1444,6 @@ Executable
 *** [[https://github.com/ericdanan/counsel-projectile][counsel-projectile]]
 #+begin_src emacs-lisp
 (use-package counsel-projectile
-  :commands d/project-find-file
   :general
   (d/leader-keys
    "pb" 'counsel-projectile-switch-to-buffer
@@ -2434,23 +2430,6 @@ Source: https://git.io/vQKuF"
 *** [[https://github.com/wasamasa/eyebrowse][eyebrowse]]
 #+begin_src emacs-lisp
 (use-package eyebrowse
-  :commands (eyebrowse-switch-to-window-config
-             eyebrowse-next-window-config
-             eyebrowse-prev-window-config
-             eyebrowse-rename-window-config
-             eyebrowse-close-window-connfig
-             eyebrowse-close-window-config
-             eyebrowse-last-window-config
-             eyebrowse-switch-to-window-config-0
-             eyebrowse-switch-to-window-config-1
-             eyebrowse-switch-to-window-config-2
-             eyebrowse-switch-to-window-config-3
-             eyebrowse-switch-to-window-config-4
-             eyebrowse-switch-to-window-config-5
-             eyebrowse-switch-to-window-config-6
-             eyebrowse-switch-to-window-config-7
-             eyebrowse-switch-to-window-config-8
-             eyebrowse-switch-to-window-config-9)
   :general
   ("<f10>" 'eyebrowse-switch-to-window-config-0
    "<f1>" 'eyebrowse-switch-to-window-config-1
@@ -3666,7 +3645,6 @@ Like git, for emacs. But cooler.
 #+begin_src emacs-lisp
 (use-package git-gutter-fringe
   :defer 5
-  :commands fringe-helper-define
   :hook (focus-in . git-gutter:update-all-windows)
   :config
   (global-git-gutter-mode)
@@ -3799,7 +3777,6 @@ Like git, for emacs. But cooler.
 #+begin_src emacs-lisp
 (use-package eshell
   :ensure nil
-  :commands d/eshell-here
   :general
   (d/leader-keys
    "RET" 'd/eshell-here)
@@ -4075,10 +4052,6 @@ I use this for reading, mostly.
    "fd" 'crux-delete-file-and-buffer
    "fr" 'crux-rename-file-and-buffer
    "bs" 'crux-sudo-edit)
-  :commands (crux-with-region-or-line
-             crux-with-region-or-buffer
-             crux-switch-to-previous-buffer
-             crux-rename-file-and-buffer)
   :config
   (crux-with-region-or-line eval-region)
   (crux-with-region-or-buffer indent-region)
@@ -4350,8 +4323,6 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 #+end_quote
 #+begin_src emacs-lisp
 (use-package evil-nerd-commenter
-  :commands (evilnc-comment-operator
-             d/comment-or-uncomment-lines-inverse)
   :general
   (nmap
    "gc" 'evilnc-comment-operator
