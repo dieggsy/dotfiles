@@ -1689,15 +1689,7 @@ Supposedly better than autocomplete.
   :defer 5
   :general
   (:keymaps 'company-active-map
-   [tab] (general-predicate-dispatch nil
-           (not (eq major-mode 'eshell-mode)) 'company-complete-common-or-cycle)
-   [return] (general-predicate-dispatch nil
-              (not (eq major-mode 'eshell-mode)) 'company-complete-selection)
-   "RET" (general-predicate-dispatch nil
-           (not (eq major-mode 'eshell-mode)) 'company-complete-selection)
-   "<S-return>" 'company-complete-selection
-   "<right>" (general-predicate-dispatch nil
-               (eq major-mode 'eshell-mode) 'company-complete-common))
+   [tab] 'company-complete-common-or-cycle)
   :custom
   (company-idle-delay 0.3)
   (company-minimum-prefix-length 1)
@@ -3943,11 +3935,7 @@ Like git, for emacs. But cooler.
       "C-r" 'eshell/ivy-history
       "C-c C-l" 'd/eshell-clear-keystroke)
     (nmap :keymaps 'eshell-mode-map
-      "G" 'end-of-buffer)
-    (with-eval-after-load 'company
-      (setq-local company-idle-delay 0)
-      (setq-local company-frontends '(company-preview-frontend))
-      (setq-local company-backends '(company-eshell-autosuggest))))
+      "G" 'end-of-buffer))
   :config
   (d/setup-hook eshell-directory-change
     (cond ((and (file-remote-p default-directory)
@@ -4000,8 +3988,11 @@ Like git, for emacs. But cooler.
 **** [[https://github.com/dieggsy/company-eshell-autosuggest][company-eshell-autosuggest]]
 #+begin_src emacs-lisp
 (use-package company-eshell-autosuggest
+  :hook (eshell-mode . company-eshell-autosuggest-mode)
   :recipe (:host github
-           :repo "dieggsy/company-eshell-autosuggest"))
+           :repo "dieggsy/company-eshell-autosuggest")
+  :custom
+  (company-eshell-autosuggest-selection-keys '("<right>" "<S-return>")))
 #+end_src
 **** [[https://github.com/dieggsy/eshell-thefuck][eshell-thefuck]]
 #+begin_src emacs-lisp
