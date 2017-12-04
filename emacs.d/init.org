@@ -1324,7 +1324,8 @@ Executable
     "r" 'dired-do-rename
     "R" 'dired-do-redisplay
     "n" 'evil-ex-search-next
-    "N" 'evil-ex-search-previous)
+    "N" 'evil-ex-search-previous
+    "~" 'd/dired-home)
 
   (setq dired-listing-switches "-lGXhA --group-directories-first"
         dired-dwim-target t
@@ -1349,6 +1350,10 @@ Executable
     (if arg
         (dired default-directory)
       (dired-other-window default-directory)))
+
+  (defun d/dired-home ()
+    (interactive)
+    (dired "~/"))
 
   (defvar d/dired-close-window nil)
 
