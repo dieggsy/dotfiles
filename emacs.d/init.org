@@ -4100,7 +4100,7 @@ directory to make multiple eshell windows easier."
 ** [[https://github.com/wasamasa/nov.el][nov.el]]
 #+begin_src emacs-lisp
 (use-package nov
-  :mode "\\.epub\\'")
+  :mode ("\\.epub\\'" . nov-mode))
 #+end_src
 ** [[https://github.com/adamrt/sane-term][sane-term]]
 #+begin_quote
