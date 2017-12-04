@@ -3793,6 +3793,9 @@ Like git, for emacs. But cooler.
 (use-package eshell
   :ensure nil
   :commands d/eshell-here
+  :general
+  (d/leader-keys
+   "RET" 'd/eshell-here)
   :custom
   (eshell-preoutput-filter-functions '(xterm-color-filter))
   (eshell-term-name "eterm-256color")
@@ -3875,20 +3878,25 @@ Like git, for emacs. But cooler.
 *** Functions
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'eshell
+  (require 'f)
   (defun d/eshell-here ()
     "Opens up a new shell in the directory associated with the
 current buffer's file. The eshell is renamed to match that
 directory to make multiple eshell windows easier."
     (interactive)
     (let* ((parent (if (buffer-file-name)
-                       (file-name-directory (buffer-file-name))
+                       (f-parent (buffer-file-name))
                      default-directory))
            (height (/ (window-total-height) 3))
-           (name   (car (last (split-string parent "/" t)))))
+           (name (format "*eshell: %s*"
+                         (f-filename parent))))
       (split-window-vertically (- height))
       (other-window 1)
-      (eshell 'new)
-      (rename-buffer (concat "*eshell: " name "*") 'unique)
+      (let ((buf (get-buffer name)))
+        (if buf
+            (switch-to-buffer buf)
+          (eshell 'new)
+          (rename-buffer name 'unique)))
       (insert (concat "ls"))
       (eshell-send-input)))
 
