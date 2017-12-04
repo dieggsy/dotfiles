@@ -1612,6 +1612,13 @@ Dear god I hate tabs. Also, four spaces is a good indentation default.
 #+end_src
 ** Tools
 *** Built-in
+**** [[elisp:(find-library-other-window "paren")][paren]]
+#+begin_src emacs-lisp
+(use-package paren
+  :ensure nil
+  :hook ((emacs-lisp-mode scheme-mode lisp-mode) . show-paren-mode))
+#+end_src
+**** [[elisp:(find-library-other-window "hippie-exp")][hippie-expand]]
 #+begin_src emacs-lisp
 (use-package hippie-exp
   :ensure nil
