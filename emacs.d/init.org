@@ -1605,7 +1605,7 @@ Dear god I hate tabs. Also, four spaces is a good indentation default.
               tab-width 4)
 #+end_src
 ** Tools
-*** Builtin
+*** Built-in
 #+begin_src emacs-lisp
 (use-package hippie-exp
   :ensure nil
