@@ -2630,6 +2630,10 @@ Use a bar cursor in the minibuffer.
 (setq-default left-margin-width 1)
 (setq-default right-margin-width 1)
 #+end_src
+*** Themes
+#+begin_src emacs-lisp
+(setq custom-safe-themes t)
+#+end_src
 ** Packages
 *** [[https://github.com/larstvei/Focus][focus]]
 #+begin_quote
