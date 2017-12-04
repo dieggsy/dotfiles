@@ -1300,6 +1300,9 @@ Executable
   :general
   (d/leader-keys
    "ad" 'dired-here)
+  (d/leader-keys
+   :keymaps 'wdired-mode-map
+   "fs" 'wdired-finish-edit)
   :init
   (d/setup-hook dired-mode
     (hl-line-mode 1)
@@ -1330,9 +1333,6 @@ Executable
   (with-eval-after-load 'dired-async
     (dired-async-mode 1))
 
-  (d/leader-keys
-   :keymaps 'wdired-mode-map
-   "fs" 'wdired-finish-edit)
 
   (defun d/dired-quit ()
     (interactive)
