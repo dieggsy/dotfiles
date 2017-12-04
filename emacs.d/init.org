@@ -518,12 +518,12 @@ This function is intended for use with `ivy-ignore-buffers'."
   (add-to-list 'ivy-ignore-buffers #'d/ignore-dired-buffers)
 
   (defun d/ivy-dired-transformer (str)
-  (let ((buf (get-buffer str))
-        (str (ivy-switch-buffer-transformer str)))
-    (if (and buf (eq (buffer-local-value 'major-mode buf) 'dired-mode))
-        (concat (propertize "Dired: " 'face (get-text-property 0 'face str))
-                str)
-      str)))
+    (let ((buf (get-buffer str))
+          (str (ivy-switch-buffer-transformer str)))
+      (if (and buf (eq (buffer-local-value 'major-mode buf) 'dired-mode))
+          (concat (propertize "Dired: " 'face (get-text-property 0 'face str))
+                  str)
+        str)))
 
   (ivy-set-display-transformer 'ivy-switch-buffer 'd/ivy-dired-transformer)
 
@@ -1716,26 +1716,26 @@ Supposedly better than autocomplete.
 (use-package evil-mc
   :general
   (nmap
-   "gr"  '(:ignore t :wk "mc")
-   "grm" 'evil-mc-make-all-cursors
-   "gru" 'evil-mc-undo-all-cursors
-   "grs" 'evil-mc-pause-cursors
-   "grr" 'evil-mc-resume-cursors
-   "grf" 'evil-mc-make-and-goto-first-cursor
-   "grl" 'evil-mc-make-and-goto-last-cursor
-   "grh" 'evil-mc-make-cursor-here
-   "grj" 'evil-mc-make-cursor-move-next-line
-   "grk" 'evil-mc-make-cursor-move-prev-line
-   ;; "M-n" 'evil-mc-skip-and-goto-next-cursor
-   "grN" 'evil-mc-make-and-goto-next-cursor
-   ;; "M-p" 'evil-mc-skip-and-goto-prev-cursor
-   "grP" 'evil-mc-make-and-goto-prev-cursor
-   ;; "C-n" 'evil-mc-skip-and-goto-next-match
-   "grn" 'evil-mc-make-and-goto-next-match
-   ;; "C-p" 'evil-mc-skip-and-goto-prev-match
-   "grp" 'evil-mc-make-and-goto-prev-match)
-  :init
-  (setq evil-mc-key-map nil)
+    "gr"  '(:ignore t :wk "mc")
+    "grm" 'evil-mc-make-all-cursors
+    "gru" 'evil-mc-undo-all-cursors
+    "grs" 'evil-mc-pause-cursors
+    "grr" 'evil-mc-resume-cursors
+    "grf" 'evil-mc-make-and-goto-first-cursor
+    "grl" 'evil-mc-make-and-goto-last-cursor
+    "grh" 'evil-mc-make-cursor-here
+    "grj" 'evil-mc-make-cursor-move-next-line
+    "grk" 'evil-mc-make-cursor-move-prev-line
+    ;; "M-n" 'evil-mc-skip-and-goto-next-cursor
+    "grN" 'evil-mc-make-and-goto-next-cursor
+    ;; "M-p" 'evil-mc-skip-and-goto-prev-cursor
+    "grP" 'evil-mc-make-and-goto-prev-cursor
+    ;; "C-n" 'evil-mc-skip-and-goto-next-match
+    "grn" 'evil-mc-make-and-goto-next-match
+    ;; "C-p" 'evil-mc-skip-and-goto-prev-match
+    "grp" 'evil-mc-make-and-goto-prev-match)
+  :custom
+  (evil-mc-key-map nil)
   :config
   (global-evil-mc-mode)
   (push 'evil-smartparens-mode evil-mc-incompatible-minor-modes)
@@ -1919,9 +1919,9 @@ Freakin yasnippet. It's the best.
   :defer 5
   :general (d/leader-keys "iy" 'yas-insert-snippet)
   :config
-  (general-def yas-minor-mode-map
-    "SPC" yas-maybe-expand
-    "S-SPC" (lambda () (interactive) (insert " ")))
+  ;; (imap yas-minor-mode-map
+  ;;   "SPC" yas-maybe-expand
+  ;;   "S-SPC" (lambda () (interactive) (insert " ")))
   (setq yas-key-syntaxes (remove "w" yas-key-syntaxes))
   (yas-global-mode 1))
 #+end_src
