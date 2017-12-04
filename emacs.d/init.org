@@ -1304,13 +1304,9 @@ Executable
   :init
   (d/setup-hook dired-mode
     (hl-line-mode 1)
-    (dired-omit-mode)
-    (setq-local prettify-symbols-alist d/dired-prettify-alist)
-    (prettify-symbols-mode))
+    (dired-omit-mode))
   ;; (d/setup-hook dired-after-readin
   ;;   (dired-git-status))
-  (defvar d/dired-prettify-alist
-    '(("->" . "→")))
   :config
   (nmap dired-mode-map
     "q" 'd/dired-quit
