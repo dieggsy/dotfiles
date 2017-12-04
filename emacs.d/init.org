@@ -712,7 +712,8 @@ But really, it's life.
         org-confirm-elisp-link-not-regexp (rx "("
                                               (or "org-wiki-search"
                                                   "describe-function"
-                                                  "describe-variable")
+                                                  "describe-variable"
+                                                  "find-library-other-window")
                                               (minimal-match (0+ nonl))
                                               ")"))
   (org-babel-do-load-languages
@@ -1104,7 +1105,7 @@ also use these keys to quit out of the minibuffer.
 #+end_src
 * Help
 ** Built-in
-*** Man
+*** [[elisp:(find-library-other-window%20"man")][man]]
 #+begin_src emacs-lisp
 (use-package man
   :general
@@ -1113,7 +1114,7 @@ also use these keys to quit out of the minibuffer.
   :config
   (setq Man-notify-method 'aggressive))
 #+end_src
-*** Info
+*** [[elisp:(find-library-other-window%20"info")][info]]
 #+begin_src emacs-lisp
 (use-package Info
   :ensure nil
@@ -1292,7 +1293,7 @@ Executable
 #+end_src
 
 ** Built-in
-*** dired
+*** [[elisp:(find-library-other-window%20"dired")][dired]]
 #+begin_src emacs-lisp
 (use-package dired
   :ensure nil
@@ -1357,7 +1358,7 @@ Executable
         (setq d/dired-close-window t)
       (setq d/dired-close-window nil))))
 #+end_src
-*** ibuffer
+*** [[elisp:(find-library-other-window%20"ibuffer")][ibuffer]]
 #+begin_src emacs-lisp
 (use-package ibuffer
   :general
@@ -1379,7 +1380,7 @@ Executable
   (d/setup-hook ibuffer-mode
     (ibuffer-switch-to-saved-filter-groups "Default")))
 #+end_src
-*** bookmark
+*** [[elisp:(find-library-other-window%20"bookmark")][bookmark]]
 #+begin_src emacs-lisp
 (use-package bookmark
   :ensure nil
@@ -2347,15 +2348,15 @@ Source: https://git.io/vQKuF"
       (shrink-window arg)
     (enlarge-window arg)))
 #+end_src
-** Bulit-in
-*** goto-addr
+** Built-in
+*** [[elisp:(find-library-other-window%20"goto-addr")][goto-addr]]
 #+begin_src emacs-lisp
 (use-package goto-addr
   :ensure nil
   :hook (((help-mode org-mode) . goto-address-mode)
          ((prog-mode conf-mode) . goto-address-prog-mode)))
 #+end_src
-*** display-line-numbers
+*** [[elisp:(find-library-other-window%20"display-line-numbers")][display-line-numbers]]
 #+begin_src emacs-lisp
 (use-package display-line-numbers
   :if (version<= "26" emacs-version)
