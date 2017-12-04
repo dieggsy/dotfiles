@@ -665,10 +665,8 @@ But really, it's life.
   (nmap org-mode-map
     "<" 'org-metaleft
     ">" 'org-metaright
-    "gh" 'outline-up-heading
-    "gl" 'outline-next-visible-heading
-    "gj" 'org-forward-heading-same-level
-    "gk" 'org-backward-heading-same-level
+    "gj" 'org-next-visible-heading
+    "gk" 'org-previous-visible-heading
     "gt" 'org-todo
     "ga" 'org-archive-subtree
     "M-l" 'org-metaright
