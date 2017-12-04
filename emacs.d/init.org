@@ -1297,10 +1297,10 @@ Executable
 #+begin_src emacs-lisp
 (use-package dired
   :ensure nil
-  :commands dired-here
+  :commands d/dired-here
   :general
   (d/leader-keys
-   "ad" 'dired-here)
+   "ad" 'd/dired-here)
   (d/leader-keys
    :keymaps 'wdired-mode-map
    "fs" 'wdired-finish-edit)
@@ -1344,7 +1344,7 @@ Executable
       (delete-window))
     (setq d/dired-close-window nil))
 
-  (defun dired-here (&optional arg)
+  (defun d/dired-here (&optional arg)
     (interactive "P")
     (if arg
         (dired default-directory)
