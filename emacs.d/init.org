@@ -177,67 +177,6 @@ defer and ensure packages are installed unless otherwise stated.
 (eval-when-compile
   (require 'use-package))
 #+end_src
-**** custom-after keyword
-The ~:custom~ keyword is handy for using the customize interface for setting
-variables, but I'd like to customize at config time to avoid copying over long
-lists.
-#+begin_src emacs-lisp
-(defun use-package-normalize/:custom-after (name keyword args)
-  "Normalize use-package custom keyword."
-  (use-package-as-one (symbol-name keyword) args
-    (lambda (label arg)
-      (unless (listp arg)
-        (use-package-error
-         (concat label " a (<symbol> <value> [comment])"
-                 " or list of these")))
-      (if (use-package--non-nil-symbolp (car arg))
-          (list arg)
-        arg))))
-
-(defun use-package-handler/:custom-after (name keyword args rest state)
-  "Generate use-package custom keyword code."
-  (let ((body (use-package-process-keywords name rest state)))
-    (use-package-concat
-     (mapcar (lambda (def)
-               (let ((variable (nth 0 def))
-                     (value (nth 1 def))
-                     (comment (nth 2 def)))
-                 (unless (and comment (stringp comment))
-                   (setq comment (format "Customized with use-package %s" name)))
-                 `(customize-set-variable (quote ,variable) ,value ,comment)))
-             args)
-     body)))
-
-(defun use-package-normalize/:custom-face-after (name-symbol keyword arg)
-  "Normalize use-package custom-face keyword."
-  (let ((error-msg (format "%s wants a (<symbol> <face-spec>) or list of these" name-symbol)))
-    (unless (listp arg)
-      (use-package-error error-msg))
-    (dolist (def arg arg)
-      (unless (listp def)
-        (use-package-error error-msg))
-      (let ((face (nth 0 def))
-            (spec (nth 1 def)))
-        (when (or (not face)
-                  (not spec)
-                  (> (length arg) 2))
-          (use-package-error error-msg))))))
-
-(defun use-package-handler/:custom-face-after (name keyword args rest state)
-  "Generate use-package custom-face keyword code."
-  (let ((body (use-package-process-keywords name rest state)))
-    (use-package-concat
-     (mapcar (lambda (def)
-               `(custom-set-faces (quote ,def)))
-             args)
-     body)))
-
-(setq use-package-keywords
-      (let* ((pos (cl-position :config use-package-keywords))
-             (head (cl-subseq use-package-keywords 0 (1+ pos)))
-             (tail (cl-subseq use-package-keywords (1+ pos))))
-        (append head (list :custom-after :custom-face-after) tail)))
-#+end_src
 * Preface
 ** Packages
 *** [[https://github.com/tarsius/no-littering/][no-littering]]
