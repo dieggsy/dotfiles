@@ -4081,22 +4081,21 @@ directory to make multiple eshell windows easier."
   Emacs support library for PDF files.
 #+end_quote
 #+begin_src emacs-lisp
-;; (use-package pdf-tools
-;;   ;; :defer-install t
-;;   :defer 10
-;;   :general
-;;   (nmap pdf-view-mode-map
-;;     "s" 'pdf-view-fit-width-to-window
-;;     "a" 'pdf-view-fit-height-to-window
-;;     "/" 'isearch-forward
-;;     "J" 'pdf-view-next-page
-;;     "K" 'pdf-view-previous-page
-;;     "j" 'pdf-view-next-line-or-next-page
-;;     "k" 'pdf-view-previou-line-or-previous-page
-;;     "-" 'pdf-view-shrink
-;;     "+" 'pdf-view-enlarg)
-;;   :config
-;;   (pdf-tools-install))
+(use-package pdf-tools
+  :mode ("\\.pdf\\'" . pdf-tools-mode)
+  :general
+  (nmap pdf-view-mode-map
+    "s" 'pdf-view-fit-width-to-window
+    "a" 'pdf-view-fit-height-to-window
+    "/" 'isearch-forward
+    "J" 'pdf-view-next-page
+    "K" 'pdf-view-previous-page
+    "j" 'pdf-view-next-line-or-next-page
+    "k" 'pdf-view-previou-line-or-previous-page
+    "-" 'pdf-view-shrink
+    "+" 'pdf-view-enlarg)
+  :config
+  (pdf-tools-install))
 #+end_src
 ** [[https://github.com/wasamasa/nov.el][nov.el]]
 #+begin_src emacs-lisp
