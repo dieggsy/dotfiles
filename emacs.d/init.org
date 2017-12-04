@@ -1435,7 +1435,7 @@ Executable
           (t nil)))
 
   (setq projectile-globally-ignored-files '("TAGS" ".DS_Store")
-        projectile-ignored-projects '("/usr/local")
+        projectile-ignored-projects '("/usr/local" "/nix/store")
         projectile-ignored-project-function #'d/maybe-ignore-project
         projectile-completion-system 'ivy)
   (projectile-mode))
