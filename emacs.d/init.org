@@ -3003,77 +3003,6 @@ Source: https://git.io/vQKzq"
 (with-current-buffer "*Messages*"
   (setq-local mode-line-format d/mode-line))
 #+end_src
-*** EXWM mode-line
-#+begin_src emacs-lisp
-(d/with-eval-after-load 'exwm
-  (display-time-mode)
-
-  (defvar d/ssid-keymap
-    (let ((map (make-sparse-keymap)))
-      (define-key map [mode-line mouse-1]
-        (lambda ()
-          (interactive)
-          (call-process-shell-command "networkmanager_dmenu")))
-      map))
-
-  (defvar d/kb-layout-keymap
-    (let ((map (make-sparse-keymap)))
-      (define-key map [mode-line mouse-1]
-        (lambda ()
-          (interactive)
-          (pcase d/kb-layout
-            ("DV"
-             (setq d/kb-layout "QW")
-             (call-process-shell-command "setxkbmap us")
-             (force-mode-line-update 'all))
-            ("QW"
-             (setq d/kb-layout "DV")
-             (call-process-shell-command "setxkbmap dvorak")
-             (force-mode-line-update 'all)))))
-      map))
-
-  (defvar d/mode-line-exwm
-    '("%e"
-      (:eval
-       (let* ((lhs d/mode-line)
-              (l-width (length (format-mode-line lhs)))
-              (rhs `((:eval
-                      (d/with-window-status
-                        (concat
-                         (when d/mute
-                           (propertize-active "M  " 'face '(:foreground "#FB4933")))
-                         (propertize-active (concat d/kb-layout "  ")
-                                            'face '(:foreground "#D3869B")
-                                            'local-map d/kb-layout-keymap)
-                         (propertize-active (concat d/ssid "  ")
-                                            'face '(:foreground "#B8bb26")
-                                            'local-map d/ssid-keymap)
-
-                         (propertize-active (concat d/battery "  ")
-                                            'face '(:foreground "#83a598"))
-
-                         (propertize-active (concat display-time-string "  ")
-                                            'face '(:foreground "#A89984")))))))
-              (r-width (length (format-mode-line rhs)))
-              (t-width (+ l-width r-width))
-              (pad (if (> (window-width) (+ l-width r-width))
-                       (make-string
-                        (- (window-width)
-                           (+ l-width r-width)
-                           (if eldoc-mode-line-string
-                               (+ (length eldoc-mode-line-string) 2)
-                             0)
-                           (if (eq major-mode 'exwm-mode)
-                               -1
-                             0))
-                        ?\ )
-                     "")))
-         (format-mode-line
-          (append lhs `(,pad) rhs))))))
-  (setq-default mode-line-format d/mode-line-exwm)
-  (with-current-buffer "*Messages*"
-    (setq-local mode-line-format d/mode-line-exwm)))
-#+end_src
 * Dev
 ** Prog
 *** Packages
@@ -5048,17 +4977,17 @@ Configure the Elfeed RSS reader with an Orgmode file
   (add-hook 'exwm-update-class-hook
             (lambda ()
               (exwm-workspace-rename-buffer exwm-class-name)))
-  (exwm-input-set-key (kbd "s-r") #'exwm-reset)
-  (exwm-input-set-key (kbd "s-w") #'exwm-workspace-switch)
-  (dotimes (i 10)
-    (exwm-input-set-key (kbd (format "s-%d" (if (= 9 i) 0 (1+ i))))
-                        `(lambda ()
-                           (interactive)
-                           (exwm-workspace-switch-create ,i))))
-  (setq exwm-workspace-index-map (lambda (i) (number-to-string (1+ i))))
-  (exwm-enable)
 
-  (setenv "INSIDE_EMACS" "1")
+  ;; (exwm-input-set-key (kbd "s-w") #'exwm-workspace-switch)
+  ;; (dotimes (i 10)
+  ;;   (exwm-input-set-key (kbd (format "s-%d" (if (= 9 i) 0 (1+ i))))
+  ;;                       `(lambda ()
+  ;;                          (interactive)
+  ;;                          (exwm-workspace-switch-create ,i))))
+  ;; (setq exwm-workspace-index-map (lambda (i) (number-to-string (1+ i))))
+
+  (setq exwm-layout-show-all-buffers t
+        exwm-workspace-show-all-buffers t)
 
   (setq window-divider-default-right-width 1)
   (setq window-divider-default-bottom-width 1)
@@ -5066,11 +4995,6 @@ Configure the Elfeed RSS reader with an Orgmode file
   (window-divider-mode)
 
   (setq windmove-wrap-around t)
-
-  ;; (pinentry-start)
-
-
-  (add-to-list 'evil-insert-state-modes 'exwm-mode)
 
   (add-hook 'evil-normal-state-entry-hook (lambda ()
                                             (setq-local exwm-input-line-mode-passthrough t)))
@@ -5083,32 +5007,60 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'exwm
   (defmacro d/exwm-define-key (&rest bindings)
+    "Define exwm keys using exwm-input-set-key.
+
+FUNC can be:
+
+- var, quoted symbol, or sharp quoted symbol
+- lambda
+- arbitrary sexp, which is wrapped in an interactive lambda
+- Sexp of form (exec CMD &optional ASYNC), where CMD is a shell
+  command. This gets converted into an interactive lambda wrapper
+  around `start-process-shell-command' if ASYNC is nil or
+  omitted, or `call-process-shell-command' if ASYNC is non-nil.
+
+\(fn [KEY FUNC]...)"
     (declare (indent defun))
-    (let ((keys (cl-loop for (key func) on bindings
-                         by #'cddr
-                         collect (elt (kbd key) 0))))
+    (cl-loop for (key func) on bindings
+             by #'cddr
+             do  (let* ((key (if (vectorp key) key (kbd key)))
+                        (func (if (and (listp func) (eq (car func) 'exec))
+                                  (let ((cmd (cadr func)))
+                                    (if (caddr func)
+                                        `(call-process-shell-command ,cmd)
+                                      `(start-process-shell-command ,cmd nil ,cmd)))
+                                func))
+                        (func (cond ((symbolp func)
+                                     (symbol-value func))
+                                    ((functionp func)
+                                     func)
+                                    ((and (consp func) (or (eq (car func) 'function)
+                                                           (eq (car func) 'quote)))
+                                     (cadr func))
+                                    (t
+                                     `(lambda ()
+                                        (interactive)
+                                        ,func)))))
+                   (exwm-input-set-key key func))))
 
-      `(progn
-         (setq exwm-input-prefix-keys ',keys)
-         (general-define-key ,@bindings))))
-
-  (cl-defmacro d/exec (cmd &key pre post)
-    `(lambda () (interactive) ,pre (call-process-shell-command ,cmd) ,post))
+  (cl-defun d/exec (cmd &optional (async t))
+    (if async
+        (call-process-shell-command cmd)
+      (start-process-shell-command cmd nil cmd)))
 
   (cl-defmacro d/exwm-mode-line-process (name &key filter-body cmd repeat fmt)
     (declare (indent defun))
     (let ((shell-cmd (format "while sleep %d; do %s; done" repeat cmd))
-          (filter-name (intern (concat name "-filter")))
-          (var-name (intern name)))
+          (filter-name (intern (concat (symbol-name name) "-filter"))))
       `(progn
-         (defvar ,var-name (string-trim (shell-command-to-string ,cmd)))
-         (start-process-shell-command ,name nil ,shell-cmd)
+         (defvar ,name (string-trim (shell-command-to-string ,cmd)))
+         (start-process-shell-command ,(symbol-name name) nil ,shell-cmd)
          (defun ,filter-name (process output)
-           filter-body
-           (setq ,var-name ,(if fmt `(funcall ,fmt (string-trim output))
-                              `(string-trim output)))
+           ,filter-body
+           (setq ,name ,(if fmt `(funcall ,fmt (string-trim output))
+                          `(string-trim output)))
            (force-mode-line-update 'all))
-         (set-process-filter (get-process ,name) #',filter-name))))
+         (set-process-filter (get-process ,(symbol-name name)) #',filter-name))))
 
   (defun d/swap-window-right ()
     (interactive)
@@ -5144,23 +5096,48 @@ Configure the Elfeed RSS reader with an Orgmode file
            (o-buff (window-buffer win)))
       (set-window-buffer win buff)
       (set-window-buffer (selected-window) o-buff)
-      (windmove-up))))
+      (windmove-up)))
+
+  (defun d/exwm-exit ()
+    (interactive)
+    (ivy-read ": "
+              '("exit"
+                "lock"
+                "suspend"
+                "hibernate"
+                "reboot"
+                "shutdown")
+              :action (lambda (x)
+                        (pcase x
+                          ("lock"
+                           (start-process-shell-command "fancylock" nil "~/bin/fancylock"))
+                          ("exit"
+                           (kill-emacs)))))))
 #+end_src
 ** Processes
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (d/with-eval-after-load 'exwm
+  (dolist (cmd
+           '("dropbox-cli start"
+             "unclutter"
+             "xset r rate 300 50"
+             "setxkbmap dvorak"
+             "setxkbmap -option 'ctrl:nocaps'"
+             "xcape -e 'Control_L=Escape'"))
+    (start-process-shell-command cmd nil cmd))
 
-  (setq d/mute
-        (string= (string-trim
-                  (shell-command-to-string "amixer -D pulse get Master \
+  (defvar d/mute
+    (string= (string-trim
+              (shell-command-to-string "amixer -D pulse get Master \
 | grep \"Left: Playback\" \
 | awk '{print $6}' \
 | tr -d \"[-]\""))
-                 "off"))
+             "off"))
 
-  (setq d/kb-layout (string-trim
-                     (shell-command-to-string
-                      "layout=$(setxkbmap -query | grep layout | cut -d' ' -f6)
+  (defvar d/kb-layout
+    (string-trim
+     (shell-command-to-string
+      "layout=$(setxkbmap -query | grep layout | cut -d' ' -f6)
 
 if [ \"$layout\" = \"us\" ]; then
     echo 'QW'
@@ -5168,59 +5145,143 @@ elif [ \"$layout\" = \"dvorak\" ]; then
      echo 'DV'
 fi")))
 
-  (d/exwm-mode-line-process "d/ssid"
+  (d/exwm-mode-line-process d/ssid
     :cmd "iwgetid -r || echo 'None'"
-    :repeat 5)
-
-  (d/exwm-mode-line-process "d/battery"
-    :cmd "bat=$(acpi | cut -d \" \" -f4 | tr -d \"%,\")
-Adapt=$(acpi -a | cut -d \" \" -f3)
-
-touch /tmp/battery-status
-if [ \"$bat\" -lt 11 ] && [ \"$(</tmp/battery-status)\" != \"critically-low\" ] && [ \"$Adapt\" != \"on-line\" ]; then
-    espeak -vf4 \"Battery critically low, consider charging.\" &
-    notify-send \"Battery critically low, consider charging.\" &
-    echo \"critically-low\" > /tmp/battery-status
-else
-    echo \"fine\" > /tmp/battery-status
-fi
-
-echo -e \" $bat \""
-    :repeat 30))
+    :repeat 5))
 #+end_src
 ** Bindings
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'exwm
   (d/exwm-define-key
-    "s-u" 'exwm-layout-toggle-fullscreen
+   ;; "s-&" (lambda (command)
+   ;;         (interactive (list (read-shell-command "$ ")))
+   ;;         (start-process-shell-command command nil command))
+   "<XF86KbdBrightnessDown>" (exec "~/bin/kb-light -")
+   "<XF86KbdBrightnessUp>" (exec "~/bin/kb-light +")
+   "<XF86MonBrightnessUp>" (exec "~/bin/i3blocks/screen +")
+   "<XF86MonBrightnessDown>" (exec "~/bin/i3blocks/screen -")
+   "<XF86AudioLowerVolume>" (exec "amixer -D pulse sset Master 5%-")
+   "<XF86AudioRaiseVolume>" (exec "amixer -D pulse sset Master 5%+")
+   "<XF86AudioMute>" (exec "amixer -D pulse sset Master toggle")
 
-    "s-&" (lambda (command)
-            (interactive (list (read-shell-command "$ ")))
-            (start-process-shell-command command nil command))
+   "s-r" 'exwm-reset
+   "s-u" 'exwm-layout-toggle-fullscreen
+   "s-P" 'exwm-restart
+   "s-\"" 'kill-this-buffer
+   "<s-return>" 'eshell
+   "M-SPC" 'counsel-linux-app
+   "s->" 'd/exwm-exit
 
-    "s-s" 'evil-window-right
-    "s-h" 'evil-window-left
-    "s-t" 'evil-window-down
-    "s-n" 'evil-window-up
+   "s-s" 'evil-window-right
+   "s-h" 'evil-window-left
+   "s-t" 'evil-window-down
+   "s-n" 'evil-window-up
 
-    "s-<right>" 'evil-window-right
-    "s-<left>" 'evil-window-left
-    "s-<down>" 'evil-window-down
-    "s-<up>" 'evil-window-up
+   "s-<right>" 'evil-window-right
+   "s-<left>" 'evil-window-left
+   "s-<down>" 'evil-window-down
+   "s-<up>" 'evil-window-up
 
-    "s-S" 'd/swap-window-right
-    "s-H" 'd/swap-window-left
-    "s-T" 'd/swap-window-down
-    "s-N" 'd/swap-window-up
+   "s-S" 'd/swap-window-right
+   "s-H" 'd/swap-window-left
+   "s-T" 'd/swap-window-down
+   "s-N" 'd/swap-window-up
 
-    "s-S-<right>" 'd/swap-window-right
-    "s-S-<left>" 'd/swap-window-left
-    "s-S-<down>" 'd/swap-window-down
-    "s-S-<up>" 'd/swap-window-up
+   "s-S-<right>" 'd/swap-window-right
+   "s-S-<left>" 'd/swap-window-left
+   "s-S-<down>" 'd/swap-window-down
+   "s-S-<up>" 'd/swap-window-up)
 
-    "s-p" 'password-store-copy)
+  (add-to-list 'exwm-input-prefix-keys ?\C-/)
+  (setq exwm-input-prefix-keys (delq 3 exwm-input-prefix-keys)))
+#+end_src
+** Mode-line
+#+begin_src emacs-lisp :tangle no
+(d/with-eval-after-load 'exwm
+  (display-battery-mode)
+  (display-time-mode)
 
-  (add-to-list 'exwm-input-prefix-keys ?\C-/))
+  (defvar d/ssid-keymap
+    (let ((map (make-sparse-keymap)))
+      (define-key map [mode-line mouse-1]
+        (lambda ()
+          (interactive)
+          (call-process-shell-command "networkmanager_dmenu")))
+      map))
+
+  (defvar d/kb-layout-keymap
+    (let ((map (make-sparse-keymap)))
+      (define-key map [mode-line mouse-1]
+        (lambda ()
+          (interactive)
+          (pcase d/kb-layout
+            ("DV"
+             (setq d/kb-layout "QW")
+             (call-process-shell-command "setxkbmap us")
+             (force-mode-line-update 'all))
+            ("QW"
+             (setq d/kb-layout "DV")
+             (call-process-shell-command "setxkbmap dvorak")
+             (force-mode-line-update 'all)))))
+      map))
+
+  ;; (defvar d/mode-line-exwm
+  ;;   '("%e"
+  ;;     (:eval
+  ;;      (let* ((lhs d/mode-line)
+  ;;             (l-width (length (format-mode-line lhs)))
+  ;;             (rhs `((:eval
+  ;;                     (d/with-window-status
+  ;;                       (concat
+  ;;                        (when d/mute
+  ;;                          (propertize-active "M  " 'face '(:foreground "#FB4933")))
+  ;;                        (propertize-active (concat d/kb-layout "  ")
+  ;;                                           'face '(:foreground "#D3869B")
+  ;;                                           'local-map d/kb-layout-keymap)
+  ;;                        (propertize-active (concat d/ssid "  ")
+  ;;                                           'face '(:foreground "#B8bb26")
+  ;;                                           'local-map d/ssid-keymap)
+
+  ;;                        (propertize-active (concat battery-mode-line-string "  ")
+  ;;                                           'face '(:foreground "#83a598"))
+
+  ;;                        (propertize-active (concat display-time-string "  ")
+  ;;                                           'face '(:foreground "#A89984")))))))
+  ;;             (r-width (length (format-mode-line rhs)))
+  ;;             (t-width (+ l-width r-width))
+  ;;             (pad (if (> (window-width) (+ l-width r-width))
+  ;;                      (make-string
+  ;;                       (- (window-width)
+  ;;                          (+ l-width r-width)
+  ;;                          (if eldoc-mode-line-string
+  ;;                              (+ (length eldoc-mode-line-string) 2)
+  ;;                            0)
+  ;;                          (if (eq major-mode 'exwm-mode)
+  ;;                              -1
+  ;;                            0))
+  ;;                       ?\s)
+  ;;                    "")))
+  ;;        (format-mode-line
+  ;;         (append lhs `(,pad) rhs))))))
+
+  (defvar d/exwm-bar
+    '((:eval
+       (let ((line (d/with-window-status
+                     (concat
+                      (propertize-active (concat d/ssid "  ")
+                                         'face '(:foreground "#B8BB26"))
+                      (propertize-active display-time-string)))))
+         (s-pad-left (window-width) " " line)))
+      ))
+
+  (setq-default mode-line-format d/mode-line-exwm)
+  (with-current-buffer "*Messages*"
+    (setq-local mode-line-format d/mode-line-exwm)))
+#+end_src
+** Enable
+#+begin_src emacs-lisp
+(d/with-eval-after-load 'exwm
+  (exwm-enable))
 #+end_src
 * Finalize
 #+begin_src emacs-lisp
