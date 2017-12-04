@@ -2799,7 +2799,12 @@ Better parentheses coloring
 #+end_src
 *** [[https://github.com/atomontage/xterm-color][xterm-color]]
 #+begin_src emacs-lisp
-(use-package xterm-color)
+(use-package xterm-color
+  :commands xterm-color-filter
+  :hook ((eshell-mode . d/xterm-color-preserve-color-properties))
+  :config
+  (defun d/xterm-color-preserve-color-properties ()
+    (setq xterm-color-preserve-properties t)))
 #+end_src
 ** Hydras
 #+begin_src emacs-lisp
@@ -3926,6 +3931,9 @@ Like git, for emacs. But cooler.
 (use-package eshell
   :ensure nil
   :commands d/eshell-here
+  :custom
+  (eshell-preoutput-filter-functions '(xterm-color-filter))
+  (eshell-term-name "eterm-256color")
   :init
   (d/setup-hook eshell-mode
     (imap :keymaps 'eshell-mode-map
