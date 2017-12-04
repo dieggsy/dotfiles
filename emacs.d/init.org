@@ -593,7 +593,8 @@ If the text hasn't changed as a result, forward to `ivy-alt-done'."
    "sr"  'counsel-rg
    "ss"  'counsel-grep-or-swiper
    "y"   'counsel-yank-pop)
-  :commands counsel-describe-face
+  :custom
+  (counsel-find-file-ignore-regexp "\\`\\.")
   :config
   (when (eq system-type 'darwin)
     (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind))
@@ -2697,6 +2698,11 @@ Use a bar cursor in the minibuffer.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package focus
+  :custom
+  (focus-mode-to-thing
+   '((prog-mode . defun)
+     (text-mode . sentence)
+     (org-mode . paragraph)))
   :config
   (define-advice focus-get-thing (:override () d/fix)
     (or focus-current-thing
@@ -3847,6 +3853,7 @@ Like git, for emacs. But cooler.
   :custom
   (eshell-preoutput-filter-functions '(xterm-color-filter))
   (eshell-term-name "eterm-256color")
+  (eshell-cmpl-compare-entry-function 'string-lessp)
   :init
   (d/setup-hook eshell-mode
     (imap :keymaps 'eshell-mode-map
@@ -4015,6 +4022,8 @@ directory to make multiple eshell windows easier."
     "k" 'pdf-view-previou-line-or-previous-page
     "-" 'pdf-view-shrink
     "+" 'pdf-view-enlarg)
+  :custom
+  (pdf-view-midnight-colors '("#FDF4C1" . "#282828"))
   :config
   (pdf-tools-install))
 #+end_src
