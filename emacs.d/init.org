@@ -1450,13 +1450,7 @@ Executable
    "pd" 'counsel-projectile-find-dir
    "pf" 'counsel-projectile-find-file
    "pp" 'counsel-projectile
-   "ps" 'counsel-projectile-switch-project)
-  :config
-  (defun d/project-find-file ()
-    (interactive)
-    (condition-case nil
-        (counsel-git)
-      (error (counsel-projectile-find-file)))))
+   "ps" 'counsel-projectile-switch-project))
 #+end_src
 ** Functions
 *** File/Buffer Manipulation
