@@ -1666,16 +1666,10 @@ Supposedly better than autocomplete.
     "grh" 'evil-mc-make-cursor-here
     "grj" 'evil-mc-make-cursor-move-next-line
     "grk" 'evil-mc-make-cursor-move-prev-line
-    ;; "M-n" 'evil-mc-skip-and-goto-next-cursor
     "grN" 'evil-mc-make-and-goto-next-cursor
-    ;; "M-p" 'evil-mc-skip-and-goto-prev-cursor
     "grP" 'evil-mc-make-and-goto-prev-cursor
-    ;; "C-n" 'evil-mc-skip-and-goto-next-match
     "grn" 'evil-mc-make-and-goto-next-match
-    ;; "C-p" 'evil-mc-skip-and-goto-prev-match
     "grp" 'evil-mc-make-and-goto-prev-match)
-  :custom
-  (evil-mc-key-map nil)
   :config
   (global-evil-mc-mode)
   (push 'evil-smartparens-mode evil-mc-incompatible-minor-modes)
