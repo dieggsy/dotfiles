@@ -4632,13 +4632,13 @@ Source: http://tinyurl.com/lo96nwc"
 *** Defaults
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'erc
-  (setq erc-prompt "\n            ❱❱"
-        erc-fill-prefix  "          \t";"              "
-        erc-notice-prefix   "          \t*** "
+  (require 's)
+  (setq erc-prompt (format "\n%s❱❱" (s-repeat 12 "\s"))
+        erc-fill-prefix (format "%s\t" (s-repeat 10 "\s"))
+        erc-notice-prefix   (format "%s\t***\s" (s-repeat 10 "\s"))
         erc-format-nick-function 'd/erc-format-nick
         erc-nick "dieggsy"
         erc-prompt-for-password nil
-        erc-hide-timestamps t
         erc-input-line-position -1
         erc-autojoin-timing 'ident
         erc-header-line-format nil
@@ -4663,7 +4663,6 @@ Source: http://tinyurl.com/lo96nwc"
                                         erc-dangerous-host-face)
         erc-autojoin-channels-alist '(("freenode.net"
                                        "#emacs"
-                                       "#gaygeeks"
                                        "##linux"
                                        "#zsh"
                                        "#python"
@@ -4689,6 +4688,25 @@ Source: http://tinyurl.com/lo96nwc"
   (imap erc-mode-map
     [up] 'erc-previous-command
     [down] 'erc-next-command)
+  :custom
+  (erc-modules
+   '(log
+     notifications
+     pcomplete
+     hl-nicks
+     netsplit
+     fill
+     button
+     track
+     stamp
+     readonly
+     networks
+     ring
+     autojoin
+     noncommands
+     irccontrols
+     move-to-prompt
+     menu))
   :config
   (add-hook 'window-configuration-change-hook #'d/erc-to-bottom)
   (add-hook 'erc-insert-post-hook #'erc-save-buffer-in-logs))
@@ -4746,7 +4764,11 @@ Source: http://tinyurl.com/lo96nwc"
                       (gethash server erc-lurker-state))
              (puthash channel nick (gethash server d/erc-last-speaker))
              (format "%10.10s%s\t"
-                     (cond (nick-was-last
+                     (cond ((string= nick (erc-current-nick))
+                            (concat
+                             (erc-propertize mode 'face 'erc-nick-prefix-face)
+                             (erc-propertize nick 'face 'erc-current-nick-face)))
+                           (nick-was-last
                             (erc-propertize
                              "↳"
                              'face
@@ -4775,8 +4797,8 @@ update lurker status."
     (d/erc-nick-format-function-body
      erc-show-my-nick
      (erc-current-nick)
-     (let ((prefix "> "))
-       (erc-propertize prefix 'font-lock-face 'erc-default-face))))
+     (let ((prefix (format "%10.10s\t" ">")))
+       (erc-propertize prefix 'font-lock-face 'erc-current-nick-face))))
 
   (define-advice erc-format-privmessage
       (:override (nick msg privp msgp) no-brackets)
@@ -4839,15 +4861,7 @@ Source: http://tinyurl.com/y8tj8vxx"
 *** Setup
 #+begin_src emacs-lisp
 (d/setup-hook erc-mode
-  (erc-hl-nicks-mode 1)
-  (smartparens-mode -1)
-  (setq tab-width 5)
-  (erc-stamp-mode -1)
-  (erc-notifications-mode 1)
-  (erc-log-mode 1)
-  (evil-smartparens-mode -1)
-  (show-smartparens-mode -1)
-  (erc-move-to-prompt-mode 1))
+  (setq tab-width 5))
 #+end_src
 ** Packages
 *** [[https://github.com/skeeto/elfeed][elfeed]]
