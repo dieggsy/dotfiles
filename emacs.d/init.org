@@ -1715,7 +1715,7 @@ Source: http://tinyurl.com/k8g9sex"
 **** [[https://github.com/d12frosted/flyspell-correct][flyspell-correct-ivy]]
 #+begin_src emacs-lisp
 (use-package flyspell-correct-ivy
-  :after flyspell)
+  :defer 15)
 #+end_src
 **** [[https://github.com/syohex/emacs-fontawesome][fontawesome]]
 #+begin_src emacs-lisp
@@ -1802,7 +1802,6 @@ Source: http://tinyurl.com/k8g9sex"
 #+end_quote
 #+begin_src emacs-lisp
 (use-package smartparens
-  :defer 5
   :hook (((prog-mode conf-mode eval-expression-minibuffer-setup) . turn-on-smartparens-strict-mode)
          (eshell-mode . smartparens-mode)
          (eval-expression-minibuffer-setup . show-smartparens-mode))
@@ -4038,7 +4037,6 @@ I use this for reading, mostly.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package crux
-  :defer 5
   :general
   (d/leader-keys
    "TAB" 'crux-switch-to-previous-buffer
@@ -4058,8 +4056,8 @@ I use this for reading, mostly.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package disable-mouse
-  :demand  t
   :if (not (string= (getenv "XDG_CURRENT_DESKTOP") "exwm"))
+  :defer 15
   :config
   (global-disable-mouse-mode)
   (dolist (key '([mouse-1]
@@ -4262,7 +4260,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 **** [[https://github.com/syohex/emacs-evil-anzu][evil-anzu]]
 #+begin_src emacs-lisp
 (use-package evil-anzu
-  :after evil
+  :defer 15
   :config
   (setq anzu-cons-mode-line-p nil)
   (defun d/anzu-update-mode-line (here total)
@@ -4282,7 +4280,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 #+end_quote
 #+begin_src emacs-lisp
 (use-package evil-indent-plus
-  :defer 10
+  :defer 15
   :config
   (evil-indent-plus-default-bindings))
 #+end_src
@@ -4298,7 +4296,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 **** [[https://github.com/redguardtoo/evil-matchit][evil-matchit]]
 #+begin_src emacs-lisp
 (use-package evil-matchit
-  :defer 10
+  :defer 15
   :config (global-evil-matchit-mode 1))
 #+end_src
 **** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
@@ -4340,7 +4338,6 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 **** [[https://github.com/emacs-evil/evil-surround][evil-surround]]
 #+begin_src emacs-lisp
 (use-package evil-surround
-  :defer 10
   :config
   (global-evil-surround-mode 1))
 #+end_src
