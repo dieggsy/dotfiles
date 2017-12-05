@@ -1301,6 +1301,9 @@ Executable
   (d/leader-keys
    :keymaps 'wdired-mode-map
    "fs" 'wdired-finish-edit)
+  (d/mode-leader-keys
+   :keymaps 'dired-mode-map
+   "h" 'dired-omit-mode)
   :init
   (d/setup-hook dired-mode
     (hl-line-mode 1)
