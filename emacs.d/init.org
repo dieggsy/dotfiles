@@ -3751,18 +3751,23 @@ Like git, for emacs. But cooler.
 #+begin_src emacs-lisp
 (use-package calc
   :ensure nil
-  :hook (prog-mode . d/calc-embedded-set-open-close)
   :general
   (d/leader-keys
    "ac" 'calc-dispatch)
   (emap calc-mode-map
     "x" (lambda () (interactive) (counsel-M-x "^calc-")))
+  :init
+  (add-hook 'calc-embedded-mode-hook #'d/calc-embedded-set-open-close)
   :config
   (setq calc-multiplication-has-precedence nil)
   (setq calc-symbolic-mode t)
   (defun d/calc-embedded-set-open-close ()
-    (setq-local calc-embedded-open-mode (concat comment-start " "))
-    (setq-local calc-embedded-close-mode (concat comment-end "\n"))))
+    (when comment-start
+      (setq-local calc-embedded-open-mode
+                  (concat comment-start " ")))
+    (when comment-end
+      (setq-local calc-embedded-close-mode
+                  (concat comment-end "\n")))))
 #+end_src
 ** Eshell
 *** Built-in
