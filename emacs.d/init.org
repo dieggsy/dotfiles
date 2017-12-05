@@ -4084,15 +4084,6 @@ I use this for reading, mostly.
                  [triple-wheel-up]))
     (define-key evil-motion-state-map key #'ignore)))
 #+end_src
-
-**** [[https://github.com/Silex/elmacro][elmacro]]
-#+begin_src emacs-lisp
-(use-package elmacro
-  :disabled t
-  :defer 10
-  :config
-  (elmacro-mode))
-#+end_src
 **** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 #+begin_quote
   Emacs package that displays available keybindings in popup
