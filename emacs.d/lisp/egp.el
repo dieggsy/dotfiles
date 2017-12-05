@@ -102,7 +102,7 @@ length of PATH (sans directory slashes) down to MAX-LEN."
                (first-line (car split))
                (branch
                 (cond ((string-match-p "(no branch)" first-line)
-                       (string-append
+                       (concat
                         ":"
                         (string-trim-right
                          (shell-command-to-string "git rev-parse --short HEAD"))))
