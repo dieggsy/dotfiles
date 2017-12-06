@@ -443,6 +443,19 @@ I went for it. Now I'll never go back.
         status)))
   (setq anzu-mode-line-update-function #'d/anzu-update-mode-line))
 #+end_src
+***** [[https://github.com/jojojames/evil-collection][evil-collection]]
+#+begin_quote
+ A set of keybindings for evil-mode
+#+end_quote
+#+begin_src emacs-lisp
+(use-package evil-collection
+  :recipe (:host github
+           :repo "jojojames/evil-collection")
+  :init
+  (require 'evil-minibuffer)
+  (evil-minibuffer-init)
+  (evil-collection-init))
+#+end_src
 ***** [[https://github.com/cute-jumper/evil-embrace.el][evil-embrace]]
 #+begin_src emacs-lisp
 (use-package evil-embrace
@@ -1481,16 +1494,18 @@ directory-browsing commands
   ;;   (dired-git-status))
   :config
   (nmap dired-mode-map
+    "SPC" 'nil ; undo this from evil-dired, since this is my leader
+    "~" 'd/dired-home
     "q" 'd/dired-quit
+    ;; got used to this from ranger
     "h" 'dired-up-directory
     "l" 'dired-open-file
-    "j" 'dired-next-line
-    "k" 'dired-previous-line
+    ;; I like inverting these
     "r" 'dired-do-rename
     "R" 'dired-do-redisplay
+    ;; evil-dired explicitly uses evil-search
     "n" 'evil-ex-search-next
-    "N" 'evil-ex-search-previous
-    "~" 'd/dired-home)
+    "N" 'evil-ex-search-previous)
 
   (setq dired-listing-switches "-lGXhA --group-directories-first"
         dired-dwim-target t
@@ -4551,28 +4566,6 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
              (setq d/show-async-tangle-results nil)
            (setq d/show-async-tangle-results t)) nil)
     ("q" nil)))
-#+end_src
-*** Bindings
-#+begin_src emacs-lisp
-(nmap custom-mode-map
-  "q" #'Custom-buffer-done)
-
-(evil-add-hjkl-bindings occur-mode-map 'emacs
-  (kbd "/")       'evil-search-forward
-  (kbd "n")       'evil-search-next
-  (kbd "N")       'evil-search-previous
-  (kbd "C-d")     'evil-scroll-down
-  (kbd "C-u")     'evil-scroll-up
-  (kbd "C-w C-w") 'other-window)
-
-(evil-add-hjkl-bindings completion-list-mode-map 'emacs
-  (kbd "/") 'evil-ex-search-forward)
-
-(add-hook 'edebug-mode-hook #'evil-normalize-keymaps)
-
-(evil-add-hjkl-bindings proced-mode-map 'normal
-  "n" 'evil-ex-search-next
-  "K" 'proced-send-signal)
 #+end_src
 * Fun
 ** Packages
