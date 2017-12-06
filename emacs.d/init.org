@@ -210,6 +210,9 @@ package should fix them nicely.
   (exec-path-from-shell-initialize))
 #+end_src
 *** [[https://github.com/Ilazki/prettify-utils.el][prettify-utils]]
+#+begin_quote
+Helper functions for emacs' prettify-symbols-mode
+#+end_quote
 #+begin_src emacs-lisp
 (use-package prettify-utils
   :recipe (:host github
@@ -574,7 +577,7 @@ Source: https://git.io/vQKmf"
 *** [[http://orgmode.org/][org-mode]]
 #+begin_quote
 Org mode is for keeping notes, maintaining TODO lists, planning projects, and
-  authoring documents with a fast and effective plain-text system.
+authoring documents with a fast and effective plain-text system.
 #+end_quote
 But really, it's life.
 
@@ -1088,6 +1091,9 @@ also use these keys to quit out of the minibuffer.
 * Help
 ** Built-in
 *** [[elisp:(find-library-other-window%20"man")][man]]
+#+begin_quote
+browse UNIX manual pages
+#+end_quote
 #+begin_src emacs-lisp
 (use-package man
   :general
@@ -1194,6 +1200,9 @@ Emacs interface to Google Translate
 (use-package google-translate)
 #+end_src
 *** [[https://github.com/Wilfred/helpful][helpful]]
+#+begin_quote
+A better Emacs *help* buffer
+#+end_quote
 #+begin_src emacs-lisp
 (use-package helpful)
 #+end_src
@@ -1212,6 +1221,9 @@ Stack Exchange for Emacs
 (use-package sx)
 #+end_src
 *** [[https://github.com/kuanyui/tldr.el][tldr]]
+#+begin_quote
+tldr client for Emacs
+#+end_quote
 #+begin_src emacs-lisp
 (use-package tldr
   :general
@@ -1274,6 +1286,9 @@ Executable
 
 ** Built-in
 *** [[elisp:(find-library-other-window%20"dired")][dired]]
+#+begin_quote
+directory-browsing commands
+#+end_quote
 #+begin_src emacs-lisp
 (use-package dired
   :ensure nil
@@ -1342,6 +1357,9 @@ Executable
       (setq d/dired-close-window nil))))
 #+end_src
 *** [[elisp:(find-library-other-window%20"ibuffer")][ibuffer]]
+#+begin_quote
+operate on buffers like dired
+#+end_quote
 #+begin_src emacs-lisp
 (use-package ibuffer
   :general
@@ -1364,6 +1382,9 @@ Executable
     (ibuffer-switch-to-saved-filter-groups "Default")))
 #+end_src
 *** [[elisp:(find-library-other-window%20"bookmark")][bookmark]]
+#+begin_quote
+set bookmarks, maybe annotate them, jump to them later
+#+end_quote
 #+begin_src emacs-lisp
 (use-package bookmark
   :ensure nil
@@ -1384,8 +1405,10 @@ Make Emacs' delete-by-moving-to-trash do what you expect it to do on OS X.
   (osx-trash-setup)
   (setq delete-by-moving-to-trash t))
 #+end_src
-
 *** [[https://github.com/emacsmirror/dired-du][dired-du]]
+#+begin_quote
+Dired with recursive directory sizes
+#+end_quote
 #+begin_src emacs-lisp
 (use-package dired-du
   :recipe (:host github :repo "emacsmirror/dired-du")
@@ -1423,6 +1446,9 @@ Project Interaction Library for Emacs
 #+end_src
 
 *** [[https://github.com/ericdanan/counsel-projectile][counsel-projectile]]
+#+begin_quote
+Ivy UI for Projectile
+#+end_quote
 #+begin_src emacs-lisp
 (use-package counsel-projectile
   :general
@@ -1584,12 +1610,18 @@ Dear god I hate tabs. Also, four spaces is a good indentation default.
 ** Tools
 *** Built-in
 **** [[elisp:(find-library-other-window "paren")][paren]]
+#+begin_quote
+highlight matching paren
+#+end_quote
 #+begin_src emacs-lisp
 (use-package paren
   :ensure nil
   :hook ((emacs-lisp-mode scheme-mode lisp-mode) . show-paren-mode))
 #+end_src
 **** [[elisp:(find-library-other-window "hippie-exp")][hippie-expand]]
+#+begin_quote
+expand text trying various ways to find its expansion
+#+end_quote
 #+begin_src emacs-lisp
 (use-package hippie-exp
   :ensure nil
@@ -1598,6 +1630,9 @@ Dear god I hate tabs. Also, four spaces is a good indentation default.
 #+end_src
 *** Packages
 **** [[https://github.com/abo-abo/auto-yasnippet][auto-yasnippet]]
+#+begin_quote
+quickly create disposable yasnippets
+#+end_quote
 #+begin_src emacs-lisp
 (use-package auto-yasnippet)
 #+end_src
@@ -1629,6 +1664,9 @@ Supposedly better than autocomplete.
   (global-company-mode t))
 #+end_src
 **** [[https://github.com/company-mode/company-statistics][company-statistics]]
+#+begin_quote
+Sort completion candidates by previous completion choices
+#+end_quote
 #+begin_src emacs-lisp
 (use-package company-statistics
   :after company
@@ -1636,6 +1674,9 @@ Supposedly better than autocomplete.
   (company-statistics-mode))
 #+end_src
 **** [[https://github.com/gabesoft/evil-mc][evil-mc]]
+#+begin_quote
+Multiple cursors implementation for evil-mode
+#+end_quote
 #+begin_src emacs-lisp
 (use-package evil-mc
   :general
@@ -1669,7 +1710,9 @@ Multiple cursors for evil-mode, based on iedit
   (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match))
 #+end_src
 **** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
-Flyspell spell-checking and ivy integration with [[https://github.com/d12frosted/flyspell-correct][d12frosted/flyspell-correct]]
+#+begin_quote
+On-the-fly spell checker
+#+end_quote
 #+begin_src emacs-lisp
 (use-package flyspell
   :config
@@ -1695,6 +1738,9 @@ Source: http://tinyurl.com/k8g9sex"
                              current-location)))))
 #+end_src
 **** [[https://github.com/d12frosted/flyspell-correct][flyspell-correct-ivy]]
+#+begin_quote
+Correcting words with flyspell via custom interface.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package flyspell-correct-ivy
   :defer 15)
@@ -1812,7 +1858,10 @@ Minor mode for Emacs that deals with parens pairs and tries to be smart about
   :hook (smartparens-enabled . evil-smartparens-mode))
 #+end_src
 **** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
-Kind of makes undo's like git. Or Vim, apparently, if you're into that.
+#+begin_quote
+Treat undo history as a tree
+#+end_quote
+Kind of makes undo like git.
 #+begin_src emacs-lisp
 (use-package undo-tree
   :hook (org-mode . undo-tree-mode)
@@ -1822,6 +1871,9 @@ Kind of makes undo's like git. Or Vim, apparently, if you're into that.
   (setq undo-tree-visualizer-timestamps t))
 #+end_src
 **** [[https://github.com/purcell/unfill][unfill]]
+#+begin_quote
+Functions providing the inverse of Emacs' fill-paragraph and fill-region
+#+end_quote
 #+begin_src emacs-lisp
 (use-package unfill
   :general
@@ -1832,7 +1884,6 @@ Kind of makes undo's like git. Or Vim, apparently, if you're into that.
 #+begin_quote
 A template system for Emacs
 #+end_quote
-Freakin yasnippet. It's the best.
 #+begin_src emacs-lisp
 (use-package yasnippet
   :defer 5
@@ -2164,6 +2215,9 @@ Major mode for editing JSON files with emacs
   :mode "\\.json\\'")
 #+end_src
 *** [[http://jblevins.org/projects/markdown-mode/][markdown-mode]]
+#+begin_quote
+Major mode for editing Markdown-formatted text
+#+end_quote
 Syntax highlighting for markdown files.
 #+begin_src emacs-lisp
 (use-package markdown-mode
@@ -2334,6 +2388,9 @@ Source: https://git.io/vQKuF"
 #+end_src
 ** Built-in
 *** [[elisp:(find-library-other-window%20"goto-addr")][goto-addr]]
+#+begin_quote
+click to browse URL or to send to e-mail address
+#+end_quote
 #+begin_src emacs-lisp
 (use-package goto-addr
   :ensure nil
@@ -2389,6 +2446,9 @@ Jump to things in Emacs tree-style
   (setq avy-keys (string-to-list "aoeuidhtns")))
 #+end_src
 *** [[https://github.com/jacktasia/dumb-jump][dumb-jump]]
+#+begin_quote
+an Emacs "jump to definition" package
+#+end_quote
 #+begin_src emacs-lisp
 (use-package dumb-jump
   :general
@@ -2404,6 +2464,9 @@ Jump to things in Emacs tree-style
 #+end_src
 
 *** [[https://github.com/wasamasa/eyebrowse][eyebrowse]]
+#+begin_quote
+A simple-minded way of managing window configs in emacs
+#+end_quote
 #+begin_src emacs-lisp
 (use-package eyebrowse
   :general
@@ -2445,13 +2508,16 @@ Jump to things in Emacs tree-style
 *** [[https://github.com/vspinu/imenu-anywhere][imenu-anywhere]]
 #+begin_quote
 ido/ivy/helm imenu tag selection across buffers with the same mode/project
-  etc
+etc
 #+end_quote
 imenu on steroids.
 #+begin_src emacs-lisp
 (use-package imenu-anywhere)
 #+end_src
 *** [[https://github.com/cyrus-and/zoom][zoom]]
+#+begin_quote
+Fixed and automatic balanced window layout for Emacs
+#+end_quote
 #+begin_src emacs-lisp
 (use-package zoom
   :config
@@ -2650,6 +2716,9 @@ Highlight text that extends beyond a certain column.
   (column-enforce-column 79))
 #+end_src
 *** [[https://github.com/dieggsy/eterm-256color][eterm-256color]]
+#+begin_quote
+Customizable 256 colors for emacs term and ansi-term
+#+end_quote
 #+begin_src emacs-lisp
 (use-package eterm-256color
   :recipe (:host github
@@ -2693,6 +2762,9 @@ Better parentheses coloring
   :hook ((prog-mode conf-mode) . rainbow-delimiters-mode))
 #+end_src
 *** [[https://github.com/atomontage/xterm-color][xterm-color]]
+#+begin_quote
+ANSI & xterm-256 color text property translator for Emacs
+#+end_quote
 #+begin_src emacs-lisp
 (use-package xterm-color
   :commands xterm-color-filter
@@ -3031,6 +3103,9 @@ Integrate pyenv with python-mode.
   (pyenv-mode))
 #+end_src
 ***** [[https://github.com/ssbb/pyenv-mode-auto][pyenv-mode-auto]]
+#+begin_quote
+Automatically activates pyenv version within Emacs if .python-version file exists.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package pyenv-mode-auto
   :after pyenv-mode)
@@ -3145,10 +3220,16 @@ A modern list library for Emacs
 (use-package dash)
 #+end_src
 ***** [[https://github.com/rejeep/f.el][f]]
+#+begin_quote
+Modern API for working with files and directories in Emacs
+#+end_quote
 #+begin_src emacs-lisp
 (use-package f)
 #+end_src
 ***** [[https://github.com/purcell/flycheck-package][flycheck-package]]
+#+begin_quote
+Flycheck checker for elisp package metadata
+#+end_quote
 #+begin_src emacs-lisp
 (use-package flycheck-package
   :after flycheck
@@ -3156,10 +3237,16 @@ A modern list library for Emacs
   (flycheck-package-setup))
 #+end_src
 ***** [[https://github.com/Wilfred/suggest.el][suggest]]
+#+begin_quote
+discover elisp functions that do what you want
+#+end_quote
 #+begin_src emacs-lisp
 (use-package suggest)
 #+end_src
 ***** [[https://github.com/dieggsy/difflib.el][difflib.el]]
+#+begin_quote
+Port of python's difflib to emacs-lisp
+#+end_quote
 #+begin_src emacs-lisp
 (use-package difflib
   :recipe (:host github
@@ -3362,6 +3449,9 @@ Source: https://git.io/vQKz8"
 *** Scheme
 **** Packages
 ***** [[https://github.com/jaor/geiser][geiser]]
+#+begin_quote
+emacs and scheme talk to each other
+#+end_quote
 #+begin_src emacs-lisp
 (use-package geiser
   :config
@@ -3421,6 +3511,9 @@ Source: http://tinyurl.com/le6wxuo"
 (font-lock-add-keywords 'geiser-repl-mode '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)) t)
 #+end_src
 *** [[https://github.com/NixOS/nix-mode][nix-mode]]
+#+begin_quote
+An Emacs major mode for editing Nix expressions.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package nix-mode
   :commands (d/nix-update-fetchgit d/nix-update-my-packages)
@@ -3546,6 +3639,9 @@ Enables syntax highlighting for .vimrc/_vimrc files
 (use-package vimrc-mode)
 #+end_src
 *** [[https://github.com/fxbois/web-mode][web-mode]]
+#+begin_quote
+web template editing mode for emacs
+#+end_quote
 #+begin_src emacs-lisp
 (use-package web-mode
   :mode ("\\.html?\\'" "\\.xml\\'" "\\.launch\\'")
@@ -3588,7 +3684,7 @@ Source: https://git.io/vQKub"
 #+begin_quote
 It's Magit! A Git Porcelain inside Emacs.
 #+end_quote
-Like git, for emacs. But cooler.
+Like git, for emacs. But cooler. (Just /trust/ me on this one.)
 #+begin_src emacs-lisp
 (use-package magit
   :general
@@ -3713,6 +3809,9 @@ Fringe version of git-gutter.el
     "....XXXX"))
 #+end_src
 **** [[https://github.com/defunkt/gist.el][gist]]
+#+begin_quote
+Yet another Emacs paste mode, this one for Gist.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package gist
   :config
@@ -3721,7 +3820,10 @@ Fringe version of git-gutter.el
           gh-vals (plist-put gh-vals :token (password-store-get "tokens/github/gist")))))
 #+end_src
 * Tools
-** Proced
+** [[elisp:(find-library-other-window%20"proced")][proced]]
+#+begin_quote
+operate on system processes like dired
+#+end_quote
 #+begin_src emacs-lisp
 (use-package proced
   :ensure nil
@@ -3731,7 +3833,12 @@ Fringe version of git-gutter.el
   :config
   (setq proced-auto-update-interval 2))
 #+end_src
-** Calc
+** [[elisp:(find-library-other-window "calc")][calc]]
+#+begin_quote
+the GNU Emacs calculator
+#+end_quote
+And it's amazing, to be quite honest. "The poor man's Mathematica", I once
+heard (and can confirm).
 #+begin_src emacs-lisp
 (use-package calc
   :ensure nil
@@ -3753,7 +3860,11 @@ Fringe version of git-gutter.el
       (setq-local calc-embedded-close-mode
                   (concat comment-end "\n")))))
 #+end_src
-** Eshell
+** [[elisp:(find-library-other-window "eshell")][eshell]]
+#+begin_quote
+the Emacs command shell
+#+end_quote
+A shell written in emacs-lisp that has recently been replacing zsh for me.
 *** Built-in
 #+begin_src emacs-lisp
 (use-package eshell
@@ -3794,7 +3905,10 @@ Fringe version of git-gutter.el
         eshell-bad-command-tolerance 1.0e+INF))
 #+end_src
 *** Packages
-**** egp
+**** [[elisp:(find-library-other-window%20"egp")][egp]]
+#+begin_quote
+Display git info in eshell
+#+end_quote
 #+begin_src emacs-lisp
 (use-package egp
   :ensure nil
@@ -3812,6 +3926,9 @@ cd to frequent directory in eshell, an Emacs port of https://github.com/rupa/z
   :after eshell)
 #+end_src
 **** [[https://github.com/Ambrevar/emacs-fish-completion][emacs-fish-completion]]
+#+begin_quote
+Fish completion for Emacs and Eshell
+#+end_quote
 #+begin_src emacs-lisp
 (use-package emacs-fish-completion
   :after eshell
@@ -3820,11 +3937,17 @@ cd to frequent directory in eshell, an Emacs port of https://github.com/rupa/z
   :hook (eshell-mode . fish-completion-mode))
 #+end_src
 **** [[https://github.com/leoliu/pcmpl-git-el][pcmpl-git]]
+#+begin_quote
+Emacs pcomplete for git
+#+end_quote
 #+begin_src emacs-lisp
 (use-package pcmpl-git
   :after eshell)
 #+end_src
 **** [[https://github.com/dieggsy/company-eshell-autosuggest][company-eshell-autosuggest]]
+#+begin_quote
+Fish-like autosuggestions in eshell.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package company-eshell-autosuggest
   :hook (eshell-mode . company-eshell-autosuggest-mode)
@@ -3834,6 +3957,9 @@ cd to frequent directory in eshell, an Emacs port of https://github.com/rupa/z
   (company-eshell-autosuggest-selection-keys '("<right>" "<S-return>")))
 #+end_src
 **** [[https://github.com/dieggsy/eshell-thefuck][eshell-thefuck]]
+#+begin_quote
+Correct the previous eshell command.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package eshell-thefuck
   :recipe (:host github
@@ -3944,6 +4070,9 @@ Emacs support library for PDF files.
   (pdf-tools-install))
 #+end_src
 ** [[https://github.com/wasamasa/nov.el][nov.el]]
+#+begin_quote
+Major mode for reading EPUBs in Emacs
+#+end_quote
 #+begin_src emacs-lisp
 (use-package nov
   :mode ("\\.epub\\'" . nov-mode))
@@ -3962,6 +4091,9 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
 ** Dired
 *** Packages
 **** [[https://github.com/Fuco1/dired-hacks][dired-hacks]]
+#+begin_quote
+Collection of useful dired additions
+#+end_quote
 ***** dired-avfs
 #+begin_src emacs-lisp
 (use-package dired-avfs
@@ -4003,6 +4135,9 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
   :after dired)
 #+end_src
 **** [[https://github.com/purcell/diredfl][diredfl]]
+#+begin_quote
+Extra Emacs font lock rules for a more colourful dired
+#+end_quote
 #+begin_src emacs-lisp
 (use-package diredfl
   :after dired
@@ -4174,6 +4309,9 @@ Fuzzy matching for Emacs ... a la Sublime Text.
 (use-package flx)
 #+end_src
 **** [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store]]
+#+begin_quote
+Password store (pass) support
+#+end_quote
 #+begin_src emacs-lisp
 (use-package password-store
   :config
@@ -4421,11 +4559,17 @@ Org sync with Google Calendar
         org-gcal-file-alist '(("diegoamundo@gmail.com" . "~/Dropbox/org/gcal.org"))))
 #+end_src
 *** [[https://github.com/larstvei/ox-gfm][ox-gfm]]
+#+begin_quote
+Github Flavored Markdown Back-End for Org Export Engine
+#+end_quote
 #+begin_src emacs-lisp
 (use-package ox-gfm
   :after ox)
 #+end_src
 *** [[https://github.com/kaushalmodi/ox-hugo][ox-hugo]]
+#+begin_quote
+A carefully crafted Org exporter back-end for Hugo
+#+end_quote
 #+begin_src emacs-lisp
 (use-package ox-hugo
   :after ox)
@@ -4464,6 +4608,10 @@ Draws stuff in ascii.
 (use-package drawille)
 #+end_src
 *** [[https://www.gnu.org/software/emms/][emms]]
+#+begin_quote
+The Emacs Multimedia System. Plays multimedia files from Emacs using a variety
+of external players.
+#+end_quote
 #+begin_src emacs-lisp
 (use-package emms
   :disabled
@@ -4548,6 +4696,9 @@ A speed reading mode for Emacs.
 (use-package spray)
 #+end_src
 *** [[https://github.com/dieggsy/turing-machine][turing-machine]]
+#+begin_quote
+Single-tape Turing machine simulator
+#+end_quote
 #+begin_src emacs-lisp
 (use-package turing-machine)
 #+end_src
@@ -4601,7 +4752,10 @@ Source: http://tinyurl.com/lo96nwc"
  "agt" 'tetris)
 #+end_src
 * Web services
-** ERC
+** [[elisp:(find-library-other-window "erc")][ERC]]
+#+begin_quote
+An Emacs Internet Relay Chat client
+#+end_quote
 *** Defaults
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'erc
@@ -4686,6 +4840,9 @@ Source: http://tinyurl.com/lo96nwc"
 #+end_src
 *** Packages
 **** [[https://github.com/leathekd/erc-hl-nicks][erc-hl-nicks]]
+#+begin_quote
+Nickname Highlighting for ERC
+#+end_quote
 #+begin_src emacs-lisp
 (use-package erc-hl-nicks
   :recipe (:host github
@@ -4890,6 +5047,9 @@ An Emacs package for displaying the forecast from OpenWeatherMap.
         sunshine-appid (password-store-get "api/openweathermap")))
 #+end_src
 * [[https://github.com/ch11ng/exwm][EXWM]]
+#+begin_quote
+Emacs X Window Manager
+#+end_quote
 ** Startup
 #+begin_src emacs-lisp
 (use-package exwm
