@@ -4467,6 +4467,7 @@ Draws stuff in ascii.
 *** [[https://www.gnu.org/software/emms/][emms]]
 #+begin_src emacs-lisp
 (use-package emms
+  :disabled
   :commands emms-smart-browse
   :general
   (d/leader-keys
@@ -4485,15 +4486,7 @@ Draws stuff in ascii.
         emms-seek-seconds 5)
   (require 'emms-player-mpd)
   (add-to-list 'emms-player-list 'emms-player-mpd)
-  (emms-player-mpd-connect)
-  ;; (nmap :keymaps emms-browser-mode-map
-  ;;   "SPC" 'emms-browser-toggle-subitems)
-  ;; (defhydra h/emms (:hint nil/)
-  ;;     "
-  ;;      ⏯
-  ;;     _p_
-  ;; ")
-  )
+  (emms-player-mpd-connect))
 #+end_src
 *** [[https://github.com/johanvts/emacs-fireplace/][fireplace]]
 #+begin_quote
