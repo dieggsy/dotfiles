@@ -4777,7 +4777,8 @@ An Emacs Internet Relay Chat client
                                        "#lisp"
                                        "#chicken"
                                        "#nixos"))
-        erc-log-channels-directory (no-littering-expand-var-file-name "erc/logs"))
+        erc-log-channels-directory (no-littering-expand-var-file-name "erc/logs")
+        erc-generate-log-file-name-function 'erc-generate-log-file-name-short)
 
   (erc-define-catalog-entry 'english 'ACTION "         *\t%n %a"))
 #+end_src
