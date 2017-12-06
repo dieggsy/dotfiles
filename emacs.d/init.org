@@ -1579,6 +1579,14 @@ set bookmarks, maybe annotate them, jump to them later
   (d/leader-keys "fB" 'bookmark-jump-other-window
                  "fb" 'bookmark-jump))
 #+end_src
+*** [[elisp:(find-library-other-window "ediff")][ediff]]
+#+begin_src emacs-lisp
+(use-package ediff
+  :custom
+  (ediff-window-setup-function 'ediff-setup-windows-plain)
+  (ediff-split-window-function 'split-window-horizontally)
+  (ediff-diff-options "-w"))
+#+end_src
 ** Packages
 *** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
 #+begin_quote
