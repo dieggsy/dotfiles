@@ -466,6 +466,14 @@ I went for it. Now I'll never go back.
   (d/with-eval-after-load 'exwm
     (setq evil-embrace-show-help-p nil)))
 #+end_src
+***** [[https://github.com/emacs-evil/evil-ediff][evil-ediff]]
+#+begin_quote
+Make ediff a little more evil
+#+end_quote
+#+begin_src emacs-lisp
+(use-package evil-ediff
+  :after ediff)
+#+end_src
 ***** [[https://github.com/TheBB/evil-indent-plus][evil-indent-plus]]
 #+begin_quote
 Better indent textobjects for evil
