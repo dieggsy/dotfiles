@@ -29,7 +29,7 @@ there's that.
 - [[#appearance][Appearance]]
 - [[#dev][Dev]]
 - [[#tools][Tools]]
-- [[#enhancements][Enhancements]]
+- [[#emacs-enhancements][Emacs Enhancements]]
 - [[#fun][Fun]]
 - [[#web-services][Web services]]
 - [[#exwm][EXWM]]
@@ -388,6 +388,7 @@ The extensible vi layer for Emacs.
 I really like Vim bindings. I originally learned Emacs bindings but there was
 something really appealing about the simplicity and power of modal editing. So
 I went for it. Now I'll never go back.
+**** package
 #+begin_src emacs-lisp
 (use-package evil
   :demand t
@@ -423,6 +424,101 @@ I went for it. Now I'll never go back.
   (evil-ex-define-cmd "dtw" #'delete-trailing-whitespace)
 
   (evil-mode 1))
+#+end_src
+**** support
+***** [[https://github.com/syohex/emacs-evil-anzu][evil-anzu]]
+#+begin_src emacs-lisp
+(use-package evil-anzu
+  :defer 15
+  :config
+  (setq anzu-cons-mode-line-p nil)
+  (defun d/anzu-update-mode-line (here total)
+    (when anzu--state
+      (let ((status (cl-case anzu--state
+                      (search (format "%s/%d%s"
+                                      (anzu--format-here-position here total)
+                                      total (if anzu--overflow-p "+" "")))
+                      (replace-query (format "(%d replace)" total))
+                      (replace (format "(%d/%d)" here total)))))
+        status)))
+  (setq anzu-mode-line-update-function #'d/anzu-update-mode-line))
+#+end_src
+***** [[https://github.com/cute-jumper/evil-embrace.el][evil-embrace]]
+#+begin_src emacs-lisp
+(use-package evil-embrace
+  :after evil-surround
+  :hook (org-mode . embrace-org-mode-hook)
+  :config
+  (evil-embrace-enable-evil-surround-integration)
+  (d/with-eval-after-load 'exwm
+    (setq evil-embrace-show-help-p nil)))
+#+end_src
+***** [[https://github.com/TheBB/evil-indent-plus][evil-indent-plus]]
+#+begin_quote
+Better indent textobjects for evil
+#+end_quote
+#+begin_src emacs-lisp
+(use-package evil-indent-plus
+  :defer 15
+  :config
+  (evil-indent-plus-default-bindings))
+#+end_src
+***** [[https://github.com/emacs-evil/evil-magit][evil-magit]]
+#+begin_quote
+Black magic or evil keys for magit
+#+end_quote
+#+begin_src emacs-lisp
+(use-package evil-magit
+  :after magit
+  :config)
+#+end_src
+***** [[https://github.com/redguardtoo/evil-matchit][evil-matchit]]
+#+begin_src emacs-lisp
+(use-package evil-matchit
+  :defer 15
+  :config (global-evil-matchit-mode 1))
+#+end_src
+***** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
+#+begin_quote
+Comment/uncomment lines efficiently. Like Nerd Commenter in Vim
+#+end_quote
+#+begin_src emacs-lisp
+(use-package evil-nerd-commenter
+  :general
+  (nmap
+    "gc" 'evilnc-comment-operator
+    "gy" 'evilnc-copy-and-comment-lines)
+  (d/leader-keys
+   ";"  'evilnc-comment-operator
+   "c"  '(:ignore t :wk "comment")
+   "ci" 'd/comment-or-uncomment-lines-inverse
+   "cl" 'evilnc-comment-or-uncomment-lines
+   "cp" 'evilnc-comment-or-uncomment-paragraphs
+   "ct" 'evilnc-comment-or-uncomment-to-the-line
+   "cy" 'evilnc-copy-and-comment-lines)
+  :config
+  (defun d/comment-or-uncomment-lines-inverse (&optional arg)
+    "Source: https://git.io/vQKza"
+    (interactive "p")
+    (let ((evilnc-invert-comment-line-by-line t))
+      (evilnc-comment-or-uncomment-lines arg))))
+#+end_src
+***** [[https://github.com/dieggsy/evil-numbers][evil-numbers]]
+#+begin_quote
+Increment and decrement numbers in Emacs
+#+end_quote
+#+begin_src emacs-lisp
+(use-package evil-numbers
+  :recipe (:host github
+           :repo "dieggsy/evil-numbers"
+           :upstream (:host github
+                      :repo "cofi/evil-numbers")))
+#+end_src
+***** [[https://github.com/emacs-evil/evil-surround][evil-surround]]
+#+begin_src emacs-lisp
+(use-package evil-surround
+  :config
+  (global-evil-surround-mode 1))
 #+end_src
 *** [[https://github.com/abo-abo/swiper][ivy]]
 #+begin_quote
@@ -1033,6 +1129,82 @@ Source: https://git.io/vQKEa"
 (d/setup-hook org-mode
   (setq-local prettify-symbols-alist d/org-prettify-alist))
 #+end_src
+**** Export backends
+***** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
+#+begin_quote
+Another org-mode exporter via pandoc.
+#+end_quote
+Translates Org-mode file to various other formats via Pandoc. Pretty neat.
+#+begin_src emacs-lisp
+(use-package ox-pandoc
+  :after ox
+  :disabled
+  :if (executable-find "pandoc")
+  :config
+  ;; default options for all output formats
+  (setq org-pandoc-options '((standalone . t)
+                             (latex-engine . xelatex)
+                             (mathjax . t)
+                             (parse-raw . t)))
+  ;; cancel above settings only for 'docx' format
+  (setq org-pandoc-options-for-docx '((standalone . nil))))
+#+end_src
+***** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
+#+begin_quote
+Export org-mode docs as HTML compatible with Twitter Bootstrap.
+#+end_quote
+#+begin_src emacs-lisp
+(use-package ox-twbs
+  :after ox)
+#+end_src
+***** [[https://github.com/larstvei/ox-gfm][ox-gfm]]
+#+begin_quote
+Github Flavored Markdown Back-End for Org Export Engine
+#+end_quote
+#+begin_src emacs-lisp
+(use-package ox-gfm
+  :after ox)
+#+end_src
+***** [[https://github.com/kaushalmodi/ox-hugo][ox-hugo]]
+#+begin_quote
+A carefully crafted Org exporter back-end for Hugo
+#+end_quote
+#+begin_src emacs-lisp
+(use-package ox-hugo
+  :after ox)
+#+end_src
+**** Babel extras
+***** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
+#+begin_quote
+org-babel integration with Jupyter for evaluation of (Python by default) code blocks
+#+end_quote
+#+begin_src emacs-lisp :tangle no
+(use-package ob-ipython
+  :after org)
+#+end_src
+**** Enhancements
+***** [[https://github.com/snosov1/toc-org][toc-org]]
+#+begin_quote
+toc-org is an Emacs utility to have an up-to-date table of contents in the
+  org files without exporting (useful primarily for readme files on GitHub)
+#+end_quote
+#+begin_src emacs-lisp
+(use-package toc-org
+  :after org
+  :hook (org-mode . toc-org-enable))
+#+end_src
+***** [[https://github.com/myuhe/org-gcal.el][org-gcal]]
+#+begin_quote
+Org sync with Google Calendar
+#+end_quote
+#+begin_src emacs-lisp
+(use-package org-gcal
+  :commands org-gcal-sync
+  :config
+  (setq org-gcal-client-id (password-store-get "api/org-gcal-id")
+        org-gcal-client-secret (password-store-get "api/org-gcal-secret")
+        org-gcal-file-alist '(("diegoamundo@gmail.com" . "~/Dropbox/org/gcal.org"))))
+#+end_src
 ** Bindings
 *** Leader
 #+begin_src emacs-lisp
@@ -1405,7 +1577,63 @@ Make Emacs' delete-by-moving-to-trash do what you expect it to do on OS X.
   (osx-trash-setup)
   (setq delete-by-moving-to-trash t))
 #+end_src
-*** [[https://github.com/emacsmirror/dired-du][dired-du]]
+*** dired enhancements
+**** [[https://github.com/Fuco1/dired-hacks][dired-hacks]]
+#+begin_quote
+Collection of useful dired additions
+#+end_quote
+***** dired-avfs
+#+begin_src emacs-lisp
+(use-package dired-avfs
+  :disabled
+  :after dired)
+#+end_src
+***** dired-open
+#+begin_src emacs-lisp
+(use-package dired-open
+  :after dired)
+#+end_src
+***** dired-rainbow
+#+begin_src emacs-lisp
+(use-package dired-rainbow
+  :after dired
+  :config
+  (dired-rainbow-define-chmod executable-unix "#B8BB26" "-[rw-]+x.*"))
+#+end_src
+***** dired-collpase
+#+begin_src emacs-lisp
+(use-package dired-collapse
+  :hook (dired-mode . dired-collapse-mode)
+  :after dired)
+#+end_src
+***** dired-subtree
+#+begin_src emacs-lisp
+(use-package dired-subtree
+  :after dired
+  :disabled
+  :general
+  (nmap dired-mode-map
+    "TAB" 'dired-subtree-toggle))
+#+end_src
+**** dired-git
+#+begin_src emacs-lisp
+(use-package dired-git
+  :ensure nil
+  :disabled
+  :after dired)
+#+end_src
+**** [[https://github.com/purcell/diredfl][diredfl]]
+#+begin_quote
+Extra Emacs font lock rules for a more colourful dired
+#+end_quote
+#+begin_src emacs-lisp
+(use-package diredfl
+  :after dired
+  :hook (dired-mode . diredfl-mode)
+  :custom
+  (diredfl-ignore-compressed-flag nil))
+#+end_src
+**** [[https://github.com/emacsmirror/dired-du][dired-du]]
 #+begin_quote
 Dired with recursive directory sizes
 #+end_quote
@@ -4087,67 +4315,9 @@ I wanted a slightly better terminal in emacs. This seems to do the trick.
   :after term
   :general (d/leader-keys "at" 'sane-term-create))
 #+end_src
-* Enhancements
-** Dired
-*** Packages
-**** [[https://github.com/Fuco1/dired-hacks][dired-hacks]]
-#+begin_quote
-Collection of useful dired additions
-#+end_quote
-***** dired-avfs
-#+begin_src emacs-lisp
-(use-package dired-avfs
-  :disabled
-  :after dired)
-#+end_src
-***** dired-open
-#+begin_src emacs-lisp
-(use-package dired-open
-  :after dired)
-#+end_src
-***** dired-rainbow
-#+begin_src emacs-lisp
-(use-package dired-rainbow
-  :after dired
-  :config
-  (dired-rainbow-define-chmod executable-unix "#B8BB26" "-[rw-]+x.*"))
-#+end_src
-***** dired-collpase
-#+begin_src emacs-lisp
-(use-package dired-collapse
-  :hook (dired-mode . dired-collapse-mode)
-  :after dired)
-#+end_src
-***** dired-subtree
-#+begin_src emacs-lisp
-(use-package dired-subtree
-  :after dired
-  :disabled
-  :general
-  (nmap dired-mode-map
-    "TAB" 'dired-subtree-toggle))
-#+end_src
-**** dired-git
-#+begin_src emacs-lisp
-(use-package dired-git
-  :ensure nil
-  :disabled
-  :after dired)
-#+end_src
-**** [[https://github.com/purcell/diredfl][diredfl]]
-#+begin_quote
-Extra Emacs font lock rules for a more colourful dired
-#+end_quote
-#+begin_src emacs-lisp
-(use-package diredfl
-  :after dired
-  :hook (dired-mode . diredfl-mode)
-  :custom
-  (diredfl-ignore-compressed-flag nil))
-#+end_src
-** Emacs
-*** Packages
-**** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
+* Emacs Enhancements
+** Packages
+*** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
 #+begin_quote
 Cursor stays vertically centered.
 #+end_quote
@@ -4155,7 +4325,7 @@ I use this for reading, mostly.
 #+begin_src emacs-lisp
 (use-package centered-cursor-mode)
 #+end_src
-**** [[https://github.com/bbatsov/crux][crux]]
+*** [[https://github.com/bbatsov/crux][crux]]
 #+begin_quote
 A Collection of Ridiculously Useful eXtensions for Emacs
 #+end_quote
@@ -4174,7 +4344,7 @@ A Collection of Ridiculously Useful eXtensions for Emacs
   (crux-with-region-or-buffer tabify)
   (crux-with-region-or-buffer fill-region))
 #+end_src
-**** [[https://github.com/purcell/disable-mouse][disable-mouse]]
+*** [[https://github.com/purcell/disable-mouse][disable-mouse]]
 #+begin_quote
 Disable the mouse in Emacs
 #+end_quote
@@ -4206,7 +4376,7 @@ Disable the mouse in Emacs
                  [triple-wheel-up]))
     (define-key evil-motion-state-map key #'ignore)))
 #+end_src
-**** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
+*** [[https://github.com/justbur/emacs-which-key][emacs-which-key]]
 #+begin_quote
 Emacs package that displays available keybindings in popup
 #+end_quote
@@ -4292,7 +4462,7 @@ Emacs package that displays available keybindings in popup
 #+begin_quote
 Package to display keyboard macros or latest interactive commands as emacs lisp.
 #+end_quote
-**** [[https://github.com/jschaf/esup][esup]]
+*** [[https://github.com/jschaf/esup][esup]]
 #+begin_quote
 ESUP - Emacs Start Up Profiler
 #+end_quote
@@ -4301,14 +4471,14 @@ ESUP - Emacs Start Up Profiler
   :config
   (setq esup-insignificant-time 0.001))
 #+end_src
-**** [[https://github.com/lewang/flx][flx]]
+*** [[https://github.com/lewang/flx][flx]]
 #+begin_quote
 Fuzzy matching for Emacs ... a la Sublime Text.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package flx)
 #+end_src
-**** [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store]]
+*** [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store]]
 #+begin_quote
 Password store (pass) support
 #+end_quote
@@ -4317,7 +4487,7 @@ Password store (pass) support
   :config
   (setq password-store-password-length 20))
 #+end_src
-**** [[https://github.com/Fanael/persistent-scratch][persistent-scratch]]
+*** [[https://github.com/Fanael/persistent-scratch][persistent-scratch]]
 #+begin_quote
 Preserve the scratch buffer across Emacs sessions
 #+end_quote
@@ -4327,7 +4497,7 @@ Preserve the scratch buffer across Emacs sessions
   :config
   (persistent-scratch-setup-default))
 #+end_src
-**** [[https://github.com/iqbalansari/restart-emacs][restart-emacs]]
+*** [[https://github.com/iqbalansari/restart-emacs][restart-emacs]]
 #+begin_quote
 A simple emacs package to restart emacs from within emacs.
 #+end_quote
@@ -4338,7 +4508,7 @@ SUPER nifty.
   :init
   (evil-ex-define-cmd "qr[estart]" 'restart-emacs))
 #+end_src
-**** [[https://github.com/nonsequitur/smex][smex]]
+*** [[https://github.com/nonsequitur/smex][smex]]
 #+begin_quote
 A smart M-x enhancement for Emacs.
 #+end_quote
@@ -4346,8 +4516,8 @@ Sorts ivy by most recently used, I think.
 #+begin_src emacs-lisp
 (use-package smex)
 #+end_src
-*** Hydras
-**** toggle
+** Hydras
+*** toggle
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'hydra
   (defhydra d/toggle
@@ -4382,102 +4552,6 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
            (setq d/show-async-tangle-results t)) nil)
     ("q" nil)))
 #+end_src
-** Evil
-*** Packages
-**** [[https://github.com/syohex/emacs-evil-anzu][evil-anzu]]
-#+begin_src emacs-lisp
-(use-package evil-anzu
-  :defer 15
-  :config
-  (setq anzu-cons-mode-line-p nil)
-  (defun d/anzu-update-mode-line (here total)
-    (when anzu--state
-      (let ((status (cl-case anzu--state
-                      (search (format "%s/%d%s"
-                                      (anzu--format-here-position here total)
-                                      total (if anzu--overflow-p "+" "")))
-                      (replace-query (format "(%d replace)" total))
-                      (replace (format "(%d/%d)" here total)))))
-        status)))
-  (setq anzu-mode-line-update-function #'d/anzu-update-mode-line))
-#+end_src
-**** [[https://github.com/TheBB/evil-indent-plus][evil-indent-plus]]
-#+begin_quote
-Better indent textobjects for evil
-#+end_quote
-#+begin_src emacs-lisp
-(use-package evil-indent-plus
-  :defer 15
-  :config
-  (evil-indent-plus-default-bindings))
-#+end_src
-**** [[https://github.com/emacs-evil/evil-magit][evil-magit]]
-#+begin_quote
-Black magic or evil keys for magit
-#+end_quote
-#+begin_src emacs-lisp
-(use-package evil-magit
-  :after magit
-  :config)
-#+end_src
-**** [[https://github.com/redguardtoo/evil-matchit][evil-matchit]]
-#+begin_src emacs-lisp
-(use-package evil-matchit
-  :defer 15
-  :config (global-evil-matchit-mode 1))
-#+end_src
-**** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
-#+begin_quote
-Comment/uncomment lines efficiently. Like Nerd Commenter in Vim
-#+end_quote
-#+begin_src emacs-lisp
-(use-package evil-nerd-commenter
-  :general
-  (nmap
-    "gc" 'evilnc-comment-operator
-    "gy" 'evilnc-copy-and-comment-lines)
-  (d/leader-keys
-   ";"  'evilnc-comment-operator
-   "c"  '(:ignore t :wk "comment")
-   "ci" 'd/comment-or-uncomment-lines-inverse
-   "cl" 'evilnc-comment-or-uncomment-lines
-   "cp" 'evilnc-comment-or-uncomment-paragraphs
-   "ct" 'evilnc-comment-or-uncomment-to-the-line
-   "cy" 'evilnc-copy-and-comment-lines)
-  :config
-  (defun d/comment-or-uncomment-lines-inverse (&optional arg)
-    "Source: https://git.io/vQKza"
-    (interactive "p")
-    (let ((evilnc-invert-comment-line-by-line t))
-      (evilnc-comment-or-uncomment-lines arg))))
-#+end_src
-**** [[https://github.com/dieggsy/evil-numbers][evil-numbers]]
-#+begin_quote
-Increment and decrement numbers in Emacs
-#+end_quote
-#+begin_src emacs-lisp
-(use-package evil-numbers
-  :recipe (:host github
-           :repo "dieggsy/evil-numbers"
-           :upstream (:host github
-                      :repo "cofi/evil-numbers")))
-#+end_src
-**** [[https://github.com/emacs-evil/evil-surround][evil-surround]]
-#+begin_src emacs-lisp
-(use-package evil-surround
-  :config
-  (global-evil-surround-mode 1))
-#+end_src
-**** [[https://github.com/cute-jumper/evil-embrace.el][evil-embrace]]
-#+begin_src emacs-lisp
-(use-package evil-embrace
-  :after evil-surround
-  :hook (org-mode . embrace-org-mode-hook)
-  :config
-  (evil-embrace-enable-evil-surround-integration)
-  (d/with-eval-after-load 'exwm
-    (setq evil-embrace-show-help-p nil)))
-#+end_src
 *** Bindings
 #+begin_src emacs-lisp
 (nmap custom-mode-map
@@ -4499,103 +4573,6 @@ Increment and decrement numbers in Emacs
 (evil-add-hjkl-bindings proced-mode-map 'normal
   "n" 'evil-ex-search-next
   "K" 'proced-send-signal)
-#+end_src
-** Org
-*** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
-#+begin_quote
-org-babel integration with Jupyter for evaluation of (Python by default) code blocks
-#+end_quote
-#+begin_src emacs-lisp :tangle no
-(use-package ob-ipython
-  :after org)
-#+end_src
-*** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
-#+begin_quote
-Another org-mode exporter via pandoc.
-#+end_quote
-Translates Org-mode file to various other formats via Pandoc. Pretty neat.
-#+begin_src emacs-lisp
-(use-package ox-pandoc
-  :after ox
-  :disabled
-  :if (executable-find "pandoc")
-  :config
-  ;; default options for all output formats
-  (setq org-pandoc-options '((standalone . t)
-                             (latex-engine . xelatex)
-                             (mathjax . t)
-                             (parse-raw . t)))
-  ;; cancel above settings only for 'docx' format
-  (setq org-pandoc-options-for-docx '((standalone . nil))))
-#+end_src
-*** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
-#+begin_quote
-Export org-mode docs as HTML compatible with Twitter Bootstrap.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package ox-twbs
-  :after ox)
-#+end_src
-*** [[https://github.com/snosov1/toc-org][toc-org]]
-#+begin_quote
-toc-org is an Emacs utility to have an up-to-date table of contents in the
-  org files without exporting (useful primarily for readme files on GitHub)
-#+end_quote
-#+begin_src emacs-lisp
-(use-package toc-org
-  :after org
-  :hook (org-mode . toc-org-enable))
-#+end_src
-*** [[https://github.com/myuhe/org-gcal.el][org-gcal]]
-#+begin_quote
-Org sync with Google Calendar
-#+end_quote
-#+begin_src emacs-lisp
-(use-package org-gcal
-  :commands org-gcal-sync
-  :config
-  (setq org-gcal-client-id (password-store-get "api/org-gcal-id")
-        org-gcal-client-secret (password-store-get "api/org-gcal-secret")
-        org-gcal-file-alist '(("diegoamundo@gmail.com" . "~/Dropbox/org/gcal.org"))))
-#+end_src
-*** [[https://github.com/larstvei/ox-gfm][ox-gfm]]
-#+begin_quote
-Github Flavored Markdown Back-End for Org Export Engine
-#+end_quote
-#+begin_src emacs-lisp
-(use-package ox-gfm
-  :after ox)
-#+end_src
-*** [[https://github.com/kaushalmodi/ox-hugo][ox-hugo]]
-#+begin_quote
-A carefully crafted Org exporter back-end for Hugo
-#+end_quote
-#+begin_src emacs-lisp
-(use-package ox-hugo
-  :after ox)
-#+end_src
-** Elfeed
-*** [[https://github.com/remyhonig/elfeed-org][elfeed-org]]
-#+begin_quote
-Configure the Elfeed RSS reader with an Orgmode file
-#+end_quote
-#+begin_src emacs-lisp :tangle no
-(use-package elfeed-org
-  :after elfeed
-  :config
-  (elfeed-org))
-#+end_src
-
-*** [[https://github.com/algernon/elfeed-goodies][elfeed-goodies]]
-#+begin_quote
-Various goodies for Elfeed
-#+end_quote
-#+begin_src emacs-lisp :tangle no
-(use-package elfeed-goodies
-  :after elfeed
-  :config
-  (elfeed-goodies/setup)
-  (setq elfeed-goodies/entry-pane-position 'bottom))
 #+end_src
 * Fun
 ** Packages
@@ -4752,11 +4729,12 @@ Source: http://tinyurl.com/lo96nwc"
  "agt" 'tetris)
 #+end_src
 * Web services
-** [[elisp:(find-library-other-window "erc")][ERC]]
+** Built-in
+*** [[elisp:(find-library-other-window "erc")][ERC]]
 #+begin_quote
 An Emacs Internet Relay Chat client
 #+end_quote
-*** Defaults
+**** Defaults
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'erc
   (require 's)
@@ -4802,7 +4780,7 @@ An Emacs Internet Relay Chat client
 
   (erc-define-catalog-entry 'english 'ACTION "         *\t%n %a"))
 #+end_src
-*** Built-in
+**** Built-in
 #+begin_src emacs-lisp
 (use-package erc
   :ensure nil
@@ -4838,30 +4816,13 @@ An Emacs Internet Relay Chat client
   (add-hook 'window-configuration-change-hook #'d/erc-to-bottom)
   (add-hook 'erc-insert-post-hook #'erc-save-buffer-in-logs))
 #+end_src
-*** Packages
-**** [[https://github.com/leathekd/erc-hl-nicks][erc-hl-nicks]]
-#+begin_quote
-Nickname Highlighting for ERC
-#+end_quote
-#+begin_src emacs-lisp
-(use-package erc-hl-nicks
-  :recipe (:host github
-           :repo "dieggsy/erc-hl-nicks"
-           :upstream (:host github
-                      :repo "leathekd/erc-hl-nicks"))
-  :after erc
-  :config
-  (setq erc-hl-nicks-skip-nicks '("diegs" "dieggsy")
-        erc-lurker-ignore-chars erc-hl-nicks-ignore-chars)
-  (push "erc-current-nick-face" erc-hl-nicks-skip-faces))
-#+end_src
-*** Variables
+**** Variables
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'erc
   (defvar d/erc-last-speaker (make-hash-table :test 'equal))
   (setq erc-lurker-state (make-hash-table :test 'equal)))
 #+end_src
-*** Functions
+**** Functions
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'erc
   (defmacro d/erc-nick-format-function-body (cond nick &optional else)
@@ -4988,17 +4949,34 @@ Source: http://tinyurl.com/y8tj8vxx"
     (and (eq major-mode 'erc-mode)
          (erc-scroll-to-bottom))))
 #+end_src
-*** Setup
+**** Setup
 #+begin_src emacs-lisp
 (d/setup-hook erc-mode
   (setq tab-width 5))
 #+end_src
 ** Packages
+*** [[https://github.com/leathekd/erc-hl-nicks][erc-hl-nicks]]
+#+begin_quote
+Nickname Highlighting for ERC
+#+end_quote
+#+begin_src emacs-lisp
+(use-package erc-hl-nicks
+  :recipe (:host github
+           :repo "dieggsy/erc-hl-nicks"
+           :upstream (:host github
+                      :repo "leathekd/erc-hl-nicks"))
+  :after erc
+  :config
+  (setq erc-hl-nicks-skip-nicks '("diegs" "dieggsy")
+        erc-lurker-ignore-chars erc-hl-nicks-ignore-chars)
+  (push "erc-current-nick-face" erc-hl-nicks-skip-faces))
+#+end_src
 *** [[https://github.com/skeeto/elfeed][elfeed]]
 #+begin_quote
 An Emacs web feeds client
 #+end_quote
 Configure the Elfeed RSS reader with an Orgmode file
+**** Package
 #+begin_src emacs-lisp :tangle no
 (use-package elfeed
   :general
@@ -5031,6 +5009,28 @@ Configure the Elfeed RSS reader with an Orgmode file
     "y" 'elfeed-show-yank)
   :config
   (add-hook 'elfeed-search-mode-hook (lambda () (evil-smartparens-mode -1))))
+#+end_src
+**** Enhancements
+***** [[https://github.com/remyhonig/elfeed-org][elfeed-org]]
+#+begin_quote
+Configure the Elfeed RSS reader with an Orgmode file
+#+end_quote
+#+begin_src emacs-lisp :tangle no
+(use-package elfeed-org
+  :after elfeed
+  :config
+  (elfeed-org))
+#+end_src
+***** [[https://github.com/algernon/elfeed-goodies][elfeed-goodies]]
+#+begin_quote
+Various goodies for Elfeed
+#+end_quote
+#+begin_src emacs-lisp :tangle no
+(use-package elfeed-goodies
+  :after elfeed
+  :config
+  (elfeed-goodies/setup)
+  (setq elfeed-goodies/entry-pane-position 'bottom))
 #+end_src
 *** [[https://github.com/aaronbieber/sunshine.el][sunshine]]
 #+begin_quote
