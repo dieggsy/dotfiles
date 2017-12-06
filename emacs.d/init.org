@@ -432,7 +432,7 @@ A really nice search/completion system for emacs.
 #+begin_src emacs-lisp
 (use-package ivy
   :general
-  (:keymaps 'ivy-minibuffer-map
+  (ivy-minibuffer-map
    [escape] 'keyboard-escape-quit
    "C-/" 'keyboard-escape-quit
    [S-return] 'ivy-dispatching-done-hydra
@@ -1060,15 +1060,15 @@ A convenient full-screen binding I'm used to from iTerm.
 I like to use ~C-/~ as Evil/Vim's ~C-[~ since I use a Dvorak keyboard, so I like to
 also use these keys to quit out of the minibuffer.
 #+begin_src emacs-lisp
-(general-define-key
- :keymaps '(minibuffer-local-map
-            minibuffer-local-ns-map
-            minibuffer-local-completion-map
-            minibuffer-local-must-match-map
-            minibuffer-local-isearch-map)
- [?\C-/]  'minibuffer-keyboard-quit
- [?\C-_]  'minibuffer-keyboard-quit
- [escape] 'minibuffer-keyboard-quit)
+(general-def
+  (minibuffer-local-map
+   minibuffer-local-ns-map
+   minibuffer-local-completion-map
+   minibuffer-local-must-match-map
+   minibuffer-local-isearch-map)
+  [?\C-/]  'minibuffer-keyboard-quit
+  [?\C-_]  'minibuffer-keyboard-quit
+  [escape] 'minibuffer-keyboard-quit)
 
 #+end_src
 *** Ret
@@ -1082,9 +1082,8 @@ also use these keys to quit out of the minibuffer.
 #+end_src
 *** universal argument
 #+begin_src emacs-lisp
-(general-define-key
- :keymaps 'universal-argument-map
- "SPC u" 'universal-argument-more)
+(general-def universal-argument-map
+  "SPC u" 'universal-argument-more)
 #+end_src
 * Help
 ** Built-in
@@ -1346,10 +1345,10 @@ Executable
 #+begin_src emacs-lisp
 (use-package ibuffer
   :general
-  (:keymaps 'ibuffer-mode-map
+  (ibuffer-mode-map
    "TAB" 'ibuffer-toggle-filter-group
    "<backtab>" 'ibuffer-toggle-filter-group)
-  (:keymaps 'ibuffer-mode-filter-group-map
+  (ibuffer-mode-filter-group-map
    "J" 'ibuffer-forward-filter-group
    "K" 'ibuffer-backward-filter-group
    "RET" 'ibuffer-toggle-marks)
@@ -1611,7 +1610,7 @@ Supposedly better than autocomplete.
 (use-package company
   :defer 5
   :general
-  (:keymaps 'company-active-map
+  (company-active-map
    [tab] 'company-complete-common-or-cycle)
   :custom
   (company-idle-delay 0.3)
@@ -1721,10 +1720,10 @@ short and sweet LISP editing
   :hook ((lispy-mode . d/lispy-fontify-headlines)
          ((emacs-lisp-mode lisp-mode scheme-mode) . lispy-mode))
   :general
-  (general-define-key :keymaps 'lispy-mode-map-lispy
-    [tab] (general-predicate-dispatch nil
-            (save-excursion (beginning-of-line) (looking-at lispy-outline))
-            'd/lispy-cycle))
+  (lispy-mode-map-lispy
+   [tab] (general-predicate-dispatch nil
+           (save-excursion (beginning-of-line) (looking-at lispy-outline))
+           'd/lispy-cycle))
   :config
   (defun d/lispy-cycle ()
     (interactive)
@@ -3768,13 +3767,13 @@ Fringe version of git-gutter.el
   (eshell-cmpl-compare-entry-function 'string-lessp)
   :init
   (d/setup-hook eshell-mode
-    (imap :keymaps 'eshell-mode-map
+    (imap eshell-mode-map
       [remap eshell-pcomplete] 'completion-at-point
       "C-p" (general-predicate-dispatch nil
               (eshell-point-within-input-p (point)) 'eshell/ivy-ps)
       "C-r" 'eshell/ivy-history
       "C-c C-l" 'd/eshell-clear-keystroke)
-    (nmap :keymaps 'eshell-mode-map
+    (nmap eshell-mode-map
       "G" 'end-of-buffer))
   :config
   (d/setup-hook eshell-directory-change
