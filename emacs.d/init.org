@@ -452,7 +452,7 @@ I went for it. Now I'll never go back.
            :repo "jojojames/evil-collection")
   :init
   (require 'evil-minibuffer)
-  (evil-minibuffer-init)
+  (evil-collection-minibuffer-init)
   (evil-collection-init))
 #+end_src
 ***** [[https://github.com/cute-jumper/evil-embrace.el][evil-embrace]]
