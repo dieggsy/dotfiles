@@ -450,6 +450,8 @@ I went for it. Now I'll never go back.
 (use-package evil-collection
   :recipe (:host github
            :repo "jojojames/evil-collection")
+  :custom
+  (evil-collection-company-use-tng nil)
   :init
   (require 'evil-minibuffer)
   (evil-collection-minibuffer-init)
