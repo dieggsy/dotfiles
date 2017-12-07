@@ -20,7 +20,6 @@ there's that.
 * Contents                                                            :toc_1:
 - [[#intro][Intro]]
 - [[#initial-setup][Initial Setup]]
-- [[#preface][Preface]]
 - [[#core][Core]]
 - [[#help][Help]]
 - [[#filesbuffers][Files/Buffers]]
@@ -36,12 +35,13 @@ there's that.
 - [[#finalize][Finalize]]
 
 * Initial Setup
-** Lexical binding
+** Details
+*** Lexical bindinga
 In accordance with the [[https://github.com/bbatsov/emacs-lisp-style-guide#source-code-layout--organization][emacs-lisp-style-guide]].
 #+begin_src emacs-lisp :comments no :cond-case no :padline no
 ;;; -*- lexical-binding: t -*-
 #+end_src
-** package-initialize
+*** package-initialize
 ~package.el~ is annoying like that.
 #+begin_src emacs-lisp :comments no :cond-case no :padline no
 ;;(package-initialize)
@@ -177,7 +177,6 @@ defer and ensure packages are installed unless otherwise stated.
 (eval-when-compile
   (require 'use-package))
 #+end_src
-* Preface
 ** Packages
 *** [[https://github.com/tarsius/no-littering/][no-littering]]
 #+begin_quote
