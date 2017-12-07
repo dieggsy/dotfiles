@@ -3511,6 +3511,17 @@ Port of python's difflib to emacs-lisp
   :recipe (:host github
            :repo "dieggsy/difflib.el"))
 #+end_src
+***** [[https://github.com/joddie/macrostep][macrostep]]
+#+begin_quote
+interactive macro-expander
+#+end_quote
+#+begin_src emacs-lisp
+(use-package macrostep
+  :general
+  (d/mode-leader-keys
+   :keymaps 'emacs-lisp-mode-map
+   "m" 'macrostep-expand))
+#+end_src
 **** Variables
 #+begin_src emacs-lisp
 (defvar d/lisp-prettify-alist
