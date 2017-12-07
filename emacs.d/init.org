@@ -1015,15 +1015,6 @@ Source: https://git.io/vQKEa"
                      link
                      timestamp))))))
 #+end_src
-**** Keyboard Macros
-***** TODO Turn this into an elisp function
-#+begin_src emacs-lisp
-(d/with-eval-after-load 'org
-  (fset 'd/org-wrap-with-quote
-        [?\{ ?i return ?# ?+ ?b ?e ?g ?i ?n ?_ ?q ?u ?o ?t ?e ?\C-/ ?\} ?i return
-             up ?# ?+ ?e ?n ?d ?_ ?q ?u ?o ?t ?e ?\C-/ ?\{ ?j ?i ?  ?  ?\M-q
-             ?\M-q ?\M-q ?\C-/]))
-#+end_src
 **** Bindings
 #+begin_src emacs-lisp
 (d/mode-leader-keys
