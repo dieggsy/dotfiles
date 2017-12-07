@@ -1294,13 +1294,13 @@ browse UNIX manual pages
   :config
   (setq Man-notify-method 'aggressive))
 #+end_src
-*** [[elisp:(find-library-other-window%20"info")][info]]
+*** [[elisp:(find-library-other-window "help")][help]]
 #+begin_src emacs-lisp
-(use-package Info
+(use-package help
   :ensure nil
-  :config
-  (nmap Info-mode-map
-    "i" Info-mode-map))
+  :general
+  (nmap help-mode-map
+    "SPC" nil))
 #+end_src
 ** Packages
 *** [[https://github.com/abo-abo/define-word][define-word]]
