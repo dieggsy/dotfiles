@@ -567,6 +567,8 @@ A really nice search/completion system for emacs.
    "-" 'ivy-resume
    "bb" 'ivy-switch-buffer
    "bB" 'ivy-switch-buffer-other-window)
+  (imap ivy-minibuffer-map
+    [remap sp-backward-delete-char] 'ivy-backward-delete-char)
   :config
   (ivy-mode 1)
 
