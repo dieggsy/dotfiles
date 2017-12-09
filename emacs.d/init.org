@@ -4814,7 +4814,7 @@ An Emacs Internet Relay Chat client
   :general
   (d/mode-leader-keys
    :keymaps 'erc-mode-map
-   "g" (lambda () (interactive) (let ((ivy-use-virtual-buffers nil)) (erc-switch-to-buffer))))
+   "g" 'd/erc-switch-to-buffer)
   (d/leader-keys
    "ai" 'd/erc)
   (imap erc-mode-map
@@ -4974,7 +4974,21 @@ Source: http://tinyurl.com/y8tj8vxx"
 
   (defun d/erc-to-bottom ()
     (and (eq major-mode 'erc-mode)
-         (erc-scroll-to-bottom))))
+         (erc-scroll-to-bottom)))
+
+  (defun d/erc-switch-to-buffer (&optional arg)
+    (interactive "P")
+    (let ((ivy-use-virtual-buffers nil))
+      (erc-switch-to-buffer arg)))
+
+  (defun d/erc ()
+    (interactive)
+    (erc :server "irc.freenode.net"))
+
+  (defun d/gitter ()
+    (interactive)
+    (let ((erc-server-connect-function 'erc-open-tls-stream))
+      (erc :server "irc.gitter.im"))))
 #+end_src
 **** Setup
 #+begin_src emacs-lisp
