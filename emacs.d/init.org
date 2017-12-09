@@ -3559,7 +3559,7 @@ interactive macro-expander
 Source: http://tinyurl.com/le6wxuo"
   (interactive "p")
   (save-excursion
-    (up-list (abs levels) t t)
+    (sp-end-of-sexp (abs levels))
     (eval-last-sexp nil)))
 
 (defun d/pp-eval-surrounding-sexp (levels)
@@ -3569,14 +3569,15 @@ Source: http://tinyurl.com/mh5ev6x"
   (interactive "p")
   (let (pp-escape-newlines)
     (save-excursion
-      (up-list (abs levels) t t)
+      (sp-end-of-sexp (abs levels))
       (pp-eval-last-sexp nil))))
 
 (defun d/pp-macroexpand-surrounding-sexp (levels)
   (interactive "p")
-  (save-excursion
-    (up-list (abs levels) t t)
-    (pp-macroexpand-last-sexp nil)))
+  (let (pp-escape-newlines)
+    (save-excursion
+      (sp-end-of-sexp (abs levels))
+      (pp-macroexpand-last-sexp nil))))
 
 (defun d/eval-buffer ()
   (interactive)
