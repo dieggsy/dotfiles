@@ -4812,9 +4812,12 @@ An Emacs Internet Relay Chat client
                                        "#i3"
                                        "#lisp"
                                        "#chicken"
-                                       "#nixos"))
-        erc-log-channels-directory (no-littering-expand-var-file-name "erc/logs")
-        erc-generate-log-file-name-function 'erc-generate-log-file-name-short)
+                                       "#nixos")
+                                      ("gitter.im"
+                                       "#use-package/Lobby"
+                                       "#magit/magit"
+                                       "#MobileOrg/Lobby"
+                                       "#raxod502/straight.el")))
 
   (erc-define-catalog-entry 'english 'ACTION "         *\t%n %a"))
 #+end_src
