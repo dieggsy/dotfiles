@@ -4099,6 +4099,15 @@ Yet another Emacs paste mode, this one for Gist.
     (setf gh-vals (plist-put gh-vals :username "dieggsy")
           gh-vals (plist-put gh-vals :token (password-store-get "tokens/github/gist")))))
 #+end_src
+**** [[https://github.com/vermiculus/magithub][magithub]]
+#+begin_src emacs-lisp
+(use-package magithub
+  :after magit
+  :config
+  (nmap magit-status-mode-map
+    "H" #'magithub-dispatch-popup)
+  (magithub-feature-autoinject t))
+#+end_src
 * Tools
 ** [[elisp:(find-library-other-window%20"proced")][proced]]
 #+begin_quote
