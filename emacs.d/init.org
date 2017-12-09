@@ -695,7 +695,17 @@ Source: https://git.io/vQKmf"
                        ivy-completion-end)
         (insert (substring-no-properties s))
         (setq ivy-completion-end (point))))
-    (forward-char (length s))))
+    (forward-char (length s)))
+
+  (ivy-add-actions
+   'counsel-find-file
+   '(("e"
+      (lambda (f)
+        (let ((default-directory (if (file-directory-p f)
+                                     f
+                                   (file-name-directory f))))
+          (d/eshell-here)))
+      "eshell"))))
 #+end_src
 *** [[http://orgmode.org/][org-mode]]
 #+begin_quote
