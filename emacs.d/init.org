@@ -4265,12 +4265,9 @@ Correct the previous eshell command.
 current buffer's file. The eshell is renamed to match that
 directory to make multiple eshell windows easier."
     (interactive)
-    (let* ((parent (if (buffer-file-name)
-                       (f-parent (buffer-file-name))
-                     default-directory))
-           (height (/ (window-total-height) 3))
+    (let* ((height (/ (window-total-height) 3))
            (name (format "*eshell: %s*"
-                         (f-filename parent))))
+                         (f-filename default-directory))))
       (split-window-vertically (- height))
       (other-window 1)
       (let ((buf (get-buffer name)))
