@@ -4774,10 +4774,9 @@ An Emacs Internet Relay Chat client
 **** Defaults
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'erc
-  (require 's)
-  (setq erc-prompt (format "\n%s❱❱" (s-repeat 12 "\s"))
-        erc-fill-prefix (format "%s\t" (s-repeat 10 "\s"))
-        erc-notice-prefix   (format "%s\t***\s" (s-repeat 10 "\s"))
+  (setq erc-prompt (format "\n%s❱❱" (make-string 12 ?\s))
+        erc-fill-prefix (format "%s\t" (make-string 10 ?\s))
+        erc-notice-prefix   (format "%s\t***\s" (make-string 10 ?\s))
         erc-format-nick-function 'd/erc-format-nick
         erc-nick "dieggsy"
         erc-prompt-for-password nil
@@ -4797,6 +4796,8 @@ An Emacs Internet Relay Chat client
         erc-track-priority-faces-only 'all
         erc-track-exclude-server-buffer t
         erc-format-query-as-channel-p t
+        erc-log-channels-directory (no-littering-expand-var-file-name "erc/logs")
+        erc-generate-log-file-name-function 'erc-generate-log-file-name-short
         erc-track-faces-priority-list '(erc-error-face
                                         erc-current-nick-face
                                         erc-keyword-face
