@@ -701,21 +701,6 @@ If the text hasn't changed as a result, forward to `ivy-alt-done'."
   (counsel-mode 1)
   (defalias 'locate #'counsel-locate)
 
-  (define-advice counsel-yank-pop-action (:override (s) d/paste-after)
-    "Paste text after point, which is consistent with evil-paste-after.
-
-Source: https://git.io/vQKmf"
-    (save-excursion
-      (undo-boundary)
-      (unless (eq (point) (point-max))
-        (forward-char))
-      (with-ivy-window
-        (delete-region ivy-completion-beg
-                       ivy-completion-end)
-        (insert (substring-no-properties s))
-        (setq ivy-completion-end (point))))
-    (forward-char (length s)))
-
   (ivy-add-actions
    'counsel-find-file
    '(("e"
