@@ -4242,8 +4242,9 @@ Fish-like autosuggestions in eshell.
   :hook (eshell-mode . company-eshell-autosuggest-mode)
   :recipe (:host github
            :repo "dieggsy/company-eshell-autosuggest")
-  :custom
-  (company-eshell-autosuggest-selection-keys '("<right>" "<S-return>")))
+  :general
+  (company-eshell-autosuggest-active-map
+   "<S-return>" 'company-complete-selection))
 #+end_src
 **** [[https://github.com/dieggsy/eshell-thefuck][eshell-thefuck]]
 #+begin_quote
