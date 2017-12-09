@@ -1281,11 +1281,11 @@ also use these keys to quit out of the minibuffer.
 *** Ret
 #+begin_src emacs-lisp
 (mmap "RET"
-      (general-predicate-dispatch nil
-        (thing-at-point 'url) 'goto-address-at-point
-        (d/fbound-and-true? d/org-at-openable-item?) 'org-open-at-point
-        (d/fbound-and-true? org-at-item-checkbox-p) 'org-toggle-checkbox
-        (d/fbound-and-true? org-in-src-block-p) 'org-babel-execute-src-block))
+  (general-predicate-dispatch nil
+    (d/fbound-and-true? d/org-at-openable-item?) 'org-open-at-point
+    (d/fbound-and-true? org-at-item-checkbox-p) 'org-toggle-checkbox
+    (d/fbound-and-true? org-in-src-block-p) 'org-babel-execute-src-block
+    (thing-at-point 'url) 'goto-address-at-point))
 #+end_src
 *** universal argument
 #+begin_src emacs-lisp
