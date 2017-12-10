@@ -3032,9 +3032,9 @@ ANSI & xterm-256 color text property translator for Emacs
 #+begin_src emacs-lisp
 (use-package xterm-color
   :commands xterm-color-filter
-  :hook ((eshell-mode . d/xterm-color-preserve-color-properties))
+  :hook ((eshell-before-prompt . d/xterm-color-preserve-properties))
   :config
-  (defun d/xterm-color-preserve-color-properties ()
+  (defun d/xterm-color-preserve-properties ()
     (setq xterm-color-preserve-properties t)))
 #+end_src
 ** Hydras
