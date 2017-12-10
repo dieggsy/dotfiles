@@ -21,7 +21,6 @@ more readable in org format than in rendered markdown.
   - [[#networkmanager_dmenu][networkmanager_dmenu]]
   - [[#peco][peco]]
   - [[#pythonrcpy][pythonrc.py]]
-  - [[#ssh][ssh]]
   - [[#termite][termite]]
   - [[#tmux][tmux]]
   - [[#xbindkeysrc][xbindkeysrc]]
@@ -1327,32 +1326,6 @@ except:
 #         writer = csv.writer(f)
 #         writer.writerows(rows)
 #+end_src
-** ssh                                                             ::crypt:
-:PROPERTIES:
-:header-args+: :tangle ~/.ssh/config
-:END:
------BEGIN PGP MESSAGE-----
-
-hQIMAx+NH7hU/QhIAQ/+JyA4BNluxDXC4NvHnxL9JhwcyvnN1k0URdsJfV2RsTZN
-v18rwG2mQr0M7DLAMgU/g3OQSZtIbug7DAqFLAtUNXidLO4KTDGHrzZP+Q7CHCV7
-kTiCkOuk7ptJxomZhGv5K+wWMdEvM18gbY51Un7n2uSCnxjaL3pnuixEBGbDE8R4
-0CDsLNSKUaeR1L1Rxk1dwGJxYfcgz96Pet9bOC3EAmVRR5c2NSMyJZH/fWChTIqJ
-Ay+RV6x2GFVAvspe9awzwmAM+TyhZ9k+McpSV9hOFHGzBSmbajfT13nq6LIu3qwy
-/7WYU3H+RzMZPx5tTeMTadGShEYhO9lvaoDRGB1eDx6LqQD5FcmPKhHWpD/Jf7Kq
-ibUXAmNgkwTT4ZCcflOFKQaXJF0fAJf0gBf6yu8LhbMLe0ZTKn4dU5EXvcWs5GwD
-Kqf29rfscbXFbQ/R4poG0e79Z1YXVfAOaAeKxsRI+dxcBWnzcsPEVnYumWdmR05T
-bE2b6XxP3I7soNwTSnl+bMPOIt3iUzKv0VTdvvaqY+0eBKqgFaup+OG2fT9qbhSE
-Uk/K/8/BgyBhLnmcY75z1GOGouxSQW7qBazJqi83+p2Tqqmfss3PuOtS7OZsAbkf
-1uiAHmdl462mujfKM5/uMz8PBK8kVx4wnV4bqiT5P9xBtkm2NJM9Q5NsOuBtg7jS
-wGoBg5ITLw7vYEKITJgi0XVddTLvHJhdpe4uO9j5Nm04f+C7oCl5f/bYC+KXWiDX
-3S3tVoYCD1xRWQcl4l6Wn45KAEwF6MqxQhLREmdL1GUXjWv+fnN/id7k6b4or+d0
-TkjCa5LdeRYv4DmpvySlPCNs4w/5zYSOdmdgBmT1tsh/nMVObSvDpIhhOxkD/f/h
-jN2mCu94sTcn7jMWJfgt19IYO+TZZfmfgpSnUGT3ir5keLRmT0O027k5LBiGY54h
-IZXhd64KFkBoeu2y9aIEurZx3n6kh2Ox+CHCLxeMuVnULLXTimIU7JCIcbUgldpG
-T7W2t4l8Xm3IaRxPaaB/hD8Yhuo8ub7pDpZr6dmnxbX7KxF4qrJaA0PBBwlWVVGa
-GOw/gsciHLa9DUP8
-=USf3
------END PGP MESSAGE-----
 ** termite
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.config/termite/config")
