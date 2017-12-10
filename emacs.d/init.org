@@ -368,17 +368,22 @@ That undersells it. The /most/ convenient key definitions in emacs.
   (dolist (func '(imap emap iemap nmap vmap nvmap omap mmap rmap otomap itomap tomap))
     (put (intern (concat "general-" (symbol-name func))) 'lisp-indent-function 'defun))
 
+  (general-override-mode)
+
   (general-create-definer
    d/mode-leader-keys
+   :keymaps 'override
    :states '(emacs normal visual motion insert)
    :non-normal-prefix "C-,"
    :prefix ",")
 
   (general-create-definer
    d/leader-keys
+   :keymaps 'override
    :states '(emacs normal visual motion insert)
    :non-normal-prefix "C-SPC"
-   :prefix "SPC"))
+   :prefix "SPC")
+  )
 #+end_src
 *** [[https://github.com/emacs-evil/evil][evil]]
 #+begin_quote
@@ -1305,14 +1310,6 @@ browse UNIX manual pages
   :config
   (setq Man-notify-method 'aggressive))
 #+end_src
-*** [[elisp:(find-library-other-window "help")][help]]
-#+begin_src emacs-lisp
-(use-package help
-  :ensure nil
-  :general
-  (nmap help-mode-map
-    "SPC" nil))
-#+end_src
 ** Packages
 *** [[https://github.com/abo-abo/define-word][define-word]]
 #+begin_quote
@@ -1512,7 +1509,6 @@ directory-browsing commands
   ;;   (dired-git-status))
   :config
   (nmap dired-mode-map
-    "SPC" 'nil ; undo this from evil-dired, since this is my leader
     "~" 'd/dired-home
     "q" 'd/dired-quit
     ;; got used to this from ranger
