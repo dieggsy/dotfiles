@@ -769,6 +769,11 @@ I know, it probably doesn't make sense to keep my gitconfig here.
 [push]
     followTags = true
 #+end_src
+**** github
+#+begin_src conf
+[github]
+	user = dieggsy
+#+end_src
 *** gitignore
 :PROPERTIES:
 :header-args+: :tangle ~/.gitignore
