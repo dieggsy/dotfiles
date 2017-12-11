@@ -733,10 +733,7 @@ But really, it's life.
 
 **** Package
 #+begin_src emacs-lisp
-(use-package org
-  :recipe (:host github
-           :repo "emacsmirror/org"
-           :files ("lisp/*.el" "contrib/lisp/*.el"))
+(use-package org-plus-contrib
   :general
   (d/leader-keys
    "C"   'org-capture
