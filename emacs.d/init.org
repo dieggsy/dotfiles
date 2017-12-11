@@ -673,8 +673,8 @@ If the text hasn't changed as a result, forward to `ivy-alt-done'."
   :general
   ("M-x" 'counsel-M-x
    "C-x C-f" 'counsel-find-file)
-  (minibuffer-local-map
-   "C-r" 'counsel-minibuffer-history)
+  (imap minibuffer-local-map
+    "C-r" 'counsel-minibuffer-history)
   (d/leader-keys
    "SPC" 'counsel-M-x
    "aa"  'counsel-linux-app
