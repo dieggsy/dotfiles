@@ -1491,7 +1491,8 @@ directory-browsing commands
    "fs" 'wdired-finish-edit)
   (d/mode-leader-keys
    :keymaps 'dired-mode-map
-   "h" 'dired-omit-mode)
+   "h" 'dired-omit-mode
+   "d" 'dired-du-mode)
   :init
   (d/setup-hook dired-mode
     (hl-line-mode 1)
