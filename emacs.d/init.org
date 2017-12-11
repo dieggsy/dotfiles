@@ -540,6 +540,15 @@ Increment and decrement numbers in Emacs
            :upstream (:host github
                       :repo "cofi/evil-numbers")))
 #+end_src
+***** [[https://github.com/Somelauw/evil-org-mode][evil-org]]
+#+begin_src emacs-lisp
+(use-package evil-org
+  :hook (org-mode . evil-org-mode)
+  :config
+  (evil-org-set-key-theme)
+  (require 'evil-org-agenda)
+  (evil-org-agenda-set-keys))
+#+end_src
 ***** [[https://github.com/emacs-evil/evil-surround][evil-surround]]
 #+begin_src emacs-lisp
 (use-package evil-surround
@@ -729,21 +738,6 @@ But really, it's life.
            :repo "emacsmirror/org"
            :files ("lisp/*.el" "contrib/lisp/*.el"))
   :general
-  (nmap org-mode-map
-    "<" 'org-metaleft
-    ">" 'org-metaright
-    "gj" 'org-next-visible-heading
-    "gk" 'org-previous-visible-heading
-    "gt" 'org-todo
-    "ga" 'org-archive-subtree
-    "M-l" 'org-metaright
-    "M-h" 'org-metaleft
-    "M-k" 'org-metaup
-    "M-j" 'org-metadown
-    "M-L" 'org-shiftmetaright
-    "M-H" 'org-shiftmetaleft
-    "M-K" 'org-shiftmetaup
-    "M-J" 'org-shiftmetadown)
   (d/leader-keys
    "C"   'org-capture
    "bo"  'org-iswitchb
