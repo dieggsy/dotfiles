@@ -632,26 +632,7 @@ If the text hasn't changed as a result, forward to `ivy-alt-done'."
           (when (or (eq this-command last-command)
                     (eq ivy--length 1))
             (let ((ivy-wrap t))
-              (ivy-next-line))))))
-
-  (defun d/find-library-readme (l)
-    (let* ((dir (file-name-directory (file-truename (find-library-name l))))
-           (readme (car (directory-files dir 'full "README"))))
-      (if readme
-          (find-file-other-window readme)
-        (user-error "Directory contains no README files."))))
-
-  (defun d/git-status-library (l)
-    (magit-status-internal
-     (file-name-directory (file-truename (find-library-name l)))))
-  (ivy-add-actions
-   'find-library-other-window
-   '(("R"
-      d/find-library-readme
-      "readme")
-     ("g"
-      d/git-status-library
-      "magit status"))))
+              (ivy-next-line)))))))
 #+end_src
 ***** ivy-hydra
 #+begin_src emacs-lisp
