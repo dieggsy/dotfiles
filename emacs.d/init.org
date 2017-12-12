@@ -2008,6 +2008,9 @@ short and sweet LISP editing
     (interactive)
     (save-excursion (beginning-of-line) (lispy-tab)))
 
+  (define-advice lispy-meta-return (:after nil d/eol)
+    (end-of-line))
+
   (defun d/lispy-fontify-headlines ()
     (interactive)
     "Calculate heading regexps for font-lock mode."
