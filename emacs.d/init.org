@@ -5149,20 +5149,6 @@ FUNC can be:
         (call-process-shell-command cmd)
       (start-process-shell-command cmd nil cmd)))
 
-  (cl-defmacro d/exwm-mode-line-process (name &key filter-body cmd repeat fmt)
-    (declare (indent defun))
-    (let ((shell-cmd (format "while sleep %d; do %s; done" repeat cmd))
-          (filter-name (intern (concat (symbol-name name) "-filter"))))
-      `(progn
-         (defvar ,name (string-trim (shell-command-to-string ,cmd)))
-         (start-process-shell-command ,(symbol-name name) nil ,shell-cmd)
-         (defun ,filter-name (process output)
-           ,filter-body
-           (setq ,name ,(if fmt `(funcall ,fmt (string-trim output))
-                          `(string-trim output)))
-           (force-mode-line-update 'all))
-         (set-process-filter (get-process ,(symbol-name name)) #',filter-name))))
-
   (defun d/swap-window-right ()
     (interactive)
     (let* ((buff (current-buffer))
@@ -5216,7 +5202,7 @@ FUNC can be:
                            (kill-emacs)))))))
 #+end_src
 ** Processes
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (d/with-eval-after-load 'exwm
   (dolist (cmd
            '("dropbox-cli start"
@@ -5225,30 +5211,7 @@ FUNC can be:
              "setxkbmap dvorak"
              "setxkbmap -option 'ctrl:nocaps'"
              "xcape -e 'Control_L=Escape'"))
-    (start-process-shell-command cmd nil cmd))
-
-  (defvar d/mute
-    (string= (string-trim
-              (shell-command-to-string "amixer -D pulse get Master \
-| grep \"Left: Playback\" \
-| awk '{print $6}' \
-| tr -d \"[-]\""))
-             "off"))
-
-  (defvar d/kb-layout
-    (string-trim
-     (shell-command-to-string
-      "layout=$(setxkbmap -query | grep layout | cut -d' ' -f6)
-
-if [ \"$layout\" = \"us\" ]; then
-    echo 'QW'
-elif [ \"$layout\" = \"dvorak\" ]; then
-     echo 'DV'
-fi")))
-
-  (d/exwm-mode-line-process d/ssid
-    :cmd "iwgetid -r || echo 'None'"
-    :repeat 5))
+    (start-process-shell-command cmd nil cmd)))
 #+end_src
 ** Bindings
 #+begin_src emacs-lisp
@@ -5295,89 +5258,6 @@ fi")))
 
   (add-to-list 'exwm-input-prefix-keys ?\C-/)
   (setq exwm-input-prefix-keys (delq 3 exwm-input-prefix-keys)))
-#+end_src
-** Mode-line
-#+begin_src emacs-lisp :tangle no
-(d/with-eval-after-load 'exwm
-  (display-battery-mode)
-  (display-time-mode)
-
-  (defvar d/ssid-keymap
-    (let ((map (make-sparse-keymap)))
-      (define-key map [mode-line mouse-1]
-        (lambda ()
-          (interactive)
-          (call-process-shell-command "networkmanager_dmenu")))
-      map))
-
-  (defvar d/kb-layout-keymap
-    (let ((map (make-sparse-keymap)))
-      (define-key map [mode-line mouse-1]
-        (lambda ()
-          (interactive)
-          (pcase d/kb-layout
-            ("DV"
-             (setq d/kb-layout "QW")
-             (call-process-shell-command "setxkbmap us")
-             (force-mode-line-update 'all))
-            ("QW"
-             (setq d/kb-layout "DV")
-             (call-process-shell-command "setxkbmap dvorak")
-             (force-mode-line-update 'all)))))
-      map))
-
-  ;; (defvar d/mode-line-exwm
-  ;;   '("%e"
-  ;;     (:eval
-  ;;      (let* ((lhs d/mode-line)
-  ;;             (l-width (length (format-mode-line lhs)))
-  ;;             (rhs `((:eval
-  ;;                     (d/with-window-status
-  ;;                       (concat
-  ;;                        (when d/mute
-  ;;                          (propertize-active "M  " 'face '(:foreground "#FB4933")))
-  ;;                        (propertize-active (concat d/kb-layout "  ")
-  ;;                                           'face '(:foreground "#D3869B")
-  ;;                                           'local-map d/kb-layout-keymap)
-  ;;                        (propertize-active (concat d/ssid "  ")
-  ;;                                           'face '(:foreground "#B8bb26")
-  ;;                                           'local-map d/ssid-keymap)
-
-  ;;                        (propertize-active (concat battery-mode-line-string "  ")
-  ;;                                           'face '(:foreground "#83a598"))
-
-  ;;                        (propertize-active (concat display-time-string "  ")
-  ;;                                           'face '(:foreground "#A89984")))))))
-  ;;             (r-width (length (format-mode-line rhs)))
-  ;;             (t-width (+ l-width r-width))
-  ;;             (pad (if (> (window-width) (+ l-width r-width))
-  ;;                      (make-string
-  ;;                       (- (window-width)
-  ;;                          (+ l-width r-width)
-  ;;                          (if eldoc-mode-line-string
-  ;;                              (+ (length eldoc-mode-line-string) 2)
-  ;;                            0)
-  ;;                          (if (eq major-mode 'exwm-mode)
-  ;;                              -1
-  ;;                            0))
-  ;;                       ?\s)
-  ;;                    "")))
-  ;;        (format-mode-line
-  ;;         (append lhs `(,pad) rhs))))))
-
-  (defvar d/exwm-bar
-    '((:eval
-       (let ((line (d/with-window-status
-                     (concat
-                      (propertize-active (concat d/ssid "  ")
-                                         'face '(:foreground "#B8BB26"))
-                      (propertize-active display-time-string)))))
-         (s-pad-left (window-width) " " line)))
-      ))
-
-  (setq-default mode-line-format d/mode-line-exwm)
-  (with-current-buffer "*Messages*"
-    (setq-local mode-line-format d/mode-line-exwm)))
 #+end_src
 ** Enable
 #+begin_src emacs-lisp
