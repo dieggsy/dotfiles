@@ -177,10 +177,15 @@ defer and ensure packages are installed unless otherwise stated.
 (setq use-package-minimum-reported-time .001
       use-package-verbose t
       use-package-always-defer t
-      use-package-always-ensure t)
+      use-package-compute-statistics t)
 
 (eval-when-compile
   (require 'use-package))
+
+(define-advice use-package-report (:after nil d/align)
+  (with-current-buffer "*use-package statistics*"
+    (org-mode)
+    (org-table-align)))
 #+end_src
 ** Packages
 *** [[https://github.com/tarsius/no-littering/][no-littering]]
