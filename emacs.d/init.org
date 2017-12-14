@@ -1152,22 +1152,6 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
   ;; cancel above settings only for 'docx' format
   (setq org-pandoc-options-for-docx '((standalone . nil))))
 #+end_src
-***** [[https://github.com/marsmining/ox-twbs][ox-twbs]]
-#+begin_quote
-Export org-mode docs as HTML compatible with Twitter Bootstrap.
-#+end_quote
-#+begin_src emacs-lisp
-(use-package ox-twbs
-  :after ox)
-#+end_src
-***** [[https://github.com/larstvei/ox-gfm][ox-gfm]]
-#+begin_quote
-Github Flavored Markdown Back-End for Org Export Engine
-#+end_quote
-#+begin_src emacs-lisp
-(use-package ox-gfm
-  :after ox)
-#+end_src
 ***** [[https://github.com/kaushalmodi/ox-hugo][ox-hugo]]
 #+begin_quote
 A carefully crafted Org exporter back-end for Hugo
