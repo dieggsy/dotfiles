@@ -227,8 +227,7 @@ Helper functions for emacs' prettify-symbols-mode
 make Emacs bindings that stick around
 #+end_quote
 #+begin_src emacs-lisp
-(use-package hydra
-  :config)
+(use-package hydra)
 #+end_src
 * Core
 ** Defaults
@@ -382,8 +381,7 @@ That undersells it. The /most/ convenient key definitions in emacs.
    :keymaps 'override
    :states '(emacs normal visual motion insert)
    :non-normal-prefix "C-SPC"
-   :prefix "SPC")
-  )
+   :prefix "SPC"))
 #+end_src
 *** [[https://github.com/emacs-evil/evil][evil]]
 #+begin_quote
@@ -465,6 +463,7 @@ I went for it. Now I'll never go back.
 #+begin_src emacs-lisp
 (use-package evil-embrace
   :after evil-surround
+  :demand t
   :hook (org-mode . embrace-org-mode-hook)
   :config
   (evil-embrace-enable-evil-surround-integration)
@@ -477,7 +476,8 @@ Make ediff a little more evil
 #+end_quote
 #+begin_src emacs-lisp
 (use-package evil-ediff
-  :after ediff)
+  :after ediff
+  :demand t)
 #+end_src
 ***** [[https://github.com/TheBB/evil-indent-plus][evil-indent-plus]]
 #+begin_quote
@@ -485,9 +485,15 @@ Better indent textobjects for evil
 #+end_quote
 #+begin_src emacs-lisp
 (use-package evil-indent-plus
-  :defer 15
-  :config
-  (evil-indent-plus-default-bindings))
+  :general
+  (itomap
+    "i" 'evil-indent-plus-i-indent
+    "I" 'evil-indent-plus-i-indent-up
+    "J" 'evil-indent-plus-i-indent-up-down)
+  (otomap
+    "i" 'evil-indent-plus-a-indent
+    "I" 'evil-indent-plus-a-indent-up
+    "J" 'evil-indent-plus-a-indent-up-down))
 #+end_src
 ***** [[https://github.com/emacs-evil/evil-magit][evil-magit]]
 #+begin_quote
@@ -496,12 +502,15 @@ Black magic or evil keys for magit
 #+begin_src emacs-lisp
 (use-package evil-magit
   :after magit
-  :config)
+  :demand t)
 #+end_src
 ***** [[https://github.com/redguardtoo/evil-matchit][evil-matchit]]
 #+begin_src emacs-lisp
 (use-package evil-matchit
-  :defer 15
+  :general
+  (itomap "%" 'evilmi-inner-text-object)
+  (otomap "%" 'evilmi-outer-text-object)
+  (nvmap "%" 'evilmi-jump-items)
   :config (global-evil-matchit-mode 1))
 #+end_src
 ***** [[https://github.com/redguardtoo/evil-nerd-commenter][evil-nerd-commenter]]
@@ -604,9 +613,9 @@ This function is intended for use with `ivy-ignore-buffers'."
   (setq ivy-re-builders-alist '((swiper . ivy--regex-plus)
                                 (t . ivy--regex-ignore-order)))
   (setq ivy-format-function 'ivy-format-function-line
-        ivy-use-virtual-buffers t ; Show recent files
+        ivy-use-virtual-buffers t
         ivy-count-format ""
-        ivy-extra-directories nil; '("../") ; ignore current folder and parent dir
+        ivy-extra-directories nil
         recentf-max-saved-items 50
         ivy-use-selectable-prompt t
         ivy-display-functions-alist nil
@@ -637,7 +646,7 @@ If the text hasn't changed as a result, forward to `ivy-alt-done'."
 ***** ivy-hydra
 #+begin_src emacs-lisp
 (use-package ivy-hydra
-  :after ivy)
+  :commands ivy-dispatching-done-hydra)
 #+end_src
 **** swiper
 #+begin_src emacs-lisp
@@ -728,8 +737,9 @@ But really, it's life.
   :custom
   (org-list-allow-alphabetical t)
   :config
-  (require 'ox-extra)
-  (ox-extras-activate '(ignore-headlines))
+  (with-eval-after-load 'ox
+    (require 'ox-extra)
+    (ox-extras-activate '(ignore-headlines)))
   (d/with-eval-after-load 'org-crypt
     (org-crypt-use-before-save-magic))
   (require 'org-mobile))
@@ -1141,43 +1151,32 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 #+begin_src emacs-lisp
 (use-package ox-pandoc
   :after ox
-  :disabled
+  :demand t
   :if (executable-find "pandoc")
-  :config
+  :custom
   ;; default options for all output formats
-  (setq org-pandoc-options '((standalone . t)
-                             (latex-engine . xelatex)
-                             (mathjax . t)
-                             (parse-raw . t)))
+  (org-pandoc-options '((standalone . t)
+                        (latex-engine . xelatex)
+                        (mathjax . t)
+                        (parse-raw . t)))
   ;; cancel above settings only for 'docx' format
-  (setq org-pandoc-options-for-docx '((standalone . nil))))
+  (org-pandoc-options-for-docx '((standalone . nil))))
 #+end_src
 ***** [[https://github.com/kaushalmodi/ox-hugo][ox-hugo]]
 #+begin_quote
 A carefully crafted Org exporter back-end for Hugo
 #+end_quote
 #+begin_src emacs-lisp
-(use-package ox-hugo
-  :after ox)
-#+end_src
-**** Babel extras
-***** [[https://github.com/gregsexton/ob-ipython][ob-ipython]]
-#+begin_quote
-org-babel integration with Jupyter for evaluation of (Python by default) code blocks
-#+end_quote
-#+begin_src emacs-lisp :tangle no
-(use-package ob-ipython
-  :after org)
+(use-package ox-hugo)
 #+end_src
 **** Enhancements
 ***** [[https://github.com/snosov1/toc-org][toc-org]]
 #+begin_quote
-toc-org is an Emacs utility to have an up-to-date table of contents in the
-  org files without exporting (useful primarily for readme files on GitHub)
+toc-org is an Emacs utility to have an up-to-date table of contents in the org
+files without exporting (useful primarily for readme files on GitHub)
 #+end_quote
 #+begin_src emacs-lisp
 (use-package toc-org
-  :after org
   :hook (org-mode . toc-org-enable))
 #+end_src
 ***** [[https://github.com/myuhe/org-gcal.el][org-gcal]]
@@ -1455,10 +1454,10 @@ directory-browsing commands
    "d" 'dired-du-mode)
   :init
   (d/setup-hook dired-mode
-    (hl-line-mode 1)
-    (dired-omit-mode))
-  ;; (d/setup-hook dired-after-readin
-  ;;   (dired-git-status))
+    (hl-line-mode 1))
+  :custom
+  (dired-listing-switches "-lGXhA --group-directories-first")
+  (dired-dwim-target t)
   :config
   (nmap dired-mode-map
     "~" 'd/dired-home
@@ -1473,14 +1472,8 @@ directory-browsing commands
     "n" 'evil-ex-search-next
     "N" 'evil-ex-search-previous)
 
-  (setq dired-listing-switches "-lGXhA --group-directories-first"
-        dired-dwim-target t
-        dired-omit-files (rx string-start "." (1+ nonl) string-end)
-        dired-clean-confirm-killing-deleted-buffers nil)
-
   (with-eval-after-load 'dired-async
     (dired-async-mode 1))
-
 
   (defun d/dired-quit ()
     (interactive)
@@ -1508,6 +1501,18 @@ directory-browsing commands
     (if (= (length (window-list)) 1)
         (setq d/dired-close-window t)
       (setq d/dired-close-window nil))))
+#+end_src
+*** [[elisp:(find-library-other-window%20"dired-x")][dired-x]]
+#+begin_src emacs-lisp
+(use-package dired-x
+  :straight nil
+  :after dired
+  :demand t
+  :hook (dired-mode . dired-omit-mode)
+  :custom
+  (dired-omit-verbose nil)
+  (dired-omit-files (rx string-start "." (1+ nonl) string-end))
+  (dired-clean-confirm-killing-deleted-buffers nil))
 #+end_src
 *** [[elisp:(find-library-other-window%20"ibuffer")][ibuffer]]
 #+begin_quote
@@ -1573,27 +1578,24 @@ Collection of useful dired additions
 #+end_quote
 ***** dired-open
 #+begin_src emacs-lisp
-(use-package dired-open
-  :after dired)
+(use-package dired-open)
 #+end_src
 ***** dired-rainbow
 #+begin_src emacs-lisp
 (use-package dired-rainbow
   :after dired
+  :demand t
   :config
   (dired-rainbow-define-chmod executable-unix "#B8BB26" "-[rw-]+x.*"))
 #+end_src
 ***** dired-collpase
 #+begin_src emacs-lisp
 (use-package dired-collapse
-  :hook (dired-mode . dired-collapse-mode)
-  :after dired)
+  :hook (dired-mode . dired-collapse-mode))
 #+end_src
 ***** dired-subtree
 #+begin_src emacs-lisp
 (use-package dired-subtree
-  :after dired
-  :disabled
   :general
   (nmap dired-mode-map
     "TAB" 'dired-subtree-toggle))
@@ -1604,7 +1606,6 @@ Extra Emacs font lock rules for a more colourful dired
 #+end_quote
 #+begin_src emacs-lisp
 (use-package diredfl
-  :after dired
   :hook (dired-mode . diredfl-mode)
   :custom
   (diredfl-ignore-compressed-flag nil))
@@ -1873,9 +1874,7 @@ Sort completion candidates by previous completion choices
 #+end_quote
 #+begin_src emacs-lisp
 (use-package company-statistics
-  :after company
-  :config
-  (company-statistics-mode))
+  :hook (company-mode . company-statistics-mode))
 #+end_src
 **** [[https://github.com/gabesoft/evil-mc][evil-mc]]
 #+begin_quote
@@ -1966,7 +1965,6 @@ short and sweet LISP editing
 #+end_quote
 #+begin_src emacs-lisp
 (use-package lispy
-  :defer 5
   :hook ((lispy-mode . d/lispy-fontify-headlines)
          ((emacs-lisp-mode lisp-mode scheme-mode) . lispy-mode))
   :general
@@ -2025,7 +2023,6 @@ lispy + evil = lispyville
                           additional-movement
                           additional
                           slurp/barf-cp))
-  :after lispy
   :config
   (lispy-define-key lispy-mode-map "v" #'lispyville-toggle-mark-type)
   (setq lispyville-barf-stay-with-closing t))
@@ -2060,7 +2057,6 @@ it.
 **** [[https://github.com/expez/evil-smartparens][evil-smartparens]]
 #+begin_src emacs-lisp
 (use-package evil-smartparens
-  :after smartparens
   :hook (smartparens-enabled . evil-smartparens-mode))
 #+end_src
 **** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
@@ -2427,8 +2423,7 @@ Major mode for editing Markdown-formatted text
 Syntax highlighting for markdown files.
 #+begin_src emacs-lisp
 (use-package markdown-mode
-  :mode "\\.md\\'"
-  :config)
+  :mode "\\.md\\'")
 #+end_src
 *** text-mode
 #+begin_src emacs-lisp
@@ -2879,14 +2874,7 @@ Dim the font color of text in surrounding paragraphs
   (focus-mode-to-thing
    '((prog-mode . defun)
      (text-mode . sentence)
-     (org-mode . paragraph)))
-  :config
-  (define-advice focus-get-thing (:override () d/fix)
-    (or focus-current-thing
-        (let* ((modes (mapcar 'car focus-mode-to-thing))
-               (mode  (or (cl-find major-mode modes)
-                          (focus-any 'derived-mode-p modes))))
-          (if mode (cdr (assoc mode focus-mode-to-thing)) 'sentence)))))
+     (org-mode . paragraph))))
 #+end_src
 *** [[http://git.savannah.gnu.org/cgit/emacs/elpa.git/tree/packages/rainbow-mode/rainbow-mode.el][rainbow-mode]]
 #+begin_quote
@@ -3290,7 +3278,8 @@ Anaconda backend for company-mode.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package company-anaconda
-  :after company)
+  :after (python company)
+  :demand t)
 #+end_src
 ***** [[https://github.com/millejoh/emacs-ipython-notebook][EIN]]
 #+begin_quote
@@ -3314,7 +3303,8 @@ Automatically activates pyenv version within Emacs if .python-version file exist
 #+end_quote
 #+begin_src emacs-lisp
 (use-package pyenv-mode-auto
-  :after pyenv-mode)
+  :after pyenv-mode
+  :demand t)
 #+end_src
 
 ***** [[https://github.com/naiquevin/sphinx-doc.el][sphinx-doc]]
@@ -3393,13 +3383,14 @@ The Superior Lisp Interaction Mode for Emacs
     [up] 'slime-repl-previous-input
     [down] 'slime-repl-next-input)
   :config
-  (setq inferior-lisp-program "/usr/local/bin/sbcl")
-  (setq slime-contribs '(slime-fancy slime-company)))
+  (setq inferior-lisp-program "/usr/local/bin/sbcl"
+        slime-contribs '(slime-fancy slime-company)))
 #+end_src
 ***** [[https://github.com/anwyn/slime-company][slime-company]]
 #+begin_src emacs-lisp
 (use-package slime-company
-  :after slime)
+  :after slime
+  :demand t)
 #+end_src
 ***** [[https://github.com/tkf/emacs-request][request]]
 #+begin_quote
@@ -3439,6 +3430,7 @@ Flycheck checker for elisp package metadata
 #+begin_src emacs-lisp
 (use-package flycheck-package
   :after flycheck
+  :demand t
   :config
   (flycheck-package-setup))
 #+end_src
@@ -4039,10 +4031,12 @@ Yet another Emacs paste mode, this one for Gist.
 **** [[https://github.com/vermiculus/magithub][magithub]]
 #+begin_src emacs-lisp
 (use-package magithub
-  :after magit
-  :config
+  :general
   (nmap magit-status-mode-map
-    "H" #'magithub-dispatch-popup)
+    "H" 'magithub-dispatch-popup)
+  :custom
+  (magithub-preferred-remote-method 'clone_url)
+  :config
   (magithub-feature-autoinject t))
 #+end_src
 * Tools
@@ -4102,6 +4096,8 @@ A shell written in emacs-lisp that has recently been replacing zsh for me.
   (eshell-preoutput-filter-functions '(xterm-color-filter))
   (eshell-term-name "eterm-256color")
   (eshell-cmpl-compare-entry-function 'string-lessp)
+  (eshell-highlight-prompt nil)
+  (eshell-prompt-function #'egp-theme)
   :init
   (d/setup-hook eshell-mode
     (imap eshell-mode-map
@@ -4138,10 +4134,7 @@ Display git info in eshell
 #+begin_src emacs-lisp
 (use-package egp
   :straight nil
-  :after eshell
-  :config
-  (setq eshell-highlight-prompt nil
-        eshell-prompt-function 'egp-theme))
+  :commands egp-theme)
 #+end_src
 **** [[https://github.com/xuchunyang/eshell-z][eshell-z]]
 #+begin_quote
@@ -4149,7 +4142,7 @@ cd to frequent directory in eshell, an Emacs port of https://github.com/rupa/z
 #+end_quote
 #+begin_src emacs-lisp
 (use-package eshell-z
-  :after eshell)
+  :commands eshell/z)
 #+end_src
 **** [[https://github.com/Ambrevar/emacs-fish-completion][emacs-fish-completion]]
 #+begin_quote
@@ -4157,7 +4150,6 @@ Fish completion for Emacs and Eshell
 #+end_quote
 #+begin_src emacs-lisp
 (use-package emacs-fish-completion
-  :after eshell
   :straight (:host github
              :repo "ambrevar/emacs-fish-completion")
   :hook (eshell-mode . fish-completion-mode))
@@ -4168,7 +4160,8 @@ Emacs pcomplete for git
 #+end_quote
 #+begin_src emacs-lisp
 (use-package pcmpl-git
-  :after eshell)
+  :after eshell
+  :demand t)
 #+end_src
 **** [[https://github.com/dieggsy/company-eshell-autosuggest][company-eshell-autosuggest]]
 #+begin_quote
@@ -4190,8 +4183,7 @@ Correct the previous eshell command.
 #+begin_src emacs-lisp
 (use-package eshell-thefuck
   :straight (:host github
-             :repo "dieggsy/eshell-thefuck")
-  :after eshell)
+             :repo "dieggsy/eshell-thefuck"))
 #+end_src
 *** Functions
 #+begin_src emacs-lisp
@@ -4301,15 +4293,17 @@ Major mode for reading EPUBs in Emacs
 (use-package nov
   :mode ("\\.epub\\'" . nov-mode))
 #+end_src
-** [[https://github.com/adamrt/sane-term][sane-term]]
-#+begin_quote
-Cycle through terms in emacs
-#+end_quote
-I wanted a slightly better terminal in emacs. This seems to do the trick.
+** [[elisp:(find-library-other-window "term")][term]]
 #+begin_src emacs-lisp
-(use-package sane-term
-  :after term
-  :general (d/leader-keys "at" 'sane-term-create))
+(use-package term
+  :general
+  (d/leader-keys "at" 'd/ansi-term)
+  :config
+  (defun d/ansi-term ()
+    (ansi-term shell-file-name))
+
+  (define-advice term-handle-exit (:after (&rest _) d/kill-buffer)
+    (kill-buffer)))
 #+end_src
 * Emacs Enhancements
 ** Packages
@@ -4378,7 +4372,7 @@ Emacs package that displays available keybindings in popup
 #+end_quote
 #+begin_src emacs-lisp
 (use-package which-key
-  :defer 10
+  :defer 20
   :general
   (d/leader-keys
    "hk" 'which-key-show-top-level)
@@ -4593,7 +4587,6 @@ A cozy fireplace for emacs.
 For the cold winters.
 #+begin_src emacs-lisp
 (use-package fireplace
-  :config
   :general
   (nmap fireplace-mode-map
     "q" 'fireplace-off
@@ -4609,8 +4602,8 @@ A customizable implementation of http://hackertyper.com in emacs.
 #+begin_src emacs-lisp
 (use-package hacker-typer
   :config
-  (setq hacker-typer-show-hackerman t)
-  (setq hacker-typer-remove-comments t))
+  (setq hacker-typer-show-hackerman t
+        hacker-typer-remove-comments t))
 #+end_src
 *** [[https://www.emacswiki.org/emacs/highlight-tail.el][highlight-tail]]
 #+begin_quote
@@ -4634,10 +4627,7 @@ Practice touch/speed typing in emacs.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package speed-type
-  :general (d/leader-keys "as" 'speed-type-text)
-  :config
-  (setq speed-type--gb-url-format
-        "http://www.gutenberg.org/cache/epub/%d/pg%d.txt"))
+  :general (d/leader-keys "as" 'speed-type-text))
 #+end_src
 *** [[https://gitlab.com/iankelling/spray][spray]]
 #+begin_quote
@@ -4673,8 +4663,7 @@ Read xkcd from Emacs.
     "r" 'xkcd-rand
     "o" 'xkcd-open-browser
     "e" 'xkcd-open-explanation-browser
-    "G" 'xkcd-get-latest)
-  :config)
+    "G" 'xkcd-get-latest))
 #+end_src
 ** Functions
 #+begin_src emacs-lisp
@@ -4959,6 +4948,7 @@ Nickname Highlighting for ERC
              :upstream (:host github
                         :repo "leathekd/erc-hl-nicks"))
   :after erc
+  :demand t
   :config
   (setq erc-hl-nicks-skip-nicks '("diegs" "dieggsy")
         erc-lurker-ignore-chars erc-hl-nicks-ignore-chars)
