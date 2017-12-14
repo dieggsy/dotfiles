@@ -1571,12 +1571,6 @@ Make Emacs' delete-by-moving-to-trash do what you expect it to do on OS X.
 #+begin_quote
 Collection of useful dired additions
 #+end_quote
-***** dired-avfs
-#+begin_src emacs-lisp
-(use-package dired-avfs
-  :disabled
-  :after dired)
-#+end_src
 ***** dired-open
 #+begin_src emacs-lisp
 (use-package dired-open
