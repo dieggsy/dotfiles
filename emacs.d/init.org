@@ -36,7 +36,7 @@ there's that.
 
 * Initial Setup
 ** Details
-*** Lexical bindinga
+*** Lexical binding
 In accordance with the [[https://github.com/bbatsov/emacs-lisp-style-guide#source-code-layout--organization][emacs-lisp-style-guide]].
 #+begin_src emacs-lisp :comments no :cond-case no :padline no
 ;;; -*- lexical-binding: t -*-
