@@ -1620,13 +1620,6 @@ Collection of useful dired additions
   (nmap dired-mode-map
     "TAB" 'dired-subtree-toggle))
 #+end_src
-**** dired-git
-#+begin_src emacs-lisp
-(use-package dired-git
-  :straight nil
-  :disabled
-  :after dired)
-#+end_src
 **** [[https://github.com/purcell/diredfl][diredfl]]
 #+begin_quote
 Extra Emacs font lock rules for a more colourful dired
