@@ -55,6 +55,11 @@ temporarily (only during startup). This saves me like .3 s of startup time.
 (add-hook 'after-init-hook (lambda ()
                              (setq gc-cons-threshold 800000)))
 #+end_src
+** Custom
+#+begin_src emacs-lisp
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+#+end_src
 ** Server
 Start server if not already running. You can do this with ~emacs --daemon~ or
 even automate it with ~brew services start emacs~ on macOS, but I usually just
@@ -148,8 +153,8 @@ Next-generation, purely functional package manager for the Emacs hacker.
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
-(straight-register-package
-  '(seq :repo "https://git.savannah.gnu.org/git/emacs/elpa.git" :files ("packages/seq/*.el")))
+
+(setq straight-use-package-by-default t)
 #+end_src
 *** [[https://github.com/jwiegley/use-package][use-package]]
 #+begin_quote
@@ -214,8 +219,8 @@ Helper functions for emacs' prettify-symbols-mode
 #+end_quote
 #+begin_src emacs-lisp
 (use-package prettify-utils
-  :recipe (:host github
-           :repo "Ilazki/prettify-utils.el"))
+  :straight (:host github
+             :repo "Ilazki/prettify-utils.el"))
 #+end_src
 *** [[https://github.com/abo-abo/hydra][hydra]]
 #+begin_quote
@@ -227,11 +232,6 @@ make Emacs bindings that stick around
 #+end_src
 * Core
 ** Defaults
-*** Custom
-#+begin_src emacs-lisp
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
-#+end_src
 *** Column
 Show the column number in the modeline, because I'm not a savage.
 #+begin_src emacs-lisp
@@ -453,8 +453,8 @@ I went for it. Now I'll never go back.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package evil-collection
-  :recipe (:host github
-           :repo "jojojames/evil-collection")
+  :straight (:host github
+             :repo "jojojames/evil-collection")
   :custom
   (evil-collection-company-use-tng nil)
   (evil-collection-setup-minibuffer t)
@@ -535,10 +535,10 @@ Increment and decrement numbers in Emacs
 #+end_quote
 #+begin_src emacs-lisp
 (use-package evil-numbers
-  :recipe (:host github
-           :repo "dieggsy/evil-numbers"
-           :upstream (:host github
-                      :repo "cofi/evil-numbers")))
+  :straight (:host github
+             :repo "dieggsy/evil-numbers"
+             :upstream (:host github
+                        :repo "cofi/evil-numbers")))
 #+end_src
 ***** [[https://github.com/Somelauw/evil-org-mode][evil-org]]
 #+begin_src emacs-lisp
@@ -1458,7 +1458,7 @@ directory-browsing commands
 #+end_quote
 #+begin_src emacs-lisp
 (use-package dired
-  :ensure nil
+  :straight nil
   :general
   (d/leader-keys
    "ad" 'd/dired-here)
@@ -1556,7 +1556,7 @@ set bookmarks, maybe annotate them, jump to them later
 #+end_quote
 #+begin_src emacs-lisp
 (use-package bookmark
-  :ensure nil
+  :straight nil
   :general
   (d/leader-keys "fB" 'bookmark-jump-other-window
                  "fb" 'bookmark-jump))
@@ -1623,7 +1623,7 @@ Collection of useful dired additions
 **** dired-git
 #+begin_src emacs-lisp
 (use-package dired-git
-  :ensure nil
+  :straight nil
   :disabled
   :after dired)
 #+end_src
@@ -1644,7 +1644,7 @@ Dired with recursive directory sizes
 #+end_quote
 #+begin_src emacs-lisp
 (use-package dired-du
-  :recipe (:host github :repo "emacsmirror/dired-du")
+  :straight (:host github :repo "emacsmirror/dired-du")
   :config
   (setq dired-du-size-format t))
 #+end_src
@@ -1848,7 +1848,7 @@ highlight matching paren
 #+end_quote
 #+begin_src emacs-lisp
 (use-package paren
-  :ensure nil
+  :straight nil
   :hook ((emacs-lisp-mode scheme-mode lisp-mode) . show-paren-mode))
 #+end_src
 **** [[elisp:(find-library-other-window "hippie-exp")][hippie-expand]]
@@ -1857,7 +1857,7 @@ expand text trying various ways to find its expansion
 #+end_quote
 #+begin_src emacs-lisp
 (use-package hippie-exp
-  :ensure nil
+  :straight nil
   :general
   ("M-/" #'hippie-expand))
 #+end_src
@@ -2628,7 +2628,7 @@ click to browse URL or to send to e-mail address
 #+end_quote
 #+begin_src emacs-lisp
 (use-package goto-addr
-  :ensure nil
+  :straight nil
   :hook (((help-mode org-mode) . goto-address-mode)
          ((prog-mode conf-mode) . goto-address-prog-mode)))
 #+end_src
@@ -2636,7 +2636,7 @@ click to browse URL or to send to e-mail address
 #+begin_src emacs-lisp
 (use-package display-line-numbers
   :if (version<= "26" emacs-version)
-  :ensure nil
+  :straight nil
   :hook ((prog-mode conf-mode) . display-line-numbers-mode)
   :custom
   (display-line-numbers-type 'relative)
@@ -2935,10 +2935,10 @@ An Emacs 24 theme remixed from gruvbox
 #+begin_src emacs-lisp
 (use-package darktooth-theme
   :demand t
-  :recipe (:host github
-           :repo "dieggsy/emacs-theme-darktooth"
-           :upstream (:host github
-                      :repo "emacsfodder/emacs-theme-darktooth")))
+  :straight (:host github
+             :repo "dieggsy/emacs-theme-darktooth"
+             :upstream (:host github
+                        :repo "emacsfodder/emacs-theme-darktooth")))
 #+end_src
 *** [[https://github.com/jordonbiondo/column-enforce-mode][column-enforce-mode]]
 #+begin_quote
@@ -2956,9 +2956,9 @@ Customizable 256 colors for emacs term and ansi-term
 #+end_quote
 #+begin_src emacs-lisp
 (use-package eterm-256color
-  :recipe (:host github
-           :repo "dieggsy/eterm-256color"
-           :files ("eterm-256color.el" "eterm-256color.ti"))
+  :straight (:host github
+             :repo "dieggsy/eterm-256color"
+             :files ("eterm-256color.el" "eterm-256color.ti"))
   :hook (term-mode . eterm-256color-mode))
 #+end_src
 *** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers]]
@@ -3484,8 +3484,8 @@ Port of python's difflib to emacs-lisp
 #+end_quote
 #+begin_src emacs-lisp
 (use-package difflib
-  :recipe (:host github
-           :repo "dieggsy/difflib.el"))
+  :straight (:host github
+             :repo "dieggsy/difflib.el"))
 #+end_src
 ***** [[https://github.com/joddie/macrostep][macrostep]]
 #+begin_quote
@@ -4081,7 +4081,7 @@ operate on system processes like dired
 #+end_quote
 #+begin_src emacs-lisp
 (use-package proced
-  :ensure nil
+  :straight nil
   :init
   (d/setup-hook proced-mode
     (proced-toggle-auto-update 1))
@@ -4096,7 +4096,7 @@ And it's amazing, to be quite honest. "The poor man's Mathematica", I once
 heard (and can confirm).
 #+begin_src emacs-lisp
 (use-package calc
-  :ensure nil
+  :straight nil
   :general
   (d/leader-keys
    "ac" 'calc-dispatch)
@@ -4123,7 +4123,7 @@ A shell written in emacs-lisp that has recently been replacing zsh for me.
 *** Built-in
 #+begin_src emacs-lisp
 (use-package eshell
-  :ensure nil
+  :straight nil
   :general
   (d/leader-keys
    "RET" 'd/eshell-here)
@@ -4166,7 +4166,7 @@ Display git info in eshell
 #+end_quote
 #+begin_src emacs-lisp
 (use-package egp
-  :ensure nil
+  :straight nil
   :after eshell
   :config
   (setq eshell-highlight-prompt nil
@@ -4187,8 +4187,8 @@ Fish completion for Emacs and Eshell
 #+begin_src emacs-lisp
 (use-package emacs-fish-completion
   :after eshell
-  :recipe (:host github
-           :repo "ambrevar/emacs-fish-completion")
+  :straight (:host github
+             :repo "ambrevar/emacs-fish-completion")
   :hook (eshell-mode . fish-completion-mode))
 #+end_src
 **** [[https://github.com/leoliu/pcmpl-git-el][pcmpl-git]]
@@ -4206,8 +4206,8 @@ Fish-like autosuggestions in eshell.
 #+begin_src emacs-lisp
 (use-package company-eshell-autosuggest
   :hook (eshell-mode . company-eshell-autosuggest-mode)
-  :recipe (:host github
-           :repo "dieggsy/company-eshell-autosuggest")
+  :straight (:host github
+             :repo "dieggsy/company-eshell-autosuggest")
   :general
   (company-eshell-autosuggest-active-map
    "<S-return>" 'company-complete-selection))
@@ -4218,8 +4218,8 @@ Correct the previous eshell command.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package eshell-thefuck
-  :recipe (:host github
-           :repo "dieggsy/eshell-thefuck")
+  :straight (:host github
+             :repo "dieggsy/eshell-thefuck")
   :after eshell)
 #+end_src
 *** Functions
@@ -4791,7 +4791,7 @@ An Emacs Internet Relay Chat client
 **** Built-in
 #+begin_src emacs-lisp
 (use-package erc
-  :ensure nil
+  :straight nil
   :general
   (d/mode-leader-keys
    :keymaps 'erc-mode-map
@@ -4983,10 +4983,10 @@ Nickname Highlighting for ERC
 #+end_quote
 #+begin_src emacs-lisp
 (use-package erc-hl-nicks
-  :recipe (:host github
-           :repo "dieggsy/erc-hl-nicks"
-           :upstream (:host github
-                      :repo "leathekd/erc-hl-nicks"))
+  :straight (:host github
+             :repo "dieggsy/erc-hl-nicks"
+             :upstream (:host github
+                        :repo "leathekd/erc-hl-nicks"))
   :after erc
   :config
   (setq erc-hl-nicks-skip-nicks '("diegs" "dieggsy")
