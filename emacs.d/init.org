@@ -1374,13 +1374,11 @@ Leader bindings
  "hcv" 'customize-variable-other-window
  "hdV" 'apropos-value
  "hdc" 'describe-char
- "hdk" 'describe-key
  "hdm" 'describe-mode
- "hdp" 'describe-package
- "hds" 'describe-symbol
  "hdt" 'describe-theme
  "hn"  'view-emacs-news
- "hs"  'system-name
+ "hi"  'info
+ "hs"  (lambda () (interactive) (message (system-name)))
  "hv"  'version)
 #+end_src
 * Files/Buffers
