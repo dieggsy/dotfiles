@@ -32,6 +32,8 @@
 (require 'cl-lib)
 (require 'eshell)
 (require 'em-ls)
+(eval-when-compile
+  (require 'subr-x))
 
 (defgroup egp nil
   "Eshell git prompt"
@@ -175,13 +177,12 @@ length of PATH (sans directory slashes) down to MAX-LEN."
   (setq eshell-prompt-regexp "^[^#\nλ]* λ[#]* ")
   (propertize
    (concat
-    (let ((host (file-remote-p default-directory 'host)))
+    (when-let* ((host (file-remote-p default-directory 'host)))
       (propertize
-       (cond ((and host default-directory (string= host (system-name)))
+       (cond ((and default-directory (string= host (system-name)))
               (concat "@" (file-remote-p default-directory 'user)))
-             ((and host default-directory)
-              (concat "@" host))
-             (t ""))
+             (default-directory
+               (concat "@" host)))
        'face
        'egp-remote-face))
     (egp-get-git-status)
