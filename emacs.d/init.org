@@ -4090,13 +4090,6 @@ A shell written in emacs-lisp that has recently been replacing zsh for me.
     (nmap eshell-mode-map
       "G" 'end-of-buffer))
   :config
-  (d/setup-hook eshell-directory-change
-    (cond ((and (file-remote-p default-directory)
-                (not (file-remote-p (ring-ref eshell-last-dir-ring 0))))
-           (eshell/alias "ls"))
-          ((and (not (file-remote-p default-directory))
-                (file-remote-p (ring-ref eshell-last-dir-ring 0)))
-           (eshell/alias "ls" "exa --group-directories-first --sort=extension --color=always $*"))))
   (d/setup-hook eshell-post-command
     (eshell-save-some-history))
   (setenv "PAGER" "cat")
