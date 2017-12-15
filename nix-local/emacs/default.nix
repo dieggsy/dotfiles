@@ -2,8 +2,9 @@
 , pkgconfig, gettext, libXft, dbus, libpng, libjpeg, giflib
 , libtiff, librsvg, gconf, libxml2, imagemagick, gnutls, libselinux
 , alsaLib, cairo, acl, gpm, AppKit, CoreWLAN, Kerberos, GSS, ImageIO
-, autoconf, texinfo, systemd, libotf, m17n_lib, m17n_db
+, autoconf, texinfo, systemd, libotf, m17n_lib, m17n_db, jansson
 , withX ? !stdenv.isDarwin
+, withJson ? true
 , withGTK2 ? false, gtk2 ? null
 , withGTK3 ? true, gtk3 ? null, gsettings_desktop_schemas ? null
 , withXwidgets ? false, webkitgtk24x-gtk3 ? null, wrapGAppsHook ? null, glib_networking ? null
@@ -35,8 +36,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     "url" = "git://git.sv.gnu.org/emacs.git";
-    "rev" = "a597969f1360b8c28fd4467018792662b698e03a";
-    "sha256" = "1953516xwvz38796pka7m3ykzvpkiwhrzn88ak5vidb4f1sm7lbg";
+    "rev" = "57e2ca5c504fda014ba1971e850a26ef001a7bfd";
+    "sha256" = "01r6r6hsjg0y439glm9p84saq23g8ldsgd37smkixfsrsjscrkyj";
     };
 
   patches = (lib.optional stdenv.isDarwin ./at-fdcwd.patch);
@@ -48,6 +49,7 @@ stdenv.mkDerivation rec {
   buildInputs =
     [ ncurses gconf libxml2 gnutls alsaLib acl gpm gettext autoconf automake
       texinfo systemd libotf m17n_lib m17n_db ]
+    ++ lib.optionals withJson [ jansson ]
     ++ lib.optionals stdenv.isLinux [ dbus libselinux ]
     ++ lib.optionals withX
       [ xlibsWrapper libXaw Xaw3d libXpm libpng libjpeg giflib libtiff librsvg libXft
@@ -68,7 +70,8 @@ stdenv.mkDerivation rec {
       then [ "--with-x-toolkit=${toolkit}" "--with-xft" ]
       else [ "--with-x=no" "--with-xpm=no" "--with-jpeg=no" "--with-png=no"
              "--with-gif=no" "--with-tiff=no" ])
-    ++ lib.optional withXwidgets "--with-xwidgets";
+    ++ lib.optional withXwidgets "--with-xwidgets"
+    ++ lib.optional withJson "--with-json";
 
   preConfigure = lib.optionalString srcRepo ''
     ./autogen.sh
