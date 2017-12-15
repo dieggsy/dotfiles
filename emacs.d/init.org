@@ -4281,6 +4281,7 @@ Major mode for reading EPUBs in Emacs
   (d/leader-keys "at" 'd/ansi-term)
   :config
   (defun d/ansi-term ()
+    (interactive)
     (ansi-term shell-file-name))
 
   (define-advice term-handle-exit (:after (&rest _) d/kill-buffer)
