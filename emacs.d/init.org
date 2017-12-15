@@ -137,12 +137,9 @@ use this a fair bit so let's explicitly require it.
 #+begin_quote
 Next-generation, purely functional package manager for the Emacs hacker.
 #+end_quote
-
 #+begin_src emacs-lisp
-(defvar straight-recipe-overrides '((nil (straight :host github
-                                                 :repo "raxod502/straight.el"
-                                                 :files ("straight.el")
-                                                 :branch "develop"))))
+(setq straight-repository-branch "develop")
+
 (let ((bootstrap-file (concat user-emacs-directory "straight/bootstrap.el"))
       (bootstrap-version 2))
   (unless (file-exists-p bootstrap-file)
