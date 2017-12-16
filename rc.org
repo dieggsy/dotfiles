@@ -675,8 +675,8 @@ I know, it probably doesn't make sense to keep my gitconfig here.
 #+begin_src conf
 [user]
     name = dieggsy
-    email = diegoamundo@protonmail.com
-    signingkey = AEAC5CE8E1F933F0
+    email = dieggsy@protonmail.com
+    signingkey = 1DF81CB1
 #+end_src
 **** filter
 #+begin_src conf
