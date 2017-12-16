@@ -120,7 +120,9 @@
        (rainbow-mode 1)))))
  '(safe-local-variable-values
    (quote
-    ((column-enforce-mode)
+    ((eval require
+           (quote ox-hugo))
+     (column-enforce-mode)
      (d/async-babel-tangle-decrypt . t)
      (auto-save-mode)
      (org-tags-match-list-sublevels)
