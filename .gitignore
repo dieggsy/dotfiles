@@ -15,7 +15,8 @@ emacs.d/lisp/there-is-trouble-with-the-trees.el
 emacs.d/quelpa/
 emacs.d/srecode-map.el
 emacs.d/tramp
-emacs.d/straight/
+emacs.d/straight/*
+!emacs.d/straight/versions
 nvim/bundle/
 emacs.d/master/
 emacs.d/.cask/
