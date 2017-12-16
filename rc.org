@@ -33,7 +33,8 @@ more readable in org format than in rendered markdown.
   - [[#i3-exit-rofi][i3-exit-rofi]]
   - [[#i3exit][i3exit]]
   - [[#fancylock][fancylock]]
-  - [[#i3blocksexwm-utils][i3blocks/exwm utils]]
+  - [[#i3blocks][i3blocks]]
+  - [[#exwm-blocks][exwm-blocks]]
   - [[#masterinstall][masterinstall]]
   - [[#ocrpdf][ocrpdf]]
   - [[#ocrpdf2][ocrpdf2]]
@@ -1759,7 +1760,7 @@ exit 0
 #+begin_src sh
 i3lock-fancy -gpf Iosevka-Term -- scrot -z
 #+end_src
-** i3blocks/exwm utils
+** i3blocks
 i3blocks scripts taken from/inspired by [[https://github.com/yeungocanh/archdot/tree/master/.config/i3blocks][yeungocanh/archdot]].
 *** battery
 :PROPERTIES:
@@ -2032,6 +2033,66 @@ else
     echo
     echo
     # echo "#FB4933"
+fi
+#+end_src
+** exwm-blocks
+*** disk
+:PROPERTIES:
+:header-args+: :tangle ~/bin/exwm-blocks/disk :shebang "#!/bin/bash"
+:END:
+#+begin_src sh
+Disk=$(df -h "$1" | grep -v "^[A-Z]" | awk '{print $4-G"/"$2}')
+Short=$(df -h "$1" | grep -v "^[A-Z]" | awk '{print $4}')
+
+echo -e " $Short "
+#+end_src
+*** layout
+:PROPERTIES:
+:header-args+: :tangle ~/bin/exwm-blocks/layout :shebang "#!/bin/bash"
+:END:
+#+begin_src sh
+layout="$(setxkbmap -query | grep layout | cut -d' ' -f6)"
+
+if [ "$1" = "toggle" ] && [ "$layout" = "dvorak" ]; then
+    setxkbmap us
+    layout="QW"
+elif [ "$1" = "toggle" ] && [ "$layout" = "us" ]; then
+    setxkbmap dvorak
+    layout="DV"
+elif [ "$layout" = "us" ]; then
+    layout="QW"
+elif [ "$layout" = "dvorak" ]; then
+    layout="DV"
+fi
+
+echo " $layout "
+#+end_src
+*** volume
+:PROPERTIES:
+:header-args+: :tangle ~/bin/exwm-blocks/volume :shebang "#!/bin/bash"
+:END:
+#+begin_src sh
+if [ "$1" = "toggle" ]; then
+    out="$(amixer -D pulse sset Master toggle)"
+elif [ "$1" = "+" ]; then
+    out="$(amixer -D pulse sset Master 5%+)"
+elif [ "$1" = "-" ]; then
+    out="$(amixer -D pulse sset Master 5%-)"
+else
+    out="$(amixer -D pulse get Master)"
+fi
+
+# echo "$out"
+
+Vol=$(echo "$out"  | grep "Left: Playback" | awk '{print $5}' | tr -d "[ %]")
+Mute=$(echo "$out" | grep "Left: Playback" | awk '{print $6}' | tr -d "[-]")
+
+if [ "$Vol" = "0" ] || [ "$Mute" = "off" ]; then
+    echo -ne " $Vol"
+elif [ "$Vol" -ge "50" ];then
+    echo -ne " $Vol"
+else
+    echo -ne " $Vol"
 fi
 #+end_src
 ** masterinstall
