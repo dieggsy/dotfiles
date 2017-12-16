@@ -636,7 +636,8 @@ This function is intended for use with `ivy-ignore-buffers'."
 ***** ivy-hydra
 #+begin_src emacs-lisp
 (use-package ivy-hydra
-  :commands ivy-dispatching-done-hydra)
+  :after ivy
+  :demand t)
 #+end_src
 **** swiper
 #+begin_src emacs-lisp
