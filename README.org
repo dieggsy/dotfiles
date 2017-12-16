@@ -19,9 +19,9 @@ aware (Linux or Darwin).
 
 ** Files
 *** [[./emacs.d/][emacs.d/]] - emacs config
-An emacs configuration based largely on [[https://github.com/jwiegley/use-package][use-package]], [[https://github.com/emacs-evil/evil][evil-mode]], and [[https://github.com/abo-abo/swiper][ivy]], with
-inspiration and code from [[https://github.com/syl20bnr/spacemacs][spacemacs]] and others' configs. The file is tangled to
-~init.el~ on save.
+An emacs configuration based largely on [[https://github.com/raxod502/straight.el][straight.el]], [[https://github.com/jwiegley/use-package][use-package]], [[https://github.com/emacs-evil/evil][evil-mode]],
+and [[https://github.com/abo-abo/swiper][ivy]], with inspiration and code from [[https://github.com/syl20bnr/spacemacs][spacemacs]] and others' configs. The file
+is tangled to ~init.el~ on save.
 *** [[./nix-local][nix-local/]] - custom nix packages
 A place where I keep custom nix packages - for example, I build emacs from
 master with a nix recipe.
