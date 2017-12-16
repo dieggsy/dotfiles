@@ -4041,8 +4041,6 @@ Yet another Emacs paste mode, this one for Gist.
   :general
   (nmap magit-status-mode-map
     "H" 'magithub-dispatch-popup)
-  :custom
-  (magithub-preferred-remote-method 'clone_url)
   :config
   (magithub-feature-autoinject t))
 #+end_src
