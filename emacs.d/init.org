@@ -4259,7 +4259,7 @@ directory to make multiple eshell windows easier."
                           (end-of-line)
                           (eshell-kill-input)
                           (insert x))
-                :initial-input input))))
+                :preselect input))))
 #+end_src
 ** [[https://github.com/politza/pdf-tools][pdf-tools]]
 #+begin_quote
