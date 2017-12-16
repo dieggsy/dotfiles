@@ -5196,6 +5196,84 @@ FUNC can be:
   (add-to-list 'exwm-input-prefix-keys ?\C-/)
   (setq exwm-input-prefix-keys (delq 3 exwm-input-prefix-keys)))
 #+end_src
+** Packages
+*** exwm-blocks
+#+begin_src emacs-lisp
+(use-package exwm-blocks
+  :straight (:host github
+             :repo "dieggsy/exwm-blocks")
+  :after exwm
+  :demand t
+  :custom
+  (exwm-blocks-separator "  ")
+  (exwm-blocks-adjust -7)
+  (exwm-blocks-script-format "~/bin/exwm-blocks/%s")
+  :config
+  (defvar d/battery-alist)
+  (define-advice battery-linux-sysfs (:around (fn) store-alist)
+    (let ((alist (funcall fn)))
+      (setq d/battery-alist alist)))
+
+  (exwm-blocks-set
+   ;; :script-fmt "~/bin/i3blocks/%s"
+   ;; (dropbox
+   ;;  :interval 2
+   ;;  :color "#3FD7e5")
+   ;; (music
+   ;;  :interval 5
+   ;;  :color "#FE8019")
+   ;; (weather
+   ;;  :interval 60
+   ;;  :color "#8EC07C")
+   (layout
+    :color "#8EC07C"
+    :bindings
+    ([mouse-1] (exec* "~/bin/exwm-blocks/layout toggle")))
+   (volume
+    :color "#FB4933"
+    :bindings
+    ([mouse-1] (exec* "~/bin/exwm-blocks/volume toggle")
+     [mouse-5] (exec* "~/bin/exwm-blocks/volume +")
+     [mouse-4] (exec* "~/bin/exwm-blocks/volume -")))
+   (disk
+    :icon ""
+    :interval 60
+    :args "/"
+    :color "#D3869B"
+    :bindings
+    ([mouse-1] (exec "notify-send \"$(df -h)\"")))
+   (wifi
+    :icon ""
+    :interval 2
+    :script "iwgetid -r || echo 'None'"
+    :color "#B8BB26")
+   (battery-emacs
+    :icon (let ((num (string-to-number battery-mode-line-string)))
+            (cond ((string= (alist-get ?L d/battery-alist) "AC")
+                   "")
+                  ((> num 95)
+                   "")
+                  ((> num 75)
+                   "")
+                  ((> num 50)
+                   "")
+                  ((> num 25)
+                   "")
+                  ((<= num 25)
+                   "")))
+    :color "#83A598"
+    :fmt "%p"
+    :bindings
+    ([mouse-1] (exec "notify-send \"$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)\"")))
+   (time-emacs
+    :icon ""
+    :color "#A89984"
+    :fmt "%Y-%d-%m %H:%M"
+    :bindings
+    ([mouse-1] (exec "notify-send \"$(cal --color=never | head -n-1 | cut -c -20)\""))))
+
+  (exwm-blocks-mode))
+#+end_src
 ** Enable
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'exwm
