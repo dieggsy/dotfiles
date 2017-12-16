@@ -1346,6 +1346,10 @@ A better Emacs *help* buffer
 #+end_quote
 #+begin_src emacs-lisp
 (use-package helpful
+  :straight (:host github
+             :repo "dieggsy/helpful"
+             :upstream (:host github
+                        :repo "Wilfred/helpful"))
   :custom
   (helpful-short-filenames t)
   :general
@@ -4624,6 +4628,10 @@ Practice touch/speed typing in emacs.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package speed-type
+  :straight (:host github
+             :repo "dieggsy/speed-type"
+             :upstream (:host github
+                        :repo "parkouss/speed-type"))
   :general (d/leader-keys "as" 'speed-type-text))
 #+end_src
 *** [[https://gitlab.com/iankelling/spray][spray]]
