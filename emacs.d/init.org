@@ -288,7 +288,16 @@ Use tab for completion and cycling candidates (relevant for the minibuffer?).
 *** Battery
 #+begin_src emacs-lisp
 (with-eval-after-load 'battery
-  (setq battery-mode-line-format "%p"))
+  (setq battery-mode-line-format "%p"
+        battery-mode-line-limit 100.7)
+
+  (define-advice battery-linux-sysfs (:around (fn) d/fix-percent)
+    (let* ((alist (funcall fn))
+           (bat (string-to-number (alist-get 112 alist))))
+      (setf (alist-get 112 alist) (if (>= bat 100)
+                                      "100"
+                                    (format "%.f" bat)))
+      alist)))
 #+end_src
 *** Tramp
 Use ssh by default and remember passwords for [[https://www.gnu.org/software/tramp/][tramp]]. Also make tramp quieter
