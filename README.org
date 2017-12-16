@@ -61,11 +61,6 @@ cd ~/dotfiles
 ./org-tangle
 #+end_src
 
-Or to be prompted before each file:
-#+begin_src sh
-./org-tangle --ask
-#+end_src
-
 *** Partial
 You can call the script with the filenames you'd like to install - say you want
 just the emacs and zsh configs:
