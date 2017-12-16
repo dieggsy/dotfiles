@@ -151,7 +151,9 @@ Next-generation, purely functional package manager for the Emacs hacker.
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(setq straight-use-package-by-default t)
+(setq straight-use-package-by-default t
+      straight-vc-git-default-protocol 'ssh
+      straight-vc-git-force-protocol t)
 #+end_src
 *** [[https://github.com/jwiegley/use-package][use-package]]
 #+begin_quote
