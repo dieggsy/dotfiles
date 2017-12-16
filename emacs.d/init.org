@@ -1186,6 +1186,7 @@ Org sync with Google Calendar
 *** Leader
 #+begin_src emacs-lisp
 (d/leader-keys
+ "." 'abort-recursive-edit
  "qf" 'delete-frame
  "qq" 'save-buffers-kill-emacs
 
