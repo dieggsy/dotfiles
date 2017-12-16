@@ -8,7 +8,8 @@ aware (Linux or Darwin).
 
 ** Contents                                                      :toc:TOC_3:
   - [[#files][Files]]
-    - [[#emacsdconfigorg---emacs-config][emacs.d/config.org - emacs config]]
+    - [[#emacsd---emacs-config][emacs.d/ - emacs config]]
+    - [[#nix-local---custom-nix-packages][nix-local/ - custom nix packages]]
     - [[#zshorg---zsh-config][zsh.org - zsh config]]
     - [[#rcorg---dotfiles-and-scripts][rc.org - dotfiles and scripts]]
     - [[#org-tangle---install-script][org-tangle - install script]]
@@ -17,10 +18,17 @@ aware (Linux or Darwin).
     - [[#partial][Partial]]
 
 ** Files
-*** [[./emacs.d/config.org][emacs.d/config.org]] - emacs config
+*** [[./emacs.d/][emacs.d/]] - emacs config
 An emacs configuration based largely on [[https://github.com/jwiegley/use-package][use-package]], [[https://github.com/emacs-evil/evil][evil-mode]], and [[https://github.com/abo-abo/swiper][ivy]], with
 inspiration and code from [[https://github.com/syl20bnr/spacemacs][spacemacs]] and others' configs. The file is tangled to
 ~init.el~ on save.
+*** [[./nix-local][nix-local/]] - custom nix packages
+A place where I keep custom nix packages - for example, I build emacs from
+master with a nix recipe.
+
+I've found nix is a nice, reproducible way to maintain custom builds you
+consistently like using (as well as consistently reproduce at least a subset of
+necessary packages on any machine).
 *** [[./zsh.org][zsh.org]] - zsh config
 A zsh configuration that is partially [[https://github.com/zplug/zplug][zplug]] based, with inspiration and code
 from prezto and oh-my-zsh where not using an actual plugin.
