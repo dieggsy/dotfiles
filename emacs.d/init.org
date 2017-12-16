@@ -711,6 +711,9 @@ But really, it's life.
 #+begin_src emacs-lisp
 (use-package org-plus-contrib
   :general
+  (nmap org-mode-map
+    "gt" 'org-todo
+    "ga" 'org-archive-subtree)
   (d/leader-keys
    "C"   'org-capture
    "bo"  'org-iswitchb
