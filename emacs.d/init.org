@@ -655,8 +655,6 @@ This function is intended for use with `ivy-ignore-buffers'."
    "fl"  'counsel-locate
    "hdF" 'counsel-describe-face
    "hdb" 'counsel-descbinds
-   "hdf" 'counsel-describe-function
-   "hdv" 'counsel-describe-variable
    "iu"  'counsel-unicode-char
    "sr"  'counsel-rg
    "ss"  'counsel-grep-or-swiper
@@ -1335,7 +1333,21 @@ Emacs interface to Google Translate
 A better Emacs *help* buffer
 #+end_quote
 #+begin_src emacs-lisp
-(use-package helpful)
+(use-package helpful
+  :custom
+  (helpful-short-filenames t)
+  :general
+  (d/leader-keys
+   "hdf" 'helpful-callable
+   "hdv" 'helpful-variable
+   "hds" 'helpful-symbol
+   "hdk" 'helpful-key)
+  :init
+  (setq find-function-C-source-directory
+        (replace-regexp-in-string
+         (regexp-quote "27.0")
+         "master"
+         find-function-C-source-directory)))
 #+end_src
 *** [[https://www.emacswiki.org/emacs/info+.el][info+]]
 #+begin_quote
