@@ -4630,10 +4630,6 @@ Practice touch/speed typing in emacs.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package speed-type
-  :straight (:host github
-             :repo "dieggsy/speed-type"
-             :upstream (:host github
-                        :repo "parkouss/speed-type"))
   :general (d/leader-keys "as" 'speed-type-text))
 #+end_src
 *** [[https://gitlab.com/iankelling/spray][spray]]
