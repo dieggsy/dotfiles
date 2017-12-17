@@ -673,6 +673,7 @@ This function is intended for use with `ivy-ignore-buffers'."
    "y"   'counsel-yank-pop)
   :custom
   (counsel-find-file-ignore-regexp "\\`\\.")
+  (counsel-yank-pop-preselect-last t)
   :config
   (when (eq system-type 'darwin)
     (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind))
