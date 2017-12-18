@@ -493,6 +493,7 @@ if [ "$(uname)" = "Darwin" ]; then
     fi
 fi
 gpgconf --launch gpg-agent
+gpg-connect-agent updatestartuptty /bye
 #+end_src
 ** Path
 #+begin_src sh
