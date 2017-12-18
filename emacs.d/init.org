@@ -674,6 +674,11 @@ This function is intended for use with `ivy-ignore-buffers'."
   :custom
   (counsel-find-file-ignore-regexp "\\`\\.")
   (counsel-yank-pop-preselect-last t)
+  (counsel-linux-apps-directories
+   '("~/.nix-profile/share/applications/"
+     "~/.local/share/applications/"
+     "/usr/local/share/applications/"
+     "/usr/share/applications/"))
   :config
   (when (eq system-type 'darwin)
     (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind))
