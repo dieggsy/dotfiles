@@ -32,7 +32,6 @@ more readable in org format than in rendered markdown.
   - [[#eshell-focus][eshell-focus]]
   - [[#i3-exit-rofi][i3-exit-rofi]]
   - [[#i3exit][i3exit]]
-  - [[#fancylock][fancylock]]
   - [[#i3blocks][i3blocks]]
   - [[#exwm-blocks][exwm-blocks]]
   - [[#masterinstall][masterinstall]]
@@ -1054,7 +1053,7 @@ exec --no-startup-id unclutter
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id nitrogen --restore; # sleep 1; compton -b
 # exec --no-startup-id blueman
-exec --no-startup-id xautolock -corners ---- -time 5 -locker ~/bin/fancylock
+exec --no-startup-id xautolock -corners ---- -time 5 -locker "betterlockscreen -l dim"
 
 exec --no-startup-id xset r rate 300 50
 
@@ -1724,7 +1723,7 @@ fi
 
 case "$1" in
     lock)
-        ~/bin/fancylock
+        betterlockscreen -l dim
         ;;
     exit)
         i3-msg exit
@@ -1733,10 +1732,10 @@ case "$1" in
         dm-tool switch-to-greeter
         ;;
     suspend)
-        ~/bin/fancylock && $logind suspend
+        betterlockscreen -l dim && $logind suspend
         ;;
     hibernate)
-        ~/bin/fancylock && $logind hibernate
+        betterlockscreen -l dim && $logind hibernate
         ;;
     reboot)
         $logind reboot
@@ -1751,14 +1750,6 @@ case "$1" in
 esac
 
 exit 0
-
-#+end_src
-** fancylock
-:PROPERTIES:
-:header-args+: :tangle ~/bin/fancylock :shebang "#!/usr/bin/env bash"
-:END:
-#+begin_src sh
-i3lock-fancy -gpf Iosevka-Term -- scrot -z
 #+end_src
 ** i3blocks
 i3blocks scripts taken from/inspired by [[https://github.com/yeungocanh/archdot/tree/master/.config/i3blocks][yeungocanh/archdot]].
