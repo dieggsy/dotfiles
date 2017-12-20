@@ -1465,9 +1465,6 @@ directory-browsing commands
    :keymaps 'dired-mode-map
    "h" 'dired-omit-mode
    "d" 'dired-du-mode)
-  :init
-  (d/setup-hook dired-mode
-    (hl-line-mode 1))
   :custom
   (dired-listing-switches "-lGXhA --group-directories-first")
   (dired-dwim-target t)
@@ -2884,6 +2881,12 @@ Use a bar cursor in the minibuffer.
 #+begin_src emacs-lisp
 (setq custom-safe-themes t)
 #+end_src
+** Built-in
+#+begin_src emacs-lisp
+(use-package hl-line
+  :straight nil
+  :hook ((prog-mode emms-browser-mode dired-mode) . hl-line-mode))
+#+end_src
 ** Packages
 *** [[https://github.com/larstvei/Focus][focus]]
 #+begin_quote
@@ -3278,8 +3281,7 @@ On the fly syntax checking for GNU Emacs
 (d/setup-hook prog-mode
   (subword-mode)
   (auto-fill-mode 1)
-  (setq-local comment-auto-fill-only-comments t)
-  (hl-line-mode 1))
+  (setq-local comment-auto-fill-only-comments t))
 #+end_src
 ** Lang
 *** Python
@@ -4585,8 +4587,6 @@ of external players.
    "ml" 'emms-seek-forward
    "mh" 'emms-seek-backward)
   :config
-  (d/setup-hook emms-browser-mode
-    (hl-line-mode 1))
   (require 'emms-setup)
   (emms-all)
   (setq emms-source-file-default-directory "~/Music/"
