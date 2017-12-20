@@ -3909,35 +3909,16 @@ Source: https://git.io/vQKub"
      :headers `(("PRIVATE-TOKEN" . ,token)))))
 #+end_src
 *** Packages
-**** [[https://github.com/magit/magit][magit]]
+**** [[https://github.com/defunkt/gist.el][gist]]
 #+begin_quote
-It's Magit! A Git Porcelain inside Emacs.
+Yet another Emacs paste mode, this one for Gist.
 #+end_quote
-Like git, for emacs. But cooler. (Just /trust/ me on this one.)
 #+begin_src emacs-lisp
-(use-package magit
-  :general
-  (d/leader-keys
-   "g"  '(:ignore t :wk "magit")
-   "gB" 'd/magit-blame-toggle
-   "gC" 'magit-clone
-   "gL" 'magit-log-buffer-file
-   "ga" 'magit-submodule-add
-   "gb" 'magit-branch
-   "gc" 'magit-checkout
-   "gf" 'magit-find-file
-   "gl" 'magit-log-all
-   "gs" 'magit-status
-   "gp" 'magit-file-popup)
+(use-package gist
   :config
-  (setq magit-diff-refine-hunk t
-        auto-revert-check-vc-info t
-        git-commit-summary-max-length 50
-        git-commit-major-mode 'org-mode)
-  (d/setup-hook git-commit-mode
-    (setq-local fill-column 72)
-    (setq-local org-hide-emphasis-markers nil)
-    (setq-local org-pretty-entities nil)))
+  (let ((gh-vals (cdar gh-profile-alist)))
+    (setf gh-vals (plist-put gh-vals :username "dieggsy")
+          gh-vals (plist-put gh-vals :token (password-store-get "tokens/github/gist")))))
 #+end_src
 **** [[https://github.com/syohex/emacs-git-gutter-fringe][git-gutter-fringe]]
 #+begin_quote
@@ -4037,16 +4018,35 @@ Fringe version of git-gutter.el
     "....XXXX"
     "....XXXX"))
 #+end_src
-**** [[https://github.com/defunkt/gist.el][gist]]
+**** [[https://github.com/magit/magit][magit]]
 #+begin_quote
-Yet another Emacs paste mode, this one for Gist.
+It's Magit! A Git Porcelain inside Emacs.
 #+end_quote
+Like git, for emacs. But cooler. (Just /trust/ me on this one.)
 #+begin_src emacs-lisp
-(use-package gist
+(use-package magit
+  :general
+  (d/leader-keys
+   "g"  '(:ignore t :wk "magit")
+   "gB" 'd/magit-blame-toggle
+   "gC" 'magit-clone
+   "gL" 'magit-log-buffer-file
+   "ga" 'magit-submodule-add
+   "gb" 'magit-branch
+   "gc" 'magit-checkout
+   "gf" 'magit-find-file
+   "gl" 'magit-log-all
+   "gs" 'magit-status
+   "gp" 'magit-file-popup)
   :config
-  (let ((gh-vals (cdar gh-profile-alist)))
-    (setf gh-vals (plist-put gh-vals :username "dieggsy")
-          gh-vals (plist-put gh-vals :token (password-store-get "tokens/github/gist")))))
+  (setq magit-diff-refine-hunk t
+        auto-revert-check-vc-info t
+        git-commit-summary-max-length 50
+        git-commit-major-mode 'org-mode)
+  (d/setup-hook git-commit-mode
+    (setq-local fill-column 72)
+    (setq-local org-hide-emphasis-markers nil)
+    (setq-local org-pretty-entities nil)))
 #+end_src
 **** [[https://github.com/vermiculus/magithub][magithub]]
 #+begin_src emacs-lisp
