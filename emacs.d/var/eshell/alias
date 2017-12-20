@@ -1,3 +1,4 @@
+alias systemctl-enabled systemctl list-unit-files --state=enabled
 alias ls exa --group-directories-first --sort=extension --color=always $*
 alias edit find-file-other-window $1
 alias printers lpstat -p | awk '{print $2}'
@@ -21,3 +22,4 @@ alias d dired-here
 alias e find-file-other-window $1
 alias dbcli dropbox-cli $*
 alias git hub -c color.ui=always $*
+alias reset-wifi sudo systemctl restart NetworkManager.service
