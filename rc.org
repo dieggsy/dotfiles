@@ -2176,17 +2176,17 @@ fi
 :PROPERTIES:
 :header-args+: :tangle ~/bin/no-lock-fullscreen :shebang "#!/usr/bin/env bash"
 :END:
+This goes in a cron job using ~crontab -e~ like so:
+#+begin_example
+*/2 * * * * /home/diego/bin/no-lock-fullscreen
+#+end_example
 #+begin_src sh
-while true; do
-    active_id=`xprop -root _NET_ACTIVE_WINDOW`
-    fullscreen="$(xprop -id ${active_id:40:9} | grep _NET_WM_STATE_FULLSCREEN)"
-    if [ -n "$fullscreen" ]; then
-        xautolock -disable; xautolock -enable
-    fi
-    sleep 120
-done
+active_id=`xprop -display :0 -root _NET_ACTIVE_WINDOW`
+fullscreen="$(xprop -display :0 -id ${active_id:40:9} | grep _NET_WM_STATE_FULLSCREEN)"
+if [ -n "$fullscreen" ]; then
+    xautolock -disable; xautolock -enable
+fi
 #+end_src
-
 ** ocrpdf
 :PROPERTIES:
 :header-args+: :tangle ~/bin/ocrpdf :shebang "#!/usr/bin/env bash"
