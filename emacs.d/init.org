@@ -1437,10 +1437,6 @@ Select the help window when opening it (I like this so I can quickly ~q~ out).
 #+begin_src emacs-lisp
 (setq help-window-select t)
 #+end_src
-Clean up whitespace before saving files.
-#+begin_src emacs-lisp
-(add-hook 'before-save-hook #'whitespace-cleanup)
-#+end_src
 Backup
 #+begin_src emacs-lisp
 (setq version-control t
@@ -1680,6 +1676,14 @@ Ivy UI for Projectile
    "pf" 'counsel-projectile-find-file
    "pp" 'counsel-projectile
    "ps" 'counsel-projectile-switch-project))
+#+end_src
+
+*** [[https://github.com/purcell/whitespace-cleanup-mode][whitespace-cleanup-mode]]
+#+begin_src emacs-lisp
+(use-package whitespace-cleanup-mode
+  :defer 15
+  :config
+  (global-whitespace-cleanup-mode))
 #+end_src
 ** Functions
 *** File/Buffer Manipulation
