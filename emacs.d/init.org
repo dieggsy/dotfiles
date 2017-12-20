@@ -4778,7 +4778,6 @@ An Emacs Internet Relay Chat client
    '(log
      notifications
      pcomplete
-     hl-nicks
      netsplit
      fill
      button
@@ -4791,7 +4790,8 @@ An Emacs Internet Relay Chat client
      noncommands
      irccontrols
      move-to-prompt
-     menu))
+     menu
+     match))
   :config
   (add-hook 'window-configuration-change-hook #'d/erc-to-bottom)
   (add-hook 'erc-insert-post-hook #'erc-save-buffer-in-logs))
@@ -4822,7 +4822,7 @@ An Emacs Internet Relay Chat client
                   (long-char
                    (if (and (> (length nick) 10)
                             (not nick-was-last))
-                       (erc-propertize "…" 'face '(:foreground "#D3869B" ))
+                       (propertize "…" 'face '(:foreground "#D3869B" ))
                      "")))
 
              (when (>= (cl-incf erc-lurker-cleanup-count)
@@ -4836,7 +4836,7 @@ An Emacs Internet Relay Chat client
              (puthash channel nick (gethash server d/erc-last-speaker))
              (format "%10.10s%s\t"
                      (cond (nick-was-last
-                            (erc-propertize
+                            (propertize
                              "↳"
                              'face
                              (if (string= trimmed (erc-current-nick))
@@ -4844,15 +4844,15 @@ An Emacs Internet Relay Chat client
                                (gethash trimmed erc-hl-nicks-face-table))))
                            ((string= nick (erc-current-nick))
                             (concat
-                             (erc-propertize mode 'face 'erc-nick-prefix-face)
-                             (erc-propertize nick 'face 'erc-current-nick-face)))
+                             (propertize mode 'face 'erc-nick-prefix-face)
+                             (propertize nick 'face 'erc-current-nick-face)))
                            ((not (member trimmed erc-hl-nicks-skip-nicks))
                             (concat
-                             (erc-propertize mode 'face 'erc-nick-prefix-face)
-                             (erc-propertize nick 'face (erc-hl-nicks-make-face trimmed))))
+                             (propertize mode 'face 'erc-nick-prefix-face)
+                             (propertize nick 'face (erc-hl-nicks-make-face trimmed))))
                            (t
                             (concat
-                             (erc-propertize mode 'face 'erc-nick-prefix-face)
+                             (propertize mode 'face 'erc-nick-prefix-face)
                              nick)))
                      long-char)))
        ,else))
@@ -4871,7 +4871,7 @@ update lurker status."
      erc-show-my-nick
      (erc-current-nick)
      (let ((prefix (format "%10.10s\t" ">")))
-       (erc-propertize prefix 'font-lock-face 'erc-current-nick-face))))
+       (propertize prefix 'font-lock-face 'erc-current-nick-face))))
 
   (define-advice erc-format-privmessage
       (:override (nick msg privp msgp) no-brackets)
@@ -4894,7 +4894,7 @@ update lurker status."
 
 Source: http://tinyurl.com/y8tj8vxx"
     (if (erc-query-buffer-p)
-        (setq ad-return-value (intern "erc-current-nick-face"))
+        (intern "erc-current-nick-face")
       (funcall fn faces)))
 
   (define-advice erc-track-modified-channels (:around (fn) promote-query)
