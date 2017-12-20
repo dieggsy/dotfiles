@@ -4835,15 +4835,17 @@ An Emacs Internet Relay Chat client
                       (gethash server erc-lurker-state))
              (puthash channel nick (gethash server d/erc-last-speaker))
              (format "%10.10s%s\t"
-                     (cond ((string= nick (erc-current-nick))
-                            (concat
-                             (erc-propertize mode 'face 'erc-nick-prefix-face)
-                             (erc-propertize nick 'face 'erc-current-nick-face)))
-                           (nick-was-last
+                     (cond (nick-was-last
                             (erc-propertize
                              "↳"
                              'face
-                             (gethash trimmed erc-hl-nicks-face-table)))
+                             (if (string= trimmed (erc-current-nick))
+                                 'erc-current-nick-face
+                               (gethash trimmed erc-hl-nicks-face-table))))
+                           ((string= nick (erc-current-nick))
+                            (concat
+                             (erc-propertize mode 'face 'erc-nick-prefix-face)
+                             (erc-propertize nick 'face 'erc-current-nick-face)))
                            ((not (member trimmed erc-hl-nicks-skip-nicks))
                             (concat
                              (erc-propertize mode 'face 'erc-nick-prefix-face)
