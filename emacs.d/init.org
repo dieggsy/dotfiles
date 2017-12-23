@@ -3883,6 +3883,10 @@ web template editing mode for emacs
   :config
   (setq web-mode-markup-indent-offset 2))
 #+end_src
+*** [[https://github.com/wwwjfy/emacs-fish][fish-mode]]
+#+begin_src emacs-lisp
+(use-package fish-mode)
+#+end_src
 ** VCS
 *** Functions
 #+begin_src emacs-lisp
