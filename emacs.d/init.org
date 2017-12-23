@@ -4185,12 +4185,12 @@ Emacs pcomplete for git
 Fish-like autosuggestions in eshell.
 #+end_quote
 #+begin_src emacs-lisp
-(use-package company-eshell-autosuggest
-  :hook (eshell-mode . company-eshell-autosuggest-mode)
+(use-package esh-autosuggest
+  :hook (eshell-mode . esh-autosuggest-mode)
   :straight (:host github
-             :repo "dieggsy/company-eshell-autosuggest")
+             :repo "dieggsy/esh-autosuggest")
   :general
-  (company-eshell-autosuggest-active-map
+  (esh-autosuggest-active-map
    "<S-return>" 'company-complete-selection))
 #+end_src
 **** [[https://github.com/dieggsy/eshell-thefuck][eshell-thefuck]]
