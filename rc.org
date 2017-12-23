@@ -19,7 +19,6 @@ more readable in org format than in rendered markdown.
   - [[#i3][i3]]
   - [[#initvim][init.vim]]
   - [[#networkmanager_dmenu][networkmanager_dmenu]]
-  - [[#peco][peco]]
   - [[#pythonrcpy][pythonrc.py]]
   - [[#termite][termite]]
   - [[#tmux][tmux]]
@@ -92,7 +91,6 @@ more readable in org format than in rendered markdown.
         pandoc
         pass
         pass-git-helper-master
-        peco
         playerctl
         ripgrep
         rlwrap
@@ -1277,27 +1275,6 @@ gui_if_available = True
 # terminal = <name of terminal program>
 # gui_if_available = <True or False>
 #+end_src
-** peco
-:PROPERTIES:
-:header-args+: :tangle ~/.config/peco/config.json :comments no
-:END:
-#+begin_src json
-{
-    "Prompt": "[peco]",
-    "InitialFilter":"SmartCase",
-    "SelectionPrefix":">",
-    "Keymap": {
-        "C-_": "peco.ToggleRangeMode"
-    },
-    "Style": {
-        "Basic": ["on_default", "default"],
-        "SavedSelection": ["bold", "on_yellow", "white"],
-        "Selected": ["on_white","black"],
-        "Query": ["cyan", "bold"],
-        "Matched": ["bold", "blue", "on_black"]
-    }
-}
-#+end_src
 ** pythonrc.py
 :PROPERTIES:
 :header-args+: :tangle ~/.pythonrc.py :padline no
@@ -2233,14 +2210,14 @@ fi
 #+end_src
 ** pass
 Extensions and utilities for [[https://www.passwordstore.org/][pass]] password manager.
-*** pass-peco
+*** pass-fzf
 :PROPERTIES:
-:header-args+: :tangle ~/.password-store/.extensions/peco.bash :shebang "#!/usr/bin/env bash"
+:header-args+: :tangle ~/.password-store/.extensions/fzf.bash :shebang "#!/usr/bin/env bash"
 :END:
 #+begin_src sh
 name=$(rg -g "*.gpg" "$HOME/.password-store" --files \
            | sed 's@'"$HOME"'/\.password-store/\(.\+\?\)\.gpg@\1@' \
-           | peco --prompt="[pass]")
+           | fzf --reverse --prompt="[pass] ")
 
 [[ -n "$name" ]] && pass -c $name
 #+end_src
