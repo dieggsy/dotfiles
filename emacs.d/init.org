@@ -4809,7 +4809,21 @@ An Emacs Internet Relay Chat client
 **** Functions
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'erc
+  ;; This function messes with our own buttons
+  (advice-add #'erc-button-remove-old-buttons :override #'ignore)
+
   (defmacro d/erc-nick-format-function-body (cond nick &optional else)
+    "If COND is true, format NICK as specified below, otherwise return ELSE.
+
+NICK will be truncated if it is longer than 10 chars and '…' will
+be appended to the end. Nick is propertized using either
+`erc-current-nick-face' or `erc-hl-nicks-make-face'. If NICK is
+the last speaker in the channel, '↳' will be displayed instead.
+This also updates lurker information and adds buttons (which I
+think is necessary since we 're so heavily messing with ERC
+internals).
+
+Basically, this kind of makes ERC act like weechat."
     `(if ,cond
          (let* ((nick ,nick)
                 (trimmed (erc-hl-nicks-trim-irc-nick nick))
@@ -4839,25 +4853,22 @@ An Emacs Internet Relay Chat client
                       (gethash server erc-lurker-state))
              (puthash channel nick (gethash server d/erc-last-speaker))
              (format "%10.10s%s\t"
-                     (cond (nick-was-last
-                            (propertize
-                             "↳"
-                             'face
-                             (if (string= trimmed (erc-current-nick))
-                                 'erc-current-nick-face
-                               (gethash trimmed erc-hl-nicks-face-table))))
-                           ((string= nick (erc-current-nick))
-                            (concat
-                             (propertize mode 'face 'erc-nick-prefix-face)
-                             (propertize nick 'face 'erc-current-nick-face)))
-                           ((not (member trimmed erc-hl-nicks-skip-nicks))
-                            (concat
-                             (propertize mode 'face 'erc-nick-prefix-face)
-                             (propertize nick 'face (erc-hl-nicks-make-face trimmed))))
-                           (t
-                            (concat
-                             (propertize mode 'face 'erc-nick-prefix-face)
-                             nick)))
+                     (concat
+                      (when (not nick-was-last)
+                        (propertize mode 'face 'erc-nick-prefix-face
+                                    'mouse-face 'font-lock-keyword-face))
+                      (propertize
+                       (if nick-was-last "↳" nick)
+                       'face
+                       (cond ((string= nick (erc-current-nick))
+                              'erc-current-nick-face)
+                             ((not (member trimmed erc-hl-nicks-skip-nicks))
+                              (erc-hl-nicks-make-face trimmed))
+                             (t nil))
+                       'mouse-face erc-button-mouse-face
+                       'keymap erc-button-keymap
+                       'erc-callback #'erc-nick-popup
+                       'erc-data (list nick)))
                      long-char)))
        ,else))
 
