@@ -1314,6 +1314,7 @@ except:
 font = iosevka term 9.5
 allow_bold=0
 cursor_shape=ibeam
+cursor=#FDF4C1
 [colors]
 background=#282828
 foreground=#FDf4c1
