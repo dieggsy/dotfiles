@@ -4166,9 +4166,7 @@ cd to frequent directory in eshell, an Emacs port of https://github.com/rupa/z
 Fish completion for Emacs and Eshell
 #+end_quote
 #+begin_src emacs-lisp
-(use-package emacs-fish-completion
-  :straight (:host github
-             :repo "ambrevar/emacs-fish-completion")
+(use-package fish-completion
   :hook (eshell-mode . fish-completion-mode))
 #+end_src
 **** [[https://github.com/leoliu/pcmpl-git-el][pcmpl-git]]
