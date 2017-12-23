@@ -4257,6 +4257,9 @@ directory to make multiple eshell windows easier."
   (defun eshell/rg (&rest args)
     (eshell-grep "rg" (append '("--no-heading" "-M" "120") args) t))
 
+  (defun eshell/zgrep (&rest args)
+    (eshell-grep "zgrep" args t))
+
   (defun eshell/ivy-ps ()
     (interactive)
     (let ((ps (split-string
