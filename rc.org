@@ -190,7 +190,7 @@ wintypes :
         avfs
         acpi
         cava
-        cmus
+        cmus-master
         detox
         emacs-master
         exa
@@ -249,6 +249,15 @@ wintypes :
 
     termite-master = super.callPackage ~/dotfiles/nix-local/termite.nix {
       vte = gnome3.vte-ng;
+    };
+
+    cmus-master = super.callPackage ~/dotfiles/nix-local/cmus.nix {
+      inherit (darwin.apple_sdk.frameworks) CoreAudio;
+      libjack = libjack2;
+      libcdio = libcdio082;
+      ffmpeg = ffmpeg_2;
+
+      pulseaudioSupport = config.pulseaudio or false;
     };
 
     # Options and overrides
