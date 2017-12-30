@@ -61,7 +61,7 @@ more readable in org format than in rendered markdown.
 :header-args+: :tangle ~/.bashrc
 :END:
 #+begin_src sh
-exec fish
+shopt -q login_shell || exec fish
 #+end_src
 ** compton.conf
 :PROPERTIES:
