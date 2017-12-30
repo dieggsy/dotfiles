@@ -677,8 +677,7 @@ set __fish_git_prompt_color_stagedstate brblue
 set __fish_git_prompt_color_untrackedfiles $fish_color_normal
 set __fish_git_prompt_color_cleanstate brgreen
 set __fish_git_prompt_color_invalidstate brred
-set __fish_git_prompt_color_upstream_ahead brmagenta
-set __fish_git_prompt_color_upstream_behind brmagenta
+set __fish_git_prompt_color_upstream brmagenta
 
 # # Status Chars
 set __fish_git_prompt_char_untrackedfiles "…"
