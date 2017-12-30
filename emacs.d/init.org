@@ -472,6 +472,7 @@ I went for it. Now I'll never go back.
   :custom
   (evil-collection-company-use-tng nil)
   (evil-collection-setup-minibuffer t)
+  (evil-collection-term-sync-state-and-mode-p t)
   :init
   (evil-collection-init))
 #+end_src
