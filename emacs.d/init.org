@@ -1994,6 +1994,10 @@ short and sweet LISP editing
    [tab] (general-predicate-dispatch nil
            (save-excursion (beginning-of-line) (looking-at lispy-outline))
            'd/lispy-cycle))
+  :custom
+  (lispy-colon-no-space-regex
+   '((scheme-mode . ".")
+     (lisp-mode . "\\s-\\|[:^?#]\\|\\(?:\\s([[:word:]-]*\\)")))
   :config
   (defun d/lispy-cycle ()
     (interactive)
