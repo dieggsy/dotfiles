@@ -1,3 +1,4 @@
+alias kill *kill $*
 alias systemctl-enabled systemctl list-unit-files --state=enabled
 alias ls exa --group-directories-first --sort=extension --color=always $*
 alias edit find-file-other-window $1
