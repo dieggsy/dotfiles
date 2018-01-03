@@ -24,3 +24,4 @@ alias e find-file-other-window $1
 alias dbcli dropbox-cli $*
 alias git hub -c color.ui=always $*
 alias reset-wifi sudo systemctl restart NetworkManager.service
+alias dual-monitor-1920-1080 xrandr --output HDMI2 --scale 1.5x1.5 --mode 1920x1080  --fb 2880x1620 --pos 0x0; xrandr --output eDP1 --scale 1x1 --pos 160x1620
