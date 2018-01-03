@@ -3401,6 +3401,10 @@ Yapf for Emacs
                (company-mode/backend-with-yas 'company-anaconda))
   (setq-local prettify-symbols-alist d/python-prettify-alist))
 #+end_src
+*** Hy
+#+begin_src emacs-lisp
+(use-package hy-mode)
+#+end_src
 *** Lisps
 **** Packages
 ***** [[https://github.com/slime/slime][slime]]
