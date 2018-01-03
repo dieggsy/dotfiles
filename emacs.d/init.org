@@ -5220,25 +5220,110 @@ FUNC can be:
            '("dropbox-cli start"
              "unclutter"
              "xset r rate 300 50"
-             "setxkbmap dvorak"
-             "setxkbmap -option 'ctrl:nocaps'"
+             "setxkbmap dvorak -option 'ctrl:nocaps'"
              "xcape -e 'Control_L=Escape'"))
     (start-process-shell-command cmd nil cmd)))
+#+end_src
+** Packages
+*** exwm-blocks
+#+begin_src emacs-lisp
+(use-package exwm-blocks
+  :straight (:host github
+             :repo "dieggsy/exwm-blocks")
+  :after exwm
+  :demand t
+  :custom
+  (exwm-blocks-separator "  ")
+  (exwm-blocks-adjust -8)
+  (exwm-blocks-script-format "~/bin/exwm-blocks/%s")
+  :config
+  (defvar d/battery-alist)
+  (define-advice battery-linux-sysfs (:around (fn) store-alist)
+    (let ((alist (funcall fn)))
+      (setq d/battery-alist alist)))
+
+  (exwm-blocks-set
+   ;; :script-fmt "~/bin/i3blocks/%s"
+   ;; (dropbox
+   ;;  :interval 2
+   ;;  :color "#3FD7e5")
+   ;; (music
+   ;;  :interval 5
+   ;;  :color "#FE8019")
+   ;; (weather
+   ;;  :interval 60
+   ;;  :color "#8EC07C")
+   (layout
+    :color "#8EC07C"
+    :bindings
+    ([mouse-1] (exec* "~/bin/exwm-blocks/layout toggle")))
+   (volume
+    :color "#FB4933"
+    :bindings
+    ([mouse-1] (exec* :name volume-mute "~/bin/exwm-blocks/volume toggle")
+     [mouse-5] (exec* :name volume-up "~/bin/exwm-blocks/volume +")
+     [mouse-4] (exec* :name volume-down "~/bin/exwm-blocks/volume -")))
+   (screen
+    :color "#FABD2F"
+    :icon ""
+    :bindings
+    ([mouse-5] (exec* :name brighter "~/bin/exwm-blocks/screen +")
+     [mouse-4] (exec* :name dimmer "~/bin/exwm-blocks/screen -")))
+   (disk
+    :icon ""
+    :interval 60
+    :args "/"
+    :color "#D3869B"
+    :bindings
+    ([mouse-1] (exec "notify-send \"$(df -h)\"")))
+   (wifi
+    :icon ""
+    :interval 2
+    :script "iwgetid -r || echo 'None'"
+    :color "#B8BB26"
+    :bindings
+    ([mouse-1] (exec "networkmanager_dmenu")))
+   (battery-emacs
+    :icon (let ((num (string-to-number battery-mode-line-string)))
+            (cond ((string= (alist-get ?L d/battery-alist) "AC")
+                   "")
+                  ((> num 95)
+                   "")
+                  ((> num 75)
+                   "")
+                  ((> num 50)
+                   "")
+                  ((> num 25)
+                   "")
+                  ((<= num 25)
+                   "")))
+    :color "#83A598"
+    :fmt "%p"
+    :bindings
+    ([mouse-1] (exec "notify-send \"$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)\"")))
+   (time-emacs
+    :icon ""
+    :color "#A89984"
+    :fmt "%Y-%d-%m %H:%M"
+    :bindings
+    ([mouse-1] (exec "notify-send \"$(cal --color=never | head -n-1 | cut -c -20)\""))))
+
+  (exwm-blocks-mode))
 #+end_src
 ** Bindings
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'exwm
-  (d/exwm-define-key
+  (exwm-blocks-define-keys
    ;; "s-&" (lambda (command)
    ;;         (interactive (list (read-shell-command "$ ")))
    ;;         (start-process-shell-command command nil command))
    "<XF86KbdBrightnessDown>" (exec "~/bin/kb-light -")
    "<XF86KbdBrightnessUp>" (exec "~/bin/kb-light +")
-   "<XF86MonBrightnessUp>" (exec "~/bin/i3blocks/screen +")
-   "<XF86MonBrightnessDown>" (exec "~/bin/i3blocks/screen -")
-   "<XF86AudioLowerVolume>" (exec "amixer -D pulse sset Master 5%-")
-   "<XF86AudioRaiseVolume>" (exec "amixer -D pulse sset Master 5%+")
-   "<XF86AudioMute>" (exec "amixer -D pulse sset Master toggle")
+   "<XF86MonBrightnessUp>" (exec :name brighter)
+   "<XF86MonBrightnessDown>" (exec :name dimmer)
+   "<XF86AudioLowerVolume>" (exec :name volume-down)
+   "<XF86AudioRaiseVolume>" (exec :name volume-up)
+   "<XF86AudioMute>" (exec :name volume-mute)
 
    "s-r" 'exwm-reset
    "s-u" 'exwm-layout-toggle-fullscreen
@@ -5270,84 +5355,6 @@ FUNC can be:
 
   (add-to-list 'exwm-input-prefix-keys ?\C-/)
   (setq exwm-input-prefix-keys (delq 3 exwm-input-prefix-keys)))
-#+end_src
-** Packages
-*** exwm-blocks
-#+begin_src emacs-lisp
-(use-package exwm-blocks
-  :straight (:host github
-             :repo "dieggsy/exwm-blocks")
-  :after exwm
-  :demand t
-  :custom
-  (exwm-blocks-separator "  ")
-  (exwm-blocks-adjust -7)
-  (exwm-blocks-script-format "~/bin/exwm-blocks/%s")
-  :config
-  (defvar d/battery-alist)
-  (define-advice battery-linux-sysfs (:around (fn) store-alist)
-    (let ((alist (funcall fn)))
-      (setq d/battery-alist alist)))
-
-  (exwm-blocks-set
-   ;; :script-fmt "~/bin/i3blocks/%s"
-   ;; (dropbox
-   ;;  :interval 2
-   ;;  :color "#3FD7e5")
-   ;; (music
-   ;;  :interval 5
-   ;;  :color "#FE8019")
-   ;; (weather
-   ;;  :interval 60
-   ;;  :color "#8EC07C")
-   (layout
-    :color "#8EC07C"
-    :bindings
-    ([mouse-1] (exec* "~/bin/exwm-blocks/layout toggle")))
-   (volume
-    :color "#FB4933"
-    :bindings
-    ([mouse-1] (exec* "~/bin/exwm-blocks/volume toggle")
-     [mouse-5] (exec* "~/bin/exwm-blocks/volume +")
-     [mouse-4] (exec* "~/bin/exwm-blocks/volume -")))
-   (disk
-    :icon ""
-    :interval 60
-    :args "/"
-    :color "#D3869B"
-    :bindings
-    ([mouse-1] (exec "notify-send \"$(df -h)\"")))
-   (wifi
-    :icon ""
-    :interval 2
-    :script "iwgetid -r || echo 'None'"
-    :color "#B8BB26")
-   (battery-emacs
-    :icon (let ((num (string-to-number battery-mode-line-string)))
-            (cond ((string= (alist-get ?L d/battery-alist) "AC")
-                   "")
-                  ((> num 95)
-                   "")
-                  ((> num 75)
-                   "")
-                  ((> num 50)
-                   "")
-                  ((> num 25)
-                   "")
-                  ((<= num 25)
-                   "")))
-    :color "#83A598"
-    :fmt "%p"
-    :bindings
-    ([mouse-1] (exec "notify-send \"$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)\"")))
-   (time-emacs
-    :icon ""
-    :color "#A89984"
-    :fmt "%Y-%d-%m %H:%M"
-    :bindings
-    ([mouse-1] (exec "notify-send \"$(cal --color=never | head -n-1 | cut -c -20)\""))))
-
-  (exwm-blocks-mode))
 #+end_src
 ** Enable
 #+begin_src emacs-lisp
