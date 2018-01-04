@@ -121,7 +121,7 @@ refresh-rate = 0;
 vsync = "none";
 dbe = false;
 paint-on-overlay = true;
-focus-exclude = [ "class_g = 'Cairo-clock'" ];
+focus-exclude = [ "class_g = 'Cairo-clock'", "_NET_WM_NAME@:s = 'rofi'"];
 detect-transient = true;
 detect-client-leader = true;
 invert-color-include = [ ];
