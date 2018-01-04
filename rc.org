@@ -21,6 +21,7 @@ more readable in org format than in rendered markdown.
   - [[#i3][i3]]
   - [[#initvim][init.vim]]
   - [[#networkmanager_dmenu][networkmanager_dmenu]]
+  - [[#polybar][polybar]]
   - [[#profile][profile]]
   - [[#pythonrcpy][pythonrc.py]]
   - [[#termite][termite]]
@@ -42,6 +43,7 @@ more readable in org format than in rendered markdown.
   - [[#ocrpdf2][ocrpdf2]]
   - [[#pass][pass]]
   - [[#playerctl-cmus][playerctl-cmus]]
+  - [[#polybar-launch][polybar-launch]]
   - [[#rofi-files][rofi-files]]
   - [[#scriptl][scriptl]]
   - [[#spectrum_ls][spectrum_ls]]
@@ -80,27 +82,27 @@ shadow-offset-y = 1;
 shadow-opacity = .3;
 shadow-ignore-shaped = false;
 shadow-exclude = [
-	"name = 'Notification'",
+    "name = 'Notification'",
 # workaround for conky until it provides window properties:
-	"override_redirect = 1 && !WM_CLASS@:s",
-#	"class_g ?= 'Dunst'",
+    "override_redirect = 1 && !WM_CLASS@:s",
+#   "class_g ?= 'Dunst'",
 # disable shadows for hidden windows:
-	"_NET_WM_STATE@:32a *= '_NET_WM_STATE_HIDDEN'",
-	"_GTK_FRAME_EXTENTS@:c",
+    "_NET_WM_STATE@:32a *= '_NET_WM_STATE_HIDDEN'",
+    "_GTK_FRAME_EXTENTS@:c",
 # disables shadows on sticky windows:
-#	"_NET_WM_STATE@:32a *= '_NET_WM_STATE_STICKY'",
+#   "_NET_WM_STATE@:32a *= '_NET_WM_STATE_STICKY'",
 # disables shadows on i3 frames
-	"class_g ?= 'i3-frame'"
+    "class_g ?= 'i3-frame'"
 ];
 
 # shadow-exclude-reg = "x10+0+0";
 # xinerama-shadow-crop = true;
 
 menu-opacity = 0.95;
-inactive-opacity = 0.93;
+inactive-opacity = 0.8;
 active-opacity = 1;
 alpha-step = 0.01;
-inactive-dim = 0.0;
+inactive-dim = .4;
 blur-background = false;
 blur-kern = "3x3box";
 
@@ -135,6 +137,7 @@ opacity-rule = [
 "99:name *?= 'Event'",
 "99:class_g = 'Firefox'",
 "99:class_g = 'GIMP'",
+"0:class_g = 'i3bar'",
 "99:name *?= 'Image'",
 "99:class_g = 'Lazpaint'",
 "99:class_g = 'Midori'",
@@ -967,6 +970,9 @@ __pychache__
 :END:
 **** Defaults
 #+begin_src conf
+exec --no-startup-id compton -b
+exec_always --no-startup-id $HOME/.config/polybar/launch.sh
+
 # Set modifier key to command/windows key
 set $mod Mod4
 
@@ -1157,21 +1163,23 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-    status_command i3blocks
+    # status_command i3blocks
     position top
     tray_output none
-    font pango:Iosevka Term, FontAwesome 9
-    strip_workspace_numbers yes
+    # font pango:Iosevka Term, FontAwesome 9
+    # strip_workspace_numbers yes
+    workspace_buttons no
+    height 90
     # mode hide
-    colors {
-        background #282828
-        statusline #fdf4c1
-        focused_workspace  #282828 #282828 #FDF4c1
-        active_workspace   #282828 #282828 #FDF4c1
-        inactive_workspace #282828 #282828 #A89984
-        urgent_workspace   #901A1E #901A1E #FDF4c1
-        binding_mode       #901A1E #901A1E #FDF4c1
-    }
+    # colors {
+    #     background #282828
+    #     statusline #fdf4c1
+    #     focused_workspace  #282828 #282828 #FDF4c1
+    #     active_workspace   #282828 #282828 #FDF4c1
+    #     inactive_workspace #282828 #282828 #A89984
+    #     urgent_workspace   #901A1E #901A1E #FDF4c1
+    #     binding_mode       #901A1E #901A1E #FDF4c1
+    # }
 }
 #+end_src
 **** Appearance
@@ -1194,7 +1202,8 @@ mode "$mode_gaps" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
-new_window pixel 1
+new_window pixel 0
+new_float pixel 0
 #+end_src
 **** Bindings
 #+begin_src conf
@@ -1452,19 +1461,264 @@ gui_if_available = True
 # terminal = <name of terminal program>
 # gui_if_available = <True or False>
 #+end_src
+** polybar
+:PROPERTIES:
+:header-args+: :tangle ~/.config/polybar/config
+:END:
+#+begin_src conf-windows
+;=====================================================
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/jaagr/polybar
+;
+;   The README contains alot of information
+;
+;=====================================================
+
+[colors]
+background = #282828
+background-alt = #444
+foreground = #FDF4C1
+foreground-alt = #555
+primary = #ffb52a
+secondary = #e60053
+alert = #FB4933
+
+[bar/simple]
+monitor = eDP1
+width = 2500
+height = 60
+offset-x = 30
+offset-y = 30
+; radius = 6.0
+fixed-center = true
+; underline-color = #B8bb26
+underline-size = 5
+
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+; overline-size = 20
+; line-size = 3
+; line-color = #f00
+
+; border-size = 4
+; border-color = #fdf4c1
+padding = 2
+; padding-left = 2
+; padding-right = 2
+
+module-margin-left = 1
+module-margin-right = 2
+
+font-0 = Iosevka Term:size=17;3
+font-1 =  fontawesome:size=17;3
+
+modules-left = date network xwindow
+modules-center = i3
+modules-right = spotify cmus weather filesystem xbacklight volume battery
+
+; tray-position = right
+; tray-padding = 2
+;tray-transparent = true
+; tray-background = #282828
+
+;wm-restack = bspwm
+override-redirect = true
+wm-restack = i3
+
+;scroll-up = bspwm-desknext
+;scroll-down = bspwm-deskprev
+
+;scroll-up = i3wm-wsnext
+;scroll-down = i3wm-wsprev
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:30:...%
+
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+
+format-prefix = " "
+format-prefix-foreground = ${colors.foreground-alt}
+
+label-layout = %layout%
+
+label-indicator-padding = 2
+label-indicator-margin = 1
+label-indicator-background = ${colors.secondary}
+
+[module/filesystem]
+type = internal/fs
+interval = 25
+format-mounted-underline = #D3869b
+format-unmounted-underline = #D3869b
+mount-0 = /
+
+label-mounted =  %free%
+label-unmounted = %mountpoint% not mounted
+
+[module/i3]
+type = internal/i3
+format = <label-state> <label-mode>
+index-sort = true
+wrapping-scroll = false
+
+; Only show workspaces on the same output as the bar
+pin-workspaces = true
+
+label-mode-padding = 1
+
+; focused = Active workspace on focused monitor
+label-focused = ●
+label-focused-padding = 1
+
+; unfocused = Inactive workspace on any monitor
+label-unfocused = ○
+label-unfocused-padding = 1
+
+; visible = Active workspace on unfocused monitor
+label-visible = ●
+label-visible-padding = ${self.label-focused-padding}
+
+; urgent = Workspace with urgency hint set
+label-urgent = ●
+label-urgent-foreground = ${colors.alert}
+label-urgent-padding = 1
+
+[module/mpd]
+type = internal/mpd
+format-online = <label-song>  <icon-prev> <icon-stop> <toggle> <icon-next>
+
+icon-prev = 
+icon-stop = 
+icon-play = 
+icon-pause = 
+icon-next = 
+
+label-song-maxlen = 25
+label-song-ellipsis = true
+
+[module/xbacklight]
+type = internal/xbacklight
+format-underline = #FAbd2f
+format =  <label>
+label = %percentage%
+
+[module/network]
+click-left = networkmanager_dmenu
+type = custom/script
+exec = ~/bin/i3blocks/chicken-wifi
+format-underline = #B8bb26
+interval = 2
+
+[module/date]
+type = internal/date
+date = %a %Y-%m-%d
+time = %H:%M
+label = %date% %time%
+format =  <label>
+format-underline = #A89984
+interval = 60
+
+[module/volume]
+type = internal/volume
+mapped = true
+master-soundcard = hw:1
+format-volume = <ramp-volume> <label-volume>
+label-volume = %percentage%
+format-volume-underline = #FB4933
+
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+
+format-muted =  <label-muted>
+label-muted = %percentage%
+format-muted-underline = #FB4933
+
+[module/battery]
+type = internal/battery
+format-charging-underline = #83a598
+format-discharging-underline = #83a598
+format-full-underline = #83a598
+battery = BAT0
+adapter = ADP1
+full-at = 100
+
+format-full =  <label-full>
+format-charging = <animation-charging> <label-charging>
+format-discharging = <ramp-capacity> <label-discharging>
+
+label-full = %percentage%
+label-charging = %percentage%
+label-discharging = %percentage%
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-framerate = 750
+
+[module/weather]
+type = custom/script
+exec = ~/bin/i3blocks/chicken-weather
+format-underline = #DD6f48
+interval = 60
+
+[module/cmus]
+type = custom/script
+exec = ~/bin/i3blocks/chicken-music
+format-underline = #FE8019
+tail = true
+
+[module/spotify]
+type = custom/script
+exec = ~/bin/i3blocks/chicken-music spotify
+format-underline = #FE8019
+tail = true
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+
+[global/wm]
+margin-top = 5
+margin-bottom = 5
+
+; vim:ft=dosini
+#+end_src
 ** profile
 :PROPERTIES:
 :header-args+: :tangle ~/.profile
 :END:
 #+begin_src sh
+source ~/.nix-profile/etc/profile.d/nix.sh
+
 [ -d $HOME/.local/bin ] && export PATH=$HOME/.local/bin:$PATH
 [ -d $HOME/.pyenv/bin ] && export PATH=$HOME/.pyenv/bin:$PATH
+[ -d $HOME/.pyenv/shims ] && export PATH=$HOME/.pyenv/shims:$PATH
 [ -d $HOME/bin ] && export PATH=$HOME/bin:$PATH
 [ -d $HOME/.evm/bin ] && export PATH=$HOME/.evm/bin:$PATH
 
 export XDG_DATA_DIRS="$HOME/.local/share:$HOME/.nix-profile/share:/usr/local/share:/usr/share"
+export CHICKEN_REPOSITORY=~/.local/lib/chicken/8
 
-source ~/.nix-profile/etc/profile.d/nix.sh
 gpgconf --launch gpg-agent
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpg-connect-agent updatestartuptty /bye ^/dev/null
@@ -2451,6 +2705,22 @@ else
     fi
 
 fi
+#+end_src
+** polybar-launch
+:PROPERTIES:
+:header-args+: :tangle ~/.config/polybar/launch.sh :shebang "#!/usr/bin/env sh"
+:END:
+#+begin_src sh
+#!/usr/bin/env sh
+
+# Terminate already running bar instances
+killall -q polybar
+
+# Wait until the processes have been shut down
+while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
+
+# Launch bar1 and bar2
+polybar simple &
 #+end_src
 ** rofi-files
 :PROPERTIES:
