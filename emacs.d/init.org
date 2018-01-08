@@ -671,6 +671,8 @@ This function is intended for use with `ivy-ignore-buffers'."
    "fl"  'counsel-locate
    "hdF" 'counsel-describe-face
    "hdb" 'counsel-descbinds
+   "hdf" 'counsel-describe-function
+   "hdv" 'counsel-describe-variable
    "iu"  'counsel-unicode-char
    "sr"  'counsel-rg
    "ss"  'counsel-grep-or-swiper
@@ -678,6 +680,8 @@ This function is intended for use with `ivy-ignore-buffers'."
   :custom
   (counsel-find-file-ignore-regexp "\\`\\.")
   (counsel-yank-pop-preselect-last t)
+  (counsel-describe-function-function #'helpful-callable)
+  (counsel-describe-variable-function #'helpful-variable)
   (counsel-linux-apps-directories
    '("~/.nix-profile/share/applications/"
      "~/.local/share/applications/"
@@ -1368,8 +1372,6 @@ A better Emacs *help* buffer
   (helpful-short-filenames t)
   :general
   (d/leader-keys
-   "hdf" 'helpful-callable
-   "hdv" 'helpful-variable
    "hds" 'helpful-symbol
    "hdk" 'helpful-key)
   :init
