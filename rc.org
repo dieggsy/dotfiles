@@ -2327,7 +2327,9 @@ fi
 #+begin_src sh
 status=$(dropbox-cli status)
 if [ ! "$status" = "Up to date" ]; then
-    echo "  $status"
+    echo "$status"
+else
+    echo ""
 fi
 #+end_src
 *** layout
