@@ -4148,6 +4148,7 @@ A shell written in emacs-lisp that has recently been replacing zsh for me.
   (eshell-cmpl-compare-entry-function 'string-lessp)
   (eshell-highlight-prompt nil)
   (eshell-prompt-function #'egp-theme)
+  (eshell-confine-point-to-input nil)
   :init
   (d/setup-hook eshell-mode
     (imap eshell-mode-map
