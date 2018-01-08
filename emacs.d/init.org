@@ -2085,6 +2085,8 @@ it.
 **** [[https://github.com/expez/evil-smartparens][evil-smartparens]]
 #+begin_src emacs-lisp
 (use-package evil-smartparens
+  :init
+  (make-variable-buffer-local 'evil-smartparens-mode-map)
   :hook (smartparens-enabled . evil-smartparens-mode))
 #+end_src
 **** [[https://www.emacswiki.org/emacs/UndoTree][undo-tree]]
