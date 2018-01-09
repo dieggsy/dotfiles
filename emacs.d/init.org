@@ -414,7 +414,7 @@ I went for it. Now I'll never go back.
 (use-package evil
   :demand t
   :general
-  (nmap
+  (mmap
     "-" 'negative-argument
     "\\" 'evil-window-next
     ;; Basically C-[ for a Dvorak keyboard (_ is for terminal).
