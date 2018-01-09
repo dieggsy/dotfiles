@@ -2486,7 +2486,7 @@ echo -e "  $icon  $bat "
 :END:
 #+begin_src sh
 if [ "$BLOCK_BUTTON" = "1" ]; then
-    notify-send "$(cal --color=never | head -n-1 | cut -c -20)"
+    notify-send "$(cal --color=never | cut -c -20)"
 fi
 echo -e "    $(date +%F\ %R) "
 echo -e "    $(date +%R) "
@@ -2540,7 +2540,6 @@ elif [ "$layout" = "dvorak" ]; then
     layout="DV"
 fi
 
-# echo "   $layout "
 echo "    $layout "
 #+end_src
 *** music
@@ -2617,16 +2616,10 @@ elif [ "$1" = "-" ] || [ "$BLOCK_BUTTON" = "4" ]; then
     amixer -D pulse sset Master 5%- > /dev/null 2>&1
 fi
 
-Vol=$(amixer -D pulse get Master | grep "Left: Playback" | awk '{print $5}' | tr -d "[ %]")
-Mute=$(amixer -D pulse get Master | grep "Left: Playback" | awk '{print $6}' | tr -d "[-]")
+Vol=$(amixer -D pulse get Master | grep "Left: Playback" | awk '{print $5}' | tr -d "[ %]" | head -1)
+Mute=$(amixer -D pulse get Master | grep "Left: Playback" | awk '{print $6}' | tr -d "[-]" | head -1)
 
-if [ "$XDG_CURRENT_DESKTOP" = "exwm" ] && [ "$1" = "toggle" ] && [ "$Mute" = "off" ]; then
-    emacsclient --eval "(progn (setq d/mute t) (force-mode-line-update 'all))"
-elif [ "$XDG_CURRENT_DESKTOP" = "exwm" ] && [ "$1" = "toggle" ] && [ "$Mute" = "on" ]; then
-    emacsclient --eval "(progn (setq d/mute nil) (force-mode-line-update 'all))"
-elif [ "$XDG_CURRENT_DESKTOP" = "exwm" ]; then
-    emacsclient --eval "(message \"Volume: $Vol\")"
-elif [ "$Vol" = "0" ] || [ "$Mute" = "off" ]; then
+if [ "$Vol" = "0" ] || [ "$Mute" = "off" ]; then
     echo -ne "    $Vol "
 elif [ "$Vol" -ge "50" ];then
     echo -ne "    $Vol "
@@ -2680,7 +2673,7 @@ elif [[ "${WEATHER_MAIN}" = *Clear* ]]; then
   echo "  ${ICON_SUNNY}  ${WEATHER_TEMP}${SYMBOL_CELSIUS} "
   echo "  ${ICON_SUNNY}  ${WEATHER_TEMP}${SYMBOL_CELSIUS} "
   echo ""
-elif [[ "${WEATHER_MAIN}" = *Fog* ]] || [[ "${WEATHER_MAIN}" = *Mist* ]]; then
+elif [[ "${WEATHER_MAIN}" = *Fog* ]] || [[ "${WEATHER_MAIN}" = *Mist* ]] || [[ "${WEATHER_MAIN}" = *Haze* ]]; then
   echo "  ${ICON_FOG}  ${WEATHER_TEMP}${SYMBOL_CELSIUS} "
   echo "  ${ICON_FOG}  ${WEATHER_TEMP}${SYMBOL_CELSIUS} "
   echo ""
