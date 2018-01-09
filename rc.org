@@ -1090,6 +1090,10 @@ for_window [class="Blueman-manager"] move position center
 for_window [class="Pcmanfm"] floating enable
 for_window [class="Pcmanfm"] resize set 1500 1000
 for_window [class="Pcmanfm"] move position center
+
+for_window [class="etcher"] floating enable
+
+for_window [class="D-feet"] floating enable
 #+end_src
 **** Focus
 #+begin_src conf
@@ -1147,6 +1151,9 @@ bindsym $mod+Shift+space floating toggle
 #+end_src
 **** Workspaces
 #+begin_src conf
+assign [class="^.emacs-wrapped$"] 2
+assign [class="^FirefoxNightly$"] 1
+
 # switch to workspace
 # workspace_layout tabbed
 bindsym $mod+1 workspace 1
@@ -1173,8 +1180,6 @@ bindsym $mod+Shift+7 move container to workspace 7
 bindsym $mod+Shift+8 move container to workspace 8
 bindsym $mod+Shift+9 move container to workspace 9
 bindsym $mod+Shift+0 move container to workspace 10
-
-for_window [class="etcher"] floating enable
 #+end_src
 **** Resizing
 #+begin_src conf
@@ -1214,6 +1219,7 @@ bar {
     tray_output none
     # font pango:Iosevka Term, FontAwesome 9
     # strip_workspace_numbers yes
+    mode dock
     workspace_buttons no
     height 90
     # mode hide
@@ -1239,6 +1245,7 @@ client.background       #282828
 
 gaps inner 30
 gaps outer 0
+# smart_borders no_gaps
 
 set $mode_gaps Toggle gaps: (1) on (2) off
 bindsym $mod+g mode "$mode_gaps"
@@ -1285,7 +1292,6 @@ exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id nitrogen --restore; # sleep 1; compton -b
 # exec --no-startup-id blueman
 exec --no-startup-id xautolock -corners ---- -time 5 -locker "betterlockscreen -l dim"
-exec --no-startup-id ~/bin/no-lock-fullscreen
 
 exec --no-startup-id xset r rate 300 50
 
