@@ -1521,18 +1521,8 @@ gui_if_available = True
 :header-args+: :tangle ~/.config/polybar/config
 :END:
 #+begin_src conf-windows
-;=====================================================
-;
-;   To learn more about how to configure Polybar
-;   go to https://github.com/jaagr/polybar
-;
-;   The README contains alot of information
-;
-;=====================================================
-
 [colors]
 background = #282828
-background-alt = #444
 foreground = #FDF4C1
 foreground-alt = #555
 primary = #ffb52a
@@ -1547,19 +1537,12 @@ offset-x = 30
 offset-y = 30
 fixed-center = true
 underline-size = 5
+; bottom = true
 
 background = ${colors.background}
 foreground = ${colors.foreground}
 
-; overline-size = 20
-; line-size = 3
-; line-color = #f00
-
-; border-size = 4
-; border-color = #fdf4c1
 padding = 2
-; padding-left = 2
-; padding-right = 2
 
 module-margin-left = 1
 module-margin-right = 1
@@ -1569,44 +1552,18 @@ font-1 =  fontawesome:size=17;3
 
 modules-left = date network xwindow
 modules-center = i3 bspwm
-modules-right = spotify cmus weather filesystem xbacklight volume battery
+modules-right = demo dropbox spotify cmus github weather filesystem xbacklight volume battery
 
-; tray-position = right
-; tray-padding = 2
-;tray-transparent = true
-; tray-background = #282828
-
-;wm-restack = bspwm
-; override-redirect = true
 wm-restack = bspwm
-
-;scroll-up = bspwm-desknext
-;scroll-down = bspwm-deskprev
-
-;scroll-up = i3wm-wsnext
-;scroll-down = i3wm-wsprev
 
 cursor-click = pointer
 cursor-scroll = ns-resize
-
+click-left = BLOCK_BUTTON=1 ~/bin/i3blocks/layout
 enable-ipc = true
 
 [module/xwindow]
 type = internal/xwindow
 label = %title:0:30:...%
-
-[module/xkeyboard]
-type = internal/xkeyboard
-blacklist-0 = num lock
-
-format-prefix = " "
-format-prefix-foreground = ${colors.foreground-alt}
-
-label-layout = %layout%
-
-label-indicator-padding = 2
-label-indicator-margin = 1
-label-indicator-background = ${colors.secondary}
 
 [module/filesystem]
 type = internal/fs
@@ -1698,15 +1655,14 @@ format-padding = 1
 interval = 2
 
 [module/date]
-type = internal/date
-date = %a %Y-%m-%d
-time = %H:%M
-label = %date% %time%
+type = custom/script
+exec = date +'%a %Y-%m-%d %H:%M'
 format =  <label>
 format-background = #A89984
 format-foreground = #282828
 format-padding = 1
 interval = 60
+click-left = notify-send "$(cal --color=never | cut -c -20)"
 
 [module/volume]
 type = internal/volume
@@ -1778,6 +1734,8 @@ tail = true
 click-left = playerctl --player=cmus play-pause
 scroll-up = playerctl --player=cmus previous
 scroll-down = playerctl --player=cmus next
+format-prefix = "C* "
+format-prefix-foreground = #B8bb26
 
 [module/spotify]
 type = custom/script
@@ -1795,6 +1753,22 @@ exec = ~/bin/i3blocks/dropbox
 interval = 2
 format-prefix = " "
 format-prefix-foreground = #3FD7E5
+
+[module/github]
+type = internal/github
+token=${file:$HOME/.polybar-ghub-token}
+empty-notifications = false
+interval = 10
+format-prefix = " "
+label = %notifications%
+
+[module/demo]
+type = custom/ipc
+hook-0 = ~/bin/i3blocks/volume
+initial = 1
+click-left = polybar-msg -p %pid% hook demo 1
+; click-right = polybar-msg -p %pid% hook demo 2
+; double-click-left = polybar-msg -p %pid% hook demo 3
 
 [settings]
 screenchange-reload = true
