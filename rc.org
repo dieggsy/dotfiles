@@ -75,8 +75,11 @@ shopt -q login_shell || exec fish
 xsetroot -cursor_name left_ptr
 sxhkd &
 
+# polybar
+killall -q polybar
+while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
+polybar simple &
 killall compton; compton -b &
-killall polybar; ~/.config/polybar/launch.sh &
 nitrogen --restore &
 setxkbmap dvorak -option ctrl:nocaps &
 dropbox-cli start &
