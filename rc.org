@@ -11,6 +11,7 @@ more readable in org format than in rendered markdown.
 - [[#intro][Intro]]
 - [[#config][Config]]
   - [[#bashrc][bashrc]]
+  - [[#bspwmrc][bspwmrc]]
   - [[#comptonconf][compton.conf]]
   - [[#confignix][config.nix]]
   - [[#darktooththeme][darktooth.theme]]
@@ -24,6 +25,7 @@ more readable in org format than in rendered markdown.
   - [[#polybar][polybar]]
   - [[#profile][profile]]
   - [[#pythonrcpy][pythonrc.py]]
+  - [[#sxhkdrc][sxhkdrc]]
   - [[#termite][termite]]
   - [[#tmux][tmux]]
   - [[#xbindkeysrc][xbindkeysrc]]
@@ -64,6 +66,45 @@ more readable in org format than in rendered markdown.
 :END:
 #+begin_src sh
 shopt -q login_shell || exec fish
+#+end_src
+** bspwmrc
+:PROPERTIES:
+:header-args+: :tangle ~/.config/bspwm/bspwmrc :shebang "#!/bin/sh"
+:END:
+#+begin_src sh
+xsetroot -cursor_name left_ptr
+sxhkd &
+
+killall compton; compton -b &
+killall polybar; ~/.config/polybar/launch.sh &
+nitrogen --restore &
+setxkbmap dvorak -option ctrl:nocaps &
+dropbox-cli start &
+killall unclutter; unclutter &
+xautolock -corners ---- -time 5 -locker "betterlockscreen -l dim" &
+xcape -e 'Control_L=Escape' &
+xset r rate 300 50 &
+
+# bspc config initial_polarity second_child
+bspc config focus_follows_pointer true
+bspc config initial_polraity second_child
+
+bspc monitor -d 1 2 3 4 5 6 7 8 9
+
+bspc config border_width         0
+bspc config window_gap          30
+
+bspc config split_ratio          0.5
+
+bspc rule -a Gimp desktop='^8' state=floating follow=on
+bspc rule -a Chromium desktop='^2'
+bspc rule -a mplayer2 state=floating
+bspc rule -a Kupfer.py focus=on
+bspc rule -a Screenkey manage=off
+bspc rule -a .emacs-wrapped state=tiled
+bspc rule -a Pavucontrol state=floating
+bspc rule -a D-feet state=floating
+bspc rule -a Pcmanfm state=floating
 #+end_src
 ** compton.conf
 :PROPERTIES:
@@ -1801,6 +1842,166 @@ except:
 #     with open(path, 'w') as f:
 #         writer = csv.writer(f)
 #         writer.writerows(rows)
+#+end_src
+** sxhkdrc
+:PROPERTIES:
+:header-args+: :tangle ~/.config/sxhkd/sxhkdrc
+:END:
+#+begin_src conf
+#
+# wm independent hotkeys
+#
+
+# terminal emulator
+super + Return
+    scratch-focus
+
+# program launcher
+
+alt + space
+    rofi -combi-modi window,drun -show combi -modi combi -display-combi ''
+
+# passwords
+super + p
+    ~/.password-store/.extensions/rofi.bash
+
+# make sxhkd reload its configuration files:
+super + Escape
+    pkill -USR1 -x sxhkd
+
+#
+# bspwm hotkeys
+#
+
+# quit bspwm normally
+super + shift + period
+    bspc quit
+
+super + shift + p
+   ~/.config/bspwm/bspwmrc
+
+# close and kill
+super + {_,shift + }apostrophe
+    bspc node -{c,k}
+
+# alternate between the tiled and monocle layout
+super + m
+    bspc desktop -l next
+
+# if the current node is automatic, send it to the last manual, otherwise pull the last leaf
+super + y
+    bspc query -N -n focused.automatic && bspc node -n last.!automatic || bspc node last.leaf -n focused
+
+
+
+# swap the current node and the biggest node
+super + g
+    bspc node -s biggest
+
+#
+# state/flags
+#
+
+# set the window state
+super + {period,u,f}
+    bspc node -t {tiled,~fullscreen,~floating}
+
+# set the node flags
+super + ctrl + {x,y,z}
+    bspc node -g {locked,sticky,private}
+
+
+# focus/swap
+#
+
+# focus the node in the given direction
+super + {_,shift + }{h,t,n,s}
+    bspc node -{f,s} {west,south,north,east}
+
+# focus the node for the given path jump
+# super + {p,b,comma,period}
+#     bspc node -f @{parent,brother,first,second}
+
+# focus the next/previous node in the current desktop
+super + {_,shift + }c
+    bspc node -f {next,prev}.local
+
+# focus the next/previous desktop in the current monitor
+super + bracket{left,right}
+    bspc desktop -f {prev,next}.local
+
+# focus the last node/desktop
+super + {grave,Tab}
+    bspc {node,desktop} -f last
+
+# focus the older or newer node in the focus history
+super + {o,i}
+    bspc wm -h off; \
+    bspc node {older,newer} -f; \
+    bspc wm -h on
+
+# focus or send to the given desktop
+super + {_,shift + }{1-9,0}
+    bspc {desktop -f,node -d} '^{1-9,10}'
+
+#
+# preselect
+#
+
+# preselect the direction
+super + ctrl + {h,t,n,s}
+    bspc node -p {west,south,north,east}
+
+# preselect the ratio
+super + ctrl + {1-9}
+    bspc node -o 0.{1-9}
+
+# move into preselection
+super + l
+    bspc node -n last.!automatic.local
+
+# cancel the preselection for the focused node
+super + ctrl + space
+    bspc node -p cancel
+
+# cancel the preselection for the focused desktop
+super + ctrl + shift + space
+    bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+
+#
+# move/resize
+#
+
+# expand a window by moving one of its side outward
+super + alt + {h,t,n,s}
+    bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# contract a window by moving one of its side inward
+super + alt + shift + {h,t,n,s}
+    bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# move a floating window
+super + {Left,Down,Up,Right}
+    bspc node -v {-20 0,0 20,0 -20,20 0}
+
+XF86MonBrightnessUp
+    ~/bin/i3blocks/screen +
+
+XF86MonBrightnessDown
+    ~/bin/i3blocks/screen -
+
+XF86KbdBrightnessDown
+    ~/bin/kb-light -
+
+XF86KbdBrightnessUp
+    ~/bin/kb-light +
+
+XF86AudioMute
+    exec amixer -D pulse sset Master toggle
+XF86AudioLowerVolume
+    exec amixer -D pulse sset Master 5%-
+XF86AudioRaiseVolume
+    exec amixer -D pulse sset Master 5%+
 #+end_src
 ** termite
 :PROPERTIES:
