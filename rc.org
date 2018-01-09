@@ -1841,8 +1841,8 @@ except:
 #
 
 # terminal emulator
-super + Return
-    scratch-focus
+# super + Return
+#     scratch-focus
 
 # program launcher
 
