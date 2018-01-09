@@ -253,8 +253,6 @@ wintypes :
         gitAndTools.hub
         glibcLocales
         htop
-        i3-gaps
-        i3blocks-gaps
         iosevka-master
         libreoffice
         ncdu
@@ -273,7 +271,6 @@ wintypes :
         sbcl
         termite-master
         tmux
-        unclutter
         vlc
         xcape
         xorg.xbacklight
