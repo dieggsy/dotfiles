@@ -212,6 +212,7 @@ If you've ever had issues where emacs doesn't find your executables, this
 package should fix them nicely.
 #+begin_src emacs-lisp
 (use-package exec-path-from-shell
+  :disabled
   :defer 5
   :config
   (setq exec-path-from-shell-check-startup-files nil)
