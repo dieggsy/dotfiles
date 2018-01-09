@@ -216,8 +216,7 @@ package should fix them nicely.
   :defer 5
   :config
   (setq exec-path-from-shell-check-startup-files nil)
-  (let ((shell-file-name "fish"))
-    (exec-path-from-shell-initialize)))
+  (exec-path-from-shell-initialize))
 #+end_src
 *** [[https://github.com/Ilazki/prettify-utils.el][prettify-utils]]
 #+begin_quote
@@ -315,10 +314,6 @@ except for warnings and errors.
 *** EPA
 #+begin_src emacs-lisp
 (setq epa-pinentry-mode 'loopback)
-#+end_src
-*** shell-file-name
-#+begin_src emacs-lisp
-(setq shell-file-name "bash")
 #+end_src
 ** Functions
 *** Dotfiles
