@@ -1521,19 +1521,27 @@ gui_if_available = True
 [colors]
 background = #282828
 foreground = #FDF4C1
-foreground-alt = #555
-primary = #ffb52a
-secondary = #e60053
-alert = #FB4933
+black = ${colors.background}
+white = ${colors.foreground}
+green = #B8BB26
+red = #FB4933
+yellow = #FABD2F
+blue = #83A598
+purple = #D3869B
+aqua = #8EC07C
+orange = #FE8019
+cyan = #3FD7E5
+sienna = #DD6F48
+light4 = #A89984
+alert = ${colors.red}
 
 [bar/simple]
 monitor = eDP1
-width = 2500
+width = 2440
 height = 60
-offset-x = 30
-offset-y = 30
+offset-x = 60
+offset-y = 60
 fixed-center = true
-underline-size = 5
 ; bottom = true
 
 background = ${colors.background}
@@ -1549,7 +1557,7 @@ font-1 =  fontawesome:size=17;3
 
 modules-left = date network xwindow
 modules-center = i3 bspwm
-modules-right = demo dropbox spotify cmus github weather filesystem xbacklight volume battery
+modules-right = dropbox spotify cmus inbox-reddit github weather filesystem xbacklight volume battery
 
 wm-restack = bspwm
 
@@ -1563,15 +1571,13 @@ type = internal/xwindow
 label = %title:0:30:...%
 
 [module/filesystem]
-type = internal/fs
+type = custom/script
+exec = df -h / | grep -v "^[A-Z]" | awk '{print $4}'
 interval = 25
-format-mounted-background = #FB4933
-format-mounted-foreground = #282828
-format-mounted-padding = 1
-format-unmounted-background = #FB4933
-format-unmounted-foreground = #282828
-format-unmounted-padding = 1
-mount-0 = /
+format-background = ${colors.aqua}
+format-foreground = ${colors.black}
+format-prefix = " "
+format-padding = 1
 
 label-mounted =  %free%
 label-unmounted = %mountpoint% not mounted
@@ -1636,8 +1642,8 @@ label-empty =
 
 [module/xbacklight]
 type = internal/xbacklight
-format-background = #FAbd2f
-format-foreground = #282828
+format-background = ${colors.yellow}
+format-foreground = ${colors.black}
 format-padding = 1
 format =  <label>
 label = %percentage%
@@ -1646,8 +1652,8 @@ label = %percentage%
 click-left = networkmanager_dmenu
 type = custom/script
 exec = ~/bin/i3blocks/chicken-wifi
-format-background = #B8bb26
-format-foreground = #282828
+format-background = ${colors.green}
+format-foreground = ${colors.black}
 format-padding = 1
 interval = 2
 
@@ -1655,49 +1661,31 @@ interval = 2
 type = custom/script
 exec = date +'%a %Y-%m-%d %H:%M'
 format =  <label>
-format-background = #A89984
-format-foreground = #282828
+format-background = ${colors.light4}
+format-foreground = ${colors.black}
 format-padding = 1
 interval = 60
 click-left = notify-send "$(cal --color=never | cut -c -20)"
 
-[module/volume]
-type = internal/volume
-mapped = true
-master-soundcard = hw:1
-format-volume = <ramp-volume> <label-volume>
-label-volume = %percentage%
-format-volume-background = #D3869b
-format-volume-foreground = #282828
-format-volume-padding = 1
-
-ramp-volume-0 = 
-ramp-volume-1 = 
-
-format-muted =  <label-muted>
-label-muted = %percentage%
-format-muted-background = #D3869b
-format-muted-foreground = #282828
-format-muted-padding = 1
-
 [module/battery]
 type = internal/battery
-format-full-background = #DD6f48
-format-full-foreground = #282828
+format-full-background = ${colors.sienna}
+format-full-foreground = ${colors.black}
 format-full-padding = 1
-format-charging-background = #DD6f48
-format-charging-foreground = #282828
+format-charging-background = ${colors.sienna}
+format-charging-foreground = ${colors.black}
 format-charging-padding = 1
-format-discharging-background = #DD6f48
-format-discharging-foreground = #282828
+format-discharging-background = ${colors.sienna}
+format-discharging-foreground = ${colors.black}
 format-discharging-padding = 1
 battery = BAT0
 adapter = ADP1
 full-at = 98
 
-format-full =  <label-full>
-format-charging = <animation-charging> <label-charging>
-format-discharging = <ramp-capacity> <label-discharging>
+format-full = %{A1:notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)":} <label-full>%{A}
+; format-full =  <label-full>
+format-charging = %{A1:notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)":}<animation-charging> <label-charging>%{A}
+format-discharging = %{A1:notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)":}<ramp-capacity> <label-discharging>%{A}
 
 label-full = %percentage%
 label-charging = %percentage%
@@ -1719,8 +1707,8 @@ animation-charging-framerate = 750
 [module/weather]
 type = custom/script
 exec = ~/bin/i3blocks/chicken-weather
-format-background = #83A598
-format-foreground = #282828
+format-background = ${colors.blue}
+format-foreground = ${colors.black}
 format-padding = 1
 interval = 60
 
@@ -1731,15 +1719,15 @@ tail = true
 click-left = playerctl --player=cmus play-pause
 scroll-up = playerctl --player=cmus previous
 scroll-down = playerctl --player=cmus next
-format-prefix = "C* "
-format-prefix-foreground = #B8bb26
+format-prefix = " "
+format-prefix-foreground = ${colors.green}
 
 [module/spotify]
 type = custom/script
 exec = ~/bin/i3blocks/chicken-music spotify
 tail = true
 format-prefix = " "
-format-prefix-foreground = #B8bb26
+format-prefix-foreground = ${colors.green}
 click-left = playerctl --player=spotify play-pause
 scroll-up = playerctl --player=spotify previous
 scroll-down = playerctl --player=spotify next
@@ -1749,23 +1737,36 @@ type = custom/script
 exec = ~/bin/i3blocks/dropbox
 interval = 2
 format-prefix = " "
-format-prefix-foreground = #3FD7E5
+format-prefix-foreground = ${colors.cyan}
 
 [module/github]
 type = internal/github
 token=${file:$HOME/.polybar-ghub-token}
 empty-notifications = false
 interval = 10
-format-prefix = " "
-label = %notifications%
+format = %{A1:xdg-open https\://github.com/notifications:}<label>%{A}
+label =  %notifications%
 
-[module/demo]
+[module/volume]
 type = custom/ipc
 hook-0 = ~/bin/i3blocks/volume
 initial = 1
-click-left = polybar-msg -p %pid% hook demo 1
+scroll-down = ~/bin/i3blocks/volume + && polybar-msg -p %pid% hook volume 1
+scroll-up = ~/bin/i3blocks/volume - && polybar-msg -p %pid% hook volume 1
+click-left = ~/bin/i3blocks/volume toggle && polybar-msg -p %pid% hook volume 1
+format-background = ${colors.purple}
+format-foreground = ${colors.black}
+format-padding = 1
 ; click-right = polybar-msg -p %pid% hook demo 2
 ; double-click-left = polybar-msg -p %pid% hook demo 3
+
+[module/inbox-reddit]
+type = custom/script
+exec = ~/bin/inbox-reddit.sh
+interval = 10
+click-left = xdg-open https://reddit.com/message/unread
+format-prefix = " "
+format-prefix-foreground = #FF3F18
 
 [settings]
 screenchange-reload = true
