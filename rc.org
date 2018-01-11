@@ -65,7 +65,8 @@ more readable in org format than in rendered markdown.
 :header-args+: :tangle ~/.bashrc
 :END:
 #+begin_src sh
-shopt -q login_shell || exec fish
+# source ~/.profile >& /dev/null
+exec fish
 #+end_src
 ** bspwmrc
 :PROPERTIES:
@@ -1797,7 +1798,11 @@ export CHICKEN_REPOSITORY=~/.local/lib/chicken/8
 
 gpgconf --launch gpg-agent
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
-gpg-connect-agent updatestartuptty /bye ^/dev/null
+gpg-connect-agent updatestartuptty /bye >&/dev/null
+
+if [ "$TERM" = "linux" ]; then
+    exec fish
+fi
 #+end_src
 ** pythonrc.py
 :PROPERTIES:
