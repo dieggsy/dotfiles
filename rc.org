@@ -927,7 +927,7 @@ I know, it probably doesn't make sense to keep my gitconfig here.
 **** credential
 #+begin_src conf
 [credential]
-    helper = /home/diego/.nix-profile/bin/pass-git-helper
+    helper = /home/dieggsy/.nix-profile/bin/pass-git-helper
 #+end_src
 **** gpg
 #+begin_src conf
@@ -2855,7 +2855,7 @@ fi
 :END:
 This goes in a cron job using ~crontab -e~ like so:
 #+begin_example
-*/2 * * * * /home/diego/bin/no-lock-fullscreen
+*/2 * * * * /home/dieggsy/bin/no-lock-fullscreen
 #+end_example
 #+begin_src sh
 active_id=`xprop -display :0 -root _NET_ACTIVE_WINDOW`
@@ -3001,14 +3001,14 @@ rg -a --files 2>/dev/null \
 (swank:create-server :port 4005 :dont-close t)
 (scriptl:start)
 
-(defmacro scriptl-script (script-name args &key (path #P"/home/diego/scriptl/") body)
+(defmacro scriptl-script (script-name args &key (path #P"/home/dieggsy/scriptl/") body)
   `(progn
      (defun ,script-name ,args
        ,body)
      (let ((*default-pathname-defaults* ,path))
        (scriptl:make-script ,(string-downcase (symbol-name script-name)) ',script-name))))
 
-(load "/home/diego/scriptl/scripts.lisp")
+(load "/home/dieggsy/scriptl/scripts.lisp")
 #+end_src
 *** scripts
 :PROPERTIES:
@@ -3018,7 +3018,7 @@ rg -a --files 2>/dev/null \
 #+begin_src lisp :tangle no
 (scriptl-script
  kb-light (&optional up-down)
- :path #P"/home/diego/scriptl/"
+ :path #P"/home/dieggsy/scriptl/"
  :body
  (dbus:with-open-bus (bus (dbus:system-server-addresses))
    (dbus:with-introspected-object
