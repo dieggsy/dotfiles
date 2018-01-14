@@ -1982,6 +1982,12 @@ XF86MonBrightnessUp
     ~/bin/i3blocks/screen +
 XF86MonBrightnessDown
     ~/bin/i3blocks/screen -
+XF86LaunchA
+    scrot ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png
+@XF86LaunchB
+    scrot -s ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png
+shift + XF86LaunchB
+    scrot -ub ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png
 XF86KbdBrightnessDown
     ~/bin/kb-light -
 XF86KbdBrightnessUp
