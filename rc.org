@@ -545,7 +545,7 @@ set color_win_inactive_sel_fg=default
     icon_position = left
 
     # Paths to default icons.
-    icon_folders = /usr/share/icons/Adwaita/16x16/status/:/usr/share/icons/Adwaita/16x16/devices/
+    icon_folders = /usr/share/icons/Adwaita/48x48/status/:/usr/share/icons/Adwaita/48x48/devices/
 
     # Limit icons size.
     max_icon_size=128
