@@ -247,45 +247,44 @@ wintypes :
     myPackages = super.buildEnv {
       name = "my-packages";
       paths = [
-        avfs
-        acpi
-        cava
-        cmus-master
-        detox
+        # avfs
+        # acpi
+        # cava
+        # detox
         emacs-master
-        exa
+        # exa
         font-awesome-ttf
-        ghq
-        gimp
-        gitAndTools.gitFull
-        gitAndTools.hub
+        # ghq
+        # gimp
+        # gitAndTools.gitFull
+        # gitAndTools.hub
         glibcLocales
-        htop
+        # htop
         iosevka-master
-        libreoffice
-        ncdu
-        neovim
-        networkmanager_dmenu
+        # libreoffice
+        # ncdu
+        # neovim
+        # networkmanager_dmenu
         nix
         nix-prefetch-git
-        pandoc
-        pass
-        pass-git-helper-master
-        playerctl
-        ripgrep
-        rlwrap
-        rofi
-        rtv
-        sbcl
-        termite-master
-        tmux
-        vlc
-        xcape
-        xorg.xbacklight
-        youtube-dl
-        zathura
-        zsh
-        zsh-completions
+        # pandoc
+        # pass
+        # pass-git-helper-master
+        # playerctl
+        # ripgrep
+        # rlwrap
+        # rofi
+        # rtv
+        # sbcl
+        # termite-master
+        # tmux
+        # vlc
+        # xcape
+        # xorg.xbacklight
+        # youtube-dl
+        # zathura
+        # zsh
+        # zsh-completions
       ] ;
     };
 
