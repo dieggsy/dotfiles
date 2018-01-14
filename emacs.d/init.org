@@ -1287,7 +1287,7 @@ Display the definition of word at point in Emacs
                              (thing-at-point 'word)) "]: ")
                    nil nil
                    (thing-at-point 'word))))
-        (define-word word)))))
+        (define-word word define-word-default-service)))))
 #+end_src
 *** [[https://github.com/xuchunyang/devdocs.el][devdocs]]
 #+begin_quote
