@@ -2978,6 +2978,11 @@ Emacs: highlight surrounding parentheses
 (use-package highlight-parentheses
   :hook ((prog-mode conf-mode) . highlight-parentheses-mode))
 #+end_src
+*** [[https://github.com/ecraven/no-emoji/][no-emoji]]
+#+begin_src emacs-lisp
+(use-package no-emoji
+  :hook (erc-mode . no-emoji-minor-mode))
+#+end_src
 *** [[https://github.com/milkypostman/powerline][powerline]]
 #+begin_src emacs-lisp
 (use-package powerline)
