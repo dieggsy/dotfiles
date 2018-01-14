@@ -776,6 +776,7 @@ getopts
 pyenv
 z
 omf/plugin-foreign-env
+decors/fish-colored-man
 #+end_src
 *** functions
 **** fish_user_key_bindings.fish
