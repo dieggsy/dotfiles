@@ -97,7 +97,16 @@
  '(python-shell-interpreter "python")
  '(recentf-exclude
    (quote
-    ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" "/elpa/" "/xkcd/")))
+    ("/\\(\\(\\(COMMIT\\|NOTES\\|PULLREQ\\|TAG\\)_EDIT\\|MERGE_\\|\\)MSG\\|BRANCH_DESCRIPTION\\)\\'" "/elpa/" "/xkcd/"
+     (lambda
+       (f)
+       (or
+        (string-prefix-p
+         (expand-file-name "var/" "~/dotfiles/emacs.d")
+         f)
+        (string-prefix-p
+         (locate-user-emacs-file "var/")
+         f))))))
  '(safe-local-eval-forms
    (quote
     ((add-hook
