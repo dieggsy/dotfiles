@@ -4746,7 +4746,7 @@ An Emacs Internet Relay Chat client
 **** Defaults
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'erc
-  (setq erc-prompt (format "\n%s❱❱" (make-string 12 ?\s))
+  (setq erc-prompt (format "\n%s❱❱" (make-string 11 ?\s))
         erc-fill-prefix (format "%s\t" (make-string 10 ?\s))
         erc-notice-prefix   (format "%s\t***\s" (make-string 10 ?\s))
         erc-format-nick-function 'd/erc-format-nick
@@ -4993,7 +4993,7 @@ Source: http://tinyurl.com/y8tj8vxx"
 **** Setup
 #+begin_src emacs-lisp
 (d/setup-hook erc-mode
-  (setq tab-width 5))
+  (setq tab-width 7))
 #+end_src
 ** Packages
 *** [[https://github.com/leathekd/erc-hl-nicks][erc-hl-nicks]]
