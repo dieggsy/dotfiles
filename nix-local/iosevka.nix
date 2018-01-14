@@ -7,15 +7,16 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     "owner" = "be5invis";
     "repo" = "iosevka";
-    "rev" = "5da7f90a79b856052a7a3560fc3db0e6468b0ffb";
-    "sha256" = "15akrll4v52b9mqsmpyh1fy3iia8x7vs7i8qi3d96azyxv0zn8hz";
+    "rev" = "c466ee8a267cb8de1c7cb6968520dd127f539f9a";
+    "sha256" = "10hlx9ykyw80wyyw0wsf1ddaia16h201lhf0vsgac83sdfpb71rm";
   };
 
   buildInputs = [ otfcc nodejs-8_x gnumake ttfautohint ];
 
   buildPhase = ''
     HOME=. npm install
-    make custom-config set=term design='term v-asterisk-low' italic='v-i-serifed v-l-serifed v-a-doublestorey v-g-doublestorey'
+    # make custom-config set=term design='term v-asterisk-low' italic='v-i-serifed v-l-serifed v-a-doublestorey v-g-doublestorey'
+    make custom-config set=term design='term v-asterisk-low v-l-zshaped v-i-zshaped v-a-singlestorey v-g-singlestorey v-m-shortleg' italic='v-l-zshaped v-i-zshaped v-a-singlestorey v-g-singlestorey v-m-shortleg'
     make custom set=term
   '';
 
