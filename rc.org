@@ -2638,11 +2638,11 @@ Vol=$(amixer -D pulse get Master | grep "Left: Playback" | awk '{print $5}' | tr
 Mute=$(amixer -D pulse get Master | grep "Left: Playback" | awk '{print $6}' | tr -d "[-]" | head -1)
 
 if [ "$Vol" = "0" ] || [ "$Mute" = "off" ]; then
-    echo -ne "    $Vol "
+    echo -ne " $Vol"
 elif [ "$Vol" -ge "50" ];then
-    echo -ne "    $Vol "
+    echo -ne " $Vol"
 else
-    echo -ne "    $Vol "
+    echo -ne " $Vol"
 fi
 #+end_src
 *** weather
