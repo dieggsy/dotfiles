@@ -855,6 +855,7 @@ set -U man_bold -o brred
 set -U man_underline -o brgreen
 set -U man_standout bryellow -b blue
 set -U __done_min_cmd_duration 10000
+set -U fish_color_autosuggestion 7C6F64
 set -U fish_color_command brgreen
 set -U fish_color_param normal
 set -U fish_color_comment 7C6F64
