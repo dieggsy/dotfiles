@@ -2824,12 +2824,11 @@ have a look. Additionally, show whitespace.
 (setq whitespace-global-modes '(not erc-mode ses-mode))
 #+end_src
 *** Font
-Choose a font in order of preference, when available.
+Set the font to Iosevka Term, if available.
 #+begin_src emacs-lisp
-(when window-system
-  (cond ((x-list-fonts "Iosevka Term")
-         (add-to-list 'default-frame-alist '(font . "Iosevka Term-9.5:weight=book"))
-         (set-face-attribute 'default t :font "Iosevka Term-9.5:weight=book"))))
+(when (and window-system (x-list-fonts "Iosevka Term"))
+  (add-to-list 'default-frame-alist '(font . "Iosevka Term-9.5:weight=book"))
+  (set-face-attribute 'default t :font "Iosevka Term-9.5:weight=book"))
 #+end_src
 And use [[http://fontawesome.io/][Font Awesome]] for the unicode glyphs it supports.
 #+begin_src emacs-lisp
