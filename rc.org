@@ -1748,12 +1748,11 @@ format-prefix = " "
 format-prefix-foreground = ${colors.cyan}
 
 [module/github]
-type = internal/github
-token=${file:$HOME/.polybar-ghub-token}
-empty-notifications = false
+type = custom/script
+exec = ~/bin/hint-github.sh
 interval = 10
-format = %{A1:xdg-open https\://github.com/notifications:}<label>%{A}
-label =  %notifications%
+format-prefix = " "
+click-left = xdg-open https://github.com/notifications
 
 [module/volume]
 type = custom/ipc
