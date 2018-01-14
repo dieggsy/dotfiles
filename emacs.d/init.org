@@ -4127,6 +4127,7 @@ A shell written in emacs-lisp that has recently been replacing zsh for me.
   (d/setup-hook eshell-post-command
     (eshell-save-some-history))
   (setenv "PAGER" "cat")
+  (setenv "GIT_PAGER" "cat")
   (setq eshell-buffer-maximum-lines 20000
         eshell-history-size 20000
         eshell-scroll-to-bottom-on-input 'this
