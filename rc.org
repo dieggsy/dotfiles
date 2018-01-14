@@ -710,10 +710,16 @@ set color_win_inactive_sel_fg=default
 :END:
 **** defaults
 #+begin_src fish
-if test $TERM = "eterm-256color";
+if [ $TERM = "eterm-256color" ];
     set fish_term24bit 0
-else
+else;
+    if [ $TERM = "linux" ];
+        set oldterm "linux"
+    end
     set -gx TERM xterm-256color
+    if [ "$oldterm" = "linux" ];
+        set -g fish_color_autosuggestion 282828
+    end
 end
 #+end_src
 **** prompt
