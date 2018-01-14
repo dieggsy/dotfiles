@@ -2861,6 +2861,8 @@ This goes in a cron job using ~crontab -e~ like so:
 active_id=`xprop -display :0 -root _NET_ACTIVE_WINDOW`
 fullscreen="$(xprop -display :0 -id ${active_id:40:9} | grep _NET_WM_STATE_FULLSCREEN)"
 if [ -n "$fullscreen" ]; then
+    echo "RESTARTING XAUTOLOCK"
+    export DISPLAY=":0"
     xautolock -disable; xautolock -enable
 fi
 #+end_src
