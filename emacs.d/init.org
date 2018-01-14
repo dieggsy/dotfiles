@@ -4741,13 +4741,12 @@ An Emacs Internet Relay Chat client
         erc-autojoin-channels-alist '(("freenode.net"
                                        "#emacs"
                                        "##linux"
-                                       "#zsh"
+                                       "#archlinux"
                                        "#python"
                                        "##programming"
-                                       "#i3"
                                        "#lisp"
                                        "#chicken"
-                                       "#nixos")
+                                       "#bspwm")
                                       ("gitter.im"
                                        "#use-package/Lobby"
                                        "#magit/magit"
