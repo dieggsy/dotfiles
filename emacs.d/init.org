@@ -2829,19 +2829,7 @@ Choose a font in order of preference, when available.
 (when window-system
   (cond ((x-list-fonts "Iosevka Term")
          (add-to-list 'default-frame-alist '(font . "Iosevka Term-9.5:weight=book"))
-         (set-face-attribute 'default t :font "Iosevka Term-9.5:weight=book"))
-        ((x-list-fonts "Input")
-         (add-to-list 'default-frame-alist '(font . "Input-10"))
-         (set-face-attribute 'default t :font "Input-10"))
-        ((x-list-fonts "Office Code Pro D")
-         (add-to-list 'default-frame-alist '(font . "Office Code Pro D-11"))
-         (set-face-attribute 'default t :font "Office Code Pro D-11"))
-        ((x-list-fonts "Consolas")
-         (add-to-list 'default-frame-alist '(font . "Consolas-11"))
-         (set-face-attribute 'default t :font "Consolas-11"))
-        ((x-list-fonts "Menlo")
-         (add-to-list 'default-frame-alist '(font . "Menlo-11"))
-         (set-face-attribute 'default t :font "Menlo-11"))))
+         (set-face-attribute 'default t :font "Iosevka Term-9.5:weight=book"))))
 #+end_src
 And use [[http://fontawesome.io/][Font Awesome]] for the unicode glyphs it supports.
 #+begin_src emacs-lisp
@@ -2849,33 +2837,6 @@ And use [[http://fontawesome.io/][Font Awesome]] for the unicode glyphs it suppo
 (when (and window-system (x-list-fonts "FontAwesome"))
   (set-fontset-font t 'unicode "FontAwesome" nil 'prepend))
 #+end_src
-
-:NOTES:
-*Current:* Now I use [[https://be5invis.github.io/Iosevka/][Iosevka]], which is really great since it has all of the
-wonderful customization abilities of Input, but is fully open source (and has
-web variants!), sees active development, and the maintainer is incredibly
-responsive. It /is/ quite narrow, but give it a chance - I wasn't able to go back
-after a few weeks.
-
-*2016-ish:* I'm using the wonderful [[http://input.fontbureau.com/][Input]] font. If, like me, you're
-coming from something more like SauceCodePro, Consolas, or even just Menlo,
-this font may at first seem a little "blocky," but it's so wonderfully
-[[http://input.fontbureau.com/download/#customize][customizable]] that you should really give it a try. My current settings are:
-
- - Download a custom four-style family
-| Regular     | Input Mono Light         |
-| Italic      | Input Mono Light Italic  |
-| Bold        | Input Mono Medium        |
-| Bold Italic | Input Mono Medium Italic |
- - ~Source Code Pro style~
-   * second option for ~a~ and ~g~
- - 1.4x Line spacing
-
-*Note:* Check out [[http://mbauman.net/geek/2009/03/15/minor-truetype-font-editing-on-a-mac/][this post]] for advice on fixing the Consolas font on macOS. This
-helps with the modeline text vertical alignments and makes it consistent with
-other fonts. Post last updated in 2011, last successfully tested in 09/2016 (by
-myself).
-:END:
 *** Minibuffer
 Use a bar cursor in the minibuffer.
 #+begin_src emacs-lisp
