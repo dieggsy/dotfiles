@@ -112,6 +112,7 @@ bspc rule -a .emacs-wrapped state=tiled
 bspc rule -a Pavucontrol state=floating
 bspc rule -a D-feet state=floating
 bspc rule -a Pcmanfm state=floating
+bspc rule -a Zathura state=tiled
 #+end_src
 ** compton.conf
 :PROPERTIES:
