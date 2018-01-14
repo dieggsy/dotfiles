@@ -2845,6 +2845,7 @@ Choose a font in order of preference, when available.
 #+end_src
 And use [[http://fontawesome.io/][Font Awesome]] for the unicode glyphs it supports.
 #+begin_src emacs-lisp
+(set-fontset-font t '(#x0021B0 . #x002BA7) "DejaVu Sans Mono" nil 'prepend)
 (when (and window-system (x-list-fonts "FontAwesome"))
   (set-fontset-font t 'unicode "FontAwesome" nil 'prepend))
 #+end_src
