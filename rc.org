@@ -837,8 +837,8 @@ end
 #+begin_src fish
 function cool-history
     history | fzf --reverse --prompt "[history] " -q (commandline -b) | read -l hist_item
-    if test $hist-item
-        commandline -i $hist_item
+    if test $hist_item
+        commandline -r $hist_item
     end
 end
 #+end_src
