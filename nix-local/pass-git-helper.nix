@@ -7,8 +7,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "languitar";
     repo = "pass-git-helper";
-    rev = "f8f72671243a29af3998e0087411dc9a0d3d32e1";
-    sha256  = "1nqpsmwjnjzhvkq5jw3pnsj95amj96rmvryw8gzgih51cbd86jxh";
+    rev = "0d7712f4bb1ade0dfec1816aff40334929771c08";
+    sha256  = "1nw8ziy6f5ahj41ibcnp6z4aq23f43p3bij2fp5zk3gggcd5mzvh";
   };
 
   buildInputs = [ python3 setuptools python3Packages.wrapPython ];
