@@ -4043,6 +4043,8 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
 **** [[https://github.com/vermiculus/magithub][magithub]]
 #+begin_src emacs-lisp
 (use-package magithub
+  :after magit
+  :demand t
   :general
   (nmap magit-status-mode-map
     "H" 'magithub-dispatch-popup)
