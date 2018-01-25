@@ -4745,6 +4745,8 @@ An Emacs Internet Relay Chat client
                                        "#python"
                                        "##programming"
                                        "#lisp"
+                                       "##lisp"
+                                       "#scheme"
                                        "#chicken"
                                        "#bspwm")
                                       ("gitter.im"
