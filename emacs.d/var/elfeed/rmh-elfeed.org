@@ -1,5 +1,5 @@
-* blogs                                                              :elfeed:
+* blogs                                                             ::elfeed:
 ** emacs                                                             :emacs:
-*** http://www.reddit.com/r/emacs/.rss                             :reddit:
+*** [[http://www.reddit.com/r/emacs/.rss][r/emacs]]                                                        :reddit:
 *** http://planet.emacsen.org/atom.xml                               :blog:
 

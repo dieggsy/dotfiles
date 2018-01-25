@@ -5070,6 +5070,12 @@ An Emacs package for displaying the forecast from OpenWeatherMap.
 #+end_src
 * Finalize
 #+begin_src emacs-lisp
+(make-frame '((name . "*eshell: floating*")))
+(make-frame '((name . "*erc: floating*")
+              (left-fringe . 0)
+              (right-fringe . 0)
+              (unsplittable . t)
+              (has-modeline-p . nil)))
 (when window-system
   (let ((elapsed (float-time (time-subtract (current-time)
                                             d/emacs-start-time))))
