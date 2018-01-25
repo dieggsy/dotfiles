@@ -53,7 +53,8 @@ more readable in org format than in rendered markdown.
   - [[#updates][updates]]
   - [[#wmsh][wm.sh]]
 - [[#desktop-files][Desktop files]]
-  - [[#emacsclientdesktop][emacsclient.desktop]]
+  - [[#cmusdesktop][cmus.desktop]]
+  - [[#emacs][emacs]]
   - [[#firefox-nightlydesktop][firefox-nightly.desktop]]
   - [[#spotifydesktop][spotify.desktop]]
   - [[#vlc-dvddesktop][vlc-dvd.desktop]]
@@ -3162,18 +3163,70 @@ fi
 export KDEWM=/usr/bin/i3
 #+end_src
 * Desktop files
-** emacsclient.desktop
+** cmus.desktop
 :PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux)  "~/.local/share/applications/emacsclient.desktop")
+:header-args+: :tangle ~/.local/share/applications/cmus.desktop
+:END:
+#+begin_src conf
+[Desktop Entry]
+Name = Cmus
+GenericName=Music Player
+Terminal=true
+Exec=cmus
+TryExec=cmus
+Type=Application
+Categories=Audio;Music;Player;AudioVideo;
+Icon=multimedia-player
+#+end_src
+** emacs
+*** emacsclient.desktop
+:PROPERTIES:
+:header-args+: :tangle ~/.local/share/applications/emacsclient.desktop
 :END:
 This lets you open files with a running instance of emacs. Kinda nifty.
 #+begin_src conf
 [Desktop Entry]
 Name=Emacs Client
 Exec=emacsclient -n %u
-Icon=emacs-icon
+Icon=emacs
 Type=Application
 Terminal=false
+#+end_src
+*** emacs-q.desktop
+:PROPERTIES:
+:header-args+: :tangle ~/.local/share/applications/emacs-q.desktop
+:END:
+#+begin_src conf
+[Desktop Entry]
+Name=Emacs -q
+GenericName=Text Editor
+Comment=Edit text
+MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;
+Exec=emacs -q %F
+Icon=emacs
+Type=Application
+Terminal=false
+Categories=Development;TextEditor;
+StartupWMClass=Emacs
+Keywords=Text;Editor;
+#+end_src
+*** emacs-debug-init.desktop
+:PROPERTIES:
+:header-args+: :tangle ~/.local/share/applications/emacs-debug-init.desktop
+:END:
+#+begin_src conf
+[Desktop Entry]
+Name=Emacs -debug-init
+GenericName=Text Editor
+Comment=Edit text
+MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;
+Exec=emacs -debug-init %F
+Icon=emacs
+Type=Application
+Terminal=false
+Categories=Development;TextEditor;
+StartupWMClass=Emacs
+Keywords=Text;Editor;
 #+end_src
 ** firefox-nightly.desktop
 :PROPERTIES:
