@@ -4980,36 +4980,36 @@ An Emacs web feeds client
 #+end_quote
 Configure the Elfeed RSS reader with an Orgmode file
 **** Package
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package elfeed
   :general
   (d/leader-keys "ae" 'elfeed)
-  (nmap elfeed-search-mode-map
-    "RET" 'elfeed-search-show-entry
-    "+" 'elfeed-search-tag-all
-    "-" 'elfeed-search-untag-all
-    "G" 'elfeed-search-fetch
-    "S" 'elfeed-search-set-filter
-    "b" 'elfeed-search-browse-url
-    "g" 'elfeed-search-update--force
-    "q" 'quit-window
-    "r" 'elfeed-search-untag-all-unread
-    "s" 'elfeed-search-live-filter
-    "u" 'elfeed-search-tag-all-unread
-    "y" 'elfeed-search-yank
-    "U" 'elfeed-update)
-  (nmap elfeed-show-mode-map
-    "+" 'elfeed-show-tag
-    "-" 'elfeed-show-untag
-    "P" 'elfeed-show-play-enclosure
-    "b" 'elfeed-show-visit
-    "d" 'elfeed-show-save-enclosure
-    "g" 'elfeed-show-refresh
-    "l" 'elfeed-goodies/split-show-next
-    "h" 'elfeed-goodies/split-show-prev
-    "q" 'elfeed-kill-buffer
-    "s" 'elfeed-show-new-live-search
-    "y" 'elfeed-show-yank)
+  ;; (nmap elfeed-search-mode-map
+  ;;   "RET" 'elfeed-search-show-entry
+  ;;   "+" 'elfeed-search-tag-all
+  ;;   "-" 'elfeed-search-untag-all
+  ;;   "G" 'elfeed-search-fetch
+  ;;   "S" 'elfeed-search-set-filter
+  ;;   "b" 'elfeed-search-browse-url
+  ;;   "g" 'elfeed-search-update--force
+  ;;   "q" 'quit-window
+  ;;   "r" 'elfeed-search-untag-all-unread
+  ;;   "s" 'elfeed-search-live-filter
+  ;;   "u" 'elfeed-search-tag-all-unread
+  ;;   "y" 'elfeed-search-yank
+  ;;   "U" 'elfeed-update)
+  ;; (nmap elfeed-show-mode-map
+  ;;   "+" 'elfeed-show-tag
+  ;;   "-" 'elfeed-show-untag
+  ;;   "P" 'elfeed-show-play-enclosure
+  ;;   "b" 'elfeed-show-visit
+  ;;   "d" 'elfeed-show-save-enclosure
+  ;;   "g" 'elfeed-show-refresh
+  ;;   "l" 'elfeed-goodies/split-show-next
+  ;;   "h" 'elfeed-goodies/split-show-prev
+  ;;   "q" 'elfeed-kill-buffer
+  ;;   "s" 'elfeed-show-new-live-search
+  ;;   "y" 'elfeed-show-yank)
   :config
   (add-hook 'elfeed-search-mode-hook (lambda () (evil-smartparens-mode -1))))
 #+end_src
@@ -5021,6 +5021,7 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+begin_src emacs-lisp :tangle no
 (use-package elfeed-org
   :after elfeed
+  :demand t
   :config
   (elfeed-org))
 #+end_src
@@ -5028,9 +5029,10 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+begin_quote
 Various goodies for Elfeed
 #+end_quote
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package elfeed-goodies
   :after elfeed
+  :demand t
   :config
   (elfeed-goodies/setup)
   (setq elfeed-goodies/entry-pane-position 'bottom))
