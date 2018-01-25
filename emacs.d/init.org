@@ -1362,10 +1362,6 @@ A better Emacs *help* buffer
 #+end_quote
 #+begin_src emacs-lisp
 (use-package helpful
-  :straight (:host github
-             :repo "dieggsy/helpful"
-             :upstream (:host github
-                        :repo "Wilfred/helpful"))
   :custom
   (helpful-short-filenames t)
   :general
