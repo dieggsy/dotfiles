@@ -4569,15 +4569,12 @@ of external players.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package emms
-  :disabled
   :commands emms-smart-browse
   :general
   (d/leader-keys
-   "mc" 'emms-pause
-   "mb" 'emms-next
-   "mz" 'emms-previous
-   "ml" 'emms-seek-forward
-   "mh" 'emms-seek-backward)
+   "m" 'emms/body)
+  :custom
+  (emms-show-format "%s")
   :config
   (require 'emms-setup)
   (emms-all)
@@ -4690,6 +4687,24 @@ Source: http://tinyurl.com/lo96nwc"
          (zone-programs (list (intern pgm))))
     (redisplay)
     (zone)))
+#+end_src
+** Hydras
+#+begin_src emacs-lisp
+(defhydra emms
+  (:hint nil)
+  "
+%s(emms-track-get (emms-playlist-current-selected-track) 'info-title)
+%s(emms-track-get (emms-playlist-current-selected-track) 'info-artist) - %s(emms-track-get (emms-playlist-current-selected-track) 'info-album)
+        🔀
+  _z_   _c_   _b_    _s_
+"
+  ("c" emms-pause)
+  ("b" emms-next)
+  ("z" emms-previous)
+  ("s" emms-shuffle)
+  ("q" nil))
+
+
 #+end_src
 ** Bindings
 #+begin_src emacs-lisp
