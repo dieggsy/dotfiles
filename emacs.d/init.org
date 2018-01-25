@@ -50,9 +50,16 @@ Next we define a variable for timing startup, and change ~gc-cons-threshhold~
 temporarily (only during startup). This saves me like .3 s of startup time.
 #+begin_src emacs-lisp
 (defconst d/emacs-start-time (current-time))
-(setq gc-cons-threshold 64000000)
-(add-hook 'after-init-hook (lambda ()
-                             (setq gc-cons-threshold 800000)))
+(defvar d/file-name-handler-alist file-name-handler-alist)
+(setq gc-cons-threshold 400000000
+      gc-cons-percentage 0.6
+      file-name-handler-alist nil)
+
+(add-hook 'after-init-hook
+          (lambda ()
+            (setq gc-cons-threshold 800000
+                  gc-cons-percentage 0.1
+                  file-name-handler-alist d/file-name-handler-alist)))
 #+end_src
 ** Custom
 #+begin_src emacs-lisp
