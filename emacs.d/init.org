@@ -99,6 +99,10 @@ use this a fair bit so let's explicitly require it.
 (require 'cl-lib)
 (require 'subr-x)
 #+end_src
+** pass
+#+begin_src emacs-lisp
+;; (auth-source-pass-enable)
+#+end_src
 ** Init utilities
 #+begin_src emacs-lisp
 (defmacro d/time (name &rest body)
