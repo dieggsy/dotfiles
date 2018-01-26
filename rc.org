@@ -306,9 +306,9 @@ super + {Left,Down,Up,Right}
     bspc node -v {-20 0,0 20,0 -20,20 0}
 
 XF86MonBrightnessUp
-    ~/bin/i3blocks/screen +
+    ~/bin/blocks/xbacklight +
 XF86MonBrightnessDown
-    ~/bin/i3blocks/screen -
+    ~/bin/blocks/xbacklight -
 XF86LaunchA
     scrot ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png
 @XF86LaunchB
@@ -316,9 +316,9 @@ XF86LaunchA
 shift + XF86LaunchB
     scrot -ub ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png
 XF86KbdBrightnessDown
-    ~/bin/kb-light -
+    ~/bin/blocks/kbdbacklight -
 XF86KbdBrightnessUp
-    ~/bin/kb-light +
+    ~/bin/blocks/kbdbacklight +
 XF86AudioPrev
     playerctl previous
 XF86AudioNext
@@ -1761,13 +1761,13 @@ font-2 =  Weather Icons:size=17;3
 
 modules-left = date network bluez xwindow
 modules-center = i3 bspwm
-modules-right = dropbox spotify cmus inbox-reddit github weather xbacklight volume battery
+modules-right = dropbox spotify cmus inbox-reddit github xkb weather xbacklight volume battery
 
 wm-restack = bspwm
 
 cursor-click = pointer
 cursor-scroll = ns-resize
-click-left = BLOCK_BUTTON=1 ~/bin/i3blocks/layout
+click-left = ~/bin/blocks/xkb -toggle
 enable-ipc = true
 
 [module/xwindow]
@@ -1776,34 +1776,6 @@ label = %title:0:30:...%
 
 label-mounted =  %free%
 label-unmounted = %mountpoint% not mounted
-
-[module/i3]
-type = internal/i3
-format = <label-state> <label-mode>
-index-sort = true
-wrapping-scroll = false
-
-; Only show workspaces on the same output as the bar
-pin-workspaces = true
-
-label-mode-padding = 1
-
-; focused = Active workspace on focused monitor
-label-focused = ●
-label-focused-padding = 1
-
-; unfocused = Inactive workspace on any monitor
-label-unfocused = ○
-label-unfocused-padding = 1
-
-; visible = Active workspace on unfocused monitor
-label-visible = ●
-label-visible-padding = ${self.label-focused-padding}
-
-; urgent = Workspace with urgency hint set
-label-urgent = ●
-label-urgent-foreground = ${colors.alert}
-label-urgent-padding = 1
 
 [module/bspwm]
 type = internal/bspwm
@@ -1846,7 +1818,7 @@ label = %percentage%
 [module/network]
 click-left = networkmanager_dmenu
 type = custom/script
-exec = ~/bin/i3blocks/chicken-wifi
+exec = ~/bin/blocks/networkmanager
 format-background = ${colors.green}
 format-foreground = ${colors.black}
 format-padding = 1
@@ -1855,7 +1827,7 @@ interval = 2
 [module/bluez]
 click-left = blueman-manager
 type = custom/script
-exec = ~/bin/i3blocks/bluez
+exec = ~/bin/blocks/bluez
 format-background = #076678
 format-foreground = ${colors.white}
 format-padding = 1
@@ -1910,7 +1882,7 @@ animation-charging-framerate = 750
 
 [module/weather]
 type = custom/script
-exec = ~/bin/i3blocks/chicken-weather
+exec = ~/bin/blocks/openweathermap
 format-background = ${colors.blue}
 format-foreground = ${colors.black}
 format-padding = 1
@@ -1919,7 +1891,7 @@ label-font = 3
 
 [module/cmus]
 type = custom/script
-exec = ~/bin/i3blocks/chicken-music
+exec = ~/bin/blocks/mpris cmus
 tail = true
 click-left = playerctl --player=cmus play-pause
 scroll-up = playerctl --player=cmus previous
@@ -1929,7 +1901,7 @@ format-prefix-foreground = ${colors.green}
 
 [module/spotify]
 type = custom/script
-exec = ~/bin/i3blocks/chicken-music spotify
+exec = ~/bin/blocks/mpris spotify
 tail = true
 format-prefix = " "
 format-prefix-foreground = ${colors.green}
@@ -1939,25 +1911,25 @@ scroll-down = playerctl --player=spotify next
 
 [module/dropbox]
 type = custom/script
-exec = ~/bin/i3blocks/dropbox
+exec = ~/bin/blocks/dropbox
 interval = 2
 format-prefix = " "
 format-prefix-foreground = ${colors.cyan}
 
 [module/github]
 type = custom/script
-exec = ~/bin/hint-github.sh
+exec = ~/bin/blocks/github-unread
 interval = 10
 format-prefix = " "
 click-left = xdg-open https://github.com/notifications
 
 [module/volume]
 type = custom/ipc
-hook-0 = ~/bin/i3blocks/volume
+hook-0 = ~/bin/blocks/amixer-pulse
 initial = 1
-scroll-down = ~/bin/i3blocks/volume + && polybar-msg -p %pid% hook volume 1
-scroll-up = ~/bin/i3blocks/volume - && polybar-msg -p %pid% hook volume 1
-click-left = ~/bin/i3blocks/volume toggle && polybar-msg -p %pid% hook volume 1
+scroll-down = ~/bin/blocks/amixer-pulse +
+scroll-up = ~/bin/blocks/amixer-pulse -
+click-left = ~/bin/blocks/amixer-pulse toggle
 format-background = ${colors.purple}
 format-foreground = ${colors.black}
 format-padding = 1
@@ -1966,11 +1938,17 @@ format-padding = 1
 
 [module/inbox-reddit]
 type = custom/script
-exec = ~/bin/inbox-reddit.sh
+exec = ~/bin/blocks/reddit-unread
 interval = 10
 click-left = xdg-open https://reddit.com/message/unread
 format-prefix = " "
 format-prefix-foreground = #FF3F18
+
+[module/xkb]
+type = custom/ipc
+hook-0 = ~/bin/blocks/xkb
+initial = 1
+format-prefix = " "
 
 [settings]
 screenchange-reload = true
