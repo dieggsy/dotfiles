@@ -1,5 +1,5 @@
 { stdenv, lib, fetchgit, ncurses, xlibsWrapper, libXaw, libXpm, Xaw3d
-, pkgconfig, gettext, libXft, dbus, libpng, libjpeg, giflib
+, pkgconfig, gettext, libXft, dbus, libpng, libjpeg, libungif
 , libtiff, librsvg, gconf, libxml2, imagemagick, gnutls, libselinux
 , alsaLib, cairo, acl, gpm, AppKit, CoreWLAN, Kerberos, GSS, ImageIO
 , autoconf, texinfo, systemd, libotf, m17n_lib, m17n_db, jansson
@@ -36,8 +36,8 @@ stdenv.mkDerivation rec {
 
   src = fetchgit {
     "url" = "git://git.sv.gnu.org/emacs.git";
-    "rev" = "f44b50ffc957abb0fcda9b93f1bb7e2c8e9b3b0e";
-    "sha256" = "1m91gh7k4kri0s5f0m9rz6hb56v0m1zjycscdvr9f6cz5pbx5hz6";
+    "rev" = "606c94f47ddef5a5a3dcff13048369253bbdcb3c";
+    "sha256" = "07sqlc7j45qhn666rfrfz6lsx5vazwjyx6qdf332f2xml0b67695";
     };
 
   patches = (lib.optional stdenv.isDarwin ./at-fdcwd.patch);
@@ -52,7 +52,7 @@ stdenv.mkDerivation rec {
     ++ lib.optionals withJson [ jansson ]
     ++ lib.optionals stdenv.isLinux [ dbus libselinux ]
     ++ lib.optionals withX
-      [ xlibsWrapper libXaw Xaw3d libXpm libpng libjpeg giflib libtiff librsvg libXft
+      [ xlibsWrapper libXaw Xaw3d libXpm libpng libjpeg libungif libtiff librsvg libXft
         imagemagick gconf ]
     ++ lib.optional (withX && withGTK2) gtk2
     ++ lib.optionals (withX && withGTK3) [ gtk3 gsettings_desktop_schemas ]
