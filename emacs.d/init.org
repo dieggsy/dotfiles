@@ -4798,6 +4798,7 @@ An Emacs Internet Relay Chat client
   :custom
   (erc-modules
    '(log
+     spelling
      notifications
      pcomplete
      netsplit
