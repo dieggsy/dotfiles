@@ -1751,10 +1751,11 @@ module-margin-right = 1
 
 font-0 = Iosevka Term:size=17;3
 font-1 =  fontawesome:size=17;3
+font-2 =  Weather Icons:size=17;3
 
-modules-left = date network xwindow
+modules-left = date network bluez xwindow
 modules-center = i3 bspwm
-modules-right = dropbox spotify cmus inbox-reddit github weather filesystem xbacklight volume battery
+modules-right = dropbox spotify cmus inbox-reddit github weather xbacklight volume battery
 
 wm-restack = bspwm
 
@@ -1766,15 +1767,6 @@ enable-ipc = true
 [module/xwindow]
 type = internal/xwindow
 label = %title:0:30:...%
-
-[module/filesystem]
-type = custom/script
-exec = df -h / | grep -v "^[A-Z]" | awk '{print $4}'
-interval = 25
-format-background = ${colors.aqua}
-format-foreground = ${colors.black}
-format-prefix = " "
-format-padding = 1
 
 label-mounted =  %free%
 label-unmounted = %mountpoint% not mounted
@@ -1853,6 +1845,16 @@ format-background = ${colors.green}
 format-foreground = ${colors.black}
 format-padding = 1
 interval = 2
+
+[module/bluez]
+click-left = blueman-manager
+type = custom/script
+exec = ~/bin/i3blocks/bluez
+format-background = #076678
+format-foreground = ${colors.white}
+format-padding = 1
+format-prefix = " "
+interval = 4
 
 [module/date]
 type = custom/script
