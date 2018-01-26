@@ -2625,7 +2625,7 @@ click to browse URL or to send to e-mail address
 #+begin_src emacs-lisp
 (use-package goto-addr
   :straight nil
-  :hook (((help-mode org-mode) . goto-address-mode)
+  :hook (((help-mode org-mode text-mode) . goto-address-mode)
          ((prog-mode conf-mode) . goto-address-prog-mode)))
 #+end_src
 *** [[elisp:(find-library-other-window%20"display-line-numbers")][display-line-numbers]]
