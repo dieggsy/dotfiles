@@ -4230,12 +4230,6 @@ directory to make multiple eshell windows easier."
   (defun eshell/cpwd ()
     (kill-new (eshell/pwd)))
 
-  (defun eshell/csi ()
-    (call-interactively #'geiser))
-
-  (defun eshell/sbcl ()
-    (call-interactively #'slime))
-
   (defun eshell/rg (&rest args)
     (eshell-grep "rg" (append '("--no-heading" "-M" "120") args) t))
 
