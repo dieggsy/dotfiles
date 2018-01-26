@@ -4804,7 +4804,7 @@ An Emacs Internet Relay Chat client
     :keymaps 'erc-mode-map
     "g" 'd/erc-switch-to-buffer)
   (d/leader-keys
-    "ai" 'd/erc)
+    "ai" 'd/erc-floating)
   (imap erc-mode-map
     [up] 'erc-previous-command
     [down] 'erc-next-command)
@@ -4993,16 +4993,23 @@ Source: http://tinyurl.com/y8tj8vxx"
                           (right-fringe . 0)
                           (unsplittable . t)))))
     (with-selected-frame d/erc-floating-frame
-      (let ((live-erc-proc
-             (cl-find-if (lambda (proc)
-                           (string-match-p "erc" (process-name proc)))
-                         (cl-remove-if-not
-                          #'process-live-p
-                          (process-list)))))
-        (cond ((erc-server-buffer-live-p))
-              (live-erc-proc
-               (switch-to-buffer (process-buffer live-erc-proc)))
-              (t (switch-to-buffer (erc :server "irc.freenode.net")))))))
+      ;; we do this cause emacsclient starts out with the server buffer
+      (switch-to-buffer (window-buffer (selected-window)))
+      ;; If buffer has a live ERC process, do nothing
+      (unless (erc-server-buffer-live-p)
+        ;; Otherwise, find the first ERC process
+        (let ((live-erc-proc
+               (cl-find-if (lambda (proc)
+                             (string-match-p "erc" (process-name proc)))
+                           (cl-remove-if-not
+                            #'process-live-p
+                            (process-list)))))
+          ;; If we have one, switch to it
+          (if live-erc-proc
+              (progn
+                (switch-to-buffer (process-buffer live-erc-proc)))
+            ;; otherwise, connect to ERC
+            (switch-to-buffer (erc :server "irc.freenode.net")))))))
 
   (defun d/gitter ()
     (interactive)
