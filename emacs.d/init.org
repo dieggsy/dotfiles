@@ -4982,7 +4982,11 @@ Source: http://tinyurl.com/y8tj8vxx"
 **** Setup
 #+begin_src emacs-lisp
 (d/setup-hook erc-mode
-  (setq tab-width 7))
+  (visual-line-mode)
+  (setq wrap-prefix (make-string 14 ?\s))
+  (set-display-table-slot buffer-display-table 'wrap ?\s)
+  (setq tab-width 7)
+  (setq mode-line-format nil))
 #+end_src
 ** Packages
 *** [[https://github.com/leathekd/erc-hl-nicks][erc-hl-nicks]]
