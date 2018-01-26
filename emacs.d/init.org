@@ -835,29 +835,30 @@ But really, it's life.
      (shell . t)
      (lisp . t)
      (C . t)
-     (scheme . t)))
+     (scheme . t))))
 #+end_src
 ***** Appearance
 #+begin_src emacs-lisp
-;; appearance
-(setq org-src-fontify-natively t
-      org-src-preserve-indentation nil
-      org-edit-src-content-indentation 0
-      org-fontify-quote-and-verse-blocks t
-      org-hide-emphasis-markers nil
-      org-startup-with-inline-images t
-      org-ellipsis " "
-      org-highlight-latex-and-related '(latex)
-      org-pretty-entities nil
-      org-hide-leading-stars t
-      org-fontify-done-headline t
-      org-image-actual-width 500)
+(d/with-eval-after-load 'org
+  ;; appearance
+  (setq org-src-fontify-natively t
+        org-src-preserve-indentation nil
+        org-edit-src-content-indentation 0
+        org-fontify-quote-and-verse-blocks t
+        org-hide-emphasis-markers nil
+        org-startup-with-inline-images t
+        org-ellipsis " "
+        org-highlight-latex-and-related '(latex)
+        org-pretty-entities nil
+        org-hide-leading-stars t
+        org-fontify-done-headline t
+        org-image-actual-width 500)
 
-;; latex
-(setq org-latex-listings t)
-(add-to-list 'org-latex-packages-alist '("" "listings"))
-(add-to-list 'org-latex-packages-alist '("" "color"))
-(add-to-list 'org-latex-packages-alist '("" "tabularx")))
+  ;; latex
+  (setq org-latex-listings t)
+  (add-to-list 'org-latex-packages-alist '("" "listings"))
+  (add-to-list 'org-latex-packages-alist '("" "color"))
+  (add-to-list 'org-latex-packages-alist '("" "tabularx")))
 #+end_src
 **** Variables
 #+begin_src emacs-lisp
