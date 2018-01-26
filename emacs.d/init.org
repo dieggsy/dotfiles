@@ -4783,6 +4783,10 @@ An Emacs Internet Relay Chat client
 (use-package erc
   :straight nil
   :general
+  (nmap erc-mode-map
+    "G" (lambda ()
+          (interactive)
+          (evil-goto-line) (erc-scroll-to-bottom)))
   (d/mode-leader-keys
    :keymaps 'erc-mode-map
    "g" 'd/erc-switch-to-buffer)
