@@ -1910,6 +1910,7 @@ format-background = ${colors.blue}
 format-foreground = ${colors.black}
 format-padding = 1
 interval = 60
+label-font = 3
 
 [module/cmus]
 type = custom/script
