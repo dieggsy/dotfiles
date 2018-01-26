@@ -4264,7 +4264,18 @@ directory to make multiple eshell windows easier."
                           (end-of-line)
                           (eshell-kill-input)
                           (insert x))
-                :initial-input input))))
+                :initial-input input)))
+
+  (defun d/eshell-floating ()
+    (interactive)
+    (let ((buf-name  "*eshell: floating*"))
+      (with-selected-frame d/eshell-floating-frame
+        (when (not (get-buffer buf-name))
+          (with-current-buffer (eshell 'new)
+            (setq mode-line-format nil)
+            (rename-buffer buf-name)))
+        (when (not (string= (buffer-name) buf-name))
+          (switch-to-buffer buf-name))))))
 #+end_src
 ** [[https://github.com/politza/pdf-tools][pdf-tools]]
 #+begin_quote
