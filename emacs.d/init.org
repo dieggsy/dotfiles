@@ -5014,7 +5014,7 @@ Source: http://tinyurl.com/y8tj8vxx"
 (d/setup-hook erc-mode
   (visual-line-mode)
   (setq wrap-prefix (make-string 14 ?\s))
-  (set-display-table-slot buffer-display-table 'wrap ?\s)
+  (set-display-table-slot standard-display-table 'wrap ?\s)
   (setq tab-width 7)
   (setq mode-line-format nil))
 #+end_src
