@@ -165,10 +165,16 @@ bspc rule -a Zathura state=tiled
 
 # terminal emulator
 super + Return
-    id=$(cat /tmp/esh-float); bspc node $id --flag hidden; bspc node -f $id
+    emacsclient --eval '(d/eshell-floating)' && \
+    id=$(</tmp/esh-float) && \
+    bspc node $id --flag hidden && \
+    bspc node -f $id
 
 super + space
-    id=$(cat /tmp/erc-float); bspc node $id --flag hidden; bspc node -f $id
+    emacsclient --eval '(d/erc-floating)' && \
+    id=$(</tmp/erc-float) && \
+    bspc node $id --flag hidden && \
+    bspc node -f $id
 
 # program launcher
 

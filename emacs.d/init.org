@@ -4109,6 +4109,7 @@ A shell written in emacs-lisp that has recently been replacing zsh for me.
 #+begin_src emacs-lisp
 (use-package eshell
   :straight nil
+  :commands d/eshell-floating
   :general
   (d/leader-keys
     "RET" 'd/eshell-here)
@@ -4273,8 +4274,12 @@ directory to make multiple eshell windows easier."
                           (insert x))
                 :initial-input input)))
 
+  (defvar d/eshell-floating-frame nil)
   (defun d/eshell-floating ()
     (interactive)
+    (unless (frame-live-p d/eshell-floating-frame)
+      (setq d/eshell-floating-frame
+            (make-frame '((name . "*eshell: floating*")))))
     (let ((buf-name  "*eshell: floating*"))
       (with-selected-frame d/eshell-floating-frame
         (when (not (get-buffer buf-name))
@@ -4789,6 +4794,7 @@ An Emacs Internet Relay Chat client
 #+begin_src emacs-lisp
 (use-package erc
   :straight nil
+  :commands d/erc-floating
   :general
   (nmap erc-mode-map
     "G" (lambda ()
@@ -4977,9 +4983,26 @@ Source: http://tinyurl.com/y8tj8vxx"
     (let ((ivy-use-virtual-buffers nil))
       (erc-switch-to-buffer arg)))
 
-  (defun d/erc ()
+  (defvar d/erc-floating-frame nil)
+  (defun d/erc-floating ()
     (interactive)
-    (erc :server "irc.freenode.net"))
+    (unless (frame-live-p d/erc-floating-frame)
+      (setq d/erc-floating-frame
+            (make-frame '((name . "*erc: floating*")
+                          (left-fringe . 0)
+                          (right-fringe . 0)
+                          (unsplittable . t)))))
+    (with-selected-frame d/erc-floating-frame
+      (let ((live-erc-proc
+             (cl-find-if (lambda (proc)
+                           (string-match-p "erc" (process-name proc)))
+                         (cl-remove-if-not
+                          #'process-live-p
+                          (process-list)))))
+        (cond ((erc-server-buffer-live-p))
+              (live-erc-proc
+               (switch-to-buffer (process-buffer live-erc-proc)))
+              (t (switch-to-buffer (erc :server "irc.freenode.net")))))))
 
   (defun d/gitter ()
     (interactive)
@@ -5092,12 +5115,6 @@ An Emacs package for displaying the forecast from OpenWeatherMap.
 #+end_src
 * Finalize
 #+begin_src emacs-lisp
-(make-frame '((name . "*eshell: floating*")))
-(make-frame '((name . "*erc: floating*")
-              (left-fringe . 0)
-              (right-fringe . 0)
-              (unsplittable . t)
-              (has-modeline-p . nil)))
 (when window-system
   (let ((elapsed (float-time (time-subtract (current-time)
                                             d/emacs-start-time))))
