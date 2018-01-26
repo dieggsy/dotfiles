@@ -1928,7 +1928,7 @@ click-left = xdg-open https://github.com/notifications
 
 [module/volume]
 type = custom/ipc
-hook-0 = ~/bin/blocks/amixer-pulse
+hook-0 = ~/bin/blocks/amixer-pulse -display
 initial = 1
 scroll-down = ~/bin/blocks/amixer-pulse +
 scroll-up = ~/bin/blocks/amixer-pulse -
@@ -1949,7 +1949,7 @@ format-prefix-foreground = #FF3F18
 
 [module/xkb]
 type = custom/ipc
-hook-0 = ~/bin/blocks/xkb
+hook-0 = ~/bin/blocks/xkb -display
 initial = 1
 format-prefix = " "
 
