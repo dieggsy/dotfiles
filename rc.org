@@ -113,7 +113,8 @@ bspc rule -a Chromium desktop='^2'
 bspc rule -a mplayer2 state=floating
 bspc rule -a Kupfer.py focus=on
 bspc rule -a Screenkey manage=off
-bspc rule -a .emacs-wrapped state=tiled
+bspc rule -a .emacs-wrapped state=tiled desktop='^2'
+bspc rurle -a FirefoxNightly desktop='^1'
 bspc rule -a Pavucontrol state=floating
 bspc rule -a D-feet state=floating
 bspc rule -a Pcmanfm state=floating
