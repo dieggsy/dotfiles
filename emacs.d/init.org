@@ -4038,6 +4038,7 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
         git-commit-summary-max-length 50
         git-commit-major-mode 'org-mode)
   (d/setup-hook git-commit-mode
+    (whitespace-mode -1)
     (setq-local fill-column 72)
     (setq-local org-hide-emphasis-markers nil)
     (setq-local org-pretty-entities nil)))
