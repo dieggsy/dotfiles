@@ -1879,10 +1879,9 @@ format-discharging-foreground = ${colors.black}
 format-discharging-padding = 1
 battery = BAT0
 adapter = ADP1
-full-at = 98
+full-at = 100
 
 format-full = %{A1:notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)":} <label-full>%{A}
-; format-full =  <label-full>
 format-charging = %{A1:notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)":}<animation-charging> <label-charging>%{A}
 format-discharging = %{A1:notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)":}<ramp-capacity> <label-discharging>%{A}
 
