@@ -385,18 +385,18 @@ That undersells it. The /most/ convenient key definitions in emacs.
   (general-override-mode)
 
   (general-create-definer
-   d/mode-leader-keys
-   :keymaps 'override
-   :states '(emacs normal visual motion insert)
-   :non-normal-prefix "C-,"
-   :prefix ",")
+    d/mode-leader-keys
+    :keymaps 'override
+    :states '(emacs normal visual motion insert)
+    :non-normal-prefix "C-,"
+    :prefix ",")
 
   (general-create-definer
-   d/leader-keys
-   :keymaps 'override
-   :states '(emacs normal visual motion insert)
-   :non-normal-prefix "C-SPC"
-   :prefix "SPC"))
+    d/leader-keys
+    :keymaps 'override
+    :states '(emacs normal visual motion insert)
+    :non-normal-prefix "C-SPC"
+    :prefix "SPC"))
 #+end_src
 *** [[https://github.com/emacs-evil/evil][evil]]
 #+begin_quote
@@ -539,13 +539,13 @@ Comment/uncomment lines efficiently. Like Nerd Commenter in Vim
     "gc" 'evilnc-comment-operator
     "gy" 'evilnc-copy-and-comment-lines)
   (d/leader-keys
-   ";"  'evilnc-comment-operator
-   "c"  '(:ignore t :wk "comment")
-   "ci" 'd/comment-or-uncomment-lines-inverse
-   "cl" 'evilnc-comment-or-uncomment-lines
-   "cp" 'evilnc-comment-or-uncomment-paragraphs
-   "ct" 'evilnc-comment-or-uncomment-to-the-line
-   "cy" 'evilnc-copy-and-comment-lines)
+    ";"  'evilnc-comment-operator
+    "c"  '(:ignore t :wk "comment")
+    "ci" 'd/comment-or-uncomment-lines-inverse
+    "cl" 'evilnc-comment-or-uncomment-lines
+    "cp" 'evilnc-comment-or-uncomment-paragraphs
+    "ct" 'evilnc-comment-or-uncomment-to-the-line
+    "cy" 'evilnc-copy-and-comment-lines)
   :config
   (defun d/comment-or-uncomment-lines-inverse (&optional arg)
     "Source: https://git.io/vQKza"
@@ -600,9 +600,9 @@ A really nice search/completion system for emacs.
    [S-up] 'ivy-previous-history-element
    [S-down] 'ivy-next-history-element)
   (d/leader-keys
-   "-" 'ivy-resume
-   "bb" 'ivy-switch-buffer
-   "bB" 'ivy-switch-buffer-other-window)
+    "-" 'ivy-resume
+    "bb" 'ivy-switch-buffer
+    "bB" 'ivy-switch-buffer-other-window)
   :config
   (ivy-mode 1)
 
@@ -648,8 +648,8 @@ This function is intended for use with `ivy-ignore-buffers'."
 (use-package swiper
   :general
   (d/leader-keys
-   "sm" 'swiper-multi
-   "sS" 'swiper-all)
+    "sm" 'swiper-multi
+    "sS" 'swiper-all)
   :config (setq swiper-goto-start-of-match t))
 #+end_src
 **** counsel
@@ -661,20 +661,20 @@ This function is intended for use with `ivy-ignore-buffers'."
   (imap minibuffer-local-map
     "C-r" 'counsel-minibuffer-history)
   (d/leader-keys
-   "SPC" 'counsel-M-x
-   "aa"  'counsel-linux-app
-   "ff"  'counsel-find-file
-   "fF"  'find-file-other-window
-   "fj"  'counsel-file-jump
-   "fl"  'counsel-locate
-   "hdF" 'counsel-describe-face
-   "hdb" 'counsel-descbinds
-   "hdf" 'counsel-describe-function
-   "hdv" 'counsel-describe-variable
-   "iu"  'counsel-unicode-char
-   "sr"  'counsel-rg
-   "ss"  'counsel-grep-or-swiper
-   "y"   'counsel-yank-pop)
+    "SPC" 'counsel-M-x
+    "aa"  'counsel-linux-app
+    "ff"  'counsel-find-file
+    "fF"  'find-file-other-window
+    "fj"  'counsel-file-jump
+    "fl"  'counsel-locate
+    "hdF" 'counsel-describe-face
+    "hdb" 'counsel-descbinds
+    "hdf" 'counsel-describe-function
+    "hdv" 'counsel-describe-variable
+    "iu"  'counsel-unicode-char
+    "sr"  'counsel-rg
+    "ss"  'counsel-grep-or-swiper
+    "y"   'counsel-yank-pop)
   :custom
   (counsel-find-file-ignore-regexp "\\`\\.")
   (counsel-yank-pop-preselect-last t)
@@ -727,19 +727,19 @@ But really, it's life.
     "gt" 'org-todo
     "ga" 'org-archive-subtree)
   (d/leader-keys
-   "C"   'org-capture
-   "bo"  'org-iswitchb
-   "ao"  '(:ignore t :wk "org")
-   "ao#" 'org-agenda-list-stuck-projects
-   "ao/" 'org-occur-in-agenda-files
-   "aoO" 'org-clock-out
-   "aoa" 'org-agenda-list
-   "aoe" 'org-store-agenda-views
-   "aol" 'org-store-link
-   "aom" 'org-store-tags-view
-   "aoo" 'org-agenda
-   "aos" 'org-search-view
-   "aot" 'org-todo-list )
+    "C"   'org-capture
+    "bo"  'org-iswitchb
+    "ao"  '(:ignore t :wk "org")
+    "ao#" 'org-agenda-list-stuck-projects
+    "ao/" 'org-occur-in-agenda-files
+    "aoO" 'org-clock-out
+    "aoa" 'org-agenda-list
+    "aoe" 'org-store-agenda-views
+    "aol" 'org-store-link
+    "aom" 'org-store-tags-view
+    "aoo" 'org-agenda
+    "aos" 'org-search-view
+    "aot" 'org-todo-list )
   :custom
   (org-list-allow-alphabetical t)
   :config
@@ -1019,95 +1019,95 @@ Source: https://git.io/vQKEa"
 **** Bindings
 #+begin_src emacs-lisp
 (d/mode-leader-keys
- :keymaps 'org-mode-map
- "$"  'org-archive-subtree
- "'"  'org-edit-special
- "."  'org-time-stamp
- "/"  'org-sparse-tree
- ":"  'd/org-set-tags
- "-"  'org-decrypt-entry
- "A"  'org-archive-subtree
- "N"  'widen
- "P"  'org-set-property
- "R"  'org-refile
- "^"  'org-sort
- "a"  'org-agenda
- "c"  'org-capture
- "d"  'org-deadline
- "g"  'counsel-org-goto
- "G"  'counsel-org-goto-all
- "l"  'd/org-choose-bullet-type
- "n"  'org-narrow-to-subtree
- "s"  'org-schedule
+  :keymaps 'org-mode-map
+  "$"  'org-archive-subtree
+  "'"  'org-edit-special
+  "."  'org-time-stamp
+  "/"  'org-sparse-tree
+  ":"  'd/org-set-tags
+  "-"  'org-decrypt-entry
+  "A"  'org-archive-subtree
+  "N"  'widen
+  "P"  'org-set-property
+  "R"  'org-refile
+  "^"  'org-sort
+  "a"  'org-agenda
+  "c"  'org-capture
+  "d"  'org-deadline
+  "g"  'counsel-org-goto
+  "G"  'counsel-org-goto-all
+  "l"  'd/org-choose-bullet-type
+  "n"  'org-narrow-to-subtree
+  "s"  'org-schedule
 
- "i"  '(:ignore t :wk "insert")
- "ic" 'org-table-insert-column
- "ir" 'org-table-insert-row
- "il" 'org-insert-link
- "if" 'org-footnote-new
- "id" 'org-insert-drawer
+  "i"  '(:ignore t :wk "insert")
+  "ic" 'org-table-insert-column
+  "ir" 'org-table-insert-row
+  "il" 'org-insert-link
+  "if" 'org-footnote-new
+  "id" 'org-insert-drawer
 
- "e"  '(:ignore t :wk "eval/export")
- "ed" 'org-export-dispatch
- "eh" 'd/org-hugo-export
- "es" 'd/eval-surrounding-sexp
- "er" 'eval-region
- "eb" 'd/eval-buffer
- "ef" 'd/eval-defun
+  "e"  '(:ignore t :wk "eval/export")
+  "ed" 'org-export-dispatch
+  "eh" 'd/org-hugo-export
+  "es" 'd/eval-surrounding-sexp
+  "er" 'eval-region
+  "eb" 'd/eval-buffer
+  "ef" 'd/eval-defun
 
- "b"  'org-babel-tangle
+  "b"  'org-babel-tangle
 
- "x"  '(:ignore t :wk "text")
- "xb" 'd/org-bold
- "xi" 'd/org-italic
- "xc" 'd/org-code
- "xu" 'd/org-underline
- "xv" 'd/org-verbatim
- "xs" 'd/org-strike-through
- "xr" 'd/org-clear
- "xq" 'd/org-wrap-with-quote
- "xx" 'org-cut-special
- "xp" 'org-paste-special
+  "x"  '(:ignore t :wk "text")
+  "xb" 'd/org-bold
+  "xi" 'd/org-italic
+  "xc" 'd/org-code
+  "xu" 'd/org-underline
+  "xv" 'd/org-verbatim
+  "xs" 'd/org-strike-through
+  "xr" 'd/org-clear
+  "xq" 'd/org-wrap-with-quote
+  "xx" 'org-cut-special
+  "xp" 'org-paste-special
 
- ;; tables
- "t"   '(:ignore t :wk "table")
- "ta"  'org-table-align
- "tb"  'org-table-blank-field
- "tc"  'org-table-convert
- "tdc" 'org-table-delete-column
- "tdr" 'org-table-kill-row
- "te"  'org-table-eval-formula
- "tE"  'org-table-export
- "th"  'org-table-previous-field
- "tH"  'org-table-move-column-left
- "tic" 'org-table-insert-column
- "tih" 'org-table-insert-hline
- "tiH" 'org-table-hline-and-move
- "tir" 'org-table-insert-row
- "tI"  'org-table-import
- "tj"  'org-table-next-row
- "tJ"  'org-table-move-row-down
- "tK"  'org-table-move-row-up
- "tl"  'org-table-next-field
- "tL"  'org-table-move-column-right
- "tn"  'org-table-create
- "tN"  'org-table-create-with-table.el
- "tr"  'org-table-recalculate
- "ts"  'org-table-sort-lines
- "ttf" 'org-table-toggle-formula-debugger
- "tto" 'org-table-toggle-coordinate-overlays
- "tw"  'org-table-wrap-region)
+  ;; tables
+  "t"   '(:ignore t :wk "table")
+  "ta"  'org-table-align
+  "tb"  'org-table-blank-field
+  "tc"  'org-table-convert
+  "tdc" 'org-table-delete-column
+  "tdr" 'org-table-kill-row
+  "te"  'org-table-eval-formula
+  "tE"  'org-table-export
+  "th"  'org-table-previous-field
+  "tH"  'org-table-move-column-left
+  "tic" 'org-table-insert-column
+  "tih" 'org-table-insert-hline
+  "tiH" 'org-table-hline-and-move
+  "tir" 'org-table-insert-row
+  "tI"  'org-table-import
+  "tj"  'org-table-next-row
+  "tJ"  'org-table-move-row-down
+  "tK"  'org-table-move-row-up
+  "tl"  'org-table-next-field
+  "tL"  'org-table-move-column-right
+  "tn"  'org-table-create
+  "tN"  'org-table-create-with-table.el
+  "tr"  'org-table-recalculate
+  "ts"  'org-table-sort-lines
+  "ttf" 'org-table-toggle-formula-debugger
+  "tto" 'org-table-toggle-coordinate-overlays
+  "tw"  'org-table-wrap-region)
 
 (d/with-eval-after-load 'org
   (d/mode-leader-keys
-   :keymaps 'org-src-mode
-   :definer 'minor-mode
-   "'" 'org-edit-src-exit)
+    :keymaps 'org-src-mode
+    :definer 'minor-mode
+    "'" 'org-edit-src-exit)
 
   (d/leader-keys
-   :keymaps 'org-src-mode
-   :definer 'minor-mode
-   "fs" 'org-edit-src-save))
+    :keymaps 'org-src-mode
+    :definer 'minor-mode
+    "fs" 'org-edit-src-save))
 #+end_src
 **** Setup
 ***** Agenda
@@ -1201,16 +1201,16 @@ Org sync with Google Calendar
 *** Leader
 #+begin_src emacs-lisp
 (d/leader-keys
- "." 'abort-recursive-edit
- "qf" 'delete-frame
- "qq" 'save-buffers-kill-emacs
+  "." 'abort-recursive-edit
+  "qf" 'delete-frame
+  "qq" 'save-buffers-kill-emacs
 
- "t"   '(:def d/toggle/body :wk "toggle")
+  "t"   '(:def d/toggle/body :wk "toggle")
 
- "&"   'async-shell-command
- ":"   'eval-expression
- "r"   'repeat
- "u"   'universal-argument)
+  "&"   'async-shell-command
+  ":"   'eval-expression
+  "r"   'repeat
+  "u"   'universal-argument)
 #+end_src
 *** macOS fullscreen
 A convenient full-screen binding I'm used to from iTerm.
@@ -1263,7 +1263,7 @@ browse UNIX manual pages
 (use-package man
   :general
   (d/leader-keys
-   "hm" 'man)
+    "hm" 'man)
   :config
   (setq Man-notify-method 'aggressive))
 #+end_src
@@ -1307,8 +1307,8 @@ A set of emacs functions and bindings to google under point.
 (use-package google-this
   :general
   (d/leader-keys
-   "sd" 'ddg-this-search
-   "sg" 'google-this-search)
+    "sd" 'ddg-this-search
+    "sg" 'google-this-search)
   :config
   (defun ddg-this-parse-and-search-string (text prefix &optional search-url)
     "Convert illegal characters in TEXT to their %XX versions, and then duckduckgo.
@@ -1366,8 +1366,8 @@ A better Emacs *help* buffer
   (helpful-short-filenames t)
   :general
   (d/leader-keys
-   "hds" 'helpful-symbol
-   "hdk" 'helpful-key)
+    "hds" 'helpful-symbol
+    "hdk" 'helpful-key)
   :init
   (setq find-function-C-source-directory
         (replace-regexp-in-string
@@ -1404,20 +1404,20 @@ tldr client for Emacs
 Leader bindings
 #+begin_src emacs-lisp
 (d/leader-keys
- "hc"  '(:ignore t :wk "customize")
- "hca" 'customize-apropos
- "hcf" 'customize-face-other-window
- "hcg" 'customize-group-other-window
- "hcm" 'customize-mode
- "hcv" 'customize-variable-other-window
- "hdV" 'apropos-value
- "hdc" 'describe-char
- "hdm" 'describe-mode
- "hdt" 'describe-theme
- "hn"  'view-emacs-news
- "hi"  'info
- "hs"  (lambda () (interactive) (message (system-name)))
- "hv"  'version)
+  "hc"  '(:ignore t :wk "customize")
+  "hca" 'customize-apropos
+  "hcf" 'customize-face-other-window
+  "hcg" 'customize-group-other-window
+  "hcm" 'customize-mode
+  "hcv" 'customize-variable-other-window
+  "hdV" 'apropos-value
+  "hdc" 'describe-char
+  "hdm" 'describe-mode
+  "hdt" 'describe-theme
+  "hn"  'view-emacs-news
+  "hi"  'info
+  "hs"  (lambda () (interactive) (message (system-name)))
+  "hv"  'version)
 #+end_src
 * Files/Buffers
 ** Defaults
@@ -1457,14 +1457,14 @@ directory-browsing commands
   :straight nil
   :general
   (d/leader-keys
-   "ad" 'd/dired-here)
+    "ad" 'd/dired-here)
   (d/leader-keys
-   :keymaps 'wdired-mode-map
-   "fs" 'wdired-finish-edit)
+    :keymaps 'wdired-mode-map
+    "fs" 'wdired-finish-edit)
   (d/mode-leader-keys
-   :keymaps 'dired-mode-map
-   "h" 'dired-omit-mode
-   "d" 'dired-du-mode)
+    :keymaps 'dired-mode-map
+    "h" 'dired-omit-mode
+    "d" 'dired-du-mode)
   :custom
   (dired-listing-switches "-lGXhA --group-directories-first")
   (dired-dwim-target t)
@@ -1557,8 +1557,9 @@ set bookmarks, maybe annotate them, jump to them later
 (use-package bookmark
   :straight nil
   :general
-  (d/leader-keys "fB" 'bookmark-jump-other-window
-                 "fb" 'bookmark-jump))
+  (d/leader-keys
+    "fB" 'bookmark-jump-other-window
+    "fb" 'bookmark-jump))
 #+end_src
 *** [[elisp:(find-library-other-window "ediff")][ediff]]
 #+begin_src emacs-lisp
@@ -1638,11 +1639,11 @@ Project Interaction Library for Emacs
 (use-package projectile
   :general
   (d/leader-keys
-   "p"  '(:ignore t :wk "project")
-   "pg" 'projectile-vc
-   "pk" 'projectile-kill-buffers
-   "po" 'projectile-multi-occur
-   "pr" 'projectil-recentf)
+    "p"  '(:ignore t :wk "project")
+    "pg" 'projectile-vc
+    "pk" 'projectile-kill-buffers
+    "po" 'projectile-multi-occur
+    "pr" 'projectil-recentf)
   :config
   (defun d/maybe-ignore-project (root)
     (cond ((file-remote-p root)
@@ -1668,11 +1669,11 @@ Ivy UI for Projectile
 (use-package counsel-projectile
   :general
   (d/leader-keys
-   "pb" 'counsel-projectile-switch-to-buffer
-   "pd" 'counsel-projectile-find-dir
-   "pf" 'counsel-projectile-find-file
-   "pp" 'counsel-projectile
-   "ps" 'counsel-projectile-switch-project))
+    "pb" 'counsel-projectile-switch-to-buffer
+    "pd" 'counsel-projectile-find-dir
+    "pf" 'counsel-projectile-find-file
+    "pp" 'counsel-projectile
+    "ps" 'counsel-projectile-switch-project))
 #+end_src
 
 *** [[https://github.com/purcell/whitespace-cleanup-mode][whitespace-cleanup-mode]]
@@ -1777,28 +1778,28 @@ Source: https://git.io/vQKuU"
 ** Bindings
 #+begin_src emacs-lisp
 (d/leader-keys
- "b*" 'd/switch-to-star
- "bC" 'd/switch-to-customize
- "bK" 'kill-buffer
- "bM" 'd/switch-to-messages
- "br" 'revert-buffer
- "bR" 'rename-buffer
- "bS" 'd/switch-to-scratch
- "bc" 'clone-indirect-buffer-other-window
- "be" 'd/safe-erase-buffer
- "bi" 'ibuffer
- "bk" 'kill-this-buffer
- "bm" 'kill-matching-buffers
- "bq" 'kill-buffer-and-window
- "bv" 'view-mode
+  "b*" 'd/switch-to-star
+  "bC" 'd/switch-to-customize
+  "bK" 'kill-buffer
+  "bM" 'd/switch-to-messages
+  "br" 'revert-buffer
+  "bR" 'rename-buffer
+  "bS" 'd/switch-to-scratch
+  "bc" 'clone-indirect-buffer-other-window
+  "be" 'd/safe-erase-buffer
+  "bi" 'ibuffer
+  "bk" 'kill-this-buffer
+  "bm" 'kill-matching-buffers
+  "bq" 'kill-buffer-and-window
+  "bv" 'view-mode
 
- "fc" 'd/copy-file
- "fs" 'save-buffer
+  "fc" 'd/copy-file
+  "fs" 'save-buffer
 
- "nf" 'narrow-to-defun
- "nn" 'd/narrow-dwim
- "np" 'narrow-to-page
- "nr" 'narrow-to-region)
+  "nf" 'narrow-to-defun
+  "nn" 'd/narrow-dwim
+  "np" 'narrow-to-page
+  "nr" 'narrow-to-region)
 #+end_src
 * Editing
 ** Defaults
@@ -2452,8 +2453,8 @@ Syntax highlighting for markdown files.
 *** text-mode
 #+begin_src emacs-lisp
 (d/mode-leader-keys
- :keymap 'text-mode-map
- "f" '(:def d/flyspell/body :wk "flyspell"))
+  :keymap 'text-mode-map
+  "f" '(:def d/flyspell/body :wk "flyspell"))
 #+end_src
 *** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
 #+begin_quote
@@ -2475,43 +2476,43 @@ Make indent-rigidly more vimmy.
 Leader keys
 #+begin_src emacs-lisp
 (d/leader-keys
- "n-"  'd/numbers/evil-numbers/dec-at-pt
- "n="  'd/numbers/evil-numbers/inc-at-pt
+  "n-"  'd/numbers/evil-numbers/dec-at-pt
+  "n="  'd/numbers/evil-numbers/inc-at-pt
 
- "x"   '(:ignore t :wk "text")
- "xa"  '(:ignore t :wk "align")
- "xa&" 'd/align-repeat-ampersand
- "xa'" 'd/align-repeat-single-quote
- "xa(" 'd/align-repeat-left-paren
- "xa)" 'd/align-repeat-right-paren
- "xa," 'd/align-repeat-comma
- "xa." 'd/align-repeat-decimal
- "xa:" 'd/align-repeat-colon
- "xa;" 'd/align-repeat-semicolon
- "xa=" 'd/align-repeat-equal
- "xaa" 'align
- "xac" 'align-current
- "xam" 'd/align-repeat-math-oper
- "xar" 'align-regexp
- "xar" 'd/align-repeat
- "xa|" 'd/align-repeat-bar
+  "x"   '(:ignore t :wk "text")
+  "xa"  '(:ignore t :wk "align")
+  "xa&" 'd/align-repeat-ampersand
+  "xa'" 'd/align-repeat-single-quote
+  "xa(" 'd/align-repeat-left-paren
+  "xa)" 'd/align-repeat-right-paren
+  "xa," 'd/align-repeat-comma
+  "xa." 'd/align-repeat-decimal
+  "xa:" 'd/align-repeat-colon
+  "xa;" 'd/align-repeat-semicolon
+  "xa=" 'd/align-repeat-equal
+  "xaa" 'align
+  "xac" 'align-current
+  "xam" 'd/align-repeat-math-oper
+  "xar" 'align-regexp
+  "xar" 'd/align-repeat
+  "xa|" 'd/align-repeat-bar
 
- "xib" 'indent-buffer
- "xii" 'indent-rigidly
- "xir" 'indent-region
- "xj"  '(:def d/justify/body :wk "justify")
- "xls" 'sort-lines
- "xt"  '(:def d/transpose/body :wk "transpose")
- "xc" 'count-words
+  "xib" 'indent-buffer
+  "xii" 'indent-rigidly
+  "xir" 'indent-region
+  "xj"  '(:def d/justify/body :wk "justify")
+  "xls" 'sort-lines
+  "xt"  '(:def d/transpose/body :wk "transpose")
+  "xc" 'count-words
 
- "xm"  '(:def d/multiedit/body :wk "multiedit")
+  "xm"  '(:def d/multiedit/body :wk "multiedit")
 
- "xp"  '(:def d/smartparens/body :wk "smartparens")
+  "xp"  '(:def d/smartparens/body :wk "smartparens")
 
- "xs"  'd/shorten-url-at-point
- "xe"  'd/expand-url-at-point
+  "xs"  'd/shorten-url-at-point
+  "xe"  'd/expand-url-at-point
 
- "im"  'insert-kbd-macro)
+  "im"  'insert-kbd-macro)
 #+end_src
 * Navigation
 ** Defaults
@@ -2649,10 +2650,10 @@ Quickly switch windows in Emacs
 (use-package ace-window
   :general
   (d/leader-keys
-   "\\" 'ace-window
-   "wD" 'ace-delete-window
-   "wS" 'ace-swap-window
-   "wa" 'ace-window)
+    "\\" 'ace-window
+    "wD" 'ace-delete-window
+    "wS" 'ace-swap-window
+    "wa" 'ace-window)
   :config
   (setq aw-keys (string-to-list "aoeuidhtns")))
 #+end_src
@@ -2664,9 +2665,9 @@ Jump to things in Emacs tree-style
 (use-package avy
   :general
   (d/leader-keys
-   "jc" 'avy-goto-char-2
-   "jl" 'avy-goto-line
-   "jw" 'avy-goto-word-1)
+    "jc" 'avy-goto-char-2
+    "jl" 'avy-goto-line
+    "jw" 'avy-goto-word-1)
   :config
   (setq avy-keys (string-to-list "aoeuidhtns")))
 #+end_src
@@ -2678,11 +2679,11 @@ an Emacs "jump to definition" package
 (use-package dumb-jump
   :general
   (d/leader-keys
-   "jE" 'dumb-jump-go-prefer-external-other-window
-   "jG" 'dumb-jump-go-other-window
-   "jb" 'dumb-jump-back
-   "je" 'dumb-jump-go-prefer-external
-   "jg" 'dumb-jump-go)
+    "jE" 'dumb-jump-go-prefer-external-other-window
+    "jG" 'dumb-jump-go-other-window
+    "jb" 'dumb-jump-back
+    "je" 'dumb-jump-go-prefer-external
+    "jg" 'dumb-jump-go)
   :config
   (setq dumb-jump-selector 'ivy
         dumb-jump-prefer-searcher 'rg))
@@ -2706,23 +2707,23 @@ A simple-minded way of managing window configs in emacs
    "<f8>" 'eyebrowse-switch-to-window-config-8
    "<f9>" 'eyebrowse-switch-to-window-config-9)
   (d/leader-keys
-   "e"  '(:ignore t :wk "eyebrowse")
-   "es" 'eyebrowse-switch-to-window-config
-   "el" 'eyebrowse-next-window-config
-   "eh" 'eyebrowse-prev-window-config
-   "er" 'eyebrowse-rename-window-config
-   "ec" 'eyebrowse-close-window-config
-   "e'" 'eyebrowse-last-window-config
-   "e0" 'eyebrowse-switch-to-window-config-0
-   "e1" 'eyebrowse-switch-to-window-config-1
-   "e2" 'eyebrowse-switch-to-window-config-2
-   "e3" 'eyebrowse-switch-to-window-config-3
-   "e4" 'eyebrowse-switch-to-window-config-4
-   "e5" 'eyebrowse-switch-to-window-config-5
-   "e6" 'eyebrowse-switch-to-window-config-6
-   "e7" 'eyebrowse-switch-to-window-config-7
-   "e8" 'eyebrowse-switch-to-window-config-8
-   "e9" 'eyebrowse-switch-to-window-config-9)
+    "e"  '(:ignore t :wk "eyebrowse")
+    "es" 'eyebrowse-switch-to-window-config
+    "el" 'eyebrowse-next-window-config
+    "eh" 'eyebrowse-prev-window-config
+    "er" 'eyebrowse-rename-window-config
+    "ec" 'eyebrowse-close-window-config
+    "e'" 'eyebrowse-last-window-config
+    "e0" 'eyebrowse-switch-to-window-config-0
+    "e1" 'eyebrowse-switch-to-window-config-1
+    "e2" 'eyebrowse-switch-to-window-config-2
+    "e3" 'eyebrowse-switch-to-window-config-3
+    "e4" 'eyebrowse-switch-to-window-config-4
+    "e5" 'eyebrowse-switch-to-window-config-5
+    "e6" 'eyebrowse-switch-to-window-config-6
+    "e7" 'eyebrowse-switch-to-window-config-7
+    "e8" 'eyebrowse-switch-to-window-config-8
+    "e9" 'eyebrowse-switch-to-window-config-9)
   :config
   (setq eyebrowse-wrap-around t
         eyebrowse-new-workspace t
@@ -2756,7 +2757,7 @@ Fixed and automatic balanced window layout for Emacs
 (use-package zoom-window
   :general
   (d/leader-keys
-   "wz" 'zoom-window-zoom)
+    "wz" 'zoom-window-zoom)
   :config
   (setq zoom-window-mode-line-color "#1D2021"))
 #+end_src
@@ -2774,19 +2775,19 @@ Fixed and automatic balanced window layout for Emacs
 ** Bindings
 #+begin_src emacs-lisp
 (d/leader-keys
- "jI" 'imenu-anywhere
- "jf" 'find-function-other-window
- "ji" 'imenu
- "jv" 'find-variable-other-window
- "jj" 'find-library-other-window
+  "jI" 'imenu-anywhere
+  "jf" 'find-function-other-window
+  "ji" 'imenu
+  "jv" 'find-variable-other-window
+  "jj" 'find-library-other-window
 
- "wd" 'delete-window
- "wf" 'make-frame
- "wh" 'd/split-horz-focus
- "wo" 'delete-other-windows
- "ws" 'd/splitter/body
- "wt" 'd/toggle-window-split
- "wv" 'd/split-vert-focus)
+  "wd" 'delete-window
+  "wf" 'make-frame
+  "wh" 'd/split-horz-focus
+  "wo" 'delete-other-windows
+  "ws" 'd/splitter/body
+  "wt" 'd/toggle-window-split
+  "wv" 'd/split-vert-focus)
 #+end_src
 * Appearance
 ** Defaults
@@ -2976,7 +2977,7 @@ ANSI & xterm-256 color text property translator for Emacs
 ** Bindings
 #+begin_src emacs-lisp
 (d/leader-keys
- "z" '(:def d/zoom/body :wk "zoom"))
+  "z" '(:def d/zoom/body :wk "zoom"))
 #+end_src
 ** Mode line
 *** Helpers
@@ -3246,8 +3247,8 @@ On the fly syntax checking for GNU Emacs
 *** Bindings
 #+begin_src emacs-lisp
 (d/mode-leader-keys
- :keymaps 'prog-mode-map
- "f" '(:def d/flycheck/body :wk "flycheck"))
+  :keymaps 'prog-mode-map
+  "f" '(:def d/flycheck/body :wk "flycheck"))
 #+end_src
 *** Setup
 #+begin_src emacs-lisp
@@ -3458,8 +3459,8 @@ interactive macro-expander
 (use-package macrostep
   :general
   (d/mode-leader-keys
-   :keymaps 'emacs-lisp-mode-map
-   "m" 'macrostep-expand))
+    :keymaps 'emacs-lisp-mode-map
+    "m" 'macrostep-expand))
 #+end_src
 **** Variables
 #+begin_src emacs-lisp
@@ -3609,15 +3610,15 @@ Source: https://git.io/vQKz8"
 **** Bindings
 #+begin_src emacs-lisp
 (d/mode-leader-keys
- :keymaps 'emacs-lisp-mode-map
- "eb" 'd/eval-buffer
- "ef" 'eval-defun
- "er" 'eval-region
- "eR" 'd/eval-and-replace
- "es" 'd/eval-surrounding-sexp
- "el" 'eval-last-sexp
- "pm" 'd/pp-macroexpand-surrounding-sexp
- "ps" 'd/pp-eval-surrounding-sexp)
+  :keymaps 'emacs-lisp-mode-map
+  "eb" 'd/eval-buffer
+  "ef" 'eval-defun
+  "er" 'eval-region
+  "eR" 'd/eval-and-replace
+  "es" 'd/eval-surrounding-sexp
+  "el" 'eval-last-sexp
+  "pm" 'd/pp-macroexpand-surrounding-sexp
+  "ps" 'd/pp-eval-surrounding-sexp)
  #+end_src
 **** Setup
 #+begin_src emacs-lisp
@@ -3704,12 +3705,12 @@ Source: http://tinyurl.com/le6wxuo"
 **** Bindings
 #+begin_src emacs-lisp
 (d/mode-leader-keys
- :keymaps 'scheme-mode-map
- "eb" 'geiser-eval-buffer
- "ef" 'geiser-eval-definition
- "er" 'geiser-eval-region
- "el" 'geiser-eval-last-sexp
- "es" 'd/geiser-eval-surrounding-sexp)
+  :keymaps 'scheme-mode-map
+  "eb" 'geiser-eval-buffer
+  "ef" 'geiser-eval-definition
+  "er" 'geiser-eval-region
+  "el" 'geiser-eval-last-sexp
+  "es" 'd/geiser-eval-surrounding-sexp)
 #+end_src
 **** Setup
 #+begin_src emacs-lisp
@@ -4020,17 +4021,17 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
 (use-package magit
   :general
   (d/leader-keys
-   "g"  '(:ignore t :wk "magit")
-   "gB" 'd/magit-blame-toggle
-   "gC" 'magit-clone
-   "gL" 'magit-log-buffer-file
-   "ga" 'magit-submodule-add
-   "gb" 'magit-branch
-   "gc" 'magit-checkout
-   "gf" 'magit-find-file
-   "gl" 'magit-log-all
-   "gs" 'magit-status
-   "gp" 'magit-file-popup)
+    "g"  '(:ignore t :wk "magit")
+    "gB" 'd/magit-blame-toggle
+    "gC" 'magit-clone
+    "gL" 'magit-log-buffer-file
+    "ga" 'magit-submodule-add
+    "gb" 'magit-branch
+    "gc" 'magit-checkout
+    "gf" 'magit-find-file
+    "gl" 'magit-log-all
+    "gs" 'magit-status
+    "gp" 'magit-file-popup)
   :config
   (setq magit-diff-refine-hunk t
         auto-revert-check-vc-info t
@@ -4077,7 +4078,7 @@ heard (and can confirm).
   :straight nil
   :general
   (d/leader-keys
-   "ac" 'calc-dispatch)
+    "ac" 'calc-dispatch)
   (emap calc-mode-map
     "x" (lambda () (interactive) (counsel-M-x "^calc-")))
   :init
@@ -4104,7 +4105,7 @@ A shell written in emacs-lisp that has recently been replacing zsh for me.
   :straight nil
   :general
   (d/leader-keys
-   "RET" 'd/eshell-here)
+    "RET" 'd/eshell-here)
   :custom
   (eshell-preoutput-filter-functions '(xterm-color-filter))
   (eshell-term-name "eterm-256color")
@@ -4339,10 +4340,10 @@ A Collection of Ridiculously Useful eXtensions for Emacs
 (use-package crux
   :general
   (d/leader-keys
-   "TAB" 'crux-switch-to-previous-buffer
-   "fd" 'crux-delete-file-and-buffer
-   "fr" 'crux-rename-file-and-buffer
-   "bs" 'crux-sudo-edit)
+    "TAB" 'crux-switch-to-previous-buffer
+    "fd" 'crux-delete-file-and-buffer
+    "fr" 'crux-rename-file-and-buffer
+    "bs" 'crux-sudo-edit)
   :config
   (crux-with-region-or-line eval-region)
   (crux-with-region-or-buffer indent-region)
@@ -4391,7 +4392,7 @@ Emacs package that displays available keybindings in popup
   :defer 20
   :general
   (d/leader-keys
-   "hk" 'which-key-show-top-level)
+    "hk" 'which-key-show-top-level)
   :config
   (which-key-mode)
 
@@ -4578,7 +4579,7 @@ of external players.
   :commands emms-smart-browse
   :general
   (d/leader-keys
-   "m" 'emms/body)
+    "m" 'emms/body)
   :custom
   (emms-show-format "%s")
   :config
@@ -4715,10 +4716,10 @@ Source: http://tinyurl.com/lo96nwc"
 ** Bindings
 #+begin_src emacs-lisp
 (d/leader-keys
- "ag"  '(:ignore t :wk "games")
- "agd" 'dunnet
- "agg" 'gomoku
- "agt" 'tetris)
+  "ag"  '(:ignore t :wk "games")
+  "agd" 'dunnet
+  "agg" 'gomoku
+  "agt" 'tetris)
 #+end_src
 * Web services
 ** Built-in
@@ -4788,10 +4789,10 @@ An Emacs Internet Relay Chat client
           (interactive)
           (evil-goto-line) (erc-scroll-to-bottom)))
   (d/mode-leader-keys
-   :keymaps 'erc-mode-map
-   "g" 'd/erc-switch-to-buffer)
+    :keymaps 'erc-mode-map
+    "g" 'd/erc-switch-to-buffer)
   (d/leader-keys
-   "ai" 'd/erc)
+    "ai" 'd/erc)
   (imap erc-mode-map
     [up] 'erc-previous-command
     [down] 'erc-next-command)
@@ -5077,8 +5078,8 @@ An Emacs package for displaying the forecast from OpenWeatherMap.
 (use-package sunshine
   :general
   (d/leader-keys
-   "aW" 'sunshine-quick-forecast
-   "aw" 'sunshine-forecast)
+    "aW" 'sunshine-quick-forecast
+    "aw" 'sunshine-forecast)
   :config
   (setq sunshine-location "02139,USA"
         sunshine-appid (password-store-get "api/openweathermap")))
