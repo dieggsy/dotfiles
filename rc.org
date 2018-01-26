@@ -152,7 +152,10 @@ bspc rule -a Zathura state=tiled
               (with-output-to-file (create-temporary-file)
                 (lambda ()
                   (display "YES")))
-              (display ("state=floating sticky=on"))))))
+              (display ("state=floating sticky=on")))))
+      ((equal? instance "termite")
+       (when (equal? title "htop")
+         (display "state=floating"))))
 #+end_src
 *** sxhkdrc
 :PROPERTIES:
