@@ -112,7 +112,6 @@ bspc rule -a Chromium desktop='^2'
 bspc rule -a mplayer2 state=floating
 bspc rule -a Kupfer.py focus=on
 bspc rule -a Screenkey manage=off
-bspc rule -a .emacs-wrapped state=tiled desktop='^2'
 bspc rurle -a FirefoxNightly desktop='^1'
 bspc rule -a Pavucontrol state=floating
 bspc rule -a D-feet state=floating
@@ -133,11 +132,7 @@ bspc rule -a Zathura state=tiled
 (define instance (caddr args))
 (define title (string-chomp (run/string (xtitle ,wid))))
 
-(with-output-to-file (create-temporary-file)
-  (lambda ()
-    (display title)))
-
-(cond ((equal? instance "-emacs-wrapped")
+(cond ((substring-index "emacs" instance)
        (cond ((equal? title "*eshell: floating*")
               (with-output-to-file "/tmp/esh-float"
                 (lambda () (display wid) (newline)))
@@ -148,11 +143,8 @@ bspc rule -a Zathura state=tiled
                 (lambda () (display wid) (newline)))
               (display "state=floating hidden=on sticky=on")
               (run (wmctrl -i -r ,wid -e "0,120,877,1085,603")))
-             ((equal? title "*Minibuf-0*")
-              (with-output-to-file (create-temporary-file)
-                (lambda ()
-                  (display "YES")))
-              (display ("state=floating sticky=on")))))
+             (else (display "state=tiled desktop=^2"))
+             ))
       ((equal? instance "termite")
        (when (equal? title "htop")
          (display "state=floating"))))
