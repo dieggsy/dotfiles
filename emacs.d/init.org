@@ -287,7 +287,7 @@ Use tab for completion and cycling candidates (relevant for the minibuffer?).
 #+end_src
 *** Time Display
 #+begin_src emacs-lisp
-(with-eval-after-load 'time
+(d/with-eval-after-load 'time
   (setq  display-time-24hr-format t
          display-time-default-load-average nil
          display-time-format "%Y-%d-%m %H:%M "
@@ -295,7 +295,7 @@ Use tab for completion and cycling candidates (relevant for the minibuffer?).
 #+end_src
 *** Battery
 #+begin_src emacs-lisp
-(with-eval-after-load 'battery
+(d/with-eval-after-load 'battery
   (setq battery-mode-line-format "%p"
         battery-mode-line-limit 100.7)
 
@@ -382,9 +382,6 @@ That undersells it. The /most/ convenient key definitions in emacs.
   :demand t
   :config
   (general-evil-setup t)
-
-  (dolist (func '(imap emap iemap nmap vmap nvmap omap mmap rmap otomap itomap tomap))
-    (put (intern (concat "general-" (symbol-name func))) 'lisp-indent-function 'defun))
 
   (general-override-mode)
 
@@ -485,9 +482,7 @@ I went for it. Now I'll never go back.
   :demand t
   :hook (org-mode . embrace-org-mode-hook)
   :config
-  (evil-embrace-enable-evil-surround-integration)
-  (d/with-eval-after-load 'exwm
-    (setq evil-embrace-show-help-p nil)))
+  (evil-embrace-enable-evil-surround-integration))
 #+end_src
 ***** [[https://github.com/emacs-evil/evil-ediff][evil-ediff]]
 #+begin_quote
@@ -694,9 +689,9 @@ This function is intended for use with `ivy-ignore-buffers'."
     (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind))
 
   (setq conusel-org-goto-display-style 'path
-        counsel-org-goto-separator ": "
+        counsel-org-headline-path-separator ": "
         counsel-org-goto-face-style 'org
-        counsel-org-goto-display-todo t
+        counsel-org-headline-display-todo t
         counsel-grep-base-command "rg -i -M 120 --no-heading --line-number --color never %s %s"
         counsel-yank-pop-separator "\n─────────────────────────\n"
         counsel-find-file-ignore-regexp (rx (or (group string-start (char ".#"))
@@ -747,7 +742,7 @@ But really, it's life.
   :custom
   (org-list-allow-alphabetical t)
   :config
-  (with-eval-after-load 'ox
+  (d/with-eval-after-load 'ox
     (require 'ox-extra)
     (ox-extras-activate '(ignore-headlines)))
   (d/with-eval-after-load 'org-crypt
@@ -1285,7 +1280,7 @@ Display the definition of word at point in Emacs
   (defun d/define-word (&optional word)
     (interactive)
     (if word
-        (define-word word)
+        (define-word word define-word-default-service)
       (let ((word (read-string
                    (concat "Define word ["
                            (if (region-active-p)
@@ -1487,7 +1482,7 @@ directory-browsing commands
     "n" 'evil-ex-search-next
     "N" 'evil-ex-search-previous)
 
-  (with-eval-after-load 'dired-async
+  (d/with-eval-after-load 'dired-async
     (dired-async-mode 1))
 
   (defun d/dired-quit ()
@@ -3355,14 +3350,6 @@ Yapf for Emacs
     ("^" . "⊻")
     ("**" . "^")))
 #+end_src
-**** Functions
-#+begin_src emacs-lisp
-(defun d/ipython-shell ()
-  "Open an ipython shell using multi-term, respecting virtualenv."
-  (interactive)
-  (let ((sane-term-shell-command "ipython"))
-    (sane-term-create)))
-#+end_src
 **** Setup
 #+begin_src emacs-lisp
 (d/setup-hook python-mode
@@ -3629,7 +3616,7 @@ Source: https://git.io/vQKz8"
 #+begin_src emacs-lisp
 (d/setup-hook (lisp-mode emacs-lisp-mode)
   (hs-minor-mode)
-  (with-eval-after-load 'evil-surround
+  (d/with-eval-after-load 'evil-surround
     (push '(? . ("`" . "'")) evil-surround-pairs-alist))
   (setq-local lisp-indent-function #'d/lisp-indent-function)
   (setq-local prettify-symbols-alist d/lisp-prettify-alist))
@@ -3740,7 +3727,7 @@ An Emacs major mode for editing Nix expressions.
 
   (defmacro d/nix-update-helper (search get-url)
     `(save-excursion
-       (beginning-of-buffer)
+       (goto-char (point-min))
        (d/let lop ((bound
                     (re-search-forward
                      (rx "=" (opt " ") ,search (opt " ") "{"
@@ -4721,8 +4708,6 @@ Source: http://tinyurl.com/lo96nwc"
   ("z" emms-previous)
   ("s" emms-shuffle)
   ("q" nil))
-
-
 #+end_src
 ** Bindings
 #+begin_src emacs-lisp
@@ -5053,32 +5038,6 @@ Configure the Elfeed RSS reader with an Orgmode file
 (use-package elfeed
   :general
   (d/leader-keys "ae" 'elfeed)
-  ;; (nmap elfeed-search-mode-map
-  ;;   "RET" 'elfeed-search-show-entry
-  ;;   "+" 'elfeed-search-tag-all
-  ;;   "-" 'elfeed-search-untag-all
-  ;;   "G" 'elfeed-search-fetch
-  ;;   "S" 'elfeed-search-set-filter
-  ;;   "b" 'elfeed-search-browse-url
-  ;;   "g" 'elfeed-search-update--force
-  ;;   "q" 'quit-window
-  ;;   "r" 'elfeed-search-untag-all-unread
-  ;;   "s" 'elfeed-search-live-filter
-  ;;   "u" 'elfeed-search-tag-all-unread
-  ;;   "y" 'elfeed-search-yank
-  ;;   "U" 'elfeed-update)
-  ;; (nmap elfeed-show-mode-map
-  ;;   "+" 'elfeed-show-tag
-  ;;   "-" 'elfeed-show-untag
-  ;;   "P" 'elfeed-show-play-enclosure
-  ;;   "b" 'elfeed-show-visit
-  ;;   "d" 'elfeed-show-save-enclosure
-  ;;   "g" 'elfeed-show-refresh
-  ;;   "l" 'elfeed-goodies/split-show-next
-  ;;   "h" 'elfeed-goodies/split-show-prev
-  ;;   "q" 'elfeed-kill-buffer
-  ;;   "s" 'elfeed-show-new-live-search
-  ;;   "y" 'elfeed-show-yank)
   :config
   (add-hook 'elfeed-search-mode-hook (lambda () (evil-smartparens-mode -1))))
 #+end_src
