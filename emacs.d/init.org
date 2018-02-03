@@ -4815,7 +4815,9 @@ An Emacs Internet Relay Chat client
      match))
   :config
   (add-hook 'window-configuration-change-hook #'d/erc-to-bottom)
-  (add-hook 'erc-insert-post-hook #'erc-save-buffer-in-logs))
+  (add-hook 'erc-insert-post-hook #'erc-save-buffer-in-logs)
+  (add-hook 'erc-send-pre-hook 'd/erc-preprocess))
+
 #+end_src
 **** Variables
 #+begin_src emacs-lisp
@@ -4999,7 +5001,12 @@ Source: http://tinyurl.com/y8tj8vxx"
   (defun d/gitter ()
     (interactive)
     (let ((erc-server-connect-function 'erc-open-tls-stream))
-      (erc :server "irc.gitter.im"))))
+      (erc :server "irc.gitter.im")))
+
+  (defun d/erc-preprocess (string)
+    (setq str
+          (string-trim
+           (replace-regexp-in-string "\n+" " " str)))))
 #+end_src
 **** Setup
 #+begin_src emacs-lisp
