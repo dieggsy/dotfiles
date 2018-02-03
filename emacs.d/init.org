@@ -5053,7 +5053,7 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+begin_quote
 Configure the Elfeed RSS reader with an Orgmode file
 #+end_quote
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package elfeed-org
   :after elfeed
   :demand t
