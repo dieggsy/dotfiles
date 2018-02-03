@@ -846,7 +846,7 @@ But really, it's life.
         org-fontify-quote-and-verse-blocks t
         org-hide-emphasis-markers nil
         org-startup-with-inline-images t
-        org-ellipsis " "
+        org-ellipsis " […]"
         org-highlight-latex-and-related '(latex)
         org-pretty-entities nil
         org-hide-leading-stars t
@@ -3146,7 +3146,7 @@ Source: https://git.io/vQKzq"
      (d/with-window-status
        (when vc-mode
          (propertize-active
-          (concat (replace-regexp-in-string "^ Git." " " vc-mode) "  ")
+          (concat (replace-regexp-in-string "^ Git." "" vc-mode) "  ")
           'face '(:foreground "#FE8019" )))))
     ;; Flycheck
     (:eval
@@ -4726,7 +4726,7 @@ An Emacs Internet Relay Chat client
 **** Defaults
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'erc
-  (setq erc-prompt (format "\n%s❱❱" (make-string 11 ?\s))
+  (setq erc-prompt (format "\n%s>>" (make-string 11 ?\s))
         erc-fill-prefix (format "%s\t" (make-string 10 ?\s))
         erc-notice-prefix   (format "%s\t***\s" (make-string 10 ?\s))
         erc-format-nick-function 'd/erc-format-nick
@@ -4835,7 +4835,7 @@ An Emacs Internet Relay Chat client
 NICK will be truncated if it is longer than 10 chars and '…' will
 be appended to the end. Nick is propertized using either
 `erc-current-nick-face' or `erc-hl-nicks-make-face'. If NICK is
-the last speaker in the channel, '↳' will be displayed instead.
+the last speaker in the channel, '→' will be displayed instead.
 This also updates lurker information and adds buttons (which I
 think is necessary since we 're so heavily messing with ERC
 internals).
@@ -4875,7 +4875,7 @@ Basically, this kind of makes ERC act like weechat."
                         (propertize mode 'face 'erc-nick-prefix-face
                                     'mouse-face 'font-lock-keyword-face))
                       (propertize
-                       (if nick-was-last "↳" nick)
+                       (if nick-was-last "→" nick)
                        'face
                        (cond ((string= nick (erc-current-nick))
                               'erc-current-nick-face)
