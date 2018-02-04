@@ -4283,7 +4283,12 @@ directory to make multiple eshell windows easier."
           (with-current-buffer (eshell 'new)
             (setq mode-line-format nil)
             (rename-buffer buf-name)))
-        (when (not (string= (buffer-name) buf-name))
+        (when (not
+               (member buf-name
+                       (mapcar
+                        (lambda (window)
+                          (buffer-name (window-buffer window)))
+                        (window-list))))
           (switch-to-buffer buf-name))))))
 #+end_src
 ** [[https://github.com/politza/pdf-tools][pdf-tools]]
