@@ -223,15 +223,6 @@ package should fix them nicely.
   (setq exec-path-from-shell-check-startup-files nil)
   (exec-path-from-shell-initialize))
 #+end_src
-*** [[https://github.com/Ilazki/prettify-utils.el][prettify-utils]]
-#+begin_quote
-Helper functions for emacs' prettify-symbols-mode
-#+end_quote
-#+begin_src emacs-lisp
-(use-package prettify-utils
-  :straight (:host github
-             :repo "Ilazki/prettify-utils.el"))
-#+end_src
 *** [[https://github.com/abo-abo/hydra][hydra]]
 #+begin_quote
 make Emacs bindings that stick around
@@ -864,17 +855,6 @@ But really, it's life.
   (add-to-list 'org-latex-packages-alist '("" "color"))
   (add-to-list 'org-latex-packages-alist '("" "tabularx")))
 #+end_src
-**** Variables
-#+begin_src emacs-lisp
-(defvar d/org-prettify-alist
-  (prettify-utils-generate
-   ("TODO" "❯❯❯")
-   ("READ" "❙❙❙")
-   ("IN-PROGRESS" "○○○")
-   ("WAITING" "￭￭￭")
-   ("CANCELED" "✗✗✗")
-   ("DONE" "✓✓✓")))
-#+end_src
 **** Functions
 #+begin_src emacs-lisp
 (d/with-eval-after-load 'org
@@ -1128,9 +1108,6 @@ Source: https://git.io/vQKEa"
 
 (d/with-eval-after-load 'org-agenda
   (setq org-habit-graph-column 50))
-
-(d/setup-hook org-agenda-mode
-  (setq-local prettify-symbols-alist d/org-prettify-alist))
 #+end_src
 ***** Capture
 #+begin_src emacs-lisp
@@ -1149,9 +1126,6 @@ Source: https://git.io/vQKEa"
          (d/org-insert-list-item-or-self ,char))))
 
   (setq org-bullets-bullet-list '("•")))
-
-(d/setup-hook org-mode
-  (setq-local prettify-symbols-alist d/org-prettify-alist))
 #+end_src
 **** Export backends
 ***** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
@@ -3361,8 +3335,7 @@ Yapf for Emacs
   (set (make-local-variable 'comment-inline-offset) 2)
   (require 'company)
   (add-to-list 'company-backends
-               (company-mode/backend-with-yas 'company-anaconda))
-  (setq-local prettify-symbols-alist d/python-prettify-alist))
+               (company-mode/backend-with-yas 'company-anaconda)))
 #+end_src
 *** Hy
 #+begin_src emacs-lisp
@@ -3458,25 +3431,6 @@ interactive macro-expander
   (d/mode-leader-keys
     :keymaps 'emacs-lisp-mode-map
     "m" 'macrostep-expand))
-#+end_src
-**** Variables
-#+begin_src emacs-lisp
-(defvar d/lisp-prettify-alist
-  (prettify-utils-generate
-   ("<=" "≤")
-   (">=" "≥")
-   ("/=" "≠")
-   ("eq" "≡")
-   ("equal" "≣")
-   ("sqrt" "√")
-   ("float-pi" "π")
-   ("lambda" "λ")
-   ("and" "⋏")
-   ("or" "⋎")
-   ("defun" "ƒ")
-   ("defmacro" "ƒₘ")
-   ("not" "¬")
-   ("nil" "∅")))
 #+end_src
 **** Functions
 #+begin_src emacs-lisp
@@ -3623,8 +3577,7 @@ Source: https://git.io/vQKz8"
   (hs-minor-mode)
   (d/with-eval-after-load 'evil-surround
     (push '(? . ("`" . "'")) evil-surround-pairs-alist))
-  (setq-local lisp-indent-function #'d/lisp-indent-function)
-  (setq-local prettify-symbols-alist d/lisp-prettify-alist))
+  (setq-local lisp-indent-function #'d/lisp-indent-function))
 #+end_src
 *** Haskell
 **** Packages
@@ -3648,11 +3601,6 @@ Source: https://git.io/vQKz8"
     ("not" . "¬")
     ("lambda" . "λ")))
 #+end_src
-**** Setup
-#+begin_src emacs-lisp
-(d/setup-hook haskell-mode
-  (setq-local prettify-symbols-alist d/haskell-prettify-alist))
-#+end_src
 *** Scheme
 **** Packages
 ***** [[https://github.com/jaor/geiser][geiser]]
@@ -3668,25 +3616,6 @@ emacs and scheme talk to each other
   (setq geiser-active-implementations '(chicken)
         geiser-debug-jump-to-debug-p nil
         geiser-debug-show-debug-p nil))
-#+end_src
-**** Variables
-#+begin_src emacs-lisp
-(defvar d/scheme-prettify-alist
-  (prettify-utils-generate
-   ("<=" "≤")
-   (">=" "≥")
-   ("/=" "≠")
-   ("eqv?" "≡")
-   ("equal?" "≣")
-   ("sqrt" "√")
-   ("float-pi" "π")
-   ("lambda" "λ")
-   ("and" "⋏")
-   ("or" "⋎")
-   ("define" "ƒ")
-   ("define-syntax" "ƒₛ")
-   ("not" "¬")
-   ("->" "→")))
 #+end_src
 **** Functions
 #+begin_src emacs-lisp
@@ -3714,8 +3643,7 @@ Source: http://tinyurl.com/le6wxuo"
 (d/setup-hook scheme-mode
   (hs-minor-mode)
   (d/with-eval-after-load 'evil-surround
-    (push '(? . ("`" . "'")) evil-surround-pairs-alist))
-  (setq-local prettify-symbols-alist d/scheme-prettify-alist))
+    (push '(? . ("`" . "'")) evil-surround-pairs-alist)))
 
 (font-lock-add-keywords 'scheme-mode '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)) t)
 (font-lock-add-keywords 'geiser-repl-mode '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)) t)
