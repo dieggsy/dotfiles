@@ -567,6 +567,10 @@ Increment and decrement numbers in Emacs
 #+begin_src emacs-lisp
 (use-package evil-org
   :hook (org-mode . evil-org-mode)
+  :general
+  (nvmap evil-org-mode-map
+    "TAB" 'org-cycle
+    "S-TAB" 'org-cycle)
   :config
   (evil-org-set-key-theme)
   (require 'evil-org-agenda)
@@ -825,16 +829,17 @@ But really, it's life.
                                                   "find-library-other-window")
                                               (minimal-match (0+ nonl))
                                               ")"))
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((python . t)
-     (emacs-lisp . t)
-     (calc . t)
-     ;; (ipython . t)
-     (shell . t)
-     (lisp . t)
-     (C . t)
-     (scheme . t))))
+  (define-advice org-babel-execute-src-block (:before (&rest _) d/load-lang)
+    "Load src language."
+    (let ((language (intern
+                     (org-element-property :language (org-element-at-point)))))
+      (when (eq language 'sh)
+        (setq language 'shell))
+      (unless (alist-get language org-babel-load-languages)
+        (add-to-list 'org-babel-load-languages (cons language t))
+        (org-babel-do-load-languages
+         'org-babel-load-languages
+         org-babel-load-languages)))))
 #+end_src
 ***** Appearance
 #+begin_src emacs-lisp
