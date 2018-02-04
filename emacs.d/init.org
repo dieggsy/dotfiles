@@ -5050,6 +5050,12 @@ Nickname Highlighting for ERC
         erc-lurker-ignore-chars erc-hl-nicks-ignore-chars)
   (push "erc-current-nick-face" erc-hl-nicks-skip-faces))
 #+end_src
+*** [[https://github.com/kidd/erc-image.el][erc-image]]
+#+begin_src emacs-lisp
+(use-package erc-image
+  :config
+  (setq erc-image-inline-rescale 300))
+#+end_src
 *** [[https://github.com/skeeto/elfeed][elfeed]]
 #+begin_quote
 An Emacs web feeds client
