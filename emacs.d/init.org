@@ -3897,7 +3897,12 @@ Source: https://git.io/vQKub"
              ("file_name" . ,file-name)
              ("content" . ,content)
              ("visibility" . ,visibility))
-     :headers `(("PRIVATE-TOKEN" . ,token)))))
+     :success (cl-function (lambda (&key data &allow-other-keys)
+                             (let ((url (gethash "web_url" data)))
+                               (kill-new url)
+                               (message "Added %S to kill ring" url))))
+     :headers `(("PRIVATE-TOKEN" . ,token))
+     :parser 'json-parse-buffer)))
 #+end_src
 *** Packages
 **** [[https://github.com/defunkt/gist.el][gist]]
