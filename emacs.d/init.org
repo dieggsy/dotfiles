@@ -3465,7 +3465,7 @@ Source: http://tinyurl.com/mh5ev6x"
           (org-edit-special)
           (eval-defun nil)
           (org-edit-src-exit)))
-    (eval-defun)))
+    (eval-defun (when current-prefix-arg 'edebug))))
 
 (defmacro d/let (&rest clause)
   (declare (indent defun))
