@@ -434,7 +434,7 @@ wintypes :
         # acpi
         # cava
         # detox
-        emacs-master
+        # emacs-master
         # exa
         font-awesome-ttf
         # ghq
