@@ -1060,6 +1060,7 @@ set -U fish_cursor_replace_one underscore
 <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
 <fontconfig>
   <dir>~/.nix-profile/share/fonts</dir>
+  <dir>~/.guix-profile/share/fonts</dir>
   <alias>
     <family>Iosevka Term</family>
     <default>
