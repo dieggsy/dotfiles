@@ -2798,12 +2798,6 @@ Set the font to Iosevka Term, if available.
   (add-to-list 'default-frame-alist '(font . "Iosevka Term-9.5:weight=book"))
   (set-face-attribute 'default t :font "Iosevka Term-9.5:weight=book"))
 #+end_src
-And use [[http://fontawesome.io/][Font Awesome]] for the unicode glyphs it supports.
-#+begin_src emacs-lisp
-(set-fontset-font t '(#x0021B0 . #x002BA7) "DejaVu Sans Mono" nil 'prepend)
-(when (and window-system (x-list-fonts "FontAwesome"))
-  (set-fontset-font t 'unicode "FontAwesome" nil 'prepend))
-#+end_src
 *** Minibuffer
 Use a bar cursor in the minibuffer.
 #+begin_src emacs-lisp
