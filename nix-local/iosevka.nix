@@ -16,7 +16,8 @@ stdenv.mkDerivation rec {
   buildPhase = ''
     HOME=. npm install
     # make custom-config set=term design='term v-asterisk-low' italic='v-i-serifed v-l-serifed v-a-doublestorey v-g-doublestorey'
-    make custom-config set=term design='term v-asterisk-low v-l-zshaped v-i-zshaped v-a-singlestorey v-g-singlestorey v-m-shortleg' italic='v-l-zshaped v-i-zshaped v-a-singlestorey v-g-singlestorey v-m-shortleg'
+    # make custom-config set=term design='term v-asterisk-low v-l-zshaped v-i-zshaped v-a-singlestorey v-g-singlestorey v-m-shortleg' italic='v-l-zshaped v-i-zshaped v-a-singlestorey v-g-singlestorey v-m-shortleg'
+    make custom-config set=term design='term v-asterisk-low v-l-zshaped v-i-zshaped v-a-doublestorey v-g-doublestorey v-m-shortleg' italic='v-l-zshaped v-i-zshaped v-a-doublestorey v-g-doublestorey v-m-shortleg'
     make custom set=term
   '';
 
