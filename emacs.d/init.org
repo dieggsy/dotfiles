@@ -3606,7 +3606,8 @@ emacs and scheme talk to each other
   :config
   (setq geiser-active-implementations '(chicken)
         geiser-debug-jump-to-debug-p nil
-        geiser-debug-show-debug-p nil))
+        geiser-debug-show-debug-p nil
+        geiser-chicken-load-init-file-p t))
 #+end_src
 **** Functions
 #+begin_src emacs-lisp
