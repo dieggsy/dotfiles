@@ -1969,6 +1969,9 @@ source ~/.nix-profile/etc/profile.d/nix.sh
 [ -d $HOME/bin ] && export PATH=$HOME/bin:$PATH
 [ -d $HOME/.evm/bin ] && export PATH=$HOME/.evm/bin:$PATH
 
+[ -d $HOME/.guix-profile/lib/locale/ ] && export GUIX_LOCPATH=$HOME/.guix-profile/lib/locale
+
+[ -d $HOME/dotfiles/guix/ ] && export GUIX_PACKAGE_PATH="$HOME/dotfiles/guix/packages"
 export XDG_DATA_DIRS="$HOME/.local/share:$HOME/.nix-profile/share:/usr/local/share:/usr/share"
 export CHICKEN_REPOSITORY=~/.local/lib/chicken/8
 
