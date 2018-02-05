@@ -1097,15 +1097,6 @@ Source: https://git.io/vQKEa"
 **** Setup
 ***** Agenda
 #+begin_src emacs-lisp
-(general-def org-agenda-mode-map
-  "j" 'org-agenda-next-line
-  "k" 'org-agenda-previous-line
-  "n" 'org-agenda-next-date-line
-  "p" 'org-agenda-previous-date-line
-  "c" 'org-agenda-capture
-  "R" 'org-revert-all-org-buffers
-  "RET" 'org-agenda-switch-to)
-
 (d/with-eval-after-load 'org-agenda
   (setq org-habit-graph-column 50))
 #+end_src
