@@ -4984,9 +4984,7 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+begin_src emacs-lisp
 (use-package elfeed
   :general
-  (d/leader-keys "ae" 'elfeed)
-  :config
-  (add-hook 'elfeed-search-mode-hook (lambda () (evil-smartparens-mode -1))))
+  (d/leader-keys "ae" 'elfeed))
 #+end_src
 **** Enhancements
 ***** [[https://github.com/remyhonig/elfeed-org][elfeed-org]]
