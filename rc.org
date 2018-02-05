@@ -1961,7 +1961,11 @@ margin-bottom = 5
 :header-args+: :tangle ~/.profile
 :END:
 #+begin_src sh
-source ~/.nix-profile/etc/profile.d/nix.sh
+[ -d $HOME/.nix-profile ] && source ~/.nix-profile/etc/profile.d/nix.sh
+if [ -d $HOME/.guix-profile ]; then
+    export PATH=$HOME/.guix-profile/bin:$PATH
+    export INFOPATH=$HOME/.guix-profile/share/info:$INFOPATH
+fi
 
 [ -d $HOME/.local/bin ] && export PATH=$HOME/.local/bin:$PATH
 [ -d $HOME/.pyenv/bin ] && export PATH=$HOME/.pyenv/bin:$PATH
