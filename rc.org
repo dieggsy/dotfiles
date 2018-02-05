@@ -34,6 +34,7 @@ more readable in org format than in rendered markdown.
   - [[#erc-rofi][erc-rofi]]
   - [[#eshell-focus][eshell-focus]]
   - [[#exwm-blocks][exwm-blocks]]
+  - [[#guix][guix]]
   - [[#i3-exit-rofi][i3-exit-rofi]]
   - [[#i3blocks][i3blocks]]
   - [[#i3exit][i3exit]]
@@ -2404,6 +2405,18 @@ elif [ "$Vol" -ge "50" ];then
 else
     echo -ne " $Vol"
 fi
+#+end_src
+** guix
+:PROPERTIES:
+:header-args+: :tangle ~/bin/guix :shebang "#!/usr/bin/sh"
+:END:
+#+begin_src sh
+export SSL_CERT_DIR="$HOME/.guix-profile/etc/ssl/certs"
+export SSL_CERT_FILE="$HOME/.guix-profile/etc/ssl/certs/ca-certificates.crt"
+export GIT_SSL_CAINFO="$SSL_CERT_FILE"
+
+
+/usr/local/bin/guix $*
 #+end_src
 ** i3-exit-rofi
 :PROPERTIES:
