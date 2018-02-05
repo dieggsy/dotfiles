@@ -552,7 +552,16 @@ Increment and decrement numbers in Emacs
   :straight (:host github
              :repo "dieggsy/evil-numbers"
              :upstream (:host github
-                        :repo "cofi/evil-numbers")))
+                        :repo "cofi/evil-numbers"))
+  :general
+  (d/leader-keys
+    "n-"  'd/numbers/evil-numbers/dec-at-pt
+    "n="  'd/numbers/evil-numbers/inc-at-pt)
+  :config
+  (defhydra d/numbers ()
+    "evil-numbers"
+    ("="  evil-numbers/inc-at-pt "inc")
+    ("-" evil-numbers/dec-at-pt "dec")))
 #+end_src
 ***** [[https://github.com/Somelauw/evil-org-mode][evil-org]]
 #+begin_src emacs-lisp
@@ -1898,15 +1907,39 @@ Multiple cursors for evil-mode, based on iedit
 #+end_quote
 #+begin_src emacs-lisp
 (use-package evil-multiedit
+  :general
+  (d/leader-keys
+    "xm"  '(:def d/multiedit/body :wk "multiedit"))
   :config
-  (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match))
+  (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match)
+
+  (defhydra d/multiedit (:hint nil)
+    "
+multiedit:
+_r_estore  _t_oggle/restrict  match _a_ll
+_n_ext     match and _N_ext
+_p_rev     match and _P_rev
+"
+    ("a"   evil-multiedit-match-all)
+    ("n"   evil-multiedit-next)
+    ("p"   evil-multiedit-prev)
+    ("r"   evil-multiedit-restore)
+    ("t"   evil-multiedit-toggle-or-restrict-region)
+    ("N"   evil-multiedit-match-and-next)
+    ("P"   evil-multiedit-match-and-prev)
+    ("q"   evil-multiedit-abort :exit t)))
 #+end_src
+
 **** [[https://www.emacswiki.org/emacs/FlySpell][flyspell]]
 #+begin_quote
 On-the-fly spell checker
 #+end_quote
 #+begin_src emacs-lisp
 (use-package flyspell
+  :general
+  (d/mode-leader-keys
+    :keymap 'text-mode-map
+    "f" '(:def d/flyspell/body :wk "flyspell"))
   :config
   (defun d/flyspell-correct-next ()
     (interactive "p")
@@ -1927,7 +1960,17 @@ Source: http://tinyurl.com/k8g9sex"
                              current-location
                              (cl-caddr word)
                              (cl-caddr word)
-                             current-location)))))
+                             current-location))))
+
+  (defhydra d/flyspell (:pre (require 'flyspell))
+    "flyspell"
+    ("b" flyspell-buffer "buffer")
+    ("j" flyspell-goto-next-error "next")
+    ("a" d/flyspell-add-to-dictionary "add to dict")
+    ("n" flyspell-correct-next-word-generic "correct next generic")
+    ("p" flyspell-correct-previous-word-generic "correct prev generic")
+    ("N" d/flyspell-correct-next "correct next")
+    ("P" flyspell-auto-correct-previous-word "correct pref")))
 #+end_src
 **** [[https://github.com/d12frosted/flyspell-correct][flyspell-correct-ivy]]
 #+begin_quote
@@ -2029,6 +2072,9 @@ it.
 (use-package smartparens
   :hook (((prog-mode conf-mode) . turn-on-smartparens-strict-mode)
          (eshell-mode . smartparens-mode))
+  :general
+  (d/leader-keys
+    "xp"  '(:def d/smartparens/body :wk "smartparens"))
   :custom
   (sp-ignore-modes-list
    '(scheme-mode
@@ -2045,7 +2091,22 @@ it.
                  minibuffer-inactive-mode
                  html-mode)))
     (sp-local-pair modes "'" nil :actions nil)
-    (sp-local-pair modes "`" nil :actions nil)))
+    (sp-local-pair modes "`" nil :actions nil))
+
+  (defhydra d/smartparens (:hint nil)
+    "
+smartparens:
+_r_ewrap  _s_lurp
+_u_nwrap  _S_lurp (back)
+        _b_arf
+        _B_arf (back)
+"
+    ("r"  sp-rewrap-sexp)
+    ("u"  sp-unwrap-sexp)
+    ("b"  sp-forward-barf-sexp)
+    ("B"  sp-backward-barf-sexp)
+    ("s"  sp-forward-slurp-sexp)
+    ("S"  sp-backward-slurp-sexp)))
 #+end_src
 **** [[https://github.com/expez/evil-smartparens][evil-smartparens]]
 #+begin_src emacs-lisp
@@ -2298,87 +2359,27 @@ Source: http://tinyurl.com/l8z7vph"
     (error "No url at point.")))
 #+end_src
 *** Hydras
-**** Multiedit
-#+begin_src emacs-lisp
-(d/with-eval-after-load 'hydra
-  (defhydra d/multiedit (:hint nil)
-    "
-multiedit:
-_r_estore  _t_oggle/restrict  match _a_ll
-_n_ext     match and _N_ext
-_p_rev     match and _P_rev
-"
-    ("a"   evil-multiedit-match-all)
-    ("n"   evil-multiedit-next)
-    ("p"   evil-multiedit-prev)
-    ("r"   evil-multiedit-restore)
-    ("t"   evil-multiedit-toggle-or-restrict-region)
-    ("N"   evil-multiedit-match-and-next)
-    ("P"   evil-multiedit-match-and-prev)
-    ("q"   evil-multiedit-abort :exit t)))
-#+end_src
 **** Transpose
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'hydra
-  (defhydra d/transpose ()
-    "transpose"
-    ("c" d/transpose-chars "char")
-    ("C" d/backward-transpose-chars "backward char")
-    ("j" d/move-line-or-region "line/region")
-    ("k" d/backward-move-line-or-region "backward line/region")
-    ("w" transpose-words "word")
-    ("W" d/backward-transpose-words "backward word")
-    ("s" transpose-sexps "sexp" :exit t)))
+(defhydra d/transpose ()
+  "transpose"
+  ("c" d/transpose-chars "char")
+  ("C" d/backward-transpose-chars "backward char")
+  ("j" d/move-line-or-region "line/region")
+  ("k" d/backward-move-line-or-region "backward line/region")
+  ("w" transpose-words "word")
+  ("W" d/backward-transpose-words "backward word")
+  ("s" transpose-sexps "sexp" :exit t))
 #+end_src
 **** Justify
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'hydra
-  (defhydra d/justify (:exit t)
-    "justify"
-    ("r" d/justify-right "right")
-    ("l" d/justify-left "left")
-    ("c" d/justify-center "center")
-    ("f" d/justify-full "full")
-    ("n" d/justify-none "none")))
-#+end_src
-**** Smartparens
-#+begin_src emacs-lisp
-(d/with-eval-after-load 'hydra
-  (defhydra d/smartparens (:hint nil)
-    "
-smartparens:
-_r_ewrap  _s_lurp
-_u_nwrap  _S_lurp (back)
-        _b_arf
-        _B_arf (back)
-"
-    ("r"  sp-rewrap-sexp)
-    ("u"  sp-unwrap-sexp)
-    ("b"  sp-forward-barf-sexp)
-    ("B"  sp-backward-barf-sexp)
-    ("s"  sp-forward-slurp-sexp)
-    ("S"  sp-backward-slurp-sexp)))
-#+end_src
-**** Evil-numbers
-#+begin_src emacs-lisp
-(d/with-eval-after-load 'hydra
-  (defhydra d/numbers ()
-    "evil-numbers"
-    ("="  evil-numbers/inc-at-pt "inc")
-    ("-" evil-numbers/dec-at-pt "dec")))
-#+end_src
-**** Spelling
-#+begin_src emacs-lisp
-(d/with-eval-after-load 'hydra
-  (defhydra d/flyspell (:pre (require 'flyspell))
-    "flyspell"
-    ("b" flyspell-buffer "buffer")
-    ("j" flyspell-goto-next-error "next")
-    ("a" d/flyspell-add-to-dictionary "add to dict")
-    ("n" flyspell-correct-next-word-generic "correct next generic")
-    ("p" flyspell-correct-previous-word-generic "correct prev generic")
-    ("N" d/flyspell-correct-next "correct next")
-    ("P" flyspell-auto-correct-previous-word "correct pref")))
+(defhydra d/justify (:exit t)
+  "justify"
+  ("r" d/justify-right "right")
+  ("l" d/justify-left "left")
+  ("c" d/justify-center "center")
+  ("f" d/justify-full "full")
+  ("n" d/justify-none "none"))
 #+end_src
 ** Modes
 *** [[https://github.com/Kitware/CMake][cmake-mode]]
@@ -2420,12 +2421,6 @@ Syntax highlighting for markdown files.
 (use-package markdown-mode
   :mode "\\.md\\'")
 #+end_src
-*** text-mode
-#+begin_src emacs-lisp
-(d/mode-leader-keys
-  :keymap 'text-mode-map
-  "f" '(:def d/flyspell/body :wk "flyspell"))
-#+end_src
 *** [[https://github.com/yoshiki/yaml-mode][yaml-mode]]
 #+begin_quote
 The emacs major mode for editing files in the YAML data serialization format.
@@ -2446,8 +2441,6 @@ Make indent-rigidly more vimmy.
 Leader keys
 #+begin_src emacs-lisp
 (d/leader-keys
-  "n-"  'd/numbers/evil-numbers/dec-at-pt
-  "n="  'd/numbers/evil-numbers/inc-at-pt
 
   "x"   '(:ignore t :wk "text")
   "xa"  '(:ignore t :wk "align")
@@ -2475,9 +2468,7 @@ Leader keys
   "xt"  '(:def d/transpose/body :wk "transpose")
   "xc" 'count-words
 
-  "xm"  '(:def d/multiedit/body :wk "multiedit")
 
-  "xp"  '(:def d/smartparens/body :wk "smartparens")
 
   "xs"  'd/shorten-url-at-point
   "xe"  'd/expand-url-at-point
@@ -2733,14 +2724,13 @@ Fixed and automatic balanced window layout for Emacs
 #+end_src
 ** Hydras
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'hydra
-  (defhydra d/splitter ()
-    "splitter"
-    ("h" d/move-splitter-left "←")
-    ("j" d/move-splitter-down "↓")
-    ("k" d/move-splitter-up "↑")
-    ("l" d/move-splitter-right "→" )
-    ("=" balance-windows "balance")))
+(defhydra d/splitter ()
+  "splitter"
+  ("h" d/move-splitter-left "←")
+  ("j" d/move-splitter-down "↓")
+  ("k" d/move-splitter-up "↑")
+  ("l" d/move-splitter-right "→" )
+  ("=" balance-windows "balance"))
 #+end_src
 ** Bindings
 #+begin_src emacs-lisp
@@ -2931,12 +2921,11 @@ ANSI & xterm-256 color text property translator for Emacs
 #+end_src
 ** Hydras
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'hydra
-  (defhydra d/zoom ()
-    "zoom"
-    ("=" text-scale-increase "in")
-    ("-" text-scale-decrease "out")
-    ("0" (text-scale-adjust 0) "reset")))
+(defhydra d/zoom ()
+  "zoom"
+  ("=" text-scale-increase "in")
+  ("-" text-scale-decrease "out")
+  ("0" (text-scale-adjust 0) "reset"))
 #+end_src
 ** Bindings
 #+begin_src emacs-lisp
@@ -3167,6 +3156,10 @@ On the fly syntax checking for GNU Emacs
 #+begin_src emacs-lisp
 (use-package flycheck
   :hook (python-mode . flycheck-mode)
+  :general
+  (d/mode-leader-keys
+    :keymaps 'prog-mode-map
+    "f" '(:def d/flycheck/body :wk "flycheck"))
   :config
   (setq flycheck-completing-read-function 'ivy-completing-read)
   (define-fringe-bitmap 'flycheck-fringe-bitmap-double-arrow
@@ -3186,11 +3179,7 @@ On the fly syntax checking for GNU Emacs
             #b11100000
             #b11000000
             #b10000000
-            #b00000000)))
-#+end_src
-*** Hydras
-#+begin_src emacs-lisp
-(d/with-eval-after-load 'hydra
+            #b00000000))
   (defhydra d/flycheck
     (:pre (progn
             (flycheck-mode 1)
@@ -3207,12 +3196,6 @@ On the fly syntax checking for GNU Emacs
     ("gg" flycheck-first-error                                      "First")
     ("G"  (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
     ("q"  nil)))
-#+end_src
-*** Bindings
-#+begin_src emacs-lisp
-(d/mode-leader-keys
-  :keymaps 'prog-mode-map
-  "f" '(:def d/flycheck/body :wk "flycheck"))
 #+end_src
 *** Setup
 #+begin_src emacs-lisp
@@ -4453,38 +4436,37 @@ Sorts ivy by most recently used, I think.
 ** Hydras
 *** toggle
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'hydra
-  (defhydra d/toggle
-    (:pre (progn
-            (defvar flycheck-mode nil)
-            (defvar focus-mode nil)
-            (defvar d/show-async-tangle-results nil))
-     :color pink
-     :timeout 1
-     :hint nil)
-    "
+(defhydra d/toggle
+  (:pre (progn
+          (defvar flycheck-mode nil)
+          (defvar focus-mode nil)
+          (defvar d/show-async-tangle-results nil))
+   :color pink
+   :timeout 1
+   :hint nil)
+  "
 _a_ abbrev:              %-3s`abbrev-mode   _d_ debug-on-error:      %-3s`debug-on-error   _P_ prettify-symbols:       %-3s`prettify-symbols-mode
 _i_ aggressive-indent:   %-3s`aggressive-indent-mode   _l_ rlines:              %-3s`display-line-numbers-mode   _F_ focus:                  %-3s`focus-mode
 _c_ column-indicator:    %-3s`column-enforce-mode   _p_ smartparens:         %-3s`smartparens-mode   _z_ async-tangle-results:   %-3s`d/show-async-tangle-results
 _f_ flycheck:            %-3s`flycheck-mode   _e_ evil-smartparens:    %-3s`evil-smartparens-mode
 _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`global-whitespace-mode
 "
-    ("a" abbrev-mode nil)
-    ("i" aggressive-indent-mode nil)
-    ("d" toggle-debug-on-error nil)
-    ("c" column-enforce-mode nil)
-    ("l" display-line-numbers-mode nil)
-    ("p" smartparens-mode nil)
-    ("P" prettify-symbols-mode nil)
-    ("e" evil-smartparens-mode nil)
-    ("f" flycheck-mode nil)
-    ("F" focus-mode nil)
-    ("s" flyspell-mode nil)
-    ("w" global-whitespace-mode nil)
-    ("z" (if d/show-async-tangle-results
-             (setq d/show-async-tangle-results nil)
-           (setq d/show-async-tangle-results t)) nil)
-    ("q" nil)))
+  ("a" abbrev-mode nil)
+  ("i" aggressive-indent-mode nil)
+  ("d" toggle-debug-on-error nil)
+  ("c" column-enforce-mode nil)
+  ("l" display-line-numbers-mode nil)
+  ("p" smartparens-mode nil)
+  ("P" prettify-symbols-mode nil)
+  ("e" evil-smartparens-mode nil)
+  ("f" flycheck-mode nil)
+  ("F" focus-mode nil)
+  ("s" flyspell-mode nil)
+  ("w" global-whitespace-mode nil)
+  ("z" (if d/show-async-tangle-results
+           (setq d/show-async-tangle-results nil)
+         (setq d/show-async-tangle-results t)) nil)
+  ("q" nil))
 #+end_src
 * Fun
 ** Packages
@@ -4517,7 +4499,20 @@ of external players.
         emms-seek-seconds 5)
   (require 'emms-player-mpd)
   (add-to-list 'emms-player-list 'emms-player-mpd)
-  (emms-player-mpd-connect))
+  (emms-player-mpd-connect)
+  (defhydra emms
+    (:hint nil)
+    "
+%s(emms-track-get (emms-playlist-current-selected-track) 'info-title)
+%s(emms-track-get (emms-playlist-current-selected-track) 'info-artist) - %s(emms-track-get (emms-playlist-current-selected-track) 'info-album)
+        🔀
+  _z_   _c_   _b_    _s_
+"
+    ("c" emms-pause)
+    ("b" emms-next)
+    ("z" emms-previous)
+    ("s" emms-shuffle)
+    ("q" nil)))
 #+end_src
 *** [[https://github.com/johanvts/emacs-fireplace/][fireplace]]
 #+begin_quote
@@ -4621,22 +4616,6 @@ Source: http://tinyurl.com/lo96nwc"
          (zone-programs (list (intern pgm))))
     (redisplay)
     (zone)))
-#+end_src
-** Hydras
-#+begin_src emacs-lisp
-(defhydra emms
-  (:hint nil)
-  "
-%s(emms-track-get (emms-playlist-current-selected-track) 'info-title)
-%s(emms-track-get (emms-playlist-current-selected-track) 'info-artist) - %s(emms-track-get (emms-playlist-current-selected-track) 'info-album)
-        🔀
-  _z_   _c_   _b_    _s_
-"
-  ("c" emms-pause)
-  ("b" emms-next)
-  ("z" emms-previous)
-  ("s" emms-shuffle)
-  ("q" nil))
 #+end_src
 ** Bindings
 #+begin_src emacs-lisp
