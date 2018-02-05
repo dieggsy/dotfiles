@@ -1,6 +1,9 @@
 ;; -*- geiser-scheme-implementation: guile -*-
 (define-module (custom)
   #:use-module (deps)
+  #:use-module ((guix licenses) #:prefix |license:|)
+  #:use-module (srfi srfi-1)
+  #:use-module (srfi srfi-88)
   #:use-module (guix packages)
   #:use-module (guix utils)
   #:use-module (guix download)
@@ -23,7 +26,11 @@
   #:use-module (gnu packages wm)
   #:use-module (gnu packages compression)
   #:use-module (gnu packages xdisorg)
-  #:use-module (srfi srfi-1))
+  #:use-module (gnu packages libevent)
+  #:use-module (gnu packages gtk)
+  #:use-module (gnu packages pkg-config)
+  #:use-module (guix build-system cmake)
+  #:use-module (guix build-system font))
 
 (define custom-hashes
   (read (open-input-file
@@ -33,11 +40,11 @@
 
 (define (get-custom key name)
   (assoc-ref
-   (assoc-ref custom-hashes name)
+   (assoc-ref custom-hashes (string->keyword name))
    key))
 
 (define (get-custom-uri name)
-  (let ((info (assoc-ref custom-hashes name)))
+  (let ((info (assoc-ref custom-hashes (string->keyword name))))
     (cond ((assoc-ref info 'uri-format)
            (format #f
                    (assoc-ref info 'uri-format)
@@ -48,14 +55,17 @@
                    (cadr (assoc-ref info 'github))
                    (assoc-ref info 'gitsha))))))
 
+(define (custom-git-version name)
+  (git-version
+   (get-custom 'version name)
+   (get-custom 'rev name)
+   (get-custom 'gitsha name)))
+
 (define-public emacs-git
   (package
    (inherit emacs)
    (name "emacs-git")
-   (version (git-version
-             (get-custom 'version name)
-             (get-custom 'rev name)
-             (get-custom 'gitsha name)))
+   (version (custom-git-version name))
    (source (origin
             (method url-fetch)
             (file-name (git-file-name name version))
@@ -118,14 +128,106 @@
     (origin
      (file-name (string-append (git-file-name name version) ".zip"))
      (method url-fetch)
-     (uri (get-custom-uri "bspwm-git"))
-     (sha256 (base32 (get-custom 'sha256 "bspwm-git")))))
+     (uri (get-custom-uri name))
+     (sha256 (base32 (get-custom 'sha256 name)))))
    (inputs
     `(("sxhkd" ,sxhkd-git)
       ,@(alist-delete "sxhkd" (package-inputs bspwm))))
    (native-inputs
     `(("unzip" ,unzip)
       ,@(package-native-inputs bspwm)))))
+
+(define-public font-weather-icons
+  (package
+   (name "font-weather-icons")
+   (version "2.0.10")
+   (source (origin
+            (method url-fetch/zipbomb)
+            (uri (string-append
+                  "https://github.com/erikflowers/weather-icons/archive/"
+                  version
+                  ".zip"))
+            (sha256
+             (base32
+              "0hgqiry1xgfmbr84aj3941bnljr7vv0igyk496dyxpg3vmsrq0b6"))))
+   (build-system font-build-system)
+   (arguments
+    `(#:phases
+      (modify-phases
+       %standard-phases
+       (add-before
+        'install
+        'chdir
+        (lambda _
+          (chdir (string-append "weather-icons-" ,version "/font")))))))
+   (home-page "https://erikflowers.github.io/weather-icons/")
+   (synopsis "215 Weather Themed Icons and CSS")
+   (description
+    "Weather Icons is the only icon font and CSS with 222 weather themed icons,
+ready to be dropped right into Bootstrap, or any project that needs high
+quality weather, maritime, and meteorological based icons!")
+   (license #f)))
+
+;; (define-public polybar-git
+;;   (package
+;;    (name "polybar-git")
+;;    (version (custom-git-version name))
+;;    (build-system cmake-build-system)
+;;    (source
+;;     (origin
+;;      ;; (file-name (string-append (git-file-name name version) ".zip"))
+;;      (method git-fetch)
+;;      (uri (get-custom-uri name))
+;;      (recursive? #t)
+;;      (file-name (git-file-name name version))
+;;      (sha256 (base32 (get-custom 'sha256 name))))
+;;     (inputs
+;;      `(("cairo" ,cairo)
+;;        ("xcb-util-image" ,xcb-util-image)
+;;        ("xcb-util-wm" ,xcb-util-wm)
+;;        ("xcb-util-xrm" ,xcb-util-xrm)
+;;        ("xcb-util-cursor" ,xcb-util-cursor)))
+;;     (native-inputs
+;;      `(("unzip" ,unzip)
+;;        ("pkg-config" ,pkg-config)))
+;;     (home-page "https://github.com/jaagr/polybar")
+;;     (synopsis "A fast and easy-to-use status bar")
+;;     (description "A fast and easy-to-use tool for creating status bars. Polybar
+;; aims to help users build beautiful and highly customizable status bars for
+;; their desktop environment, without the need of having a black belt in shell
+;; scripting. ")
+;;     (license #f))))
+
+;; (define-public unclutter-xfixes-git
+;;   (package
+;;    (inherit unclutter)
+;;    (name "unclutter-xfixes-git")
+;;    (version (git-version
+;;              (get-custom 'version name)
+;;              (get-custom 'rev name)
+;;              (get-custom 'gitsha name)))
+;;    (source
+;;     (origin
+;;      (file-name (string-append (git-file-name name version) ".zip"))
+;;      (method url-fetch)
+;;      (uri (get-custom-uri name))
+;;      (sha256 (base32 (get-custom 'sha256 name)))))
+;;    (inputs
+;;     `(("libev" ,libev)
+;;       ("libxfixes" ,libxfixes)
+;;       ("libxi" ,libxi)
+;; some X error?
+;;       ,@(package-inputs unclutter)))
+;;    (native-inputs
+;;     `(("unzip" ,unzip)
+;;       ,@(package-native-inputs unclutter)))))
+
+;; (define-public ripgrep
+;;   (package
+;;    (name "ripgrep")
+;;    (version "0.7.1")
+;;    (source (origin
+;;             (method url-fetch/tarbomb)))))
 
 ;; (define-public font-iosevka-custom
 ;;   (package
