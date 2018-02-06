@@ -1020,8 +1020,7 @@ Source: https://git.io/vQKEa"
 #+end_src
 **** Bindings
 #+begin_src emacs-lisp
-(d/mode-leader-keys
-  :keymaps 'org-mode-map
+(d/mode-leader-keys org-mode-map
   "$"  'org-archive-subtree
   "'"  'org-edit-special
   "."  'org-time-stamp
@@ -1101,13 +1100,11 @@ Source: https://git.io/vQKEa"
   "tw"  'org-table-wrap-region)
 
 (d/with-eval-after-load 'org
-  (d/mode-leader-keys
-    :keymaps 'org-src-mode
+  (d/mode-leader-keys org-src-mode
     :definer 'minor-mode
     "'" 'org-edit-src-exit)
 
-  (d/leader-keys
-    :keymaps 'org-src-mode
+  (d/leader-keys org-src-mode
     :definer 'minor-mode
     "fs" 'org-edit-src-save))
 #+end_src
@@ -1445,11 +1442,9 @@ directory-browsing commands
   :general
   (d/leader-keys
     "ad" 'd/dired-here)
-  (d/leader-keys
-    :keymaps 'wdired-mode-map
+  (d/leader-keys wdired-mode-map
     "fs" 'wdired-finish-edit)
-  (d/mode-leader-keys
-    :keymaps 'dired-mode-map
+  (d/mode-leader-keys dired-mode-map
     "h" 'dired-omit-mode
     "d" 'dired-du-mode)
   :custom
@@ -1966,15 +1961,9 @@ On-the-fly spell checker
 #+begin_src emacs-lisp
 (use-package flyspell
   :general
-  (d/mode-leader-keys
-    :keymap 'text-mode-map
+  (d/mode-leader-keys text-mode-map
     "f" '(:def d/flyspell/body :wk "flyspell"))
   :config
-  (defun d/flyspell-correct-next ()
-    (interactive "p")
-    (flyspell-goto-next-error)
-    (flyspell-auto-correct-word))
-
   (defun d/flyspell-add-to-dictionary ()
     "Add word at point to flyspell dictionary at `/Users/d/.ispell_english'.
 
@@ -3228,8 +3217,7 @@ On the fly syntax checking for GNU Emacs
 (use-package flycheck
   :hook (python-mode . flycheck-mode)
   :general
-  (d/mode-leader-keys
-    :keymaps 'prog-mode-map
+  (d/mode-leader-keys prog-mode-map
     "f" '(:def d/flycheck/body :wk "flycheck"))
   :config
   (setq flycheck-completing-read-function 'ivy-completing-read)
@@ -3469,8 +3457,7 @@ interactive macro-expander
 #+begin_src emacs-lisp
 (use-package macrostep
   :general
-  (d/mode-leader-keys
-    :keymaps 'emacs-lisp-mode-map
+  (d/mode-leader-keys emacs-lisp-mode-map
     "m" 'macrostep-expand))
 #+end_src
 **** Functions
@@ -3601,8 +3588,7 @@ Source: https://git.io/vQKz8"
 #+end_src
 **** Bindings
 #+begin_src emacs-lisp
-(d/mode-leader-keys
-  :keymaps 'emacs-lisp-mode-map
+(d/mode-leader-keys emacs-lisp-mode-map
   "eb" 'd/eval-buffer
   "ef" 'eval-defun
   "er" 'eval-region
@@ -3672,8 +3658,7 @@ Source: http://tinyurl.com/le6wxuo"
 #+end_src
 **** Bindings
 #+begin_src emacs-lisp
-(d/mode-leader-keys
-  :keymaps 'scheme-mode-map
+(d/mode-leader-keys scheme-mode-map
   "eb" 'geiser-eval-buffer
   "ef" 'geiser-eval-definition
   "er" 'geiser-eval-region
@@ -4765,8 +4750,7 @@ An Emacs Internet Relay Chat client
     "G" (lambda ()
           (interactive)
           (evil-goto-line) (erc-scroll-to-bottom)))
-  (d/mode-leader-keys
-    :keymaps 'erc-mode-map
+  (d/mode-leader-keys erc-mode-map
     "g" 'd/erc-switch-to-buffer)
   (d/leader-keys
     "ai" 'd/erc-floating)
