@@ -560,9 +560,16 @@ Increment and decrement numbers in Emacs
     "n="  'd/numbers/evil-numbers/inc-at-pt)
   :config
   (defhydra d/numbers ()
-    "evil-numbers"
-    ("="  evil-numbers/inc-at-pt "inc")
-    ("-" evil-numbers/dec-at-pt "dec")))
+    "
+╭─────────╮
+│ numbers │
+└─────────┘
+  [_=_] inc
+  [_-_] dec
+───────────
+"
+    ("="  evil-numbers/inc-at-pt)
+    ("-" evil-numbers/dec-at-pt)))
 #+end_src
 ***** [[https://github.com/Somelauw/evil-org-mode][evil-org]]
 #+begin_src emacs-lisp
@@ -1882,25 +1889,41 @@ Multiple cursors implementation for evil-mode
 #+begin_src emacs-lisp
 (use-package evil-mc
   :general
-  (nmap
-    "gr"  '(:ignore t :wk "mc")
-    "grm" 'evil-mc-make-all-cursors
-    "gru" 'evil-mc-undo-all-cursors
-    "grs" 'evil-mc-pause-cursors
-    "grr" 'evil-mc-resume-cursors
-    "grf" 'evil-mc-make-and-goto-first-cursor
-    "grl" 'evil-mc-make-and-goto-last-cursor
-    "grh" 'evil-mc-make-cursor-here
-    "grj" 'evil-mc-make-cursor-move-next-line
-    "grk" 'evil-mc-make-cursor-move-prev-line
-    "grN" 'evil-mc-make-and-goto-next-cursor
-    "grP" 'evil-mc-make-and-goto-prev-cursor
-    "grn" 'evil-mc-make-and-goto-next-match
-    "grp" 'evil-mc-make-and-goto-prev-match)
+  (d/leader-keys
+    "xM"  '(:def d/mc/body :wk "multiple-cursors"))
   :config
   (global-evil-mc-mode)
   (push 'evil-smartparens-mode evil-mc-incompatible-minor-modes)
-  (push 'fci-mode evil-mc-incompatible-minor-modes))
+  (push 'fci-mode evil-mc-incompatible-minor-modes)
+  (defhydra d/mc (:post (evil-mc-undo-all-cursors))
+    "
+╭─────────╮
+│ evil-mc │
+└─────────┴─────────────────────────────────────────────────────────────
+ [_mm_] make+next-match [_sm_] skip+next-match [_h_] here   [_P_] print-pattern
+ [_mM_] make+prev-match [_sM_] skip+prev-match [_a_] all
+ [_mc_] make+next-cur   [_sc_] skip+next-cur   [_p_] pause
+ [_mC_] make+prev-cur   [_sC_] skip+prev-cur   [_r_] resume
+ [_mf_] make+first-cur                       [_u_] undo-all
+ [_ml_] make+last-cur
+────────────────────────────────────────────────────────────────────────
+"
+    ("mm" evil-mc-make-and-goto-next-match)
+    ("mM" evil-mc-make-and-goto-prev-match)
+    ("mc" evil-mc-make-and-goto-next-cursor)
+    ("mC" evil-mc-make-and-goto-prev-cursor)
+    ("mf" evil-mc-make-and-goto-first-cursor)
+    ("ml" evil-mc-make-and-goto-last-cursor)
+    ("sm" evil-mc-skip-and-goto-next-match)
+    ("sM" evil-mc-skip-and-goto-prev-match)
+    ("sc" evil-mc-skip-and-goto-next-cursor)
+    ("sC" evil-mc-skip-and-goto-prev-cursor)
+    ("h" evil-mc-make-cursor-here)
+    ("a" evil-mc-make-all-cursors)
+    ("p" evil-mc-pause-cursors)
+    ("r" evil-mc-resume-cursors)
+    ("u" evil-mc-undo-all-cursors)
+    ("P" evil-mc-print-pattern)))
 #+end_src
 **** [[https://github.com/hlissner/evil-multiedit][evil-multiedit]]
 #+begin_quote
@@ -1916,18 +1939,23 @@ Multiple cursors for evil-mode, based on iedit
 
   (defhydra d/multiedit (:color pink)
     "
-multiedit:
-_r_estore  _t_oggle/restrict  match _a_ll
-_n_ext     match and _N_ext
-_p_rev     match and _P_rev
+╭───────────╮
+│ multiedit │
+└───────────┴──────────────────────────────────────────────────────────
+ [_>_] next [_m_] match+next [_s_] symbol+next [_a_] all     [_t_] toggle-marker
+ [_<_] prev [_M_] match+prev [_S_] symbol+prev [_r_] restore [_T_] toggle-region
+───────────────────────────────────────────────────────────────────────
 "
+    (">"   evil-multiedit-next)
+    ("<"   evil-multiedit-prev)
+    ("m"   evil-multiedit-match-and-next)
+    ("M"   evil-multiedit-match-and-prev)
+    ("s"   evil-multiedit-match-symbol-and-next)
+    ("S"   evil-multiedit-match-symbol-and-prev)
     ("a"   evil-multiedit-match-all)
-    ("n"   evil-multiedit-next)
-    ("p"   evil-multiedit-prev)
     ("r"   evil-multiedit-restore)
     ("t"   evil-multiedit-toggle-or-restrict-region)
-    ("N"   evil-multiedit-match-and-next)
-    ("P"   evil-multiedit-match-and-prev)
+    ("T"   evil-multiedit-toggle-marker-here)
     ("q"   evil-multiedit-abort :exit t)))
 #+end_src
 
@@ -1963,15 +1991,23 @@ Source: http://tinyurl.com/k8g9sex"
                              (cl-caddr word)
                              current-location))))
 
-  (defhydra d/flyspell (:pre (require 'flyspell))
-    "flyspell"
-    ("b" flyspell-buffer "buffer")
-    ("j" flyspell-goto-next-error "next")
-    ("a" d/flyspell-add-to-dictionary "add to dict")
-    ("n" flyspell-correct-next-word-generic "correct next generic")
-    ("p" flyspell-correct-previous-word-generic "correct prev generic")
-    ("N" d/flyspell-correct-next "correct next")
-    ("P" flyspell-auto-correct-previous-word "correct pref")))
+  (defhydra d/flyspell ()
+    "
+╭──────────╮
+│ flyspell │
+└──────────┴───────────────────────────────────────────────────────
+ [_>_] goto-next [_c_] correct-next [_a_] auto-correct-next [_b_] buffer
+ [_<_] goto-prev [_C_] correct-prev [_A_] auto-correct-prev [_d_] dict add
+───────────────────────────────────────────────────────────────────
+"
+    (">" flyspell-goto-next-error)
+    ("<" flyspell-goto-prev-error)
+    ("c" flyspell-correct-next)
+    ("C" flyspell-correct-previous)
+    ("a" flyspell-auto-correct-word)
+    ("A" flyspell-auto-correct-previous-word)
+    ("b" flyspell-buffer)
+    ("d" d/flyspell-add-to-dictionary)))
 #+end_src
 **** [[https://github.com/d12frosted/flyspell-correct][flyspell-correct-ivy]]
 #+begin_quote
@@ -2101,17 +2137,19 @@ it.
 
   (defhydra d/smartparens ()
     "
-smartparens:
-_r_ewrap  _s_lurp
-_u_nwrap  _S_lurp (back)
-        _b_arf
-        _B_arf (back)
+
+╭─────────────╮
+│ smartparens │
+└─────────────┴───────────────────
+ [_>_] slurp→ [_S_] slurp← [_r_] rewrap
+ [_<_] barf→  [_B_] barf←  [_u_] unwrap
+──────────────────────────────────
 "
     ("r"  sp-rewrap-sexp)
     ("u"  sp-unwrap-sexp)
-    ("b"  sp-forward-barf-sexp)
+    ("<"  sp-forward-barf-sexp)
     ("B"  sp-backward-barf-sexp)
-    ("s"  sp-forward-slurp-sexp)
+    (">"  sp-forward-slurp-sexp)
     ("S"  sp-backward-slurp-sexp)))
 #+end_src
 **** [[https://github.com/expez/evil-smartparens][evil-smartparens]]
@@ -2368,24 +2406,38 @@ Source: http://tinyurl.com/l8z7vph"
 **** Transpose
 #+begin_src emacs-lisp
 (defhydra d/transpose ()
-  "transpose"
-  ("c" d/transpose-chars "char")
-  ("C" d/backward-transpose-chars "backward char")
-  ("j" d/move-line-or-region "line/region")
-  ("k" d/backward-move-line-or-region "backward line/region")
-  ("w" transpose-words "word")
-  ("W" d/backward-transpose-words "backward word")
-  ("s" transpose-sexps "sexp" :exit t))
+  "
+╭───────────╮
+│ transpose │
+└───────────┴────────────────────────────
+ [_c_] char→ [_j_] line↑  [_w_] word→ [_s_] sexp
+ [_C_] char← [_k_] line↓  [_W_] word←
+─────────────────────────────────────────
+"
+  ("c" d/transpose-chars)
+  ("C" d/backward-transpose-chars)
+  ("j" d/move-line-or-region)
+  ("k" d/backward-move-line-or-region)
+  ("w" transpose-words)
+  ("W" d/backward-transpose-words)
+  ("s" transpose-sexps :exit t))
 #+end_src
 **** Justify
 #+begin_src emacs-lisp
 (defhydra d/justify (:exit t)
-  "justify"
-  ("r" d/justify-right "right")
-  ("l" d/justify-left "left")
-  ("c" d/justify-center "center")
-  ("f" d/justify-full "full")
-  ("n" d/justify-none "none"))
+  "
+╭─────────╮
+│ justify │
+└─────────┴────────────────────
+ [_<_] left  [_c_] center [_n_] none
+ [_>_] right [_f_] full
+───────────────────────────────
+"
+  (">" d/justify-right)
+  ("<" d/justify-left)
+  ("c" d/justify-center)
+  ("f" d/justify-full)
+  ("n" d/justify-none))
 #+end_src
 ** Modes
 *** [[https://github.com/Kitware/CMake][cmake-mode]]
@@ -2731,12 +2783,19 @@ Fixed and automatic balanced window layout for Emacs
 ** Hydras
 #+begin_src emacs-lisp
 (defhydra d/splitter ()
-  "splitter"
-  ("h" d/move-splitter-left "←")
-  ("j" d/move-splitter-down "↓")
-  ("k" d/move-splitter-up "↑")
-  ("l" d/move-splitter-right "→" )
-  ("=" balance-windows "balance"))
+  "
+╭──────────╮
+│ splitter │
+└──────────┴─────────────
+ [_s_] → [_t_] ↑ [_=_] balance
+ [_h_] ← [_n_] ↓
+─────────────────────────
+"
+  ("h" d/move-splitter-left)
+  ("n" d/move-splitter-down)
+  ("t" d/move-splitter-up)
+  ("s" d/move-splitter-right)
+  ("=" balance-windows))
 #+end_src
 ** Bindings
 #+begin_src emacs-lisp
@@ -2928,10 +2987,16 @@ ANSI & xterm-256 color text property translator for Emacs
 ** Hydras
 #+begin_src emacs-lisp
 (defhydra d/zoom ()
-  "zoom"
-  ("=" text-scale-increase "in")
-  ("-" text-scale-decrease "out")
-  ("0" (text-scale-adjust 0) "reset"))
+  "
+╭──────╮
+│ zoom │
+└──────┴──────────────────
+ [_=_] in [_-_] out [_0_] reset
+──────────────────────────
+"
+  ("=" text-scale-increase)
+  ("-" text-scale-decrease)
+  ("0" (text-scale-adjust 0)))
 #+end_src
 ** Bindings
 #+begin_src emacs-lisp
@@ -3187,21 +3252,24 @@ On the fly syntax checking for GNU Emacs
             #b10000000
             #b00000000))
   (defhydra d/flycheck
-    (:pre (progn
-            (flycheck-mode 1)
-            (setq hydra-lv t)
-            (flycheck-list-errors))
-     :post (progn
-             (setq hydra-lv nil)
-             (quit-windows-on "*Flycheck errors*"))
-     :hint nil)
-    "Errors"
-    ("f"  flycheck-error-list-set-filter                            "Filter")
-    ("j"  flycheck-next-error                                       "Next")
-    ("k"  flycheck-previous-error                                   "Previous")
-    ("gg" flycheck-first-error                                      "First")
-    ("G"  (progn (goto-char (point-max)) (flycheck-previous-error)) "Last")
-    ("q"  nil)))
+    (:body-pre (progn
+                 (flycheck-mode 1)
+                 (flycheck-list-errors))
+     :post (quit-windows-on "*Flycheck errors*"))
+    "
+╭──────────╮
+│ flycheck │
+└──────────┴────────
+ [_>_] next [_H_] first
+ [_<_] prev [_L_] last
+────────────────────
+"
+    ("f"  flycheck-error-list-set-filter)
+    (">"  flycheck-next-error)
+    ("<"  flycheck-previous-error)
+    ("H" flycheck-first-error)
+    ("L"  (progn (goto-char (point-max))
+                 (flycheck-previous-error)))))
 #+end_src
 *** Setup
 #+begin_src emacs-lisp
