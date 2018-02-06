@@ -216,9 +216,8 @@ Make Emacs use the $PATH set up by the user's shell
 #+end_quote
 If you've ever had issues where emacs doesn't find your executables, this
 package should fix them nicely.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package exec-path-from-shell
-  :disabled
   :defer 5
   :config
   (setq exec-path-from-shell-check-startup-files nil)
@@ -1274,7 +1273,7 @@ Display the definition of word at point in Emacs
 #+begin_quote
 Emacs package allowing you to easily search the DevDocs documentation
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package devdocs
   :general
   (d/leader-keys "hdd"  'devdocs-search))
@@ -1283,7 +1282,7 @@ Emacs package allowing you to easily search the DevDocs documentation
 #+begin_quote
 A set of emacs functions and bindings to google under point.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package google-this
   :general
   (d/leader-keys
@@ -1333,7 +1332,7 @@ Non-interactively SEARCH-STRING is the string to search."
 #+begin_quote
 Emacs interface to Google Translate
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package google-translate)
 #+end_src
 *** [[https://github.com/Wilfred/helpful][helpful]]
@@ -1366,7 +1365,7 @@ Extensions to info.el.
 #+begin_quote
 Stack Exchange for Emacs
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package sx)
 #+end_src
 *** [[https://github.com/kuanyui/tldr.el][tldr]]
@@ -1554,7 +1553,7 @@ set bookmarks, maybe annotate them, jump to them later
 #+begin_quote
 Make Emacs' delete-by-moving-to-trash do what you expect it to do on OS X.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package osx-trash
   :defer 5
   :if (eq system-type 'darwin)
@@ -2384,7 +2383,7 @@ Source: http://tinyurl.com/l8z7vph"
 #+end_src
 ** Modes
 *** [[https://github.com/Kitware/CMake][cmake-mode]]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package cmake-mode)
 #+end_src
 *** conf-mode
@@ -2706,7 +2705,7 @@ imenu on steroids.
 #+begin_quote
 Fixed and automatic balanced window layout for Emacs
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package zoom
   :config
   (setq zoom-size '(0.618 . 0.618)
@@ -2715,7 +2714,7 @@ Fixed and automatic balanced window layout for Emacs
                                     "*Calc Trail*")))
 #+end_src
 *** [[https://github.com/syohex/emacs-zoom-window][zoom-window]]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package zoom-window
   :general
   (d/leader-keys
@@ -2871,7 +2870,7 @@ Customizable 256 colors for emacs term and ansi-term
 #+begin_quote
 Emacs minor mode to highlight each source code identifier uniquely based on its name
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package color-identifiers-mode)
 #+end_src
 *** [[https://github.com/Fanael/highlight-numbers][highlight-numbers]]
@@ -3230,7 +3229,7 @@ Anaconda backend for company-mode.
 #+begin_quote
 Jupyter and IPython 2.x/3.x notebook client in Emacs
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package ein)
 #+end_src
 ***** [[https://github.com/proofit404/pyenv-mode][pyenv-mode]]
@@ -3257,7 +3256,7 @@ Automatically activates pyenv version within Emacs if .python-version file exist
 Generate Sphinx friendly docstrings for Python functions in Emacs
 #+end_quote
 Pretty neat, though not entirely complete, IMO.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package sphinx-doc)
 #+end_src
 
@@ -3307,7 +3306,7 @@ Yapf for Emacs
                (company-mode/backend-with-yas 'company-anaconda)))
 #+end_src
 *** Hy
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package hy-mode)
 #+end_src
 *** Lisps
@@ -3316,7 +3315,7 @@ Yapf for Emacs
 #+begin_quote
 The Superior Lisp Interaction Mode for Emacs
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package slime
   :general
   (imap slime-repl-mode-map
@@ -3327,7 +3326,7 @@ The Superior Lisp Interaction Mode for Emacs
         slime-contribs '(slime-fancy slime-company)))
 #+end_src
 ***** [[https://github.com/anwyn/slime-company][slime-company]]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package slime-company
   :after slime
   :demand t)
@@ -3348,7 +3347,6 @@ The long lost Emacs string manipulation library.
 #+begin_src emacs-lisp
 (use-package s)
 #+end_src
-
 ***** [[https://github.com/magnars/dash.el][dash]]
 #+begin_quote
 A modern list library for Emacs
@@ -3378,7 +3376,7 @@ Flycheck checker for elisp package metadata
 #+begin_quote
 discover elisp functions that do what you want
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package suggest)
 #+end_src
 ***** [[https://github.com/dieggsy/difflib.el][difflib.el]]
@@ -3551,7 +3549,7 @@ Source: https://git.io/vQKz8"
 *** Haskell
 **** Packages
 ***** [[https://github.com/haskell/haskell-mode][haskell-mode]]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package haskell-mode
   :mode "\\.hs\\'"
   :config
@@ -3807,7 +3805,7 @@ Source: https://git.io/vQKub"
 #+begin_quote
 Yet another Emacs paste mode, this one for Gist.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package gist
   :config
   (let ((gh-vals (cdar gh-profile-alist)))
@@ -4216,7 +4214,7 @@ Emacs support library for PDF files.
 #+begin_quote
 Major mode for reading EPUBs in Emacs
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package nov
   :mode ("\\.epub\\'" . nov-mode))
 #+end_src
@@ -4240,7 +4238,7 @@ Major mode for reading EPUBs in Emacs
 Cursor stays vertically centered.
 #+end_quote
 I use this for reading, mostly.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package centered-cursor-mode)
 #+end_src
 *** [[https://github.com/bbatsov/crux][crux]]
@@ -4266,7 +4264,7 @@ A Collection of Ridiculously Useful eXtensions for Emacs
 #+begin_quote
 Disable the mouse in Emacs
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package disable-mouse
   :if (not (string= (getenv "XDG_CURRENT_DESKTOP") "exwm"))
   :defer 15
@@ -4476,7 +4474,7 @@ _s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`glob
 Drawille library implementation in elisp.
 #+end_quote
 Draws stuff in ascii.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package drawille)
 #+end_src
 *** [[https://www.gnu.org/software/emms/][emms]]
@@ -4484,7 +4482,7 @@ Draws stuff in ascii.
 The Emacs Multimedia System. Plays multimedia files from Emacs using a variety
 of external players.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package emms
   :commands emms-smart-browse
   :general
@@ -4520,7 +4518,7 @@ of external players.
 A cozy fireplace for emacs.
 #+end_quote
 For the cold winters.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package fireplace
   :general
   (nmap fireplace-mode-map
@@ -4534,7 +4532,7 @@ For the cold winters.
 #+begin_quote
 A customizable implementation of http://hackertyper.com in emacs.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package hacker-typer
   :config
   (setq hacker-typer-show-hackerman t
@@ -4545,7 +4543,7 @@ A customizable implementation of http://hackertyper.com in emacs.
 Draw a colourful "tail" while you write
 #+end_quote
 (pure awesome)
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package highlight-tail)
 #+end_src
 *** [[https://github.com/rbanffy/selectric-mode][selectric-mode]]
@@ -4553,7 +4551,7 @@ Draw a colourful "tail" while you write
 Make your Emacs sound like a proper typewriter.
 #+end_quote
 Clackity-clack.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package selectric-mode)
 #+end_src
 *** [[https://github.com/parkouss/speed-type][speed-type]]
@@ -4568,21 +4566,21 @@ Practice touch/speed typing in emacs.
 #+begin_quote
 A speed reading mode for Emacs.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package spray)
 #+end_src
 *** [[https://github.com/dieggsy/turing-machine][turing-machine]]
 #+begin_quote
 Single-tape Turing machine simulator
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package turing-machine)
 #+end_src
 *** [[https://github.com/vibhavp/emacs-xkcd][xkcd]]
 #+begin_quote
 Read xkcd from Emacs.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package xkcd
   :general
   (d/leader-keys "ax" 'xkcd)
@@ -4989,7 +4987,7 @@ Various goodies for Elfeed
 #+begin_quote
 An Emacs package for displaying the forecast from OpenWeatherMap.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package sunshine
   :general
   (d/leader-keys
