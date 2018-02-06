@@ -531,7 +531,6 @@ Comment/uncomment lines efficiently. Like Nerd Commenter in Vim
     "gc" 'evilnc-comment-operator
     "gy" 'evilnc-copy-and-comment-lines)
   (d/leader-keys
-    ";"  'evilnc-comment-operator
     "c"  '(:ignore t :wk "comment")
     "ci" 'd/comment-or-uncomment-lines-inverse
     "cl" 'evilnc-comment-or-uncomment-lines
