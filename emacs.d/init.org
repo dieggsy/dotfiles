@@ -2071,8 +2071,9 @@ it.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package smartparens
-  :hook (((prog-mode conf-mode) . turn-on-smartparens-strict-mode)
+  :hook (((prog-mode conf-mode) . d/turn-on-smartparens-strict-mode)
          (eshell-mode . smartparens-mode))
+  :defer 15
   :general
   (d/leader-keys
     "xp"  '(:def d/smartparens/body :wk "smartparens"))
@@ -2082,6 +2083,10 @@ it.
      emacs-lisp-mode
      lisp-mode
      erc-mode))
+  :init
+  (defun d/turn-on-smartparens-strict-mode ()
+    (when (not (member major-mode sp-ignore-modes-list))
+      (turn-on-smartparens-strict-mode)))
   :config
   (require 'smartparens-config)
   (smartparens-global-mode)
