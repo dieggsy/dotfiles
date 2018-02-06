@@ -228,7 +228,9 @@ package should fix them nicely.
 make Emacs bindings that stick around
 #+end_quote
 #+begin_src emacs-lisp
-(use-package hydra)
+(use-package hydra
+  :custom
+  (hydra-default-hint nil))
 #+end_src
 * Core
 ** Defaults
@@ -1913,7 +1915,7 @@ Multiple cursors for evil-mode, based on iedit
   :config
   (evil-ex-define-cmd "ie[dit]" 'evil-multiedit-ex-match)
 
-  (defhydra d/multiedit (:hint nil)
+  (defhydra d/multiedit (:color pink)
     "
 multiedit:
 _r_estore  _t_oggle/restrict  match _a_ll
@@ -2093,7 +2095,7 @@ it.
     (sp-local-pair modes "'" nil :actions nil)
     (sp-local-pair modes "`" nil :actions nil))
 
-  (defhydra d/smartparens (:hint nil)
+  (defhydra d/smartparens ()
     "
 smartparens:
 _r_ewrap  _s_lurp
@@ -4441,8 +4443,7 @@ Sorts ivy by most recently used, I think.
           (defvar focus-mode nil)
           (defvar d/show-async-tangle-results nil))
    :color pink
-   :timeout 1
-   :hint nil)
+   :timeout 1)
   "
 _a_ abbrev:              %-3s`abbrev-mode   _d_ debug-on-error:      %-3s`debug-on-error   _P_ prettify-symbols:       %-3s`prettify-symbols-mode
 _i_ aggressive-indent:   %-3s`aggressive-indent-mode   _l_ rlines:              %-3s`display-line-numbers-mode   _F_ focus:                  %-3s`focus-mode
@@ -4499,8 +4500,7 @@ of external players.
   (require 'emms-player-mpd)
   (add-to-list 'emms-player-list 'emms-player-mpd)
   (emms-player-mpd-connect)
-  (defhydra emms
-    (:hint nil)
+  (defhydra emms ()
     "
 %s(emms-track-get (emms-playlist-current-selected-track) 'info-title)
 %s(emms-track-get (emms-playlist-current-selected-track) 'info-artist) - %s(emms-track-get (emms-playlist-current-selected-track) 'info-album)
