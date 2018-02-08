@@ -108,16 +108,6 @@ use this a fair bit so let's explicitly require it.
 #+end_src
 ** Init utilities
 #+begin_src emacs-lisp
-(defmacro d/time (name &rest body)
-  (declare (indent defun))
-  `(let ((s-time (current-time)))
-     (prog1
-         (progn
-           ,@body)
-       (message "`%s' execution took %.5f seconds."
-                ,name
-                (float-time (time-subtract (current-time) s-time))))))
-
 (defmacro d/setup-hook (hooks &rest body)
   "Create a setup function for HOOKS and add it to relevant hook(s)."
   (declare (indent defun))
