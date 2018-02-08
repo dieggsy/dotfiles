@@ -226,11 +226,6 @@ make Emacs bindings that stick around
 #+end_src
 * Core
 ** Defaults
-*** Column
-Show the column number in the modeline, because I'm not a savage.
-#+begin_src emacs-lisp
-(setq column-number-mode t)
-#+end_src
 *** Disabled Commands
 #+begin_src emacs-lisp
 (setq disabled-command-function nil)
@@ -271,15 +266,15 @@ Use tab for completion and cycling candidates (relevant for the minibuffer?).
       tab-always-indent 'complete)
 #+end_src
 *** Time Display
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (d/after 'time
-  (setq  display-time-24hr-format t
-         display-time-default-load-average nil
-         display-time-format "%Y-%d-%m %H:%M "
-         display-time-load-average nil))
+  (setq display-time-24hr-format t
+        display-time-default-load-average nil
+        display-time-format "%Y-%d-%m %H:%M "
+        display-time-load-average nil))
 #+end_src
 *** Battery
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (d/after 'battery
   (setq battery-mode-line-format "%p"
         battery-mode-line-limit 100.7)
