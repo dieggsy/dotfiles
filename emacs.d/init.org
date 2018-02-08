@@ -2254,31 +2254,6 @@ drag it up past ARG other lines (down if ARG negative)."
 
 #+end_src
 #+end_src
-**** Justify
-#+begin_src emacs-lisp
-(defmacro d/create-justify-x (&rest types)
-  "Create justification function(s), one per given TYPE."
-  `(progn
-     ,@(cl-loop
-        for type in types collect
-        (let ((func-name (intern (concat "d/justify-" type)))
-              (current-type type))
-          `(defun ,func-name ()
-             (interactive)
-             (if (region-active-p)
-                 (set-justification (region-beginning)
-                                    (region-end)
-                                    (intern ,current-type))
-               (set-justification (line-beginning-position)
-                                  (line-end-position)
-                                  (intern ,current-type))))))))
-
-(d/create-justify-x
- "left"
- "right"
- "full"
- "center"
- "none")
 #+end_src
 
 **** Paragraph
@@ -2359,11 +2334,11 @@ Source: http://tinyurl.com/l8z7vph"
  [_>_] right [_f_] full
 ───────────────────────────────
 "
-  (">" d/justify-right)
-  ("<" d/justify-left)
-  ("c" d/justify-center)
-  ("f" d/justify-full)
-  ("n" d/justify-none))
+  (">" set-justification-left)
+  ("<" set-justification-right)
+  ("c" set-justification-center)
+  ("f" set-justification-full)
+  ("n" set-justification-none))
 #+end_src
 ** Modes
 *** [[https://github.com/Kitware/CMake][cmake-mode]]
