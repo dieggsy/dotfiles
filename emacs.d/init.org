@@ -2253,69 +2253,6 @@ drag it up past ARG other lines (down if ARG negative)."
     (d/move-line-or-region (- arg))))
 
 #+end_src
-**** Align
-#+begin_src emacs-lisp
-(defun d/align-repeat (start end regexp &optional justify-right after)
-  "Repeat alignment with respect to the given regular expression.
-
-If JUSTIFY-RIGHT is non nil justify to the right instead of the
-left. If AFTER is non-nil, add whitespace to the left instead of
-the right.
-
-Source: https://git.io/vQKul"
-  (interactive "r\nsAlign regexp: ")
-  (let* ((ws-regexp (if (string-empty-p regexp)
-                        "\\(\\s-+\\)"
-                      "\\(\\s-*\\)"))
-         (complete-regexp (if after
-                              (concat regexp ws-regexp)
-                            (concat ws-regexp regexp)))
-         (group (if justify-right -1 1)))
-    (message "%S" complete-regexp)
-    (align-regexp start end complete-regexp group 1 t)))
-
-(defmacro d/create-align-repeat-x (&rest args)
-  "Create an alignment function given name and alignment regexp.
-
-Source: https://git.io/vQKu4"
-  `(progn
-     ,@(cl-loop
-        for (name regexp justify-right default-after) on args
-        by #'cddddr collect
-        (let ((new-func (intern (concat "d/align-repeat-" name))))
-          `(defun ,new-func (start end switch)
-             (interactive "r\nP")
-             (let ((after (not (eq (if switch t nil) (if ,default-after t nil)))))
-               (d/align-repeat start end ,regexp ,justify-right after)))))))
-
-(d/create-align-repeat-x
- "comma" "," nil t
- "semicolon" ";" nil t
- "colon" ":" nil t
- "equal" "=" nil nil
- "math-oper" "[+\\-*/]" nil nil
- "ampersand" "&" nil nil
- "bar" "|" nil nil
- "left-paren" "(" nil nil
- "right-paren" ")" t nil
- "backslash" "\\\\" nil nil
- "single-quote" "'" nil nil)
-
-(defun d/align-repeat-decimal (start end)
-  "Align a table of numbers on decimal points and dollar signs (both optional).
-
-Source: https://git.io/vQKu2"
-  (interactive "r")
-  (require 'align)
-  (align-region start end nil
-                '((nil (regexp . "\\([\t ]*\\)\\$?\\([\t ]+[0-9]+\\)\\.?")
-                       (repeat . t)
-                       (group 1 2)
-                       (spacing 1 1)
-                       (justify nil t)))
-                nil))
-
-
 #+end_src
 **** Justify
 #+begin_src emacs-lisp
@@ -2488,25 +2425,6 @@ Make indent-rigidly more vimmy.
 Leader keys
 #+begin_src emacs-lisp
 (d/leader-keys
-
-  "x"   '(:ignore t :wk "text")
-  "xa"  '(:ignore t :wk "align")
-  "xa&" 'd/align-repeat-ampersand
-  "xa'" 'd/align-repeat-single-quote
-  "xa(" 'd/align-repeat-left-paren
-  "xa)" 'd/align-repeat-right-paren
-  "xa," 'd/align-repeat-comma
-  "xa." 'd/align-repeat-decimal
-  "xa:" 'd/align-repeat-colon
-  "xa;" 'd/align-repeat-semicolon
-  "xa=" 'd/align-repeat-equal
-  "xaa" 'align
-  "xac" 'align-current
-  "xam" 'd/align-repeat-math-oper
-  "xar" 'align-regexp
-  "xar" 'd/align-repeat
-  "xa|" 'd/align-repeat-bar
-
   "xib" 'indent-buffer
   "xii" 'indent-rigidly
   "xir" 'indent-region
