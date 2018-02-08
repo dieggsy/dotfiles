@@ -393,7 +393,6 @@ I went for it. Now I'll never go back.
   :general
   (mmap
     "-" 'negative-argument
-    "\\" 'evil-window-next
     ;; Basically C-[ for a Dvorak keyboard (_ is for terminal).
     "C-_" 'keyboard-quit
     "C-/"  'keyboard-quit
@@ -2516,13 +2515,12 @@ Quickly switch windows in Emacs
 #+begin_src emacs-lisp
 (use-package ace-window
   :general
-  (d/leader-keys
-    "\\" 'ace-window
-    "wD" 'ace-delete-window
-    "wS" 'ace-swap-window
-    "wa" 'ace-window)
+  (nmap :keymaps 'override
+    "\\" 'ace-window)
   :config
-  (setq aw-keys (string-to-list "aoeuidhtns")))
+  (setq aw-keys (string-to-list "aoeuidhtns")
+        aw-scope 'visible))
+
 #+end_src
 *** [[https://github.com/abo-abo/avy][avy]]
 #+begin_quote
