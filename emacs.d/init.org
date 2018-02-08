@@ -2194,8 +2194,9 @@ A template system for Emacs
 #+begin_src emacs-lisp
 (defun d/transpose-chars (arg)
   "Move character at point forward one character.
-With prefix arg ARG, effect is to take character at point
-and drag it forward past ARG other characters (backward if ARG negative)."
+With prefix arg ARG, effect is to take character at point and
+drag it forward past ARG other characters (backward if ARG
+negative)."
   (interactive "P")
   (forward-char)
   (if arg
@@ -2205,60 +2206,39 @@ and drag it forward past ARG other characters (backward if ARG negative)."
 
 (defun d/backward-transpose-chars (arg)
   "Move character at point backward one character.
-With prefix arg ARG, effect is to take character at point
-and drag it backward past ARG other characters (backward if ARG negative)."
+With prefix arg ARG, effect is to take character at point and
+drag it backward past ARG other characters (backward if ARG
+negative)."
   (interactive "P")
-  (forward-char)
-  (if arg
-      (transpose-chars (- arg))
-    (transpose-chars -1))
-  (backward-char))
+  (d/transpose-chars (- (or arg 1))))
 
 (defun d/backward-transpose-words (arg)
   "Interchange words around point, leaving point at end of them.
-With prefix arg ARG, effect is to take word before or around point
-and drag it forward past ARG other words (backward if ARG negative).
-If ARG is zero, the words around or after point and around or after mark
-are interchanged."
+With prefix arg ARG, effect is to take word before or around
+point and drag it forward past ARG other words (backward if ARG
+negative). If ARG is zero, the words around or after point and
+around or after mark are interchanged."
   (interactive "P")
-  (if arg
-      (transpose-words (- arg))
-    (transpose-words -1)))
+  (transpose-words (- (or arg 1))))
 
-(defun d/move-line-or-region (arg)
-  "Move line or region down one one line.
-With prefix arg ARG, effect is to take line at point and
-drag it down past ARG other lines (up if ARG negative)."
+(defun d/transpose-lines (arg)
   (interactive "P")
-  (if (or (not arg) (>= arg 0))
-      (let ((reg-or-lin (if (region-active-p) "'>" "."))
-            (reactivate-region (if (region-active-p) "gv=gv" ""))
-            (num (if arg arg 1)))
-        (execute-kbd-macro
-         (concat ":m" reg-or-lin "+" (number-to-string num) (kbd "RET") reactivate-region)))
-    (d/backward-move-line-or-region (- arg))))
+  (save-excursion
+    (end-of-line)
+    (when (eobp) (insert "\n")))
+  (forward-line 1)
+  (with-demoted-errors "%s"
+    (transpose-lines (or arg 1)))
+  (forward-line -1))
 
-(defun d/backward-move-line-or-region (arg)
-  "Move line or region up one one line.
-With prefix arg ARG, effect is to take line at point and
-drag it up past ARG other lines (down if ARG negative)."
+(defun d/backward-transpose-lines (arg)
   (interactive "P")
-  (if (or (not arg) (>= arg 0))
-      (let ((reg-or-lin (if (region-active-p) "'<" "."))
-            (reactivate-region (if (region-active-p) "gv=gv" ""))
-            (num (if arg (+ arg 1) 2)))
-        (execute-kbd-macro
-         (concat ":m" reg-or-lin "-" (number-to-string num) (kbd "RET") reactivate-region)))
-    (d/move-line-or-region (- arg))))
-
+  (d/transpose-lines (- (or arg 1))))
 #+end_src
-#+end_src
-#+end_src
-
 **** Paragraph
 #+begin_src emacs-lisp
 (defun d/paragraphize ()
-  "Remove newlines from region."
+  "Remove empty newlines from region."
   (interactive)
   (if (region-active-p)
       (flush-lines "^$" (region-beginning) (region-end))
@@ -2316,8 +2296,8 @@ Source: http://tinyurl.com/l8z7vph"
 "
   ("c" d/transpose-chars)
   ("C" d/backward-transpose-chars)
-  ("j" d/move-line-or-region)
-  ("k" d/backward-move-line-or-region)
+  ("j" d/transpose-lines)
+  ("k" d/backward-transpose-lines)
   ("w" transpose-words)
   ("W" d/backward-transpose-words)
   ("s" transpose-sexps :exit t))
