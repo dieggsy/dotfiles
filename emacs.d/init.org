@@ -93,9 +93,7 @@ really bad self-made themes, ~org-export-async-init-file~, etc.
 (eval-and-compile
   (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
   (let ((default-directory  "~/.emacs.d/lisp/"))
-    (normal-top-level-add-subdirs-to-load-path))
-
-  (add-to-list 'custom-theme-load-path "~/.emacs.d/lisp/"))
+    (normal-top-level-add-subdirs-to-load-path)))
 #+end_src
 ** Libraries
 I'm sure this will be required by some package somewhere along the way, but I
