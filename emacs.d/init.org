@@ -859,7 +859,7 @@ But really, it's life.
         org-fontify-quote-and-verse-blocks t
         org-hide-emphasis-markers nil
         org-startup-with-inline-images t
-        org-ellipsis " […]"
+        org-ellipsis " …"
         org-highlight-latex-and-related '(latex)
         org-pretty-entities nil
         org-hide-leading-stars t
