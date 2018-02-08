@@ -31,7 +31,7 @@ there's that.
 - [[#emacs-enhancements][Emacs Enhancements]]
 - [[#fun][Fun]]
 - [[#web-services][Web services]]
-- [[#finalize][Finalize]]
+- [[#local-vars][Local vars]]
 
 * Initial Setup
 ** Details
@@ -57,10 +57,14 @@ temporarily (only during startup). This saves me like .3 s of startup time.
       esup-child-profile-require-level 0)
 
 (add-hook 'after-init-hook
-          (lambda ()
-            (setq gc-cons-threshold 800000
-                  gc-cons-percentage 0.1
-                  file-name-handler-alist d/file-name-handler-alist)))
+          `(lambda ()
+             (setq gc-cons-threshold 800000
+                   gc-cons-percentage 0.1
+                   file-name-handler-alist d/file-name-handler-alist)
+             (let ((elapsed (float-time (time-subtract (current-time)
+                                                       d/emacs-start-time))))
+               (message "Loading %s...done (%.3fs) [after-init]"
+                        ,load-file-name elapsed))))
 #+end_src
 ** Custom
 #+begin_src emacs-lisp
@@ -4925,22 +4929,7 @@ An Emacs package for displaying the forecast from OpenWeatherMap.
   (setq sunshine-location "02139,USA"
         sunshine-appid (password-store-get "api/openweathermap")))
 #+end_src
-* Finalize
-#+begin_src emacs-lisp
-(when window-system
-  (let ((elapsed (float-time (time-subtract (current-time)
-                                            d/emacs-start-time))))
-    (message "Loading %s...done (%.3fs)" load-file-name elapsed))
-
-  (add-hook 'after-init-hook
-            `(lambda ()
-               (let ((elapsed (float-time (time-subtract (current-time)
-                                                         d/emacs-start-time))))
-                 (message "Loading %s...done (%.3fs) [after-init]"
-                          ,load-file-name elapsed)))
-            t))
-#+end_src
-
+* Local vars
 #+begin_example
 # Local Variables:
 # after-save-hook: (git-gutter d/async-babel-tangle)
