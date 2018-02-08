@@ -108,7 +108,7 @@ use this a fair bit so let's explicitly require it.
 #+end_src
 ** Init utilities
 #+begin_src emacs-lisp
-(defmacro d/setup-hook (hooks &rest body)
+(defmacro d/hook (hooks &rest body)
   "Create a setup function for HOOKS and add it to relevant hook(s)."
   (declare (indent defun))
   (let ((hooks (if (listp hooks) hooks (list hooks))))
@@ -121,7 +121,7 @@ use this a fair bit so let's explicitly require it.
                                                      "-hook"))))
                       `(add-hook ',hook-name #',setup-func)))))))
 
-(defmacro d/with-eval-after-load (feature &rest body)
+(defmacro d/after (feature &rest body)
   (declare (indent defun))
   `(with-eval-after-load ,feature
      (condition-case-unless-debug err
@@ -272,7 +272,7 @@ Use tab for completion and cycling candidates (relevant for the minibuffer?).
 #+end_src
 *** Time Display
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'time
+(d/after 'time
   (setq  display-time-24hr-format t
          display-time-default-load-average nil
          display-time-format "%Y-%d-%m %H:%M "
@@ -280,7 +280,7 @@ Use tab for completion and cycling candidates (relevant for the minibuffer?).
 #+end_src
 *** Battery
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'battery
+(d/after 'battery
   (setq battery-mode-line-format "%p"
         battery-mode-line-limit 100.7)
 
@@ -308,7 +308,7 @@ except for warnings and errors.
 ** Functions
 *** Dotfiles
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'org
+(d/after 'org
   (defvar d/show-async-tangle-results nil)
 
   (defvar d/async-babel-tangle-decrypt nil)
@@ -746,17 +746,17 @@ But really, it's life.
   :custom
   (org-list-allow-alphabetical t)
   :config
-  (d/with-eval-after-load 'ox
+  (d/after 'ox
     (require 'ox-extra)
     (ox-extras-activate '(ignore-headlines)))
-  (d/with-eval-after-load 'org-crypt
+  (d/after 'org-crypt
     (org-crypt-use-before-save-magic))
   (require 'org-mobile))
 #+end_src
 **** Defaults
 ***** Files
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'org
+(d/after 'org
   (setq org-agenda-text-search-extra-files '(agenda-archives)
         org-agenda-files '("~/Dropbox/org/todo.org" "~/Dropbox/org/gcal.org")
         org-default-notes-file "~/Dropbox/org/todo.org"
@@ -769,7 +769,7 @@ But really, it's life.
 #+end_src
 ***** Todo/agenda
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'org
+(d/after 'org
   (setq org-enforce-todo-dependencies t
         org-enforce-todo-checkbox-dependencies t
         org-log-done 'time
@@ -803,7 +803,7 @@ But really, it's life.
 #+end_src
 ***** Behavior
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'org
+(d/after 'org
   (setq org-startup-indented t
         org-catch-invisible-edits 'error
         org-insert-heading-respect-content t
@@ -843,7 +843,7 @@ But really, it's life.
 #+end_src
 ***** Appearance
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'org
+(d/after 'org
   ;; appearance
   (setq org-src-fontify-natively t
         org-src-preserve-indentation nil
@@ -866,7 +866,7 @@ But really, it's life.
 #+end_src
 **** Functions
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'org
+(d/after 'org
   (defmacro d/create-block-wrap (&rest blocktypes)
     `(progn
        ,@(cl-loop
@@ -1091,7 +1091,7 @@ Source: https://git.io/vQKEa"
   "tto" 'org-table-toggle-coordinate-overlays
   "tw"  'org-table-wrap-region)
 
-(d/with-eval-after-load 'org
+(d/after 'org
   (d/mode-leader-keys org-src-mode
     :definer 'minor-mode
     "'" 'org-edit-src-exit)
@@ -1103,7 +1103,7 @@ Source: https://git.io/vQKEa"
 **** Setup
 ***** Agenda
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'org-agenda
+(d/after 'org-agenda
   (setq org-habit-graph-column 50))
 #+end_src
 ***** Capture
@@ -1115,7 +1115,7 @@ Source: https://git.io/vQKEa"
 #+end_src
 ***** Org
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'org
+(d/after 'org
   (dolist (char '("+" "-"))
     (define-key org-mode-map (kbd char)
       `(lambda ()
@@ -1456,7 +1456,7 @@ directory-browsing commands
     "n" 'evil-ex-search-next
     "N" 'evil-ex-search-previous)
 
-  (d/with-eval-after-load 'dired-async
+  (d/after 'dired-async
     (dired-async-mode 1))
 
   (defun d/dired-quit ()
@@ -2318,7 +2318,7 @@ Source: http://tinyurl.com/l8z7vph"
 #+end_src
 *** conf-mode
 #+begin_src emacs-lisp
-(d/setup-hook conf-mode
+(d/hook conf-mode
   (d/setup-prog-mode))
 (add-to-list 'auto-mode-alist '("\\.service\\'" . conf-mode))
 #+end_src
@@ -2677,7 +2677,7 @@ Get right to your files or the scratch buffer. No B.S.
 #+end_src
 *** Time display
 #+begin_src emacs-lisp :tangle no
-(d/with-eval-after-load 'time
+(d/after 'time
   (setq  display-time-24hr-format t
          display-time-default-load-average nil
          display-time-format "│ %Y-%d-%m %H:%M │"
@@ -3125,7 +3125,7 @@ On the fly syntax checking for GNU Emacs
 #+end_src
 *** Setup
 #+begin_src emacs-lisp
-(d/setup-hook prog-mode
+(d/hook prog-mode
   (subword-mode)
   (auto-fill-mode 1)
   (setq-local comment-auto-fill-only-comments t))
@@ -3225,7 +3225,7 @@ Yapf for Emacs
 #+end_src
 **** Setup
 #+begin_src emacs-lisp
-(d/setup-hook python-mode
+(d/hook python-mode
   (set (make-local-variable 'comment-inline-offset) 2)
   (require 'company)
   (add-to-list 'company-backends
@@ -3464,9 +3464,9 @@ Source: https://git.io/vQKz8"
  #+end_src
 **** Setup
 #+begin_src emacs-lisp
-(d/setup-hook (lisp-mode emacs-lisp-mode)
+(d/hook (lisp-mode emacs-lisp-mode)
   (hs-minor-mode)
-  (d/with-eval-after-load 'evil-surround
+  (d/after 'evil-surround
     (push '(? . ("`" . "'")) evil-surround-pairs-alist))
   (setq-local lisp-indent-function #'d/lisp-indent-function))
 #+end_src
@@ -3531,9 +3531,9 @@ Source: http://tinyurl.com/le6wxuo"
 #+end_src
 **** Setup
 #+begin_src emacs-lisp
-(d/setup-hook scheme-mode
+(d/hook scheme-mode
   (hs-minor-mode)
-  (d/with-eval-after-load 'evil-surround
+  (d/after 'evil-surround
     (push '(? . ("`" . "'")) evil-surround-pairs-alist)))
 
 (font-lock-add-keywords 'scheme-mode '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)) t)
@@ -3858,7 +3858,7 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
         auto-revert-check-vc-info t
         git-commit-summary-max-length 50
         git-commit-major-mode 'org-mode)
-  (d/setup-hook git-commit-mode
+  (d/hook git-commit-mode
     (whitespace-mode -1)
     (setq-local fill-column 72)
     (setq-local org-hide-emphasis-markers nil)
@@ -3884,7 +3884,7 @@ operate on system processes like dired
 (use-package proced
   :straight nil
   :init
-  (d/setup-hook proced-mode
+  (d/hook proced-mode
     (proced-toggle-auto-update 1))
   :config
   (setq proced-auto-update-interval 2))
@@ -3937,7 +3937,7 @@ A shell written in emacs-lisp that has recently been replacing zsh for me.
   (eshell-prompt-function #'egp-theme)
   (eshell-confine-point-to-input nil)
   :init
-  (d/setup-hook eshell-mode
+  (d/hook eshell-mode
     (setq-local nobreak-char-display nil)
     (imap eshell-mode-map
       [remap eshell-pcomplete] 'completion-at-point
@@ -3948,7 +3948,7 @@ A shell written in emacs-lisp that has recently been replacing zsh for me.
     (nmap eshell-mode-map
       "G" 'end-of-buffer))
   :config
-  (d/setup-hook eshell-post-command
+  (d/hook eshell-post-command
     (eshell-save-some-history))
   (setenv "PAGER" "cat")
   (setenv "GIT_PAGER" "cat")
@@ -4018,7 +4018,7 @@ Correct the previous eshell command.
 #+end_src
 *** Functions
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'eshell
+(d/after 'eshell
   (require 'f)
   (defun d/eshell-here ()
     "Opens up a new shell in the directory associated with the
@@ -4553,7 +4553,7 @@ An Emacs Internet Relay Chat client
 #+end_quote
 **** Defaults
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'erc
+(d/after 'erc
   (setq erc-prompt (format "\n%s>" (make-string 12 ?\s))
         erc-fill-prefix (format "%s\t" (make-string 10 ?\s))
         erc-notice-prefix   (format "%s\t***\s" (make-string 10 ?\s))
@@ -4648,13 +4648,13 @@ An Emacs Internet Relay Chat client
 #+end_src
 **** Variables
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'erc
+(d/after 'erc
   (defvar d/erc-last-speaker (make-hash-table :test 'equal))
   (setq erc-lurker-state (make-hash-table :test 'equal)))
 #+end_src
 **** Functions
 #+begin_src emacs-lisp
-(d/with-eval-after-load 'erc
+(d/after 'erc
   ;; This function messes with our own buttons
   (advice-add #'erc-button-remove-old-buttons :override #'ignore)
 
@@ -4837,7 +4837,7 @@ Source: http://tinyurl.com/y8tj8vxx"
 #+end_src
 **** Setup
 #+begin_src emacs-lisp
-(d/setup-hook erc-mode
+(d/hook erc-mode
   (visual-line-mode)
   (setq wrap-prefix (make-string 14 ?\s))
   (set-display-table-slot standard-display-table 'wrap ?\s)
