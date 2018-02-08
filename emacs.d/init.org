@@ -2688,7 +2688,7 @@ I don't want line-wrapping madness, just tell me there's more to see and I'll
 have a look. Additionally, show whitespace.
 #+begin_src emacs-lisp
 (setq-default truncate-lines t)
-(setq whitespace-style '(face trailing tabs))
+(setq whitespace-style '(face trailing))
 (global-whitespace-mode)
 (setq whitespace-global-modes '(not erc-mode ses-mode))
 #+end_src
@@ -4163,6 +4163,11 @@ A Collection of Ridiculously Useful eXtensions for Emacs
 #+end_quote
 #+begin_src emacs-lisp
 (use-package crux
+  :straight
+  (crux :type git
+        :host github
+        :repo "bbatsov/crux"
+        :no-autoloads t)
   :general
   (d/leader-keys
     "TAB" 'crux-switch-to-previous-buffer
