@@ -2126,12 +2126,11 @@ it.
 
   (defhydra d/smartparens ()
     "
-
 ╭─────────────╮
 │ smartparens │
 └─────────────┴───────────────────
  [_>_] slurp→ [_S_] slurp← [_r_] rewrap
- [_<_] barf→  [_B_] barf←  [_u_] unwrap
+ [_<_] barf←  [_B_] barf→  [_u_] unwrap
 ──────────────────────────────────
 "
     ("r"  sp-rewrap-sexp)
