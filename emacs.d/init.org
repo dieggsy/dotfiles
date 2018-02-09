@@ -221,8 +221,8 @@ make Emacs bindings that stick around
 #+end_quote
 #+begin_src emacs-lisp
 (use-package hydra
-  :custom
-  (hydra-default-hint nil))
+  :config
+  (setq hydra-default-hint nil))
 #+end_src
 * Core
 ** Defaults
