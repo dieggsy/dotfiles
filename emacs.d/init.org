@@ -336,18 +336,6 @@ except for warnings and errors.
 (defmacro d/fbound-and-true? (name &optional args)
   `(and (fboundp #',name)
         (apply #',name ,args)))
-
-(defun pinentry-emacs (desc prompt ok error)
-  (read-passwd
-   (concat (replace-regexp-in-string
-            "%22"
-            "\""
-            (replace-regexp-in-string
-             "%0A"
-             "\n"
-             desc))
-           prompt
-           " ")))
 #+end_src
 ** Packages
 These are packages that I consider /absolutely essential/ to my emacs workflow,
