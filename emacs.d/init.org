@@ -611,6 +611,12 @@ This function is intended for use with `ivy-ignore-buffers'."
 
   (setq ivy-re-builders-alist '((swiper . ivy--regex-plus)
                                 (t . ivy--regex-ignore-order)))
+
+  (map-put ivy-sort-functions-alist
+           #'ivy-completion-in-region
+           (lambda (str1 str2)
+             (string< (downcase str1) (downcase str2))))
+
   (setq ivy-format-function 'ivy-format-function-line
         ivy-use-virtual-buffers t
         ivy-count-format ""
