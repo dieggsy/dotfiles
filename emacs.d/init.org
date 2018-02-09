@@ -561,8 +561,13 @@ Increment and decrement numbers in Emacs
 ***** [[https://github.com/emacs-evil/evil-surround][evil-surround]]
 #+begin_src emacs-lisp
 (use-package evil-surround
-  :config
-  (global-evil-surround-mode 1))
+  :general
+  (omap
+    "s" 'evil-surround-edit
+    "S" 'evil-Surround-edit)
+  (vmap
+    "S" 'evil-surround-region
+    "gS" 'evil-Surround-region))
 #+end_src
 *** [[https://github.com/abo-abo/swiper][ivy]]
 #+begin_quote
