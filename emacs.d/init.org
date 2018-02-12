@@ -3271,6 +3271,7 @@ The Superior Lisp Interaction Mode for Emacs
     [up] 'slime-repl-previous-input
     [down] 'slime-repl-next-input)
   :config
+  (require 'slime-macrostep)
   (setq inferior-lisp-program (executable-find "sbcl")
         slime-contribs '(slime-fancy slime-company)))
 #+end_src
@@ -3344,7 +3345,7 @@ interactive macro-expander
 #+begin_src emacs-lisp
 (use-package macrostep
   :general
-  (d/mode-leader-keys emacs-lisp-mode-map
+  (d/mode-leader-keys (emacs-lisp-mode-map lisp-mode-map)
     "m" 'macrostep-expand))
 #+end_src
 **** Functions
