@@ -3857,6 +3857,16 @@ It's Magit! A Git Porcelain inside Emacs.
 Like git, for emacs. But cooler. (Just /trust/ me on this one.)
 #+begin_src emacs-lisp
 (use-package magit
+  :straight
+  (magit :type git
+         :files ("lisp/magit*.el"
+                 "lisp/git-rebase.el"
+                 "Documentation/magit.texi"
+                 "Documentation/AUTHORS.md"
+                 "LICENSE")
+         :host github
+         :repo "magit/magit"
+         :no-autoloads t)
   :general
   (d/leader-keys
     "g"  '(:ignore t :wk "magit")
