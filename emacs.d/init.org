@@ -2143,8 +2143,7 @@ it.
   (sp-ignore-modes-list
    '(scheme-mode
      emacs-lisp-mode
-     lisp-mode
-     erc-mode))
+     lisp-mode))
   :init
   (defun d/turn-on-smartparens-strict-mode ()
     (when (not (member major-mode sp-ignore-modes-list))
