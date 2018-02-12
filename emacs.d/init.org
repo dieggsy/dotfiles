@@ -68,8 +68,7 @@ temporarily (only during startup). This saves me like .3 s of startup time.
 #+end_src
 ** Custom
 #+begin_src emacs-lisp
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
+(setq custom-file "/tmp/custom.el")
 #+end_src
 ** Server
 Start server if not already running. You can do this with ~emacs --daemon~ or
@@ -134,6 +133,17 @@ use this a fair bit so let's explicitly require it.
                  (symbol-name ,feature)
                  (error-message-string err))
          :error)))))
+
+(defun d/list-prepend! (list &rest args)
+  (declare (indent defun))
+  (cl-loop for thing in (reverse args)
+           do (add-to-list list thing)))
+
+(defmacro d/safe-vars! (&rest vars)
+  (declare (indent defun))
+  (cl-loop for thing in vars
+           as thing = (if (listp thing) thing (list thing))
+           do (add-to-list 'safe-local-variable-values thing)))
 #+end_src
 ** Package management
 *** [[https://github.com/raxod502/straight.el#getting-started][straight]]
@@ -226,6 +236,14 @@ make Emacs bindings that stick around
 *** Disabled Commands
 #+begin_src emacs-lisp
 (setq disabled-command-function nil)
+#+end_src
+*** Local vars
+Only enable local variables that have been added to
+~safe-local-variable-values~. I mostly just don't like being prompted to enable
+local vars willy nilly, and wil usually add something to safe local vars if I
+really need it.
+#+begin_src emacs-lisp
+(setq enable-local-variables :safe)
 #+end_src
 *** Kill-ring
 Save stuff you've copied in other applications to the emacs kill-ring.
@@ -326,7 +344,10 @@ except for warnings and errors.
                 (message "SUCCESS: init.org successfully tangled. (%.3fs)"
                          (float-time (time-subtract (current-time)
                                                     ',init-tangle-start-time)))
-              (message "ERROR: init.org tangle failed."))))))))
+              (message "ERROR: init.org tangle failed.")))))))
+
+  (d/safe-vars!
+    (eval add-hook 'after-save-hook 'd/async-babel-tangle 'append 'local)))
 #+end_src
 *** Other
 #+begin_src emacs-lisp
@@ -593,13 +614,22 @@ A really nice search/completion system for emacs.
   :config
   (ivy-mode 1)
 
-  (defun d/ignore-dired-buffers (str)
+  (defun d/ivy-ignore-buffer? (str)
     "Return non-nil if STR names a Dired buffer.
 This function is intended for use with `ivy-ignore-buffers'."
-    (let ((buf (get-buffer str)))
-      (and buf (eq (buffer-local-value 'major-mode buf) 'dired-mode))))
+    (let* ((buf (get-buffer str))
+           (mode (and buf (buffer-local-value 'major-mode buf))))
+      (and mode (member mode '(dired-mode erc-mode)))))
 
-  (add-to-list 'ivy-ignore-buffers #'d/ignore-dired-buffers)
+  (d/list-prepend! 'ivy-ignore-buffers
+    'd/ivy-ignore-buffer?
+    (rx "*"
+        (or "LV" "epc" "Calc" "Colors" "Help" "Packages" "Customize" "info"
+            "Compile" "anaconda-mode" "scratch" "Messages" "elfeed-log" "Man"
+            "Quail" "Paradox Report" "Backtrace" "slime-events"
+            "slime-compilation" "inferior-lisp" "Completions" "embrace-help"
+            "geiser messages*" "Geiser dbg" "tramp/.*" "Process List"
+            "eshell:" "Error")))
 
   (defun d/ivy-dired-transformer (str)
     (let ((buf (get-buffer str))
@@ -735,6 +765,8 @@ But really, it's life.
     "aot" 'org-todo-list )
   :custom
   (org-list-allow-alphabetical t)
+  :init
+  (d/safe-vars! (org-log-done))
   :config
   (d/after 'ox
     (require 'ox-extra)
@@ -794,7 +826,8 @@ But really, it's life.
 ***** Behavior
 #+begin_src emacs-lisp
 (d/after 'org
-  (setq org-startup-indented t
+  (setq org-confirm-babel-evaluate nil
+        org-startup-indented t
         org-catch-invisible-edits 'error
         org-insert-heading-respect-content t
         org-src-window-setup 'current-window
@@ -850,9 +883,10 @@ But really, it's life.
 
   ;; latex
   (setq org-latex-listings t)
-  (add-to-list 'org-latex-packages-alist '("" "listings"))
-  (add-to-list 'org-latex-packages-alist '("" "color"))
-  (add-to-list 'org-latex-packages-alist '("" "tabularx")))
+  (d/list-prepend! 'org-latex-packages-alist
+    '("" "listings")
+    '("" "color")
+    '("" "tabularx")))
 #+end_src
 **** Functions
 #+begin_src emacs-lisp
@@ -1139,7 +1173,14 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 A carefully crafted Org exporter back-end for Hugo
 #+end_quote
 #+begin_src emacs-lisp
-(use-package ox-hugo)
+(use-package ox-hugo
+  :init
+  (d/safe-vars!
+    (eval require 'ox-hugo)
+    (eval add-hook
+          'after-save-hook
+          'org-hugo-export-wim-to-md-after-save
+          'append 'local)))
 #+end_src
 **** Enhancements
 ***** [[https://github.com/snosov1/toc-org][toc-org]]
@@ -1340,6 +1381,8 @@ A better Emacs *help* buffer
          (regexp-quote "27.0")
          "master"
          find-function-C-source-directory)))
+  :config
+  (evil-set-initial-state 'helpful-mode 'motion))
 #+end_src
 *** [[https://www.emacswiki.org/emacs/info+.el][info+]]
 #+begin_quote
@@ -1347,6 +1390,12 @@ Extensions to info.el.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package info+)
+#+end_src
+*** [[https://github.com/Wilfred/elisp-refs][elisp-refs]]
+#+begin_src emacs-lisp
+(use-package elisp-refs
+  :config
+  (evil-set-initial-state 'elisp-refs-mode 'motion))
 #+end_src
 *** [[https://github.com/vermiculus/sx.el/][sx]]
 #+begin_quote
@@ -2710,6 +2759,11 @@ Use a bar cursor in the minibuffer.
 #+begin_src emacs-lisp
 (setq custom-safe-themes t)
 #+end_src
+*** variable-pitch
+I don't like seeing variable pitch in emacs. Just sorta throws me off.
+#+begin_src emacs-lisp
+(face-spec-set 'variable-pitch '((t nil)))
+#+end_src
 ** Built-in
 #+begin_src emacs-lisp
 (use-package hl-line
@@ -2736,6 +2790,8 @@ Colorize color names in buffers
 #+begin_src emacs-lisp
 (use-package rainbow-mode
   :hook help-mode
+  :init
+  (d/safe-vars! (eval when (fboundp 'rainbow-mode) (rainbow-mode 1)))
   :config
   (setq rainbow-x-colors-major-mode-list '(c-mode c++-mode java-mode)))
 #+end_src
@@ -2759,6 +2815,8 @@ Highlight text that extends beyond a certain column.
 #+begin_src emacs-lisp
 (use-package column-enforce-mode
   :hook (prog-mode conf-mode)
+  :init
+  (d/safe-vars! column-enforce-mode)
   :custom
   (column-enforce-column 79))
 #+end_src
@@ -3219,6 +3277,9 @@ Yapf for Emacs
   (require 'company)
   (add-to-list 'company-backends
                (company-mode/backend-with-yas 'company-anaconda)))
+
+(d/after 'python
+  (setq python-shell-completion-native-enable nil))
 #+end_src
 *** Hy
 #+begin_src emacs-lisp :tangle no
@@ -3918,13 +3979,6 @@ A shell written in emacs-lisp that has recently been replacing zsh for me.
   :general
   (d/leader-keys
     "RET" 'd/eshell-here)
-  :custom
-  (eshell-preoutput-filter-functions '(xterm-color-filter))
-  (eshell-term-name "eterm-256color")
-  (eshell-cmpl-compare-entry-function 'string-lessp)
-  (eshell-highlight-prompt nil)
-  (eshell-prompt-function #'egp-theme)
-  (eshell-confine-point-to-input nil)
   :init
   (d/hook eshell-mode
     (setq-local nobreak-char-display nil)
@@ -3946,7 +4000,36 @@ A shell written in emacs-lisp that has recently been replacing zsh for me.
         eshell-scroll-to-bottom-on-input 'this
         eshell-hist-ignoredups t
         eshell-destroy-buffer-when-process-dies t
-        eshell-bad-command-tolerance 1.0e+INF))
+        eshell-bad-command-tolerance 1.0e+INF)
+  (d/list-prepend! 'eshell-visual-commands
+    "htop" "cmus" "alsamixer" "nmtui" "nmtui-connect" "nmtui-edit")
+  :custom
+  (eshell-preoutput-filter-functions '(xterm-color-filter))
+  (eshell-term-name "eterm-256color")
+  (eshell-cmpl-compare-entry-function 'string-lessp)
+  (eshell-highlight-prompt nil)
+  (eshell-prompt-function #'egp-theme)
+  (eshell-confine-point-to-input nil)
+  (eshell-output-filter-functions
+   '(eshell-truncate-buffer
+     eshell-postoutput-scroll-to-bottom
+     eshell-handle-control-codes
+     eshell-handle-ansi-color eshell-watch-for-password-prompt))
+  (eshell-modules-list
+   '(eshell-alias
+     eshell-basic
+     eshell-cmpl
+     eshell-dirs
+     eshell-glob
+     eshell-hist
+     eshell-ls
+     eshell-pred
+     eshell-prompt
+     eshell-rebind
+     eshell-script
+     eshell-term
+     eshell-tramp
+     eshell-unix)))
 #+end_src
 *** Packages
 **** [[elisp:(find-library-other-window%20"egp")][egp]]
@@ -4615,6 +4698,10 @@ An Emacs Internet Relay Chat client
   (imap erc-mode-map
     [up] 'erc-previous-command
     [down] 'erc-next-command)
+  :config
+  (add-hook 'window-configuration-change-hook #'d/erc-to-bottom)
+  (add-hook 'erc-insert-post-hook #'erc-save-buffer-in-logs)
+  (add-hook 'erc-send-pre-hook 'd/erc-preprocess)
   :custom
   (erc-modules
    '(log
@@ -4634,11 +4721,7 @@ An Emacs Internet Relay Chat client
      irccontrols
      move-to-prompt
      menu
-     match))
-  :config
-  (add-hook 'window-configuration-change-hook #'d/erc-to-bottom)
-  (add-hook 'erc-insert-post-hook #'erc-save-buffer-in-logs)
-  (add-hook 'erc-send-pre-hook 'd/erc-preprocess))
+     match)))
 #+end_src
 **** Variables
 #+begin_src emacs-lisp
