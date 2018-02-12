@@ -3977,8 +3977,9 @@ A shell written in emacs-lisp that has recently been replacing zsh for me.
         eshell-hist-ignoredups t
         eshell-destroy-buffer-when-process-dies t
         eshell-bad-command-tolerance 1.0e+INF)
-  (d/list-prepend! 'eshell-visual-commands
-    "htop" "cmus" "alsamixer" "nmtui" "nmtui-connect" "nmtui-edit")
+  (d/after 'em-term
+    (d/list-prepend! 'eshell-visual-commands
+      "htop" "cmus" "alsamixer" "nmtui" "nmtui-connect" "nmtui-edit"))
   :custom
   (eshell-preoutput-filter-functions '(xterm-color-filter))
   (eshell-term-name "eterm-256color")
