@@ -466,6 +466,8 @@ I went for it. Now I'll never go back.
   :after evil-surround
   :demand t
   :hook (org-mode . embrace-org-mode-hook)
+  :custom
+  (embrace-show-help-p nil)
   :config
   (evil-embrace-enable-evil-surround-integration))
 #+end_src
