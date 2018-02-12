@@ -6,13 +6,11 @@
 (define (assoc-ref lst key)
   (alist-ref key lst equal?))
 
-(define getenv get-environment-variable)
-
 (define custom-hashes
   (read (open-input-file
          (format
           "~a/dotfiles/guix/custom-hashes.scm"
-          (getenv "HOME")))))
+          (get-environment-variable "HOME")))))
 
 (define (get-custom-uri name #!optional gitsha)
   (let ((info (assoc-ref custom-hashes name)))

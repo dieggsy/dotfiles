@@ -184,7 +184,7 @@ packages are installed. It's pretty neat.
 #+end_src
 I also set some variables - in particular, tell me the load time when a package
 takes more than .001 seconds, always tell me about package loading, and always
-defer and ensure packages are installed unless otherwise stated.
+defer packages unless otherwise stated.
 #+begin_src emacs-lisp
 (setq use-package-minimum-reported-time .001
       use-package-verbose t
@@ -741,7 +741,6 @@ Org mode is for keeping notes, maintaining TODO lists, planning projects, and
 authoring documents with a fast and effective plain-text system.
 #+end_quote
 But really, it's life.
-
 **** Package
 #+begin_src emacs-lisp
 (use-package org-plus-contrib
@@ -1227,7 +1226,7 @@ A convenient full-screen binding I'm used to from iTerm.
 #+end_src
 *** Macros
 #+begin_src emacs-lisp
-(general-define-key
+(general-def
  "<f11>" 'kmacro-start-macro-or-insert-counter
  "<f12>" 'kmacro-end-or-call-macro)
 #+end_src
@@ -1463,6 +1462,18 @@ Executable
 #+end_src
 
 ** Built-in
+*** [[elisp:(find-library-other-window%20"bookmark")][bookmark]]
+#+begin_quote
+set bookmarks, maybe annotate them, jump to them later
+#+end_quote
+#+begin_src emacs-lisp
+(use-package bookmark
+  :straight nil
+  :general
+  (d/leader-keys
+    "fB" 'bookmark-jump-other-window
+    "fb" 'bookmark-jump))
+#+end_src
 *** [[elisp:(find-library-other-window%20"dired")][dired]]
 #+begin_quote
 directory-browsing commands
@@ -1537,43 +1548,6 @@ directory-browsing commands
   (dired-omit-files (rx string-start "." (1+ nonl) string-end))
   (dired-clean-confirm-killing-deleted-buffers nil))
 #+end_src
-*** [[elisp:(find-library-other-window%20"ibuffer")][ibuffer]]
-#+begin_quote
-operate on buffers like dired
-#+end_quote
-#+begin_src emacs-lisp
-(use-package ibuffer
-  :general
-  (ibuffer-mode-map
-   "TAB" 'ibuffer-toggle-filter-group
-   "<backtab>" 'ibuffer-toggle-filter-group)
-  (ibuffer-mode-filter-group-map
-   "J" 'ibuffer-forward-filter-group
-   "K" 'ibuffer-backward-filter-group
-   "RET" 'ibuffer-toggle-marks)
-  :custom
-  (ibuffer-saved-filter-groups
-   '(("Default"
-      ("Dired"
-       (mode . dired-mode))
-      ("ERC"
-       (mode . erc-mode)))))
-  :init
-  (d/setup-hook ibuffer-mode
-    (ibuffer-switch-to-saved-filter-groups "Default")))
-#+end_src
-*** [[elisp:(find-library-other-window%20"bookmark")][bookmark]]
-#+begin_quote
-set bookmarks, maybe annotate them, jump to them later
-#+end_quote
-#+begin_src emacs-lisp
-(use-package bookmark
-  :straight nil
-  :general
-  (d/leader-keys
-    "fB" 'bookmark-jump-other-window
-    "fb" 'bookmark-jump))
-#+end_src
 *** [[elisp:(find-library-other-window "ediff")][ediff]]
 #+begin_src emacs-lisp
 (use-package ediff
@@ -1581,6 +1555,61 @@ set bookmarks, maybe annotate them, jump to them later
   (ediff-window-setup-function 'ediff-setup-windows-plain)
   (ediff-split-window-function 'split-window-horizontally)
   (ediff-diff-options "-w"))
+#+end_src
+*** [[elisp:(find-library-other-window%20"ibuffer")][ibuffer]]
+#+begin_quote
+operate on buffers like dired
+#+end_quote
+#+begin_src emacs-lisp
+(use-package ibuffer
+  :config
+  (nmap ibuffer-mode-map
+    "TAB" 'ibuffer-toggle-filter-group
+    "<backtab>" 'ibuffer-toggle-filter-group
+    "*%" 'ibuffer-mark-by-name-regexp)
+  (nmap ibuffer-mode-filter-group-map
+    "J" 'ibuffer-forward-filter-group
+    "K" 'ibuffer-backward-filter-group
+    "RET" 'ibuffer-toggle-marks)
+  (setq ibuffer-saved-filter-groups
+        '(("Default"
+           ("Dired"
+            (mode . dired-mode))
+           ("ERC"
+            (mode . erc-mode))
+           ("Help"
+            (or
+             (mode . helpful-mode)
+             (mode . Man-mode)
+             (predicate  member major-mode
+                         ibuffer-help-buffer-modes)))
+           ("Package"
+            (filename . ".*/dotfiles/emacs.d/straight/.*"))
+           ("Built in"
+            (and
+             (not (mode . eshell-mode))
+             (filename . "/gnu.*")))
+           ("Magit"
+            (name . "\\*magit"))
+           ("Shell"
+            (predicate member major-mode '(eshell-mode term-mode))))))
+
+  (d/hook ibuffer-mode
+    (ibuffer-switch-to-saved-filter-groups "Default"))
+
+  (setq ibuffer-never-show-predicates '("\\*magit-\\(diff\\|process\\):")))
+#+end_src
+*** [[elisp:(find-library-other-window%20"recentf")][recentf]]
+#+begin_src emacs-lisp
+(use-package recentf
+  :config
+  (defun d/recentf-exclude? (f)
+    (string-prefix-p
+     (expand-file-name "var/" "~/dotfiles/emacs.d")
+     (file-truename f)))
+
+  (d/list-prepend! 'recentf-exclude
+    'd/recentf-exclude?))
 #+end_src
 ** Packages
 *** [[https://github.com/lunaryorn/osx-trash.el][osx-trash]]
@@ -1663,7 +1692,7 @@ Project Interaction Library for Emacs
            t)
           ((string-prefix-p (expand-file-name "~/dotfiles/emacs.d/straight") root)
            (let ((default-directory root))
-             (not (string-match-p (regexp-quote "github.com/dieggsy")
+             (not (string-match-p (regexp-quote "dieggsy")
                                   (shell-command-to-string "git config --get remote.origin.url")))))
           (t nil)))
 
@@ -1996,7 +2025,7 @@ On-the-fly spell checker
     "f" '(:def d/flyspell/body :wk "flyspell"))
   :config
   (defun d/flyspell-add-to-dictionary ()
-    "Add word at point to flyspell dictionary at `/Users/d/.ispell_english'.
+    "Add word at point to flyspell dictionary.
 
 Source: http://tinyurl.com/k8g9sex"
     (interactive)
@@ -2007,8 +2036,8 @@ Source: http://tinyurl.com/k8g9sex"
                              nil
                              (car word)
                              current-location
-                             (cl-caddr word)
-                             (cl-caddr word)
+                             (caddr word)
+                             (caddr word)
                              current-location))))
 
   (defhydra d/flyspell ()
@@ -3187,7 +3216,11 @@ Code navigation, documentation lookup and completion for Python.
 #+begin_src emacs-lisp
 (use-package anaconda-mode
   :hook (python-mode
-         (python-mode . anaconda-eldoc-mode)))
+         (python-mode . anaconda-eldoc-mode))
+  :config
+  (d/after company
+    (add-to-list 'company-backends
+                 (company-mode/backend-with-yas 'company-anaconda)) ))
 #+end_src
 ***** [[https://github.com/proofit404/company-anaconda][company-anaconda]]
 #+begin_quote
@@ -3273,10 +3306,7 @@ Yapf for Emacs
 **** Setup
 #+begin_src emacs-lisp
 (d/hook python-mode
-  (set (make-local-variable 'comment-inline-offset) 2)
-  (require 'company)
-  (add-to-list 'company-backends
-               (company-mode/backend-with-yas 'company-anaconda)))
+  (set (make-local-variable 'comment-inline-offset) 2))
 
 (d/after 'python
   (setq python-shell-completion-native-enable nil))
@@ -3298,7 +3328,7 @@ The Superior Lisp Interaction Mode for Emacs
     [up] 'slime-repl-previous-input
     [down] 'slime-repl-next-input)
   :config
-  (setq inferior-lisp-program "/usr/local/bin/sbcl"
+  (setq inferior-lisp-program (executable-find "sbcl")
         slime-contribs '(slime-fancy slime-company)))
 #+end_src
 ***** [[https://github.com/anwyn/slime-company][slime-company]]
@@ -4997,6 +5027,6 @@ An Emacs package for displaying the forecast from OpenWeatherMap.
 * Local vars
 #+begin_example
 # Local Variables:
-# after-save-hook: (git-gutter d/async-babel-tangle)
+# eval: (add-hook 'after-save-hook 'd/async-babel-tangle 'append 'local)
 # End:
 #+end_example

@@ -3262,8 +3262,6 @@ Keywords=Player;Capture;DVD;Audio;Video;Server;Broadcast;
 Tangles the files asynchronously on save.
 #+begin_example
 # Local Variables:
-# after-save-hook: (git-gutter d/async-babel-tangle)
-# org-pretty-entities: nil
-# d/async-babel-tangle-decrypt: t
+# eval: (add-hook 'after-save-hook 'd/async-babel-tangle 'append 'local)
 # End:
 #+end_example
