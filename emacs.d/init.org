@@ -1353,11 +1353,11 @@ A better Emacs *help* buffer
     "hds" 'helpful-symbol
     "hdk" 'helpful-key)
   :init
-  (setq find-function-C-source-directory
-        (replace-regexp-in-string
-         (regexp-quote "27.0")
-         "master"
-         find-function-C-source-directory)))
+  ;; (setq find-function-C-source-directory
+  ;;       (replace-regexp-in-string
+  ;;        (regexp-quote "27.0")
+  ;;        "master"
+  ;;        find-function-C-source-directory))
   :config
   (evil-set-initial-state 'helpful-mode 'motion))
 #+end_src
