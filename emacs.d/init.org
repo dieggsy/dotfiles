@@ -180,9 +180,6 @@ defer and ensure packages are installed unless otherwise stated.
       use-package-verbose t
       use-package-always-defer t
       use-package-compute-statistics t)
-
-(eval-when-compile
-  (require 'use-package))
 #+end_src
 ** Packages
 *** [[https://github.com/tarsius/no-littering/][no-littering]]
