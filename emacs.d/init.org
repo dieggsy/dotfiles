@@ -3,19 +3,9 @@
 
 * Intro
 
-This is the bulk of my emacs configuration, loaded by [[./init.el][init.el]]. It's pretty cool
-that I can write it in org mode, because easy organization and rearrangement
-are sweet. Check out [[https://github.com/aaronbieber/dotfiles/tree/master/configs/emacs.d][@aaronbieber]], [[https://github.com/hrs/dotfiles/tree/master/emacs.d][@hrs]], and [[https://github.com/syl20bnr/spacemacs][spacemacs]] - a lot of the
-inspiration (and erm, code) for this is taken from them.
-
-:NOTE:
-*Note:* The usual way to do this is to call ~(org-babel-load-file "config.org")~,
-and I did that for a while, but for whatever reason I decided I wanted
-=config.el= (and its compiled verison) to be produced as I changed the file
-itself, hence the [[#dotfile-handling][dotfile handling]] functions and [[#local-vars][file local variables]]. Also,
-the optional ~COMPILE~ argument of ~org-babel-load-file~ wasn't working for me, so
-there's that.
-:END:
+This is the bulk of my emacs configuration, which gets tangled to [[./init.el][init.el]]. It's
+pretty cool that I can write it in org mode, because easy organization and
+rearrangement are sweet.
 
 * Contents                                                            :toc_1:
 - [[#intro][Intro]]
@@ -41,7 +31,8 @@ In accordance with the [[https://github.com/bbatsov/emacs-lisp-style-guide#sourc
 ;;; -*- lexical-binding: t -*-
 #+end_src
 *** package-initialize
-~package.el~ is annoying like that.
+This is required (even though I don't use package.el) because ~package.el~ is
+annoying like that.
 #+begin_src emacs-lisp :comments no :cond-case no :padline no
 ;;(package-initialize)
 #+end_src
@@ -54,8 +45,11 @@ temporarily (only during startup). This saves me like .3 s of startup time.
 (setq gc-cons-threshold 400000000
       gc-cons-percentage 0.6
       file-name-handler-alist nil
+      ;; sidesteps a bug when profiling with esup
       esup-child-profile-require-level 0)
-
+#+end_src
+Make sure to reset the variables after init.
+#+begin_src emacs-lisp
 (add-hook 'after-init-hook
           `(lambda ()
              (setq gc-cons-threshold 800000
@@ -67,13 +61,17 @@ temporarily (only during startup). This saves me like .3 s of startup time.
                         ,load-file-name elapsed))))
 #+end_src
 ** Custom
+Custom.el and the a custom file can be a nice convenience at first, but over
+time stuff kind of just accumulates to the point where you don't even know
+where anything came from anymore, and it's hard to track through version
+control.
 #+begin_src emacs-lisp
 (setq custom-file "/tmp/custom.el")
 #+end_src
 ** Server
-Start server if not already running. You can do this with ~emacs --daemon~ or
-even automate it with ~brew services start emacs~ on macOS, but I usually just
-run Emacs on login anyway, so this suffices.
+Start server if not already running. You can do this with ~emacs --daemon~,
+automate it with systemd, or use ~brew services start emacs~ on macOS. I
+usually just run Emacs on login anyway, so this suffices.
 
 This makes startup time irrelevant. Start emacs once, connect with emacsclient
 every other time. See [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html#Emacs-Server][Using Emacs as a Server]].
@@ -95,8 +93,10 @@ really bad self-made themes, ~org-export-async-init-file~, etc.
     (normal-top-level-add-subdirs-to-load-path)))
 #+end_src
 ** Libraries
-I'm sure this will be required by some package somewhere along the way, but I
-use this a fair bit so let's explicitly require it.
+~cl-lib~ gives us a wealth of common-lisp inspired or based functions and
+macros that just make our lives easier. ~subr-x~ is similar. I'm sure these
+will be required by some package somewhere along the way, but I use them a fair
+bit so let's explicitly require them.
 #+begin_src emacs-lisp
 (require 'cl-lib)
 (require 'subr-x)
@@ -121,6 +121,7 @@ use this a fair bit so let's explicitly require it.
                       `(add-hook ',hook-name #',setup-func)))))))
 
 (defmacro d/after (feature &rest body)
+  "Load BODY after FEATURE, catching errors and displaying as warnings."
   (declare (indent defun))
   `(with-eval-after-load ,feature
      (condition-case-unless-debug err
@@ -135,11 +136,17 @@ use this a fair bit so let's explicitly require it.
          :error)))))
 
 (defun d/list-prepend! (list &rest args)
+  "Prepend each of ARGS to LIST (a symbol).
+
+Args are prepended in reverse order, so the first arg will be the
+first element of the list. Convenience wrapper around
+`add-to-list'."
   (declare (indent defun))
   (cl-loop for thing in (reverse args)
            do (add-to-list list thing)))
 
 (defmacro d/safe-vars! (&rest vars)
+  "Add VARS to `safe-local-variable-values'."
   (declare (indent defun))
   (cl-loop for thing in vars
            as thing = (if (listp thing) thing (list thing))
@@ -150,6 +157,14 @@ use this a fair bit so let's explicitly require it.
 #+begin_quote
 Next-generation, purely functional package manager for the Emacs hacker.
 #+end_quote
+This gives me finer control over my packages - I can specify a gitsha to pin
+packages to, as well as "freeze" packages for a fully reproducible install. The
+only packages that are persistently loaded across sessions are those declared
+in the init.
+
+Also, to patch, edit, or contribute to a package, I can simply ~M-x
+find-library~ and edit/push/pull request away, since package sources are stored
+as git repos.
 #+begin_src emacs-lisp
 (setq straight-repository-branch "develop")
 
@@ -181,11 +196,6 @@ keeping track of what's installed or not and it will ensure that any missing
 packages are installed. It's pretty neat.
 #+begin_src emacs-lisp
 (straight-use-package 'use-package)
-#+end_src
-I also set some variables - in particular, tell me the load time when a package
-takes more than .001 seconds, always tell me about package loading, and always
-defer packages unless otherwise stated.
-#+begin_src emacs-lisp
 (setq use-package-minimum-reported-time .001
       use-package-verbose t
       use-package-always-defer t
@@ -234,13 +244,15 @@ make Emacs bindings that stick around
 * Core
 ** Defaults
 *** Disabled Commands
+By default, some emacs commands are disabled because I guess they're considered
+"confusing" to beginners or something. Nonsense! :)
 #+begin_src emacs-lisp
 (setq disabled-command-function nil)
 #+end_src
 *** Local vars
 Only enable local variables that have been added to
 ~safe-local-variable-values~. I mostly just don't like being prompted to enable
-local vars willy nilly, and wil usually add something to safe local vars if I
+local vars willy nilly, and usually add something to safe local vars if I
 really need it.
 #+begin_src emacs-lisp
 (setq enable-local-variables :safe)
@@ -257,8 +269,7 @@ back if you need to.
 (setq message-log-max 10000)
 #+end_src
 *** Minibuffer
-Allow editing in the minibuffer... /with/ the minibuffer. Also resize minibuffer
-windows to fit text.
+Allow editing in the minibuffer... /with/ the minibuffer.
 #+begin_src emacs-lisp
 (setq enable-recursive-minibuffers t
       resize-mini-windows t)
@@ -269,12 +280,14 @@ Having to type "yes" can be annoying.
 (defalias 'yes-or-no-p #'y-or-n-p)
 #+end_src
 *** Scratch
+There's kind of no point in using a whole separate mode for the scratch buffer.
+Setting to emacs-lisp-mode reduces the amount of configuration we have to do.
 #+begin_src emacs-lisp
 (setq initial-scratch-message ""
       initial-major-mode 'emacs-lisp-mode)
 #+end_src
 *** Tab
-Use tab for completion and cycling candidates (relevant for the minibuffer?).
+Use tab for completion in region and cycle candidates.
 #+begin_src emacs-lisp
 (setq tab-stop-list (number-sequence 4 200 4)
       completion-cycle-threshold t
@@ -284,47 +297,53 @@ Use tab for completion and cycling candidates (relevant for the minibuffer?).
 #+begin_src emacs-lisp :tangle no
 (d/after 'time
   (setq display-time-24hr-format t
-        display-time-default-load-average nil
         display-time-format "%Y-%d-%m %H:%M "
+        display-time-default-load-average nil
         display-time-load-average nil))
 #+end_src
-*** Battery
-#+begin_src emacs-lisp :tangle no
-(d/after 'battery
-  (setq battery-mode-line-format "%p"
-        battery-mode-line-limit 100.7)
-
-  (define-advice battery-linux-sysfs (:around (fn) d/fix-percent)
-    (let* ((alist (funcall fn))
-           (bat (string-to-number (alist-get 112 alist))))
-      (setf (alist-get 112 alist) (if (>= bat 100)
-                                      "100"
-                                    (format "%.f" bat)))
-      alist)))
-#+end_src
 *** Tramp
-Use ssh by default and remember passwords for [[https://www.gnu.org/software/tramp/][tramp]]. Also make tramp quieter
+Use ssh by default and remember passwords for [[https://www.gnu.org/software/emacs/manual/html_node/tramp/index.html][tramp]]. Also make tramp quieter
 except for warnings and errors.
 #+begin_src emacs-lisp
 (setq tramp-default-method "ssh"
-      tramp-verbose 2
-      password-cache t
+      tramp-verbose 2)
+#+end_src
+*** Passwords
+#+begin_src emacs-lisp
+(setq password-cache t
       password-cache-expiry 86400)
 #+end_src
 *** EPA
+Integrate gpg passphrase query with Emacs minibuffer when using EPA.
 #+begin_src emacs-lisp
 (setq epa-pinentry-mode 'loopback)
 #+end_src
 ** Functions
 *** Dotfiles
+Here I define a function that uses [[https://github.com/jwiegley/emacs-async][async.el]] to open and tangle an org file
+asynchronously. This is how I tangle init.org (and rc.org) directly to init.el
+on save, since it's long enough that a synchronous tangle causes a pretty
+annoynig lag.
+
+- If ~d/asyncbabel-tangle-decrypt~ is set to ~t~ in the [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Specifying-File-Variables.html#Specifying-File-Variables][file variables]], org entries
+  are decrypted first. Mostly useful if you do something like keep sensitive
+  configuration files in an org file.
+- If ~d/show-async-tangle-results~ is ~t~, don't dispose of async emacs process
+  buffers. This is useful for debugging errors.
 #+begin_src emacs-lisp
 (d/after 'org
-  (defvar d/show-async-tangle-results nil)
+  (defvar d/show-async-tangle-results nil
+    "Keep *emacs* async buffers around for later inspection.")
+  (defvar d/async-babel-tangle-decrypt nil
+    "Decrypt org entries before tangling.
 
-  (defvar d/async-babel-tangle-decrypt nil)
+Probably most useful as a file-local variable.")
 
   (defun d/async-babel-tangle (&optional decrypt)
-    "Tangle org file asynchronously."
+    "Tangle org file asynchronously.
+
+If optional DECRYPT argument is given, dercypt entries before
+tangling."
     (interactive)
     (let ((init-tangle-start-time (current-time))
           (file (buffer-file-name))
@@ -344,16 +363,14 @@ except for warnings and errors.
                 (message "SUCCESS: init.org successfully tangled. (%.3fs)"
                          (float-time (time-subtract (current-time)
                                                     ',init-tangle-start-time)))
-              (message "ERROR: init.org tangle failed.")))))))
-
+              (message "ERROR: init.org tangle failed."))))))))
+#+end_src
+Declare adding d/async-babel-tangle to after-save-hook locally a safe eval form
+so emacs doesn't ask every time.
+#+begin_src emacs-lisp
+(d/after 'org
   (d/safe-vars!
     (eval add-hook 'after-save-hook 'd/async-babel-tangle 'append 'local)))
-#+end_src
-*** Other
-#+begin_src emacs-lisp
-(defmacro d/fbound-and-true? (name &optional args)
-  `(and (fboundp #',name)
-        (apply #',name ,args)))
 #+end_src
 ** Packages
 These are packages that I consider /absolutely essential/ to my emacs workflow,
@@ -414,9 +431,10 @@ I went for it. Now I'll never go back.
   (evil-search-module 'evil-search)
   (evil-lookup-func (lambda () (man (thing-at-point 'word))))
   :config
-  (setq evil-insert-state-cursor '(bar . 1)
+  (setq evil-insert-state-cursor '(bar . 1) ;thinner cursors
         evil-emacs-state-cursor '(bar . 1)
         evil-ex-search-vim-style-regexp t
+        ;; This was more relevant when I displayed the tag in the mode-line.
         evil-normal-state-tag  " N "
         evil-insert-state-tag  " I "
         evil-motion-state-tag  " M "
@@ -431,6 +449,7 @@ I went for it. Now I'll never go back.
 #+end_src
 **** support
 ***** [[https://github.com/syohex/emacs-evil-anzu][evil-anzu]]
+Show evil search current/total count in the mode line.
 #+begin_src emacs-lisp
 (use-package evil-anzu
   :defer 15
@@ -451,6 +470,7 @@ I went for it. Now I'll never go back.
 #+begin_quote
  A set of keybindings for evil-mode
 #+end_quote
+Evil integration for a bunch of misc modes.
 #+begin_src emacs-lisp
 (use-package evil-collection
   :custom
@@ -461,6 +481,7 @@ I went for it. Now I'll never go back.
   (evil-collection-init))
 #+end_src
 ***** [[https://github.com/cute-jumper/evil-embrace.el][evil-embrace]]
+Additional support for custom surrounding pairs for evil-surround.
 #+begin_src emacs-lisp
 (use-package evil-embrace
   :after evil-surround
@@ -506,6 +527,7 @@ Black magic or evil keys for magit
   :demand t)
 #+end_src
 ***** [[https://github.com/redguardtoo/evil-matchit][evil-matchit]]
+A more generic ~%~ in evil.
 #+begin_src emacs-lisp
 (use-package evil-matchit
   :general
@@ -566,6 +588,9 @@ Increment and decrement numbers in Emacs
     ("-" evil-numbers/dec-at-pt)))
 #+end_src
 ***** [[https://github.com/Somelauw/evil-org-mode][evil-org]]
+#+begin_quote
+Supplemental evil-mode keybindings to emacs org-mode
+#+end_quote
 #+begin_src emacs-lisp
 (use-package evil-org
   :hook (org-mode . evil-org-mode)
@@ -579,6 +604,7 @@ Increment and decrement numbers in Emacs
   (evil-org-agenda-set-keys))
 #+end_src
 ***** [[https://github.com/emacs-evil/evil-surround][evil-surround]]
+Helps work with surrounding chars better.
 #+begin_src emacs-lisp
 (use-package evil-surround
   :general
@@ -639,6 +665,14 @@ This function is intended for use with `ivy-ignore-buffers'."
             "eshell:" "Error")))
 
   (defun d/ivy-dired-transformer (str)
+    "Display transformer for dired buffers in `ivy-switch-buffer'.
+
+Adds 'Dired: ' before dired buffer names.
+
+Dired buffers are often just named after their directory, and
+it's not always clear thet it's a dired buffer in ivy. Color
+matching can mitigate this, but for short directory names the
+color is hidden by ivy's match color."
     (let ((buf (get-buffer str))
           (str (ivy-switch-buffer-transformer str)))
       (if (and buf (eq (buffer-local-value 'major-mode buf) 'dired-mode))
@@ -659,7 +693,6 @@ This function is intended for use with `ivy-ignore-buffers'."
         ivy-use-virtual-buffers t
         ivy-count-format ""
         ivy-extra-directories nil
-        recentf-max-saved-items 50
         ivy-use-selectable-prompt t
         ivy-display-functions-alist nil
         ivy-switch-buffer-faces-alist '((dired-mode . ivy-subdir)
@@ -710,8 +743,9 @@ This function is intended for use with `ivy-ignore-buffers'."
   (counsel-describe-function-function #'helpful-callable)
   (counsel-describe-variable-function #'helpful-variable)
   (counsel-linux-apps-directories
-   '("~/.nix-profile/share/applications/"
-     "~/.local/share/applications/"
+   '("~/.local/share/applications/"
+     "~/.guix-profile/share/applications/"
+     "~/.nix-profile/share/applications/"
      "/usr/local/share/applications/"
      "/usr/share/applications/"))
   :config
@@ -756,9 +790,9 @@ But really, it's life.
     "ga" 'org-archive-subtree)
   (mmap org-mode-map
     "RET" (general-predicate-dispatch nil
-            (d/fbound-and-true? d/org-at-openable-item?) 'org-open-at-point
-            (d/fbound-and-true? org-at-item-checkbox-p) 'org-toggle-checkbox
-            (d/fbound-and-true? org-in-src-block-p) 'org-babel-execute-src-block))
+            (d/org-at-openable-item?) 'org-open-at-point
+            (org-at-item-checkbox-p) 'org-toggle-checkbox
+            (org-in-src-block-p) 'org-babel-execute-src-block))
   (d/leader-keys
     "C"   'org-capture
     "bo"  'org-iswitchb
@@ -863,7 +897,12 @@ But really, it's life.
                                               (minimal-match (0+ nonl))
                                               ")"))
   (define-advice org-babel-execute-src-block (:before (&rest _) d/load-lang)
-    "Load src language."
+    "Load src language on demand.
+
+This removes the need to add every language manually to
+`org-babel-load-languages'. This also implies that any language
+that supports execution can be executed. Executing src blocks is
+an active enough action that I'm ok with this."
     (let ((language (intern
                      (org-element-property :language (org-element-at-point)))))
       (when (eq language 'sh)
@@ -901,25 +940,6 @@ But really, it's life.
 **** Functions
 #+begin_src emacs-lisp
 (d/after 'org
-  (defmacro d/org-emphasize (&rest args)
-    "Make functions for setting the emphasis in org mode"
-    `(progn
-       ,@(cl-loop for (name char) on args
-                  by #'cddr collect
-                  (let ((fname (intern (concat "d/org-" name))))
-                    `(defun ,fname ()
-                       (interactive)
-                       (org-emphasize ,char))))))
-
-  (d/org-emphasize
-   "bold" ?*
-   "italic" ?/
-   "code" ?~
-   "underline" ?_
-   "verbatim" ?=
-   "strike-through" ?+
-   "clear" ?\s)
-
   (defun d/org-agenda-toggle-date (current-line)
     "Toggle `SCHEDULED' and `DEADLINE' tag in the capture buffer.
 
@@ -1010,18 +1030,18 @@ Source: https://git.io/vQKEa"
         (_ (org-cycle-list-bullet (char-to-string char))))))
 
   (defun d/org-at-openable-item? ()
-    (when (eq major-mode 'org-mode)
-      (let* ((context (org-element-lineage
-                       (org-element-context)
-                       '(clock footnote-definition footnote-reference headline
-                               inlinetask link timestamp)
-                       t))
-             (type (org-element-type context)))
-        (memq type '(footnote-definition
-                     footnote-reference
-                     headline inlinetask
-                     link
-                     timestamp))))))
+    "Return non-nil if item is openable. (Think link-like)"
+    (let* ((context (org-element-lineage
+                     (org-element-context)
+                     '(clock footnote-definition footnote-reference headline
+                             inlinetask link timestamp)
+                     t))
+           (type (org-element-type context)))
+      (memq type '(footnote-definition
+                   footnote-reference
+                   headline inlinetask
+                   link
+                   timestamp)))))
 #+end_src
 **** Bindings
 #+begin_src emacs-lisp
@@ -1046,52 +1066,31 @@ Source: https://git.io/vQKEa"
 
   "i"  '(:ignore t :wk "insert")
   "ic" 'org-table-insert-column
-  "ir" 'org-table-insert-row
   "il" 'org-insert-link
   "if" 'org-footnote-new
   "id" 'org-insert-drawer
 
-  "e"  '(:ignore t :wk "eval/export")
-  "ed" 'org-export-dispatch
-  "eh" 'd/org-hugo-export
-  "es" 'd/eval-surrounding-sexp
-  "er" 'eval-region
-  "eb" 'd/eval-buffer
-  "ef" 'd/eval-defun
+  "e" 'org-export-dispatch
 
   "b"  'org-babel-tangle
 
   "x"  '(:ignore t :wk "text")
-  "xb" 'd/org-bold
-  "xi" 'd/org-italic
-  "xc" 'd/org-code
-  "xu" 'd/org-underline
-  "xv" 'd/org-verbatim
-  "xs" 'd/org-strike-through
-  "xr" 'd/org-clear
+  "xe" 'org-emphasize
   "xx" 'org-cut-special
   "xp" 'org-paste-special
 
   ;; tables
   "t"   '(:ignore t :wk "table")
-  "ta"  'org-table-align
   "tb"  'org-table-blank-field
   "tc"  'org-table-convert
   "tdc" 'org-table-delete-column
-  "tdr" 'org-table-kill-row
-  "te"  'org-table-eval-formula
-  "tE"  'org-table-export
-  "th"  'org-table-previous-field
-  "tH"  'org-table-move-column-left
+  "tf"  'org-table-eval-formula
+  "te"  'org-table-export
   "tic" 'org-table-insert-column
   "tih" 'org-table-insert-hline
   "tiH" 'org-table-hline-and-move
-  "tir" 'org-table-insert-row
   "tI"  'org-table-import
-  "tj"  'org-table-next-row
-  "tJ"  'org-table-move-row-down
-  "tK"  'org-table-move-row-up
-  "tl"  'org-table-next-field
+  "tH"  'org-table-move-column-left
   "tL"  'org-table-move-column-right
   "tn"  'org-table-create
   "tN"  'org-table-create-with-table.el
@@ -1130,9 +1129,7 @@ Source: https://git.io/vQKEa"
     (define-key org-mode-map (kbd char)
       `(lambda ()
          (interactive)
-         (d/org-insert-list-item-or-self ,char))))
-
-  (setq org-bullets-bullet-list '("•")))
+         (d/org-insert-list-item-or-self ,char)))))
 #+end_src
 **** Export backends
 ***** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
@@ -1198,18 +1195,13 @@ Org sync with Google Calendar
   "qf" 'delete-frame
   "qq" 'save-buffers-kill-emacs
 
-  "t"   '(:def d/toggle/body :wk "toggle")
+  "td" 'toggle-debug-on-error
+  "tr" 'd/toggle-rlines
 
   "&"   'async-shell-command
   ":"   'eval-expression
   "r"   'repeat
   "u"   'universal-argument)
-#+end_src
-*** macOS fullscreen
-A convenient full-screen binding I'm used to from iTerm.
-#+begin_src emacs-lisp
-(when (eq system-type 'darwin)
-  (global-set-key (kbd "<s-return>") #'toggle-frame-fullscreen))
 #+end_src
 *** Macros
 #+begin_src emacs-lisp
@@ -1413,32 +1405,35 @@ Leader bindings
 #+end_src
 * Files/Buffers
 ** Defaults
+*** Buffer names
 How to uniquify buffer names.
 #+begin_src emacs-lisp
 (setq uniquify-buffer-name-style 'forward)
 #+end_src
+*** Frame
 If a frame is already open, use it to open files.
 #+begin_src emacs-lisp
 (setq ns-pop-up-frames nil)
 #+end_src
+*** Symlinks
 Follow symlinks to files under version control because why would I not.
 #+begin_src emacs-lisp
 (setq vc-follow-symlinks t)
 #+end_src
+*** Help buffer
 Select the help window when opening it (I like this so I can quickly ~q~ out).
 #+begin_src emacs-lisp
 (setq help-window-select t)
 #+end_src
-Backup
+*** Backup
 #+begin_src emacs-lisp
 (setq version-control t
       delete-old-versions t)
 #+end_src
-Executable
+*** Executable
 #+begin_src emacs-lisp
 (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
 #+end_src
-
 ** Built-in
 *** [[elisp:(find-library-other-window%20"bookmark")][bookmark]]
 #+begin_quote
@@ -1581,6 +1576,8 @@ operate on buffers like dired
 #+begin_src emacs-lisp
 (use-package recentf
   :config
+  (setq recentf-max-saved-items 50)
+
   (defun d/recentf-exclude? (f)
     (string-prefix-p
      (expand-file-name "var/" "~/dotfiles/emacs.d")
@@ -1822,16 +1819,19 @@ Source: https://git.io/vQKuU"
 #+end_src
 * Editing
 ** Defaults
+*** Default mode
 Text-mode is nicer than fundamental-mode, or so I hear.
 #+begin_src emacs-lisp
 (setq-default major-mode 'text-mode)
 #+end_src
+*** Fill
 Fill column default, and use auto-fill for text-mode (and derived modes, such
 as org-mode, markdown, etc.).
 #+begin_src emacs-lisp
 (setq-default fill-column 79)
 (add-hook 'text-mode-hook 'auto-fill-mode)
 #+end_src
+*** Input
 TeX input is /really/ useful for inputing special characters. Setting it as
 default makes it quickly available with ~C-\~, or ~toggle-input-method~.
 
@@ -1841,10 +1841,12 @@ glory.
 #+begin_src emacs-lisp
 (setq default-input-method "TeX")
 #+end_src
+*** Sentence
 Who uses double spaces between sentences?
 #+begin_src emacs-lisp
 (setq sentence-end-double-space nil)
 #+end_src
+*** Tab
 Dear god I hate tabs. Also, four spaces is a good indentation default.
 #+begin_src emacs-lisp
 (setq-default indent-tabs-mode nil
@@ -2046,6 +2048,12 @@ Correcting words with flyspell via custom interface.
 **** [[https://github.com/syohex/emacs-fontawesome][fontawesome]]
 #+begin_src emacs-lisp
 (use-package fontawesome)
+#+end_src
+**** [[elisp:(find-library%20"counsel-weather-icons")][counsel-weather-icons]]
+#+begin_src emacs-lisp
+(use-package counsel-weather-icons
+  :commands counsel-weather-icons
+  :straight nil)
 #+end_src
 **** [[https://github.com/nflath/hungry-delete][hungry-delete]]
 #+begin_src emacs-lisp
@@ -2437,6 +2445,7 @@ right boundary.
       scroll-conservatively 10000
       auto-hscroll-mode 'current-line)
 #+end_src
+*** Mouse Scroll
 Smoother mouse scrolling, which is now irrelevant to me since I've disabled the
 mouse in emacs.
 #+begin_src emacs-lisp
@@ -2713,7 +2722,7 @@ Fixed and automatic balanced window layout for Emacs
 * Appearance
 ** Defaults
 *** Startup
-Get right to your files or the scratch buffer. No B.S.
+Get right to the scratch buffer if not editing a file.
 #+begin_src emacs-lisp
 (setq inhibit-startup-screen t
       inhibit-startup-echo-area-message t)
@@ -2726,6 +2735,22 @@ Get right to your files or the scratch buffer. No B.S.
          display-time-format "│ %Y-%d-%m %H:%M │"
          display-time-load-average nil))
 #+end_src
+*** Battery
+#+begin_src emacs-lisp :tangle no
+(d/after 'battery
+  (setq battery-mode-line-format "%p" ; only percent
+        battery-mode-line-limit 101)  ; show battery at 100%
+
+  (define-advice battery-linux-sysfs (:around (fn) d/fix-percent)
+    "Don't report >100% battery, hide decimal percent."
+    (let* ((alist (funcall fn))
+           (bat (string-to-number (alist-get 112 alist))))
+      (setf (alist-get 112 alist) (if (>= bat 100)
+                                      "100"
+                                    (format "%.f" bat)))
+      alist)))
+#+end_src
+
 *** Gui elements
 Turn off gui elements that I never use. Gui emacs is great, but I still prefer
 text-based interaction thank you very much.
@@ -2752,8 +2777,8 @@ Set the font to Iosevka Term, if available.
 *** Minibuffer
 Use a bar cursor in the minibuffer.
 #+begin_src emacs-lisp
-(add-hook 'minibuffer-setup-hook
-          (lambda () (setq-local cursor-type '(bar . 1))))
+(d/hook minibuffer-setup
+  (setq-local cursor-type '(bar . 1)))
 #+end_src
 *** Margin
 #+begin_src emacs-lisp
@@ -3366,39 +3391,6 @@ Source: http://tinyurl.com/le6wxuo"
     (sp-end-of-sexp (abs levels))
     (eval-last-sexp nil)))
 
-(defun d/pp-eval-surrounding-sexp (levels)
-  "Replace the preceding sexp with its value.
-
-Source: http://tinyurl.com/mh5ev6x"
-  (interactive "p")
-  (let (pp-escape-newlines)
-    (save-excursion
-      (sp-end-of-sexp (abs levels))
-      (pp-eval-last-sexp nil))))
-
-(defun d/pp-macroexpand-surrounding-sexp (levels)
-  (interactive "p")
-  (let (pp-escape-newlines)
-    (save-excursion
-      (sp-end-of-sexp (abs levels))
-      (pp-macroexpand-last-sexp nil))))
-
-(defun d/eval-buffer ()
-  (interactive)
-  (if (eq major-mode 'org-mode)
-      (org-babel-execute-src-block)
-    (eval-buffer)))
-
-(defun d/eval-defun ()
-  (interactive)
-  (if  (eq major-mode 'org-mode)
-      (progn
-        (when (org-in-src-block-p)
-          (org-edit-special)
-          (eval-defun nil)
-          (org-edit-src-exit)))
-    (eval-defun (when current-prefix-arg 'edebug))))
-
 (defmacro d/let (&rest clause)
   (declare (indent defun))
   (pcase clause
@@ -3484,14 +3476,11 @@ Source: https://git.io/vQKz8"
 **** Bindings
 #+begin_src emacs-lisp
 (d/mode-leader-keys emacs-lisp-mode-map
-  "eb" 'd/eval-buffer
+  "eb" 'eval-buffer
   "ef" 'eval-defun
   "er" 'eval-region
-  "eR" 'd/eval-and-replace
   "es" 'd/eval-surrounding-sexp
-  "el" 'eval-last-sexp
-  "pm" 'd/pp-macroexpand-surrounding-sexp
-  "ps" 'd/pp-eval-surrounding-sexp)
+  "el" 'eval-last-sexp)
  #+end_src
 **** Setup
 #+begin_src emacs-lisp
@@ -4238,6 +4227,8 @@ A Collection of Ridiculously Useful eXtensions for Emacs
     "fd" 'crux-delete-file-and-buffer
     "fr" 'crux-rename-file-and-buffer
     "bs" 'crux-sudo-edit)
+  (d/mode-leader-keys emacs-lisp-mode-map
+    "eR" 'crux-eval-and-replace)
   :config
   (crux-with-region-or-line eval-region)
   (crux-with-region-or-buffer indent-region)
@@ -4415,40 +4406,6 @@ A smart M-x enhancement for Emacs.
 Sorts ivy by most recently used, I think.
 #+begin_src emacs-lisp
 (use-package smex)
-#+end_src
-** Hydras
-*** toggle
-#+begin_src emacs-lisp
-(defhydra d/toggle
-  (:pre (progn
-          (defvar flycheck-mode nil)
-          (defvar focus-mode nil)
-          (defvar d/show-async-tangle-results nil))
-   :color pink
-   :timeout 1)
-  "
-_a_ abbrev:              %-3s`abbrev-mode   _d_ debug-on-error:      %-3s`debug-on-error   _P_ prettify-symbols:       %-3s`prettify-symbols-mode
-_i_ aggressive-indent:   %-3s`aggressive-indent-mode   _l_ rlines:              %-3s`display-line-numbers-mode   _F_ focus:                  %-3s`focus-mode
-_c_ column-indicator:    %-3s`column-enforce-mode   _p_ smartparens:         %-3s`smartparens-mode   _z_ async-tangle-results:   %-3s`d/show-async-tangle-results
-_f_ flycheck:            %-3s`flycheck-mode   _e_ evil-smartparens:    %-3s`evil-smartparens-mode
-_s_ flyspell:            %-3s`flyspell-mode   _w_ global-whitespace:   %-3s`global-whitespace-mode
-"
-  ("a" abbrev-mode nil)
-  ("i" aggressive-indent-mode nil)
-  ("d" toggle-debug-on-error nil)
-  ("c" column-enforce-mode nil)
-  ("l" display-line-numbers-mode nil)
-  ("p" smartparens-mode nil)
-  ("P" prettify-symbols-mode nil)
-  ("e" evil-smartparens-mode nil)
-  ("f" flycheck-mode nil)
-  ("F" focus-mode nil)
-  ("s" flyspell-mode nil)
-  ("w" global-whitespace-mode nil)
-  ("z" (if d/show-async-tangle-results
-           (setq d/show-async-tangle-results nil)
-         (setq d/show-async-tangle-results t)) nil)
-  ("q" nil))
 #+end_src
 * Fun
 ** Packages
@@ -4922,12 +4879,6 @@ Nickname Highlighting for ERC
   (setq erc-hl-nicks-skip-nicks '("diegs" "dieggsy")
         erc-lurker-ignore-chars erc-hl-nicks-ignore-chars)
   (push "erc-current-nick-face" erc-hl-nicks-skip-faces))
-#+end_src
-*** [[https://github.com/kidd/erc-image.el][erc-image]]
-#+begin_src emacs-lisp
-(use-package erc-image
-  :config
-  (setq erc-image-inline-rescale 300))
 #+end_src
 *** [[https://github.com/skeeto/elfeed][elfeed]]
 #+begin_quote
