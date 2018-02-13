@@ -2,6 +2,6 @@
 # name: src
 # key: <s
 # --
-#+begin_src ${1:lang}
+#+begin_src ${1:emacs-lisp}
 $0
 #+end_src
