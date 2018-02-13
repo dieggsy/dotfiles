@@ -616,18 +616,17 @@ A really nice search/completion system for emacs.
   :config
   (ivy-mode 1)
 
+  (defvar d/ivy-buffer-ignored-modes '(magit-mode erc-mode dired-mode grep-mode))
+
   (defun d/ivy-ignore-buffer? (str)
-    "Return non-nil if STR names a Dired buffer.
+    "Return non-nil if str names a buffer with a major mode
+derived from one of `d/ivy-buffer-ignored-modes'.
+
 This function is intended for use with `ivy-ignore-buffers'."
     (let* ((buf (get-buffer str))
            (mode (and buf (buffer-local-value 'major-mode buf))))
       (and mode
-           (provided-mode-derived-p
-            mode
-            'magit-mode
-            'erc-mode
-            'dired-mode
-            'grep-mode))))
+           (apply #'provided-mode-derived-p mode d/ivy-buffer-ignored-modes))))
 
   (d/list-prepend! 'ivy-ignore-buffers
     'd/ivy-ignore-buffer?
