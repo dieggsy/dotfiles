@@ -7,17 +7,17 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     "owner" = "be5invis";
     "repo" = "iosevka";
-    "rev" = "96f3af9d8b78524f14c355eae6ee54896531b483";
-    "sha256" = "1ry0473h7ld41izrcdkwk2vlvrrhqrqc4prca7x43wlqwr3x9rfw";
+    "rev" = "495620c57cdcc6f38a10658a0207d04134643cc3";
+    "sha256" = "0mmdlrd9a0rhmmdqwkk6v7cdvbi23djr5kkiyv38llk11j3w0clp";
   };
 
   buildInputs = [ otfcc nodejs-8_x gnumake ttfautohint ];
 
   buildPhase = ''
     HOME=. npm install
-    # make custom-config set=term design='term v-asterisk-low' italic='v-i-serifed v-l-serifed v-a-doublestorey v-g-doublestorey'
+    make custom-config set=term design='term v-asterisk-low' italic='v-i-serifed v-l-serifed v-a-doublestorey v-g-doublestorey'
     # make custom-config set=term design='term v-asterisk-low v-l-zshaped v-i-zshaped v-a-singlestorey v-g-singlestorey v-m-shortleg' italic='v-l-zshaped v-i-zshaped v-a-singlestorey v-g-singlestorey v-m-shortleg'
-    make custom-config set=term design='term v-asterisk-low v-l-zshaped v-i-zshaped v-a-doublestorey v-g-doublestorey v-m-shortleg' italic='v-l-zshaped v-i-zshaped v-a-doublestorey v-g-doublestorey v-m-shortleg'
+    # make custom-config set=term design='term v-asterisk-low v-l-zshaped v-i-zshaped v-a-doublestorey v-g-doublestorey v-m-shortleg' italic='v-l-zshaped v-i-zshaped v-a-doublestorey v-g-doublestorey v-m-shortleg'
     make custom set=term
   '';
 
