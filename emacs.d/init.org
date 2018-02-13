@@ -3016,11 +3016,10 @@ Source: https://git.io/vQKzq"
      (d/with-evil-tag-color
        (d/with-window-status
          (cond ((and window-active?
-                     (not (or ;; (featurep 'exwm)
-                           (d/eyebrowse-relevant?)
-                           (bound-and-true-p anzu--state)
-                           (d/in-macro?)
-                           (d/in-evil-substitution?))))
+                     (not (or (d/eyebrowse-relevant?)
+                              (bound-and-true-p anzu--state)
+                              (d/in-macro?)
+                              (d/in-evil-substitution?))))
                 (d/make-xpm evil-tag-color 56 8))
                ((not window-active?)
                 (d/make-xpm "#1D2021" 56 8))))))
@@ -3037,8 +3036,6 @@ Source: https://git.io/vQKzq"
                      "Macro"))
                   ((bound-and-true-p anzu--state)
                    (anzu--update-mode-line))
-                  ;; ((featurep 'exwm)
-                  ;;  (number-to-string (1+ exwm-workspace-current-index)))
                   ((d/eyebrowse-relevant?)
                    (let* ((num (eyebrowse--get 'current-slot))
                           (tag (nth 2 (assoc num (eyebrowse--get 'window-configs)))))
@@ -3071,9 +3068,8 @@ Source: https://git.io/vQKzq"
                 '(:foreground "#D3869B")))))
     ;; Line/column number
     (:eval (d/with-window-status
-             (unless (eq major-mode 'exwm-mode)
-               (propertize-active "%4l:%2c  "
-                                  'face '(:foreground "#A89984")))))
+             (propertize-active "%4l:%2c  "
+                                'face '(:foreground "#A89984"))))
     ;; Major mode
     (:eval
      (d/with-window-status
@@ -4257,7 +4253,6 @@ Disable the mouse in Emacs
 #+end_quote
 #+begin_src emacs-lisp :tangle no
 (use-package disable-mouse
-  :if (not (string= (getenv "XDG_CURRENT_DESKTOP") "exwm"))
   :defer 15
   :config
   (global-disable-mouse-mode)
