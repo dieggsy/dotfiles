@@ -22,13 +22,11 @@
           ((assoc-ref info 'github)
            (let ((author (car (assoc-ref info 'github)))
                  (repo (cadr (assoc-ref info 'github))))
-             (if (assoc-ref info 'recursive)
-                 (format "https://github.com/~a/~a.git" author repo)
-                 (format "https://github.com/~a/~a/archive/~a.zip"
-                         author
-                         repo
-                         (or gitsha
-                             (assoc-ref info 'gitsha)))))))))
+             (format "https://github.com/~a/~a/archive/~a.zip"
+                     author
+                     repo
+                     (or gitsha
+                         (assoc-ref info 'gitsha))))))))
 
 (define (get-custom-repo name)
   (let ((info (assoc-ref custom-hashes name)))
@@ -46,15 +44,28 @@
       (string-split
        (run/string (git ls-remote ,(get-custom-repo name) master)) "\t")))
     ((sha256-remote)
-     (last
-      (run/strings
-       (guix download ,(get-custom-uri
-                        name
-                        (get-custom 'gitsha-remote name))))))
+     (if (get-custom 'recursive name)
+         (begin
+           (let ((dir-name (string-append
+                            "guix-custom-"
+                            (number->string
+                             (inexact->exact (current-seconds))))))
+             (change-directory "/tmp/")
+             (run (git clone --recursive ,(get-custom-repo name) ,dir-name))
+             (change-directory dir-name)
+             (string-chomp (run/string (guix hash "." -rx)))))
+         (last
+          (run/strings
+           (guix download ,(get-custom-uri
+                            name
+                            (get-custom 'gitsha-remote name)))))))
     (else
      (assoc-ref
       (assoc-ref custom-hashes name)
       key))))
+
+;; (define (update-info info)
+;;   )
 
 (define (update-hashes #!optional (port #t))
   (let loop ((pkgs custom-hashes))

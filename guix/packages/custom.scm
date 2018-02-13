@@ -1,4 +1,5 @@
 ;; -*- geiser-scheme-implementation: guile -*-
+(read-enable 'r7rs-symbols)
 (define-module (custom)
   #:use-module (deps)
   #:use-module ((guix licenses) #:prefix |license:|)
@@ -30,7 +31,8 @@
   #:use-module (gnu packages gtk)
   #:use-module (gnu packages pkg-config)
   #:use-module (guix build-system cmake)
-  #:use-module (guix build-system font))
+  #:use-module (guix build-system font)
+  #:use-module (gnu packages python))
 
 (define custom-hashes
   (read (open-input-file
@@ -55,6 +57,15 @@
                    (cadr (assoc-ref info 'github))
                    (assoc-ref info 'gitsha))))))
 
+(define (get-custom-repo name)
+  (let ((info (assoc-ref custom-hashes (string->keyword name))))
+    (cond ((assoc-ref info 'repo)
+           (assoc-ref info 'repo))
+          ((assoc-ref info 'github)
+           (format #f "https://github.com/~a/~a.git"
+                   (car (assoc-ref info 'github))
+                   (cadr (assoc-ref info 'github)))))))
+
 (define (custom-git-version name)
   (git-version
    (get-custom 'version name)
@@ -63,228 +74,106 @@
 
 (define-public emacs-git
   (package
-   (inherit emacs)
-   (name "emacs-git")
-   (version (custom-git-version name))
-   (source (origin
-            (method url-fetch)
-            (file-name (git-file-name name version))
-            (uri (get-custom-uri name))
-            (sha256 (base32 (get-custom 'sha256 name)))))
-   (inputs
-    `(("jansson" ,jansson)
-      ("webkitgtk" ,webkitgtk)
-      ("lcms" ,lcms)
-      ("gpm" ,gpm)
-      ("libxcomposite" ,libxcomposite)
-      ,@(package-inputs emacs)))
-   (native-inputs
-    `(("autoconf" ,autoconf)
-      ,@(package-native-inputs emacs)))
-   (arguments
-    (substitute-keyword-arguments
-     `(#:tests?
-       #f
-       #:configure-flags
-       '("--with-jansson"
-         "--with-modules"
-         "--with-xwidgets")
-       ,@(package-arguments emacs))
-     ((#:phases phases)
-      `(modify-phases
-        ,phases
-        (add-before
-         'configure 'autogen
-         (lambda _
-           (zero? (system* "./autogen.sh"))))))))))
-
-(define-public sxhkd-git
-  (package
-   (inherit sxhkd)
-   (name "sxhkd-git")
-   (version (git-version
-             (get-custom 'version name)
-             (get-custom 'rev name)
-             (get-custom 'gitsha name)))
-   (source
-    (origin
-     (file-name (string-append (git-file-name name version) ".zip"))
-     (method url-fetch)
-     (uri (get-custom-uri name))
-     (sha256 (base32 (get-custom 'sha256 name)))))
-   (native-inputs
-    `(("unzip" ,unzip)
-      ,@(package-native-inputs bspwm)))))
-
-(define-public bspwm-git
-  (package
-   (inherit bspwm)
-   (name "bspwm-git")
-   (version (git-version
-             (get-custom 'version name)
-             (get-custom 'rev name)
-             (get-custom 'gitsha name)))
-   (source
-    (origin
-     (file-name (string-append (git-file-name name version) ".zip"))
-     (method url-fetch)
-     (uri (get-custom-uri name))
-     (sha256 (base32 (get-custom 'sha256 name)))))
-   (inputs
-    `(("sxhkd" ,sxhkd-git)
-      ,@(alist-delete "sxhkd" (package-inputs bspwm))))
-   (native-inputs
-    `(("unzip" ,unzip)
-      ,@(package-native-inputs bspwm)))))
+    (inherit emacs)
+    (name "emacs-git")
+    (version (custom-git-version name))
+    (source (origin
+              (method url-fetch)
+              (file-name (git-file-name name version))
+              (uri (get-custom-uri name))
+              (sha256 (base32 (get-custom 'sha256 name)))))
+    (inputs
+     `(("jansson" ,jansson)
+       ("webkitgtk" ,webkitgtk)
+       ("lcms" ,lcms)
+       ("gpm" ,gpm)
+       ("libxcomposite" ,libxcomposite)
+       ,@(package-inputs emacs)))
+    (native-inputs
+     `(("autoconf" ,autoconf)
+       ,@(package-native-inputs emacs)))
+    (arguments
+     (substitute-keyword-arguments
+         `(#:tests?
+           #f
+           ;; #:make-flags
+           ;; '("bootstrap")
+           #:configure-flags
+           '("--with-jansson"
+             "--with-modules"
+             "--with-xwidgets")
+           ,@(package-arguments emacs))
+       ((#:phases phases)
+        `(modify-phases ,phases
+           (add-before 'configure 'autogen
+             (lambda _
+               (zero? (system* "./autogen.sh"))))))))))
 
 (define-public font-weather-icons
   (package
-   (name "font-weather-icons")
-   (version "2.0.10")
-   (source (origin
-            (method url-fetch/zipbomb)
-            (uri (string-append
-                  "https://github.com/erikflowers/weather-icons/archive/"
-                  version
-                  ".zip"))
-            (sha256
-             (base32
-              "0hgqiry1xgfmbr84aj3941bnljr7vv0igyk496dyxpg3vmsrq0b6"))))
-   (build-system font-build-system)
-   (arguments
-    `(#:phases
-      (modify-phases
-       %standard-phases
-       (add-before
-        'install
-        'chdir
-        (lambda _
-          (chdir (string-append "weather-icons-" ,version "/font")))))))
-   (home-page "https://erikflowers.github.io/weather-icons/")
-   (synopsis "215 Weather Themed Icons and CSS")
-   (description
-    "Weather Icons is the only icon font and CSS with 222 weather themed icons,
+    (name "font-weather-icons")
+    (version "2.0.10")
+    (source (origin
+              (method url-fetch/zipbomb)
+              (uri (string-append
+                    "https://github.com/erikflowers/weather-icons/archive/"
+                    version
+                    ".zip"))
+              (sha256
+               (base32
+                "0hgqiry1xgfmbr84aj3941bnljr7vv0igyk496dyxpg3vmsrq0b6"))))
+    (build-system font-build-system)
+    (arguments
+     `(#:phases
+       (modify-phases %standard-phases
+         (add-before 'install 'chdir
+           (lambda _
+             (chdir (string-append "weather-icons-" ,version "/font")))))))
+    (home-page "https://erikflowers.github.io/weather-icons/")
+    (synopsis "215 Weather Themed Icons and CSS")
+    (description
+     "Weather Icons is the only icon font and CSS with 222 weather themed icons,
 ready to be dropped right into Bootstrap, or any project that needs high
 quality weather, maritime, and meteorological based icons!")
-   (license #f)))
+    (license #f)))
 
-;; (define-public polybar-git
-;;   (package
-;;    (name "polybar-git")
-;;    (version (custom-git-version name))
-;;    (build-system cmake-build-system)
-;;    (source
-;;     (origin
-;;      ;; (file-name (string-append (git-file-name name version) ".zip"))
-;;      (method git-fetch)
-;;      (uri (get-custom-uri name))
-;;      (recursive? #t)
-;;      (file-name (git-file-name name version))
-;;      (sha256 (base32 (get-custom 'sha256 name))))
-;;     (inputs
-;;      `(("cairo" ,cairo)
-;;        ("xcb-util-image" ,xcb-util-image)
-;;        ("xcb-util-wm" ,xcb-util-wm)
-;;        ("xcb-util-xrm" ,xcb-util-xrm)
-;;        ("xcb-util-cursor" ,xcb-util-cursor)))
-;;     (native-inputs
-;;      `(("unzip" ,unzip)
-;;        ("pkg-config" ,pkg-config)))
-;;     (home-page "https://github.com/jaagr/polybar")
-;;     (synopsis "A fast and easy-to-use status bar")
-;;     (description "A fast and easy-to-use tool for creating status bars. Polybar
-;; aims to help users build beautiful and highly customizable status bars for
-;; their desktop environment, without the need of having a black belt in shell
-;; scripting. ")
-;;     (license #f))))
+(define-public font-symbola
+  (package
+    (name "font-symbola")
+    (version "10.24")
+    (source (origin
+              (method url-fetch/zipbomb)
+              (uri "http://users.teilar.gr/~g1951d/Symbola.zip")
+              (sha256
+               (base32 "0q1yx7fq0hqbm35khyf4gibmx8fjypa88xfd1yf8crh3hqlmz7vy"))))
+    (build-system font-build-system)
+    (home-page "http://users.teilar.gr/~g1951d/")
+    (synopsis "Font for unicode symbols")
+    (description #f)
+    (license #f)))
 
-;; (define-public unclutter-xfixes-git
-;;   (package
-;;    (inherit unclutter)
-;;    (name "unclutter-xfixes-git")
-;;    (version (git-version
-;;              (get-custom 'version name)
-;;              (get-custom 'rev name)
-;;              (get-custom 'gitsha name)))
-;;    (source
-;;     (origin
-;;      (file-name (string-append (git-file-name name version) ".zip"))
-;;      (method url-fetch)
-;;      (uri (get-custom-uri name))
-;;      (sha256 (base32 (get-custom 'sha256 name)))))
-;;    (inputs
-;;     `(("libev" ,libev)
-;;       ("libxfixes" ,libxfixes)
-;;       ("libxi" ,libxi)
-;; some X error?
-;;       ,@(package-inputs unclutter)))
-;;    (native-inputs
-;;     `(("unzip" ,unzip)
-;;       ,@(package-native-inputs unclutter)))))
-
-;; (define-public ripgrep
-;;   (package
-;;    (name "ripgrep")
-;;    (version "0.7.1")
-;;    (source (origin
-;;             (method url-fetch/tarbomb)))))
-
-;; (define-public font-iosevka-custom
-;;   (package
-;;    (inherit font-iosevka)
-;;    (name "font-iosevka-custom")
-;;    (version "1.13.4")
-;;    (source (origin
-;;             (method url-fetch)
-;;             (uri
-;;              (string-append "https://github.com/be5invis/Iosevka/archive/v"
-;;                             version
-;;                             ".tar.gz")
-;;              ;; (string-append
-;;              ;;  "https://github.com/be5invis/Iosevka/archive/"
-;;              ;;  "9df394a4ab6f3c75f0cb0b95ae7ec0c64d531000"
-;;              ;;  ".zip")
-;;              )
-;;             (sha256
-;;              (base32 "0harh619djcqx61xvigvgxw2rqb21fmsnx1yz396p1m0bvygk6c2")
-;;              ;; (base32 "170508r22w38f1zpsxb4zr7chjgb67ghjq4q2lmlkx7mq21v5730")
-;;              )))
-;;    (build-system gnu-build-system)
-;;    (inputs
-;;     `(("node" ,node)
-;;       ("ttfautohint" ,ttfautohint)
-;;       ("otfcc" ,otfcc)))
-;;    (arguments
-;;     `(#:tests?
-;;       #f
-;;       #:make-flags '("custom set=term")
-;;       #:phases
-;;       (modify-phases
-;;        %standard-phases
-;;        (delete 'configure)
-;;        (add-after
-;;         'patch-source-shebangs 'npm
-;;         (lambda _
-;;           (let ((npm (string-append (assoc-ref %build-inputs "node")
-;;                                     "/bin/npm")))
-;;             (and
-;;              (setenv "HOME" ".")
-;;              (zero? (system* npm "set" "strict-ssl" "false"))
-;;              (zero? (system* npm "install" "-g"))))))
-;;        (add-before
-;;         'build 'customize
-;;         (lambda _
-;;           (zero?
-;;            (system*
-;;             "make"
-;;             "custom-config"
-;;             "set=term"
-;;             "design='term v-asterisk-low v-l-zshaped v-i-zshaped v-a-singlestorey v-g-singlestorey v-m-shortleg'"
-;;             "italic='v-l-zshaped v-i-zshaped v-a-singlestorey v-g-singlestorey v-m-shortleg'"))))
-;;        (replace
-;;         'install
-;;         (lambda* (#:key outputs #:allow-other-keys)
-;;           (let* ((font-dir (string-append %output "/share/fonts/truetype")))
-;;             (for-each (lambda (file)
-;;                         (install-file file font-dir))
-;;                       (find-files "dist/iosevka-term/ttf" ""))))))))))
+(define-public font-sarasa-gothic
+  (package
+    (name "font-sarasa-gothic")
+    (version "0.5.1")
+    (source
+     (origin
+       (method url-fetch)
+       (uri (string-append "https://github.com/be5invis/Sarasa-Gothic/releases/download/v"
+                           version
+                           "/sarasa-gothic-ttf-0.5.1.7z"))
+       (sha256
+        (base32 "0m5pa3xbdw0bb6dm50pxkg5jiib14rfx2fdf7w1r143jki3gd6ln"))))
+    (build-system font-build-system)
+    (native-inputs `(("p7zip" ,p7zip)))
+    (arguments
+     `(#:phases
+       (modify-phases %standard-phases
+         (replace 'unpack
+           (lambda* (#:key source #:allow-other-keys)
+             (and (zero? (system* "7za" "e" source))))))))
+    (home-page "https://github.com/be5invis/Sarasa-Gothic/")
+    (synopsis "This is SARASA GOTHIC, a Chinese & Japanese programming font
+based on Iosevka and Source Han Sans.")
+    (description #f)
+    (license license:bsd-3)))
