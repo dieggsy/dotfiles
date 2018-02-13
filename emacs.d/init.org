@@ -1573,7 +1573,7 @@ operate on buffers like dired
              (not (mode . eshell-mode))
              (filename . "/gnu.*")))
            ("Magit"
-            (name . "\\*magit"))
+            (derived-mode . magit-mode))
            ("Shell"
             (predicate member major-mode '(eshell-mode term-mode))))))
 
