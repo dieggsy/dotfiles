@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: gh
+# key: gh
+# --
+git@github.com:
