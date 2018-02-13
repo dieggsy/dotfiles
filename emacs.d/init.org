@@ -2747,7 +2747,7 @@ have a look. Additionally, show whitespace.
 *** Font
 Set the font to Iosevka Term, if available.
 #+begin_src emacs-lisp
-(when (and window-system (x-list-fonts "Iosevka Term"))
+(when (and (display-graphic-p) (x-list-fonts "Iosevka Term"))
   (add-to-list 'default-frame-alist '(font . "Iosevka Term-9.5:weight=book"))
   (set-face-attribute 'default t :font "Iosevka Term-9.5:weight=book"))
 #+end_src
