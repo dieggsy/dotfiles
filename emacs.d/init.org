@@ -621,16 +621,22 @@ A really nice search/completion system for emacs.
 This function is intended for use with `ivy-ignore-buffers'."
     (let* ((buf (get-buffer str))
            (mode (and buf (buffer-local-value 'major-mode buf))))
-      (and mode (member mode '(dired-mode erc-mode)))))
+      (and mode
+           (provided-mode-derived-p
+            mode
+            'magit-mode
+            'erc-mode
+            'dired-mode
+            'grep-mode))))
 
   (d/list-prepend! 'ivy-ignore-buffers
     'd/ivy-ignore-buffer?
     (rx "*"
-        (or "LV" "epc" "Calc" "Colors" "Help" "Packages" "Customize" "info"
+        (or "LV" "epc" "Calc" "Colors" "help" "Packages" "Customize" "info"
             "Compile" "anaconda-mode" "scratch" "Messages" "elfeed-log" "Man"
             "Quail" "Paradox Report" "Backtrace" "slime-events"
             "slime-compilation" "inferior-lisp" "Completions" "embrace-help"
-            "geiser messages*" "Geiser dbg" "tramp/.*" "Process List"
+            "geiser messages*" "Geiser dbg" "tramp/" "Process List"
             "eshell:" "Error")))
 
   (defun d/ivy-dired-transformer (str)
