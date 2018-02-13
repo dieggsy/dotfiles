@@ -634,7 +634,8 @@ A really nice search/completion system for emacs.
    "C-j" 'ivy-next-line
    "C-k" 'ivy-previous-line
    [S-up] 'ivy-previous-history-element
-   [S-down] 'ivy-next-history-element)
+   [S-down] 'ivy-next-history-element
+   "DEL" 'ivy-backward-delete-char)
   (d/leader-keys
     "-" 'ivy-resume
     "bb" 'ivy-switch-buffer
