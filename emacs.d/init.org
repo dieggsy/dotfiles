@@ -2947,29 +2947,37 @@ Source: https://git.io/vQKzv"
   "Create an XPM bitmap.
 
 Source: https://git.io/vQKzL"
-  (propertize
-   " " 'display
-   (let ((data (make-list height (make-list width 1)))
-         (color (or color "None")))
-     (create-image
-      (concat
-       (format "/* XPM */\nstatic char * percent[] = {\n\"%i %i 2 1\",\n\". c %s\",\n\"  c %s\","
-               (length (car data))
-               (length data)
-               color
-               color)
-       (apply #'concat
-              (cl-loop with idx = 0
-                       with len = (length data)
-                       for dl in data
-                       do (cl-incf idx)
-                       collect
-                       (concat "\""
-                               (cl-loop for d in dl
-                                        if (= d 0) collect (string-to-char " ")
-                                        else collect (string-to-char "."))
-                               (if (eq idx len) "\"};" "\",\n")))))
-      'xpm t :ascent 'center))))
+  (if (display-graphic-p)
+      (propertize
+       " " 'display
+       (let ((data (make-list height (make-list width 1)))
+             (color (or color "None"))
+             (xpm-name (intern (concat "d/ml-xpm-" (substring color 1)))))
+         (if (boundp xpm-name)
+             (symbol-value xpm-name)
+           (set xpm-name
+                (create-image
+                 (concat
+                  (format "/* XPM */\nstatic char * percent[] = {\n\"%i %i 2 1\",\n\". c %s\",\n\"  c %s\","
+                          (length (car data))
+                          (length data)
+                          color
+                          color)
+                  (apply #'concat
+                         (cl-loop with idx = 0
+                                  with len = (length data)
+                                  for dl in data
+                                  do (cl-incf idx)
+                                  collect
+                                  (concat "\""
+                                          (cl-loop for d in dl
+                                                   if (= d 0) collect (string-to-char " ")
+                                                   else collect (string-to-char "."))
+                                          (if (eq idx len) "\"};" "\",\n")))))
+                 'xpm t :ascent 'center)))))
+    (propertize
+     " " 'face
+     `(:background ,color))))
 
 (defun d/eyebrowse-relevant? ()
   (and (featurep 'eyebrowse)
