@@ -1755,9 +1755,11 @@ font-0 = Iosevka Term:size=17;3
 font-1 =  fontawesome:size=17;3
 font-2 =  Weather Icons:size=17;3
 
-modules-left = date network bluez xwindow
+; modules-left = date network bluez xwindow
+modules-left = date network xwindow
 modules-center = i3 bspwm
-modules-right = dropbox spotify cmus inbox-reddit github xkb weather xbacklight volume battery
+; modules-right = dropbox spotify cmus inbox-reddit github xkb weather xbacklight volume battery
+modules-right = dropbox inbox-reddit github xkb weather xbacklight volume battery
 
 wm-restack = bspwm
 
