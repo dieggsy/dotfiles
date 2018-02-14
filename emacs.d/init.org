@@ -107,7 +107,7 @@ bit so let's explicitly require them.
 #+end_src
 ** Init utilities
 #+begin_src emacs-lisp
-(defmacro d/hook (hooks &rest body)
+(defmacro d/hook! (hooks &rest body)
   "Create a setup function for HOOKS and add it to relevant hook(s)."
   (declare (indent defun))
   (let ((hooks (if (listp hooks) hooks (list hooks))))
@@ -1568,7 +1568,7 @@ operate on buffers like dired
            ("Shell"
             (predicate member major-mode '(eshell-mode term-mode))))))
 
-  (d/hook ibuffer-mode
+  (d/hook! ibuffer-mode
     (ibuffer-switch-to-saved-filter-groups "Default"))
 
   (setq ibuffer-never-show-predicates '("\\*magit-\\(diff\\|process\\):")))
@@ -2371,7 +2371,7 @@ Source: http://tinyurl.com/l8z7vph"
 #+end_src
 *** conf-mode
 #+begin_src emacs-lisp
-(d/hook conf-mode
+(d/hook! conf-mode
   (d/setup-prog-mode))
 (add-to-list 'auto-mode-alist '("\\.service\\'" . conf-mode))
 #+end_src
@@ -2778,7 +2778,7 @@ Set the font to Iosevka Term, if available.
 *** Minibuffer
 Use a bar cursor in the minibuffer.
 #+begin_src emacs-lisp
-(d/hook minibuffer-setup
+(d/hook! minibuffer-setup
   (setq-local cursor-type '(bar . 1)))
 #+end_src
 *** Margin
@@ -3207,7 +3207,7 @@ On the fly syntax checking for GNU Emacs
 #+end_src
 *** Setup
 #+begin_src emacs-lisp
-(d/hook prog-mode
+(d/hook! prog-mode
   (subword-mode)
   (auto-fill-mode 1)
   (setq-local comment-auto-fill-only-comments t))
@@ -3281,7 +3281,7 @@ Yapf for Emacs
 #+end_src
 **** Setup
 #+begin_src emacs-lisp
-(d/hook python-mode
+(d/hook! python-mode
   (set (make-local-variable 'comment-inline-offset) 2))
 
 (d/after 'python
@@ -3485,7 +3485,7 @@ Source: https://git.io/vQKz8"
  #+end_src
 **** Setup
 #+begin_src emacs-lisp
-(d/hook (lisp-mode emacs-lisp-mode)
+(d/hook! (lisp-mode emacs-lisp-mode)
   (hs-minor-mode)
   (d/after 'evil-surround
     (push '(? . ("`" . "'")) evil-surround-pairs-alist))
@@ -3542,7 +3542,7 @@ Source: http://tinyurl.com/le6wxuo"
 #+end_src
 **** Setup
 #+begin_src emacs-lisp
-(d/hook scheme-mode
+(d/hook! scheme-mode
   (hs-minor-mode)
   (d/after 'evil-surround
     (push '(? . ("`" . "'")) evil-surround-pairs-alist)))
@@ -3883,7 +3883,7 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
         auto-revert-check-vc-info t
         git-commit-summary-max-length 50
         git-commit-major-mode 'org-mode)
-  (d/hook git-commit-mode
+  (d/hook! git-commit-mode
     (setq-local fill-column 72)
     (setq-local org-hide-emphasis-markers nil)
     (setq-local org-pretty-entities nil)))
@@ -3908,7 +3908,7 @@ operate on system processes like dired
 (use-package proced
   :straight nil
   :init
-  (d/hook proced-mode
+  (d/hook! proced-mode
     (proced-toggle-auto-update 1))
   :config
   (setq proced-auto-update-interval 2))
@@ -3954,7 +3954,7 @@ A shell written in emacs-lisp that has recently been replacing zsh for me.
   (d/leader-keys
     "RET" 'd/eshell-here)
   :init
-  (d/hook eshell-mode
+  (d/hook! eshell-mode
     (setq-local nobreak-char-display nil)
     (imap eshell-mode-map
       [remap eshell-pcomplete] 'completion-at-point
@@ -3965,7 +3965,7 @@ A shell written in emacs-lisp that has recently been replacing zsh for me.
     (nmap eshell-mode-map
       "G" 'end-of-buffer))
   :config
-  (d/hook eshell-post-command
+  (d/hook! eshell-post-command
     (eshell-save-some-history))
   (setenv "PAGER" "cat")
   (setenv "GIT_PAGER" "cat")
@@ -4856,7 +4856,7 @@ Source: http://tinyurl.com/y8tj8vxx"
 #+end_src
 **** Setup
 #+begin_src emacs-lisp
-(d/hook erc-mode
+(d/hook! erc-mode
   (visual-line-mode)
   (setq wrap-prefix (make-string 14 ?\s))
   (set-display-table-slot standard-display-table 'wrap ?\s)
