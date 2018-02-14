@@ -2698,9 +2698,9 @@ Fixed and automatic balanced window layout for Emacs
 ─────────────────────────
 "
   ("h" d/move-splitter-left)
-  ("t" d/move-splitter-down)
-  ("n" d/move-splitter-up)
-  ("s" d/move-splitter-right)
+  ("j" d/move-splitter-down)
+  ("k" d/move-splitter-up)
+  ("l" d/move-splitter-right)
   ("=" balance-windows))
 #+end_src
 ** Bindings
