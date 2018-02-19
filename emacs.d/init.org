@@ -3560,6 +3560,9 @@ Source: http://tinyurl.com/le6wxuo"
 
 (font-lock-add-keywords 'scheme-mode '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)) t)
 (font-lock-add-keywords 'geiser-repl-mode '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)) t)
+(font-lock-add-keywords 'scheme-mode '(("\\<#!\\sw+\\>" . 'font-lock-type-face)) t)
+(font-lock-add-keywords 'geiser-repl-mode '(("\\<#!\\sw+\\>" . 'font-lock-type-face)) t)
+
 #+end_src
 *** [[https://github.com/NixOS/nix-mode][nix-mode]]
 #+begin_quote
