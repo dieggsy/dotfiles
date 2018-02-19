@@ -2700,8 +2700,8 @@ Fixed and automatic balanced window layout for Emacs
 ╭──────────╮
 │ splitter │
 └──────────┴─────────────
- [_s_] → [_t_] ↑ [_=_] balance
- [_h_] ← [_n_] ↓
+ [_l_] → [_j_] ↑ [_=_] balance
+ [_h_] ← [_k_] ↓
 ─────────────────────────
 "
   ("h" d/move-splitter-left)
