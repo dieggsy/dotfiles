@@ -2567,6 +2567,13 @@ click to browse URL or to send to e-mail address
         (setq display-line-numbers t)
       (setq display-line-numbers 'relative))))
 #+end_src
+*** [[elisp:(find-library%20"winner")][winner]]
+#+begin_src emacs-lisp
+(use-package winner
+  :defer 15
+  :config
+  (winner-mode))
+#+end_src
 ** Packages
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
 #+begin_quote
