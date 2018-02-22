@@ -876,7 +876,7 @@ But really, it's life.
         org-catch-invisible-edits 'error
         org-insert-heading-respect-content t
         org-src-window-setup 'current-window
-        org-list-demote-modify-bullet '(("-" . "*") ("*" . "+"))
+        org-list-demote-modify-bullet '(("-" . "+") ("+" . "*") ("*" . "-"))
         org-export-in-background t
         org-confirm-babel-evaluate nil
         org-src-tab-acts-natively t
