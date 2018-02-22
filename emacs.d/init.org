@@ -1042,7 +1042,14 @@ Source: https://git.io/vQKEa"
                    footnote-reference
                    headline inlinetask
                    link
-                   timestamp)))))
+                   timestamp))))
+
+  (define-advice org-babel-do-key-sequence-in-edit-buffer (:override (key) d/evil-insert)
+    (interactive "kEnter key-sequence to execute in edit buffer: ")
+    (org-babel-do-in-edit-buffer
+     (evil-insert-state)
+     (call-interactively
+      (key-binding (or key (read-key-sequence nil)))))))
 #+end_src
 **** Bindings
 #+begin_src emacs-lisp
