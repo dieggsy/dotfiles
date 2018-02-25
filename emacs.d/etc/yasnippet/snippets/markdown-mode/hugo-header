@@ -1,9 +1,0 @@
-# key: hugo
-# name: hugo-header
-# --
----
-title: "$1"
-slug: $2
-date: "`(format-time-string "%Y-%m-%d")`"
-categories: [$3]
----
