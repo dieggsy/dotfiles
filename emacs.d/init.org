@@ -3289,7 +3289,7 @@ Code navigation, documentation lookup and completion for Python.
   :hook (python-mode
          (python-mode . anaconda-eldoc-mode))
   :config
-  (d/after company
+  (d/after 'company
     (add-to-list 'company-backends
                  (company-mode/backend-with-yas 'company-anaconda)) ))
 #+end_src
