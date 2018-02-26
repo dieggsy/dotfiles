@@ -1622,7 +1622,47 @@ Collection of useful dired additions
   :after dired
   :demand t
   :config
-  (dired-rainbow-define-chmod executable-unix "#B8BB26" "-[rw-]+x.*"))
+  (dired-rainbow-define-chmod executable-unix "#B8BB26" "-[rw-]+x.*")
+  (dired-rainbow-define
+   immediate
+   "#FABD2F"
+   "\\(?:\\(?:R\\(?:EADME\\|eadme\\)\\|readme\\)\\)\\(?:[^ ]*?\\)?\\|Makefile\\|Cargo\\.toml\\|SConstruct\\|CMakeLists\\.txt\\|build\\.gradle\\|Rakefile\\|Gruntfile\\.js\\|Gruntfile\\.coffee")
+  (dired-rainbow-define
+   image
+   "#af5faf"
+   ("png" "jpeg" "jpg" "gif" "bmp" "tiff" "tif"
+    "ppm" "pgm" "pbm" "pnm" "webp" "raw" "arw"
+    "svg" "stl" "eps" "dvi" "ps" "cbr"
+    "cbz" "xpm" "ico" "cr2" "orf" "nef"))
+  (dired-rainbow-define
+   video
+   "#af5fff"
+   ("avi" "flv" "m2v" "mkv" "mov" "mp4" "mpeg"
+    "mpg" "ogm" "ogv" "vob" "wmv" "webm" "m2ts"
+    "ts"))
+  (dired-rainbow-define
+   music
+   "#8700d7"
+   ("aac" "m4a" "mp3" "ogg" "wma" "mka" "opus"))
+  (dired-rainbow-define
+   lossless-music
+   "#8700ff"
+   ("alac" "ape" "flac" "wav"))
+  (dired-rainbow-define
+   crypto
+   "#87afaf"
+   ("asc" "enc" "gpg" "pgp" "sig" "signature" "pfx" "p12"))
+  (dired-rainbow-define
+   document
+   "#8787ff"
+   ("djvu" "doc" "docx" "dvi" "eml" "eps" "fotd"
+    "odp" "odt" "pdf" "ppt" "pptx" "rtf"
+    "xls" "xlsx"))
+  ;; not working?
+  (dired-rainbow-define
+   compiled
+   "#af875f"
+   ("class" "elc" "hi" "o" "pyc")))
 #+end_src
 ***** dired-collpase
 #+begin_src emacs-lisp
