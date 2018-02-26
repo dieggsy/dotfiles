@@ -1667,7 +1667,18 @@ Collection of useful dired additions
 ***** dired-collpase
 #+begin_src emacs-lisp
 (use-package dired-collapse
-  :hook (dired-mode . dired-collapse-mode))
+  :hook (dired-mode . d/dired-collapse-mode)
+  :config
+  (defvar dired-collapse-ignore-dirs
+    (list "~/Music"))
+  (defun d/dired-collapse-mode ()
+    (unless (cl-find-if
+             (lambda (dir)
+               (string-prefix-p
+                (expand-file-name dir)
+                (expand-file-name dired-directory)))
+             dired-collapse-ignore-dirs)
+      (dired-collapse-mode))))
 #+end_src
 ***** dired-subtree
 #+begin_src emacs-lisp
