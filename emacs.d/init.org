@@ -2198,6 +2198,7 @@ it.
   :hook (((prog-mode conf-mode) . d/turn-on-smartparens-strict-mode)
          (eshell-mode . smartparens-mode))
   :defer 15
+  :commands sp-end-of-sexp
   :general
   (d/leader-keys
     "xp"  '(:def d/smartparens/body :wk "smartparens"))
