@@ -1492,12 +1492,15 @@ directory-browsing commands
 
   (defun d/dired-quit ()
     (interactive)
-    (while (eq major-mode 'dired-mode)
-      (quit-window))
-    (when (and d/dired-close-window
-               (eq major-mode 'dired-mode))
-      (delete-window))
-    (setq d/dired-close-window nil))
+    (let ((prev-nondired
+           (cl-find-if
+            (lambda (spec)
+              (not (eq (buffer-local-value 'major-mode (car spec))
+                       'dired-mode)))
+            (window-prev-buffers))))
+      (if prev-nondired
+          (switch-to-buffer (car prev-nondired))
+        (delete-window))))
 
   (defun d/dired-here (&optional arg)
     (interactive "P")
@@ -1507,15 +1510,7 @@ directory-browsing commands
 
   (defun d/dired-home ()
     (interactive)
-    (dired "~/"))
-
-  (defvar d/dired-close-window nil)
-
-  (define-advice dired-other-window
-      (:before (dirname &optional switches) other-window-exists)
-    (if (= (length (window-list)) 1)
-        (setq d/dired-close-window t)
-      (setq d/dired-close-window nil))))
+    (dired "~/")))
 #+end_src
 *** [[elisp:(find-library-other-window%20"dired-x")][dired-x]]
 #+begin_src emacs-lisp
