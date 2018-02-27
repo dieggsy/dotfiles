@@ -20,3 +20,4 @@ emacs.d/straight/*
 nvim/bundle/
 emacs.d/master/
 emacs.d/.cask/
+/emacs.d/etc/yasnippet/snippets/org-mode/property
