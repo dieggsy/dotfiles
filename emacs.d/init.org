@@ -1421,7 +1421,11 @@ Leader bindings
   "hdt" 'describe-theme
   "hn"  'view-emacs-news
   "hi"  'info
-  "hs"  (lambda () (interactive) (message (system-name)))
+  "hs"  (lambda ()
+          (interactive)
+          (message "%s@%s"
+                   (user-login-name)
+                   (system-name)))
   "hv"  'version)
 #+end_src
 * Files/Buffers
