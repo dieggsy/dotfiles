@@ -2975,7 +2975,12 @@ Emacs: highlight surrounding parentheses
 Better parentheses coloring
 #+begin_src emacs-lisp
 (use-package rainbow-delimiters
-  :hook ((prog-mode conf-mode) . rainbow-delimiters-mode))
+  :hook ((prog-mode
+          conf-mode
+          geiser-repl-mode
+          ielm-mode)
+         .
+         rainbow-delimiters-mode))
 #+end_src
 *** [[https://github.com/atomontage/xterm-color][xterm-color]]
 #+begin_quote
