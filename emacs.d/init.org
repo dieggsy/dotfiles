@@ -3933,6 +3933,7 @@ heard (and can confirm).
   :init
   (add-hook 'calc-embedded-mode-hook #'d/calc-embedded-set-open-close)
   :config
+  (evil-set-initial-state 'calc-mode 'emacs)
   (setq calc-multiplication-has-precedence nil)
   (setq calc-symbolic-mode t)
   (defun d/calc-embedded-set-open-close ()
