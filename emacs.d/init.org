@@ -7,7 +7,7 @@ This is the bulk of my emacs configuration, which gets tangled to [[./init.el][i
 pretty cool that I can write it in org mode, because easy organization and
 rearrangement are sweet.
 
-* Contents                                                            :toc_1:
+* Contents                                                   :toc_1:noexport:
 - [[#intro][Intro]]
 - [[#initial-setup][Initial Setup]]
 - [[#core][Core]]
