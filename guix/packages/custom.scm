@@ -155,15 +155,17 @@ quality weather, maritime, and meteorological based icons!")
 (define-public font-sarasa-gothic
   (package
     (name "font-sarasa-gothic")
-    (version "0.5.1")
+    (version "0.5.2")
     (source
      (origin
        (method url-fetch)
        (uri (string-append "https://github.com/be5invis/Sarasa-Gothic/releases/download/v"
                            version
-                           "/sarasa-gothic-ttf-0.5.1.7z"))
+                           "/sarasa-gothic-ttf-"
+                           version
+                           ".7z"))
        (sha256
-        (base32 "0m5pa3xbdw0bb6dm50pxkg5jiib14rfx2fdf7w1r143jki3gd6ln"))))
+        (base32 "18ycw57k7yhrbb8njzhzk6x32xnjal61wr48qxkqy4lh9zfy0p22"))))
     (build-system font-build-system)
     (native-inputs `(("p7zip" ,p7zip)))
     (arguments
