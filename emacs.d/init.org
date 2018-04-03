@@ -2856,7 +2856,7 @@ Use a bar cursor in the minibuffer.
   (setq-local cursor-type '(bar . 1)))
 #+end_src
 *** Margin
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (setq-default left-margin-width 1)
 (setq-default right-margin-width 1)
 #+end_src

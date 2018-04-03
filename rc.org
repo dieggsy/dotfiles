@@ -2292,6 +2292,7 @@ rofi.hide-scrollbar: true
 rofi.bw: 0
 
 Emacs.fontBackend: xft
+Emacs.internalBorder: 15
 Emacs.font: Iosevka Term-9.5:weight=book
 Emacs.geometry: 105x41
 Emacs.menuBar: off
