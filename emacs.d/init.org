@@ -3118,9 +3118,9 @@ Source: https://git.io/vQKzq"
                               (bound-and-true-p anzu--state)
                               (d/in-macro?)
                               (d/in-evil-substitution?))))
-                (d/make-xpm evil-tag-color 56 8))
+                (d/make-xpm evil-tag-color 47 8))
                ((not window-active?)
-                (d/make-xpm "#1D2021" 56 8))))))
+                (d/make-xpm "#1D2021" 47 8))))))
     (:eval
      (d/with-window-status
        (d/with-evil-tag-color
@@ -3145,11 +3145,11 @@ Source: https://git.io/vQKzq"
               "#3E3D31"
               :weight bold
               :background ,evil-tag-color
-              :box (:color ,evil-tag-color :line-width 14)))))))
+              :box (:color ,evil-tag-color :line-width 9)))))))
     ;; File modified
     " %* "
     ;; Buffer name & recursive editing
-    "%[" mode-line-buffer-identification "%] "
+    "%[" "%b" "%]  "
     ;; Remote
     (:eval (d/with-window-status
              (let ((host (file-remote-p default-directory 'host)))
@@ -3165,22 +3165,23 @@ Source: https://git.io/vQKzq"
                 'face
                 '(:foreground "#D3869B")))))
     ;; Line/column number
-    (:eval (d/with-window-status
-             (propertize-active "%4l:%2c  "
-                                'face '(:foreground "#A89984"))))
+    ;; (:eval (d/with-window-status
+    ;;          (propertize-active "%4l:%2c  "
+    ;;                             'face '(:foreground "#A89984"))))
     ;; Major mode
     (:eval
      (d/with-window-status
-       (propertize-active
-        (concat (format-mode-line mode-name) "  ")
-        'face '(:foreground "#83A598" :weight bold))))
+       (unless (file-name-extension (buffer-name))
+         (propertize-active
+          (concat mode-name "  ")
+          'face '(:foreground "#83A598")))))
     ;; Version control
     (:eval
      (d/with-window-status
        (when vc-mode
          (propertize-active
           (concat (replace-regexp-in-string "^ Git." "" vc-mode) "  ")
-          'face '(:foreground "#FE8019" )))))
+          'face '(:foreground "#DD6F48" )))))
     ;; Flycheck
     (:eval
      (d/with-window-status
