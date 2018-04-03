@@ -106,6 +106,8 @@ bit so let's explicitly require them.
 ;; (auth-source-pass-enable)
 #+end_src
 ** Init utilities
+It can be annoying to have a bunch of ~add-hook~ statements, some with lambdas.
+This just makes a hook function with the given body and adds that.
 #+begin_src emacs-lisp
 (defmacro d/hook! (hooks &rest body)
   "Create a setup function for HOOKS and add it to relevant hook(s)."
@@ -119,7 +121,13 @@ bit so let's explicitly require them.
                     (let ((hook-name (intern (concat (symbol-name hook)
                                                      "-hook"))))
                       `(add-hook ',hook-name #',setup-func)))))))
-
+#+end_src
+~use-package~ declarations avoid major breakage when something is configured
+incorrectly by wrapping code in ~condition-case-unless-debug~. I wanted a
+version of ~with-eval-after-load~ that can do that, so I can split up package
+configuration into different src blocks for organization, without giving up
+error handling and lazy loading.
+#+begin_src emacs-lisp
 (defmacro d/after (feature &rest body)
   "Load BODY after FEATURE, catching errors and displaying as warnings."
   (declare (indent defun))
@@ -134,7 +142,9 @@ bit so let's explicitly require them.
                  (symbol-name ,feature)
                  (error-message-string err))
          :error)))))
-
+#+end_src
+Like ~add-to-list~, but accepts multiple.
+#+begin_src emacs-lisp
 (defun d/list-prepend! (list &rest args)
   "Prepend each of ARGS to LIST (a symbol).
 
@@ -144,7 +154,10 @@ first element of the list. Convenience wrapper around
   (declare (indent defun))
   (cl-loop for thing in (reverse args)
            do (add-to-list list thing)))
-
+#+end_src
+Just a wrapper around ~safe-local-variable-values~, allowing for multiple
+safe variable declarations.
+#+begin_src emacs-lisp
 (defmacro d/safe-vars! (&rest vars)
   "Add VARS to `safe-local-variable-values'."
   (declare (indent defun))
