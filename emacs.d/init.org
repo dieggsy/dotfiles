@@ -614,7 +614,9 @@ Supplemental evil-mode keybindings to emacs org-mode
   :config
   (evil-org-set-key-theme)
   (require 'evil-org-agenda)
-  (evil-org-agenda-set-keys))
+  (evil-org-agenda-set-keys)
+  (nmap evil-org-mode-map
+    [backtab] 'org-shifttab))
 #+end_src
 ***** [[https://github.com/emacs-evil/evil-surround][evil-surround]]
 Helps work with surrounding chars better.
