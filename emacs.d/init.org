@@ -2925,6 +2925,10 @@ Highlight text that extends beyond a certain column.
   :custom
   (column-enforce-column 79))
 #+end_src
+*** [[https://github.com/gonewest818/dimmer.el][dimmer]]
+#+begin_src emacs-lisp
+(use-package dimmer)
+#+end_src
 *** [[https://github.com/dieggsy/eterm-256color][eterm-256color]]
 #+begin_quote
 Customizable 256 colors for emacs term and ansi-term
