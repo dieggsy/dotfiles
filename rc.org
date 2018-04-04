@@ -214,6 +214,12 @@ super + y
 super + g
     bspc node -s biggest
 
+# rotate
+super + r
+    bspc node @/ -R 90
+
+super + R
+    bspc node @/ -R -90
 #
 # state/flags
 #
