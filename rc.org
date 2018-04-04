@@ -341,12 +341,15 @@ XF86AudioRaiseVolume
 # Shadow
 shadow = true;
 # no-dnd-shadow = true;
-no-dock-shadow = true;
+# no-dock-shadow = true;
 clear-shadow = true;
 detect-rounded-corners = true;
-shadow-radius = 64;
-shadow-offset-x = -96;
-shadow-offset-y = -60;
+shadow-radius = 10;
+# shadow-offset-x = -96;
+# shadow-offset-y = -60;
+# shadow-opacity = .8;
+shadow-offset-x = -15;
+shadow-offset-y = -15;
 shadow-opacity = .8;
 shadow-ignore-shaped = false;
 shadow-exclude = [
