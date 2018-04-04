@@ -1889,11 +1889,12 @@ animation-charging-framerate = 750
 
 [module/weather]
 type = custom/script
-exec = ~/bin/blocks/openweathermap
+exec = ~/bin/blocks/darksky
 format-background = ${colors.blue}
 format-foreground = ${colors.black}
 format-padding = 1
-interval = 60
+click-left = xdg-open https://darksky.net
+interval = 120
 label-font = 3
 
 [module/cmus]
