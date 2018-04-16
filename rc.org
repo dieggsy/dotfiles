@@ -55,6 +55,7 @@ more readable in org format than in rendered markdown.
   - [[#cmusdesktop][cmus.desktop]]
   - [[#emacs][emacs]]
   - [[#firefox-nightlydesktop][firefox-nightly.desktop]]
+  - [[#firefoxdesktop][firefox.desktop]]
   - [[#spotifydesktop][spotify.desktop]]
   - [[#vlc-dvddesktop][vlc-dvd.desktop]]
 - [[#local-vars][Local vars]]
@@ -3224,7 +3225,7 @@ Keywords=Text;Editor;
 #+end_src
 ** firefox-nightly.desktop
 :PROPERTIES:
-:header-args+: :tangle ~/.local/share/applications/firefox-nightly.desktop
+# :header-args+: :tangle ~/.local/share/applications/firefox-nightly.desktop
 :END:
 I like firefox-nightly GTK theme to be light regardless of the global gtk
 theme, to avoid dark input boxes.
@@ -3251,6 +3252,30 @@ Exec=env GTK_THEME=Arc firefox-nightly --class=FirefoxNightly --new-window %u
 [Desktop Action new-private-window]
 Name=New Private Window
 Exec=env GTK_THEME=Arc firefox-nightly --class=FirefoxNightly --private-window %u
+#+end_src
+** firefox.desktop
+:PROPERTIES:
+:header-args+: :tangle ~/.local/share/applications/firefox.desktop
+:END:
+#+begin_src conf
+[Desktop Entry]
+Version=1.0
+Name=Firefox
+Comment=Browse the Web
+Exec=env GTK_THEME=Arc /usr/lib/firefox/firefox %u
+Icon=firefox
+Terminal=false
+Type=Application
+MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;
+StartupNotify=true
+StartupWMClass=Firefox
+Categories=Network;WebBrowser;
+Keywords=web;browser;internet;
+Actions=new-window;new-private-window;
+
+[Desktop Action new-window]
+Name=New Window
+Exec=/usr/lib/firefox/firefox --private-window %u
 #+end_src
 ** spotify.desktop
 :PROPERTIES:
