@@ -2949,6 +2949,7 @@ Customizable 256 colors for emacs term and ansi-term
 #+begin_src emacs-lisp
 (use-package eterm-256color
   :straight (:host github
+             :branch "devel"
              :repo "dieggsy/eterm-256color"
              :files ("eterm-256color.el" "eterm-256color.ti"))
   :hook (term-mode . eterm-256color-mode))
