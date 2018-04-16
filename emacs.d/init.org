@@ -2151,8 +2151,13 @@ short and sweet LISP editing
   :custom
   (lispy-colon-no-space-regex
    '((scheme-mode . ".")
+     (geiser-repl-mode . ".")
      (lisp-mode . "\\s-\\|[:^?#]\\|\\(?:\\s([[:word:]-]*\\)")))
   :config
+  (d/list-prepend! 'lispy-parens-preceding-syntax-alist
+    '(scheme-mode "[#`',@]+")
+    '(geiser-repl-mode "[#`',@]+"))
+
   (defun d/lispy-cycle ()
     (interactive)
     (save-excursion (beginning-of-line) (lispy-tab)))
@@ -3979,9 +3984,9 @@ A shell written in emacs-lisp that has recently been replacing zsh for me.
     (setq-local nobreak-char-display nil)
     (imap eshell-mode-map
       [remap eshell-pcomplete] 'completion-at-point
-      "C-p" (general-predicate-dispatch nil
+      "C-c C-p" (general-predicate-dispatch nil
               (eshell-point-within-input-p (point)) 'eshell/ivy-ps)
-      "C-r" 'eshell/ivy-history
+      "C-c C-r" 'eshell/ivy-history
       "C-c C-l" 'd/eshell-clear-keystroke)
     (nmap eshell-mode-map
       "G" 'end-of-buffer))
