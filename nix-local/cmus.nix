@@ -107,8 +107,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner  = "cmus";
     repo   = "cmus";
-    rev    = "15b5c5b538a1a07cb7705f742407052304dd7dde";
-    sha256 = "00s4jd25yic0wwcjbq584bx2cdqm7wghfcw55p19z8f64xkkhafn";
+    rev    = "20a738df603a7d9c4db2ef6988384cba2eb94fc0";
+    sha256 = "1zrj8lsr6biy5gymsxrali21nzib36fw3bq44gxwxb7g3lbpsm4j";
   };
 
   configurePhase = "./configure " + concatStringsSep " " ([

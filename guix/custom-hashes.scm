@@ -1,8 +1,8 @@
 ((emacs-git:
    (version . "27.0.50")
-   (rev . "31")
-   (gitsha . "e3525385a87c92fdca6b3cf929797a731c688a3f")
-   (sha256 . "0fsbg3mcv8amb4rk7c3fw0hn9g9yhkzgjnvj28s6m15k2mrbdd34")
+   (rev . "34")
+   (gitsha . "6ec3ec7fbec2c04d5e9570b0470217cd97e5e7e6")
+   (sha256 . "15l5flwbs6izk9n9vm0daa02xph4737m0i8kdszs2wlkds0gpw0c")
    (repo . "https://git.savannah.gnu.org/git/emacs.git")
    (uri-format
      .
