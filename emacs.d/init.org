@@ -2621,9 +2621,6 @@ click to browse URL or to send to e-mail address
 #+end_quote
 #+begin_src emacs-lisp
 (use-package goto-addr
-  :general
-  (mmap "RET" (general-predicate-dispatch nil
-                (thing-at-point 'url) 'goto-address-at-point))
   :straight nil
   :hook (((help-mode org-mode text-mode) . goto-address-mode)
          ((prog-mode conf-mode) . goto-address-prog-mode)))
