@@ -31,6 +31,7 @@ more readable in org format than in rendered markdown.
   - [[#xterm-24bitterminfo][xterm-24bit.terminfo]]
   - [[#zathurarc][zathurarc]]
 - [[#scripts][Scripts]]
+  - [[#desktop-record][desktop-record]]
   - [[#erc-rofi][erc-rofi]]
   - [[#eshell-focus][eshell-focus]]
   - [[#exwm-blocks][exwm-blocks]]
@@ -354,6 +355,7 @@ shadow-opacity = .8;
 shadow-ignore-shaped = false;
 shadow-exclude = [
     "name = 'Notification'",
+    "name = 'screenkey'",
 # workaround for conky until it provides window properties:
     "override_redirect = 1 && !WM_CLASS@:s",
 #   "class_g ?= 'Dunst'",
@@ -395,6 +397,7 @@ paint-on-overlay = true;
 focus-exclude = [
 "class_g = 'Cairo-clock'",
 "_NET_WM_NAME@:s = 'rofi'",
+"_NET_WM_NAME@:s = 'screenkey'",
 "name *?= 'i3lock'"
 ];
 
@@ -405,6 +408,7 @@ glx-copy-from-front = false;
 glx-swap-method = "undefined";
 
 opacity-rule = [
+"100:class_g = 'screenkey'",
 "0:_NET_WM_STATE@:32a *= '_NET_WM_STATE_HIDDEN'",
 "100:_NET_WM_STATE@:32a *= '_NET_WM_STATE_STICKY'"
 ];
@@ -2347,6 +2351,17 @@ set recolor-darkcolor "#fDf4c1"
 set recolor-lightcolor "#282828"
 #+end_src
 * Scripts
+** desktop-record
+:PROPERTIES:
+:header-args+: :tangle ~/bin/desktop-record :shebang "#!/usr/bin/bash"
+:END:
+#+begin_src sh
+screenkey -mf "Iosevka Term" --bg-color "#282828" --font-color "#FDF4C1" --opacity 1 --mods-mode emacs -p fixed -g 2560x129+0+0
+# emacsclient --eval '(increase-all-fonts)'
+recordmydesktop --device pulse
+# emacsclient ---eval '(decrease-all-fonts)'
+pkill -f screenkey
+#+end_src
 ** erc-rofi
 :PROPERTIES:
 :header-args+: :tangle ~/bin/erc-rofi :shebang "#!/usr/bin/env bash"
