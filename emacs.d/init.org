@@ -2142,7 +2142,12 @@ short and sweet LISP editing
 #+begin_src emacs-lisp
 (use-package lispy
   :hook ((lispy-mode . d/lispy-fontify-headlines)
-         ((emacs-lisp-mode lisp-mode scheme-mode geiser-repl-mode) . lispy-mode))
+         ((emacs-lisp-mode
+           lisp-mode
+           scheme-mode
+           geiser-repl-mode
+           ielm-mode)
+          . lispy-mode))
   :general
   (lispy-mode-map-lispy
    [tab] (general-predicate-dispatch nil
@@ -2231,7 +2236,8 @@ it.
    '(scheme-mode
      emacs-lisp-mode
      lisp-mode
-     geiser-repl-mode))
+     geiser-repl-mode
+     inferior-emacs-lisp-mode))
   :init
   (defun d/turn-on-smartparens-strict-mode ()
     (when (not (member major-mode sp-ignore-modes-list))
