@@ -456,6 +456,17 @@ I went for it. Now I'll never go back.
         evil-replace-state-tag " R "
         evil-operator-state-tag " O ")
 
+  (evil-define-command evil-view (file &optional bang)
+    "Open FILE in view-mode.
+If no FILE is specified, change current buffer to view mode."
+    :repeat nil
+    (interactive "<f>")
+    (cond (file
+           (view-file file))
+          (view-mode
+           (view-mode -1))
+          (t (view-mode))))
+
   (evil-ex-define-cmd "dtw" #'delete-trailing-whitespace)
 
   (evil-mode 1))
@@ -1889,6 +1900,8 @@ Source: https://git.io/vQKuU"
   "nn" 'd/narrow-dwim
   "np" 'narrow-to-page
   "nr" 'narrow-to-region)
+
+(evil-ex-define-cmd "view" 'evil-view)
 #+end_src
 * Editing
 ** Defaults
