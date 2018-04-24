@@ -2665,8 +2665,7 @@ Quickly switch windows in Emacs
 #+begin_src emacs-lisp
 (use-package ace-window
   :general
-  (mmap :keymaps 'override
-    "\\" 'ace-window)
+  (nmap :keymaps 'override "\\" 'ace-window)
   :config
   (setq aw-keys (string-to-list "aoeuidhtns")
         aw-scope 'visible))
