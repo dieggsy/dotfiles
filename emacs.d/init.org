@@ -2224,7 +2224,8 @@ it.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package smartparens
-  :hook (((prog-mode conf-mode) . d/turn-on-smartparens-strict-mode)
+  :hook (((prog-mode conf-mode eval-expression-minibuffer-setup)
+          . d/turn-on-smartparens-strict-mode)
          (eshell-mode . smartparens-mode))
   :defer 15
   :commands sp-end-of-sexp
