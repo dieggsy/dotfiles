@@ -448,6 +448,8 @@ I went for it. Now I'll never go back.
   (setq evil-insert-state-cursor '(bar . 1) ;thinner cursors
         evil-emacs-state-cursor '(bar . 1)
         evil-ex-search-vim-style-regexp t
+        evil-split-window-below t
+        evil-vsplit-window-right t
         ;; This was more relevant when I displayed the tag in the mode-line.
         evil-normal-state-tag  " N "
         evil-insert-state-tag  " I "
@@ -1497,7 +1499,10 @@ directory-browsing commands
   (d/leader-keys
     "ad" 'd/dired-here)
   (d/leader-keys wdired-mode-map
-    "fs" 'wdired-finish-edit)
+    ;; "fs" 'wdired-finish-edit
+    "fs" (lambda ()
+           (interactive)
+           (message "Use ':w' or variant to finish editing ")))
   (d/mode-leader-keys dired-mode-map
     "h" 'dired-omit-mode
     "d" 'dired-du-mode)
@@ -1883,19 +1888,28 @@ Source: https://git.io/vQKuU"
   "bC" 'd/switch-to-customize
   "bK" 'kill-buffer
   "bM" 'd/switch-to-messages
-  "br" 'revert-buffer
+  ;; "br" 'revert-buffer
+  "br" (lambda ()
+         (interactive)
+         (message "Use ':e' to revert buffer."))
   "bR" 'rename-buffer
   "bS" 'd/switch-to-scratch
   "bc" 'clone-indirect-buffer-other-window
   "be" 'd/safe-erase-buffer
   "bi" 'ibuffer
-  "bk" 'kill-this-buffer
+  ;; "bk" 'kill-this-buffer
+  "bk" (lambda ()
+         (interactive)
+         (message "Use ':bk' to kill buffer."))
   "bm" 'kill-matching-buffers
   "bq" 'kill-buffer-and-window
   "bv" 'view-mode
 
   "fc" 'd/copy-file
-  "fs" 'save-buffer
+  ;; "fs" 'save-buffer
+  "fs" (lambda ()
+         (interactive)
+         (message "Use ':w' to save buffer."))
 
   "nf" 'narrow-to-defun
   "nn" 'd/narrow-dwim
@@ -1903,6 +1917,7 @@ Source: https://git.io/vQKuU"
   "nr" 'narrow-to-region)
 
 (evil-ex-define-cmd "view" 'evil-view)
+(evil-ex-define-cmd "bk[ill]" 'kill-this-buffer)
 #+end_src
 * Editing
 ** Defaults
@@ -2594,46 +2609,6 @@ Source: http://tinyurl.com/k7s96fa"
   (interactive)
   (split-window-below)
   (other-window 1))
-
-(defun d/move-splitter-left (arg)
-  "Move window splitter left.
-
-Source: https://git.io/vQKuS"
-  (interactive "p")
-  (if (let ((windmove-wrap-around))
-        (windmove-find-other-window 'right))
-      (shrink-window-horizontally arg)
-    (enlarge-window-horizontally arg)))
-
-(defun d/move-splitter-right (arg)
-  "Move window splitter right.
-
-Source: https://git.io/vQKu7"
-  (interactive "p")
-  (if (let ((windmove-wrap-around))
-        (windmove-find-other-window 'right))
-      (enlarge-window-horizontally arg)
-    (shrink-window-horizontally arg)))
-
-(defun d/move-splitter-up (arg)
-  "Move window splitter up.
-
-Source: https://git.io/vQKu5"
-  (interactive "p")
-  (if (let ((windmove-wrap-around))
-        (windmove-find-other-window 'up))
-      (enlarge-window arg)
-    (shrink-window arg)))
-
-(defun d/move-splitter-down (arg)
-  "Move window splitter down.
-
-Source: https://git.io/vQKuF"
-  (interactive "p")
-  (if (let ((windmove-wrap-around))
-        (windmove-find-other-window 'up))
-      (shrink-window arg)
-    (enlarge-window arg)))
 #+end_src
 ** Built-in
 *** [[elisp:(find-library-other-window%20"goto-addr")][goto-addr]]
@@ -2793,18 +2768,21 @@ Fixed and automatic balanced window layout for Emacs
 #+begin_src emacs-lisp
 (defhydra d/splitter ()
   "
-╭──────────╮
-│ splitter │
-└──────────┴─────────────
- [_l_] → [_j_] ↑ [_=_] balance
- [_h_] ← [_k_] ↓
-─────────────────────────
+╭────────╮
+│ window │
+└────────┴────────────────
+ [_>_] → [_+_] ↑ [_w_] next [_r_] ↻
+ [_<_] ← [_-_] ↓ [_W_] prev [_R_] ↺
+────────────────────────────
 "
-  ("h" d/move-splitter-left)
-  ("j" d/move-splitter-down)
-  ("k" d/move-splitter-up)
-  ("l" d/move-splitter-right)
-  ("=" balance-windows))
+  (">" evil-window-increase-width)
+  ("<" evil-window-decrease-width)
+  ("+" evil-window-increase-height)
+  ("-" evil-window-descrease-height)
+  ("r" evil-window-rotate-downwards)
+  ("R" evil-window-rotate-upwards)
+  ("w" evil-window-next)
+  ("W" evil-window-prev))
 #+end_src
 ** Bindings
 #+begin_src emacs-lisp
@@ -2815,13 +2793,36 @@ Fixed and automatic balanced window layout for Emacs
   "jv" 'find-variable-other-window
   "jj" 'find-library-other-window
 
-  "wd" 'delete-window
+  ;; "wd" 'delete-window
+  "wd" (lambda ()
+         (interactive)
+         (message "Use 'C-w c' to delete window."))
   "wf" 'make-frame
-  "wh" 'd/split-horz-focus
-  "wo" 'delete-other-windows
-  "ws" 'd/splitter/body
+  ;; "wh" 'd/split-horz-focus
+  "wh" (lambda ()
+         (interactive)
+         (message "Use 'C-w s' to split window horizontally."))
+  ;; "wo" 'delete-other-windows
+  "wo" (lambda ()
+         (interactive)
+         (message "Use 'C-w o' to delete other windows."))
+  "ws" (lambda ()
+         (interactive)
+         (message "Use C-w ... directly to access window manipulation."))
   "wt" 'd/toggle-window-split
-  "wv" 'd/split-vert-focus)
+  ;; "wv" 'd/split-vert-focus
+  "wv" (lambda ()
+         (interactive)
+         (message "Use 'C-w v' to split windows vertically.")))
+
+(define-key evil-window-map ">" 'd/splitter/evil-window-increase-width)
+(define-key evil-window-map "<" 'd/splitter/evil-window-decrease-width)
+(define-key evil-window-map "+" 'd/splitter/evil-window-increase-height)
+(define-key evil-window-map "-" 'd/splitter/evil-window-decrease-height)
+(define-key evil-window-map "w" 'd/splitter/evil-window-next)
+(define-key evil-window-map "W" 'd/splitter/evil-window-prev)
+(define-key evil-window-map "r" 'd/splitter/evil-window-rotate-downwards)
+(define-key evil-window-map "R" 'd/splitter/evil-window-rotate-upwards)
 #+end_src
 * Appearance
 ** Defaults
@@ -4441,7 +4442,11 @@ A simple emacs package to restart emacs from within emacs.
 SUPER nifty.
 #+begin_src emacs-lisp
 (use-package restart-emacs
-  :general (d/leader-keys "qr" 'restart-emacs)
+  :general (d/leader-keys
+             ;; "qr" 'restart-emacs
+             "qr" (lambda ()
+                    (interactive)
+                    (message "Use ':qr' to restart emacs.")))
   :init
   (evil-ex-define-cmd "qr[estart]" 'restart-emacs))
 #+end_src
