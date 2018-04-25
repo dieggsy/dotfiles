@@ -544,6 +544,14 @@ Better indent textobjects for evil
     "I" 'evil-indent-plus-a-indent-up
     "J" 'evil-indent-plus-a-indent-up-down))
 #+end_src
+***** [[https://github.com/edkolev/evil-lion][evil-lion]]
+#+begin_src emacs-lisp
+(use-package evil-lion
+  :general
+  (nvmap
+    "gl" 'evil-lion-left
+    "gL" 'evil-lion-right))
+#+end_src
 ***** [[https://github.com/emacs-evil/evil-magit][evil-magit]]
 #+begin_quote
 Black magic or evil keys for magit
