@@ -2679,10 +2679,10 @@ Quickly switch windows in Emacs
 (use-package ace-window
   :general
   (nmap :keymaps 'override "\\" 'ace-window)
+  (mmap :keymaps 'override "\\" 'ace-window)
   :config
   (setq aw-keys (string-to-list "aoeuidhtns")
         aw-scope 'visible))
-
 #+end_src
 *** [[https://github.com/abo-abo/avy][avy]]
 #+begin_quote
