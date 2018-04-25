@@ -68,18 +68,6 @@ control.
 #+begin_src emacs-lisp
 (setq custom-file "/tmp/custom.el")
 #+end_src
-** Server
-Start server if not already running. You can do this with ~emacs --daemon~,
-automate it with systemd, or use ~brew services start emacs~ on macOS. I
-usually just run Emacs on login anyway, so this suffices.
-
-This makes startup time irrelevant. Start emacs once, connect with emacsclient
-every other time. See [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html#Emacs-Server][Using Emacs as a Server]].
-#+begin_src emacs-lisp
-(require 'server)
-(unless (server-running-p)
-  (server-start))
-#+end_src
 ** Load Path
 Add [[./lisp][lisp]] directory and subdirectories to ~load-path~ and ~custom-theme-load-path~.
 
@@ -227,9 +215,6 @@ everything in either ~.emacs.d/var~ or ~.emacs.d/etc~.
 (use-package no-littering
   :demand t
   :config
-  (savehist-mode 1)
-  (add-to-list 'savehist-additional-variables 'kill-ring)
-  (save-place-mode 1)
   (setq auto-save-file-name-transforms
         `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
 #+end_src
@@ -254,6 +239,35 @@ make Emacs bindings that stick around
 (use-package hydra
   :config
   (setq hydra-default-hint nil))
+#+end_src
+*** [[elisp:(find-library-other-window%20"server")][server]]
+Start server if not already running. You can do this with ~emacs --daemon~,
+automate it with systemd, or use ~brew services start emacs~ on macOS. I
+usually just run Emacs on login anyway, so this suffices.
+
+This makes startup time irrelevant. Start emacs once, connect with emacsclient
+every other time. See [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html#Emacs-Server][Using Emacs as a Server]].
+#+begin_src emacs-lisp
+(use-package server
+  :defer 5
+  :config
+  (unless (server-running-p)
+    (server-start)))
+#+end_src
+*** [[elisp:(find-library-other-window%20"savehist")][savehist]]
+#+begin_src emacs-lisp
+(use-package savehist
+  :defer 5
+  :config
+  (savehist-mode 1)
+  (add-to-list 'savehist-additional-variables 'kill-ring))
+#+end_src
+*** [[elisp:(find-library-other-window%20"saveplace")][saveplace]]
+#+begin_src emacs-lisp
+(use-package saveplace
+  :defer 5
+  :config
+  (save-place-mode 1))
 #+end_src
 * Core
 ** Defaults
@@ -298,7 +312,7 @@ There's kind of no point in using a whole separate mode for the scratch buffer.
 Setting to emacs-lisp-mode reduces the amount of configuration we have to do.
 #+begin_src emacs-lisp
 (setq initial-scratch-message ""
-      initial-major-mode 'emacs-lisp-mode)
+      initial-major-mode 'fundamental-mode)
 #+end_src
 *** Tab
 Use tab for completion in region and cycle candidates.
@@ -2876,9 +2890,6 @@ I don't want line-wrapping madness, just tell me there's more to see and I'll
 have a look. Additionally, show whitespace.
 #+begin_src emacs-lisp
 (setq-default truncate-lines t)
-(setq whitespace-style '(face trailing))
-(global-whitespace-mode)
-(setq whitespace-global-modes '(not erc-mode ses-mode))
 #+end_src
 *** Font
 Set the font to Iosevka Term, if available.
@@ -2908,6 +2919,7 @@ I don't like seeing variable pitch in emacs. Just sorta throws me off.
 (face-spec-set 'variable-pitch '((t nil)))
 #+end_src
 ** Built-in
+*** [[elisp:(find-library-other-window%20"hl-line")][hl-line]]
 #+begin_src emacs-lisp
 (use-package hl-line
   :straight nil
@@ -2916,6 +2928,15 @@ I don't like seeing variable pitch in emacs. Just sorta throws me off.
           dired-mode
           conf-mode)
          . hl-line-mode))
+#+end_src
+*** whitespace
+#+begin_src emacs-lisp
+(use-package whitespace
+  :defer 5
+  :config
+  (setq whitespace-style '(face trailing))
+  (global-whitespace-mode)
+  (setq whitespace-global-modes '(not erc-mode ses-mode)))
 #+end_src
 ** Packages
 *** [[https://github.com/larstvei/Focus][focus]]
@@ -4441,6 +4462,8 @@ Preserve the scratch buffer across Emacs sessions
 (use-package persistent-scratch
   :defer 10
   :config
+  (with-current-buffer "*scratch*"
+    (emacs-lisp-mode))
   (persistent-scratch-setup-default))
 #+end_src
 *** [[https://github.com/iqbalansari/restart-emacs][restart-emacs]]
