@@ -274,6 +274,15 @@ every other time. See [[https://www.gnu.org/software/emacs/manual/html_node/emac
   :config
   (save-place-mode 1))
 #+end_src
+*** [[elisp:(find-library-other-window%20"midnight")][midnight-mode]]
+#+begin_src emacs-lisp
+(use-package midnight
+  :defer 10
+  :config
+  (setq clean-buffer-list-delay-general 1
+        clean-buffer-list-kill-regexps '("\\`\\*Man " "\\`\\*helpful "))
+  (midnight-mode))
+#+end_src
 * Core
 ** Defaults
 *** Disabled Commands
