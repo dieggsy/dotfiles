@@ -2662,8 +2662,22 @@ click to browse URL or to send to e-mail address
 #+begin_src emacs-lisp
 (use-package winner
   :defer 15
+  :general
+  (evil-window-map
+   "<right>" 'd/winner/winner-redo
+   "<left>" 'd/winner/winner-undo)
   :config
-  (winner-mode))
+  (winner-mode)
+  (defhydra d/winner ()
+    "
+╭────────╮
+│ winner │
+└────────┴────────────────────
+ [_<left>_] undo [_<right>_] redo
+──────────────────────────────
+"
+    ("<right>" winner-redo)
+    ("<left>" winner-undo)))
 #+end_src
 ** Packages
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
