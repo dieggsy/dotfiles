@@ -78,7 +78,6 @@ exec fish
 xsetroot -cursor_name left_ptr
 sxhkd &
 
-# polybar
 killall -q polybar
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 polybar simple &
@@ -94,31 +93,25 @@ xautolock -corners ---- -time 5 -locker "betterlockscreen -l dim" &
 xcape -e 'Control_L=Escape' &
 xset r rate 300 50 &
 
-# bspc config initial_polarity second_child
-bspc config focus_follows_pointer true
-bspc config initial_polraity second_child
+# bspc config initial_polarity     second_child
+bspc config focus_follows_pointer  true
 bspc config external_rules_command "$HOME/.config/bspwm/rules.scm"
 
 bspc monitor -d 1 2 3 4 5 6 7 8 9
 
-bspc config border_width         0
-bspc config window_gap          30
-bspc config left_padding 30
+bspc config border_width   5
+bspc config window_gap     30
+bspc config left_padding   30
 bspc config bottom_padding 30
-bspc config right_padding 30
+bspc config right_padding  30
+bspc config split_ratio    0.5
 
-bspc config split_ratio          0.5
-
-bspc rule -a Gimp desktop='^8' state=floating follow=on
-bspc rule -a Chromium desktop='^2'
-bspc rule -a mplayer2 state=floating
-bspc rule -a Kupfer.py focus=on
-bspc rule -a Screenkey manage=off
-bspc rurle -a FirefoxNightly desktop='^1'
+bspc rule -a Nitrogen    state=floating
+bspc rule -a Screenkey   manage=off
 bspc rule -a Pavucontrol state=floating
-bspc rule -a D-feet state=floating
-bspc rule -a Pcmanfm state=floating
-bspc rule -a Zathura state=tiled
+bspc rule -a D-feet      state=floating
+bspc rule -a Pcmanfm     state=floating
+bspc rule -a Zathura     state=tiled
 #+end_src
 *** rules
 :PROPERTIES:
@@ -145,8 +138,7 @@ bspc rule -a Zathura state=tiled
                 (lambda () (display wid) (newline)))
               (display "state=floating hidden=on sticky=on")
               (run (wmctrl -i -r ,wid -e "0,120,877,1085,603")))
-             (else (display "state=tiled desktop=^2"))
-             ))
+             (else (display "state=tiled desktop=^2"))))
       ((equal? instance "termite")
        (when (equal? title "htop")
          (display "state=floating"))))
@@ -206,9 +198,11 @@ super + {_,shift + }apostrophe
 super + m
     bspc desktop -l next
 
-# if the current node is automatic, send it to the last manual, otherwise pull the last leaf
+# if the current node is automatic, send it to the last manual, otherwise pull
+# the last leaf
 super + y
-    bspc query -N -n focused.automatic && bspc node -n last.!automatic || bspc node last.leaf -n focused
+    bspc query -N -n focused.automatic && \
+    bspc node -n last.!automatic || bspc node last.leaf -n focused
 
 
 
@@ -329,11 +323,14 @@ XF86AudioNext
 XF86AudioPlay
     playerctl play-pause
 XF86AudioMute
-    amixer -D pulse sset Master toggle && echo hook:module/volume1 > /tmp/ipc-polybar-simple
+    amixer -D pulse sset Master toggle && \
+    echo hook:module/volume1 > /tmp/ipc-polybar-simple
 XF86AudioLowerVolume
-    amixer -D pulse sset Master 5%- && echo hook:module/volume1 > /tmp/ipc-polybar-simple
+    amixer -D pulse sset Master 5%- && \
+    echo hook:module/volume1 > /tmp/ipc-polybar-simple
 XF86AudioRaiseVolume
-    amixer -D pulse sset Master 5%+ && echo hook:module/volume1 > /tmp/ipc-polybar-simple
+    amixer -D pulse sset Master 5%+ && \
+    echo hook:module/volume1 > /tmp/ipc-polybar-simple
 #+end_src
 ** compton.conf
 :PROPERTIES:
