@@ -84,7 +84,7 @@ polybar simple &
 ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-simple
 udiskie &
 killall xfce-polkit; /usr/lib/xfce-polkit/xfce-polkit &
-killall compton; compton -b &
+# killall compton; compton -b &
 nitrogen --restore &
 setxkbmap dvorak -option ctrl:nocaps &
 dropbox-cli start &
