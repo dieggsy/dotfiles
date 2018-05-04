@@ -2865,14 +2865,16 @@ Fixed and automatic balanced window layout for Emacs
          (interactive)
          (message "Use 'C-w v' to split windows vertically.")))
 
-(define-key evil-window-map ">" 'd/splitter/evil-window-increase-width)
-(define-key evil-window-map "<" 'd/splitter/evil-window-decrease-width)
-(define-key evil-window-map "+" 'd/splitter/evil-window-increase-height)
-(define-key evil-window-map "-" 'd/splitter/evil-window-decrease-height)
-(define-key evil-window-map "w" 'd/splitter/evil-window-next)
-(define-key evil-window-map "W" 'd/splitter/evil-window-prev)
-(define-key evil-window-map "r" 'd/splitter/evil-window-rotate-downwards)
-(define-key evil-window-map "R" 'd/splitter/evil-window-rotate-upwards)
+(general-def evil-window-map
+  ">" 'd/splitter/evil-window-increase-width
+  "<" 'd/splitter/evil-window-decrease-width
+  "+" 'd/splitter/evil-window-increase-height
+  "-" 'd/splitter/evil-window-decrease-height
+  "w" 'd/splitter/evil-window-next
+  "W" 'd/splitter/evil-window-prev
+  "r" 'd/splitter/evil-window-rotate-downwards
+  "R" 'd/splitter/evil-window-rotate-upwards
+  "f" 'make-frame)
 #+end_src
 * Appearance
 ** Defaults
