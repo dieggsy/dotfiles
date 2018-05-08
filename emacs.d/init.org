@@ -2847,7 +2847,10 @@ Fixed and automatic balanced window layout for Emacs
   "wd" (lambda ()
          (interactive)
          (message "Use 'C-w c' to delete window."))
-  "wf" 'make-frame
+  ;; "wf" 'make-frame
+  "wf" (lambda ()
+         (interactive)
+         (message "Use 'C-w f' to make a new frame."))
   ;; "wh" 'd/split-horz-focus
   "wh" (lambda ()
          (interactive)
