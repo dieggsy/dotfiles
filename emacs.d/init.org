@@ -73,9 +73,7 @@ to be in a standalone file such as a some auth settings, lisp practice,
 really bad self-made themes, ~org-export-async-init-file~, etc.
 #+begin_src emacs-lisp
 (eval-and-compile
-  (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
-  (let ((default-directory  "~/.emacs.d/lisp/"))
-    (normal-top-level-add-subdirs-to-load-path)))
+  (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory)))
 #+end_src
 ** Libraries
 ~cl-lib~ gives us a wealth of common-lisp inspired or based functions and
@@ -198,7 +196,7 @@ An excellent utility for managing packages and package configuration in a neat
 and organized way, with advanced support for deferring, pre/post-loading
 configuration, time reporting, and more.
 
-Using use-package, you can use the same init file across computers without
+With use-package, you can use the same init file across computers without
 keeping track of what's installed or not and it will ensure that any missing
 packages are installed. It's pretty neat.
 #+begin_src emacs-lisp
@@ -324,6 +322,9 @@ Having to type "yes" can be annoying.
 *** Scratch
 There's kind of no point in using a whole separate mode for the scratch buffer.
 Setting to emacs-lisp-mode reduces the amount of configuration we have to do.
+Here, I set it to fundamental-mode so as to avoid unnecessary prog-mode or
+emacs-lisp-mode hooks being called on startup, and load emacs-lisp-mode with a
+delay in the config for persistent-scratch.
 #+begin_src emacs-lisp
 (setq initial-scratch-message ""
       initial-major-mode 'fundamental-mode)
@@ -964,7 +965,6 @@ But really, it's life.
         org-link-search-must-match-exact-headline nil
         org-confirm-elisp-link-function 'y-or-n-p
         org-tags-exclude-from-inheritance '("crypt")
-        org-crypt-key "diegoamundo@protonmail.com"
         org-confirm-elisp-link-not-regexp (rx "("
                                               (or "org-wiki-search"
                                                   "describe-function"
@@ -1257,18 +1257,6 @@ files without exporting (useful primarily for readme files on GitHub)
 #+begin_src emacs-lisp
 (use-package toc-org
   :hook (org-mode . toc-org-enable))
-#+end_src
-***** [[https://github.com/myuhe/org-gcal.el][org-gcal]]
-#+begin_quote
-Org sync with Google Calendar
-#+end_quote
-#+begin_src emacs-lisp
-(use-package org-gcal
-  :commands org-gcal-sync
-  :config
-  (setq org-gcal-client-id (password-store-get "api/org-gcal-id")
-        org-gcal-client-secret (password-store-get "api/org-gcal-secret")
-        org-gcal-file-alist '(("diegoamundo@gmail.com" . "~/Dropbox/org/gcal.org"))))
 #+end_src
 ** Bindings
 *** Leader
