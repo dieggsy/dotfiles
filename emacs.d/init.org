@@ -666,7 +666,17 @@ Supplemental evil-mode keybindings to emacs org-mode
   (require 'evil-org-agenda)
   (evil-org-agenda-set-keys)
   (nmap evil-org-mode-map
-    [backtab] 'org-shifttab))
+    [backtab] 'org-shifttab)
+  (d/after 'org-capture
+    (define-key org-src-mode-map [remap evil-write] 'org-edit-src-save)
+    (define-key org-src-mode-map [remap evil-save-and-close]
+      (lambda () (interactive)
+        (org-edit-src-save)
+        (org-edit-src-exit)))
+    (define-key org-src-mode-map [remap evil-save-modified-and-close]
+      (lambda () (interactive)
+        (org-edit-src-save)
+        (org-edit-src-exit)))))
 #+end_src
 ***** [[https://github.com/emacs-evil/evil-surround][evil-surround]]
 Helps work with surrounding chars better.
