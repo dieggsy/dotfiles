@@ -483,38 +483,38 @@ wintypes :
     };
 
     # Packages from source
-    emacs-master = super.callPackage ~/dotfiles/nix-local/emacs {
-      # use override to enable additional features
-      libXaw = pkgs.xorg.libXaw;
-      Xaw3d = null;
-      gconf = null;
-      inherit (pkgs.darwin.apple_sdk.frameworks) AppKit CoreWLAN GSS Kerberos ImageIO;
-    };
+    # emacs-master = super.callPackage ~/dotfiles/nix-local/emacs {
+    #   # use override to enable additional features
+    #   libXaw = pkgs.xorg.libXaw;
+    #   Xaw3d = null;
+    #   gconf = null;
+    #   inherit (pkgs.darwin.apple_sdk.frameworks) AppKit CoreWLAN GSS Kerberos ImageIO;
+    # };
 
     iosevka-master = super.callPackage ~/dotfiles/nix-local/iosevka.nix {};
 
-    pass-git-helper-master = super.callPackage ~/dotfiles/nix-local/pass-git-helper.nix {
-      inherit (python3Packages) setuptools;
-    };
+    # pass-git-helper-master = super.callPackage ~/dotfiles/nix-local/pass-git-helper.nix {
+    #   inherit (python3Packages) setuptools;
+    # };
 
-    termite-master = super.callPackage ~/dotfiles/nix-local/termite.nix {
-      vte = gnome3.vte-ng;
-    };
+    # termite-master = super.callPackage ~/dotfiles/nix-local/termite.nix {
+    #   vte = gnome3.vte-ng;
+    # };
 
-    cmus-master = super.callPackage ~/dotfiles/nix-local/cmus.nix {
-      inherit (darwin.apple_sdk.frameworks) CoreAudio;
-      libjack = libjack2;
-      libcdio = libcdio082;
-      ffmpeg = ffmpeg_2;
+    # cmus-master = super.callPackage ~/dotfiles/nix-local/cmus.nix {
+    #   inherit (darwin.apple_sdk.frameworks) CoreAudio;
+    #   libjack = libjack2;
+    #   libcdio = libcdio082;
+    #   ffmpeg = ffmpeg_2;
 
-      pulseaudioSupport = config.pulseaudio or false;
-    };
+    #   pulseaudioSupport = config.pulseaudio or false;
+    # };
 
     # Options and overrides
-    polybar = super.polybar.override {
-      i3GapsSupport = true;
-      githubSupport = true;
-    };
+    # polybar = super.polybar.override {
+    #   i3GapsSupport = true;
+    #   githubSupport = true;
+    # };
 
     # Dependencies
     libotf = super.callPackage ~/dotfiles/nix-local/deps/libotf.nix {};
