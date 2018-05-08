@@ -1209,6 +1209,11 @@ I know, it probably doesn't make sense to keep my gitconfig here.
 [github]
 	user = dieggsy
 #+end_src
+**** hub
+#+begin_src conf
+[hub]
+    protocol = ssh
+#+end_src
 *** gitignore
 :PROPERTIES:
 :header-args+: :tangle ~/.gitignore
