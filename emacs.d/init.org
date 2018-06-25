@@ -910,12 +910,12 @@ But really, it's life.
 #+begin_src emacs-lisp
 (d/after 'org
   (setq org-agenda-text-search-extra-files '(agenda-archives)
-        org-agenda-files '("~/Dropbox/org/todo.org" "~/Dropbox/org/gcal.org")
-        org-default-notes-file "~/Dropbox/org/todo.org"
-        d/notes-file "~Dropbox/org/notes.org"
-        org-directory "~/Dropbox/org"
-        org-archive-location "~/Dropbox/org/archive.org::"
-        org-mobile-inbox-for-pull "~/Dropbox/org/mobile.org"
+        org-agenda-files '("~/syncthing/org/todo.org" "~/syncthing/org/gcal.org")
+        org-default-notes-file "~/syncthing/org/todo.org"
+        d/notes-file "~syncthing/org/notes.org"
+        org-directory "~/syncthing/org"
+        org-archive-location "~/syncthing/org/archive.org::"
+        org-mobile-inbox-for-pull "~/syncthing/org/mobile.org"
         org-export-async-init-file
         (locate-user-emacs-file "lisp/org-async-init.el")))
 #+end_src
@@ -951,7 +951,7 @@ But really, it's life.
            "* TODO %?")
           ("n" "Note")
           ("g" "Google calendar" entry
-           (file "~/Dropbox/org/gcal.org") "* %?\n\n%^T"))))
+           (file "~/syncthing/org/gcal.org") "* %?\n\n%^T"))))
 #+end_src
 ***** Behavior
 #+begin_src emacs-lisp
