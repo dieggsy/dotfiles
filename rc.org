@@ -3034,6 +3034,47 @@ rg -a --files 2>/dev/null \
                    current))
        (format t "~a~%" (round (* 100 (float (/ current maximum)))))))))
 #+end_src
+** snapbackup
+:PROPERTIES:
+:header-args+: :tangle "~/bin/snapbackup" :shebang "#!/bin/bash"
+:END:
+#+begin_src sh
+# if [ $(/usr/bin/id -u) -ne 0 ]; then
+#     echo "Invalid Permissions. Are you root?"
+#     exit
+# fi
+# Basic snapshot-style rsync backup script
+
+# Config
+if [ -d "/run/media/dieggsy/wd-passport/" ]; then
+    echo "Backing up locally..."
+    SSHOPT=""
+    DEST="/run/media/dieggsy/wd-passport/backup"
+else
+    echo "Backing up over ssh..."
+    SSHOPT="-e ssh"
+    DEST="dieggsy@panda:~/wd-passport/backup"
+fi
+OPT="-avAXh --delete --exclude-from=/home/dieggsy/.rsync-exclude"
+LINK="--link-dest=../last"
+SRC="/home/dieggsy/"
+SNAP="$DEST"
+LAST="$DEST/last"
+date=`date "+%Y-%m-%dT%H%M"`
+
+# Run rsync to create snapshot
+rsync $OPT $SSHOPT $LINK $SRC ${SNAP}/$date # | pv -lep -s $(rsync -n $OPT $SSHOPT $LINK $SRC ${SNAP}/$date | awk 'NF' | wc -l) > /dev/null
+
+# Remove symlink to previous snapshot
+# Create new symlink to latest snapshot for the next backup to hardlink
+if [ -d "/run/media/dieggsy/wd-passport/" ]; then
+    rm -f $LAST
+    ln -s ${SNAP}/$date $LAST
+else
+    ssh dieggsy@panda "rm ~/wd-passport/backup/last && ln -s ~/wd-passport/backup/$date ~/wd-passport/backup/last"
+fi
+
+#+end_src
 ** spectrum_ls
 :PROPERTIES:
 :header-args+: :tangle ~/bin/spectrum_ls :shebang "#!/usr/bin/env zsh"
