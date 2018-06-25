@@ -50,6 +50,7 @@ more readable in org format than in rendered markdown.
   - [[#spectrum_ls][spectrum_ls]]
   - [[#text-pager][text-pager]]
   - [[#updates][updates]]
+  - [[#update-volume][update-volume]]
 - [[#desktop-files][Desktop files]]
   - [[#cmusdesktop][cmus.desktop]]
   - [[#emacs][emacs]]
@@ -3182,6 +3183,23 @@ echo -e "\e[1;34mDone"
 
 pyenv global $globalpython # Set python version back to original
 fi
+#+end_src
+** update-volume
+:PROPERTIES:
+:header-args+: :tangle "~/bin/update-volume.scm"
+:END:
+#+begin_src scheme
+(use posix
+     scsh-process)
+
+(define adjust-volume
+  (do ((line (read-line) (read-line)))
+      ((eof-object? line))
+    (when line
+      (with-output-to-file "/tmp/ipc-polybar-simple"
+        (lambda () (display "hook:module/volume1"))))))
+
+(pipe (pactl subscribe) (begin (adjust-volume)))
 #+end_src
 * Desktop files
 ** cmus.desktop
