@@ -28,7 +28,7 @@ more readable in org format than in rendered markdown.
   - [[#rofi][rofi]]
   - [[#rsync-exclude][rsync-exclude]]
   - [[#termite][termite]]
-  - [[#tmux][tmux]]
+  - [[#tmuxconf][tmux.conf]]
   - [[#xresources][Xresources]]
   - [[#xterm-24bitterminfo][xterm-24bit.terminfo]]
   - [[#zathurarc][zathurarc]]
@@ -2207,14 +2207,14 @@ color13=#d3869b
 color14=#3fd7e5
 color15=#fdf4c1
 #+end_src
-** tmux
-*** tmux.conf
+** tmux.conf
 :PROPERTIES:
 :header-args+: :tangle ~/.tmux.conf
 :END:
-**** Initialize
+*** Initialize
 #+begin_src conf
 set -s escape-time 0
+set -g default-command /usr/bin/fish
 # set -g default-terminal "xterm-256color"
 # set -ga terminal-overrides ",screen-256color:Tc"
 # set -g lock-after-time 300
@@ -2224,13 +2224,13 @@ set -g set-titles on
 set -g set-titles-string '#W'
 # set-option -g set-titles-string '#H:#S.#I.#P #W #T'
 #+end_src
-**** Prefix
+*** Prefix
 #+begin_src conf
 unbind C-b
 set-option -g prefix C-a
 bind-key C-a send-prefix
 #+end_src
-**** Bindings
+*** Bindings
 #+begin_src conf
 bind r source-file ~/.tmux.conf
 
@@ -2248,7 +2248,7 @@ bind-key -T copy-mode-vi 'y' send -X copy-pipe 'xclip -i -sel c' \; send -X clea
 set-option -s set-clipboard off
 bind -n C-k clear-history
 #+end_src
-**** Windows/Panes
+*** Windows/Panes
 #+begin_src conf
 setw -g monitor-activity on
 set-option -g allow-rename off
@@ -2277,12 +2277,12 @@ bind-key ^ split-window -v \; choose-window 'kill-pane ; join-pane -vs %%'
 bind-key = select-layout even-horizontal
 bind-key + select-layout even-vertical
 #+end_src
-**** Bell
+*** Bell
 #+begin_src conf
 set-option -g bell-action any
 set-option -g visual-bell off
 #+end_src
-**** Theming
+*** Theming
 #+begin_src conf
 # panes
 set -g pane-border-fg black
@@ -2379,12 +2379,12 @@ set -g message-bg colour166
 
 # }
 #+end_src
-**** osx-specific
+*** osx-specific
 #+begin_src conf :tangle (when (eq system-type 'darwin) "~/.tmux.conf")
 set-option -g default-command "reattach-to-user-namespace -l zsh"
 bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
 #+end_src
-**** Plugins
+*** Plugins
 #+begin_src conf
 # List of plugins
 set -g @plugin 'tmux-plugins/tpm'
@@ -2398,20 +2398,6 @@ set -g @plugin 'tmux-plugins/tmux-sidebar'
 set -g @sidebar-tree-command 'exa -TL2 --color=always'
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 run '~/.tmux/plugins/tpm/tpm'
-#+end_src
-*** tmuxinator-hud
-:PROPERTIES:
-:header-args+: :tangle ~/.tmuxinator/hud.yml
-:END:
-#+begin_src yaml :comments no
-# ~/.tmuxinator/hud.yml
-
-name: hud
-
-windows:
-  - shell:
-  - social: exec weechat
-  - music: exec cmus
 #+end_src
 ** Xresources
 :PROPERTIES:
