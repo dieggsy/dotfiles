@@ -48,6 +48,7 @@ more readable in org format than in rendered markdown.
   - [[#playerctl-cmus][playerctl-cmus]]
   - [[#rofi-files][rofi-files]]
   - [[#scriptl][scriptl]]
+  - [[#snapbackup][snapbackup]]
   - [[#spectrum_ls][spectrum_ls]]
   - [[#text-pager][text-pager]]
   - [[#updates][updates]]
