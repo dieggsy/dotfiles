@@ -26,6 +26,7 @@ more readable in org format than in rendered markdown.
   - [[#profile][profile]]
   - [[#pythonrcpy][pythonrc.py]]
   - [[#rofi][rofi]]
+  - [[#rsync-exclude][rsync-exclude]]
   - [[#termite][termite]]
   - [[#tmux][tmux]]
   - [[#xresources][Xresources]]
@@ -2164,6 +2165,17 @@ rofi.lines: 10
 
 /* vim: set ft=css : */
 
+#+end_src
+** rsync-exclude
+:PROPERTIES:
+:header-args+: :tangle ~/.rsync-exclude :comments no
+:END:
+#+begin_src txt
+.cache
+Dropbox
+.dropbox
+.dropbox-dist
+syncthing
 #+end_src
 ** termite
 :PROPERTIES:
