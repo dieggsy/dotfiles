@@ -4085,7 +4085,8 @@ A shell written in emacs-lisp that has recently been replacing zsh for me.
         eshell-scroll-to-bottom-on-input 'this
         eshell-hist-ignoredups t
         eshell-destroy-buffer-when-process-dies t
-        eshell-bad-command-tolerance 1.0e+INF)
+        eshell-bad-command-tolerance 1.0e+INF
+        eshell-list-files-after-cd t)
   (d/after 'em-term
     (d/list-prepend! 'eshell-visual-commands
       "htop" "cmus" "alsamixer" "nmtui" "nmtui-connect" "nmtui-edit"))
