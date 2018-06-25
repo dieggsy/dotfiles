@@ -4728,14 +4728,10 @@ An Emacs Internet Relay Chat client
                                        "#emacs"
                                        "##linux"
                                        "#archlinux"
-                                       "#python"
-                                       "##programming"
                                        "#lisp"
                                        "##lisp"
                                        "#scheme"
-                                       "#chicken"
-                                       "#bspwm"
-                                       "#guix")
+                                       "#chicken")
                                       ("gitter.im"
                                        "#use-package/Lobby"
                                        "#magit/magit"
