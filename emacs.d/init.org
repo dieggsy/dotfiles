@@ -4070,7 +4070,7 @@ A shell written in emacs-lisp that has recently been replacing zsh for me.
     (imap eshell-mode-map
       [remap eshell-pcomplete] 'completion-at-point
       "C-c C-p" (general-predicate-dispatch nil
-              (eshell-point-within-input-p (point)) 'eshell/ivy-ps)
+                  (eshell-point-within-input-p (point)) 'eshell/ivy-ps)
       "C-c C-r" 'eshell/ivy-history
       "C-c C-l" 'd/eshell-clear-keystroke)
     (nmap eshell-mode-map
