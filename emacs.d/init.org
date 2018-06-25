@@ -319,6 +319,11 @@ Having to type "yes" can be annoying.
 #+begin_src emacs-lisp
 (defalias 'yes-or-no-p #'y-or-n-p)
 #+end_src
+*** clipboard
+#+begin_src emacs-lisp
+(setq x-select-enable-primary t
+      mouse-yank-at-point t)
+#+end_src
 *** Scratch
 There's kind of no point in using a whole separate mode for the scratch buffer.
 Setting to emacs-lisp-mode reduces the amount of configuration we have to do.
