@@ -1,6 +1,5 @@
 alias zathura zathura --fork $*
 alias nmcli nmcli -c yes $*
-alias git hub -c color.ui=always $*
 alias dbcli dropbox-cli $*
 alias e find-file-other-window $1
 alias d dired-here
@@ -14,5 +13,4 @@ alias def d/define-word $1
 alias pep8 pep8 --first --ignore=E129,W503,E226 $*
 alias printers lpstat -p | awk '{print $2}'
 alias edit find-file-other-window $1
-alias ls exa --group-directories-first --sort=extension --color=always $*
 alias kill *kill $*
