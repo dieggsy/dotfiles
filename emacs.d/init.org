@@ -3014,7 +3014,9 @@ An Emacs 24 theme remixed from gruvbox
   :straight (:host github
              :repo "dieggsy/emacs-theme-darktooth"
              :upstream (:host github
-                        :repo "emacsfodder/emacs-theme-darktooth")))
+                        :repo "emacsfodder/emacs-theme-darktooth"))
+  :config
+  (load-theme 'darktooth))
 #+end_src
 *** [[https://github.com/jordonbiondo/column-enforce-mode][column-enforce-mode]]
 #+begin_quote
