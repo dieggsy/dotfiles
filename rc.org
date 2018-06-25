@@ -70,7 +70,8 @@ more readable in org format than in rendered markdown.
 :END:
 #+begin_src sh
 # source ~/.profile >& /dev/null
-exec fish
+# [ -z "$EMACS" ] && exec fish
+# exec fish
 #+end_src
 ** bspwm
 *** bspwmrc
@@ -79,21 +80,23 @@ exec fish
 :END:
 #+begin_src sh
 xsetroot -cursor_name left_ptr
-sxhkd &
+killall -q sxhkd; sxhkd &
 
 killall -q polybar
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 polybar simple &
 ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-simple
-udiskie &
-killall xfce-polkit; /usr/lib/xfce-polkit/xfce-polkit &
-# killall compton; compton -b &
+killall -q udiskie; udiskie &
 nitrogen --restore &
 setxkbmap dvorak -option ctrl:nocaps &
-dropbox-cli start &
+# dropbox-cli start &
 killall unclutter; unclutter &
-xautolock -corners ---- -time 5 -locker "betterlockscreen -l dim" &
+killall -q xautolock; xautolock -corners ---- -time 5 -locker "slock" &
+killall -q xss-lock; xss-lock -- slock &
 xcape -e 'Control_L=Escape' &
+pactl subscribe | ~/bin/update-volume &
+syncthing &
+
 xset r rate 300 50 &
 
 # bspc config initial_polarity     second_child
@@ -107,7 +110,11 @@ bspc config window_gap     30
 bspc config left_padding   30
 bspc config bottom_padding 30
 bspc config right_padding  30
+bspc config top_padding    70
 bspc config split_ratio    0.5
+
+bspc config focused_border_color "#928374"
+bspc config normal_border_color  "#504945"
 
 bspc rule -a Nitrogen    state=floating
 bspc rule -a Screenkey   manage=off
@@ -115,6 +122,8 @@ bspc rule -a Pavucontrol state=floating
 bspc rule -a D-feet      state=floating
 bspc rule -a Pcmanfm     state=floating
 bspc rule -a Zathura     state=tiled
+
+st -T st-float -e tmux &
 #+end_src
 *** rules
 :PROPERTIES:
@@ -135,16 +144,24 @@ bspc rule -a Zathura     state=tiled
               (with-output-to-file "/tmp/esh-float"
                 (lambda () (display wid) (newline)))
               (display "state=floating hidden=on sticky=on")
-              (run (wmctrl -i -r ,wid -e "0,120,215,2320,600")))
+              (run (wmctrl -i -r ,wid -e "0,120,160,2320,540")))
+             ;; ((equal? title "* eshell")
+             ;;  (display "state=floating")
+             ;;  (run (wmctrl -i -r ,wid -e "0,,,1085,603")))
              ((equal? title "*erc: floating*")
               (with-output-to-file "/tmp/erc-float"
                 (lambda () (display wid) (newline)))
               (display "state=floating hidden=on sticky=on")
-              (run (wmctrl -i -r ,wid -e "0,120,877,1085,603")))
+              (run (wmctrl -i -r ,wid -e "0,120,770,1085,560")))
              (else (display "state=tiled desktop=^2"))))
-      ((equal? instance "termite")
+      ((equal? instance "st-256color")
        (when (equal? title "htop")
-         (display "state=floating"))))
+         (display "state=floating"))
+       (when (equal? title "st-float")
+         (with-output-to-file "/tmp/st-float"
+           (lambda () (display wid) (newline)))
+         (display "state=floating hidden=on sticky=on")
+         (run (wmctrl -i -r ,wid -e "0,1350,770,1085,540")))))
 #+end_src
 *** sxhkdrc
 :PROPERTIES:
@@ -168,10 +185,14 @@ super + space
     bspc node $id --flag hidden && \
     bspc node -f $id
 
+super + z
+    id=$(</tmp/st-float) && \
+    bspc node $id --flag hidden && \
+    bspc node -f $id
 # program launcher
 
 alt + space
-    rofi -combi-modi window,drun -show combi -modi combi -display-combi ''
+    rofi -combi-modi window,drun -show combi -modi combi # -display-combi ''
     # rofi -show drun -sidebar-mode
 
 # passwords
@@ -306,25 +327,27 @@ super + {Left,Down,Up,Right}
     bspc node -v {-20 0,0 20,0 -20,20 0}
 
 XF86MonBrightnessUp
-    ~/bin/blocks/xbacklight +
+#     # ~/bin/blocks/xbacklight +
+    light -A 5
 XF86MonBrightnessDown
-    ~/bin/blocks/xbacklight -
-XF86LaunchA
-    scrot ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png
-@XF86LaunchB
-    scrot -s ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png
-shift + XF86LaunchB
-    scrot -ub ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png
-XF86KbdBrightnessDown
-    ~/bin/blocks/kbdbacklight -
-XF86KbdBrightnessUp
-    ~/bin/blocks/kbdbacklight +
-XF86AudioPrev
-    playerctl previous
-XF86AudioNext
-    playerctl next
-XF86AudioPlay
-    playerctl play-pause
+#     # ~/bin/blocks/xbacklight -
+    light -U 5
+# XF86LaunchA
+#     scrot ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png
+# @XF86LaunchB
+#     scrot -s ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png
+# shift + XF86LaunchB
+#     scrot -ub ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png
+# XF86KbdBrightnessDown
+#     ~/bin/blocks/kbdbacklight -
+# XF86KbdBrightnessUp
+#     ~/bin/blocks/kbdbacklight +
+# XF86AudioPrev
+#     playerctl previous
+# XF86AudioNext
+#     playerctl next
+# XF86AudioPlay
+#     playerctl play-pause
 XF86AudioMute
     amixer -D pulse sset Master toggle && \
     echo hook:module/volume1 > /tmp/ipc-polybar-simple
@@ -334,6 +357,10 @@ XF86AudioLowerVolume
 XF86AudioRaiseVolume
     amixer -D pulse sset Master 5%+ && \
     echo hook:module/volume1 > /tmp/ipc-polybar-simple
+XF86AudioMicMute
+    amixer set Capture toggle
+XF86Display
+    slock
 #+end_src
 ** compton.conf
 :PROPERTIES:
@@ -619,7 +646,7 @@ set color_win_inactive_sel_fg=default
     #   %I  iconname (without its path)
     #   %p  progress value if set ([  0%] to [100%]) or nothing
     # Markup is allowed
-    format = "%s %p\n%b"
+    format = "<b>%s</b> %p\n%b"
 
     # Sort messages by urgency.
     sort = yes
@@ -663,7 +690,7 @@ set color_win_inactive_sel_fg=default
     # the top and down respectevly.
     # The width can be negative.  In this case the actual width is the
     # screen width minus the width defined in within the geometry option.
-    geometry = "700x5-90+185"
+    geometry = "700x5-30+70"
 
     # Shrink window if it's smaller than the width.  Will be ignored if
     # width is 0.
@@ -743,17 +770,17 @@ set color_win_inactive_sel_fg=default
     browser = firefox-nightly
 
     # Align icons left/right/off
-    icon_position = left
+    # icon_position = left
 
     # Paths to default icons.
-    icon_folders = /usr/share/icons/Adwaita/48x48/status/:/usr/share/icons/Adwaita/48x48/devices/
+    # icon_folders = /usr/share/icons/Adwaita/48x48/status/:/usr/share/icons/Adwaita/48x48/devices/
 
     # Limit icons size.
     max_icon_size=128
 
 [frame]
-    width = 1
-    color = "#FDF4C1"
+    width = 5
+    color = "#504945"
 
 [shortcuts]
 
@@ -781,7 +808,7 @@ set color_win_inactive_sel_fg=default
     # IMPORTANT: colors have to be defined in quotation marks.
     # Otherwise the "#" and following would be interpreted as a comment.
     background = "#282828"
-    foreground = "#888888"
+    foreground = "#FDF4C1"
     timeout = 10
 
 [urgency_normal]
@@ -964,7 +991,7 @@ end
 #+end_src
 **** alias
 #+begin_src fish
-alias ls='exa --group-directories-first --sort=extension'
+# alias ls='exa --group-directories-first --sort=extension'
 alias rg="rg -M 200 -i -g '!archive-contents' --colors 'line:style:bold' --colors 'path:style:bold'"
 alias fzf='fzf --reverse'
 #+end_src
@@ -994,6 +1021,9 @@ function fish_user_key_bindings
     bind -M insert \cc kill-whole-line force-repaint
     bind -M normal \e insert-sudo
     bind -M insert \c_ "if commandline -P; commandline -f cancel; else; set fish_bind_mode default; commandline -f backward-char force-repaint; end"
+    for mode in insert default visual
+        bind -M $mode \cf forward-char
+    end
 end
 #+end_src
 **** fuck.fish
@@ -1129,11 +1159,6 @@ I know, it probably doesn't make sense to keep my gitconfig here.
     editor = emacsclient -t
     excludesfile = ~/.gitignore
     pager = "less"
-#+end_src
-**** credential
-#+begin_src conf
-[credential]
-    helper = /home/dieggsy/.nix-profile/bin/pass-git-helper
 #+end_src
 **** gpg
 #+begin_src conf
@@ -1752,34 +1777,36 @@ orange = #FE8019
 cyan = #3FD7E5
 sienna = #DD6F48
 light4 = #A89984
+dark2 = #504945
 alert = ${colors.red}
 
 [bar/simple]
-monitor = eDP1
-width = 2440
-height = 60
-offset-x = 60
-offset-y = 60
+monitor = eDP-1
+width = 2560
+height = 40
+; offset-x = 60
+; offset-y = 60
 fixed-center = true
+border-bottom-size=5
+border-bottom-color=${colors.dark2}
 ; bottom = true
 
 background = ${colors.background}
 foreground = ${colors.foreground}
 
-padding = 2
+; padding-left = 1
 
-module-margin-left = 1
-module-margin-right = 1
+module-margin=1
 
 font-0 = Iosevka Term:size=17;3
-font-1 =  fontawesome:size=17;3
-font-2 =  Weather Icons:size=17;3
+font-1 = fontawesome:size=17;3
+font-2 = Weather Icons:size=17;3
 
 ; modules-left = date network bluez xwindow
-modules-left = date network xwindow
-modules-center = i3 bspwm
+modules-left = bspwm date network bluetooth xwindow
+; modules-center = i3 bspwm
 ; modules-right = dropbox spotify cmus inbox-reddit github xkb weather xbacklight volume battery
-modules-right = dropbox inbox-reddit github xkb weather xbacklight volume battery
+modules-right = dropbox inbox-reddit github xkb weather xbacklight volume bat1 bat0
 
 wm-restack = bspwm
 
@@ -1790,46 +1817,56 @@ enable-ipc = true
 
 [module/xwindow]
 type = internal/xwindow
-label = %title:0:30:...%
+label = %{F#BDAE93}%title:0:30:...%%{F-}
 
 label-mounted =  %free%
 label-unmounted = %mountpoint% not mounted
 
 [module/bspwm]
 type = internal/bspwm
-format = <label-state> <label-mode>
-index-sort = true
+format =<label-state>
+; index-sort = true
 wrapping-scroll = false
+enable-click = false
+enable-scroll = false
+reverse-scroll = false
 
 ; Only show workspaces on the same output as the bar
 pin-workspaces = true
 
-label-mode-padding = 1
+; label-mode-padding = 1
 
 ; focused = Active workspace on focused monitor
-label-focused = ●
+label-focused = %name%
+; label-separator =
 label-focused-padding = 1
+label-focused-foreground = #BDAE93
+label-focused-background = ${colors.dark2}
 
 ; unfocused = Inactive workspace on any monitor
-label-occupied = ○
-label-occupied-padding = 1
+label-occupied =
+; label-occupied-background=${colors.dark2}
+; label-occupied-foreground=#BDAE93
+; label-occupied-padding = 1
 
 ; visible = Active workspace on unfocused monitor
-label-visible = ●
-label-visible-padding = ${self.label-focused-padding}
+; label-visible = ●
+; label-visible-padding = ${self.label-focused-padding}
 
 ; urgent = Workspace with urgency hint set
-label-urgent = ●
-label-urgent-foreground = ${colors.alert}
+; label-urgent =
+label-urgent-background = ${colors.alert}
+label-urgent-foreground = ${colors.black}
 label-urgent-padding = 1
 
 label-empty =
 
 [module/xbacklight]
-type = internal/xbacklight
-format-background = ${colors.yellow}
-format-foreground = ${colors.black}
-format-padding = 1
+type = internal/backlight
+card = intel_backlight
+; format-background = ${colors.dark2}
+format-foreground = #BDAE93
+; format-padding = 1
 format =  <label>
 label = %percentage%
 
@@ -1837,10 +1874,15 @@ label = %percentage%
 click-left = networkmanager_dmenu
 type = custom/script
 exec = ~/bin/blocks/networkmanager
-format-background = ${colors.green}
-format-foreground = ${colors.black}
+format-background = ${colors.dark2}
+format-foreground = #BDAE93
 format-padding = 1
 interval = 2
+
+[module/bluetooth]
+type = custom/script
+exec = rfkill list bluetooth | grep yes > /dev/null && echo '' || echo 
+format-foreground = #BDAE93
 
 [module/bluez]
 click-left = blueman-manager
@@ -1854,24 +1896,24 @@ interval = 4
 
 [module/date]
 type = custom/script
-exec = date +'%a %Y-%m-%d %H:%M'
-format =  <label>
-format-background = ${colors.light4}
-format-foreground = ${colors.black}
-format-padding = 1
+exec = date +'%%{F#665C54} %a %Y-%m-%d%%{F-} %%{F#BDAE93}%H:%M%%{F-}'
+; format =  <label>
+; format-background = ${colors.light4}
+; format-foreground = ${colors.dark2}
+; format-padding = 1
 interval = 60
 click-left = notify-send "$(cal --color=never | cut -c -20)"
 
-[module/battery]
+[module/bat0]
 type = internal/battery
-format-full-background = ${colors.sienna}
-format-full-foreground = ${colors.black}
+format-full-background = ${colors.dark2}
+format-full-foreground = #BDAE93
 format-full-padding = 1
-format-charging-background = ${colors.sienna}
-format-charging-foreground = ${colors.black}
+format-charging-background = ${colors.dark2}
+format-charging-foreground = #BDAE93
 format-charging-padding = 1
-format-discharging-background = ${colors.sienna}
-format-discharging-foreground = ${colors.black}
+format-discharging-background = ${colors.dark2}
+format-discharging-foreground = #BDAE93
 format-discharging-padding = 1
 battery = BAT0
 adapter = ADP1
@@ -1898,11 +1940,67 @@ animation-charging-3 = 
 animation-charging-4 = 
 animation-charging-framerate = 750
 
+[module/bat1]
+type = internal/battery
+; format-full-background = ${colors.dark2}
+format-full-foreground = #BDAE93
+; format-full-padding = 1
+; format-charging-background = ${colors.dark2}
+format-charging-foreground = #BDAE93
+; format-charging-padding = 1
+; format-discharging-background = ${colors.dark2}
+format-discharging-foreground = #BDAE93
+; format-discharging-padding = 1
+battery = BAT1
+adapter = ADP1
+full-at = 100
+
+format-full = %{A1:notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)":} <label-full>%{A}
+format-charging = %{A1:notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)":}<animation-charging> <label-charging>%{A}
+format-discharging = %{A1:notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)":}<ramp-capacity> <label-discharging>%{A}
+
+label-full = %percentage%
+label-charging = %percentage%
+label-discharging = %percentage%
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-framerate = 750
+
+[module/cpu]
+type = internal/cpu
+
+; Seconds to sleep between updates
+; Default: 1
+interval = 0.5
+format-foreground = #BDAE93
+; format = <label> <ramp-coreload>
+format = <label>
+label =  %percentage%%
+
+ramp-coreload-0 = ▁
+ramp-coreload-1 = ▂
+ramp-coreload-2 = ▃
+ramp-coreload-3 = ▄
+ramp-coreload-4 = ▅
+ramp-coreload-5 = ▆
+ramp-coreload-6 = ▇
+ramp-coreload-7 = █
+
 [module/weather]
 type = custom/script
 exec = ~/bin/blocks/darksky
-format-background = ${colors.blue}
-format-foreground = ${colors.black}
+format-background = ${colors.dark2}
+format-foreground = #BDAE93
 format-padding = 1
 click-left = xdg-open https://darksky.net
 interval = 120
@@ -1949,8 +2047,8 @@ initial = 1
 scroll-down = ~/bin/blocks/amixer-pulse +
 scroll-up = ~/bin/blocks/amixer-pulse -
 click-left = ~/bin/blocks/amixer-pulse toggle
-format-background = ${colors.purple}
-format-foreground = ${colors.black}
+format-background = ${colors.dark2}
+format-foreground = #BDAE93
 format-padding = 1
 ; click-right = polybar-msg -p %pid% hook demo 2
 ; double-click-left = polybar-msg -p %pid% hook demo 3
@@ -2007,9 +2105,9 @@ gpgconf --launch gpg-agent
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpg-connect-agent updatestartuptty /bye >&/dev/null
 
-if [ "$TERM" = "linux" ]; then
-    exec fish
-fi
+# if [ "$TERM" = "linux" ]; then
+#     exec fish
+# fi
 #+end_src
 ** pythonrc.py
 :PROPERTIES:
@@ -2408,7 +2506,7 @@ run '~/.tmux/plugins/tpm/tpm'
 #include ".extend.Xresources"
 #endif
 
-Xft.dpi: 184
+Xft.dpi: 172
 Xft.antialias: 1
 Xft.hinting: 1
 Xft.rgba: rgb
@@ -2416,7 +2514,7 @@ Xft.autohint: false
 Xft.hintstyle: hintslight
 Xft.lcdfilter: lcddefault
 
-Xcursor.size: 64
+Xcursor.size: 32
 
 Emacs.fontBackend: xft
 Emacs.internalBorder: 15
