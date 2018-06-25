@@ -772,8 +772,9 @@ color is hidden by ivy's match color."
                                 (t . ivy--regex-ignore-order)))
 
   (d/list-prepend! 'ivy-sort-functions-alist
-    '(ivy-completion-in-region . (lambda (str1 str2)
-                                   (string< (downcase str1) (downcase str2)))))
+    `(ivy-completion-in-region
+      . ,(lambda (str1 str2)
+           (> 0 (compare-strings str1 nil nil str2 nil nil 'ignore-case)))))
 
   (setq ivy-format-function 'ivy-format-function-line
         ivy-use-virtual-buffers t
