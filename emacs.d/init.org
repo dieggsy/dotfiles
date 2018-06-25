@@ -361,6 +361,10 @@ except for warnings and errors.
 (setq password-cache t
       password-cache-expiry 86400)
 #+end_src
+*** Authinfo
+#+begin_src emacs-lisp
+(setq auth-sources '("~/.authinfo.gpg"))
+#+end_src
 *** EPA
 Integrate gpg passphrase query with Emacs minibuffer when using EPA.
 #+begin_src emacs-lisp
