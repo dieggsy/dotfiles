@@ -182,7 +182,9 @@ length of PATH (sans directory slashes) down to MAX-LEN."
         (propertize
          (cond ((and default-directory (string= host (system-name)))
                 (concat "@" (file-remote-p default-directory 'user)))
-               (default-directory (concat "@" host)))
+               (default-directory (concat (file-remote-p default-directory
+                                                         'user)
+                                          "@" host)))
          'face 'egp-remote-face)))
     (egp-get-git-status)
     (propertize (egp-fish-path (eshell/pwd) 0) 'face 'egp-dir-face)
