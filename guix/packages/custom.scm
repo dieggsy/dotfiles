@@ -140,12 +140,12 @@ quality weather, maritime, and meteorological based icons!")
 (define-public font-symbola
   (package
     (name "font-symbola")
-    (version "10.24")
+    (version "11.00")
     (source (origin
               (method url-fetch/zipbomb)
               (uri "http://users.teilar.gr/~g1951d/Symbola.zip")
               (sha256
-               (base32 "0q1yx7fq0hqbm35khyf4gibmx8fjypa88xfd1yf8crh3hqlmz7vy"))))
+               (base32 "181qsvfc20q2pypfj4qn53jilr62248nzbanfq4q3mzxcn0rg24k"))))
     (build-system font-build-system)
     (home-page "http://users.teilar.gr/~g1951d/")
     (synopsis "Font for unicode symbols")
