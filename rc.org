@@ -1282,7 +1282,6 @@ Plugin 'sheerun/vim-polyglot'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-speeddating'
 Plugin 'tpope/vim-surround'
-Plugin 'wincent/command-t'
 call vundle#end()
 filetype plugin indent on
 #+end_src
