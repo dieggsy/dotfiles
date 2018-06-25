@@ -33,14 +33,9 @@ more readable in org format than in rendered markdown.
   - [[#zathurarc][zathurarc]]
 - [[#scripts][Scripts]]
   - [[#desktop-record][desktop-record]]
-  - [[#erc-rofi][erc-rofi]]
-  - [[#eshell-focus][eshell-focus]]
-  - [[#exwm-blocks][exwm-blocks]]
   - [[#guix][guix]]
-  - [[#i3-exit-rofi][i3-exit-rofi]]
-  - [[#i3blocks][i3blocks]]
-  - [[#i3exit][i3exit]]
-  - [[#masterinstall][masterinstall]]
+  - [[#wm-exit-rofi][wm-exit-rofi]]
+  - [[#wm-exit][wm-exit]]
   - [[#no-lock-fullscreen][no-lock-fullscreen]]
   - [[#ocrpdf][ocrpdf]]
   - [[#ocrpdf2][ocrpdf2]]
@@ -207,7 +202,7 @@ super + Escape
 
 # quit bspwm normally
 super + shift + period
-    bspc quit
+    wm-exit-rofi
 
 super + shift + p
    ~/.config/bspwm/bspwmrc
@@ -1102,8 +1097,6 @@ set -U fish_cursor_replace_one underscore
 <?xml version="1.0"?>
 <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
 <fontconfig>
-  <dir>~/.nix-profile/share/fonts</dir>
-  <dir>~/.guix-profile/share/fonts</dir>
   <alias>
     <family>Iosevka Term</family>
     <default>
@@ -1235,11 +1228,6 @@ I know, it probably doesn't make sense to keep my gitconfig here.
 [github]
 	user = dieggsy
 #+end_src
-**** hub
-#+begin_src conf
-[hub]
-    protocol = ssh
-#+end_src
 *** gitignore
 :PROPERTIES:
 :header-args+: :tangle ~/.gitignore
@@ -1249,7 +1237,6 @@ I know, it probably doesn't make sense to keep my gitconfig here.
 .DS\_Store
 *.pyc
 __pychache__
-*.alfredworkflow
 #+end_src
 ** init.vim
 :PROPERTIES:
@@ -2171,85 +2158,6 @@ recordmydesktop --device pulse
 # emacsclient ---eval '(decrease-all-fonts)'
 pkill -f screenkey
 #+end_src
-** erc-rofi
-:PROPERTIES:
-:header-args+: :tangle ~/bin/erc-rofi :shebang "#!/usr/bin/env bash"
-:END:
-#+begin_src sh
-this=$(emacsclient --eval "(format \"%s\" (mapcar #'buffer-name (cl-remove-if-not (lambda (buf) (with-current-buffer buf (eq major-mode 'erc-mode))) (buffer-list)))))" | sed 's/"//g;s/[()]//g;s/ /\n/g' | rofi -dmenu -p '[erc] ')
-echo $this
-emacsclient -e "(switch-to-buffer \"$this\")"
-i3-msg '[title=".emacs-wrapped@Ragnarok"] focus'
-#+end_src
-** eshell-focus
-:PROPERTIES:
-:header-args+: :tangle ~/bin/eshell-focus :shebang "#!/usr/bin/env bash"
-:END:
-#+begin_src sh
-# emacsclient -e "(eshell-frame)"
-emacsclient -e '(eshell) '
-i3-msg '[title=".emacs-wrapped@Ragnarok"] focus'
-#+end_src
-** exwm-blocks
-*** disk
-:PROPERTIES:
-:header-args+: :tangle ~/bin/exwm-blocks/disk :shebang "#!/bin/bash"
-:END:
-#+begin_src sh
-Disk=$(df -h "$1" | grep -v "^[A-Z]" | awk '{print $4-G"/"$2}')
-Short=$(df -h "$1" | grep -v "^[A-Z]" | awk '{print $4}')
-
-echo -e " $Short "
-#+end_src
-*** layout
-:PROPERTIES:
-:header-args+: :tangle ~/bin/exwm-blocks/layout :shebang "#!/bin/bash"
-:END:
-#+begin_src sh
-layout="$(setxkbmap -query | grep layout | cut -d' ' -f6)"
-
-if [ "$1" = "toggle" ] && [ "$layout" = "dvorak" ]; then
-    setxkbmap us
-    layout="QW"
-elif [ "$1" = "toggle" ] && [ "$layout" = "us" ]; then
-    setxkbmap dvorak
-    layout="DV"
-elif [ "$layout" = "us" ]; then
-    layout="QW"
-elif [ "$layout" = "dvorak" ]; then
-    layout="DV"
-fi
-
-echo " $layout "
-#+end_src
-*** volume
-:PROPERTIES:
-:header-args+: :tangle ~/bin/exwm-blocks/volume :shebang "#!/bin/bash"
-:END:
-#+begin_src sh
-if [ "$1" = "toggle" ]; then
-    out="$(amixer -D pulse sset Master toggle)"
-elif [ "$1" = "+" ]; then
-    out="$(amixer -D pulse sset Master 5%+)"
-elif [ "$1" = "-" ]; then
-    out="$(amixer -D pulse sset Master 5%-)"
-else
-    out="$(amixer -D pulse get Master)"
-fi
-
-# echo "$out"
-
-Vol=$(echo "$out"  | grep "Left: Playback" | awk '{print $5}' | tr -d "[ %]")
-Mute=$(echo "$out" | grep "Left: Playback" | awk '{print $6}' | tr -d "[-]")
-
-if [ "$Vol" = "0" ] || [ "$Mute" = "off" ]; then
-    echo -ne " $Vol"
-elif [ "$Vol" -ge "50" ];then
-    echo -ne " $Vol"
-else
-    echo -ne " $Vol"
-fi
-#+end_src
 ** guix
 :PROPERTIES:
 :header-args+: :tangle ~/bin/guix :shebang "#!/usr/bin/sh"
@@ -2262,309 +2170,36 @@ export GIT_SSL_CAINFO="$SSL_CERT_FILE"
 
 /usr/local/bin/guix $*
 #+end_src
-** i3-exit-rofi
+** wm-exit-rofi
 :PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3-exit-rofi") :shebang "#!/usr/bin/env bash"
+:header-args+: :tangle ~/bin/wm-exit-rofi :shebang "#!/usr/bin/env bash"
 :END:
 #+begin_src sh
 # message="Exit i3?"
 response=$(echo -e "exit\nlock\nsuspend\nhibernate\nreboot\nshutdown" | rofi -l 6 -width 30 -dmenu -i -p "")
 if [ -n "$response" ]; then
-    ~/bin/i3exit $response
+    ~/bin/wm-exit $response
 fi
 #+end_src
-** i3blocks
-i3blocks scripts taken from/inspired by [[https://github.com/yeungocanh/archdot/tree/master/.config/i3blocks][yeungocanh/archdot]].
-*** battery
+** wm-exit
 :PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/battery") :shebang "#!/bin/bash"
-:END:
-#+begin_src sh
-if [ "$BLOCK_BUTTON" = "1" ]; then
-    notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)"
-fi
-bat=$(acpi | cut -d " " -f4 | tr -d "%,")
-Adapt=$(acpi -a | cut -d " " -f3)
-
-touch /tmp/battery-status
-if [ "$bat" -lt 11 ] && [ "$(</tmp/battery-status)" != "critically-low" ] && [ "$Adapt" != "on-line" ]; then
-    espeak -vf4 "Battery critically low, consider charging." &
-    notify-send "Battery critically low, consider charging." &
-    echo "critically-low" > /tmp/battery-status
-else
-    echo "fine" > /tmp/battery-status
-fi
-
-
-if [ "$Adapt" = "on-line" ];then
-    icon=""
-elif [ "$bat" -gt "95" ];then
-    icon=""
-elif [ "$bat" -gt "75" ];then
-    icon=""
-elif [ "$bat" -gt "50" ];then
-    icon=""
-elif [ "$bat" -gt "25" ];then
-    icon=""
-elif [ "$bat" -le "25" ];then
-    icon=""
-fi
-
-
-echo -e "  $icon  $bat "
-#+end_src
-*** date
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/date") :shebang "#!/bin/bash"
-:END:
-#+begin_src sh
-if [ "$BLOCK_BUTTON" = "1" ]; then
-    notify-send "$(cal --color=never | cut -c -20)"
-fi
-echo -e "    $(date +%F\ %R) "
-echo -e "    $(date +%R) "
-#+end_src
-*** disk
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/disk") :shebang "#!/bin/bash"
-:END:
-#+begin_src sh
-if [ "$BLOCK_BUTTON" = "1" ]; then
-    notify-send "$(df -h)"
-fi
-Disk=$(df -h "$1" | grep -v "^[A-Z]" | awk '{print $4-G"/"$2}')
-Short=$(df -h "$1" | grep -v "^[A-Z]" | awk '{print $4}')
-
-if [ -z "$1" ];then
-    echo -e "Enter Your Mounted Point Name Ex : \"/\" "
-else
-    # echo -e " $Disk "
-    echo -e " $Short "
-fi
-#+end_src
-*** dropbox
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/dropbox") :shebang "#!/bin/bash"
-:END:
-#+begin_src sh
-status=$(dropbox-cli status)
-if [ ! "$status" = "Up to date" ]; then
-    echo "$status"
-else
-    echo ""
-fi
-#+end_src
-*** layout
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/layout") :shebang "#!/bin/bash"
-:END:
-#+begin_src sh
-layout="$(setxkbmap -query | grep layout | cut -d' ' -f6)"
-
-if [ "$BLOCK_BUTTON" = "1" ] && [ "$layout" = "dvorak" ]; then
-    setxkbmap us
-    layout="QW"
-elif [ "$BLOCK_BUTTON" = "1" ] && [ "$layout" = "us" ]; then
-    setxkbmap dvorak
-    layout="DV"
-elif [ "$layout" = "us" ]; then
-    layout="QW"
-elif [ "$layout" = "dvorak" ]; then
-    layout="DV"
-fi
-
-echo "    $layout "
-#+end_src
-*** music
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/music") :shebang "#!/bin/bash"
-:END:
-#+begin_src sh
-if [ "$1" = "toggle" ] || [ "$BLOCK_BUTTON" = "1" ]; then
-    playerctl-cmus play-pause
-elif [ "$1" = "next" ] || [ "$BLOCK_BUTTON" = "5" ]; then
-    playerctl-cmus next
-elif [ "$1" = "prev" ] || [ "$BLOCK_BUTTON" = "4" ]; then
-    playerctl-cmus previous
-fi
-
-spotify=$(pgrep -x 'spotify')
-spotplaying="$([ -n "$spotify" ] && pacmd list-sink-inputs | grep -B16 'application.name = "spotify"' | head -1 | awk '{print $2}')"
-cmus=$(pgrep -x 'cmus')
-cmusplaying="$([ -n "$cmus" ] && cmus-remote -Q | head -1 | awk '{print $2}')"
-
-if [ -n "$spotify" ] && [ "$spotplaying" = "RUNNING" ]; then
-    artist="$(sp current | grep -E '^Artist' | cut -d' ' -f8-)"
-    title="$(sp current | grep Title | cut -d' ' -f9-)"
-    icon="⏸"
-elif [ -n "$cmus" ] && [ "$cmusplaying" = "playing" ]; then
-    title="$(cmus-remote -Q | grep "tag title" | cut -d" " -f3-)"
-    artist="$(cmus-remote -Q | grep "tag artist" | cut -d" " -f3-)"
-    icon="⏸"
-elif [ -n "$spotify" ]; then
-    artist="$(sp current | grep -E '^Artist' | cut -d' ' -f8-)"
-    title="$(sp current | grep Title | cut -d' ' -f9-)"
-    icon="▶"
-elif [ -n "$cmus" ]; then
-    title="$(cmus-remote -Q | grep "tag title" | cut -d" " -f3-)"
-    artist="$(cmus-remote -Q | grep "tag artist" | cut -d" " -f3-)"
-    icon="▶"
-fi
-
-if [ "$XDG_CURRENT_DESKTOP" = "exwm" ]; then
-    emacsclient --eval "(message \"Current track: $artist - $title\")"
-elif [ -n "$artist" ] && [ -n "$title" ]; then
-    echo -e " $icon $artist - $title "
-    echo -e " $icon $title "
-fi
-#+end_src
-*** screen
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/screen") :shebang "#!/bin/bash"
-:END:
-#+begin_src sh
-brightness=$(xbacklight -get)
-multiple=$(printf %.0f $(echo "scale=2; $brightness / 5" | bc))
-brightness=$((($multiple * 5)))
-if [ "$1" = "+" ]; then
-    brightness=$((($brightness + 5)))
-    xbacklight -set $brightness > /dev/null 2>&1
-elif [ "$1" = "-" ]; then
-    brightness=$((($brightness - 5)))
-    xbacklight -set $brightness > /dev/null 2>&1
-fi
-
-echo "    $brightness"
-#+end_src
-*** volume
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/volume") :shebang "#!/bin/bash"
-:END:
-#+begin_src sh
-if [ "$1" = "toggle" ] || [ "$BLOCK_BUTTON" = "1" ]; then
-    amixer -D pulse sset Master toggle > /dev/null 2>&1
-elif [ "$1" = "+" ] || [ "$BLOCK_BUTTON" = "5" ]; then
-    amixer -D pulse sset Master 5%+ > /dev/null 2>&1
-elif [ "$1" = "-" ] || [ "$BLOCK_BUTTON" = "4" ]; then
-    amixer -D pulse sset Master 5%- > /dev/null 2>&1
-fi
-
-Vol=$(amixer -D pulse get Master | grep "Left: Playback" | awk '{print $5}' | tr -d "[ %]" | head -1)
-Mute=$(amixer -D pulse get Master | grep "Left: Playback" | awk '{print $6}' | tr -d "[-]" | head -1)
-
-if [ "$Vol" = "0" ] || [ "$Mute" = "off" ]; then
-    echo -ne " $Vol"
-elif [ "$Vol" -ge "50" ];then
-    echo -ne " $Vol"
-else
-    echo -ne " $Vol"
-fi
-#+end_src
-*** weather
-:PROPERTIES:
-:header-args+: :tangle ~/bin/i3blocks/weather :shebang "#!/bin/bash"
-:END:
-#+begin_src sh
-# Based on http://openweathermap.org/current
-
-API_KEY="fab96973be619554c0024b39a579202a"
-
-# Check on http://openweathermap.org/find
-CITY_ID="${BLOCK_INSTANCE}"
-
-# URGENT_LOWER=0
-# URGENT_HIGHER=30
-
-ICON_SUNNY=""
-ICON_CLOUDY=""
-ICON_RAINY=""
-ICON_STORM=""
-ICON_SNOW=""
-ICON_FOG=""
-
-SYMBOL_CELSIUS=""
-
-WEATHER_URL="http://api.openweathermap.org/data/2.5/weather?id=${CITY_ID}&appid=${API_KEY}&units=imperial"
-
-WEATHER_INFO=$(wget -qO- "${WEATHER_URL}")
-WEATHER_MAIN=$(echo "${WEATHER_INFO}" | grep -o -e '\"main\":\"[a-Z]*\"' | awk -F ':' '{print $2}' | tr -d '"')
-WEATHER_TEMP=$(echo "${WEATHER_INFO}" | grep -o -e '\"temp\":\-\?[0-9]*' | awk -F ':' '{print $2}' | tr -d '"')
-
-if [[ "${WEATHER_MAIN}" = *Snow* ]]; then
-  echo "  ${ICON_SNOW}  ${WEATHER_TEMP}${SYMBOL_CELSIUS} "
-  echo "  ${ICON_SNOW}  ${WEATHER_TEMP}${SYMBOL_CELSIUS} "
-  echo ""
-elif [[ "${WEATHER_MAIN}" = *Rain* ]] || [[ "${WEATHER_MAIN}" = *Drizzle* ]]; then
-  echo "  ${ICON_RAINY}  ${WEATHER_TEMP}${SYMBOL_CELSIUS} "
-  echo "  ${ICON_RAINY}  ${WEATHER_TEMP}${SYMBOL_CELSIUS} "
-  echo ""
-elif [[ "${WEATHER_MAIN}" = *Cloud* ]]; then
-  echo "  ${ICON_CLOUDY}  ${WEATHER_TEMP}${SYMBOL_CELSIUS} "
-  echo "  ${ICON_CLOUDY}  ${WEATHER_TEMP}${SYMBOL_CELSIUS} "
-  echo ""
-elif [[ "${WEATHER_MAIN}" = *Clear* ]]; then
-  echo "  ${ICON_SUNNY}  ${WEATHER_TEMP}${SYMBOL_CELSIUS} "
-  echo "  ${ICON_SUNNY}  ${WEATHER_TEMP}${SYMBOL_CELSIUS} "
-  echo ""
-elif [[ "${WEATHER_MAIN}" = *Fog* ]] || [[ "${WEATHER_MAIN}" = *Mist* ]] || [[ "${WEATHER_MAIN}" = *Haze* ]]; then
-  echo "  ${ICON_FOG}  ${WEATHER_TEMP}${SYMBOL_CELSIUS} "
-  echo "  ${ICON_FOG}  ${WEATHER_TEMP}${SYMBOL_CELSIUS} "
-  echo ""
-else
-  echo "  ${WEATHER_MAIN}  ${WEATHER_TEMP}${SYMBOL_CELSIUS} "
-  echo "  ${WEATHER_MAIN}  ${WEATHER_TEMP}${SYMBOL_CELSIUS} "
-  echo ""
-fi
-
-# if [[ "${WEATHER_TEMP}" -lt "${URGENT_LOWER}" ]] || [[ "${WEATHER_TEMP}" -gt "${URGENT_HIGHER}" ]]; then
-#   exit 33
-# fi
-#+end_src
-*** wifi
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/bin/i3blocks/wifi") :shebang "#!/bin/bash"
-:END:
-#+begin_src sh
-if [ "$BLOCK_BUTTON" = "1" ]; then
-    networkmanager_dmenu
-fi
-name="$(iwgetid -r)"
-if [ -n "$name" ]; then
-    # strength="$(nmcli device wifi list | grep '*' | tail -1 | awk -F '[[:space:]][[:space:]]+' '{print $6}')"
-    # echo -e "   $name $strength%"
-    # echo -e "$strength% "
-    echo -e "  $name "
-    echo ""
-    # echo "#B8BB26"
-else
-    echo -e "  None "
-    echo
-    echo
-    # echo "#FB4933"
-fi
-#+end_src
-** i3exit
-:PROPERTIES:
-:header-args+: :tangle ~/bin/i3exit :shebang "#!/bin/sh"
+:header-args+: :tangle ~/bin/wm-exit :shebang "#!/bin/sh"
 :END:
 #+begin_src sh
 [[ $(cat /proc/1/comm) == "systemd" ]] && logind=systemctl || logind=loginctl
 
 case "$1" in
     lock)
-        betterlockscreen -l dim
+        slock
         ;;
     exit)
-        i3-msg exit
-        ;;
-    switch_user)
-        dm-tool switch-to-greeter
+        bspc quit
         ;;
     suspend)
-        betterlockscreen -l dim && $logind suspend
+        $logind suspend
         ;;
     hibernate)
-        betterlockscreen -l dim && $logind hibernate
+        $logind hibernate
         ;;
     reboot)
         $logind reboot
@@ -2573,96 +2208,11 @@ case "$1" in
         $logind poweroff
         ;;
     ,*)
-        echo "== ! i3exit: missing or invalid argument ! =="
-        echo "Try again with: lock | logout | switch_user | suspend | hibernate | reboot | shutdown"
+        notify-send 'Invalid argument'
         exit 2
 esac
 
 exit 0
-#+end_src
-** masterinstall
-:PROPERTIES:
-:header-args+: :tangle ~/bin/masterinstall :shebang "#!/usr/bin/env bash"
-:END:
-A work in progress to reinstall programs post apocalpyse.
-*** macOS
-**** Xcode
-#+begin_src sh :tangle (when (eq system-type 'darwin) "~/bin/masterinstall")
-if  [ ! -d /Applications/Xcode.app ]; then
-    echo "Please install Xcode and try again."
-    exit 1
-else
-    echo "\e[1;34mInstalling: \e[91mXcode command line tools\e[0;97m"
-    xcode-select --install
-fi
-#+end_src
-**** homebrew
-#+begin_src sh :tangle (when (eq system-type 'darwin) "~/bin/masterinstall")
-echo "\n\e[1;34mInstalling: \e[91mhomebrew\e[0;97m"
-ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-
-# Install brew bundle
-echo "\n\e[1;34mInstalling: \e[91mhomebrew programs\e[0;97m"
-/usr/local/bin/brew tap Homebrew/bundle
-/usr/local/bin/brew bundle --file=~/Dropbox/installed-programs/brew.rb
-#+end_src
-**** Install alfred workflow utils
-#+begin_src sh :tangle (when (eq system-type 'darwin) "~/bin/masterinstall")
-echo "\n\e[1;34mInstalling: \e[91mAlfred workflow utils\e[0;97m"
-curl -o  ~/bin/workflow-build.py https://gist.githubusercontent.com/deanishe/b16f018119ef3fe951af/raw/
-curl -o  ~/bin/workflow-install.py https://gist.githubusercontent.com/deanishe/35faae3e7f89f629a94e/raw/
-chmod a+x ~/bin/workflow-build.py
-chmod a+x ~/bin/workflow-install.py
-echo -e "\e[1;34mDone"
-#+end_src
-*** Linux
-**** apt-get packages
-#+begin_src sh :tangle (when (eq system-type 'gnu/linux) "~/bin/masterinstall")
-tar -xf ~/Dropbox/installed-programs/apt.tgz /tmp/apt
-sudo apt-key add /tmp/apt/repo.keys
-sudo cp -R /tmp/apt/sources.list* /etc/apt/
-sudo apt-get update
-sudo apt-get install dselect
-sudo dselect update
-sudo dpkg --set-selections < /tmp/apt/package.list
-sudo apt-get dselect-upgrade -y
-#+end_src
-*** nix
-#+begin_src sh :tangle (when (eq system-type 'gnu/linx) "~/bin/masterinstall")
-curl https://nixos.org/nix/install | sh
-nix-env -f ~/dotfiles/nix-local/packages.nix -i
-#+end_src
-*** pyenv
-#+begin_src sh :tangle (when (eq system-type 'gnu/linux) "~/bin/masterinstall")
-curl -L https://raw.githubusercontent.com/yyuu/pyenv-installer/master/bin/pyenv-installer | bash
-pyenv update
-#+end_src
-*** Python versions
-#+begin_src sh
-echo "\n\e[1;34mInstalling: \e[91mpython\e[0;97m"
-# Pyenv setup
-usr/local/bin/pyenv install $python3version
-usr/local/bin/pyenv rehash
-usr/local/bin/pyenv install $python2version
-usr/local/bin/pyenv rehash
-#+end_src
-*** Pip
-#+begin_src sh
-pyenv global $python3version
-echo "\n\e[1;34mInstalling: \e[91mpip3 programs\e[0;97m"
-<~/Dropbox/installed-programs/pip3.txt xargs pip install
-
-pyenv global $python2version
-echo "\n\e[1;34mInstalling: \e[91mpip2 programs\e[0;97m"
-<~/Dropbox/installed-programs/pip2.txt xargs pip install
-
-pyenv global $python3version
-#+end_src
-*** Tangle dotfiles
-#+begin_src sh
-if [ -d ~/dotfiles ]; then
-    ~/dotfiles/org-tangle
-fi
 #+end_src
 ** no-lock-fullscreen
 :PROPERTIES:
