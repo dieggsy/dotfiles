@@ -1962,6 +1962,9 @@ Source: https://git.io/vQKuU"
 
 (evil-ex-define-cmd "view" 'evil-view)
 (evil-ex-define-cmd "bk[ill]" 'kill-this-buffer)
+(evil-ex-define-cmd "wk[ill]" (lambda () (interactive)
+                                (save-buffer)
+                                (kill-this-buffer)))
 #+end_src
 * Editing
 ** Defaults
