@@ -3072,8 +3072,7 @@ Emacs: highlight surrounding parentheses
 *** [[https://github.com/ecraven/no-emoji/][no-emoji]]
 #+begin_src emacs-lisp
 (use-package no-emoji
-  ;; :hook (erc-mode . no-emoji-minor-mode)
-  )
+  :hook (erc-mode . no-emoji-minor-mode))
 #+end_src
 *** [[https://github.com/milkypostman/powerline][powerline]]
 #+begin_src emacs-lisp
