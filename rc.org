@@ -1390,7 +1390,7 @@ font-2 = Weather Icons:size=17;3
 modules-left = bspwm date network bluetooth xwindow
 ; modules-center = i3 bspwm
 ; modules-right = dropbox spotify cmus inbox-reddit github xkb weather xbacklight volume battery
-modules-right = dropbox inbox-reddit github xkb weather xbacklight volume bat1 bat0
+modules-right = xkb weather xbacklight volume bat1 bat0
 
 wm-restack = bspwm
 
