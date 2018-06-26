@@ -4957,7 +4957,8 @@ Source: http://tinyurl.com/y8tj8vxx"
               (progn
                 (switch-to-buffer (process-buffer live-erc-proc)))
             ;; otherwise, connect to ERC
-            (switch-to-buffer (erc :server "irc.freenode.net")))))))
+            (switch-to-buffer (erc-tls :server "firefly"
+                                       :port 4000)))))))
 
   (defun d/gitter ()
     (interactive)
