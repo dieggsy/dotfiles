@@ -32,7 +32,6 @@ more readable in org format than in rendered markdown.
   - [[#zathurarc][zathurarc]]
 - [[#scripts][Scripts]]
   - [[#desktop-record][desktop-record]]
-  - [[#guix][guix]]
   - [[#wm-exit-rofi][wm-exit-rofi]]
   - [[#wm-exit][wm-exit]]
   - [[#no-lock-fullscreen][no-lock-fullscreen]]
@@ -2057,18 +2056,6 @@ screenkey -mf "Iosevka Term" --bg-color "#282828" --font-color "#FDF4C1" --opaci
 recordmydesktop --device pulse
 # emacsclient ---eval '(decrease-all-fonts)'
 pkill -f screenkey
-#+end_src
-** guix
-:PROPERTIES:
-:header-args+: :tangle ~/bin/guix :shebang "#!/usr/bin/sh"
-:END:
-#+begin_src sh
-export SSL_CERT_DIR="$HOME/.guix-profile/etc/ssl/certs"
-export SSL_CERT_FILE="$HOME/.guix-profile/etc/ssl/certs/ca-certificates.crt"
-export GIT_SSL_CAINFO="$SSL_CERT_FILE"
-
-
-/usr/local/bin/guix $*
 #+end_src
 ** wm-exit-rofi
 :PROPERTIES:
