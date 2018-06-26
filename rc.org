@@ -88,7 +88,7 @@ killall -q xautolock; xautolock -corners ---- -time 5 -locker "slock" &
 killall -q xss-lock; xss-lock -- slock &
 xcape -e 'Control_L=Escape' &
 pactl subscribe | ~/bin/update-volume &
-syncthing &
+killall syncthing; syncthing -no-browser &
 
 xset r rate 300 50 &
 
