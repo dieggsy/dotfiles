@@ -9,8 +9,6 @@ aware (Linux or Darwin).
 ** Contents                                                      :toc:TOC_3:
   - [[#files][Files]]
     - [[#emacsd---emacs-config][emacs.d/ - emacs config]]
-    - [[#nix-local---custom-nix-packages][nix-local/ - custom nix packages]]
-    - [[#zshorg---zsh-config][zsh.org - zsh config]]
     - [[#rcorg---dotfiles-and-scripts][rc.org - dotfiles and scripts]]
     - [[#org-tangle---install-script][org-tangle - install script]]
   - [[#installation][Installation]]
@@ -22,16 +20,6 @@ aware (Linux or Darwin).
 An emacs configuration based largely on [[https://github.com/raxod502/straight.el][straight.el]], [[https://github.com/jwiegley/use-package][use-package]], [[https://github.com/emacs-evil/evil][evil-mode]],
 and [[https://github.com/abo-abo/swiper][ivy]], with inspiration and code from [[https://github.com/syl20bnr/spacemacs][spacemacs]] and others' configs. The file
 is tangled to ~init.el~ on save.
-*** [[./nix-local][nix-local/]] - custom nix packages
-A place where I keep custom nix packages - for example, I build emacs from
-master with a nix recipe.
-
-I've found nix is a nice, reproducible way to maintain custom builds you
-consistently like using (as well as consistently reproduce at least a subset of
-necessary packages on any machine).
-*** [[./zsh.org][zsh.org]] - zsh config
-A zsh configuration that is partially [[https://github.com/zplug/zplug][zplug]] based, with inspiration and code
-from prezto and oh-my-zsh where not using an actual plugin.
 *** [[./rc.org][rc.org]] - dotfiles and scripts
 A bunch of less complex or one-off configuration files and scripts I like to
 keep handy, including configurations for [[https://github.com/dieggsy/dotfiles/blob/master/rc.org#tmux][tmux]] and [[https://github.com/dieggsy/dotfiles/blob/master/rc.org#i3][i3]] as well as a [[https://github.com/dieggsy/dotfiles/blob/master/rc.org#darktooththeme-cmus][cmus theme]],
@@ -45,7 +33,7 @@ to install.
 ** Installation
 You should /probably/ have a fairly recent version of emacs, and potentially
 org-mode. I tend to use a "bleeding edge" installation of emacs from source
-(currently v26.0.50), and I've not tested this with older versions, though it
+(currently v27.0.50), and I've not tested this with older versions, though it
 should work in theory.
 
 Clone the repo to =~/dotfiles= (or wherever you'd like, but make sure the folder
@@ -63,17 +51,17 @@ cd ~/dotfiles
 
 *** Partial
 You can call the script with the filenames you'd like to install - say you want
-just the emacs and zsh configs:
+just the emacs config:
 #+begin_src sh
-./org-tangle emacs.d/config.org zsh.org
+./org-tangle emacs.d/config.org
 #+end_src
 Any arguments not corresponding to a filename will search for a heading in
 rc.org and tangle the files under that heading.
 
-For example, say you want my emacs config, and /just/ my tmux and i3 configs from
+For example, say you want my emacs config, and /just/ my tmux and bspwm configs from
 ~rc.org~:
 #+begin_src sh
-./org-tangle emacs.d/config.org tmux i3
+./org-tangle emacs.d/config.org tmux bspwm
 #+end_src
 
 *Note:* Ideally for all of this to work optimally, there should be no ambiguity
