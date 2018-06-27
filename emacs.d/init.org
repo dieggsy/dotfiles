@@ -3705,6 +3705,13 @@ emacs and scheme talk to each other
   (geiser-chicken-binary '("csi" "-q"))
   (geiser-chicken-required-modules nil)
   :config
+  (define-advice geiser (:around (fn impl) d/reuse-existing)
+    (if-let (buffer (cl-find-if (lambda (b)
+                                  (eq 'geiser-repl-mode
+                                      (buffer-local-value 'major-mode b)))
+                                (buffer-list)))
+        (pop-to-buffer buffer #'display-buffer-pop-up-window)
+      (funcall fn impl)))
   (setq geiser-active-implementations '(chicken)
         geiser-debug-jump-to-debug-p nil
         geiser-debug-show-debug-p nil
