@@ -252,7 +252,7 @@ This makes startup time irrelevant. Start emacs once, connect with emacsclient
 every other time. See [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html#Emacs-Server][Using Emacs as a Server]].
 #+begin_src emacs-lisp
 (use-package server
-  :defer 5
+  :defer 3
   :config
   (unless (server-running-p)
     (server-start)))
