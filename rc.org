@@ -1682,12 +1682,15 @@ rofi.lines: 10
 :PROPERTIES:
 :header-args+: :tangle ~/.rsync-exclude :comments no
 :END:
-#+begin_src txt
+#+begin_src text
 .cache
 Dropbox
 .dropbox
 .dropbox-dist
 syncthing
+dotfiles/emacs.d/straight/repos
+dotfiles/emacs.d/straight/build
+pkg/emacs
 #+end_src
 ** termite
 :PROPERTIES:
