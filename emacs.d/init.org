@@ -2804,6 +2804,15 @@ imenu on steroids.
 #+begin_src emacs-lisp
 (use-package imenu-anywhere)
 #+end_src
+*** [[https://github.com/wasamasa/shackle][shackle]]
+#+begin_src emacs-lisp
+(use-package shackle
+  :defer 15
+  :config
+  (setq shackle-rules '((compilation-mode :ignore t)
+                        (inferior-emacs-lisp-mode :popup t)))
+  (shackle-mode))
+#+end_src
 *** [[https://github.com/cyrus-and/zoom][zoom]]
 #+begin_quote
 Fixed and automatic balanced window layout for Emacs
