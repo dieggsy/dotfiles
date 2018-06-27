@@ -337,6 +337,12 @@ XF86MonBrightnessDown
 #     playerctl next
 # XF86AudioPlay
 #     playerctl play-pause
+super + F1
+    playerctl play-pause
+super + F2
+    playerctl previous
+super + F3
+    playerctl next
 XF86AudioMute
     amixer -D pulse sset Master toggle && \
     echo hook:module/volume1 > /tmp/ipc-polybar-simple
