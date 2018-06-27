@@ -4745,12 +4745,7 @@ An Emacs Internet Relay Chat client
                                        "#lisp"
                                        "##lisp"
                                        "#scheme"
-                                       "#chicken")
-                                      ("gitter.im"
-                                       "#use-package/Lobby"
-                                       "#magit/magit"
-                                       "#MobileOrg/Lobby"
-                                       "#raxod502/straight.el")))
+                                       "#chicken")))
 
   (erc-define-catalog-entry 'english 'ACTION (format "%s*\t%%n %%a" (make-string 9 ?\s))))
 #+end_src
@@ -4976,10 +4971,12 @@ Source: http://tinyurl.com/y8tj8vxx"
             (switch-to-buffer (erc-tls :server "firefly"
                                        :port 4000)))))))
 
-  (defun d/gitter ()
+  (defun d/dogbike ()
     (interactive)
     (let ((erc-server-connect-function 'erc-open-tls-stream))
-      (erc :server "irc.gitter.im")))
+      (erc :server "firefly"
+           :port 4000
+           :nick "dieggsy/dogbike")))
 
   (defun d/erc-preprocess (string)
     (setq str
