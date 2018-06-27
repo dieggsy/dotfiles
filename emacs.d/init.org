@@ -2979,8 +2979,8 @@ I don't like seeing variable pitch in emacs. Just sorta throws me off.
   :defer 5
   :config
   (setq whitespace-style '(face trailing))
-  (global-whitespace-mode)
-  (setq whitespace-global-modes '(not erc-mode ses-mode)))
+  (setq whitespace-global-modes '(not erc-mode ses-mode))
+  (global-whitespace-mode))
 #+end_src
 ** Packages
 *** [[https://github.com/larstvei/Focus][focus]]
