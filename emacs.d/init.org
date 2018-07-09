@@ -557,15 +557,6 @@ Additional support for custom surrounding pairs for evil-surround.
   :config
   (evil-embrace-enable-evil-surround-integration))
 #+end_src
-***** [[https://github.com/emacs-evil/evil-ediff][evil-ediff]]
-#+begin_quote
-Make ediff a little more evil
-#+end_quote
-#+begin_src emacs-lisp
-(use-package evil-ediff
-  :after ediff
-  :demand t)
-#+end_src
 ***** [[https://github.com/TheBB/evil-indent-plus][evil-indent-plus]]
 #+begin_quote
 Better indent textobjects for evil
