@@ -175,7 +175,8 @@ as git repos.
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(setq straight-cache-autoloads t
+(setq straight-process-buffer " *straight-process*"
+      straight-cache-autoloads t
       straight-use-package-by-default t
       straight-vc-git-default-protocol (if (getenv "TERMUX") 'https 'ssh)
       straight-vc-git-force-protocol t)
