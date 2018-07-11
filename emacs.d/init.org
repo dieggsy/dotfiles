@@ -4261,22 +4261,23 @@ directory to make multiple eshell windows easier."
   (defvar d/eshell-floating-frame nil)
   (defun d/eshell-floating ()
     (interactive)
-    (unless (frame-live-p d/eshell-floating-frame)
-      (setq d/eshell-floating-frame
-            (make-frame '((name . "*eshell: floating*")))))
-    (let ((buf-name  "*eshell: floating*"))
-      (with-selected-frame d/eshell-floating-frame
-        (when (not (get-buffer buf-name))
-          (with-current-buffer (eshell 'new)
-            (setq mode-line-format nil)
-            (rename-buffer buf-name)))
-        (when (not
-               (member buf-name
-                       (mapcar
-                        (lambda (window)
-                          (buffer-name (window-buffer window)))
-                        (window-list))))
-          (switch-to-buffer buf-name))))))
+    (let ((frame-resize-pixelwise t))
+      (unless (frame-live-p d/eshell-floating-frame)
+        (setq d/eshell-floating-frame
+              (make-frame '((name . "*eshell: floating*")))))
+      (let ((buf-name  "*eshell: floating*"))
+        (with-selected-frame d/eshell-floating-frame
+          (when (not (get-buffer buf-name))
+            (with-current-buffer (eshell 'new)
+              (setq mode-line-format nil)
+              (rename-buffer buf-name)))
+          (when (not
+                 (member buf-name
+                         (mapcar
+                          (lambda (window)
+                            (buffer-name (window-buffer window)))
+                          (window-list))))
+            (switch-to-buffer buf-name)))))))
 #+end_src
 ** [[https://github.com/politza/pdf-tools][pdf-tools]]
 #+begin_quote
@@ -4937,31 +4938,32 @@ Source: http://tinyurl.com/y8tj8vxx"
   (defvar d/erc-floating-frame nil)
   (defun d/erc-floating ()
     (interactive)
-    (unless (frame-live-p d/erc-floating-frame)
-      (setq d/erc-floating-frame
-            (make-frame '((name . "*erc: floating*")
-                          (left-fringe . 0)
-                          (right-fringe . 0)
-                          (unsplittable . t)))))
-    (with-selected-frame d/erc-floating-frame
-      ;; we do this cause emacsclient starts out with the server buffer
-      (switch-to-buffer (window-buffer (selected-window)))
-      ;; If buffer has a live ERC process, do nothing
-      (unless (erc-server-buffer-live-p)
-        ;; Otherwise, find the first ERC process
-        (let ((live-erc-proc
-               (cl-find-if (lambda (proc)
-                             (string-match-p "erc" (process-name proc)))
-                           (cl-remove-if-not
-                            #'process-live-p
-                            (process-list)))))
-          ;; If we have one, switch to it
-          (if live-erc-proc
-              (progn
-                (switch-to-buffer (process-buffer live-erc-proc)))
-            ;; otherwise, connect to ERC
-            (switch-to-buffer (erc-tls :server "firefly"
-                                       :port 4000)))))))
+    (let ((frame-resize-pixelwise t))
+      (unless (frame-live-p d/erc-floating-frame)
+        (setq d/erc-floating-frame
+              (make-frame '((name . "*erc: floating*")
+                            (left-fringe . 0)
+                            (right-fringe . 0)
+                            (unsplittable . t)))))
+      (with-selected-frame d/erc-floating-frame
+        ;; we do this cause emacsclient starts out with the server buffer
+        (switch-to-buffer (window-buffer (selected-window)))
+        ;; If buffer has a live ERC process, do nothing
+        (unless (erc-server-buffer-live-p)
+          ;; Otherwise, find the first ERC process
+          (let ((live-erc-proc
+                 (cl-find-if (lambda (proc)
+                               (string-match-p "erc" (process-name proc)))
+                             (cl-remove-if-not
+                              #'process-live-p
+                              (process-list)))))
+            ;; If we have one, switch to it
+            (if live-erc-proc
+                (progn
+                  (switch-to-buffer (process-buffer live-erc-proc)))
+              ;; otherwise, connect to ERC
+              (switch-to-buffer (erc-tls :server "firefly"
+                                         :port 4000))))))))
 
   (defun d/dogbike ()
     (interactive)
