@@ -3411,6 +3411,29 @@ On the fly syntax checking for GNU Emacs
   (setq-local comment-auto-fill-only-comments t))
 #+end_src
 ** Lang
+*** C++
+**** Packages
+***** irony
+#+begin_src emacs-lisp
+(use-package irony
+  :hook ((c++-mode . irony-mode)
+         (irony-mode . irony-cdb-autosetup-compile-options)))
+#+end_src
+***** company-irony
+#+begin_src emacs-lisp
+(use-package company-irony
+  :after irony
+  :demand
+  :init
+  (d/after 'company
+    '(add-to-list 'company-backends 'company-irony)))
+#+end_src
+**** Setup
+#+begin_src emacs-lisp
+(d/after 'cc-mode
+  (setq-default c-basic-offset 4)
+  (c-set-offset 'case-label '+))
+#+end_src
 *** Python
 **** Packages
 ***** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]
