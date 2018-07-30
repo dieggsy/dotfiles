@@ -1522,6 +1522,7 @@ fi
 [ -d $HOME/.pyenv/shims ] && export PATH=$HOME/.pyenv/shims:$PATH
 [ -d $HOME/bin ] && export PATH=$HOME/bin:$PATH
 [ -d $HOME/.evm/bin ] && export PATH=$HOME/.evm/bin:$PATH
+[ -d $HOME/go ] && export GOPATH=$HOME/go && export PATH=$GOPATH/bin:$PATH
 
 [ -d $HOME/.guix-profile/lib/locale/ ] && export GUIX_LOCPATH=$HOME/.guix-profile/lib/locale
 
