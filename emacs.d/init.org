@@ -983,8 +983,11 @@ that supports execution can be executed. Executing src blocks is
 an active enough action that I'm ok with this."
     (let ((language (intern
                      (org-element-property :language (org-element-at-point)))))
-      (when (eq language 'sh)
-        (setq language 'shell))
+      (message "LANG: %s" language)
+      (pcase language
+        ('sh (setq language 'shell))
+        ('C++ (setq language 'C)))
+      (message "LANG: %s" language)
       (unless (alist-get language org-babel-load-languages)
         (add-to-list 'org-babel-load-languages (cons language t))
         (org-babel-do-load-languages
