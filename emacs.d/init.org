@@ -149,7 +149,7 @@ safe variable declarations.
            do (add-to-list 'safe-local-variable-values thing)))
 #+end_src
 ** Package management
-*** [[https://github.com/raxod502/straight.el#getting-started][straight]]
+*** [[https://github.com/raxod502/straight.el][straight]]
 #+begin_quote
 Next-generation, purely functional package manager for the Emacs hacker.
 #+end_quote
