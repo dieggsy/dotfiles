@@ -2320,6 +2320,7 @@ it.
   (require 'smartparens-config)
   (smartparens-global-mode)
   (show-smartparens-global-mode)
+  (setq sp-escape-quotes-after-insert nil)
   (let ((modes '(text-mode
                  org-mode
                  markdown-mode
