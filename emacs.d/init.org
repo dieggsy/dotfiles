@@ -3279,14 +3279,10 @@ Source: https://git.io/vQKzq"
     (:eval (d/with-window-status
              (let ((host (file-remote-p default-directory 'host)))
                (propertize-active
-                (cond ((and host
-                            default-directory
-                            (string= host (system-name)))
-                       (concat "@"
-                               (file-remote-p default-directory 'user)
-                               " "))
-                      ((and host default-directory)
-                       (concat "@" host " ")))
+                (and host
+                     (format "%s@%s "
+                             (file-remote-p default-directory 'user)
+                             host))
                 'face
                 '(:foreground "#D3869B")))))
     ;; Line/column number
