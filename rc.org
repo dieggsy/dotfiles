@@ -1577,7 +1577,7 @@ except:
 rofi.theme: ~/.config/rofi/darktooth.rasi
 rofi.modi: window,run,ssh,drun
 rofi.combi-modi: window, drun
-rofi.lines: 10
+rofi.dpi: 172
 #+end_src
 *** darktooth.rasi
 :PROPERTIES:
@@ -1594,7 +1594,7 @@ rofi.lines: 10
     foregroundcolorinverse: #ebdbb2;
     selectioncolor: #504945;
 
-    font: "Iosevka Term 20";
+    font: "Iosevka Term 10";
     border-color: @separatorcolor;
     background-color: @backgroundcolor;
     text-color: @foregroundcolor;
@@ -1610,14 +1610,14 @@ rofi.lines: 10
     margin: 0;
     dynamic: true;
     padding-top: 500;
-    /* lines: 10; */
+    lines: 10;
 }
 
 #window {
     background-color: @backgroundcolor;
     border-color: @separatorcolor;
     border-color: #928374;
-    border: 4;
+    border: 5;
     border-radius: 0;
     width: 800;
 }
