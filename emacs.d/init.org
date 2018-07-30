@@ -1488,7 +1488,8 @@ Leader bindings
 *** Buffer names
 How to uniquify buffer names.
 #+begin_src emacs-lisp
-(setq uniquify-buffer-name-style 'forward)
+(setq uniquify-buffer-name-style 'forward
+      uniquify-strip-common-suffix nil)
 #+end_src
 *** Frame
 If a frame is already open, use it to open files.
