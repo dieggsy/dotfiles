@@ -1741,7 +1741,8 @@ Collection of useful dired additions
   :hook (dired-mode . d/dired-collapse-mode)
   :config
   (defvar dired-collapse-ignore-dirs
-    (list "~/Music"))
+    (list "~/Music"
+          "/ssh:"))
   (defun d/dired-collapse-mode ()
     (unless (cl-find-if
              (lambda (dir)
