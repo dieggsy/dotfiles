@@ -3349,7 +3349,12 @@ Emacs minor mode that keeps your code always indented. More reliable than electr
 #+end_quote
 #+begin_src emacs-lisp
 (use-package aggressive-indent
-  :hook ((lisp-mode emacs-lisp-mode c-mode scheme-mode) . aggressive-indent-mode))
+  :hook ((lisp-mode
+          emacs-lisp-mode
+          scheme-mode
+          c-mode
+          c++-mode)
+         . aggressive-indent-mode))
 #+end_src
 **** [[https://github.com/flycheck/flycheck][flycheck]]
 #+begin_quote
