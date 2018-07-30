@@ -1224,7 +1224,7 @@ font-2 = Weather Icons:size=17;3
 modules-left = bspwm date network bluetooth xwindow
 ; modules-center = i3 bspwm
 ; modules-right = dropbox spotify cmus inbox-reddit github xkb weather xbacklight volume battery
-modules-right = xkb weather xbacklight volume bat1 bat0
+modules-right = xkb weather xbacklight volume battery
 
 wm-restack = bspwm
 
@@ -1282,9 +1282,9 @@ label-empty =
 [module/xbacklight]
 type = internal/backlight
 card = intel_backlight
-; format-background = ${colors.dark2}
+format-background = ${colors.dark2}
 format-foreground = #BDAE93
-; format-padding = 1
+format-padding = 1
 format =  <label>
 label = %percentage%
 
@@ -1417,12 +1417,21 @@ ramp-coreload-7 = █
 [module/weather]
 type = custom/script
 exec = ~/bin/blocks/darksky
-format-background = ${colors.dark2}
+; format-background = ${colors.dark2}
 format-foreground = #BDAE93
-format-padding = 1
+; format-padding = 1
 click-left = xdg-open https://darksky.net
 interval = 120
 label-font = 3
+
+[module/battery]
+type=custom/script
+tail=true
+exec = ~/src/racket-blocks/T480-battery.rkt
+format-foreground = #BDAE93
+format-background = ${colors.dark2}
+format-padding = 1
+
 
 [module/cmus]
 type = custom/script
@@ -1465,9 +1474,9 @@ initial = 1
 scroll-down = ~/bin/blocks/amixer-pulse +
 scroll-up = ~/bin/blocks/amixer-pulse -
 click-left = ~/bin/blocks/amixer-pulse toggle
-format-background = ${colors.dark2}
+; format-background = ${colors.dark2}
 format-foreground = #BDAE93
-format-padding = 1
+; format-padding = 1
 ; click-right = polybar-msg -p %pid% hook demo 2
 ; double-click-left = polybar-msg -p %pid% hook demo 3
 
