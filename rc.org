@@ -85,6 +85,8 @@ killall -q xss-lock; xss-lock -- slock &
 xcape -e 'Control_L=Escape' &
 pactl subscribe | ~/bin/update-volume &
 killall syncthing; syncthing -no-browser &
+killall autocutsel; autocutsel -selection CLIPBOARD -fork &
+autocutsel -selection PRIMARY -fork &
 
 xset r rate 300 50 &
 
