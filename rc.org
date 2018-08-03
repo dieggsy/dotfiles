@@ -136,10 +136,7 @@ st -T st-float -e tmux &
               (with-output-to-file "/tmp/esh-float"
                 (lambda () (display wid) (newline)))
               (display "state=floating hidden=on sticky=on")
-              (run (wmctrl -i -r ,wid -e "0,120,160,2320,540")))
-             ;; ((equal? title "* eshell")
-             ;;  (display "state=floating")
-             ;;  (run (wmctrl -i -r ,wid -e "0,,,1085,603")))
+              (run (wmctrl -i -r ,wid -e "0,0,40,2550,540")))
              ((equal? title "*erc: floating*")
               (with-output-to-file "/tmp/erc-float"
                 (lambda () (display wid) (newline)))
@@ -317,14 +314,12 @@ super + {Left,Down,Up,Right}
     bspc node -v {-20 0,0 20,0 -20,20 0}
 
 XF86MonBrightnessUp
-#     # ~/bin/blocks/xbacklight +
     light -A 5
 XF86MonBrightnessDown
-#     # ~/bin/blocks/xbacklight -
     light -U 5
 # XF86LaunchA
 #     scrot ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png
-# @XF86LaunchB
+# XF86LaunchB
 #     scrot -s ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png
 # shift + XF86LaunchB
 #     scrot -ub ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png
@@ -345,14 +340,11 @@ super + F2
 super + F3
     playerctl next
 XF86AudioMute
-    amixer -D pulse sset Master toggle && \
-    echo hook:module/volume1 > /tmp/ipc-polybar-simple
+    amixer -D pulse sset Master toggle
 XF86AudioLowerVolume
-    amixer -D pulse sset Master 5%- && \
-    echo hook:module/volume1 > /tmp/ipc-polybar-simple
+    amixer -D pulse sset Master 5%-
 XF86AudioRaiseVolume
-    amixer -D pulse sset Master 5%+ && \
-    echo hook:module/volume1 > /tmp/ipc-polybar-simple
+    amixer -D pulse sset Master 5%+
 XF86AudioMicMute
     amixer set Capture toggle
 XF86Display
@@ -1199,18 +1191,11 @@ alert = ${colors.red}
 monitor = eDP-1
 width = 2560
 height = 40
-; offset-x = 60
-; offset-y = 60
 fixed-center = true
-; border-bottom-size=0
-; border-bottom-color=${colors.dark2}
-; bottom = true
 
 dpi = 172
 background = ${colors.background}
 foreground = ${colors.foreground}
-
-; padding-left = 1
 
 module-margin=1
 
@@ -1218,11 +1203,8 @@ font-0 = Iosevka Term:size=10;3
 font-1 = fontawesome:size=10;3
 font-2 = Weather Icons:size=10;3
 
-; modules-left = date network bluez xwindow
 modules-left = bspwm date network bluetooth
-; modules-center = i3 bspwm
-; modules-right = dropbox spotify cmus inbox-reddit github xkb weather xbacklight volume battery
-modules-right = xkb weather xbacklight volume battery
+modules-right = xkb weather cpu volume battery
 
 wm-restack = bspwm
 
@@ -1235,42 +1217,23 @@ enable-ipc = true
 type = internal/xwindow
 label = %{F#BDAE93}%title:0:30:...%%{F-}
 
-label-mounted =  %free%
-label-unmounted = %mountpoint% not mounted
-
 [module/bspwm]
 type = internal/bspwm
 format =<label-state>
-; index-sort = true
 wrapping-scroll = false
 enable-click = false
 enable-scroll = false
 reverse-scroll = false
 
-; Only show workspaces on the same output as the bar
 pin-workspaces = true
 
-; label-mode-padding = 1
-
-; focused = Active workspace on focused monitor
 label-focused = %name%
-; label-separator =
 label-focused-padding = 1
 label-focused-foreground = #BDAE93
 label-focused-background = ${colors.dark2}
 
-; unfocused = Inactive workspace on any monitor
 label-occupied =
-; label-occupied-background=${colors.dark2}
-; label-occupied-foreground=#BDAE93
-; label-occupied-padding = 1
 
-; visible = Active workspace on unfocused monitor
-; label-visible = ●
-; label-visible-padding = ${self.label-focused-padding}
-
-; urgent = Workspace with urgency hint set
-; label-urgent =
 label-urgent-background = ${colors.alert}
 label-urgent-foreground = ${colors.black}
 label-urgent-padding = 1
@@ -1313,12 +1276,8 @@ interval = 4
 [module/date]
 type = custom/script
 exec = date +'%%{F#665C54} %a %Y-%m-%d%%{F-} %%{F#BDAE93}%H:%M%%{F-}'
-; format =  <label>
-; format-background = ${colors.light4}
-; format-foreground = ${colors.dark2}
-; format-padding = 1
 interval = 60
-click-left = notify-send "$(cal --color=never | cut -c -20)"
+click-left = notify-send "$(cal --color=never | cut -c -20 | head -n-1)"
 
 [module/bat0]
 type = internal/battery
@@ -1356,68 +1315,18 @@ animation-charging-3 = 
 animation-charging-4 = 
 animation-charging-framerate = 750
 
-[module/bat1]
-type = internal/battery
-; format-full-background = ${colors.dark2}
-format-full-foreground = #BDAE93
-; format-full-padding = 1
-; format-charging-background = ${colors.dark2}
-format-charging-foreground = #BDAE93
-; format-charging-padding = 1
-; format-discharging-background = ${colors.dark2}
-format-discharging-foreground = #BDAE93
-; format-discharging-padding = 1
-battery = BAT1
-adapter = ADP1
-full-at = 100
-
-format-full = %{A1:notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)":} <label-full>%{A}
-format-charging = %{A1:notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)":}<animation-charging> <label-charging>%{A}
-format-discharging = %{A1:notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)":}<ramp-capacity> <label-discharging>%{A}
-
-label-full = %percentage%
-label-charging = %percentage%
-label-discharging = %percentage%
-
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
-ramp-capacity-3 = 
-ramp-capacity-4 = 
-
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
-animation-charging-3 = 
-animation-charging-4 = 
-animation-charging-framerate = 750
-
 [module/cpu]
 type = internal/cpu
-
-; Seconds to sleep between updates
-; Default: 1
-interval = 0.5
+format-background = ${colors.dark2}
 format-foreground = #BDAE93
-; format = <label> <ramp-coreload>
+format-padding = 1
 format = <label>
-label =  %percentage%%
-
-ramp-coreload-0 = ▁
-ramp-coreload-1 = ▂
-ramp-coreload-2 = ▃
-ramp-coreload-3 = ▄
-ramp-coreload-4 = ▅
-ramp-coreload-5 = ▆
-ramp-coreload-6 = ▇
-ramp-coreload-7 = █
+label = CPU%percentage:3%%
 
 [module/weather]
 type = custom/script
 exec = ~/bin/blocks/darksky
-; format-background = ${colors.dark2}
 format-foreground = #BDAE93
-; format-padding = 1
 click-left = xdg-open https://darksky.net
 interval = 120
 label-font = 3
@@ -1425,7 +1334,7 @@ label-font = 3
 [module/battery]
 type=custom/script
 tail=true
-exec = ~/src/racket-blocks/T480-battery.rkt
+exec = ~/bin/blocks/t480-battery
 format-foreground = #BDAE93
 format-background = ${colors.dark2}
 format-padding = 1
@@ -1466,17 +1375,10 @@ format-prefix = " "
 click-left = xdg-open https://github.com/notifications
 
 [module/volume]
-type = custom/ipc
-hook-0 = ~/bin/blocks/amixer-pulse -display
-initial = 1
-scroll-down = ~/bin/blocks/amixer-pulse +
-scroll-up = ~/bin/blocks/amixer-pulse -
-click-left = ~/bin/blocks/amixer-pulse toggle
-; format-background = ${colors.dark2}
+type = custom/script
+exec = ~/bin/blocks/amixer
+tail = true
 format-foreground = #BDAE93
-; format-padding = 1
-; click-right = polybar-msg -p %pid% hook demo 2
-; double-click-left = polybar-msg -p %pid% hook demo 3
 
 [module/inbox-reddit]
 type = custom/script
@@ -1494,10 +1396,6 @@ format-prefix = " "
 
 [settings]
 screenchange-reload = true
-;compositing-background = xor
-;compositing-background = screen
-;compositing-foreground = source
-;compositing-border = over
 #+end_src
 ** profile
 :PROPERTIES:
@@ -1860,18 +1758,6 @@ set -g message-command-bg black
 setw -g mode-bg colour6
 setw -g mode-fg colour0
 
-# window status
-setw -g window-status-format " #F#I:#W#F "
-setw -g window-status-current-format " #F#I:#W#F "
-setw -g window-status-format "#[fg=magenta]#[bg=black] #I #[bg=cyan]#[fg=colour8] #W "
-setw -g window-status-current-format "#[bg=brightmagenta]#[fg=colour8] #I #[fg=colour8]#[bg=colour14] #W "
-setw -g window-status-current-bg colour0
-setw -g window-status-current-fg colour11
-setw -g window-status-current-attr dim
-setw -g window-status-bg green
-setw -g window-status-fg black
-setw -g window-status-attr reverse
-
 # Info on left (I don't have a session display for now)
 set -g status-left ''
 
@@ -1907,9 +1793,10 @@ set -g status-bg colour234
 set -g status-fg colour137
 set -g status-attr dim
 set -g status-left ''
-set -g status-right '#[fg=colour233,bg=colour241,bold] %Y-%d-%m #[fg=colour233,bg=colour245,bold] %H:%M '
-set -g status-right-length 50
-set -g status-left-length 20
+# set -g status-right '#[fg=colour233,bg=colour241,bold] %Y-%d-%m #[fg=colour233,bg=colour245,bold] %H:%M '
+# set -g status-right-length 50
+# set -g status-left-length 20
+set -g status-right ''
 
 setw -g window-status-current-fg colour81
 setw -g window-status-current-bg colour238
@@ -1940,7 +1827,7 @@ set-option -g default-command "reattach-to-user-namespace -l zsh"
 bind-key -t vi-copy y copy-pipe "reattach-to-user-namespace pbcopy"
 #+end_src
 *** Plugins
-#+begin_src conf
+#+begin_src conf :tangle no
 # List of plugins
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-urlview'
