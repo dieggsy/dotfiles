@@ -103,8 +103,7 @@ bspc config window_gap     0
 bspc config left_padding   0
 bspc config bottom_padding 0
 bspc config right_padding  0
-# weird hack to get rid of top space?
-(sleep 1 && bspc config top_padding 40) &
+bspc config top_padding 40;
 
 bspc config focused_border_color "#928374"
 bspc config normal_border_color  "#504945"
@@ -1499,10 +1498,6 @@ screenchange-reload = true
 ;compositing-background = screen
 ;compositing-foreground = source
 ;compositing-border = over
-
-[global/wm]
-margin-top = 5
-margin-bottom = 5
 #+end_src
 ** profile
 :PROPERTIES:
