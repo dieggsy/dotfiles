@@ -1822,20 +1822,20 @@ bind - split-window -v -c '#{pane_current_path}'
 unbind '"'
 unbind %
 
-bind-key { swap-window -t -1
-bind-key } swap-window -t +1
-bind-key \ next-window
+bind { swap-window -t -1
+bind } swap-window -t +1
+bind \ next-window
 
-bind-key j select-pane -D
-bind-key k select-pane -U
-bind-key h select-pane -L
-bind-key l select-pane -R
-bind-key o swap-pane -D
-bind-key < split-window -h \; choose-window 'kill-pane ; join-pane -hs %%'
-bind-key > break-pane -d
-bind-key ^ split-window -v \; choose-window 'kill-pane ; join-pane -vs %%'
-bind-key = select-layout even-horizontal
-bind-key + select-layout even-vertical
+bind j select-pane -D
+bind k select-pane -U
+bind h select-pane -L
+bind l select-pane -R
+bind o swap-pane -D
+bind < split-window -h \; choose-window 'kill-pane ; join-pane -hs %%'
+bind > break-pane -d
+bind ^ split-window -v \; choose-window 'kill-pane ; join-pane -vs %%'
+bind = select-layout even-horizontal
+bind + select-layout even-vertical
 #+end_src
 *** Bell
 #+begin_src conf
