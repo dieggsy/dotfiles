@@ -4816,12 +4816,12 @@ An Emacs Internet Relay Chat client
   (add-hook 'erc-send-pre-hook 'd/erc-preprocess)
   :custom
   (erc-modules
-   '(log
+   '(;; log
      spelling
      notifications
      pcomplete
      netsplit
-     fill
+     ;; fill
      button
      track
      stamp
