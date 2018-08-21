@@ -4057,6 +4057,14 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
     (setq-local org-hide-emphasis-markers nil)
     (setq-local org-pretty-entities nil)))
 #+end_src
+**** [[https://github.com/alphapapa/magit-todos][magit-todos]]
+#+begin_src emacs-lisp
+(use-package magit-todos
+  :after magit
+  :demand t
+  :config
+  (magit-todos-mode))
+#+end_src
 **** [[https://github.com/vermiculus/magithub][magithub]]
 #+begin_src emacs-lisp
 (use-package magithub
