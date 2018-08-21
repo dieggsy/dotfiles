@@ -1380,6 +1380,18 @@ exec = ~/bin/blocks/amixer
 tail = true
 format-foreground = #BDAE93
 
+[module/pulse]
+type=internal/pulseaudio
+format-volume-foreground = #BDAE93
+format-muted-foreground=#BDAE93
+format-volume = <ramp-volume> <label-volume>
+format-muted =  <label-muted>
+label-volume = %percentage%
+use-ui-max = false
+label-muted =  %percentage%
+ramp-volume-0 = 
+ramp-volume-1 = 
+
 [module/inbox-reddit]
 type = custom/script
 exec = ~/bin/blocks/reddit-unread
