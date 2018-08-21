@@ -3456,6 +3456,7 @@ On the fly syntax checking for GNU Emacs
 #+end_src
 **** Setup
 #+begin_src emacs-lisp
+(defalias 'cpp-mode 'c++-mode)
 (d/after 'cc-mode
   (setq-default c-basic-offset 4)
   (c-set-offset 'case-label '+))
