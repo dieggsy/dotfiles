@@ -61,9 +61,7 @@ time stuff kind of just accumulates to the point where you don't even know
 where anything came from anymore, and it's hard to track through version
 control.
 #+begin_src emacs-lisp
-(setq custom-file
-      (expand-file-name "custom.el"
-                        temporary-file-directory))
+(setq custom-file (expand-file-name "custom.el" temporary-file-directory))
 #+end_src
 ** Load Path
 Add [[./lisp][lisp]] directory and subdirectories to ~load-path~ and ~custom-theme-load-path~.
