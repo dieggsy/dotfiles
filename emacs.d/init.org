@@ -903,12 +903,12 @@ But really, it's life.
 #+begin_src emacs-lisp
 (d/after 'org
   (setq org-agenda-text-search-extra-files '(agenda-archives)
-        org-agenda-files '("~/syncthing/org/todo.org" "~/syncthing/org/gcal.org")
-        org-default-notes-file "~/syncthing/org/todo.org"
-        d/notes-file "~syncthing/org/notes.org"
-        org-directory "~/syncthing/org"
-        org-archive-location "~/syncthing/org/archive.org::"
-        org-mobile-inbox-for-pull "~/syncthing/org/mobile.org"
+        org-agenda-files '("~/org/todo.org" "~/org/gcal.org")
+        org-default-notes-file "~/org/todo.org"
+        d/notes-file "~/org/notes.org"
+        org-directory "~/org"
+        org-archive-location "~/org/archive.org::"
+        org-mobile-inbox-for-pull "~/org/mobile.org"
         org-export-async-init-file
         (locate-user-emacs-file "lisp/org-async-init.el")))
 #+end_src
