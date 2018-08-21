@@ -1604,9 +1604,13 @@ rofi.dpi: 172
 :header-args+: :tangle ~/.rsync-exclude :comments no
 :END:
 #+begin_src text
+downloads
+music
 .cache
 .mbed
+.platformio
 Dropbox
+org
 .dropbox
 .dropbox-dist
 syncthing
