@@ -1203,8 +1203,8 @@ font-0 = Iosevka Term:size=10;3
 font-1 = fontawesome:size=10;3
 font-2 = Weather Icons:size=10;3
 
-modules-left = bspwm date network bluetooth
-modules-right = xkb weather cpu volume battery
+modules-left = bspwm date network bluez
+modules-right = xkb weather mem cpu pulse battery
 
 wm-restack = bspwm
 
@@ -1267,11 +1267,8 @@ format-foreground = #BDAE93
 click-left = blueman-manager
 type = custom/script
 exec = ~/bin/blocks/bluez
-format-background = #076678
-format-foreground = ${colors.white}
-format-padding = 1
-format-prefix = " "
-interval = 4
+format-foreground = #BDAE93
+interval = 1
 
 [module/date]
 type = custom/script
@@ -1321,12 +1318,21 @@ format-background = ${colors.dark2}
 format-foreground = #BDAE93
 format-padding = 1
 format = <label>
-label = CPU%percentage:3%%
+label = P %percentage:2%%
+
+[module/mem]
+type = internal/memory
+format = <label>
+label = M %percentage_used:2%%
+format-foreground = #BDAE93
 
 [module/weather]
 type = custom/script
 exec = ~/bin/blocks/darksky
+; format-foreground = #BDAE93
+format-background = ${colors.dark2}
 format-foreground = #BDAE93
+format-padding = 1
 click-left = xdg-open https://darksky.net
 interval = 120
 label-font = 3
