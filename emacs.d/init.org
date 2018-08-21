@@ -3416,19 +3416,43 @@ On the fly syntax checking for GNU Emacs
 *** C++
 **** Packages
 ***** irony
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package irony
   :hook ((c++-mode . irony-mode)
          (irony-mode . irony-cdb-autosetup-compile-options)))
 #+end_src
 ***** company-irony
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package company-irony
   :after irony
   :demand
   :init
   (d/after 'company
     '(add-to-list 'company-backends 'company-irony)))
+#+end_src
+***** lsp-mode
+#+begin_src emacs-lisp
+(use-package lsp-mode)
+#+end_src
+***** cquery
+#+begin_src emacs-lisp
+(use-package cquery
+  :hook (c++-mode . lsp-cquery-enable)
+  :config
+  (setq cquery-executable "/usr/bin/cquery"))
+#+end_src
+***** lsp-ui
+#+begin_src emacs-lisp
+(use-package lsp-ui
+  :hook (lsp-mode . lsp-ui-mode))
+#+end_src
+***** company-lsp
+#+begin_src emacs-lisp
+(use-package company-lsp
+  :after lsp-mode
+  :demand t
+  :config
+  (push '(company-lsp :with company-yasnippet) company-backends))
 #+end_src
 **** Setup
 #+begin_src emacs-lisp
