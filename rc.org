@@ -513,6 +513,8 @@ set color_win_inactive_sel_fg=default
 [global]
 font = Iosevka Term 9
 
+frame_width = 5
+frame_color = "#504945"
 # Allow a small subset of html markup:
 #   <b>bold</b>
 #   <i>italic</i>
@@ -523,7 +525,7 @@ font = Iosevka Term 9
 # <http://developer.gnome.org/pango/stable/PangoMarkupFormat.html>.
 # If markup is not allowed, those tags will be stripped out of the
 # message.
-allow_markup = yes
+markup = yes
 
 # The format of the message.  Possible variables are:
 #   %a  appname
@@ -664,10 +666,6 @@ browser = firefox-nightly
 
 # Limit icons size.
 max_icon_size=128
-
-[frame]
-width = 5
-color = "#504945"
 
 [shortcuts]
 
