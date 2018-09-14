@@ -2363,7 +2363,8 @@ Kind of makes undo like git.
   :general
   (d/leader-keys "au" 'undo-tree-visualize)
   :config
-  (setq undo-tree-visualizer-timestamps t))
+  (setq undo-tree-visualizer-timestamps t
+        undo-tree-auto-save-history t))
 #+end_src
 **** [[https://github.com/purcell/unfill][unfill]]
 #+begin_quote
