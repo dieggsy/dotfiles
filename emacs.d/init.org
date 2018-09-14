@@ -4326,7 +4326,8 @@ directory to make multiple eshell windows easier."
     (let ((frame-resize-pixelwise t))
       (unless (frame-live-p d/eshell-floating-frame)
         (setq d/eshell-floating-frame
-              (make-frame '((name . "*eshell: floating*")))))
+              (make-frame `((name . "*eshell: floating*")
+                            (display . ,(getenv "DISPLAY"))))))
       (let ((buf-name  "*eshell: floating*"))
         (with-selected-frame d/eshell-floating-frame
           (when (not (get-buffer buf-name))
@@ -5003,10 +5004,11 @@ Source: http://tinyurl.com/y8tj8vxx"
     (let ((frame-resize-pixelwise t))
       (unless (frame-live-p d/erc-floating-frame)
         (setq d/erc-floating-frame
-              (make-frame '((name . "*erc: floating*")
+              (make-frame `((name . "*erc: floating*")
                             (left-fringe . 0)
                             (right-fringe . 0)
-                            (unsplittable . t)))))
+                            (unsplittable . t)
+                            (display . ,(getenv "DISPLAY"))))))
       (with-selected-frame d/erc-floating-frame
         ;; we do this cause emacsclient starts out with the server buffer
         (switch-to-buffer (window-buffer (selected-window)))
