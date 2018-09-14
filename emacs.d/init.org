@@ -3433,11 +3433,16 @@ On the fly syntax checking for GNU Emacs
 (use-package lsp-mode)
 #+end_src
 ***** cquery
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package cquery
   :hook (c++-mode . lsp-cquery-enable)
   :config
   (setq cquery-executable "/usr/bin/cquery"))
+#+end_src
+***** ccls
+#+begin_src emacs-lisp
+(use-package ccls
+  :hook (c++-mode . lsp-ccls-enable))
 #+end_src
 ***** lsp-ui
 #+begin_src emacs-lisp
