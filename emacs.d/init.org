@@ -366,7 +366,7 @@ except for warnings and errors.
 #+end_src
 *** EPA
 Integrate gpg passphrase query with Emacs minibuffer when using EPA.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (setq epa-pinentry-mode 'loopback)
 #+end_src
 ** Functions
