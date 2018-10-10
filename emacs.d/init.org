@@ -4765,46 +4765,48 @@ An Emacs Internet Relay Chat client
 **** Defaults
 #+begin_src emacs-lisp
 (d/after 'erc
-  (setq erc-prompt (format "\n%s>" (make-string 12 ?\s))
-        erc-fill-prefix (format "%s\t" (make-string 10 ?\s))
-        erc-notice-prefix   (format "%s\t***\s" (make-string 10 ?\s))
-        erc-format-nick-function 'd/erc-format-nick
-        erc-nick "dieggsy"
-        erc-prompt-for-password nil
-        erc-input-line-position -1
-        erc-autojoin-timing 'ident
-        erc-header-line-format nil
-        erc-fill-column 79
-        erc-hide-list '("353")
-        erc-lurker-threshold-time (* 6 60 60)
-        erc-lurker-hide-list '("JOIN" "PART" "QUIT" "NICK")
-        erc-kill-buffer-on-part t
-        erc-kill-queries-on-quit t
-        erc-kill-server-buffer-on-quit t
-        erc-rename-buffers t
-        erc-join-buffer 'bury
-        erc-track-use-faces nil
-        erc-track-priority-faces-only 'all
-        erc-track-exclude-server-buffer t
-        erc-format-query-as-channel-p t
-        erc-log-channels-directory (no-littering-expand-var-file-name "erc/logs")
-        erc-generate-log-file-name-function 'erc-generate-log-file-name-short
-        erc-track-faces-priority-list '(erc-error-face
-                                        erc-current-nick-face
-                                        erc-keyword-face
-                                        erc-nick-msg-face
-                                        erc-direct-msg-face
-                                        erc-dangerous-host-face)
-        erc-autojoin-channels-alist '(("freenode.net"
-                                       "#emacs"
-                                       "##linux"
-                                       "#archlinux"
-                                       "#lisp"
-                                       "##lisp"
-                                       "#scheme"
-                                       "#chicken")))
+  (setq
+   ;; erc-prompt (format "\n%s>" (make-string 12 ?\s))
+   ;; erc-fill-prefix (format "%s\t" (make-string 10 ?\s))
+   ;; erc-notice-prefix   (format "%s\t***\s" (make-string 10 ?\s))
+   ;; erc-format-nick-function 'd/erc-format-nick
+   erc-nick "dieggsy"
+   erc-prompt-for-password nil
+   erc-input-line-position -1
+   erc-autojoin-timing 'ident
+   erc-header-line-format nil
+   erc-fill-column 79
+   erc-hide-list '("353")
+   erc-lurker-threshold-time (* 6 60 60)
+   erc-lurker-hide-list '("JOIN" "PART" "QUIT" "NICK")
+   erc-kill-buffer-on-part t
+   erc-kill-queries-on-quit t
+   erc-kill-server-buffer-on-quit t
+   erc-rename-buffers t
+   erc-join-buffer 'bury
+   erc-track-use-faces nil
+   erc-track-priority-faces-only 'all
+   erc-track-exclude-server-buffer t
+   erc-format-query-as-channel-p t
+   erc-log-channels-directory (no-littering-expand-var-file-name "erc/logs")
+   erc-generate-log-file-name-function 'erc-generate-log-file-name-short
+   erc-track-faces-priority-list '(erc-error-face
+                                   erc-current-nick-face
+                                   erc-keyword-face
+                                   erc-nick-msg-face
+                                   erc-direct-msg-face
+                                   erc-dangerous-host-face)
+   erc-autojoin-channels-alist '(("freenode.net"
+                                  "#emacs"
+                                  "##linux"
+                                  "#archlinux"
+                                  "#lisp"
+                                  "##lisp"
+                                  "#scheme"
+                                  "#chicken")))
 
-  (erc-define-catalog-entry 'english 'ACTION (format "%s*\t%%n %%a" (make-string 9 ?\s))))
+  ;; (erc-define-catalog-entry 'english 'ACTION (format "%s*\t%%n %%a" (make-string 9 ?\s)))
+  )
 #+end_src
 **** Built-in
 #+begin_src emacs-lisp
@@ -4825,7 +4827,7 @@ An Emacs Internet Relay Chat client
     [down] 'erc-next-command)
   :config
   (add-hook 'window-configuration-change-hook #'d/erc-to-bottom)
-  (add-hook 'erc-insert-post-hook #'erc-save-buffer-in-logs)
+  ;; (add-hook 'erc-insert-post-hook #'erc-save-buffer-in-logs)
   (add-hook 'erc-send-pre-hook 'd/erc-preprocess)
   :custom
   (erc-modules
@@ -4848,15 +4850,12 @@ An Emacs Internet Relay Chat client
      menu
      match)))
 #+end_src
-**** Variables
-#+begin_src emacs-lisp
+**** Appearance
+Mostly a hack to make ERC look like weechat
+#+begin_src emacs-lisp :tangle no
 (d/after 'erc
   (defvar d/erc-last-speaker (make-hash-table :test 'equal))
-  (setq erc-lurker-state (make-hash-table :test 'equal)))
-#+end_src
-**** Functions
-#+begin_src emacs-lisp
-(d/after 'erc
+  (setq erc-lurker-state (make-hash-table :test 'equal))
   ;; This function messes with our own buttons
   (advice-add #'erc-button-remove-old-buttons :override #'ignore)
 
@@ -4988,8 +4987,11 @@ Source: http://tinyurl.com/y8tj8vxx"
                :title (xml-escape-string (format "%s@%s" channel server))
                :body (xml-escape-string (format "%s: %s" nick msg))
                :replaces-id erc-notifications-last-notification
-               :app-icon erc-notifications-icon)))))
-
+               :app-icon erc-notifications-icon))))))
+#+end_src
+**** Functions
+#+begin_src emacs-lisp
+(d/after 'erc
   (defun d/erc-to-bottom ()
     (and (eq major-mode 'erc-mode)
          (erc-scroll-to-bottom)))
@@ -5046,9 +5048,9 @@ Source: http://tinyurl.com/y8tj8vxx"
 #+begin_src emacs-lisp
 (d/hook! erc-mode
   (visual-line-mode)
-  (setq wrap-prefix (make-string 14 ?\s))
+  ;; (setq wrap-prefix (make-string 14 ?\s))
   (set-display-table-slot standard-display-table 'wrap ?\s)
-  (setq tab-width 7)
+  ;; (setq tab-width 7)
   (setq mode-line-format nil))
 #+end_src
 ** Packages
