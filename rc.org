@@ -110,9 +110,10 @@ bspc config normal_border_color  "#504945"
 bspc rule -a Nitrogen    state=floating
 bspc rule -a Screenkey   manage=off
 bspc rule -a Pavucontrol state=floating
-bspc rule -a D-feet      state=floating
 bspc rule -a Pcmanfm     state=floating
 bspc rule -a Zathura     state=tiled
+bspc rule -a Civ5XP      state=fullscreen
+
 killall st; st -T st-float -e tmux &
 
 #+end_src
