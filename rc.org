@@ -122,27 +122,31 @@ st -T st-float -e tmux &
 :header-args+: :tangle ~/.config/bspwm/rules.scm :shebang "#!/usr/bin/csi -s"
 :END:
 #+begin_src scheme
-(use scsh-process)
+(import (chicken io)
+        (chicken process)
+        (chicken process-context)
+        (chicken string))
 
 (define args (command-line-arguments))
-
 (define wid (car args))
 (define class (cadr args))
 (define instance (caddr args))
-(define title (string-chomp (run/string (xtitle ,wid))))
+(define title (string-chomp (call-with-input-pipe
+                             (string-append "xtitle " wid)
+                             (lambda (out) (read-string #f out)))))
 
 (cond ((substring-index "emacs" instance)
-       (cond ((equal? title "*eshell: floating*")
-              (with-output-to-file "/tmp/esh-float"
-                (lambda () (display wid) (newline)))
-              (display "state=floating hidden=on sticky=on")
-              (run (wmctrl -i -r ,wid -e "0,0,40,2550,540")))
-             ((equal? title "*erc: floating*")
-              (with-output-to-file "/tmp/erc-float"
-                (lambda () (display wid) (newline)))
-              (display "state=floating hidden=on sticky=on")
-              (run (wmctrl -i -r ,wid -e "0,120,770,1085,560")))
-             (else (display "state=tiled desktop=^2"))))
+       (display "state=tiled desktop=^2"))
+      ((substring-index "_erc__floating_" instance)
+       (with-output-to-file "/tmp/erc-float"
+         (lambda () (display wid) (newline)))
+       (display "state=floating hidden=on sticky=on")
+       (system (string-append "wmctrl -i -r " wid " -e '0,120,770,1085,560'")))
+      ((substring-index "_eshell__floating_" instance)
+       (with-output-to-file "/tmp/esh-float"
+         (lambda () (display wid) (newline)))
+       (display "state=floating hidden=on sticky=on")
+       (system (string-append "wmctrl -i -r " wid " -e '0,0,40,2550,540'")))
       ((equal? instance "st-256color")
        (when (equal? title "htop")
          (display "state=floating"))
@@ -150,7 +154,7 @@ st -T st-float -e tmux &
          (with-output-to-file "/tmp/st-float"
            (lambda () (display wid) (newline)))
          (display "state=floating hidden=on sticky=on")
-         (run (wmctrl -i -r ,wid -e "0,1350,770,1085,540")))))
+         (system (string-append "wmctrl -i -r " wid " -e '0,1350,770,1085,540'")))))
 #+end_src
 *** sxhkdrc
 :PROPERTIES:
