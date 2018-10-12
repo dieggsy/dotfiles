@@ -1014,7 +1014,8 @@ an active enough action that I'm ok with this."
   (d/list-prepend! 'org-latex-packages-alist
     '("" "listings")
     '("" "color")
-    '("" "tabularx")))
+    '("" "tabularx"))
+  (setq org-format-latex-options (plist-put org-format-latex-options :scale 2.0)))
 #+end_src
 **** Functions
 #+begin_src emacs-lisp
