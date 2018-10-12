@@ -76,7 +76,6 @@ ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-simple
 pgrep emacs || emacs --daemon
 killall -q udiskie; udiskie &
 nitrogen --restore &
-setxkbmap dvorak -option ctrl:nocaps &
 # dropbox-cli start &
 killall unclutter; unclutter &
 # killall xautolock; xautolock -corners ---- -time 10 -locker "slock" &
