@@ -1696,6 +1696,7 @@ set -g update-environment -r
 set -g set-titles on
 set -g set-titles-string '#W'
 # set-option -g set-titles-string '#H:#S.#I.#P #W #T'
+set -ga update-environment ' SSH_AUTH_SOCK'
 #+end_src
 *** Prefix
 #+begin_src conf
