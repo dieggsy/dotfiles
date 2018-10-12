@@ -1188,27 +1188,27 @@ alert = ${colors.red}
 [bar/simple]
 monitor = eDP-1
 width = 2560
-height = 40
+height = 47
 fixed-center = true
 
 dpi = 172
 background = ${colors.background}
 foreground = ${colors.foreground}
 
-module-margin=1
+module-margin=0
+separator=
 
 font-0 = Iosevka Term:size=10;3
-font-1 = fontawesome:size=10;3
+font-1 = FontAwesome:size=10;3
 font-2 = Weather Icons:size=10;3
 
 modules-left = bspwm date network bluez
-modules-right = xkb weather mem cpu pulse battery
+modules-right = weather mem cpu pulse battery
 
 wm-restack = bspwm
 
 cursor-click = pointer
 cursor-scroll = ns-resize
-click-left = ~/bin/blocks/xkb -toggle
 enable-ipc = true
 
 [module/xwindow]
@@ -1260,18 +1260,21 @@ interval = 2
 type = custom/script
 exec = rfkill list bluetooth | grep yes > /dev/null && echo '' || echo 
 format-foreground = #BDAE93
+format-padding = 1
 
 [module/bluez]
 click-left = blueman-manager
 type = custom/script
 exec = ~/bin/blocks/bluez
 format-foreground = #BDAE93
+format-padding=1
 interval = 1
 
 [module/date]
 type = custom/script
 exec = date +'%%{F#665C54} %a %Y-%m-%d%%{F-} %%{F#BDAE93}%H:%M%%{F-}'
 interval = 60
+format-padding=1
 click-left = notify-send "$(cal --color=never | cut -c -20 | head -n-1)"
 
 [module/bat0]
@@ -1323,6 +1326,7 @@ type = internal/memory
 format = <label>
 label = M %percentage_used:2%%
 format-foreground = #BDAE93
+format-padding=1
 
 [module/weather]
 type = custom/script
@@ -1383,6 +1387,7 @@ type = custom/script
 exec = ~/bin/blocks/amixer
 tail = true
 format-foreground = #BDAE93
+format-padding=1
 
 [module/pulse]
 type=internal/pulseaudio
@@ -1395,6 +1400,8 @@ use-ui-max = false
 label-muted =  %percentage%
 ramp-volume-0 = 
 ramp-volume-1 = 
+format-volume-padding=1
+format-muted-padding=1
 
 [module/inbox-reddit]
 type = custom/script
