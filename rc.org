@@ -897,7 +897,6 @@ Extensions
 #+begin_src text fish-colored-man
 done
 getopts
-pyenv
 z
 omf/plugin-foreign-env
 decors/fish-colored-man
