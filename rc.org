@@ -324,8 +324,8 @@ XF86MonBrightnessUp
     light -A 5
 XF86MonBrightnessDown
     light -U 5
-Print
-    scrot ~/pic/scrot/%Y-%m-%d_%H:%M:%S.png && notify-send "Screenshot!"
+# Print
+#     scrot ~/pic/scrot/%Y-%m-%d_%H:%M:%S.png && notify-send "Screenshot!"
 # XF86LaunchB
 #     scrot -s ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png
 # shift + XF86LaunchB
