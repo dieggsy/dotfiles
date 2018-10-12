@@ -26,6 +26,7 @@ more readable in org format than in rendered markdown.
   - [[#rsync-exclude][rsync-exclude]]
   - [[#termite][termite]]
   - [[#tmuxconf][tmux.conf]]
+  - [[#user-dirsdirs][user-dirs.dirs]]
   - [[#xorgconfd][xorg.conf.d]]
   - [[#xresources][Xresources]]
   - [[#xterm-24bitterminfo][xterm-24bit.terminfo]]
@@ -1859,6 +1860,20 @@ set -g @plugin 'tmux-plugins/tmux-sidebar'
 set -g @sidebar-tree-command 'exa -TL2 --color=always'
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 run '~/.tmux/plugins/tpm/tpm'
+#+end_src
+** user-dirs.dirs
+:PROPERTIES:
+:header-args+: :tangle ~/.config/user-dirs.dirs :comments nil
+:END:
+#+begin_src conf
+XDG_DESKTOP_DIR="$HOME/desktop"
+XDG_DOCUMENTS_DIR="$HOME/doc"
+XDG_DOWNLOAD_DIR="$HOME/downloads"
+XDG_MUSIC_DIR="$HOME/music"
+XDG_PICTURES_DIR="$HOME/pic"
+XDG_PUBLICSHARE_DIR="$HOME/public"
+XDG_TEMPLATES_DIR="$HOME/templates"
+XDG_VIDEOS_DIR="$HOME/vid"
 #+end_src
 ** xorg.conf.d
 *** 00-keyboard.conf
