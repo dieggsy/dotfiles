@@ -2391,10 +2391,6 @@ A template system for Emacs
   (setq yas-key-syntaxes (remove "w" yas-key-syntaxes))
   (yas-global-mode 1))
 #+end_src
-***** [[https://github.com/haskell/haskell-snippets][haskell-snippets]]
-#+begin_src emacs-lisp
-(use-package haskell-snippets)
-#+end_src
 *** Functions
 **** Move text
 #+begin_src emacs-lisp
@@ -3747,6 +3743,10 @@ Source: https://git.io/vQKz8"
         haskell-indentation-left-offset 4
         haskell-indentation-ifte-offset 4))
 
+#+end_src
+***** [[https://github.com/haskell/haskell-snippets][haskell-snippets]]
+#+begin_src emacs-lisp :tangle no
+(use-package haskell-snippets)
 #+end_src
 *** Scheme
 **** Packages
