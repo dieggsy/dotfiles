@@ -1434,6 +1434,8 @@ fi
 [ -d $HOME/.guix-profile/lib/locale/ ] && export GUIX_LOCPATH=$HOME/.guix-profile/lib/locale
 
 [ -d $HOME/dotfiles/guix/ ] && export GUIX_PACKAGE_PATH="$HOME/dotfiles/guix/packages"
+
+[ -d /usr/lib/ccache/ ] && export PATH=/usr/lib/ccache/bin:$PATH
 export XDG_DATA_DIRS="$HOME/.local/share:$HOME/.nix-profile/share:/usr/local/share:/usr/share"
 export CHICKEN_REPOSITORY=~/.local/lib/chicken/8
 
