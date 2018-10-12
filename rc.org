@@ -26,6 +26,7 @@ more readable in org format than in rendered markdown.
   - [[#rsync-exclude][rsync-exclude]]
   - [[#termite][termite]]
   - [[#tmuxconf][tmux.conf]]
+  - [[#xorgconfd][xorg.conf.d]]
   - [[#xresources][Xresources]]
   - [[#xterm-24bitterminfo][xterm-24bit.terminfo]]
   - [[#zathurarc][zathurarc]]
@@ -1858,6 +1859,49 @@ set -g @plugin 'tmux-plugins/tmux-sidebar'
 set -g @sidebar-tree-command 'exa -TL2 --color=always'
 # Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
 run '~/.tmux/plugins/tpm/tpm'
+#+end_src
+** xorg.conf.d
+*** 00-keyboard.conf
+- ctrl:nocaps :: make caps lock another ctrl
+- grp:shifs_toggle :: pressing both shift keys toggles xkblayout
+- grp_led:caps :: caps lock key used to indicate active layout
+- compose:prsc :: use PrtSc key as compose key
+#+begin_src conf-space
+# Written by systemd-localed(8), read by systemd-localed and Xorg. It's
+# probably wise not to edit this file manually. Use localectl(1) to
+# instruct systemd-localed to update it.
+Section "InputClass"
+        Identifier "system-keyboard"
+        MatchIsKeyboard "on"
+        Option "XkbLayout" "dvorak,us"
+        Option "XkbOptions" "ctrl:nocaps,grp:shifts_toggle,grp_led:caps,compose:prsc"
+EndSection
+#+end_src
+*** 40-libinput.conf
+#+begin_src conf-space
+# On all pointers, use flat acceleration
+Section "InputClass"
+        Identifier "libinput pointer catchall"
+        MatchIsPointer "on"
+        MatchDevicePath "/dev/input/event*"
+        Driver "libinput"
+        Option "AccelProfile" "flat"
+EndSection
+
+# Ignore trackpad
+Section "InputClass"
+        Identifier "SynPS/2 Synaptics TouchPad"
+        MatchProduct "SynPS/2 Synaptics TouchPad"
+        Option "Ignore" "on"
+EndSection
+
+# Make Lenovo trackpoint faster
+Section "InputClass"
+        Identifier "Lenovo Trackpoint"
+        MatchProduct "TPPS/2 IBM TrackPoint"
+        Option "TransformationMatrix" "2.5 0 0 0 2.5 0 0 0 1"
+        Option "AccelSpeed" "1"
+EndSection
 #+end_src
 ** Xresources
 :PROPERTIES:
