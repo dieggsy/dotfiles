@@ -3147,67 +3147,58 @@ Source: https://git.io/vQKzv"
          (running (eq 'running flycheck-last-status-change)))
     (if (or errorp running) (format "•%s" err))))
 
-(defmacro d/with-window-status (&rest body)
-  (declare (indent defun))
-  `(let ((window-active? (powerline-selected-window-active)))
-     (cl-flet ((propertize-active
-                (&rest arguments)
-                (let ((str (car arguments)))
-                  (cond  ((and window-active? (stringp str))
-                          (apply #'propertize arguments) )
-                         ((stringp str)
-                          (car arguments))))))
-       ,@body)))
+(defalias 'd/window-active? #'powerline-selected-window-active)
 
-(defmacro d/with-evil-tag-color (&rest body)
-  (declare (indent defun))
-  `(let ((evil-tag-color
-          (pcase (substring-no-properties
-                  evil-mode-line-tag)
-            (" N " "#B8BB26")
-            (" I " "#66999D")
-            (" M " "#D3869B")
-            (" V " "#FE8019")
-            (" E " "#FABD2F" )
-            (" R " "#FE8019")
-            (" O " "#B8BB26"))))
-     ,@body))
+(defun d/propertize-active (&rest arguments)
+  (let ((str (car arguments)))
+    (cond ((and (stringp str)
+                (or (d/window-active?)
+                    (member 'display arguments)))
+           ;; (and (d/window-active?) (stringp str))
+           (apply #'propertize arguments) )
+          ((stringp str)
+           (car arguments)))))
+
+(defun d/evil-tag-color ()
+  (pcase (substring-no-properties
+          evil-mode-line-tag)
+    (" N " "#B8BB26")
+    (" I " "#66999D")
+    (" M " "#D3869B")
+    (" V " "#FE8019")
+    (" E " "#FABD2F" )
+    (" R " "#FE8019")
+    (" O " "#B8BB26")))
 
 (defun d/make-xpm (color height width)
   "Create an XPM bitmap.
 
 Source: https://git.io/vQKzL"
-  (if (display-graphic-p)
-      (propertize
-       " " 'display
-       (let ((data (make-list height (make-list width 1)))
-             (color (or color "None"))
-             (xpm-name (intern (concat "d/ml-xpm-" (substring color 1)))))
-         (if (boundp xpm-name)
-             (symbol-value xpm-name)
-           (set xpm-name
-                (create-image
-                 (concat
-                  (format "/* XPM */\nstatic char * percent[] = {\n\"%i %i 2 1\",\n\". c %s\",\n\"  c %s\","
-                          (length (car data))
-                          (length data)
-                          color
-                          color)
-                  (apply #'concat
-                         (cl-loop with idx = 0
-                                  with len = (length data)
-                                  for dl in data
-                                  do (cl-incf idx)
-                                  collect
-                                  (concat "\""
-                                          (cl-loop for d in dl
-                                                   if (= d 0) collect (string-to-char " ")
-                                                   else collect (string-to-char "."))
-                                          (if (eq idx len) "\"};" "\",\n")))))
-                 'xpm t :ascent 'center)))))
-    (propertize
-     " " 'face
-     `(:background ,color))))
+  (let ((data (make-list height (make-list width 1)))
+        (color (or color "None"))
+        (xpm-name (intern (concat "d/ml-xpm-" (substring color 1)))))
+    (if (boundp xpm-name)
+        (symbol-value xpm-name)
+      (set xpm-name
+           (create-image
+            (concat
+             (format "/* XPM */\nstatic char * percent[] = {\n\"%i %i 2 1\",\n\". c %s\",\n\"  c %s\","
+                     (length (car data))
+                     (length data)
+                     color
+                     color)
+             (apply #'concat
+                    (cl-loop with idx = 0
+                             with len = (length data)
+                             for dl in data
+                             do (cl-incf idx)
+                             collect
+                             (concat "\""
+                                     (cl-loop for d in dl
+                                              if (= d 0) collect (string-to-char " ")
+                                              else collect (string-to-char "."))
+                                     (if (eq idx len) "\"};" "\",\n")))))
+            'xpm t :ascent 'center)))))
 
 (defun d/eyebrowse-relevant? ()
   (and (featurep 'eyebrowse)
@@ -3237,104 +3228,106 @@ Source: https://git.io/vQKzq"
 #+begin_src emacs-lisp
 (defvar d/mode-line
   '((:eval
-     (d/with-evil-tag-color
-       (d/with-window-status
-         (cond ((and window-active?
-                     (not (or (d/eyebrowse-relevant?)
-                              (bound-and-true-p anzu--state)
-                              (d/in-macro?)
-                              (d/in-evil-substitution?))))
-                (d/make-xpm evil-tag-color 47 8))
-               ((not window-active?)
-                (d/make-xpm "#1D2021" 47 8))))))
-    (:eval
-     (d/with-window-status
-       (d/with-evil-tag-color
-         (when window-active?
-           (propertize-active
-            (cond ((d/in-evil-substitution?)
-                   (d/evil-substitute-num-matches))
-                  ((d/in-macro?)
-                   (if (bound-and-true-p evil-this-macro)
-                       (char-to-string evil-this-macro)
-                     "Macro"))
-                  ((bound-and-true-p anzu--state)
-                   (anzu--update-mode-line))
-                  ((d/eyebrowse-relevant?)
-                   (let* ((num (eyebrowse--get 'current-slot))
-                          (tag (nth 2 (assoc num (eyebrowse--get 'window-configs)))))
-                     (if (and tag (< 0 (length tag)))
-                         tag
-                       (int-to-string num)))))
-            'face
-            `(:foreground
-              "#3E3D31"
-              :weight bold
-              :background ,evil-tag-color
-              :box (:color ,evil-tag-color :line-width 9)))))))
+     (let* ((evil-tag-color (d/evil-tag-color))
+            (window-active (d/window-active?))
+            (properties `(face
+                          (:foreground
+                           "#3E3D31"
+                           :weight bold
+                           :background ,evil-tag-color
+                           :box (:color ,evil-tag-color :line-width 9))))
+            (text (cond ((not window-active)
+                         (setq window-active t)
+                         (when (display-graphic-p)
+                           (setq properties
+                                 `(display
+                                   ,(d/make-xpm "#1D2021" 47 8))))
+                         " ")
+                        ((d/in-evil-substitution?)
+                         (d/evil-substitute-num-matches))
+                        ((d/in-macro?)
+                         (if (bound-and-true-p evil-this-macro)
+                             (char-to-string evil-this-macro)
+                           "Macro"))
+                        ((bound-and-true-p anzu--state)
+                         (anzu--update-mode-line))
+                        ((d/eyebrowse-relevant?)
+                         (let* ((num (eyebrowse--get 'current-slot))
+                                (tag (nth 2 (assoc num (eyebrowse--get 'window-configs)))))
+                           (if (and tag (< 0 (length tag)))
+                               tag
+                             (int-to-string num))))
+                        (t
+                         (when (display-graphic-p)
+                           (setq properties
+                                 `(display ,(d/make-xpm evil-tag-color 47 8))))
+                         " "))))
+       (apply #'d/propertize-active text properties)))
+
     ;; File modified
     " %* "
     ;; Buffer name & recursive editing
     "%[" "%b" "%]  "
     ;; Remote
-    (:eval (d/with-window-status
-             (let ((host (file-remote-p default-directory 'host)))
-               (propertize-active
-                (and host
-                     (format "%s@%s "
-                             (file-remote-p default-directory 'user)
-                             host))
-                'face
-                '(:foreground "#D3869B")))))
+    (:eval
+     (let ((host (file-remote-p default-directory 'host)))
+       (d/propertize-active
+        (and host
+             (format "%s@%s "
+                     (file-remote-p default-directory 'user)
+                     host))
+        'face
+        '(:foreground "#D3869B"))))
     ;; Line/column number
     ;; (:eval (d/with-window-status
     ;;          (propertize-active "%4l:%2c  "
     ;;                             'face '(:foreground "#A89984"))))
     ;; Major mode
     (:eval
-     (d/with-window-status
-       (unless (file-name-extension (buffer-name))
-         (propertize-active
-          (concat mode-name "  ")
-          'face '(:foreground "#83A598")))))
+     (unless (and (file-name-extension (buffer-name))
+                  (eq major-mode (alist-get (buffer-name)
+                                            auto-mode-alist
+                                            nil
+                                            nil
+                                            #'string-match-p)))
+       (d/propertize-active
+        (concat mode-name "  ")
+        'face '(:foreground "#83A598"))))
     ;; Version control
     (:eval
-     (d/with-window-status
-       (when vc-mode
-         (propertize-active
-          (concat (replace-regexp-in-string "^ Git." "" vc-mode) "  ")
-          'face '(:foreground "#DD6F48" )))))
+     (when vc-mode
+       (d/propertize-active
+        (concat (replace-regexp-in-string "^ Git." "" vc-mode) "  ")
+        'face '(:foreground "#DD6F48" ))))
     ;; Flycheck
     (:eval
-     (d/with-window-status
-       (when (and (bound-and-true-p flycheck-mode)
-                  (or flycheck-current-errors
-                      (eq 'running flycheck-last-status-change)))
-         (concat
-          (cl-loop for state in '((error . "#FB4933")
-                                  (warning . "#FABD2F")
-                                  (info . "#83A598"))
-                   as lighter = (d/flycheck-lighter (car state))
-                   when lighter
-                   concat (propertize-active
-                           lighter
-                           'face `(:foreground ,(cdr state))))
-          " "))))
+     (when (and (bound-and-true-p flycheck-mode)
+                (or flycheck-current-errors
+                    (eq 'running flycheck-last-status-change)))
+       (concat
+        (cl-loop for state in '((error . "#FB4933")
+                                (warning . "#FABD2F")
+                                (info . "#83A598"))
+                 as lighter = (d/flycheck-lighter (car state))
+                 when lighter
+                 concat (d/propertize-active
+                         lighter
+                         'face `(:foreground ,(cdr state))))
+        " ")))
     ;; Input method
     (:eval
-     (d/with-window-status
-       (when (or current-input-method
-                 (and (bound-and-true-p evil-mode)
-                      (bound-and-true-p evil-input-method)))
-         (cond
-          (current-input-method
-           (propertize-active
-            (concat current-input-method-title " ")
-            'face
-            'bold))
-          ((and (featurep 'evil) (bound-and-true-p evil-input-method))
-           (concat (nth 3 (assoc default-input-method input-method-alist))
-                   " "))))))
+     (when (or current-input-method
+               (and (bound-and-true-p evil-mode)
+                    (bound-and-true-p evil-input-method)))
+       (cond
+        (current-input-method
+         (d/propertize-active
+          (concat current-input-method-title " ")
+          'face
+          'bold))
+        ((and (featurep 'evil) (bound-and-true-p evil-input-method))
+         (concat (nth 3 (assoc default-input-method input-method-alist))
+                 " ")))))
     erc-modified-channels-object))
 
 (setq-default mode-line-format d/mode-line)
