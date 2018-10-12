@@ -77,7 +77,7 @@ nitrogen --restore &
 setxkbmap dvorak -option ctrl:nocaps &
 # dropbox-cli start &
 killall unclutter; unclutter &
-killall xautolock; xautolock -corners ---- -time 10 -locker "slock" &
+# killall xautolock; xautolock -corners ---- -time 10 -locker "slock" &
 killall xss-lock; xss-lock -- slock &
 killall xcape; xcape -e 'Control_L=Escape' &
 killall syncthing; syncthing -no-browser &
@@ -1994,7 +1994,7 @@ fullscreen="$(xprop -display :0 -id ${active_id:40:9} | grep _NET_WM_STATE_FULLS
 if [ -n "$fullscreen" ]; then
     echo "RESTARTING XAUTOLOCK"
     export DISPLAY=":0"
-    xautolock -disable; xautolock -enable
+    # xautolock -disable; xautolock -enable
 fi
 #+end_src
 ** ocrpdf
