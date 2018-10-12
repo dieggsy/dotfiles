@@ -2109,6 +2109,8 @@ SNAP="$SSHDEST$DEST"
 LAST="$DEST/last"
 date=`date "+%Y-%m-%dT%H%M"`
 
+notify-send "Backing up home directory" "to $SNAP"
+
 # Run rsync to create snapshot
 rsync $OPT $SSHOPT $LINK $SRC ${SNAP}/$date # | pv -lep -s $(rsync -n $OPT $SSHOPT $LINK $SRC ${SNAP}/$date | awk 'NF' | wc -l) > /dev/null
 
