@@ -477,6 +477,7 @@ I went for it. Now I'll never go back.
   (vmap [escape] 'keyboard-quit)
   :custom
   (evil-want-C-u-scroll t)
+  (evil-want-keybinding nil)
   (evil-want-integration nil)
   (evil-want-fine-undo t)
   (evil-search-module 'evil-search)
