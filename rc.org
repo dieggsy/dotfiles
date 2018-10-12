@@ -1877,6 +1877,7 @@ Xft.hintstyle: hintslight
 Xft.lcdfilter: lcddefault
 
 Xcursor.size: 32
+Xcursor.theme: Breeze
 
 Emacs.fontBackend: xft
 Emacs.internalBorder: 15
