@@ -1605,6 +1605,7 @@ rofi.dpi: 172
 :header-args+: :tangle ~/.rsync-exclude :comments no
 :END:
 #+begin_src text
+.eve
 downloads
 music
 .cache
