@@ -1880,8 +1880,8 @@ Xcursor.size: 32
 
 Emacs.fontBackend: xft
 Emacs.internalBorder: 15
-Emacs.font: Iosevka Term-9.5:weight=book
-Emacs.geometry: 105x41
+Emacs.font: Iosevka Term-10:weight=book
+! Emacs.geometry: 105x41
 Emacs.menuBar: off
 Emacs.toolBar: off
 Emacs.verticalScrollBars: off
