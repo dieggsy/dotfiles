@@ -2220,7 +2220,8 @@ short and sweet LISP editing
            lisp-mode
            scheme-mode
            geiser-repl-mode
-           ielm-mode)
+           ielm-mode
+           slime-repl-mode)
           . lispy-mode))
   :general
   (lispy-mode-map-lispy
@@ -2312,6 +2313,7 @@ it.
      emacs-lisp-mode
      lisp-mode
      geiser-repl-mode
+     slime-repl-mode
      inferior-emacs-lisp-mode))
   :init
   (defun d/turn-on-smartparens-strict-mode ()
