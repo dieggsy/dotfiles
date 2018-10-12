@@ -113,8 +113,8 @@ bspc rule -a Pavucontrol state=floating
 bspc rule -a D-feet      state=floating
 bspc rule -a Pcmanfm     state=floating
 bspc rule -a Zathura     state=tiled
+killall st; st -T st-float -e tmux &
 
-st -T st-float -e tmux &
 #+end_src
 *** rules
 :PROPERTIES:
