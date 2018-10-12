@@ -2117,6 +2117,7 @@ rsync $OPT $SSHOPT $LINK $SRC ${SNAP}/$date # | pv -lep -s $(rsync -n $OPT $SSHO
 if [ -d "/run/media/dieggsy/wd-passport/" ]; then
     rm -f $LAST
     ln -s $DEST/$date $LAST
+    find $DEST -maxdepth 1 -type d ! -path $DEST -mtime +30 -exec echo 'Removing' {} + -exec rm -vrf {} +
 else
     ssh dieggsy@panda "rm -f $LAST && ln -s ${DEST}/$date $LAST"
     # ssh dieggsy@panda "find $DEST -maxdepth 1 -type d ! -path $DEST ! -path $DEST/$date -mtime -1 -exec echo 'Removing' {} + -exec rm -rf {} +"
