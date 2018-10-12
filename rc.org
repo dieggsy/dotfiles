@@ -320,9 +320,9 @@ super + {Left,Down,Up,Right}
     bspc node -v {-20 0,0 20,0 -20,20 0}
 
 XF86MonBrightnessUp
-    light -A 5
+    xbacklight -inc 5
 XF86MonBrightnessDown
-    light -U 5
+    xbacklight -dec 5
 # Print
 #     scrot ~/pic/scrot/%Y-%m-%d_%H:%M:%S.png && notify-send "Screenshot!"
 # XF86LaunchB
