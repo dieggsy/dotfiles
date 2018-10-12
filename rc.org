@@ -177,6 +177,10 @@ super + space
     bspc node $id --flag hidden && \
     bspc node -f $id
 
+super + d
+    j4-dmenu-desktop
+
+
 super + z
     id=$(</tmp/st-float) && \
     bspc node $id --flag hidden && \
@@ -184,12 +188,11 @@ super + z
 # program launcher
 
 alt + space
-    rofi -combi-modi window,drun -show combi -modi combi # -display-combi ''
-    # rofi -show drun -sidebar-mode
+    dmenu_run
 
 # passwords
 super + p
-    notify-send $(passmenu)
+    passmenu
 
 # make sxhkd reload its configuration files:
 super + Escape
@@ -659,7 +662,7 @@ separator_color = #454947
 startup_notification = false
 
 # dmenu path.
-dmenu = /usr/bin/dmenu -p dunst:
+# dmenu = /usr/bin/rofi -dmenu -p dunst:
 
 # Browser for opening urls in context menu.
 browser = firefox-nightly
@@ -1142,8 +1145,6 @@ __pychache__
 :END:
 #+begin_src conf
 [dmenu]
-dmenu_command = rofi
-p = [Networks]
 l = 10
 rofi_highlight=True
 # # Note that dmenu_command can contain arguments as well like `rofi -width 30`
@@ -1494,8 +1495,8 @@ except:
 :END:
 #+begin_src conf
 rofi.theme: ~/.config/rofi/darktooth.rasi
-rofi.modi: window,run,ssh,drun
-rofi.combi-modi: window, drun
+rofi.modi: window,run,ssh,drun,combi
+rofi.combi-modi: window,drun,run
 rofi.dpi: 172
 #+end_src
 *** darktooth.rasi
@@ -1552,6 +1553,18 @@ rofi.dpi: 172
     border: 0 0 1 0;
     border-color: @separatorcolor;
     background-color: @backgroundcoloralternate;
+}
+
+#message {
+    format: center;
+    padding: 16 4ch;
+    border: 0 0 1 0;
+    border-color: @separatorcolor;
+    background-color: @backgroundcoloralternate;
+}
+
+#textbox {
+    text-color: #7C6F64;
 }
 
 #element.selected.normal {
