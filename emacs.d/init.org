@@ -4268,9 +4268,12 @@ directory to make multiple eshell windows easier."
       (insert (concat "ls"))
       (eshell-send-input)))
 
-  (defun eshell/clear ()
+  (define-advice eshell/clear (:override () d/log-and-colors)
     "Custom `eshell' clear function to clear to top."
     (interactive)
+    (append-to-file (point-min) (point-max)
+                    (expand-file-name "eshell/log.txt.gz"
+                                      no-littering-var-directory))
     (let ((inhibit-read-only t))
       (erase-buffer)
       (delete-all-overlays)))
