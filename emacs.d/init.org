@@ -249,7 +249,7 @@ usually just run Emacs on login anyway, so this suffices.
 
 This makes startup time irrelevant. Start emacs once, connect with emacsclient
 every other time. See [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Emacs-Server.html#Emacs-Server][Using Emacs as a Server]].
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package server
   :defer 3
   :config
