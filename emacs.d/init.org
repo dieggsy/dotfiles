@@ -839,7 +839,9 @@ color is hidden by ivy's match color."
         counsel-find-file-ignore-regexp (rx (or (group string-start (char ".#"))
                                                 (group (char "~#") string-end)
                                                 (group ".elc" string-end)
-                                                (group ".pyc" string-end))))
+                                                (group ".pyc" string-end)
+                                                (group ".import.scm" string-end)
+                                                (group ".so" string-end))))
   (counsel-mode 1)
   (defalias 'locate #'counsel-locate)
 
