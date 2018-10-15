@@ -631,9 +631,9 @@ Increment and decrement numbers in Emacs
 #+begin_src emacs-lisp
 (use-package evil-numbers
   :straight (:host github
-             :repo "dieggsy/evil-numbers"
+             :repo "cofi/evil-numbers"
              :fork (:host github
-                    :repo "cofi/evil-numbers"))
+                    :repo "dieggsy/evil-numbers"))
   :general
   (d/leader-keys
     "n-"  'd/numbers/evil-numbers/dec-at-pt
@@ -3026,9 +3026,9 @@ An Emacs 24 theme remixed from gruvbox
 (use-package darktooth-theme
   :demand t
   :straight (:host github
-             :repo "dieggsy/emacs-theme-darktooth"
+             :repo "emacsfodder/emacs-theme-darktooth"
              :fork (:host github
-                    :repo "emacsfodder/emacs-theme-darktooth"))
+                    :repo "dieggsy/emacs-theme-darktooth"))
   :config
   (load-theme 'darktooth))
 #+end_src
@@ -5063,9 +5063,9 @@ Nickname Highlighting for ERC
 #+begin_src emacs-lisp
 (use-package erc-hl-nicks
   :straight (:host github
-             :repo "dieggsy/erc-hl-nicks"
+             :repo "leathekd/erc-hl-nicks"
              :fork (:host github
-                    :repo "leathekd/erc-hl-nicks"))
+                    :repo "dieggsy/erc-hl-nicks"))
   :after erc
   :demand t
   :config
