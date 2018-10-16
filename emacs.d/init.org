@@ -4567,7 +4567,7 @@ Password store (pass) support
 #+begin_src emacs-lisp
 (use-package password-store
   :config
-  (setq password-store-password-length 20))
+  (setq password-store-password-length 30))
 #+end_src
 *** [[https://github.com/Fanael/persistent-scratch][persistent-scratch]]
 #+begin_quote
