@@ -1455,7 +1455,7 @@ Stack Exchange for Emacs
 #+begin_quote
 tldr client for Emacs
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package tldr
   :general
   (d/leader-keys "ht" 'tldr)
@@ -1759,7 +1759,7 @@ Collection of useful dired additions
       (dired-collapse-mode))))
 #+end_src
 ***** dired-subtree
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package dired-subtree
   :general
   (nmap dired-mode-map
@@ -1789,7 +1789,7 @@ Dired with recursive directory sizes
 #+begin_quote
 Project Interaction Library for Emacs
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package projectile
   :general
   (d/leader-keys
@@ -1818,7 +1818,7 @@ Project Interaction Library for Emacs
 #+begin_quote
 Ivy UI for Projectile
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package counsel-projectile
   :general
   (d/leader-keys
@@ -2760,7 +2760,7 @@ an Emacs "jump to definition" package
 #+begin_quote
 A simple-minded way of managing window configs in emacs
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package eyebrowse
   :general
   ("<f10>" 'eyebrowse-switch-to-window-config-0
@@ -2999,7 +2999,7 @@ I don't like seeing variable pitch in emacs. Just sorta throws me off.
 #+begin_quote
 Dim the font color of text in surrounding paragraphs
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package focus
   :custom
   (focus-mode-to-thing
@@ -3047,7 +3047,7 @@ Highlight text that extends beyond a certain column.
   (column-enforce-column 79))
 #+end_src
 *** [[https://github.com/gonewest818/dimmer.el][dimmer]]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package dimmer)
 #+end_src
 *** [[https://github.com/dieggsy/eterm-256color][eterm-256color]]
@@ -3497,7 +3497,7 @@ Jupyter and IPython 2.x/3.x notebook client in Emacs
 #+begin_quote
 Integrate pyenv with python-mode.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package pyenv-mode
   :config
   (pyenv-mode))
@@ -3506,7 +3506,7 @@ Integrate pyenv with python-mode.
 #+begin_quote
 Automatically activates pyenv version within Emacs if .python-version file exists.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package pyenv-mode-auto
   :after pyenv-mode
   :demand t)
@@ -3525,7 +3525,7 @@ Pretty neat, though not entirely complete, IMO.
 #+begin_quote
 Yapf for Emacs
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package yapfify)
 #+end_src
 **** Setup
@@ -3576,14 +3576,14 @@ Easy HTTP request for Emacs Lisp
 #+begin_quote
 The long lost Emacs string manipulation library.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package s)
 #+end_src
 ***** [[https://github.com/magnars/dash.el][dash]]
 #+begin_quote
 A modern list library for Emacs
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package dash)
 #+end_src
 ***** [[https://github.com/rejeep/f.el][f]]
@@ -3823,7 +3823,7 @@ Source: http://tinyurl.com/le6wxuo"
 #+begin_quote
 An Emacs major mode for editing Nix expressions.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package nix-mode
   :commands (d/nix-update-fetchgit d/nix-update-my-packages)
   :config
@@ -4462,7 +4462,7 @@ Disable the mouse in Emacs
 #+begin_quote
 Emacs package that displays available keybindings in popup
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package which-key
   :defer 20
   :general
@@ -4548,7 +4548,7 @@ Package to display keyboard macros or latest interactive commands as emacs lisp.
 #+begin_quote
 ESUP - Emacs Start Up Profiler
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package esup
   :config
   (setq esup-insignificant-time 0.001))
@@ -4586,7 +4586,7 @@ Preserve the scratch buffer across Emacs sessions
 A simple emacs package to restart emacs from within emacs.
 #+end_quote
 SUPER nifty.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package restart-emacs
   :general (d/leader-keys
              ;; "qr" 'restart-emacs
@@ -4694,7 +4694,7 @@ Clackity-clack.
 #+begin_quote
 Practice touch/speed typing in emacs.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package speed-type
   :general (d/leader-keys "as" 'speed-type-text))
 #+end_src
@@ -5076,6 +5076,9 @@ Nickname Highlighting for ERC
   (push "erc-current-nick-face" erc-hl-nicks-skip-faces))
 #+end_src
 *** [[https://github.com/skeeto/elfeed][elfeed]]
+:PROPERTIES:
+:header-args+: :tangle no
+:END:
 #+begin_quote
 An Emacs web feeds client
 #+end_quote
