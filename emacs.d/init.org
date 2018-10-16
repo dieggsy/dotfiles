@@ -4228,7 +4228,7 @@ Emacs pcomplete for git
   :after eshell
   :demand t)
 #+end_src
-**** [[https://github.com/dieggsy/company-eshell-autosuggest][company-eshell-autosuggest]]
+**** [[https://github.com/dieggsy/esh-autosuggest][esh-autosuggest]]
 #+begin_quote
 Fish-like autosuggestions in eshell.
 #+end_quote
