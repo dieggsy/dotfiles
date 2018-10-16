@@ -3818,6 +3818,8 @@ Source: http://tinyurl.com/le6wxuo"
  '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)
    ("\\<#!\\sw+\\>" . 'font-lock-type-face))
  t)
+
+(add-to-list 'auto-mode-alist '("\\.egg\\'" . scheme-mode))
 #+end_src
 *** [[https://github.com/NixOS/nix-mode][nix-mode]]
 #+begin_quote
