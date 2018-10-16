@@ -4113,8 +4113,8 @@ heard (and can confirm).
   (add-hook 'calc-embedded-mode-hook #'d/calc-embedded-set-open-close)
   :config
   (evil-set-initial-state 'calc-mode 'emacs)
-  (setq calc-multiplication-has-precedence nil)
-  (setq calc-symbolic-mode t)
+  (setq calc-multiplication-has-precedence nil
+        calc-symbolic-mode t)
   (defun d/calc-embedded-set-open-close ()
     (when comment-start
       (setq-local calc-embedded-open-mode
@@ -5083,7 +5083,6 @@ Nickname Highlighting for ERC
 An Emacs web feeds client
 #+end_quote
 Configure the Elfeed RSS reader with an Orgmode file
-**** Package
 #+begin_src emacs-lisp
 (use-package elfeed
   :general
