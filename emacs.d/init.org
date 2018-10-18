@@ -478,7 +478,6 @@ I went for it. Now I'll never go back.
   :custom
   (evil-want-C-u-scroll t)
   (evil-want-keybinding nil)
-  (evil-want-integration nil)
   (evil-want-fine-undo t)
   (evil-search-module 'evil-search)
   (evil-lookup-func (lambda () (man (thing-at-point 'word))))
