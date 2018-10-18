@@ -4098,6 +4098,10 @@ operate on system processes like dired
   :config
   (setq proced-auto-update-interval 2))
 #+end_src
+** comint
+#+begin_src emacs-lisp
+(setq comint-prompt-read-only t)
+#+end_src
 ** [[elisp:(find-library-other-window "calc")][calc]]
 #+begin_quote
 the GNU Emacs calculator
