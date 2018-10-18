@@ -4061,7 +4061,9 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
   (d/hook! git-commit-mode
     (setq-local fill-column 72)
     (setq-local org-hide-emphasis-markers nil)
-    (setq-local org-pretty-entities nil)))
+    (setq-local org-pretty-entities nil))
+  (d/hook! git-commit-setup
+    (git-commit-turn-on-flyspell)))
 #+end_src
 **** [[https://github.com/alphapapa/magit-todos][magit-todos]]
 #+begin_src emacs-lisp
