@@ -2048,6 +2048,8 @@ pathadd $HOME/.pyenv/bin
 pathadd $HOME/.pyenv/shims
 pathadd $HOME/bin
 pathadd $PREFIX/lib/ccache/bin
+
+export PATH
 #+end_src
 *** zprofile
 #+begin_src sh :tangle ~/.zlogin
