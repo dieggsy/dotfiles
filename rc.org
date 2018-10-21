@@ -34,7 +34,6 @@ more readable in org format than in rendered markdown.
   - [[#desktop-record][desktop-record]]
   - [[#wm-exit-rofi][wm-exit-rofi]]
   - [[#wm-exit][wm-exit]]
-  - [[#no-lock-fullscreen][no-lock-fullscreen]]
   - [[#ocrpdf][ocrpdf]]
   - [[#ocrpdf2][ocrpdf2]]
   - [[#pass][pass]]
@@ -2101,23 +2100,6 @@ case "$1" in
 esac
 
 exit 0
-#+end_src
-** no-lock-fullscreen
-:PROPERTIES:
-:header-args+: :tangle ~/bin/no-lock-fullscreen :shebang "#!/usr/bin/env bash"
-:END:
-This goes in a cron job using ~crontab -e~ like so:
-#+begin_example
-*/2 * * * * /home/dieggsy/bin/no-lock-fullscreen
-#+end_example
-#+begin_src sh
-active_id=`xprop -display :0 -root _NET_ACTIVE_WINDOW`
-fullscreen="$(xprop -display :0 -id ${active_id:40:9} | grep _NET_WM_STATE_FULLSCREEN)"
-if [ -n "$fullscreen" ]; then
-    echo "RESTARTING XAUTOLOCK"
-    export DISPLAY=":0"
-    # xautolock -disable; xautolock -enable
-fi
 #+end_src
 ** ocrpdf
 :PROPERTIES:
