@@ -2028,26 +2028,17 @@ alias ls='ls --color=auto -F'
 #+end_src
 *** zshenv
 #+begin_src sh :tangle ~/.zshenv
-# [ -d $HOME/.nix-profile ] && source ~/.nix-profile/etc/profile.d/nix.sh
-# if [ -d $HOME/.guix-profile ]; then
-#     export PATH=$HOME/.guix-profile/bin:$PATH
-#     export INFOPATH=$HOME/.guix-profile/share/info:$INFOPATH
-# fi
+function pathadd() {
+    if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
+        PATH="$1${PATH:+":$PATH"}"
+    fi
+}
 
-[ -d $HOME/.local/bin ] && export PATH=$HOME/.local/bin:$PATH
-[ -d $HOME/.pyenv/bin ] && export PATH=$HOME/.pyenv/bin:$PATH
-[ -d $HOME/.pyenv/shims ] && export PATH=$HOME/.pyenv/shims:$PATH
-[ -d $HOME/bin ] && export PATH=$HOME/bin:$PATH
-# [ -d $HOME/.evm/bin ] && export PATH=$HOME/.evm/bin:$PATH
-# [ -d $HOME/go ] && export GOPATH=$HOME/go && export PATH=$GOPATH/bin:$PATH
-
-[ -d $HOME/.guix-profile/lib/locale/ ] && export GUIX_LOCPATH=$HOME/.guix-profile/lib/locale
-
-# [ -d $HOME/dotfiles/guix/ ] && export GUIX_PACKAGE_PATH="$HOME/dotfiles/guix/packages"
-
-[ -d /usr/lib/ccache/ ] && export PATH=/usr/lib/ccache/bin:$PATH
-# export XDG_DATA_DIRS="$HOME/.local/share:$HOME/.nix-profile/share:/usr/local/share:/usr/share"
-# export CHICKEN_REPOSITORY=~/.local/lib/chicken/8
+pathadd $HOME/.local/bin
+pathadd $HOME/.pyenv/bin
+pathadd $HOME/.pyenv/shims
+pathadd $HOME/bin
+pathadd /usr/lib/ccache/bin
 #+end_src
 *** zprofile
 #+begin_src sh :tangle ~/.zlogin
