@@ -2015,13 +2015,19 @@ fi
 [ -d /$ZPLUGINDIR/zsh-history-substring-search ] && source /$ZPLUGINDIR/zsh-history-substring-search/zsh-history-substring-search.zsh
 [ -d /$ZPLUGINDIR/zsh-notify ] && source /$ZPLUGINDIR/zsh-notify/notify.plugin.zsh
 
-function maybe_show_host {
+function maybe_host {
     if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
         echo "%F{13}%n@%M%f "
     fi
 }
 
-export PROMPT="$(maybe_show_host)%F{7}%1~%f %F{167}%(!.#.λ)%f "
+function maybe_git {
+    hash git-status && echo "$(git-status)"
+}
+
+
+setopt prompt_subst
+export PROMPT='$(maybe_host)$(maybe_git)%F{7}%1~%f %F{167}%(!.#.λ)%f '
 
 alias ls='ls --color=auto -F'
 
