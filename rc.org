@@ -2031,6 +2031,12 @@ export PROMPT='$(maybe_host)$(maybe_git)%F{7}%1~%f %F{167}%(!.#.λ)%f '
 
 alias ls='ls --color=auto -F'
 
+function cd_list() {
+    emulate -L zsh
+    ls --color=auto -F
+}
+
+chpwd_functions=(${chpwd_functions[@]} "cd_list")
 #+end_src
 *** zshenv
 #+begin_src sh :tangle ~/.zshenv
