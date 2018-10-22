@@ -3761,7 +3761,7 @@ Source: https://git.io/vQKz8"
 #+begin_quote
 emacs and scheme talk to each other
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package geiser
   :custom
   (geiser-chicken-binary '("csi" "-q"))
