@@ -2759,7 +2759,7 @@ an Emacs "jump to definition" package
 #+begin_quote
 A simple-minded way of managing window configs in emacs
 #+end_quote
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package eyebrowse
   :general
   ("<f10>" 'eyebrowse-switch-to-window-config-0
