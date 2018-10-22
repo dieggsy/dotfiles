@@ -2015,13 +2015,13 @@ fi
 [ -d /$ZPLUGINDIR/zsh-history-substring-search ] && source /$ZPLUGINDIR/zsh-history-substring-search/zsh-history-substring-search.zsh
 [ -d /$ZPLUGINDIR/zsh-notify ] && source /$ZPLUGINDIR/zsh-notify/notify.plugin.zsh
 
-function maybe_host {
+maybe_host () {
     if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
         echo "%F{13}%n@%M%f "
     fi
 }
 
-function maybe_git {
+maybe_git () {
     hash git-status > /dev/null 2>&1 && echo "$(git-status)"
 }
 
@@ -2031,7 +2031,7 @@ export PROMPT='$(maybe_host)$(maybe_git)%F{7}%1~%f %F{167}%(!.#.λ)%f '
 
 alias ls='ls --color=auto -F'
 
-function cd_list() {
+cd_list () {
     emulate -L zsh
     ls --color=auto -F
 }
@@ -2043,7 +2043,7 @@ chpwd_functions=(${chpwd_functions[@]} "cd_list")
 if [[ "$PREFIX" != "/data/data/com.termux"* ]]; then
     PREFIX=/usr
 fi
-function pathadd() {
+pathadd () {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
         PATH="$1${PATH:+":$PATH"}"
     fi
