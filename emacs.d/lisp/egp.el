@@ -156,7 +156,7 @@ length of PATH (sans directory slashes) down to MAX-LEN."
                            str))
                         status-list))
              (dirty (member "??" status-list)))
-        (format "(%s%s%s|%s%s%s%s%s)"
+        (format "(%s%s%s|%s%s%s%s%s) "
                 (egp-stylize "#B8BB26" branch)
                 (egp-stylize "#D3869B" "↑" ahead)
                 (egp-stylize "#D3869B" "↓" behind)
@@ -187,7 +187,7 @@ length of PATH (sans directory slashes) down to MAX-LEN."
                                           "@" host)))
          'face 'egp-remote-face)))
     (egp-get-git-status)
-    (propertize (egp-fish-path (eshell/pwd) 0) 'face 'egp-dir-face)
+    (propertize (file-name-nondirectory (abbreviate-file-name (eshell/pwd))) 'face 'egp-dir-face)
     " "
     (propertize egp-prompt-symbol 'face 'egp-symbol-face)
     (propertize (if (= (user-uid) 0) "#" "") 'face 'egp-root-face)
