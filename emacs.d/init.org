@@ -3795,30 +3795,103 @@ Source: http://tinyurl.com/le6wxuo"
 #+end_src
 **** Setup
 #+begin_src emacs-lisp
+(add-to-list 'auto-mode-alist '("\\.egg\\'" . scheme-mode))
+
 (d/hook! scheme-mode
   (hs-minor-mode)
   (d/after 'evil-surround
     (push '(? . ("`" . "'")) evil-surround-pairs-alist)))
 
 (d/after 'scheme
-  (put 'set-sharp-read-syntax! 'scheme-indent-function 1)
-  (put 'set-read-syntax! 'scheme-indent-function 1))
+  (dolist (fn '((assume . 1)
+                (compiler-typecase . 1)
+                (cond-expand . 0)
+                (condition-case . 1)
+                (cut . 1)
+                (cute . 1)
+                (declare . 0)
+                (dotimes . 1)
+                (ecase . 1)
+                (fluid-let . 1)
+                (foreign-lambda . 2)
+                (foreign-lambda* . 2)
+                (foreign-primitive . 2)
+                (foreign-safe-lambda . 2)
+                (foreign-safe-lambda* . 2)
+                (functor . 3)
+                (handle-exceptions . 2)
+                (import . 0)
+                (let-location . 1)
+                (let-optionals . 2)
+                (let-optionals* . 2)
+                (letrec-values . 1)
+                (module . 2)
+                (regex-case . 1)
+                (select . 1)
+                (set! . 1)
+                (use . 0)
+                (with-input-from-pipe . 1)
+                (with-output-to-pipe . 1)
+                (set-sharp-read-syntax! . 1)
+                (set-read-syntax! . 1)))
+    (put (car fn) 'scheme-indent-function (cdr fn)))
+  (let ((keywords '("and-let*"
+                    "cut"
+                    "cute"
+                    "define-condition-type"
+                    "define-immutable-record-type"
+                    "define-record-type"
+                    "define-values"
+                    "letrec*"
+                    "match"
+                    "match-lambda"
+                    "match-lambda*"
+                    "match-let"
+                    "match-let*"
+                    "match-letrec"
+                    "parameterize"
+                    "receive"
+                    "require-extension"
+                    "set!"
+                    "syntax-case"
+                    "test-approximate"
+                    "test-assert"
+                    "test-begin"
+                    "test-end"
+                    "test-eq"
+                    "test-equal"
+                    "test-eqv"
+                    "test-error"
+                    "test-group"
+                    "test-group-with-cleanup"
+                    "test-with-runner"
+                    "unless"
+                    "when"
+                    "with-exception-handler"
+                    "with-input-from-file"
+                    "with-output-to-file")))
+    (font-lock-add-keywords 'scheme-mode
+                            (append
+                             `((,(format "[[(]%s\\>" (regexp-opt keywords 1)) . 1))
+                             `(("\\[\\(else\\)\\>" . 1)
+                               (,(rx "(" (group "define-syntax-rule") eow (* space)
+                                     (? "(") (? (group (1+ word))))
+                                (1 font-lock-keyword-face)
+                                (2 font-lock-function-name-face nil t))))))
 
-(font-lock-add-keywords
- 'scheme-mode
- '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)
-   ("\\`\\(#!/\\(?:\\(?:.*?/\\)+\\)?\\([^/ ]+\\)?\\(?:.*$\\)?\\)"
-    (1 'font-lock-comment-face)
-    (2 'font-lock-keyword-face t))
-   ("\\<#!\\sw+\\>" . 'font-lock-type-face))
- t)
-(font-lock-add-keywords
- 'geiser-repl-mode
- '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)
-   ("\\<#!\\sw+\\>" . 'font-lock-type-face))
- t)
-
-(add-to-list 'auto-mode-alist '("\\.egg\\'" . scheme-mode))
+  (font-lock-add-keywords
+   'scheme-mode
+   '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)
+     ("\\`\\(#!/\\(?:\\(?:.*?/\\)+\\)?\\([^/ ]+\\)?\\(?:.*$\\)?\\)"
+      (1 'font-lock-comment-face)
+      (2 'font-lock-keyword-face t))
+     ("\\<#!\\sw+\\>" . 'font-lock-type-face))
+   t)
+  (font-lock-add-keywords
+   'geiser-repl-mode
+   '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)
+     ("\\<#!\\sw+\\>" . 'font-lock-type-face))
+   t))
 #+end_src
 *** [[https://github.com/NixOS/nix-mode][nix-mode]]
 #+begin_quote
