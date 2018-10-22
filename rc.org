@@ -2022,7 +2022,7 @@ function maybe_host {
 }
 
 function maybe_git {
-    hash git-status && echo "$(git-status)"
+    hash git-status > /dev/null 2>&1 && echo "$(git-status)"
 }
 
 
