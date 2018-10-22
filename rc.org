@@ -2057,7 +2057,7 @@ pathadd $PREFIX/lib/ccache/bin
 
 export PATH
 #+end_src
-*** zprofile
+*** zlogin
 #+begin_src sh :tangle ~/.zlogin
 gpgconf --launch gpg-agent
 export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
