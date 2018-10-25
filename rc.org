@@ -32,7 +32,7 @@ more readable in org format than in rendered markdown.
   - [[#zsh][zsh]]
 - [[#scripts][Scripts]]
   - [[#desktop-record][desktop-record]]
-  - [[#wm-exit-rofi][wm-exit-rofi]]
+  - [[#wm-exit-dmenu][wm-exit-dmenu]]
   - [[#wm-exit][wm-exit]]
   - [[#ocrpdf][ocrpdf]]
   - [[#ocrpdf2][ocrpdf2]]
@@ -193,7 +193,7 @@ super + Escape
 
 # quit bspwm normally
 super + shift + period
-    wm-exit-rofi
+    wm-exit-dmenu
 
 super + shift + p
    ~/.config/bspwm/bspwmrc
@@ -2075,13 +2075,13 @@ recordmydesktop --device pulse
 # emacsclient ---eval '(decrease-all-fonts)'
 pkill -f screenkey
 #+end_src
-** wm-exit-rofi
+** wm-exit-dmenu
 :PROPERTIES:
-:header-args+: :tangle ~/bin/wm-exit-rofi :shebang "#!/usr/bin/env bash"
+:header-args+: :tangle ~/bin/wm-exit-dmenu :shebang "#!/usr/bin/env bash"
 :END:
 #+begin_src sh
 # message="Exit i3?"
-response=$(echo -e "exit\nlock\nsuspend\nhibernate\nreboot\nshutdown" | rofi -l 6 -width 30 -dmenu -i -p "")
+response=$(echo -e "exit\nlock\nsuspend\nhibernate\nreboot\nshutdown" | dmenu)
 if [ -n "$response" ]; then
     ~/bin/wm-exit $response
 fi
