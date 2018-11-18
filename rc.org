@@ -64,7 +64,7 @@ polybar simple &
 ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-simple
 pgrep emacs || emacs --daemon &
 killall -q udiskie; udiskie &
-nitrogen --restore &
+[ -f ~/pic/wallpapers/arch-small.jpg ] && feh --bg-fill ~/pic/wallpapers/arch-small.jpg &
 killall unclutter; unclutter &
 # killall xautolock; xautolock -corners ---- -time 10 -locker "slock" &
 killall xss-lock; xss-lock -- slock &
