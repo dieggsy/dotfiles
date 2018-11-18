@@ -101,6 +101,7 @@ bspc rule -a Pavucontrol state=floating
 bspc rule -a Pcmanfm     state=floating
 bspc rule -a Zathura     state=tiled
 bspc rule -a Civ5XP      state=fullscreen
+bspc rule -a guvcview    state=floating
 
 killall st; st -T st-float -e tmux &
 
@@ -121,28 +122,28 @@ killall st; st -T st-float -e tmux &
 (define instance (caddr args))
 (define title (string-chomp (call-with-input-pipe
                              (string-append "xtitle " wid)
-                             (lambda (out) (read-string #f out)))))
+                             (cut read-string #f <>))))
 
 (cond ((substring-index "emacs" instance)
        (display "state=tiled desktop=^2"))
       ((substring-index "_erc__floating_" instance)
        (with-output-to-file "/tmp/erc-float"
          (lambda () (display wid) (newline)))
-       (display "state=floating hidden=on sticky=on")
-       (system (string-append "wmctrl -i -r " wid " -e '0,120,770,1085,560'")))
+       (display "state=floating hidden=on sticky=on rectangle=1085x560+0+870"))
       ((substring-index "_eshell__floating_" instance)
        (with-output-to-file "/tmp/esh-float"
          (lambda () (display wid) (newline)))
-       (display "state=floating hidden=on sticky=on")
-       (system (string-append "wmctrl -i -r " wid " -e '0,0,40,2550,540'")))
+       (display "state=floating hidden=on sticky=on rectangle=1084x560+720+870"))
       ((equal? instance "st-256color")
        (when (equal? title "htop")
          (display "state=floating"))
        (when (equal? title "st-float")
          (with-output-to-file "/tmp/st-float"
            (lambda () (display wid) (newline)))
-         (display "state=floating hidden=on sticky=on")
-         (system (string-append "wmctrl -i -r " wid " -e '0,1350,770,1085,540'")))))
+         (display "state=floating hidden=on sticky=on rectangle=1085x560+1465+870")))
+      ((and (equal? instance "guvcview")
+            (substring-index "Video" title))
+       (display "sticky=on rectangle=520x390+2030+176")))
 #+end_src
 *** sxhkdrc
 :PROPERTIES:
