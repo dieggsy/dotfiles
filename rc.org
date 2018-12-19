@@ -2359,7 +2359,7 @@ if [ -d "/run/media/dieggsy/wd-passport/" ]; then
     SSHDEST=""
 else
     echo "Backing up over ssh..."
-    SSHOPT="-e ssh"
+    SSHOPT="-e ssh -zz"
     SSHDEST="dieggsy@panda:"
     DEST="~/wd-passport/backup"
 fi
