@@ -179,13 +179,15 @@ length of PATH (sans directory slashes) down to MAX-LEN."
    (concat
     (let* ((host (file-remote-p default-directory 'host)))
       (when host
-        (propertize
-         (cond ((and default-directory (string= host (system-name)))
-                (concat "@" (file-remote-p default-directory 'user)))
-               (default-directory (concat (file-remote-p default-directory
-                                                         'user)
-                                          "@" host)))
-         'face 'egp-remote-face)))
+        (concat
+         (propertize
+          (cond ((and default-directory (string= host (system-name)))
+                 (concat "@" (file-remote-p default-directory 'user)))
+                (default-directory (concat (file-remote-p default-directory
+                                                          'user)
+                                           "@" host)))
+          'face 'egp-remote-face)
+         " ")))
     (egp-get-git-status)
     (propertize (file-name-nondirectory (abbreviate-file-name (eshell/pwd))) 'face 'egp-dir-face)
     " "
