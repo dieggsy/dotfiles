@@ -56,7 +56,7 @@ more readable in org format than in rendered markdown.
 :END:
 #+begin_src sh
 xsetroot -cursor_name left_ptr
-killall -q sxhkd; sxhkd &
+killall -q sxhkd; sxhkd -m -1 &
 
 killall -q polybar
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
