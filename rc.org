@@ -135,14 +135,14 @@ killall st; st -T st-float -e tmux &
        (with-output-to-file "/tmp/esh-float"
          (lambda () (display wid) (newline)))
        (display "state=floating hidden=on sticky=on rectangle=1084x560+720+870"))
-      ((equal? instance "st-256color")
-       (when (equal? title "htop")
+      ((string=? instance "st-256color")
+       (when (string=? title "htop")
          (display "state=floating"))
-       (when (equal? title "st-float")
+       (when (string=? title "st-float")
          (with-output-to-file "/tmp/st-float"
            (lambda () (display wid) (newline)))
          (display "state=floating hidden=on sticky=on rectangle=1085x560+1465+870")))
-      ((and (equal? instance "guvcview")
+      ((and (string=? instance "guvcview")
             (substring-index "Video" title))
        (display "sticky=on rectangle=520x390+2030+176"))
       ((and (string=? instance "vlc")
