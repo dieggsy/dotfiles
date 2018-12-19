@@ -92,7 +92,7 @@ bspc config window_gap     0
 bspc config left_padding   0
 bspc config bottom_padding 0
 bspc config right_padding  0
-bspc config top_padding    0;
+bspc config top_padding    0
 
 bspc config focused_border_color "#928374"
 bspc config normal_border_color  "#504945"
@@ -107,7 +107,6 @@ bspc rule -a guvcview    state=floating
 bspc rule -a mpv         state=floating sticky=on rectangle=960x540+1540+840
 
 killall st; st -T st-float -e tmux &
-
 #+end_src
 *** rules
 :PROPERTIES:
@@ -2386,7 +2385,6 @@ else
     # ssh dieggsy@panda "find $DEST -maxdepth 1 -type d ! -path $DEST ! -path $DEST/$date -mtime -1 -exec echo 'Removing' {} + -exec rm -rf {} +"
     ssh dieggsy@panda "find $DEST -maxdepth 1 -type d ! -path $DEST -mtime +30 -exec echo 'Removing' {} + -exec rm -vrf {} +"
 fi
-
 #+end_src
 ** spectrum_ls
 :PROPERTIES:
