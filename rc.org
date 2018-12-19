@@ -102,6 +102,7 @@ bspc rule -a Pcmanfm     state=floating
 bspc rule -a Zathura     state=tiled
 bspc rule -a Civ5XP      state=fullscreen
 bspc rule -a guvcview    state=floating
+bspc rule -a mpv         state=floating sticky=on rectangle=960x540+1540+840
 
 killall st; st -T st-float -e tmux &
 
