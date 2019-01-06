@@ -62,7 +62,9 @@ pgrep sxhkd || sxhkd -m -1 &
 
 killall -q polybar
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
-polybar simple &
+for m in $(polybar --list-monitors | cut -d":" -f1); do
+    MONITOR=$m polybar simple &
+done
 ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-simple
 pgrep emacs || emacs --daemon &
 pgrep udiskie || udiskie &
