@@ -595,7 +595,7 @@ Black magic or evil keys for magit
 #+end_src
 ***** [[https://github.com/redguardtoo/evil-matchit][evil-matchit]]
 A more generic ~%~ in evil.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package evil-matchit
   :general
   (itomap "%" 'evilmi-inner-text-object)
@@ -1249,7 +1249,7 @@ Translates Org-mode file to various other formats via Pandoc. Pretty neat.
 #+begin_quote
 A carefully crafted Org exporter back-end for Hugo
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package ox-hugo
   :init
   (d/safe-vars!
@@ -1330,7 +1330,7 @@ browse UNIX manual pages
 #+begin_quote
 Display the definition of word at point in Emacs
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package define-word
   :general
   (d/leader-keys "sw" 'd/define-word)
@@ -1439,7 +1439,7 @@ A better Emacs *help* buffer
 #+begin_quote
 Extensions to info.el.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package info+)
 #+end_src
 *** [[https://github.com/Wilfred/elisp-refs][elisp-refs]]
@@ -1783,7 +1783,7 @@ Extra Emacs font lock rules for a more colourful dired
 #+begin_quote
 Dired with recursive directory sizes
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package dired-du
   :straight (:host github :repo "emacsmirror/dired-du")
   :config
@@ -2034,7 +2034,7 @@ expand text trying various ways to find its expansion
 #+begin_quote
 quickly create disposable yasnippets
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package auto-yasnippet)
 #+end_src
 **** [[https://github.com/company-mode/company-mode][company-mode]]
@@ -2076,7 +2076,7 @@ Sort completion candidates by previous completion choices
 #+begin_quote
 Multiple cursors implementation for evil-mode
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package evil-mc
   :general
   (d/leader-keys
@@ -2119,7 +2119,7 @@ Multiple cursors implementation for evil-mode
 #+begin_quote
 Multiple cursors for evil-mode, based on iedit
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package evil-multiedit
   :general
   (d/leader-keys
@@ -2550,7 +2550,7 @@ Major mode for editing comma/char separated values
 #+end_quote
 Eh, wanted to try a simpler way of editing csv files. (Excel and Numbers both
 kinda suck at this, LibreOffice was slightly better.) Haven't used this much.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package csv-mode
   :mode "\\.csv\\'"
   :config
@@ -4152,7 +4152,7 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
   (magit-todos-mode))
 #+end_src
 **** [[https://github.com/vermiculus/magithub][magithub]]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package magithub
   :after magit
   :demand t
@@ -4290,7 +4290,7 @@ Display git info in eshell
 #+begin_quote
 cd to frequent directory in eshell, an Emacs port of https://github.com/rupa/z
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package eshell-z
   :commands eshell/z)
 #+end_src
@@ -4306,7 +4306,7 @@ Fish completion for Emacs and Eshell
 #+begin_quote
 Emacs pcomplete for git
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package pcmpl-git
   :after eshell
   :demand t)
@@ -5168,7 +5168,7 @@ Nickname Highlighting for ERC
 An Emacs web feeds client
 #+end_quote
 Configure the Elfeed RSS reader with an Orgmode file
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package elfeed
   :general
   (d/leader-keys "ae" 'elfeed))
@@ -5178,7 +5178,7 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+begin_quote
 Configure the Elfeed RSS reader with an Orgmode file
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package elfeed-org
   :after elfeed
   :demand t
@@ -5189,7 +5189,7 @@ Configure the Elfeed RSS reader with an Orgmode file
 #+begin_quote
 Various goodies for Elfeed
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package elfeed-goodies
   :after elfeed
   :demand t
