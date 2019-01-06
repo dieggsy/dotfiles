@@ -33,6 +33,8 @@ more readable in org format than in rendered markdown.
   - [[#zathurarc][zathurarc]]
   - [[#zsh][zsh]]
 - [[#scripts][Scripts]]
+  - [[#bluez-rofi][bluez-rofi]]
+  - [[#mons-rofi][mons-rofi]]
   - [[#desktop-record][desktop-record]]
   - [[#wm-exit-dmenu][wm-exit-dmenu]]
   - [[#wm-exit][wm-exit]]
@@ -2459,6 +2461,119 @@ export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
 gpg-connect-agent updatestartuptty /bye >&/dev/null
 #+end_src
 * Scripts
+** bluez-rofi
+#+begin_src python :tangle ~/bin/bluez-rofi :shebang "#!/usr/bin/env python3"
+import dbus
+import os
+import locale
+import time
+from subprocess import Popen, PIPE
+
+ENV = os.environ.copy()
+ENV['LC_ALL'] = 'C'
+ENC = locale.getpreferredencoding()
+BLUETOOTH_GUI = "blueman-manager"
+ROFI_CMD = [
+    "rofi",
+    "-p", "bluetooth",
+    "-location", "1",
+    "-yoffset", "62",
+    "-xoffset", "350",
+    "-dmenu", "-i",
+    "-theme", "dropdown",
+    "-theme-str", "#window {width: 500;}",
+    "-theme-str", "#inputbar {enabled:false;}",
+]
+
+# rofi -location 1 -dmenu -i -theme dropdown -theme-str "#window {width: 500;}"
+
+def make_device_list(devmap):
+    def rank_device(dev):
+        if dev["Connected"]:
+            return 1
+        elif dev["Paired"]:
+            if dev["Trusted"]:
+                return 2
+            else:
+                return 3
+        else:
+            return 4
+    lst = list(devmap.values());
+    lst.sort(key=rank_device)
+    return list(map(lambda dev: dev["Address"]
+                    + "  "
+                    + ("P" if dev["Paired"] else " ")
+                    + ("T" if dev["Trusted"] else " ")
+                    + "  "
+                    + dev["Alias"],
+                    lst))
+
+def run_rofi(args, inp):
+    return (Popen(args, stdin=PIPE, stdout=PIPE, env=ENV)
+            .communicate(input=inp.encode(ENC))[0]
+            .decode(ENC)).strip()
+
+def main():
+
+    bus = dbus.SystemBus()
+    bluez = bus.get_object("org.bluez", "/")
+    bluez_iface = dbus.Interface(bluez, "org.freedesktop.DBus.ObjectManager")
+    managed_objects = bluez_iface.GetManagedObjects()
+
+    adapter_path = None;
+    # devlist = []
+    devmap = {}
+    for key,val in managed_objects.items():
+        if val.get("org.bluez.Device1"):
+            dev = val["org.bluez.Device1"]
+            dev["path"] = key
+            # devlist.append(dev)
+            devmap[dev["Address"]] = dev
+        elif val.get("org.bluez.Adapter1"):
+            adapter_path = key
+
+    inp = "\n".join(make_device_list(devmap) + [ "", "Start Discovery", "Open GUI"])
+
+    sel = run_rofi(ROFI_CMD, inp)
+
+    adapter = bus.get_object("org.bluez", adapter_path)
+
+    if sel == "Start Discovery":
+        adapter_iface = dbus.Interface(adapter, "org.bluez.Adapter1");
+        adapter_iface.StartDiscovery();
+        time.sleep(30)
+    elif sel == "Open GUI":
+        Popen([BLUETOOTH_GUI]).wait()
+    elif sel:
+        sel = sel.split()[0]
+        path = devmap[sel]["path"]
+
+        dev = bus.get_object("org.bluez", path)
+        dev_iface = dbus.Interface(dev, "org.bluez.Device1")
+
+        connected = devmap[sel]["Connected"]
+        if connected:
+            dev_iface.Disconnect()
+        else:
+            dev_iface.Connect()
+
+if __name__ == '__main__':
+    main()
+#+end_src
+** mons-rofi
+#+begin_src sh :tangle ~/bin/mons-rofi :shebang "#!/bin/sh"
+sel="$(echo -e "primary\nsecondary\nmirror\nright\nleft\ntop\nbottom" |
+         rofi -dmenu -i -p 'display' -theme dropdown \
+              -location 3 -yoffset 62 -xoffset -350 \
+              -theme-str '#window {width:200;}')"
+
+case $sel in
+    "primary") mons -o;;
+    "secondary") mons -s;;
+    "mirror") mons -m;;
+    ,*) mons -e $sel;;
+esac
+#+end_src
 ** desktop-record
 :PROPERTIES:
 :header-args+: :tangle ~/bin/desktop-record :shebang "#!/usr/bin/bash"
