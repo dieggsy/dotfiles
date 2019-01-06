@@ -1297,10 +1297,8 @@ gui_if_available = True
 :END:
 #+begin_src conf-windows
 [colors]
-background = #282828
-foreground = #FDF4C1
-black = ${colors.background}
-white = ${colors.foreground}
+black = #282828
+white = #FDF4C1
 green = #B8BB26
 red = #FB4933
 yellow = #FABD2F
@@ -1310,15 +1308,24 @@ aqua = #8EC07C
 orange = #FE8019
 cyan = #3FD7E5
 sienna = #DD6F48
+light3 = #BDAE93
 light4 = #A89984
 dark2 = #504945
+
+background = ${colors.black}
+foreground = ${colors.white}
 alert = ${colors.red}
+comment = #665C54
 
 [bar/simple]
-monitor = eDP-1
-width = 2560
+monitor = ${env:MONITOR:}
+width = 100%
 height = 47
 fixed-center = true
+line-size = 2
+
+; tray-position=center
+; tray-maxsize=32
 
 dpi = 172
 background = ${colors.background}
@@ -1328,11 +1335,11 @@ module-margin=0
 separator=
 
 font-0 = Iosevka Term:size=10;3
-font-1 = FontAwesome:size=10;3
-font-2 = Weather Icons:size=10;3
+font-1 = Weather Icons:size=10;3
+font-2 = Material Icons:size=10;4
 
 modules-left = bspwm date network bluez
-modules-right = weather mem cpu pulse battery
+modules-right = display mem cpu weather pulse battery
 
 wm-restack = bspwm
 
@@ -1344,6 +1351,13 @@ enable-ipc = true
 type = internal/xwindow
 label = %{F#BDAE93}%title:0:30:...%%{F-}
 
+[module/display]
+type=custom/script
+exec=[[ "$(xrandr | grep ' connected ' | wc -l)" -gt "1" ]] && echo "  " || echo ''
+format-padding=1
+click-left=mons-rofi
+
+
 [module/bspwm]
 type = internal/bspwm
 format =<label-state>
@@ -1353,11 +1367,16 @@ enable-scroll = false
 reverse-scroll = false
 
 pin-workspaces = true
-
-label-focused = %name%
+ws-icon-0=1;
+ws-icon-1=2;
+ws-icon-2=3;
+ws-icon-3=4;
+ws-icon-4=5;
+ws-icon-5=6;
+label-focused = %icon%
+label-focused-underline = ${colors.sienna}
 label-focused-padding = 1
-label-focused-foreground = #BDAE93
-label-focused-background = ${colors.dark2}
+label-focused-foreground = ${colors.sienna}
 
 label-occupied =
 
@@ -1380,29 +1399,28 @@ label = %percentage%
 click-left = networkmanager_dmenu
 type = custom/script
 exec = ~/bin/blocks/networkmanager
-format-background = ${colors.dark2}
-format-foreground = #BDAE93
+format-foreground = ${colors.blue}
+format-underline = ${colors.blue}
 format-padding = 1
 interval = 2
 
 [module/bluetooth]
 type = custom/script
 exec = rfkill list bluetooth | grep yes > /dev/null && echo '' || echo 
-format-foreground = #BDAE93
+format-foreground = ${colors.foreground}
 format-padding = 1
 
 [module/bluez]
-click-left = blueman-manager
+click-left = bluez-rofi &
 type = custom/script
 exec = ~/bin/blocks/bluez
-format-foreground = #BDAE93
 format-padding=1
 interval = 1
 
 [module/date]
 type = custom/script
-exec = date +'%%{F#665C54} %a %Y-%m-%d%%{F-} %%{F#BDAE93}%H:%M%%{F-}'
-interval = 60
+exec = date +'%%{F#FDF4C1} %H:%M%%{F-} %%{F#665C54}%a %Y-%m-%d%%{F-}'
+interval = 1
 format-padding=1
 click-left = notify-send "$(cal --color=never | cut -c -20 | head -n-1)"
 
@@ -1444,37 +1462,39 @@ animation-charging-framerate = 750
 
 [module/cpu]
 type = internal/cpu
-format-background = ${colors.dark2}
-format-foreground = #BDAE93
+format-foreground = ${colors.comment}
 format-padding = 1
 format = <label>
-label = P %percentage:2%%
+label =  %percentage:2%%
 
 [module/mem]
 type = internal/memory
 format = <label>
-label = M %percentage_used:2%%
-format-foreground = #BDAE93
+label =  %percentage_used:2%%
+format-foreground = ${colors.comment}
 format-padding=1
 
 [module/weather]
 type = custom/script
 exec = ~/bin/blocks/darksky
 ; format-foreground = #BDAE93
-format-background = ${colors.dark2}
-format-foreground = #BDAE93
+; format-background = ${colors.dark2}
+format-foreground = ${colors.sienna}
+format-underline = ${colors.sienna}
 format-padding = 1
 click-left = xdg-open https://darksky.net
 interval = 120
-label-font = 3
+label-font = 2
 
 [module/battery]
 type=custom/script
-tail=true
+; tail=true
 exec = ~/bin/blocks/t480-battery
-format-foreground = #BDAE93
-format-background = ${colors.dark2}
+format-foreground = ${colors.blue}
+format-underline = ${colors.blue}
+; format-background = ${colors.dark2}
 format-padding = 1
+interval=30
 
 
 [module/cmus]
@@ -1515,20 +1535,19 @@ click-left = xdg-open https://github.com/notifications
 type = custom/script
 exec = ~/bin/blocks/amixer
 tail = true
-format-foreground = #BDAE93
 format-padding=1
 
 [module/pulse]
 type=internal/pulseaudio
-format-volume-foreground = #BDAE93
-format-muted-foreground=#BDAE93
 format-volume = <ramp-volume> <label-volume>
-format-muted =  <label-muted>
+format-muted =  <label-muted>
 label-volume = %percentage%
 use-ui-max = false
 label-muted =  %percentage%
-ramp-volume-0 = 
-ramp-volume-1 = 
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+ramp-volume-3 = 
 format-volume-padding=1
 format-muted-padding=1
 
