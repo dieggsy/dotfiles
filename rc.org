@@ -175,9 +175,11 @@ super + space
     bspc node $id --flag hidden && \
     bspc node -f $id
 
-super + d
-    j4-dmenu-desktop
+super + w
+    rofi -show window -theme dropdown -location 1 -yoffset 62 -xoffset 15 -theme-str "#window \{width: 800;\}"
 
+super + d
+    rofi -show drun -theme dropdown -location 1 -yoffset 62 -xoffset 15 -show-icons
 
 super + z
     id=$(</tmp/st-float) && \
@@ -186,11 +188,11 @@ super + z
 # program launcher
 
 alt + space
-    dmenu_run
+    rofi -show run -theme dropdown -location 1 -yoffset 62 -xoffset 15
 
 # passwords
 super + p
-    passmenu
+    passmenu -theme dropdown -location 1 -yoffset 62 -xoffset 15 -p "pass"
 
 # make sxhkd reload its configuration files:
 super + Escape
@@ -1265,8 +1267,9 @@ __pychache__
 :END:
 #+begin_src conf
 [dmenu]
-l = 10
-rofi_highlight=True
+# l = 10
+dmenu_command = rofi -theme dropdown -location 1 -yoffset 62 -xoffset 250 -no-fixed-num-lines -theme-str "* {highlightcolor: #83A598;}" -theme-str "#window {width: 330;}" -theme-str "#inputbar {enabled:false;}"
+rofi_highlight = True
 # # Note that dmenu_command can contain arguments as well like `rofi -width 30`
 # # Rofi and dmenu are set to case insensitive by default `-i`
 # l = number of lines to display, defaults to number of total network options
@@ -1584,6 +1587,7 @@ rofi.theme: ~/.config/rofi/darktooth.rasi
 rofi.modi: window,run,ssh,drun,combi
 rofi.combi-modi: window,drun,run
 rofi.dpi: 172
+rofi.fixed-num-lines: 0
 #+end_src
 *** darktooth.rasi
 :PROPERTIES:
@@ -1698,6 +1702,133 @@ rofi.dpi: 172
 
 #entry {
     padding: 16;
+}
+
+#scrollbar {
+    border: 0;
+    width: 0;
+    handle-color: @scrollbarcolor;
+    handle-width: 0;
+    background-color: @backgroundcoloralternate;
+}
+
+/* vim: set ft=css : */
+
+#+end_src
+*** dropdown.rasi
+:PROPERTIES:
+:header-args+: :tangle ~/.config/rofi/dropdown.rasi
+:END:
+#+begin_src css
+,* {
+    backgroundcolor: #282828;
+    bg1: #504945;
+    backgroundcoloralternate: #282828;
+    separatorcolor: #504945;
+    scrollbarcolor: #504945;
+    foregroundcolor: #ebdbb2;
+    foregroundcolorinverse: #ebdbb2;
+    highlightcolor: #DD6F48;
+    selectioncolor: #504945;
+
+    font: "Iosevka Term 10";
+    border-color: @separatorcolor;
+    background-color: @backgroundcolor;
+    text-color: @foregroundcolor;
+    margin: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+    spacing: 0;
+}
+
+#listview {
+    spacing: 0;
+    scrollbar: true;
+    margin: 0;
+    dynamic: true;
+    padding-top: 500;
+    lines: 10;
+}
+
+#window {
+    background-color: @backgroundcolor;
+    border-color: @highlightcolor;
+    border: 5;
+    border-radius: 0;
+    width: 300;
+}
+
+#mainbox {
+    border: 0;
+    padding: 0;
+    background-color: @backgroundcoloralternate;
+}
+
+#element {
+    padding:10;
+    border: 0 0 1 0;
+    border-color: @separatorcolor;
+    background-color: @backgroundcoloralternate;
+}
+
+#message {
+    format: center;
+    border: 0 0 1 0;
+    border-color: @separatorcolor;
+    background-color: @backgroundcoloralternate;
+}
+
+#textbox {
+    text-color: #7C6F64;
+    padding: 10;
+}
+
+#element.selected.normal {
+    background-color: #3C3836;
+    text-color: @foregroundcolorinverse;
+    border-radius: 0;
+
+    border: 0 0 1 0;
+    border-color: @separatorcolor;
+}
+
+#element.alternate.normal {
+    background-color: @backgroundcoloralternate;
+}
+
+#element.normal.active {
+    text-color: @highlightcolor;
+}
+
+#element.alternate.active {
+    text-color: @highlightcolor;
+}
+
+#element.selected.active {
+    background-color: #3C3836;
+    text-color: @highlightcolor;
+    /* text-color: @foregroundcolorinverse; */
+    border-radius: 0;
+
+    border: 0 0 1 0;
+    border-color: @separatorcolor;
+}
+
+#inputbar {
+    border: 0 solid 0 solid 1 solid 0 solid;
+    margin: 0;
+    spacing: 0;
+    border-color: @separatorcolor;
+}
+
+#prompt {
+    padding:10;
+    background-color: @backgroundcoloralternate;
+    border: 0 1 0 0;
+}
+
+#entry {
+    padding:10;
 }
 
 #scrollbar {
@@ -2345,7 +2476,8 @@ pkill -f screenkey
 :END:
 #+begin_src sh
 # message="Exit i3?"
-response=$(echo -e "exit\nlock\nsuspend\nhibernate\nreboot\nshutdown" | dmenu)
+response=$(echo -e "exit\nlock\nsuspend\nhibernate\nreboot\nshutdown" |
+               rofi -dmenu -theme dropdown -location 1 -yoffset 62 -xoffset 15)
 if [ -n "$response" ]; then
     ~/bin/wm-exit $response
 fi
