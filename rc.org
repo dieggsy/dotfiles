@@ -44,6 +44,7 @@ more readable in org format than in rendered markdown.
   - [[#rofi-files][rofi-files]]
   - [[#snapbackup][snapbackup]]
   - [[#spectrum_ls][spectrum_ls]]
+  - [[#spotify][spotify]]
 - [[#desktop-files][Desktop files]]
   - [[#cmusdesktop][cmus.desktop]]
   - [[#emacs][emacs]]
@@ -2811,6 +2812,10 @@ else;
         print -P -- "$code: %F{$code}$code%f"
     done
 fi
+#+end_src
+** spotify
+#+begin_src sh :tangle ~/bin/spotify :shebang "#!/bin/sh"
+/usr/bin/spotify --force-device-scale-factor=2 $@
 #+end_src
 * Desktop files
 ** cmus.desktop
