@@ -133,6 +133,9 @@ pgrep -x st || st -T st-float -e tmux &
        (with-output-to-file "/tmp/erc-float"
          (lambda () (display wid) (newline)))
        (display "state=floating hidden=on sticky=on rectangle=1085x560+0+870"))
+      ((string=? instance "gl")
+       (with-output-to-file "/tmp/mpv-float"
+         (lambda () (display wid) (newline))))
       ((substring-index "_eshell__floating_" instance)
        (with-output-to-file "/tmp/esh-float"
          (lambda () (display wid) (newline)))
