@@ -1874,9 +1874,8 @@ rofi.fixed-num-lines: 0
 .eve
 downloads
 music
+.ccache
 .cache
-.mbed
-.platformio
 Dropbox
 org
 .dropbox
