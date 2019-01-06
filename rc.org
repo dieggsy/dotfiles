@@ -2422,14 +2422,14 @@ bindkey -M menuselect '^[[Z' reverse-menu-complete
 ZPLUGINDIR=$PREFIX/share/zsh/plugins
 [ -d $ZPLUGINDIR/zsh-autopair ] && source $ZPLUGINDIR/zsh-autopair/autopair.zsh
 [ -d /$ZPLUGINDIR/zsh-autosuggestions ] && source /$ZPLUGINDIR/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
-if [ -d /$ZPLUGINDIR/fast-syntax-highlighting ]; then
-    source /$ZPLUGINDIR/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+[ -d /$ZPLUGINDIR/fast-syntax-highlighting ] && source /$ZPLUGINDIR/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+if [ -d /$ZPLUGINDIR/zsh-history-substring-search ]; then
+    source /$ZPLUGINDIR/zsh-history-substring-search/zsh-history-substring-search.zsh
     bindkey '^[[A' history-substring-search-up
     bindkey '^[[B' history-substring-search-down
     bindkey -M vicmd 'k' history-substring-search-up
     bindkey -M vicmd 'j' history-substring-search-down
 fi
-[ -d /$ZPLUGINDIR/zsh-history-substring-search ] && source /$ZPLUGINDIR/zsh-history-substring-search/zsh-history-substring-search.zsh
 [ -d /$ZPLUGINDIR/zsh-notify ] && source /$ZPLUGINDIR/zsh-notify/notify.plugin.zsh
 
 maybe_host () {
