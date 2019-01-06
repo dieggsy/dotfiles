@@ -2466,6 +2466,9 @@ man() {
         man "$@"
 }
 
+qmpv() {
+    mpv --no-terminal "$1" &!
+}
 #+end_src
 *** zshenv
 #+begin_src sh :tangle ~/.zshenv
