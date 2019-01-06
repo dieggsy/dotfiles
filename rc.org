@@ -83,9 +83,11 @@ xset r rate 300 50 &
 
 # bspc config initial_polarity     second_child
 bspc config focus_follows_pointer  true
+bspc config pointer_follows_monitor true
 bspc config external_rules_command "$HOME/.config/bspwm/rules.scm"
 
-bspc monitor -d 1 2 3 4 5 6 7 8 9
+bspc monitor eDP1 -d 1 2 3 4
+bspc monitor HDMI2 -d 5 6
 
 bspc config border_width   5
 # bspc config window_gap     30
