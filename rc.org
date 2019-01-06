@@ -165,8 +165,7 @@ pgrep -x st || st -T st-float -e tmux &
 
 # terminal emulator
 super + Return
-    emacsclient --eval '(d/eshell-floating)' && \
-    id=$(</tmp/esh-float) && \
+    id=$(</tmp/mpv-float) && \
     bspc node $id --flag hidden && \
     bspc node -f $id
 
