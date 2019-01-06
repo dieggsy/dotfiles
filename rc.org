@@ -2453,6 +2453,19 @@ cd_list () {
 }
 
 chpwd_functions=(${chpwd_functions[@]} "cd_list")
+
+man() {
+    env \
+        LESS_TERMCAP_mb=$(printf "\e[38;5;209m") \
+        LESS_TERMCAP_md=$(printf "\e[38;5;209m") \
+        LESS_TERMCAP_me=$(printf "\e[0m") \
+        LESS_TERMCAP_se=$(printf "\e[0m") \
+        LESS_TERMCAP_so=$(printf "\e[48;5;8m") \
+        LESS_TERMCAP_ue=$(printf "\e[0m") \
+        LESS_TERMCAP_us=$(printf "\e[38;5;12m") \
+        man "$@"
+}
+
 #+end_src
 *** zshenv
 #+begin_src sh :tangle ~/.zshenv
