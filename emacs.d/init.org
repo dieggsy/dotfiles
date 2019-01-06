@@ -1553,7 +1553,7 @@ directory-browsing commands
     "h" 'dired-omit-mode
     "d" 'dired-du-mode)
   :custom
-  (dired-listing-switches "-lGXhA --group-directories-first")
+  (dired-listing-switches "-lXhA --group-directories-first")
   (dired-dwim-target t)
   :config
   (nmap dired-mode-map
