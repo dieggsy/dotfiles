@@ -369,6 +369,10 @@ Integrate gpg passphrase query with Emacs minibuffer when using EPA.
 #+begin_src emacs-lisp :tangle no
 (setq epa-pinentry-mode 'loopback)
 #+end_src
+*** Window size
+#+begin_src emacs-lisp
+(setq frame-resize-pixelwise t)
+#+end_src
 ** Functions
 *** Dotfiles
 Here I define a function that uses [[https://github.com/jwiegley/emacs-async][async.el]] to open and tangle an org file
