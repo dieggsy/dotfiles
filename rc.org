@@ -89,7 +89,7 @@ bspc config border_width   5
 # bspc config left_padding   30
 # bspc config bottom_padding 30
 # bspc config right_padding  30
-bspc config window_gap     0
+bspc config window_gap     30
 bspc config left_padding   0
 bspc config bottom_padding 0
 bspc config right_padding  0
@@ -132,7 +132,7 @@ pgrep -x st || st -T st-float -e tmux &
       ((substring-index "_erc__floating_" instance)
        (with-output-to-file "/tmp/erc-float"
          (lambda () (display wid) (newline)))
-       (display "state=floating hidden=on sticky=on rectangle=1085x560+0+870"))
+       (display "state=floating hidden=on sticky=on rectangle=1085x560+15+855"))
       ((string=? instance "gl")
        (with-output-to-file "/tmp/mpv-float"
          (lambda () (display wid) (newline))))
@@ -146,7 +146,7 @@ pgrep -x st || st -T st-float -e tmux &
        (when (string=? title "st-float")
          (with-output-to-file "/tmp/st-float"
            (lambda () (display wid) (newline)))
-         (display "state=floating hidden=on sticky=on rectangle=1085x560+1465+870")))
+         (display "layer=above state=floating hidden=on sticky=on rectangle=1085x560+1450+855")))
       ((and (string=? instance "guvcview")
             (substring-index "Video" title))
        (display "sticky=on rectangle=520x390+2030+176"))
