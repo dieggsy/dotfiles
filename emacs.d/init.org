@@ -4872,6 +4872,7 @@ An Emacs Internet Relay Chat client
    ;; erc-fill-prefix (format "%s\t" (make-string 10 ?\s))
    ;; erc-notice-prefix   (format "%s\t***\s" (make-string 10 ?\s))
    ;; erc-format-nick-function 'd/erc-format-nick
+   erc-insert-timestamp-function 'd/erc-always-insert-timestamp-left
    erc-nick "dieggsy"
    erc-prompt-for-password nil
    erc-input-line-position -1
@@ -5094,6 +5095,18 @@ Source: http://tinyurl.com/y8tj8vxx"
 **** Functions
 #+begin_src emacs-lisp
 (d/after 'erc
+  (defun d/erc-always-insert-timestamp-left (_string)
+    (let* ((ct (current-time))
+           (ts-left (erc-format-timestamp ct "%H:%M "))
+           (day-left (erc-format-timestamp ct erc-timestamp-format-left)))
+      (goto-char (point-min))
+      (unless (string-equal day-left erc-timestamp-last-inserted-left)
+        (erc-put-text-property 0 (length day-left) 'field 'erc-timestamp day-left)
+        (insert day-left)
+        (setq erc-timestamp-last-inserted-left day-left))
+      (erc-put-text-property 0 (length ts-left) 'field 'erc-timestamp ts-left)
+      (insert ts-left)))
+
   (defun d/erc-to-bottom ()
     (and (eq major-mode 'erc-mode)
          (erc-scroll-to-bottom)))
@@ -5153,7 +5166,8 @@ Source: http://tinyurl.com/y8tj8vxx"
   ;; (setq wrap-prefix (make-string 14 ?\s))
   (set-display-table-slot standard-display-table 'wrap ?\s)
   ;; (setq tab-width 7)
-  (setq mode-line-format nil))
+  (setq mode-line-format nil)
+  (setq wrap-prefix "      "))
 #+end_src
 ** Packages
 *** [[https://github.com/leathekd/erc-hl-nicks][erc-hl-nicks]]
