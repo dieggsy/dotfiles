@@ -2443,7 +2443,7 @@ maybe_git () {
 
 
 setopt prompt_subst
-export PROMPT='$(maybe_host)$(maybe_git)%F{7}%1~%f %F{167}%(!.#.λ)%f '
+[ "$TERM" != "dumb" ] && export PROMPT='$(maybe_host)$(maybe_git)%F{7}%1~%f %F{209}%(!.#.λ)%f '
 
 alias ls='ls --color=auto -F'
 
