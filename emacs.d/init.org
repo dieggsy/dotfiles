@@ -3808,6 +3808,7 @@ Source: http://tinyurl.com/le6wxuo"
     (push '(? . ("`" . "'")) evil-surround-pairs-alist)))
 
 (d/after 'scheme
+  (setq scheme-program-name "csi -q")
   (dolist (fn '((assume . 1)
                 (compiler-typecase . 1)
                 (cond-expand . 0)
@@ -3838,9 +3839,18 @@ Source: http://tinyurl.com/le6wxuo"
                 (with-input-from-pipe . 1)
                 (with-output-to-pipe . 1)
                 (set-sharp-read-syntax! . 1)
-                (set-read-syntax! . 1)))
+                (set-read-syntax! . 1)
+                (test-group . 1)))
     (put (car fn) 'scheme-indent-function (cdr fn)))
-  (let ((keywords '("and-let*"
+  (let ((keywords '("module"
+                    "foreign-lambda"
+                    "foreign-lambda*"
+                    "foreign-safe-lambda"
+                    "foreign-safe-lambda*"
+                    "foreign-primitive"
+                    "foreign-declare"
+                    "define-foreign-record-type"
+                    "and-let*"
                     "cut"
                     "cute"
                     "define-condition-type"
@@ -3874,15 +3884,18 @@ Source: http://tinyurl.com/le6wxuo"
                     "when"
                     "with-exception-handler"
                     "with-input-from-file"
-                    "with-output-to-file")))
+                    "with-output-to-file"
+                    "include-relative")))
     (font-lock-add-keywords 'scheme-mode
-                            (append
-                             `((,(format "[[(]%s\\>" (regexp-opt keywords 1)) . 1))
-                             `(("\\[\\(else\\)\\>" . 1)
-                               (,(rx "(" (group "define-syntax-rule") eow (* space)
-                                     (? "(") (? (group (1+ word))))
-                                (1 font-lock-keyword-face)
-                                (2 font-lock-function-name-face nil t))))))
+                            `((,(format "[[(]%s\\>" (regexp-opt keywords 1)) . 1)
+                              ("\\[\\(else\\)\\>" . 1)
+                              (,(rx (any "([") (group (or "define-syntax-rule"
+                                                          "define-inline"
+                                                          "define-external"))
+                                    eow (* space)
+                                    (? "(") (? (group (1+ word))))
+                               (1 font-lock-keyword-face)
+                               (2 font-lock-function-name-face nil t)))))
 
   (font-lock-add-keywords
    'scheme-mode
