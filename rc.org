@@ -73,7 +73,7 @@ pgrep emacs || emacs --daemon &
 pgrep udiskie || udiskie &
 [ -f ~/pic/wallpapers/arch-small.jpg ] && feh --bg-fill ~/pic/wallpapers/arch-small.jpg &
 pgrep unclutter || unclutter &
-pgrep xss-lock || xss-lock -- betterlockscreen -l blur &
+pgrep xss-lock || xss-lock -- slock &
 pgrep xcape || xcape -e 'Control_L=Escape' &
 pgrep syncthing || syncthing -no-browser &
 pgrep 'autocutsel.*CLIPBOARD' || autocutsel -selection CLIPBOARD -fork &
