@@ -112,7 +112,13 @@ bspc rule -a Civ5XP      state=fullscreen
 bspc rule -a guvcview    state=floating
 bspc rule -a mpv         state=floating sticky=on rectangle=960x540+1540+840
 
-pgrep -x st || st -T st-float -e tmux &
+if [ -z "$(pgrep -f st-float)" ]; then
+    if [ -z "$(pgrep tmux)" ]; then
+        st -T st-float -e tmux &
+    else
+        st -T st-float -e tmux attach &
+    fi
+fi
 #+end_src
 *** rules
 :PROPERTIES:
