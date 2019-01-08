@@ -188,10 +188,10 @@ super + space
     bspc node -f $id
 
 super + w
-    rofi -show window -location 1 -yoffset 62 -xoffset 15 -theme-str "#window \{width: 800;\}"
+    rofi -show window -theme-str "#window \{width: 800;\}"
 
 super + d
-    rofi -show drun -location 1 -yoffset 62 -xoffset 15 -show-icons
+    rofi -show drun -show-icons
 
 super + z
     id=$(</tmp/st-float) && \
@@ -200,11 +200,11 @@ super + z
 # program launcher
 
 alt + space
-    rofi -show run -location 1 -yoffset 62 -xoffset 15
+    rofi -show run
 
 # passwords
 super + p
-    passmenu -location 1 -yoffset 62 -xoffset 15 -p "pass"
+    passmenu -p "pass"
 
 # make sxhkd reload its configuration files:
 super + Escape
@@ -1280,7 +1280,7 @@ __pychache__
 #+begin_src conf
 [dmenu]
 # l = 10
-dmenu_command = rofi -location 1 -yoffset 62 -xoffset 250 -no-fixed-num-lines -theme-str "* {highlightcolor: #83A598;}" -theme-str "#window {width: 330;}" -theme-str "#inputbar {enabled:false;}"
+dmenu_command = rofi -xoffset 250 -no-fixed-num-lines -theme-str "* {highlightcolor: #83A598;}" -theme-str "#window {width: 330;}" -theme-str "#inputbar {enabled:false;}"
 rofi_highlight = True
 # # Note that dmenu_command can contain arguments as well like `rofi -width 30`
 # # Rofi and dmenu are set to case insensitive by default `-i`
@@ -1615,6 +1615,9 @@ except:
 :END:
 #+begin_src conf
 rofi.theme: dropdown
+rofi.location: 1
+rofi.yoffset: 62
+rofi.xoffset: 15
 rofi.modi: window,run,ssh,drun,combi
 rofi.combi-modi: window,drun,run
 rofi.dpi: 172
@@ -2523,15 +2526,13 @@ BLUETOOTH_GUI = "blueman-manager"
 ROFI_CMD = [
     "rofi",
     "-p", "bluetooth",
-    "-location", "1",
-    "-yoffset", "62",
     "-xoffset", "350",
     "-dmenu", "-i",
     "-theme-str", "#window {width: 500;}",
     "-theme-str", "#inputbar {enabled:false;}",
 ]
 
-# rofi -location 1 -dmenu -i -theme-str "#window {width: 500;}"
+# rofi -dmenu -i -theme-str "#window {width: 500;}"
 
 def make_device_list(devmap):
     def rank_device(dev):
@@ -2623,8 +2624,6 @@ ENC=locale.getpreferredencoding()
 ROFI_CMD = [
     "rofi", "-dmenu",
     "-p", f"{calendar.month_name[month]} {today.year}",
-    "-location", "1",
-    "-yoffset", "62",
     "-xoffset", "50",
     "-columns", "7",
     "-lines", "2",
@@ -2654,7 +2653,7 @@ print(Popen(ROFI_CMD + [ "-a", str(active) ], stdin=PIPE, stdout=PIPE).communica
 #+begin_src sh :tangle ~/bin/mons-rofi :shebang "#!/bin/sh"
 sel="$(echo -e "primary\nsecondary\nmirror\nright\nleft\ntop\nbottom" |
          rofi -dmenu -i -p 'display' \
-              -location 3 -yoffset 62 -xoffset -350 \
+              -location 3 -xoffset -350 \
               -theme-str '#window {width:200;}')"
 
 case $sel in
@@ -2689,7 +2688,7 @@ pkill guvcview
 #+begin_src sh
 # message="Exit i3?"
 response=$(echo -e "exit\nlock\nsuspend\nhibernate\nreboot\nshutdown" |
-               rofi -dmenu -location 1 -yoffset 62 -xoffset 15)
+               rofi -dmenu)
 if [ -n "$response" ]; then
     ~/bin/wm-exit $response
 fi
