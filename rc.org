@@ -115,9 +115,9 @@ bspc rule -a mpv         state=floating sticky=on rectangle=960x540+1540+840
 
 if [ -z "$(pgrep -f st-float)" ]; then
     if [ -z "$(pgrep tmux)" ]; then
-        st -T st-float -e tmux &
+        st -T st-float -e sh -c 'TERM=screen-256color tmux' &
     else
-        st -T st-float -e tmux attach &
+        st -T st-float -e sh -c 'TERM=screen-256color tmux attach' &
     fi
 fi
 #+end_src
@@ -1937,7 +1937,7 @@ color15=#fdf4c1
 #+begin_src conf
 set -s escape-time 0
 # set -g default-command /usr/bin/fish
-# set -g default-terminal "xterm-256color"
+set -g default-terminal "tmux-256color"
 # set -ga terminal-overrides ",screen-256color:Tc"
 # set -g lock-after-time 300
 # set -g lock-command "/usr/bin/cmatrix -B"
