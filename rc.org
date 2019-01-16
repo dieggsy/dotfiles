@@ -2480,6 +2480,10 @@ man() {
 qmpv() {
     mpv --no-terminal "$1" &!
 }
+
+my-packages () {
+    comm -23 <(pacman -Qeq | sort) <(pacman -Qgq base base-devel xorg | sort)
+}
 #+end_src
 *** zshenv
 #+begin_src sh :tangle ~/.zshenv
