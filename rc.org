@@ -2067,8 +2067,6 @@ set-window-option -g monitor-activity off
 set-window-option -g aggressive-resize on
 set-option -g bell-action none
 
-set -g default-terminal "screen-256color"
-
 # The modes {
 setw -g clock-mode-colour colour135
 setw -g mode-attr none
