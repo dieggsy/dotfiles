@@ -1281,7 +1281,7 @@ __pychache__
 #+begin_src conf
 [dmenu]
 # l = 10
-dmenu_command = rofi -xoffset 250 -no-fixed-num-lines -theme-str "* {highlightcolor: #83A598;}" -theme-str "#window {width: 330;}" -theme-str "#inputbar {enabled:false;}"
+dmenu_command = rofi -xoffset 348 -no-fixed-num-lines -theme-str "* {highlightcolor: #83A598;}" -theme-str "#window {width: 330;}"
 rofi_highlight = True
 # # Note that dmenu_command can contain arguments as well like `rofi -width 30`
 # # Rofi and dmenu are set to case insensitive by default `-i`
@@ -2522,6 +2522,26 @@ import locale
 import time
 from subprocess import Popen, PIPE
 
+bus = dbus.SystemBus()
+
+def get_offset_hack():
+    """Get the position offset based on network SSID"""
+    base = 84
+    nm = bus.get_object("org.freedesktop.NetworkManager",
+                         "/org/freedesktop/NetworkManager")
+    props_iface = dbus.Interface(nm, "org.freedesktop.DBus.Properties")
+    # nm_iface = dbus.Interface(nm, "org.freedesktop.NetworkManager")
+    conns = props_iface.Get("org.freedesktop.NetworkManager" ,"ActiveConnections")
+    if len(conns) == 0:
+        return 72
+    else:
+        active = bus.get_object("org.freedesktop.NetworkManager",
+                                conns[0])
+        props_iface = dbus.Interface(active, "org.freedesktop.DBus.Properties")
+        conn_len = len(props_iface.Get("org.freedesktop.NetworkManager.Connection.Active",
+                                       "Id"))
+        return conn_len * 12 - base
+
 ENV = os.environ.copy()
 ENV['LC_ALL'] = 'C'
 ENC = locale.getpreferredencoding()
@@ -2529,13 +2549,15 @@ BLUETOOTH_GUI = "blueman-manager"
 ROFI_CMD = [
     "rofi",
     "-p", "bluetooth",
-    "-xoffset", "350",
+    "-xoffset", str(492 + get_offset_hack()),
     "-dmenu", "-i",
     "-theme-str", "#window {width: 500;}",
     "-theme-str", "#inputbar {enabled:false;}",
 ]
 
+
 # rofi -dmenu -i -theme-str "#window {width: 500;}"
+
 
 def make_device_list(devmap):
     def rank_device(dev):
@@ -2565,7 +2587,6 @@ def run_rofi(args, inp):
 
 def main():
 
-    bus = dbus.SystemBus()
     bluez = bus.get_object("org.bluez", "/")
     bluez_iface = dbus.Interface(bluez, "org.freedesktop.DBus.ObjectManager")
     managed_objects = bluez_iface.GetManagedObjects()
@@ -2627,11 +2648,11 @@ ENC=locale.getpreferredencoding()
 ROFI_CMD = [
     "rofi", "-dmenu",
     "-p", f"{calendar.month_name[month]} {today.year}",
-    "-xoffset", "50",
+    "-xoffset", "48",
     "-columns", "7",
     "-lines", "2",
     "-theme-str", "#listview{lines:6;}",
-    "-theme-str", "#window{width:320;}"
+    "-theme-str", "#window{width:318;}"
 ]
 
 days = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
