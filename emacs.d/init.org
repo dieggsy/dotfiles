@@ -1669,8 +1669,7 @@ operate on buffers like dired
     (string-prefix-p
      (expand-file-name "var/" "~/dotfiles/emacs.d")
      (file-truename f))
-    (string-match-p "^/\\(ssh\\|sudo\\):"
-                    (file-truename f)))
+    (file-remote-p (file-truename f)))
 
   (d/list-prepend! 'recentf-exclude
     'd/recentf-exclude?))
