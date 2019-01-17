@@ -415,10 +415,11 @@ tangling."
        (unless d/show-async-tangle-results
          `(lambda (result)
             (if result
-                (message "SUCCESS: init.org successfully tangled. (%.3fs)"
+                (message "SUCCESS: %s successfully tangled. (%.3fs)"
+                         ,(file-name-nondirectory file)
                          (float-time (time-subtract (current-time)
                                                     ',init-tangle-start-time)))
-              (message "ERROR: init.org tangle failed."))))))))
+              (message "ERROR: %s tangle failed." ,(file-name-nondirectory file)))))))))
 #+end_src
 Declare adding d/async-babel-tangle to after-save-hook locally a safe eval form
 so emacs doesn't ask every time.
