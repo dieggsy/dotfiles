@@ -1619,8 +1619,8 @@ format-padding=1
 
 [module/pulse]
 type=internal/pulseaudio
-format-volume = <ramp-volume> <label-volume>
-format-muted =  <label-muted>
+format-volume = %{A3:pavucontrol &:}<ramp-volume> <label-volume>%{A}
+format-muted = %{A3:pavucontrol &:} <label-muted>%{A}
 label-volume = %percentage%
 use-ui-max = false
 label-muted =  %percentage%
