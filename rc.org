@@ -137,9 +137,11 @@ fi
 (define wid (car args))
 (define class (cadr args))
 (define instance (caddr args))
-(define title (string-chomp (call-with-input-pipe
-                             (string-append "xtitle " wid)
-                             (cut read-string #f <>))))
+(define title (cadr (string-split
+                     (call-with-input-pipe
+                      (string-append "xwininfo -id " wid)
+                      (cut read-string #f <>))
+                     "\"")))
 
 (cond ((substring-index "emacs" instance)
        (display "state=tiled desktop=^2"))
