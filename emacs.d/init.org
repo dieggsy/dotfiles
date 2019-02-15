@@ -3612,14 +3612,14 @@ Source: https://git.io/vQKz8"
 #+begin_quote
 emacs and scheme talk to each other
 #+end_quote
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package geiser
   :custom
-  (geiser-chicken-binary '("csi" "-q"))
+  ;; (geiser-chicken-binary '("csi" "-q"))
   (geiser-chicken-required-modules nil)
   :config
-  (setq geiser-active-implementations '(racket chicken)
-        geiser-default-implementation 'racket
+  (setq geiser-active-implementations '(chicken racket)
+        geiser-default-implementation 'chicken
         geiser-debug-jump-to-debug-p nil
         geiser-debug-show-debug-p nil
         geiser-chicken-load-init-file-p t))
