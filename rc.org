@@ -65,12 +65,6 @@ more readable in org format than in rendered markdown.
 xsetroot -cursor_name left_ptr
 pgrep sxhkd || sxhkd -m -1 &
 
-killall -q polybar
-while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
-for m in $(polybar --list-monitors | cut -d":" -f1); do
-    MONITOR=$m polybar simple &
-done
-ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-simple
 pgrep emacs || emacs --daemon &
 pgrep udiskie || udiskie &
 [ -f ~/pic/wallpapers/arch-small.jpg ] && feh --bg-fill ~/pic/wallpapers/arch-small.jpg &
@@ -80,6 +74,7 @@ pgrep xcape || xcape -e 'Control_L=Escape' &
 pgrep syncthing || syncthing -no-browser &
 pgrep -f 'autocutsel.*CLIPBOARD' || autocutsel -selection CLIPBOARD -fork &
 pgrep -f 'autocutsel.*PRIMARY' || autocutsel -selection PRIMARY -fork &
+pgrep mons || mons -a -x ~/.config/bspwm/bspwmrc &
 
 xset r rate 300 50 &
 
@@ -88,8 +83,21 @@ bspc config focus_follows_pointer  true
 bspc config pointer_follows_monitor true
 bspc config external_rules_command "$HOME/.config/bspwm/rules.scm"
 
+# bspc monitor HDMI2 -d 1 2 3 4
 bspc monitor eDP1 -d 1 2 3 4
-bspc monitor HDMI2 -d 5 6
+monitors=$(bspc query -M --names | wc -l)
+if [ $monitors -gt 1 ]; then
+    mons -e left
+    bspc monitor $(bspc query -M --names | grep -v eDP1 | head -n1) -d 5 6
+    bspc wm -O eDP1 HDMI2
+fi
+
+killall -q polybar
+while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
+for m in $(polybar --list-monitors | cut -d":" -f1); do
+    MONITOR=$m polybar simple &
+done
+ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-simple
 
 bspc config border_width   5
 # bspc config window_gap     30
