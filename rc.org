@@ -78,8 +78,8 @@ pgrep unclutter || unclutter &
 pgrep xss-lock || xss-lock -- slock &
 pgrep xcape || xcape -e 'Control_L=Escape' &
 pgrep syncthing || syncthing -no-browser &
-pgrep 'autocutsel.*CLIPBOARD' || autocutsel -selection CLIPBOARD -fork &
-pgrep 'autocustel.*PRIMARY' || autocutsel -selection PRIMARY -fork &
+pgrep -f 'autocutsel.*CLIPBOARD' || autocutsel -selection CLIPBOARD -fork &
+pgrep -f 'autocutsel.*PRIMARY' || autocutsel -selection PRIMARY -fork &
 
 xset r rate 300 50 &
 
