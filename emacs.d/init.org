@@ -373,6 +373,10 @@ Integrate gpg passphrase query with Emacs minibuffer when using EPA.
 #+begin_src emacs-lisp
 (setq frame-resize-pixelwise t)
 #+end_src
+*** Mode line
+#+begin_src emacs-lisp
+(line-number-mode -1)
+#+end_src
 ** Functions
 *** Dotfiles
 Here I define a function that uses [[https://github.com/jwiegley/emacs-async][async.el]] to open and tangle an org file
@@ -481,6 +485,7 @@ I went for it. Now I'll never go back.
    "C-/" 'evil-normal-state)
   (vmap [escape] 'keyboard-quit)
   :custom
+  (evil-mode-line-format '(before . mode-line-front-space))
   (evil-want-C-u-scroll t)
   (evil-want-keybinding nil)
   (evil-want-fine-undo t)
@@ -493,13 +498,13 @@ I went for it. Now I'll never go back.
         evil-split-window-below t
         evil-vsplit-window-right t
         ;; This was more relevant when I displayed the tag in the mode-line.
-        evil-normal-state-tag  " N "
-        evil-insert-state-tag  " I "
-        evil-motion-state-tag  " M "
-        evil-visual-state-tag  " V "
-        evil-emacs-state-tag   " E "
-        evil-replace-state-tag " R "
-        evil-operator-state-tag " O ")
+        evil-normal-state-tag (propertize " " 'face '(:background "#B8BB26"))
+        evil-insert-state-tag (propertize " " 'face '(:background "#66999D"))
+        evil-motion-state-tag (propertize " " 'face '(:background "#D3869B"))
+        evil-visual-state-tag (propertize " " 'face '(:background "#FE8019"))
+        evil-emacs-state-tag (propertize " " 'face '(:background "#FABD2F"))
+        evil-replace-state-tag (propertize " " 'face '(:background "#FE8019"))
+        evil-operator-state-tag (propertize " " 'face '(:background "#B8BB26")))
 
   (evil-define-command evil-view (file &optional bang)
     "Open FILE in view-mode.
@@ -2999,6 +3004,31 @@ I don't like seeing variable pitch in emacs. Just sorta throws me off.
   (global-whitespace-mode))
 #+end_src
 ** Packages
+*** [[https://github.com/tarsius/moody][moody]]
+#+begin_src emacs-lisp
+(use-package moody
+  :demand t
+  :config
+  (setq x-underline-at-descent-line t)
+  (setq moody-mode-line-height 47)
+  (moody-replace-mode-line-buffer-identification)
+  (moody-replace-vc-mode)
+
+  ;; (d/after 'evil
+  ;;   (defvar moody-evil-mode-line-format
+  ;;     '(:eval (moody-ribbon
+  ;;              evil-mode-line-tag
+  ;;              nil 'down)))
+  ;;   (moody-replace-element 'evil-mode-line-tag 'moody-evil-mode-line-tag))
+  )
+#+end_src
+*** [[https://github.com/tarsius/minions][minions]]
+#+begin_src emacs-lisp
+(use-package minions
+  :demand t
+  :config
+  (minions-mode))
+#+end_src
 *** [[https://github.com/larstvei/Focus][focus]]
 #+begin_quote
 Dim the font color of text in surrounding paragraphs
@@ -3141,206 +3171,6 @@ ANSI & xterm-256 color text property translator for Emacs
 #+begin_src emacs-lisp
 (d/leader-keys
   "z" '(:def d/zoom/body :wk "zoom"))
-#+end_src
-** Mode line
-*** Helpers
-#+begin_src emacs-lisp
-(defun d/flycheck-lighter (state)
-  "Return flycheck information for the given error type STATE.
-
-Source: https://git.io/vQKzv"
-  (let* ((counts (flycheck-count-errors flycheck-current-errors))
-         (errorp (flycheck-has-current-errors-p state))
-         (err (or (cdr (assq state counts)) "?"))
-         (running (eq 'running flycheck-last-status-change)))
-    (if (or errorp running) (format "•%s" err))))
-
-(defalias 'd/window-active? #'powerline-selected-window-active)
-
-(defun d/propertize-active (&rest arguments)
-  (let ((str (car arguments)))
-    (cond ((and (stringp str)
-                (or (d/window-active?)
-                    (member 'display arguments)))
-           ;; (and (d/window-active?) (stringp str))
-           (apply #'propertize arguments) )
-          ((stringp str)
-           (car arguments)))))
-
-(defun d/evil-tag-color ()
-  (pcase (substring-no-properties
-          evil-mode-line-tag)
-    (" N " "#B8BB26")
-    (" I " "#66999D")
-    (" M " "#D3869B")
-    (" V " "#FE8019")
-    (" E " "#FABD2F" )
-    (" R " "#FE8019")
-    (" O " "#B8BB26")))
-
-(defun d/make-xpm (color height width)
-  "Create an XPM bitmap.
-
-Source: https://git.io/vQKzL"
-  (let ((data (make-list height (make-list width 1)))
-        (color (or color "None"))
-        (xpm-name (intern (concat "d/ml-xpm-" (substring color 1)))))
-    (if (boundp xpm-name)
-        (symbol-value xpm-name)
-      (set xpm-name
-           (create-image
-            (concat
-             (format "/* XPM */\nstatic char * percent[] = {\n\"%i %i 2 1\",\n\". c %s\",\n\"  c %s\","
-                     (length (car data))
-                     (length data)
-                     color
-                     color)
-             (apply #'concat
-                    (cl-loop with idx = 0
-                             with len = (length data)
-                             for dl in data
-                             do (cl-incf idx)
-                             collect
-                             (concat "\""
-                                     (cl-loop for d in dl
-                                              if (= d 0) collect (string-to-char " ")
-                                              else collect (string-to-char "."))
-                                     (if (eq idx len) "\"};" "\",\n")))))
-            'xpm t :ascent 'center)))))
-
-(defun d/eyebrowse-relevant? ()
-  (and (featurep 'eyebrowse)
-       (< 1 (length (eyebrowse--get 'window-configs)))))
-
-(defun d/in-macro? ()
-  (or defining-kbd-macro executing-kbd-macro))
-
-(defun d/in-evil-substitution? ()
-  (or (assq 'evil-ex-substitute evil-ex-active-highlights-alist)
-      (assq 'evil-ex-global-match evil-ex-active-highlights-alist)
-      (assq 'evil-ex-buffer-match evil-ex-active-highlights-alist)))
-
-(defun d/evil-substitute-num-matches ()
-  "Return the number of matches for the current evil substitution.
-
-Source: https://git.io/vQKzq"
-  (let ((range (if evil-ex-range
-                   (cons (car evil-ex-range) (cadr evil-ex-range))
-                 (cons (line-beginning-position) (line-end-position))))
-        (pattern (car-safe (evil-delimited-arguments evil-ex-argument 2))))
-    (if pattern
-        (format "%s matches" (how-many pattern (car range) (cdr range)))
-      " ... ")))
-#+end_src
-*** Mode-line
-#+begin_src emacs-lisp
-(defvar d/mode-line
-  '((:eval
-     (let* ((evil-tag-color (d/evil-tag-color))
-            (window-active (d/window-active?))
-            (properties `(face
-                          (:foreground
-                           "#3E3D31"
-                           :weight bold
-                           :background ,evil-tag-color
-                           :box (:color ,evil-tag-color :line-width 9))))
-            (text (cond ((not window-active)
-                         (setq window-active t)
-                         (when (display-graphic-p)
-                           (setq properties
-                                 `(display
-                                   ,(d/make-xpm "#1D2021" 47 8))))
-                         " ")
-                        ((d/in-evil-substitution?)
-                         (d/evil-substitute-num-matches))
-                        ((d/in-macro?)
-                         (if (bound-and-true-p evil-this-macro)
-                             (char-to-string evil-this-macro)
-                           "Macro"))
-                        ((bound-and-true-p anzu--state)
-                         (anzu--update-mode-line))
-                        ((d/eyebrowse-relevant?)
-                         (let* ((num (eyebrowse--get 'current-slot))
-                                (tag (nth 2 (assoc num (eyebrowse--get 'window-configs)))))
-                           (if (and tag (< 0 (length tag)))
-                               tag
-                             (int-to-string num))))
-                        (t
-                         (when (display-graphic-p)
-                           (setq properties
-                                 `(display ,(d/make-xpm evil-tag-color 47 8))))
-                         " "))))
-       (apply #'d/propertize-active text properties)))
-
-    ;; File modified
-    " %* "
-    ;; Buffer name & recursive editing
-    "%[" "%b" "%]  "
-    ;; Remote
-    (:eval
-     (let ((host (file-remote-p default-directory 'host)))
-       (d/propertize-active
-        (and host
-             (format "%s@%s "
-                     (file-remote-p default-directory 'user)
-                     host))
-        'face
-        '(:foreground "#D3869B"))))
-    ;; Line/column number
-    ;; (:eval (d/with-window-status
-    ;;          (propertize-active "%4l:%2c  "
-    ;;                             'face '(:foreground "#A89984"))))
-    ;; Major mode
-    (:eval
-     (unless (and (file-name-extension (buffer-name))
-                  (eq major-mode (alist-get (buffer-name)
-                                            auto-mode-alist
-                                            nil
-                                            nil
-                                            #'string-match-p)))
-       (d/propertize-active
-        (concat mode-name "  ")
-        'face '(:foreground "#83A598"))))
-    ;; Version control
-    (:eval
-     (when vc-mode
-       (d/propertize-active
-        (concat (replace-regexp-in-string "^ Git." "" vc-mode) "  ")
-        'face '(:foreground "#DD6F48" ))))
-    ;; Flycheck
-    (:eval
-     (when (and (bound-and-true-p flycheck-mode)
-                (or flycheck-current-errors
-                    (eq 'running flycheck-last-status-change)))
-       (concat
-        (cl-loop for state in '((error . "#FB4933")
-                                (warning . "#FABD2F")
-                                (info . "#83A598"))
-                 as lighter = (d/flycheck-lighter (car state))
-                 when lighter
-                 concat (d/propertize-active
-                         lighter
-                         'face `(:foreground ,(cdr state))))
-        " ")))
-    ;; Input method
-    (:eval
-     (when (or current-input-method
-               (and (bound-and-true-p evil-mode)
-                    (bound-and-true-p evil-input-method)))
-       (cond
-        (current-input-method
-         (d/propertize-active
-          (concat current-input-method-title " ")
-          'face
-          'bold))
-        ((and (featurep 'evil) (bound-and-true-p evil-input-method))
-         (concat (nth 3 (assoc default-input-method input-method-alist))
-                 " ")))))
-    erc-modified-channels-object))
-
-(setq-default mode-line-format d/mode-line)
-(with-current-buffer "*Messages*"
-  (setq-local mode-line-format d/mode-line))
 #+end_src
 * Dev
 ** Prog
