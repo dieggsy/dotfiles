@@ -3185,7 +3185,8 @@ Emacs minor mode that keeps your code always indented. More reliable than electr
           emacs-lisp-mode
           scheme-mode
           c-mode
-          c++-mode)
+          c++-mode
+          rust-mode)
          . aggressive-indent-mode))
 #+end_src
 **** [[https://github.com/flycheck/flycheck][flycheck]]
@@ -3589,6 +3590,21 @@ Source: https://git.io/vQKz8"
 ***** [[https://github.com/haskell/haskell-snippets][haskell-snippets]]
 #+begin_src emacs-lisp :tangle no
 (use-package haskell-snippets)
+#+end_src
+*** Rust
+**** Packages
+***** rust-mode
+#+begin_src emacs-lisp
+(use-package rust-mode)
+#+end_src
+***** racer-mode
+#+begin_src emacs-lisp
+(use-package racer
+  :hook (rust-mode . racer-mode))
+#+end_src
+***** ob-rust
+#+begin_src emacs-lisp
+(use-package ob-rust)
 #+end_src
 *** Scheme
 **** Packages
