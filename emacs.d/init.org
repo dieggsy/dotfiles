@@ -985,6 +985,7 @@ But really, it's life.
                                                   "find-library-other-window")
                                               (minimal-match (0+ nonl))
                                               ")"))
+
   (define-advice org-babel-execute-src-block (:before (&rest _) d/load-lang)
     "Load src language on demand.
 
@@ -3371,10 +3372,6 @@ Yapf for Emacs
 (d/after 'python
   (setq python-shell-completion-native-enable nil))
 #+end_src
-*** Hy
-#+begin_src emacs-lisp :tangle no
-(use-package hy-mode)
-#+end_src
 *** Lisps
 **** Packages
 ***** [[https://github.com/slime/slime][slime]]
@@ -3497,7 +3494,7 @@ If the current line is in a call to a Lisp function that has a non-nil
 property `lisp-indent-function' (or the deprecated `lisp-indent-hook'),
 it specifies how to indent.  The property value can be:
 ,* `defun', meaning indent `defun'-style
-  \(this is also the case if there is no property and the function
+  (this is also the case if there is no property and the function
   has a name that begins with \"def\", and three or more arguments);
 ,* an integer N, meaning indent the first N arguments specially
   (like ordinary function arguments), and then indent any further

@@ -2523,7 +2523,6 @@ maybe_git () {
     hash git-status > /dev/null 2>&1 && echo "$(git-status)"
 }
 
-
 setopt prompt_subst
 [ "$TERM" != "dumb" ] && export PROMPT='$(maybe_host)$(maybe_git)%F{7}%1~%f %F{209}%(!.#.λ)%f '
 

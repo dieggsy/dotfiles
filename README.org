@@ -3,8 +3,7 @@
 Just my dotfiles. Some of this is my own, a lot is inspired by or taken from
 others' configs and adapted to my needs. This is a largely org-mode (and
 therefore emacs) based dotfiles configuration. The configs are kept in org
-files that are tangled to the right place on save. The tangle is in theory OS
-aware (Linux or Darwin).
+files that are tangled to the right place on save.
 
 ** Contents                                                      :toc:TOC_3:
   - [[#files][Files]]
