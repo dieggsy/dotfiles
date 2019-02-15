@@ -2360,7 +2360,7 @@ exec bspwm
 - grp:shifs_toggle :: pressing both shift keys toggles xkblayout
 - grp_led:caps :: caps lock key used to indicate active layout
 - compose:prsc :: use PrtSc key as compose key
-#+begin_src conf-space
+#+begin_src conf-space :tangle /sudo::/etc/X11/xorg.conf.d/00-keyboard.conf
 # Written by systemd-localed(8), read by systemd-localed and Xorg. It's
 # probably wise not to edit this file manually. Use localectl(1) to
 # instruct systemd-localed to update it.
@@ -2372,7 +2372,7 @@ Section "InputClass"
 EndSection
 #+end_src
 *** 40-libinput.conf
-#+begin_src conf-space
+#+begin_src conf-space :tangle /sudo::/etc/X11/xorg.conf.d/40-libinput.conf
 # On all pointers, use flat acceleration
 Section "InputClass"
         Identifier "libinput pointer catchall"
@@ -2386,7 +2386,6 @@ EndSection
 Section "InputClass"
         Identifier "SynPS/2 Synaptics TouchPad"
         MatchProduct "SynPS/2 Synaptics TouchPad"
-        Option "Ignore" "on"
 EndSection
 
 # Make Lenovo trackpoint faster
