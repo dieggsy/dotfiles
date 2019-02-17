@@ -4710,49 +4710,42 @@ An Emacs Internet Relay Chat client
 **** Defaults
 #+begin_src emacs-lisp
 (d/after 'erc
-  (setq
-   ;; erc-prompt (format "\n%s>" (make-string 12 ?\s))
-   ;; erc-fill-prefix (format "%s\t" (make-string 10 ?\s))
-   ;; erc-notice-prefix   (format "%s\t***\s" (make-string 10 ?\s))
-   ;; erc-format-nick-function 'd/erc-format-nick
-   erc-insert-timestamp-function 'd/erc-always-insert-timestamp-left
-   erc-nick "dieggsy"
-   erc-prompt-for-password nil
-   erc-input-line-position -1
-   erc-autojoin-timing 'ident
-   erc-header-line-format nil
-   erc-fill-column 79
-   erc-hide-list '("353")
-   erc-lurker-threshold-time (* 6 60 60)
-   erc-lurker-hide-list '("JOIN" "PART" "QUIT" "NICK")
-   erc-kill-buffer-on-part t
-   erc-kill-queries-on-quit t
-   erc-kill-server-buffer-on-quit t
-   erc-rename-buffers t
-   erc-join-buffer 'bury
-   erc-track-use-faces t
-   erc-track-priority-faces-only 'all
-   erc-track-exclude-server-buffer t
-   erc-format-query-as-channel-p t
-   erc-log-channels-directory (no-littering-expand-var-file-name "erc/logs")
-   erc-generate-log-file-name-function 'erc-generate-log-file-name-short
-   erc-track-faces-priority-list '(erc-error-face
-                                   erc-current-nick-face
-                                   erc-keyword-face
-                                   erc-nick-msg-face
-                                   erc-direct-msg-face
-                                   erc-dangerous-host-face)
-   erc-autojoin-channels-alist '(("freenode.net"
-                                  "#emacs"
-                                  "##linux"
-                                  "#archlinux"
-                                  "#lisp"
-                                  "##lisp"
-                                  "#scheme"
-                                  "#chicken")))
-
-  ;; (erc-define-catalog-entry 'english 'ACTION (format "%s*\t%%n %%a" (make-string 9 ?\s)))
-  )
+  (setq erc-nick "dieggsy"
+        erc-prompt-for-password nil
+        erc-input-line-position -1
+        erc-autojoin-timing 'ident
+        erc-header-line-format nil
+        erc-fill-function #'erc-fill-static
+        erc-fill-static-center 12
+        erc-fill-column 79
+        ;; erc-hide-list '("353")
+        erc-lurker-threshold-time (* 6 60 60)
+        erc-lurker-hide-list '("JOIN" "PART" "QUIT")
+        erc-kill-buffer-on-part t
+        erc-kill-queries-on-quit t
+        erc-kill-server-buffer-on-quit t
+        erc-rename-buffers t
+        erc-join-buffer 'bury
+        erc-track-use-faces t
+        erc-track-priority-faces-only 'all
+        erc-track-exclude-server-buffer t
+        erc-format-query-as-channel-p t
+        erc-log-channels-directory (no-littering-expand-var-file-name "erc/logs")
+        erc-generate-log-file-name-function 'erc-generate-log-file-name-short
+        erc-track-faces-priority-list '(erc-error-face
+                                        erc-current-nick-face
+                                        erc-keyword-face
+                                        erc-nick-msg-face
+                                        erc-direct-msg-face
+                                        erc-dangerous-host-face)
+        erc-autojoin-channels-alist '(("freenode.net"
+                                       "#emacs"
+                                       "##linux"
+                                       "#archlinux"
+                                       "#lisp"
+                                       "##lisp"
+                                       "#scheme"
+                                       "#chicken"))))
 #+end_src
 **** Built-in
 #+begin_src emacs-lisp
@@ -4782,7 +4775,7 @@ An Emacs Internet Relay Chat client
      notifications
      pcomplete
      netsplit
-     ;; fill
+     fill
      button
      track
      stamp
@@ -4796,107 +4789,9 @@ An Emacs Internet Relay Chat client
      menu
      match)))
 #+end_src
-**** Appearance
-Mostly a hack to make ERC look like weechat
-#+begin_src emacs-lisp :tangle no
+**** Functions
+#+begin_src emacs-lisp
 (d/after 'erc
-  (defvar d/erc-last-speaker (make-hash-table :test 'equal))
-  (setq erc-lurker-state (make-hash-table :test 'equal))
-  ;; This function messes with our own buttons
-  (advice-add #'erc-button-remove-old-buttons :override #'ignore)
-
-  (defmacro d/erc-nick-format-function-body (cond nick &optional else)
-    "If COND is true, format NICK as specified below, otherwise return ELSE.
-
-NICK will be truncated if it is longer than 10 chars and '…' will
-be appended to the end. Nick is propertized using either
-`erc-current-nick-face' or `erc-hl-nicks-make-face'. If NICK is
-the last speaker in the channel, '→' will be displayed instead.
-This also updates lurker information and adds buttons (which I
-think is necessary since we 're so heavily messing with ERC
-internals).
-
-Basically, this kind of makes ERC act like weechat."
-    `(if ,cond
-         (let* ((nick ,nick)
-                (trimmed (erc-hl-nicks-trim-irc-nick nick))
-                (server (erc-canonicalize-server-name
-                         erc-server-announced-name)))
-           (unless (gethash server d/erc-last-speaker)
-             (puthash server (make-hash-table :test 'equal) d/erc-last-speaker))
-           (let* ((channel (buffer-name))
-                  (mode (erc-get-user-mode-prefix nick))
-                  (nick-was-last (string=
-                                  (gethash channel
-                                           (gethash server d/erc-last-speaker))
-                                  nick))
-                  (long-char
-                   (if (and (> (length nick) 10)
-                            (not nick-was-last))
-                       (propertize "…" 'face '(:foreground "#D3869B" ))
-                     "")))
-
-             (when (>= (cl-incf erc-lurker-cleanup-count)
-                       erc-lurker-cleanup-interval)
-               (setq erc-lurker-cleanup-count 0)
-               (erc-lurker-cleanup))
-             (unless (gethash server erc-lurker-state)
-               (puthash server (make-hash-table :test 'equal) erc-lurker-state))
-             (puthash trimmed (current-time)
-                      (gethash server erc-lurker-state))
-             (puthash channel nick (gethash server d/erc-last-speaker))
-             (format "%10.10s%s\t"
-                     (concat
-                      (when (not nick-was-last)
-                        (propertize mode 'face 'erc-nick-prefix-face
-                                    'mouse-face 'font-lock-keyword-face))
-                      (propertize
-                       (if nick-was-last "→" nick)
-                       'face
-                       (cond ((string= nick (erc-current-nick))
-                              'erc-current-nick-face)
-                             ((not (member trimmed erc-hl-nicks-skip-nicks))
-                              (erc-hl-nicks-make-face trimmed))
-                             (t nil))
-                       'mouse-face erc-button-mouse-face
-                       'keymap erc-button-keymap
-                       'erc-callback #'erc-nick-popup
-                       'erc-data (list nick)))
-                     long-char)))
-       ,else))
-
-  (defun d/erc-format-nick (&optional user channel-data)
-    "Truncate nick when too long, substitute when repeated speaker, and
-update lurker status."
-    (d/erc-nick-format-function-body
-     user
-     (erc-server-user-nickname user)))
-
-  (define-advice erc-format-my-nick (:override nil truncate-substitute-lurk)
-    "Truncate nick when too long, substitute when repeated speaker, and
-update lurker status."
-    (d/erc-nick-format-function-body
-     erc-show-my-nick
-     (erc-current-nick)
-     (let ((prefix (format "%10.10s\t" ">")))
-       (propertize prefix 'font-lock-face 'erc-current-nick-face))))
-
-  (define-advice erc-format-privmessage
-      (:override (nick msg privp msgp) no-brackets)
-    "Remove the annoying angle brackets."
-    (let* ((mark-s (if msgp (if privp "*" "") (format "%s\t" (make-string 10 ?\s))))
-           (mark-e (if msgp (if privp "*" "") ": "))
-           (str    (format "%s%s%s%s" mark-s nick mark-e msg))
-           (nick-face (if privp 'erc-nick-msg-face 'erc-nick-default-face))
-           (msg-face (if privp 'erc-direct-msg-face 'erc-default-face)))
-      ;; add text properties to text before the nick, nick and after nick
-      (erc-put-text-property 0 (length mark-s) 'font-lock-face msg-face str)
-      (erc-put-text-property (length mark-s) (+ (length mark-s) (length nick))
-                             'font-lock-face nick-face str)
-      (erc-put-text-property (+ (length mark-s) (length nick)) (length str)
-                             'font-lock-face msg-face str)
-      str))
-
   (define-advice erc-track-find-face (:around (fn faces) promote-query)
     "Promote query buffers as if everything contains current nick.
 
@@ -4933,22 +4828,7 @@ Source: http://tinyurl.com/y8tj8vxx"
                :title (xml-escape-string (format "%s@%s" channel server))
                :body (xml-escape-string (format "%s: %s" nick msg))
                :replaces-id erc-notifications-last-notification
-               :app-icon erc-notifications-icon))))))
-#+end_src
-**** Functions
-#+begin_src emacs-lisp
-(d/after 'erc
-  (defun d/erc-always-insert-timestamp-left (_string)
-    (let* ((ct (current-time))
-           (ts-left (erc-format-timestamp ct "%H:%M "))
-           (day-left (erc-format-timestamp ct erc-timestamp-format-left)))
-      (goto-char (point-min))
-      (unless (string-equal day-left erc-timestamp-last-inserted-left)
-        (erc-put-text-property 0 (length day-left) 'field 'erc-timestamp day-left)
-        (insert day-left)
-        (setq erc-timestamp-last-inserted-left day-left))
-      (erc-put-text-property 0 (length ts-left) 'field 'erc-timestamp ts-left)
-      (insert ts-left)))
+               :app-icon erc-notifications-icon)))))
 
   (defun d/erc-to-bottom ()
     (and (eq major-mode 'erc-mode)
@@ -4990,27 +4870,10 @@ Source: http://tinyurl.com/y8tj8vxx"
               (switch-to-buffer (erc-tls :server "firefly"
                                          :port 4000))))))))
 
-  (defun d/dogbike ()
-    (interactive)
-    (let ((erc-server-connect-function 'erc-open-tls-stream))
-      (erc :server "firefly"
-           :port 4000
-           :nick "dieggsy/dogbike")))
-
   (defun d/erc-preprocess (string)
     (setq str
           (string-trim
            (replace-regexp-in-string "\n+" " " str)))))
-#+end_src
-**** Setup
-#+begin_src emacs-lisp
-(d/hook! erc-mode
-  (visual-line-mode)
-  ;; (setq wrap-prefix (make-string 14 ?\s))
-  (set-display-table-slot standard-display-table 'wrap ?\s)
-  ;; (setq tab-width 7)
-  (setq mode-line-format nil)
-  (setq wrap-prefix "      "))
 #+end_src
 ** Packages
 *** [[https://github.com/leathekd/erc-hl-nicks][erc-hl-nicks]]
