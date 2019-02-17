@@ -314,7 +314,9 @@ Allow editing in the minibuffer... /with/ the minibuffer.
       resize-mini-windows t)
 #+end_src
 *** Prompts
-Having to type "yes" can be annoying.
+Having to type "yes" can be annoying. *Note:* This might be considered unsafe,
+as =yes= is more characters to type and so must be done more deliberately. Use
+at your own risk.
 #+begin_src emacs-lisp
 (defalias 'yes-or-no-p #'y-or-n-p)
 #+end_src
