@@ -524,7 +524,7 @@ If no FILE is specified, change current buffer to view mode."
 **** support
 ***** [[https://github.com/syohex/emacs-evil-anzu][evil-anzu]]
 Show evil search current/total count in the mode line.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package evil-anzu
   :defer 15
   :config
@@ -2208,7 +2208,7 @@ Correcting words with flyspell via custom interface.
   :defer 15)
 #+end_src
 **** [[https://github.com/syohex/emacs-fontawesome][fontawesome]]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package fontawesome)
 #+end_src
 **** [[elisp:(find-library%20"counsel-weather-icons")][counsel-weather-icons]]
