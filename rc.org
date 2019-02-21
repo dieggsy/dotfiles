@@ -133,7 +133,7 @@ fi
 #+end_src
 *** rules
 :PROPERTIES:
-:header-args+: :tangle ~/.config/bspwm/rules.scm :shebang "#!/usr/bin/csi -s"
+:header-args+: :tangle ~/.config/bspwm/rules.scm :shebang "#!/usr/bin/chicken-csi -s"
 :END:
 #+begin_src scheme
 (import (chicken io)
