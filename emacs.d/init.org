@@ -4817,7 +4817,7 @@ Source: http://tinyurl.com/y8tj8vxx"
           (channel (buffer-name))
           (msg (string-join
                 (split-string
-                 (replace-regexp-in-string erc-fill-prefix "" msg)
+                 (replace-regexp-in-string "[[:space:]]\\{2,\\}" " " msg)
                  nil
                  t
                  " ")
