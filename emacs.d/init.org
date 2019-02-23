@@ -3277,7 +3277,11 @@ On the fly syntax checking for GNU Emacs
 ***** ccls
 #+begin_src emacs-lisp
 (use-package ccls
-  :hook (c++-mode . lsp-ccls-enable))
+  :hook (c++-mode . d/enable-ccls)
+  :config
+  (defun d/enable-ccls ()
+    (require 'ccls)
+    (lsp)))
 #+end_src
 ***** lsp-ui
 #+begin_src emacs-lisp
