@@ -374,7 +374,7 @@ Integrate gpg passphrase query with Emacs minibuffer when using EPA.
 #+end_src
 *** Mode line
 #+begin_src emacs-lisp
-(line-number-mode -1)
+(column-number-mode)
 #+end_src
 ** Functions
 *** Dotfiles
