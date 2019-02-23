@@ -2820,9 +2820,11 @@ imenu on steroids.
 #+begin_src emacs-lisp
 (use-package shackle
   :defer 15
+  :demand t
   :config
   (setq shackle-rules '(;; (compilation-mode :ignore t)
-                        (inferior-emacs-lisp-mode :popup t)))
+                        (inferior-emacs-lisp-mode :popup t)
+                        (inferior-scheme-mode :popup t)))
   (shackle-mode))
 #+end_src
 *** [[https://github.com/cyrus-and/zoom][zoom]]
@@ -3136,6 +3138,7 @@ Better parentheses coloring
   :hook ((prog-mode
           conf-mode
           geiser-repl-mode
+          inferior-scheme-mode
           ielm-mode)
          .
          rainbow-delimiters-mode))
