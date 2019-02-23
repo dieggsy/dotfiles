@@ -1485,7 +1485,7 @@ Leader bindings
   "hdV" 'apropos-value
   "hdc" 'describe-char
   "hdm" 'describe-mode
-  "hdt" 'describe-theme
+  "hdt" 'describe-text-properties
   "hn"  'view-emacs-news
   "hi"  'info
   "hs"  (lambda ()
