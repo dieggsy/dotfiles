@@ -42,7 +42,6 @@ temporarily (only during startup). This saves me like .3 s of startup time.
 #+begin_src emacs-lisp
 (setq gc-cons-threshold 400000000
       gc-cons-percentage 0.6
-      file-name-handler-alist nil
       ;; sidesteps a bug when profiling with esup
       esup-child-profile-require-level 0)
 #+end_src
@@ -50,9 +49,8 @@ Make sure to reset the variables after init.
 #+begin_src emacs-lisp
 (add-hook 'after-init-hook
           `(lambda ()
-             (setq gc-cons-threshold (default-value 'gc-cons-threshold)
-                   gc-cons-percentage (default-value 'gc-cons-percentage)
-                   file-name-handler-alist (default-value 'file-name-handler-alist))))
+             (setq gc-cons-threshold 800000
+                   gc-cons-percentage .1)))
 #+end_src
 ** Custom
 Custom.el and the a custom file can be a nice convenience at first, but over
