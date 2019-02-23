@@ -4731,6 +4731,7 @@ An Emacs Internet Relay Chat client
         erc-kill-server-buffer-on-quit t
         erc-rename-buffers t
         erc-join-buffer 'bury
+        erc-query-display 'buffer
         erc-track-use-faces t
         erc-track-priority-faces-only 'all
         erc-track-exclude-server-buffer t
