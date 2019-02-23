@@ -4759,7 +4759,7 @@ An Emacs Internet Relay Chat client
           (interactive)
           (evil-goto-line) (erc-scroll-to-bottom)))
   (d/mode-leader-keys erc-mode-map
-    "g" 'd/erc-switch-to-buffer)
+    "g" 'erc-switch-to-buffer)
   (d/leader-keys
     "ai" 'd/erc-floating)
   (imap erc-mode-map
@@ -4835,10 +4835,9 @@ Source: http://tinyurl.com/y8tj8vxx"
     (and (eq major-mode 'erc-mode)
          (erc-scroll-to-bottom)))
 
-  (defun d/erc-switch-to-buffer (&optional arg)
-    (interactive "P")
+  (define-advice erc-switch-to-buffer (:around (fn &optional arg) d/no-virtual-buffers)
     (let ((ivy-use-virtual-buffers nil))
-      (erc-switch-to-buffer arg)))
+      (funcall fn arg)))
 
   (defvar d/erc-floating-frame nil)
   (defun d/erc-floating ()
