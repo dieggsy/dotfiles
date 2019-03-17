@@ -2346,6 +2346,9 @@ it.
     (sp-local-pair modes "'" nil :actions nil)
     (sp-local-pair modes "`" nil :actions nil))
 
+  (d/list-prepend! 'sp--special-self-insert-commands
+    'c-electric-paren
+    'c-electric-brace)
   (defhydra d/smartparens ()
     "
 ╭─────────────╮
