@@ -2735,6 +2735,12 @@ click to browse URL or to send to e-mail address
     ("<right>" winner-redo)
     ("<left>" winner-undo)))
 #+end_src
+*** [[elisp:(find-library "hideshow")][hideshow]]
+#+begin_src emacs-lisp
+(use-package hideshow
+  :config
+  (setq hs-allow-nesting t))
+#+end_src
 ** Packages
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
 #+begin_quote
