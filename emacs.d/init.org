@@ -3667,6 +3667,8 @@ Source: http://tinyurl.com/le6wxuo"
   "er" 'geiser-eval-region
   "el" 'geiser-eval-last-sexp
   "es" 'd/geiser-eval-surrounding-sexp)
+
+(evil-define-key 'normal scheme-mode-map [backtab] #'hs-toggle-hiding)
 #+end_src
 **** Setup
 #+begin_src emacs-lisp
