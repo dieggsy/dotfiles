@@ -22,7 +22,6 @@ more readable in org format than in rendered markdown.
   - [[#neovim][neovim]]
   - [[#networkmanager_dmenu][networkmanager_dmenu]]
   - [[#polybar][polybar]]
-  - [[#pythonrcpy][pythonrc.py]]
   - [[#rofi][rofi]]
   - [[#rsync-exclude][rsync-exclude]]
   - [[#termite][termite]]
@@ -1679,36 +1678,6 @@ format-prefix = " "
 
 [settings]
 screenchange-reload = true
-#+end_src
-** pythonrc.py
-:PROPERTIES:
-:header-args+: :tangle ~/.pythonrc.py :padline no
-:END:
-
-#+begin_src python
-# -*- coding: utf-8 -*-
-
-from __future__ import print_function, unicode_literals, division
-
-try:
-    def progBar(i, total, length=50, kind=None):
-        """A nice progress bar to use with for loops."""
-        i += 1
-        n = int(i*length/total)
-        percent = i/total*100
-        frame = ("{0:6.2f}% |{1}{2}|".format(percent, '█'*n, ' '*(length-n))
-                if kind is None else
-                "{0:6.2f}% [{1}{2}]".format(percent, str(kind)*n, ' '*(length-n)))
-        endchar = ('\r' if i < total else ' Done!\n')
-        print(frame, end=endchar)
-except:
-    pass
-
-# def write_csv(path, rows):
-#     "Write a list of iterables to a CSV, I think"
-#     with open(path, 'w') as f:
-#         writer = csv.writer(f)
-#         writer.writerows(rows)
 #+end_src
 ** rofi
 *** config
