@@ -1,5 +1,5 @@
 #+TITLE: rc.org
-#+PROPERTY: header-args :comments link :mkdirp yes :results silent
+#+PROPERTY: header-args :comments no :mkdirp yes :results silent
 
 * Intro
 
