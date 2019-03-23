@@ -1,0 +1,11 @@
+# -*- mode: conf -*-
+set font "Iosevka Term 9"
+set default-bg "#282828"
+set default-fg "#fdf4c1"
+set inputbar-bg "#282828"
+set inputbar-fg "#3FD7E5"
+set statusbar-fg "#fdf4c1"
+set first-page-column 1
+set recolor-darkcolor "#fDf4c1"
+set recolor-lightcolor "#282828"
+set smooth-scroll true
