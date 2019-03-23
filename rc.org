@@ -18,6 +18,7 @@ more readable in org format than in rendered markdown.
   - [[#fish][fish]]
   - [[#fontsconf][fonts.conf]]
   - [[#git][git]]
+  - [[#inputrc][inputrc]]
   - [[#neovim][neovim]]
   - [[#networkmanager_dmenu][networkmanager_dmenu]]
   - [[#polybar][polybar]]
@@ -1290,6 +1291,20 @@ I know, it probably doesn't make sense to keep my gitconfig here.
 .DS\_Store
 *.pyc
 __pychache__
+#+end_src
+** inputrc
+#+begin_src sh :tangle ~/.inputrc
+set keymap vi-insert
+"(": "\C-v(\C-v)\e[D"
+"\"": "\C-v\"\C-v\"\e[D"
+set editing-mode vi
+set show-mode-in-prompt on
+set colored-completion-prefix on
+set blink-matching-paren on
+set menu-complete-display-prefix on
+set keyseq-timeout 1
+set vi-ins-mode-string \1\e[6 q\2
+set vi-cmd-mode-string \1\e[2 q\2
 #+end_src
 ** neovim
 #+begin_src vimrc :tangle ~/.config/nvim/init.vim :comments no
