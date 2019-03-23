@@ -1373,6 +1373,8 @@ nmap * <Plug>(anzu-star-with-echo)
 nmap # <Plug>(anzu-sharp-with-echo)
 command DeleteTrailingWhitespace :%s/\s\+$//e
 cnoreabbrev dtw DeleteTrailingWhitespace
+
+au VimLeave * set guicursor=a:ver1-blinkon0
 #+end_src
 ** networkmanager_dmenu
 :PROPERTIES:
