@@ -32,7 +32,6 @@ more readable in org format than in rendered markdown.
   - [[#xinitrc][xinitrc]]
   - [[#xorgconfd][xorg.conf.d]]
   - [[#xresources][Xresources]]
-  - [[#xterm-24bitterminfo][xterm-24bit.terminfo]]
   - [[#zathurarc][zathurarc]]
   - [[#zsh][zsh]]
 - [[#scripts][Scripts]]
@@ -2456,22 +2455,6 @@ Emacs.background: #282828
 Emacs.mode-line.attributeForeground: #EBDBB2
 Emacs.mode-line.attributeBackground: #1D2021
 Emacs.mode-line.attributeBox: nil
-#+end_src
-** xterm-24bit.terminfo
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/xterm-24bit.terminfo")
-:END:
-#+begin_src text :comments no :tangle no
-# Use colon separators.
-xterm-24bit|xterm with 24-bit direct color mode,
-  use=xterm-256color,
-  setb24=\E[48:2:%p1%{65536}%/%d:%p1%{256}%/%{255}%&%d:%p1%{255}%&%dm,
-  setf24=\E[38:2:%p1%{65536}%/%d:%p1%{256}%/%{255}%&%d:%p1%{255}%&%dm,
-# Use semicolon separators.
-xterm-24bits|xterm with 24-bit direct color mode,
-  use=xterm-256color,
-  setb24=\E[48;2;%p1%{65536}%/%d;%p1%{256}%/%{255}%&%d;%p1%{255}%&%dm,
-  setf24=\E[38;2;%p1%{65536}%/%d;%p1%{256}%/%{255}%&%d;%p1%{255}%&%dm,
 #+end_src
 ** zathurarc
 :PROPERTIES:
