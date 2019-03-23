@@ -129,20 +129,8 @@ I know, it probably doesn't make sense to keep my gitconfig here.
 *.pyc
 __pychache__
 #+end_src
-** inputrc
-#+begin_src sh :tangle ~/.inputrc
-set keymap vi-insert
-"(": "\C-v(\C-v)\e[D"
-"\"": "\C-v\"\C-v\"\e[D"
-set editing-mode vi
-set show-mode-in-prompt on
-set colored-completion-prefix on
-set blink-matching-paren on
-set menu-complete-display-prefix on
-set keyseq-timeout 1
-set vi-ins-mode-string \1\e[6 q\2
-set vi-cmd-mode-string \1\e[2 q\2
-#+end_src
+** readline
+*** [[file:readline/.inputrc][inputrc]]
 ** neovim
 *** [[file:neovim/.config/nvim/init.vim][init.vim]]
 ** networkmanager_dmenu
