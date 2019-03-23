@@ -144,75 +144,7 @@ set vi-ins-mode-string \1\e[6 q\2
 set vi-cmd-mode-string \1\e[2 q\2
 #+end_src
 ** neovim
-#+begin_src vimrc :tangle ~/.config/nvim/init.vim :comments no
-call plug#begin('~/.config/nvim/plugged')
-
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-
-Plug 'itchyny/lightline.vim'
-Plug 'morhetz/gruvbox'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-commentary'
-Plug 'w0rp/ale'
-Plug 'airblade/vim-gitgutter'
-Plug 'jiangmiao/auto-pairs'
-Plug 'osyo-manga/vim-anzu'
-Plug 'sheerun/vim-polyglot'
-Plug 'jceb/vim-orgmode'
-Plug 'michaeljsmith/vim-indent-object'
-Plug 'tommcdo/vim-lion'
-Plug 'easymotion/vim-easymotion'
-Plug 'SirVer/ultisnips'
-
-call plug#end()
-
-" Plugin settings
-filetype plugin indent on
-colorscheme gruvbox
-let g:deoplete#enable_at_startup = 1
-let g:lightline = {'colorscheme' : 'gruvbox'}
-
-" Defaults
-set laststatus=2
-set relativenumber
-set cursorline
-set hlsearch
-set backspace=2
-set tabstop=4
-set shiftwidth=4
-set expandtab
-set splitbelow
-set splitright
-set inccommand=nosplit
-set termguicolors
-
-" Bindings
-noremap <C-g> <C-c>
-inoremap <C-g> <C-c>
-imap <C-_> <Esc>
-let mapleader=" "
-nnoremap <leader>ff :Files <CR>
-" nnoremap <leader>ff :Files <C-R>=expand('%:h')<CR><CR>
-nnoremap <leader>fl :Locate <space>
-nnoremap <leader>bb :Buffers <CR>
-" Don't let easymotion get in the way of <leader><leader>
-nmap <leader>j <Plug>(easymotion-prefix)
-nnoremap <leader><leader> :Commands <CR>
-nnoremap <leader>sr :Rg <space>
-
-nmap n <Plug>(anzu-n-with-echo)
-nmap N <Plug>(anzu-N-with-echo)
-nmap * <Plug>(anzu-star-with-echo)
-nmap # <Plug>(anzu-sharp-with-echo)
-command DeleteTrailingWhitespace :%s/\s\+$//e
-cnoreabbrev dtw DeleteTrailingWhitespace
-
-au VimLeave * set guicursor=a:ver1-blinkon0
-#+end_src
+*** [[file:neovim/.config/nvim/init.vim][init.vim]]
 ** networkmanager_dmenu
 :PROPERTIES:
 :header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.config/networkmanager-dmenu/config.ini")
