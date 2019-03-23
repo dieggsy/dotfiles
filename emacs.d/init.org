@@ -3712,7 +3712,8 @@ Source: http://tinyurl.com/le6wxuo"
                 (with-output-to-pipe . 1)
                 (set-sharp-read-syntax! . 1)
                 (set-read-syntax! . 1)
-                (test-group . 1)))
+                (test-group . 1)
+                (begin-for-syntax . 0)))
     (put (car fn) 'scheme-indent-function (cdr fn)))
   (let ((keywords '("module"
                     "foreign-lambda"
@@ -3757,7 +3758,9 @@ Source: http://tinyurl.com/le6wxuo"
                     "with-exception-handler"
                     "with-input-from-file"
                     "with-output-to-file"
-                    "include-relative")))
+                    "include-relative"
+                    "import-for-syntax"
+                    "begin-for-syntax")))
     (font-lock-add-keywords 'scheme-mode
                             `((,(format "[[(]%s\\>" (regexp-opt keywords 1)) . 1)
                               ("\\[\\(else\\)\\>" . 1)
