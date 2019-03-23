@@ -2230,7 +2230,7 @@ Correcting words with flyspell via custom interface.
 #+begin_quote
 short and sweet LISP editing
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package lispy
   :hook ((lispy-mode . d/lispy-fontify-headlines)
          ((emacs-lisp-mode
@@ -2295,7 +2295,7 @@ short and sweet LISP editing
 #+begin_quote
 lispy + evil = lispyville
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package lispyville
   :hook (lispy-mode . lispyville-mode)
   :custom
@@ -2316,26 +2316,29 @@ it.
 #+end_quote
 #+begin_src emacs-lisp
 (use-package smartparens
-  :hook (((prog-mode conf-mode eval-expression-minibuffer-setup)
-          . d/turn-on-smartparens-strict-mode)
+  :hook (((prog-mode
+           conf-mode
+           inferior-scheme-mode)
+          . turn-on-smartparens-strict-mode)
+         (eval-expression-minibuffer-setup . smartparens-strict-mode)
          (eshell-mode . smartparens-mode))
   :defer 15
   :commands sp-end-of-sexp
   :general
   (d/leader-keys
     "xp"  '(:def d/smartparens/body :wk "smartparens"))
-  :custom
-  (sp-ignore-modes-list
-   '(scheme-mode
-     emacs-lisp-mode
-     lisp-mode
-     geiser-repl-mode
-     slime-repl-mode
-     inferior-emacs-lisp-mode))
-  :init
-  (defun d/turn-on-smartparens-strict-mode ()
-    (when (not (member major-mode sp-ignore-modes-list))
-      (turn-on-smartparens-strict-mode)))
+  ;; :custom
+  ;; (sp-ignore-modes-list
+  ;;  '(scheme-mode
+  ;;    emacs-lisp-mode
+  ;;    lisp-mode
+  ;;    geiser-repl-mode
+  ;;    slime-repl-mode
+  ;;    inferior-emacs-lisp-mode))
+  ;; :init
+  ;; (defun d/turn-on-smartparens-strict-mode ()
+  ;;   (when (not (member major-mode sp-ignore-modes-list))
+  ;;     (turn-on-smartparens-strict-mode)))
   :config
   (require 'smartparens-config)
   (smartparens-global-mode)
