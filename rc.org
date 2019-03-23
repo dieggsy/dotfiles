@@ -2590,7 +2590,7 @@ qmpv() {
 }
 
 my-packages () {
-    comm -23 <(pacman -Qeq | sort) <(pacman -Qgq base base-devel xorg | sort)
+    comm -23 <(pacman -Qqett | sort) <(pacman -Qgq base base-devel xorg | sort)
 }
 
 missing-from-group () {
