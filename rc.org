@@ -1255,7 +1255,7 @@ I know, it probably doesn't make sense to keep my gitconfig here.
     new = green bold
     old = red bold
 #+end_src
-**** http
+**** push
 #+begin_src conf
 [push]
     followTags = true
