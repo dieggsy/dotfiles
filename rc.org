@@ -12,6 +12,7 @@ more readable in org format than in rendered markdown.
 *** [[file:bspwm/.config/bspwm/bspwmrc][bspwmrc]]
 *** [[file:bspwm/.config/bspwm/rules.scm][rules]]
 *** [[file:bspwm/.config/sxhkd/sxhkdrc][sxhkdrc]]
+** [[file:chicken/.csirc][csirc]]
 ** darktooth.theme
 :PROPERTIES:
 :header-args+: :tangle ~/.config/cmus/darktooth.theme

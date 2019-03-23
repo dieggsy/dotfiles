@@ -1,0 +1,3 @@
+;; -*- mode: scheme -*-
+(import (chicken load))
+(load-verbose #f)
