@@ -23,7 +23,6 @@ more readable in org format than in rendered markdown.
   - [[#polybar][polybar]]
   - [[#rofi][rofi]]
   - [[#rsync-exclude][rsync-exclude]]
-  - [[#termite][termite]]
   - [[#tmuxconf][tmux.conf]]
   - [[#user-dirsdirs][user-dirs.dirs]]
   - [[#xcompose][xcompose]]
@@ -1736,36 +1735,6 @@ pkg/emacs
 .local/share/Aspyr
 .config/unity3d
 .config/spotify
-#+end_src
-** termite
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.config/termite/config")
-:END:
-#+begin_src conf
-[options]
-font = iosevka term 9.5
-allow_bold=0
-cursor_shape=ibeam
-cursor=#FDF4C1
-[colors]
-background=#282828
-foreground=#FDf4c1
-color0=#282828
-color1=#9d1306
-color2=#79740e
-color3=#b57614
-color4=#076678
-color5=#8f3f71
-color6=#00a7af
-color7=#bdae93
-color8=#686868
-color9=#fb4933
-color10=#b8bb26
-color11=#fabd2f
-color12=#83a598
-color13=#d3869b
-color14=#3fd7e5
-color15=#fdf4c1
 #+end_src
 ** tmux.conf
 :PROPERTIES:
