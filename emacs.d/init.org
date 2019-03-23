@@ -1613,7 +1613,9 @@ directory-browsing commands
   (dired-omit-files (rx string-start "." (1+ nonl) string-end))
   (dired-clean-confirm-killing-deleted-buffers nil)
   :config
-  (push ".import.scm" dired-omit-extensions))
+  (d/list-prepend! 'dired-omit-extensions
+    "import.scm"
+    ".link"))
 #+end_src
 *** [[elisp:(find-library-other-window "ediff")][ediff]]
 #+begin_src emacs-lisp
