@@ -2595,6 +2595,13 @@ The emacs major mode for editing files in the YAML data serialization format.
 (use-package yaml-mode
   :mode "\\.yml\\'")
 #+end_src
+*** [[https://github.com/wasamasa/svnwiki-mode][svnwiki-mode]]
+#+begin_src emacs-lisp
+(use-package svnwiki-mode
+  :mode "\\.svnwiki\\'"
+  :straight (:host github
+             :repo "wasamasa/svnwiki-mode"))
+#+end_src
 ** Bindings
 Make indent-rigidly more vimmy.
 #+begin_src emacs-lisp
