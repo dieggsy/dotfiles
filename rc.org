@@ -17,34 +17,8 @@ more readable in org format than in rendered markdown.
 *** [[file:cmus/.config/cmus/darktooth.theme][darktooth.theme]]
 ** dunst
 *** [[file:dunst/.config/dunst/dunstrc][dunstrc]]
-** fonts.conf
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.config/fontconfig/fonts.conf") :comments no
-:END:
-#+begin_src xml
-<?xml version="1.0"?>
-<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
-<fontconfig>
-  <alias>
-    <family>Iosevka Term</family>
-    <default>
-      <family>monospace</family>
-    </default>
-    <prefer>
-      <family>FontAwesome</family>
-    </prefer>
-  </alias>
-  <match>
-    <test compare="eq" name="family">
-      <string>sans-serif</string>
-    </test>
-    <test compare="eq" name="family">
-      <string>monospace</string>
-    </test>
-    <edit mode="delete" name="family"/>
-  </match>
-</fontconfig>
-#+end_src
+** fontconfig
+*** [[file:fontconfig/.config/fontconfig/fonts.conf][fonts.conf]]
 ** git
 *** gitconfig
 :PROPERTIES:
