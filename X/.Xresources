@@ -1,0 +1,28 @@
+#if __has_include(".extend.Xresources")
+#include ".extend.Xresources"
+#endif
+
+Xft.dpi: 172
+Xft.antialias: 1
+Xft.hinting: 1
+Xft.rgba: rgb
+Xft.autohint: false
+Xft.hintstyle: hintslight
+Xft.lcdfilter: lcddefault
+
+Xcursor.size: 32
+Xcursor.theme: Breeze
+
+Emacs.fontBackend: xft
+Emacs.internalBorder: 15
+Emacs.font: Iosevka Term-10:weight=book
+! Emacs.geometry: 105x41
+Emacs.menuBar: off
+Emacs.toolBar: off
+Emacs.verticalScrollBars: off
+Emacs.cursorBlink: off
+Emacs.foreground: #fdf4c1
+Emacs.background: #282828
+Emacs.mode-line.attributeForeground: #EBDBB2
+Emacs.mode-line.attributeBackground: #1D2021
+Emacs.mode-line.attributeBox: nil
