@@ -1,0 +1,67 @@
+[filter "media"]
+    required = true
+    clean = git media clean %f
+    smudge = git media smudge %f
+
+[user]
+    name = dieggsy
+    email = dieggsy@protonmail.com
+    signingkey = 1DF81CB1
+
+[filter "lfs"]
+    clean = git-lfs clean %f
+    smudge = git-lfs smudge %f
+    required = true
+
+[core]
+    editor = emacsclient -t
+    excludesfile = ~/.gitignore
+    pager = "less"
+
+[gpg]
+    program = gpg2
+
+[alias]
+    eclipse = !git fetch upstream && git rebase -s recursive -X theirs upstream/master
+    gconfig = config --global
+    lconfig = config --local
+    mypull = pull -s recursive -X ours
+    myrebase = rebase -s recursive -X theirs
+    optimize = "!f() { git reflog expire --all --expire=now && git gc --prune=now --aggressive; }; f"
+    plog = log --graph --pretty=format:'%C(bold black)%h%Creset - %<(50,trunc)%C(bold normal)%s%Creset %<(20)%C(bold green)%an%Creset %<(15)%C(bold red)%cr%Creset%C(bold yellow)%d%Creset' --abbrev-commit
+    plog-nocolor = log --graph --pretty=format:'%h - %<(50,trunc)%s %<(20)%an %<(15)%cr%d' --abbrev-commit
+    update-from-upstream = pull --rebase -s recursive -X theirs upstream/master
+    aliases = config --get-regexp '^alias\\.'
+
+[http]
+    postBuffer = 524288000
+
+[color]
+    ui = auto
+[color "status"]
+    added = green bold
+    changed = red bold
+    untracked = red bold
+[color "branch"]
+    current = green bold
+    remote = magenta bold
+[color "diff"]
+    new = green bold
+    old = red bold
+
+[push]
+    followTags = true
+
+[status]
+    showUntrackedFiles = all
+    short=true
+    branch=true
+
+[commit]
+    gpgsign = true
+
+[push]
+    followTags = true
+
+[github]
+	user = dieggsy
