@@ -2763,15 +2763,6 @@ extra = today.replace(day=1).weekday() + 1
 lastday =  calendar.monthrange(today.year, month)[1]
 
 ENC=locale.getpreferredencoding()
-ROFI_CMD = [
-    "rofi", "-dmenu",
-    "-p", f"{calendar.month_name[month]} {today.year}",
-    "-xoffset", "48",
-    "-columns", "7",
-    "-lines", "2",
-    "-theme-str", "#listview{lines:6;}",
-    "-theme-str", "#window{width:318;}"
-]
 
 days = ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"]
 
@@ -2785,11 +2776,20 @@ def chop(l, n):
 chopped = list(chop(inp,7))
 chopped[-1] = chopped[-1] + [" "] * (7 - len(chopped[-1]))
 
+ROFI_CMD = [
+    "rofi", "-dmenu",
+    "-p", f"{calendar.month_name[month]} {today.year}",
+    "-xoffset", "48",
+    "-columns", "7",
+    "-theme-str", f"#listview{{lines:{len(chopped)};}}",
+    "-theme-str", "#window{width:318;}"
+]
+
 transposed = list(map(list, zip(*chopped)))
 flattened = list(itertools.chain.from_iterable(transposed))
 active = flattened.index(str(today.day).rjust(2))
 inp = "\n".join(flattened)
-print(Popen(ROFI_CMD + [ "-a", str(active) ], stdin=PIPE, stdout=PIPE).communicate(input=inp.encode(ENC))[0].decode(ENC).strip())
+Popen(ROFI_CMD + [ "-a", str(active) ], stdin=PIPE, stdout=PIPE).communicate(input=inp.encode(ENC))[0].decode(ENC).strip()
 #+end_src
 ** mons-rofi
 #+begin_src sh :tangle ~/bin/mons-rofi :shebang "#!/bin/sh"
