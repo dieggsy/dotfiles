@@ -3639,7 +3639,7 @@ emacs and scheme talk to each other
 #+begin_src emacs-lisp
 (use-package geiser
   :custom
-  ;; (geiser-chicken-binary '("csi" "-q"))
+  (geiser-chicken-binary '("csi" "-q"))
   (geiser-chicken-required-modules nil)
   :config
   (setq geiser-active-implementations '(chicken racket)
