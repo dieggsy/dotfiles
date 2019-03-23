@@ -12,6 +12,7 @@ more readable in org format than in rendered markdown.
 - [[#config][Config]]
   - [[#bspwm][bspwm]]
   - [[#comptonconf][compton.conf]]
+  - [[#csirc][csirc]]
   - [[#darktooththeme][darktooth.theme]]
   - [[#dunstrc][dunstrc]]
   - [[#fish][fish]]
@@ -611,6 +612,11 @@ xrender-sync = true;
 # use X Sync fence to sync clients' draw calls. Needed on nvidia-drivers with
 # GLX backend for some users.
 xrender-sync-fence = true;
+#+end_src
+** csirc
+#+begin_src scheme :tangle ~/.csirc
+(import (chicken load))
+(load-verbose #f)
 #+end_src
 ** darktooth.theme
 :PROPERTIES:
