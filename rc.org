@@ -34,30 +34,8 @@ more readable in org format than in rendered markdown.
 *** [[file:rofi/.config/rofi/dropdown.rasi][dropdown.rasi]]
 *** networkmanager_dmenu
 **** [[file:rofi/.config/networkmanager-dmenu/config.ini][config.ini]]
-
-** rsync-exclude
-:PROPERTIES:
-:header-args+: :tangle ~/.rsync-exclude :comments no
-:END:
-#+begin_src text
-.eve
-downloads
-music
-.ccache
-.cache
-Dropbox
-org
-.dropbox
-.dropbox-dist
-syncthing
-dotfiles/emacs.d/straight/repos
-dotfiles/emacs.d/straight/build
-pkg/emacs
-.local/share/Steam
-.local/share/Aspyr
-.config/unity3d
-.config/spotify
-#+end_src
+** rsync
+*** [[file:rsync/.rsync-exclude][rsync-exclude]]
 ** tmux.conf
 :PROPERTIES:
 :header-args+: :tangle ~/.tmux.conf

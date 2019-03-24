@@ -1,0 +1,17 @@
+.eve
+downloads
+music
+.ccache
+.cache
+Dropbox
+org
+.dropbox
+.dropbox-dist
+syncthing
+dotfiles/emacs.d/straight/repos
+dotfiles/emacs.d/straight/build
+pkg/emacs
+.local/share/Steam
+.local/share/Aspyr
+.config/unity3d
+.config/spotify
