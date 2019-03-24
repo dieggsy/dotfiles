@@ -3,41 +3,26 @@
 
 * Intro
 
-This is where I keep the bulk of my dotfiles (that aren't emacs or zsh). If it
-seems like a bit of a mess to keep it all in one place, note that this is /much/
-more readable in org format than in rendered markdown.
+This just points to different bits of my config, which is then managed and
+installed with gnu stow.
 
 * Config
 ** bspwm
 *** [[file:bspwm/.config/bspwm/bspwmrc][bspwmrc]]
 *** [[file:bspwm/.config/bspwm/rules.scm][rules]]
 *** [[file:bspwm/.config/sxhkd/sxhkdrc][sxhkdrc]]
-** [[file:chicken/.csirc][csirc]]
+** chicken
+*** [[file:chicken/.csirc][csirc]]
 ** cmus
 *** [[file:cmus/.config/cmus/darktooth.theme][darktooth.theme]]
 ** dunst
 *** [[file:dunst/.config/dunst/dunstrc][dunstrc]]
+** etc
+*** xorg
+**** [[file:etc/xorg/X11/xorg.conf.d/00-keyboard.conf][00-keyboard.conf]]
+**** [[file:etc/xorg/X11/xorg.conf.d/40-libinput.conf][40-libinput.conf]]
 ** fontconfig
 *** [[file:fontconfig/.config/fontconfig/fonts.conf][fonts.conf]]
-** git
-*** [[file:git/.gitconfig][gitconfig]]
-*** [[file:git/.gitignore][gitignore]]
-** readline
-*** [[file:readline/.inputrc][inputrc]]
-** neovim
-*** [[file:neovim/.config/nvim/init.vim][init.vim]]
-** polybar
-*** [[file:polybar/.config/polybar/config][config]]
-** rofi
-*** [[file:rofi/.config/rofi/config][config]]
-*** [[file:rofi/.config/rofi/darktooth.rasi][darktooth.rasi]]
-*** [[file:rofi/.config/rofi/dropdown.rasi][dropdown.rasi]]
-*** networkmanager_dmenu
-**** [[file:rofi/.config/networkmanager-dmenu/config.ini][config.ini]]
-** rsync
-*** [[file:rsync/.rsync-exclude][rsync-exclude]]
-** tmux
-*** [[file:tmux/.tmux.conf][tmux.conf]]
 ** freedesktop
 *** Desktop entries
 **** [[file:freedesktop/.local/share/applications/cmus.desktop][cmus.desktop]]
@@ -65,15 +50,31 @@ Exec=/usr/lib/firefox/firefox --private-window %u
 #+end_src
 **** [[file:freedesktop/.local/share/applications/spotify.desktop][spotify.desktop]]
 *** [[file:freedesktop/.config/user-dirs.dirs][user-dirs.dirs]]
-** etc
-*** xorg
-**** [[file:etc/xorg/X11/xorg.conf.d/00-keyboard.conf][00-keyboard.conf]]
-**** [[file:etc/xorg/X11/xorg.conf.d/40-libinput.conf][40-libinput.conf]]
+** git
+*** [[file:git/.gitconfig][gitconfig]]
+*** [[file:git/.gitignore][gitignore]]
+** neovim
+*** [[file:neovim/.config/nvim/init.vim][init.vim]]
+** polybar
+*** [[file:polybar/.config/polybar/config][config]]
+** readline
+*** [[file:readline/.inputrc][inputrc]]
+** rofi
+*** [[file:rofi/.config/rofi/config][config]]
+*** [[file:rofi/.config/rofi/darktooth.rasi][darktooth.rasi]]
+*** [[file:rofi/.config/rofi/dropdown.rasi][dropdown.rasi]]
+*** networkmanager_dmenu
+**** [[file:rofi/.config/networkmanager-dmenu/config.ini][config.ini]]
+** rsync
+*** [[file:rsync/.rsync-exclude][rsync-exclude]]
+** tmux
+*** [[file:tmux/.tmux.conf][tmux.conf]]
 ** X
 *** [[file:X/.XCompose][xcompose]]
 *** [[file:X/.xinitrc][xinitrc]]
 *** [[file:X/.Xresources][xresources]]
-** [[file:zathura/.config/zathura/zathurarc][zathurarc]]
+** zathura
+*** [[file:zathura/.config/zathura/zathurarc][zathurarc]]
 ** zsh
 *** [[file:zsh/.zshrc][zshrc]]
 *** [[file:zsh/.zshenv][zshenv]]
