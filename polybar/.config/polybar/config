@@ -1,0 +1,271 @@
+[colors]
+black = #282828
+white = #FDF4C1
+green = #B8BB26
+red = #FB4933
+yellow = #FABD2F
+blue = #83A598
+purple = #D3869B
+aqua = #8EC07C
+orange = #FE8019
+cyan = #3FD7E5
+sienna = #DD6F48
+light3 = #BDAE93
+light4 = #A89984
+dark2 = #504945
+
+background = ${colors.black}
+foreground = ${colors.white}
+alert = ${colors.red}
+comment = #665C54
+
+[bar/simple]
+monitor = ${env:MONITOR:}
+width = 100%
+height = 47
+fixed-center = true
+line-size = 2
+
+; tray-position=center
+; tray-maxsize=32
+
+dpi = 172
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+module-margin=0
+separator=
+
+font-0 = Iosevka Term:size=10;3
+font-1 = Weather Icons:size=10;3
+font-2 = Material Icons:size=10;4
+
+modules-left = bspwm date network bluez
+modules-right = display mem cpu weather pulse battery
+
+wm-restack = bspwm
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+enable-ipc = true
+
+[module/xwindow]
+type = internal/xwindow
+label = %{F#BDAE93}%title:0:30:...%%{F-}
+
+[module/display]
+type=custom/script
+exec=[[ "$(xrandr | grep ' connected ' | wc -l)" -gt "1" ]] && echo "  " || echo ''
+format-padding=1
+click-left=mons-rofi
+
+
+[module/bspwm]
+type = internal/bspwm
+format =<label-state>
+wrapping-scroll = false
+enable-click = false
+enable-scroll = false
+reverse-scroll = false
+
+pin-workspaces = true
+ws-icon-0=1;
+ws-icon-1=2;
+ws-icon-2=3;
+ws-icon-3=4;
+ws-icon-4=5;
+ws-icon-5=6;
+label-focused = %icon%
+label-focused-underline = ${colors.sienna}
+label-focused-padding = 1
+label-focused-foreground = ${colors.sienna}
+
+label-occupied =
+
+label-urgent-background = ${colors.alert}
+label-urgent-foreground = ${colors.black}
+label-urgent-padding = 1
+
+label-empty =
+
+[module/xbacklight]
+type = internal/backlight
+card = intel_backlight
+format-background = ${colors.dark2}
+format-foreground = #BDAE93
+format-padding = 1
+format =  <label>
+label = %percentage%
+
+[module/network]
+click-left = networkmanager_dmenu
+type = custom/script
+exec = ~/bin/blocks/networkmanager
+format-foreground = ${colors.blue}
+format-underline = ${colors.blue}
+format-padding = 1
+interval = 2
+
+[module/bluetooth]
+type = custom/script
+exec = rfkill list bluetooth | grep yes > /dev/null && echo '' || echo 
+format-foreground = ${colors.foreground}
+format-padding = 1
+
+[module/bluez]
+click-left = bluez-rofi &
+type = custom/script
+exec = ~/bin/blocks/bluez
+format-padding=1
+interval = 1
+
+[module/date]
+type = custom/script
+exec = date +'%%{F#FDF4C1} %H:%M%%{F-} %%{F#665C54}%a %Y-%m-%d%%{F-}'
+interval = 1
+format-padding=1
+click-left = cal-rofi
+
+[module/bat0]
+type = internal/battery
+format-full-background = ${colors.dark2}
+format-full-foreground = #BDAE93
+format-full-padding = 1
+format-charging-background = ${colors.dark2}
+format-charging-foreground = #BDAE93
+format-charging-padding = 1
+format-discharging-background = ${colors.dark2}
+format-discharging-foreground = #BDAE93
+format-discharging-padding = 1
+battery = BAT0
+adapter = ADP1
+full-at = 100
+
+format-full = %{A1:notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)":} <label-full>%{A}
+format-charging = %{A1:notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)":}<animation-charging> <label-charging>%{A}
+format-discharging = %{A1:notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)":}<ramp-capacity> <label-discharging>%{A}
+
+label-full = %percentage%
+label-charging = %percentage%
+label-discharging = %percentage%
+
+ramp-capacity-0 = 
+ramp-capacity-1 = 
+ramp-capacity-2 = 
+ramp-capacity-3 = 
+ramp-capacity-4 = 
+
+animation-charging-0 = 
+animation-charging-1 = 
+animation-charging-2 = 
+animation-charging-3 = 
+animation-charging-4 = 
+animation-charging-framerate = 750
+
+[module/cpu]
+type = internal/cpu
+format-foreground = ${colors.comment}
+format-padding = 1
+format = <label>
+label =  %percentage:2%%
+
+[module/mem]
+type = internal/memory
+format = <label>
+label =  %percentage_used:2%%
+format-foreground = ${colors.comment}
+format-padding=1
+
+[module/weather]
+type = custom/script
+exec = ~/bin/blocks/darksky
+; format-foreground = #BDAE93
+; format-background = ${colors.dark2}
+format-foreground = ${colors.sienna}
+format-underline = ${colors.sienna}
+format-padding = 1
+click-left = xdg-open https://darksky.net
+interval = 120
+label-font = 2
+
+[module/battery]
+type=custom/script
+; tail=true
+exec = ~/bin/blocks/t480-battery
+format-foreground = ${colors.blue}
+format-underline = ${colors.blue}
+; format-background = ${colors.dark2}
+format-padding = 1
+interval=30
+
+
+[module/cmus]
+type = custom/script
+exec = ~/bin/blocks/mpris cmus
+tail = true
+click-left = playerctl --player=cmus play-pause
+scroll-up = playerctl --player=cmus previous
+scroll-down = playerctl --player=cmus next
+format-prefix = " "
+format-prefix-foreground = ${colors.green}
+
+[module/spotify]
+type = custom/script
+exec = ~/bin/blocks/mpris spotify
+tail = true
+format-prefix = " "
+format-prefix-foreground = ${colors.green}
+click-left = playerctl --player=spotify play-pause
+scroll-up = playerctl --player=spotify previous
+scroll-down = playerctl --player=spotify next
+
+[module/dropbox]
+type = custom/script
+exec = ~/bin/blocks/dropbox
+interval = 2
+format-prefix = " "
+format-prefix-foreground = ${colors.cyan}
+
+[module/github]
+type = custom/script
+exec = ~/bin/blocks/github-unread
+interval = 10
+format-prefix = " "
+click-left = xdg-open https://github.com/notifications
+
+[module/volume]
+type = custom/script
+exec = ~/bin/blocks/amixer
+tail = true
+format-padding=1
+
+[module/pulse]
+type=internal/pulseaudio
+format-volume = %{A3:pavucontrol &:}<ramp-volume> <label-volume>%{A}
+format-muted = %{A3:pavucontrol &:} <label-muted>%{A}
+label-volume = %percentage%
+use-ui-max = false
+label-muted =  %percentage%
+ramp-volume-0 = 
+ramp-volume-1 = 
+ramp-volume-2 = 
+ramp-volume-3 = 
+format-volume-padding=1
+format-muted-padding=1
+
+[module/inbox-reddit]
+type = custom/script
+exec = ~/bin/blocks/reddit-unread
+interval = 10
+click-left = xdg-open https://reddit.com/message/unread
+format-prefix = " "
+format-prefix-foreground = #FF3F18
+
+[module/xkb]
+type = custom/ipc
+hook-0 = ~/bin/blocks/xkb -display
+initial = 1
+format-prefix = " "
+
+[settings]
+screenchange-reload = true
