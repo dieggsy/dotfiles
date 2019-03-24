@@ -53,6 +53,8 @@ Exec=/usr/lib/firefox/firefox --private-window %u
 ** git
 *** [[file:git/.gitconfig][gitconfig]]
 *** [[file:git/.gitignore][gitignore]]
+** gpg
+*** [[file:gpg/.gnupg/gpg-agent.conf][gpg-agent.conf]]
 ** neovim
 *** [[file:neovim/.config/nvim/init.vim][init.vim]]
 ** polybar
