@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+if [ "$#" = 1 ]; then
+  code="$(printf "%03d\n" $1)"
+  print -P -- "$code: %F{$code}$code%f"
+else;
+    for code in $(seq -f "%03g" ${1:-000} ${2:-255}); do
+        print -P -- "$code: %F{$code}$code%f"
+    done
+fi

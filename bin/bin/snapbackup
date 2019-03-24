@@ -1,0 +1,42 @@
+#!/bin/bash
+# if [ $(/usr/bin/id -u) -ne 0 ]; then
+#     echo "Invalid Permissions. Are you root?"
+#     exit
+# fi
+# Basic snapshot-style rsync backup script
+
+# Config
+if [ -d "/run/media/dieggsy/wd-passport/" ]; then
+    echo "Backing up locally..."
+    SSHOPT=""
+    DEST="/run/media/dieggsy/wd-passport/backup"
+    SSHDEST=""
+else
+    echo "Backing up over ssh..."
+    SSHOPT="-e ssh -zz"
+    SSHDEST="dieggsy@panda:"
+    DEST="~/wd-passport/backup"
+fi
+OPT="-avAXh --delete --exclude-from=/home/dieggsy/.rsync-exclude"
+LINK="--link-dest=../last"
+SRC="/home/dieggsy/"
+SNAP="$SSHDEST$DEST"
+LAST="$DEST/last"
+date=`date "+%Y-%m-%dT%H%M"`
+
+notify-send "Backing up home directory" "to $SNAP"
+
+# Run rsync to create snapshot
+rsync $OPT $SSHOPT $LINK $SRC ${SNAP}/$date # | pv -lep -s $(rsync -n $OPT $SSHOPT $LINK $SRC ${SNAP}/$date | awk 'NF' | wc -l) > /dev/null
+
+# Remove symlink to previous snapshot
+# Create new symlink to latest snapshot for the next backup to hardlink
+if [ -d "/run/media/dieggsy/wd-passport/" ]; then
+    rm -f $LAST
+    ln -s $DEST/$date $LAST
+    find $DEST -maxdepth 1 -type d ! -path $DEST -mtime +30 -exec echo 'Removing' {} + -exec rm -vrf {} +
+else
+    ssh dieggsy@panda "rm -f $LAST && ln -s ${DEST}/$date $LAST"
+    # ssh dieggsy@panda "find $DEST -maxdepth 1 -type d ! -path $DEST ! -path $DEST/$date -mtime -1 -exec echo 'Removing' {} + -exec rm -rf {} +"
+    ssh dieggsy@panda "find $DEST -maxdepth 1 -type d ! -path $DEST -mtime +30 -exec echo 'Removing' {} + -exec rm -vrf {} +"
+fi

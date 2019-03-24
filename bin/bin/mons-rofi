@@ -1,0 +1,12 @@
+#!/bin/sh
+sel="$(echo -e "primary\nsecondary\nmirror\nright\nleft\ntop\nbottom" |
+         rofi -dmenu -i -p 'display' \
+              -location 3 -xoffset -350 \
+              -theme-str '#window {width:200;}')"
+
+case $sel in
+    "primary") mons -o;;
+    "secondary") mons -s;;
+    "mirror") mons -m;;
+    *) mons -e $sel;;
+esac

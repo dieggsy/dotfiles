@@ -1,0 +1,6 @@
+#!/usr/bin/env zsh
+rg -a --files 2>/dev/null \
+    | LC_ALL=C sort \
+    | awk -v len=85 '{ if (length($0) > len) print "..." substr($0, length($0)-len, length($0)); else print; }' \
+    | rofi -dmenu -i -width 50 -levenshtein-sort -matching regex -p '[files] '\
+    | xargs -d '\n' xdg-open

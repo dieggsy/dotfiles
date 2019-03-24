@@ -1,0 +1,18 @@
+#!/usr/bin/env bash
+if [[ -z $1 ]]; then
+    echo "No input file provided."
+elif [[ -z $2 ]]; then
+    echo "No output file provided"
+else
+    echo "Converting pdf to png..."
+    convert -density 500 $1 $TMPDIR/tempocr.png
+    count=0
+    echo "Running tesseract on pngs..."
+    while [ -f $TMPDIR/tempocr-$count.png ]; do
+        echo "    Page $count"
+        tesseract $TMPDIR/tempocr-$count.png $TMPDIR/tempocr >/dev/null 2>&1
+        cat $TMPDIR/tempocr.txt >> $2
+        let count=count+1
+    done
+    echo "Created output file $2"
+fi
