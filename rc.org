@@ -65,48 +65,10 @@ Exec=/usr/lib/firefox/firefox --private-window %u
 #+end_src
 **** [[file:freedesktop/.local/share/applications/spotify.desktop][spotify.desktop]]
 *** [[file:freedesktop/.config/user-dirs.dirs][user-dirs.dirs]]
-** xorg.conf.d
-*** 00-keyboard.conf
-- ctrl:nocaps :: make caps lock another ctrl
-- grp:shifs_toggle :: pressing both shift keys toggles xkblayout
-- grp_led:caps :: caps lock key used to indicate active layout
-- compose:prsc :: use PrtSc key as compose key
-#+begin_src conf-space :tangle /sudo::/etc/X11/xorg.conf.d/00-keyboard.conf
-# Written by systemd-localed(8), read by systemd-localed and Xorg. It's
-# probably wise not to edit this file manually. Use localectl(1) to
-# instruct systemd-localed to update it.
-Section "InputClass"
-        Identifier "system-keyboard"
-        MatchIsKeyboard "on"
-        Option "XkbLayout" "dvorak,us"
-        Option "XkbOptions" "ctrl:nocaps,grp:shifts_toggle,grp_led:caps,compose:prsc"
-EndSection
-#+end_src
-*** 40-libinput.conf
-#+begin_src conf-space :tangle /sudo::/etc/X11/xorg.conf.d/40-libinput.conf
-# On all pointers, use flat acceleration
-Section "InputClass"
-        Identifier "libinput pointer catchall"
-        MatchIsPointer "on"
-        MatchDevicePath "/dev/input/event*"
-        Driver "libinput"
-        Option "AccelProfile" "flat"
-EndSection
-
-# Ignore trackpad
-Section "InputClass"
-        Identifier "SynPS/2 Synaptics TouchPad"
-        MatchProduct "SynPS/2 Synaptics TouchPad"
-EndSection
-
-# Make Lenovo trackpoint faster
-Section "InputClass"
-        Identifier "Lenovo Trackpoint"
-        MatchProduct "TPPS/2 IBM TrackPoint"
-        Option "TransformationMatrix" "2.5 0 0 0 2.5 0 0 0 1"
-        Option "AccelSpeed" "1"
-EndSection
-#+end_src
+** etc
+*** xorg
+**** [[file:etc/xorg/X11/xorg.conf.d/00-keyboard.conf][00-keyboard.conf]]
+**** [[file:etc/xorg/X11/xorg.conf.d/40-libinput.conf][40-libinput.conf]]
 ** X
 *** [[file:X/.XCompose][xcompose]]
 *** [[file:X/.xinitrc][xinitrc]]
