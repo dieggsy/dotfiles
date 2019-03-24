@@ -26,34 +26,6 @@ more readable in org format than in rendered markdown.
 *** [[file:readline/.inputrc][inputrc]]
 ** neovim
 *** [[file:neovim/.config/nvim/init.vim][init.vim]]
-** networkmanager_dmenu
-:PROPERTIES:
-:header-args+: :tangle (when (eq system-type 'gnu/linux) "~/.config/networkmanager-dmenu/config.ini")
-:END:
-#+begin_src conf
-[dmenu]
-# l = 10
-dmenu_command = rofi -xoffset 348 -no-fixed-num-lines -theme-str "* {highlightcolor: #83A598;}" -theme-str "#window {width: 330;}"
-rofi_highlight = True
-# # Note that dmenu_command can contain arguments as well like `rofi -width 30`
-# # Rofi and dmenu are set to case insensitive by default `-i`
-# l = number of lines to display, defaults to number of total network options
-# fn = font string
-# nb = normal background (name, #RGB, or #RRGGBB)
-# nf = normal foreground
-# sb = selected background
-# sf = selected foreground
-# b =  (just set to empty value and menu will appear at the bottom
-# m = number of monitor to display on
-# p = Custom Prompt for the networks menu
-# pinentry = Pinentry command
-
-[editor]
-terminal = termite
-gui_if_available = True
-# terminal = <name of terminal program>
-# gui_if_available = <True or False>
-#+end_src
 ** polybar
 :PROPERTIES:
 :header-args+: :tangle ~/.config/polybar/config
@@ -335,6 +307,9 @@ screenchange-reload = true
 *** [[file:rofi/.config/rofi/config][config]]
 *** [[file:rofi/.config/rofi/darktooth.rasi][darktooth.rasi]]
 *** [[file:rofi/.config/rofi/dropdown.rasi][dropdown.rasi]]
+*** networkmanager_dmenu
+**** [[file:rofi/.config/networkmanager-dmenu/config.ini][config.ini]]
+
 ** rsync-exclude
 :PROPERTIES:
 :header-args+: :tangle ~/.rsync-exclude :comments no
