@@ -49,6 +49,7 @@ Name=New Window
 Exec=/usr/lib/firefox/firefox --private-window %u
 #+end_src
 **** [[file:freedesktop/.local/share/applications/spotify.desktop][spotify.desktop]]
+*** [[file:freedesktop/.config/mimeapps.list][mimeapps.list]]
 *** [[file:freedesktop/.config/user-dirs.dirs][user-dirs.dirs]]
 ** git
 *** [[file:git/.gitconfig][gitconfig]]

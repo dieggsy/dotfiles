@@ -1,0 +1,6 @@
+# -*- mode: conf -*-
+
+[Default Applications]
+text/plain=emacsclient.desktop;
+text/markdown=emacsclient.desktop;
+application/pdf=org.pwmt.zathura.desktop;zathura.desktop;
