@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name = Cmus
+GenericName=Music Player
+Terminal=true
+Exec=cmus
+TryExec=cmus
+Type=Application
+Categories=Audio;Music;Player;AudioVideo;
+Icon=multimedia-player

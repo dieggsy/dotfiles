@@ -562,6 +562,31 @@ set -g @sidebar-tree-command 'exa -TL2 --color=always'
 run '~/.tmux/plugins/tpm/tpm'
 #+end_src
 ** freedesktop
+*** Desktop entries
+**** [[file:freedesktop/.local/share/applications/cmus.desktop][cmus.desktop]]
+**** [[file:freedesktop/.local/share/applications/emacsclient.desktop][emacsclient.desktop]]
+**** firefox.desktop
+#+begin_src conf
+[Desktop Entry]
+Version=1.0
+Name=Firefox
+Comment=Browse the Web
+Exec=env GTK_THEME=Arc /usr/lib/firefox/firefox %u
+Icon=firefox
+Terminal=false
+Type=Application
+MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;
+StartupNotify=true
+StartupWMClass=Firefox
+Categories=Network;WebBrowser;
+Keywords=web;browser;internet;
+Actions=new-window;new-private-window;
+
+[Desktop Action new-window]
+Name=New Window
+Exec=/usr/lib/firefox/firefox --private-window %u
+#+end_src
+**** [[file:freedesktop/.local/share/applications/spotify.desktop][spotify.desktop]]
 *** [[file:freedesktop/.config/user-dirs.dirs][user-dirs.dirs]]
 ** xorg.conf.d
 *** 00-keyboard.conf
@@ -998,137 +1023,6 @@ fi
 ** spotify
 #+begin_src sh :tangle ~/bin/spotify :shebang "#!/bin/sh"
 /usr/bin/spotify --force-device-scale-factor=2 $@
-#+end_src
-* Desktop files
-** cmus.desktop
-:PROPERTIES:
-:header-args+: :tangle ~/.local/share/applications/cmus.desktop
-:END:
-#+begin_src conf
-[Desktop Entry]
-Name = Cmus
-GenericName=Music Player
-Terminal=true
-Exec=cmus
-TryExec=cmus
-Type=Application
-Categories=Audio;Music;Player;AudioVideo;
-Icon=multimedia-player
-#+end_src
-** emacs
-*** emacsclient.desktop
-:PROPERTIES:
-:header-args+: :tangle ~/.local/share/applications/emacsclient.desktop
-:END:
-This lets you open files with a running instance of emacs. Kinda nifty.
-#+begin_src conf
-[Desktop Entry]
-Name=Emacs Client
-GenericName=Text Editor
-Comment=Edit text
-MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;
-Exec=emacsclient -n %F
-Icon=emacs
-Type=Application
-Terminal=false
-Categories=Development;TextEditor;
-Keywords=Text;Editor;
-#+end_src
-*** emacs-q.desktop
-:PROPERTIES:
-:header-args+: :tangle ~/.local/share/applications/emacs-q.desktop
-:END:
-#+begin_src conf
-[Desktop Entry]
-Name=Emacs -q
-GenericName=Text Editor
-Comment=Edit text
-MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;
-Exec=emacs -q %F
-Icon=emacs
-Type=Application
-Terminal=false
-Categories=Development;TextEditor;
-StartupWMClass=Emacs
-Keywords=Text;Editor;
-#+end_src
-*** emacs-debug-init.desktop
-:PROPERTIES:
-:header-args+: :tangle ~/.local/share/applications/emacs-debug-init.desktop
-:END:
-#+begin_src conf
-[Desktop Entry]
-Name=Emacs -debug-init
-GenericName=Text Editor
-Comment=Edit text
-MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;
-Exec=emacs -debug-init %F
-Icon=emacs
-Type=Application
-Terminal=false
-Categories=Development;TextEditor;
-StartupWMClass=Emacs
-Keywords=Text;Editor;
-#+end_src
-** firefox.desktop
-:PROPERTIES:
-:header-args+: :tangle ~/.local/share/applications/firefox.desktop
-:END:
-#+begin_src conf
-[Desktop Entry]
-Version=1.0
-Name=Firefox
-Comment=Browse the Web
-Exec=env GTK_THEME=Arc /usr/lib/firefox/firefox %u
-Icon=firefox
-Terminal=false
-Type=Application
-MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;
-StartupNotify=true
-StartupWMClass=Firefox
-Categories=Network;WebBrowser;
-Keywords=web;browser;internet;
-Actions=new-window;new-private-window;
-
-[Desktop Action new-window]
-Name=New Window
-Exec=/usr/lib/firefox/firefox --private-window %u
-#+end_src
-** spotify.desktop
-:PROPERTIES:
-:header-args+: :tangle ~/.local/share/applications/spotify.desktop
-:END:
-On high dpi displays with linux, the spotify UI is way too small. This scales
-it up
-#+begin_src conf
-[Desktop Entry]
-Name=Spotify
-GenericName=Music Player
-Comment=Spotify streaming music client
-Icon=spotify-client
-Exec=spotify --force-device-scale-factor=2  %U
-TryExec=spotify
-Terminal=false
-Type=Application
-Categories=Audio;Music;Player;AudioVideo;
-MimeType=x-scheme-handler/spotify;
-#+end_src
-** vlc-dvd.desktop
-:PROPERTIES:
-:header-args+: :tangle ~/.local/share/applications/vlc-dvd.desktop
-:END:
-#+begin_src conf
-[Desktop Entry]
-Version=1.0
-Name=VLC DVD player
-Exec=vlc dvd://
-TryExec=vlc
-Icon=vlc
-Terminal=false
-Type=Application
-Categories=AudioVideo;Player;Recorder;
-X-KDE-Protocols=ftp,http,https,mms,rtmp,rtsp,sftp,smb
-Keywords=Player;Capture;DVD;Audio;Video;Server;Broadcast;
 #+end_src
 * Local vars
 Tangles the files asynchronously on save.
