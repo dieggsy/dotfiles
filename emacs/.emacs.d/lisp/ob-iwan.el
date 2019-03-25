@@ -17,7 +17,7 @@
   (start-process-shell-command
    "mpv"
    nil
-   "mpv https://youtu.be/rEq1Z0bjdwc?t=8s --no-video")
+   "mpv 'https://youtu.be/rEq1Z0bjdwc?t=8s' --no-video")
   "Hello there!")
 
 (provide 'ob-iwan)
