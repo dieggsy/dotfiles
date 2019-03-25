@@ -25,6 +25,8 @@ installed with gnu stow.
 *** pacman
 **** [[file:etc/pacman/makepkg.conf][makepkg.conf]]
 **** [[file:etc/pacman/pacman.conf][pacman.conf]]
+*** vconsole
+**** [[file:etc/vconsole/vconsole.conf][vconsole.conf]]
 *** xorg
 **** [[file:etc/xorg/X11/xorg.conf.d/00-keyboard.conf][00-keyboard.conf]]
 **** [[file:etc/xorg/X11/xorg.conf.d/40-libinput.conf][40-libinput.conf]]
