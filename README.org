@@ -104,7 +104,10 @@ Everything that goes to ~~/bin~
 
 ** Notes
 Previously, all files were kept in an emacs org-mode file and tangled to the
-right location on save. This worked well for me for a while, but it was a
+right location on save. You can see the (outdated) gist of it here:
+https://github.com/dieggsy/dotfiles/tree/fc3dc2ef05b802cadcc37cf03f0f50fe3a8b85de
+
+This worked well for me for a while, but it was a
 little annoying for portability because it meant needing emacs on every machine
 that I wanted my dotfiles, and a crazy elisp script if I didn't want to
 manually open emacs to tangle the files.
