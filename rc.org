@@ -22,6 +22,9 @@ installed with gnu stow.
 **** dispatcher
 ***** [[file:etc/networkmanager/NetworkManager/dispatcher.d/10-tzupdate.sh][10-tzupdate.sh]]
 **** [[file:etc/networkmanager/NetworkManager/conf.d/dns.conf][dns.conf]]
+*** pacman
+**** [[file:etc/pacman/makepkg.conf][makepkg.conf]]
+**** [[file:etc/pacman/pacman.conf][pacman.conf]]
 *** xorg
 **** [[file:etc/xorg/X11/xorg.conf.d/00-keyboard.conf][00-keyboard.conf]]
 **** [[file:etc/xorg/X11/xorg.conf.d/40-libinput.conf][40-libinput.conf]]

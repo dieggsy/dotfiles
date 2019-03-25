@@ -1,5 +1,5 @@
 #+title: Emacs Init File!
-#+property: header-args :results silent :comments link :tangle ~/dotfiles/emacs.d/init.el
+#+property: header-args :results silent :comments link :tangle ~/.emacs.d/init.el
 
 * Intro
 
