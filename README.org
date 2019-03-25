@@ -1,68 +1,168 @@
 #+TITLE: dotfiles
 
 Just my dotfiles. Some of this is my own, a lot is inspired by or taken from
-others' configs and adapted to my needs. This is a largely org-mode (and
-therefore emacs) based dotfiles configuration. The configs are kept in org
-files that are tangled to the right place on save.
+others' configs and adapted to my needs. These are managed through GNU stow.
 
 ** Contents                                                      :toc:TOC_3:
-  - [[#files][Files]]
-    - [[#emacsd---emacs-config][emacs.d/ - emacs config]]
-    - [[#rcorg---dotfiles-and-scripts][rc.org - dotfiles and scripts]]
-    - [[#org-tangle---install-script][org-tangle - install script]]
   - [[#installation][Installation]]
-    - [[#full][Full]]
-    - [[#partial][Partial]]
+  - [[#conf][Conf]]
+    - [[#bspwm][bspwm]]
+    - [[#chicken][chicken]]
+    - [[#cmus][cmus]]
+    - [[#dunst][dunst]]
+    - [[#fontconfig][fontconfig]]
+    - [[#freedesktop][freedesktop]]
+    - [[#git][git]]
+    - [[#gpg][gpg]]
+    - [[#neovim][neovim]]
+    - [[#polybar][polybar]]
+    - [[#readline][readline]]
+    - [[#rofi][rofi]]
+    - [[#rsync][rsync]]
+    - [[#tmux][tmux]]
+    - [[#x][X]]
+    - [[#zathura][zathura]]
+    - [[#zsh][zsh]]
+  - [[#etc][Etc]]
+    - [[#networkmanager][networkmanager]]
+    - [[#pacman][pacman]]
+    - [[#systemd][systemd]]
+    - [[#vconsole][vconsole]]
+    - [[#xorg][xorg]]
+  - [[#scripts][Scripts]]
+    - [[#bluez-rofi][bluez-rofi]]
+    - [[#cal-rofi][cal-rofi]]
+    - [[#desktop-record][desktop-record]]
+    - [[#mons-rofi][mons-rofi]]
+    - [[#ocrpdf][ocrpdf]]
+    - [[#ocrpdf2][ocrpdf2]]
+    - [[#rofi-files][rofi-files]]
+    - [[#snapbackup][snapbackup]]
+    - [[#spectrum_ls][spectrum_ls]]
+    - [[#spotify][spotify]]
+    - [[#wm-exit][wm-exit]]
+    - [[#wm-exit-dmenu][wm-exit-dmenu]]
+  - [[#notes][Notes]]
 
-** Files
-*** [[./emacs.d/][emacs.d/]] - emacs config
-An emacs configuration based largely on [[https://github.com/raxod502/straight.el][straight.el]], [[https://github.com/jwiegley/use-package][use-package]], [[https://github.com/emacs-evil/evil][evil-mode]],
-and [[https://github.com/abo-abo/swiper][ivy]], with inspiration and code from [[https://github.com/syl20bnr/spacemacs][spacemacs]] and others' configs. The file
-is tangled to ~init.el~ on save.
-*** [[./rc.org][rc.org]] - dotfiles and scripts
-A bunch of less complex or one-off configuration files and scripts I like to
-keep handy, including configurations for [[https://github.com/dieggsy/dotfiles/blob/master/rc.org#tmux][tmux]] and [[https://github.com/dieggsy/dotfiles/blob/master/rc.org#i3][i3]] as well as a [[https://github.com/dieggsy/dotfiles/blob/master/rc.org#darktooththeme-cmus][cmus theme]],
-among others. Some are my own but a lot of these are taken from or based on
-config files from the internet. I'll pin down the sources one day.
-*** [[./org-tangle][org-tangle]] - install script
-A kind of messy script that makes use of ~emacs --script~ to run emacs-lisp code
-as a shell script for initial installation of dotfiles, with support for
-partial installation - you can choose which files or even headers from rc.org
-to install.
 ** Installation
-You should /probably/ have a fairly recent version of emacs, and potentially
-org-mode. I tend to use a "bleeding edge" installation of emacs from source
-(currently v27.0.50), and I've not tested this with older versions, though it
-should work in theory.
+To install a particluar configuration, you can call ~make [config-name]~. So if
+you wanted my bspwm config, you could run ~make bspwm~. The parts of the config
+in ~etc/~ can be installed in the same way, but require root privileges since
+they install to ~/etc~ - e.g. ~sudo make pacman~.
 
-Clone the repo to =~/dotfiles= (or wherever you'd like, but make sure the folder
-remains named ~dotfiles~)
+You can install all of the user home based config with ~make install-conf~, all
+of the ~/etc~ config with ~sudo make install-etc~, and everything with ~sudo
+make install~ or simply ~sudo make~.
+** Conf
+*** bspwm
+**** [[file:bspwm/.config/bspwm/bspwmrc][bspwmrc]]
+**** [[file:bspwm/.config/bspwm/rules.scm][rules]]
+**** [[file:bspwm/.config/sxhkd/sxhkdrc][sxhkdrc]]
+*** chicken
+**** [[file:chicken/.csirc][csirc]]
+*** cmus
+**** [[file:cmus/.config/cmus/darktooth.theme][darktooth.theme]]
+*** dunst
+**** [[file:dunst/.config/dunst/dunstrc][dunstrc]]
+*** fontconfig
+**** [[file:fontconfig/.config/fontconfig/fonts.conf][fonts.conf]]
+*** freedesktop
+**** Desktop entries
+***** [[file:freedesktop/.local/share/applications/cmus.desktop][cmus.desktop]]
+***** [[file:freedesktop/.local/share/applications/emacsclient.desktop][emacsclient.desktop]]
+***** firefox.desktop
+#+begin_src conf
+[Desktop Entry]
+Version=1.0
+Name=Firefox
+Comment=Browse the Web
+Exec=env GTK_THEME=Arc /usr/lib/firefox/firefox %u
+Icon=firefox
+Terminal=false
+Type=Application
+MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;
+StartupNotify=true
+StartupWMClass=Firefox
+Categories=Network;WebBrowser;
+Keywords=web;browser;internet;
+Actions=new-window;new-private-window;
 
-*NOTE:* The following will overwrite existing dotfiles/scripts, so be pretty damn
-sure.
-
-*** Full
-Use provided script to install dotfiles and scripts.
-#+begin_src sh
-cd ~/dotfiles
-./org-tangle
+[Desktop Action new-window]
+Name=New Window
+Exec=/usr/lib/firefox/firefox --private-window %u
 #+end_src
+***** [[file:freedesktop/.local/share/applications/spotify.desktop][spotify.desktop]]
+**** [[file:freedesktop/.config/mimeapps.list][mimeapps.list]]
+**** [[file:freedesktop/.config/user-dirs.dirs][user-dirs.dirs]]
+*** git
+**** [[file:git/.gitconfig][gitconfig]]
+**** [[file:git/.gitignore][gitignore]]
+*** gpg
+**** [[file:gpg/.gnupg/gpg-agent.conf][gpg-agent.conf]]
+*** neovim
+**** [[file:neovim/.config/nvim/init.vim][init.vim]]
+*** polybar
+**** [[file:polybar/.config/polybar/config][config]]
+*** readline
+**** [[file:readline/.inputrc][inputrc]]
+*** rofi
+**** [[file:rofi/.config/rofi/config][config]]
+**** [[file:rofi/.config/rofi/darktooth.rasi][darktooth.rasi]]
+**** [[file:rofi/.config/rofi/dropdown.rasi][dropdown.rasi]]
+**** networkmanager_dmenu
+***** [[file:rofi/.config/networkmanager-dmenu/config.ini][config.ini]]
+*** rsync
+**** [[file:rsync/.rsync-exclude][rsync-exclude]]
+*** tmux
+**** [[file:tmux/.tmux.conf][tmux.conf]]
+*** X
+**** [[file:X/.XCompose][xcompose]]
+**** [[file:X/.xinitrc][xinitrc]]
+**** [[file:X/.Xresources][xresources]]
+*** zathura
+**** [[file:zathura/.config/zathura/zathurarc][zathurarc]]
+*** zsh
+**** [[file:zsh/.zshrc][zshrc]]
+**** [[file:zsh/.zshenv][zshenv]]
+**** [[file:zsh/.zlogin][zlogin]]
+** Etc
+*** networkmanager
+**** dispatcher
+***** [[file:etc/networkmanager/NetworkManager/dispatcher.d/10-tzupdate.sh][10-tzupdate.sh]]
+**** [[file:etc/networkmanager/NetworkManager/conf.d/dns.conf][dns.conf]]
+*** pacman
+**** [[file:etc/pacman/makepkg.conf][makepkg.conf]]
+**** [[file:etc/pacman/pacman.conf][pacman.conf]]
+*** systemd
+**** [[file:etc/systemd/systemd/logind.conf][logind.conf]]
+*** vconsole
+**** [[file:etc/vconsole/vconsole.conf][vconsole.conf]]
+*** xorg
+**** [[file:etc/xorg/X11/xorg.conf.d/00-keyboard.conf][00-keyboard.conf]]
+**** [[file:etc/xorg/X11/xorg.conf.d/40-libinput.conf][40-libinput.conf]]
+** Scripts
+*** [[file:bin/bin/bluez-rofi][bluez-rofi]]
+*** [[file:bin/bin/cal-rofi][cal-rofi]]
+*** [[file:bin/bin/desktop-record][desktop-record]]
+*** [[file:bin/bin/mons-rofi][mons-rofi]]
+*** [[file:bin/bin/ocrpdf][ocrpdf]]
+*** [[file:bin/bin/ocrpdf2][ocrpdf2]]
+*** [[file:bin/bin/rofi-files][rofi-files]]
+*** [[file:bin/bin/snapbackup][snapbackup]]
+*** [[file:bin/bin/spectrum_ls][spectrum_ls]]
+*** [[file:bin/bin/spotify][spotify]]
+*** [[file:bin/bin/wm-exit][wm-exit]]
+*** [[file:bin/bin/wm-exit-dmenu][wm-exit-dmenu]]
 
-*** Partial
-You can call the script with the filenames you'd like to install - say you want
-just the emacs config:
-#+begin_src sh
-./org-tangle emacs.d/config.org
-#+end_src
-Any arguments not corresponding to a filename will search for a heading in
-rc.org and tangle the files under that heading.
+** Notes
+Previously, all files were kept in an emacs org-mode file and tangled to the
+right location on save. This worked well for me for a while, but it was a
+little annoying for portability because it meant needing emacs on every machine
+that I wanted my dotfiles, and a crazy elisp script if I didn't want to
+manually open emacs to tangle the files.
 
-For example, say you want my emacs config, and /just/ my tmux and bspwm configs from
-~rc.org~:
-#+begin_src sh
-./org-tangle emacs.d/config.org tmux bspwm
-#+end_src
-
-*Note:* Ideally for all of this to work optimally, there should be no ambiguity
-between heading names in ~rc.org~. I'm working on it, but let me know if you spot
-something.
+Stow also makes it so that the source of the file /is/ the file itself, so
+there's no extra 'tangle' step when editing files after the initial stow, and I
+can visit the symlink or the file istelf, and I can visit the symlink or the
+file istelf. I can now also just download single files via curl from my
+dotfiles repo, if needed.
