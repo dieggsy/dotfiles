@@ -25,6 +25,8 @@ installed with gnu stow.
 *** pacman
 **** [[file:etc/pacman/makepkg.conf][makepkg.conf]]
 **** [[file:etc/pacman/pacman.conf][pacman.conf]]
+*** systemd
+**** [[file:etc/systemd/systemd/logind.conf][logind.conf]]
 *** vconsole
 **** [[file:etc/vconsole/vconsole.conf][vconsole.conf]]
 *** xorg
