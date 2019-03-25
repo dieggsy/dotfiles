@@ -14,9 +14,9 @@ others' configs and adapted to my needs. These are managed through GNU stow.
 | Destination/contents         | Command                            |
 |------------------------------+------------------------------------|
 | everything                   | ~sudo make~ or ~sudo make install~ |
-| ~$HOME~                     | ~make conf~                        |
+| ~$HOME~                      | ~make conf~                        |
 | ~/etc~                       | ~sudo make etc~                    |
-| ~$HOME/bin~                 | ~make bin~                         |
+| ~$HOME/bin~                  | ~make bin~                         |
 | specific config              | e.g. ~make bspwm~                  |
 | specific config (under [[file:etc/][etc/]]) | e.g. ~sudo make pacman~            |
 ** conf
