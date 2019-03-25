@@ -22,106 +22,85 @@ others' configs and adapted to my needs. These are managed through GNU stow.
 ** conf
 Everything that goes to ~$HOME~
 *** bspwm
-**** [[file:bspwm/.config/bspwm/bspwmrc][bspwmrc]]
-**** [[file:bspwm/.config/bspwm/rules.scm][rules]]
-**** [[file:bspwm/.config/sxhkd/sxhkdrc][sxhkdrc]]
+- [[file:bspwm/.config/bspwm/bspwmrc][bspwmrc]]
+- [[file:bspwm/.config/bspwm/rules.scm][rules]]
+- [[file:bspwm/.config/sxhkd/sxhkdrc][sxhkdrc]]
 *** chicken
-**** [[file:chicken/.csirc][csirc]]
+- [[file:chicken/.csirc][csirc]]
 *** cmus
-**** [[file:cmus/.config/cmus/darktooth.theme][darktooth.theme]]
+- [[file:cmus/.config/cmus/darktooth.theme][darktooth.theme]]
 *** dunst
-**** [[file:dunst/.config/dunst/dunstrc][dunstrc]]
+- [[file:dunst/.config/dunst/dunstrc][dunstrc]]
 *** fontconfig
-**** [[file:fontconfig/.config/fontconfig/fonts.conf][fonts.conf]]
+- [[file:fontconfig/.config/fontconfig/fonts.conf][fonts.conf]]
 *** freedesktop
+- [[file:freedesktop/.config/mimeapps.list][mimeapps.list]]
+- [[file:freedesktop/.config/user-dirs.dirs][user-dirs.dirs]]
 **** Desktop entries
-***** [[file:freedesktop/.local/share/applications/cmus.desktop][cmus.desktop]]
-***** [[file:freedesktop/.local/share/applications/emacsclient.desktop][emacsclient.desktop]]
-***** firefox.desktop
-#+begin_src conf
-[Desktop Entry]
-Version=1.0
-Name=Firefox
-Comment=Browse the Web
-Exec=env GTK_THEME=Arc /usr/lib/firefox/firefox %u
-Icon=firefox
-Terminal=false
-Type=Application
-MimeType=text/html;text/xml;application/xhtml+xml;application/vnd.mozilla.xul+xml;text/mml;x-scheme-handler/http;x-scheme-handler/https;
-StartupNotify=true
-StartupWMClass=Firefox
-Categories=Network;WebBrowser;
-Keywords=web;browser;internet;
-Actions=new-window;new-private-window;
-
-[Desktop Action new-window]
-Name=New Window
-Exec=/usr/lib/firefox/firefox --private-window %u
-#+end_src
-***** [[file:freedesktop/.local/share/applications/spotify.desktop][spotify.desktop]]
-**** [[file:freedesktop/.config/mimeapps.list][mimeapps.list]]
-**** [[file:freedesktop/.config/user-dirs.dirs][user-dirs.dirs]]
+- [[file:freedesktop/.local/share/applications/cmus.desktop][cmus.desktop]]
+- [[file:freedesktop/.local/share/applications/emacsclient.desktop][emacsclient.desktop]]
+- [[file:freedesktop/.local/share/applications/spotify.desktop][spotify.desktop]]
 *** git
-**** [[file:git/.gitconfig][gitconfig]]
-**** [[file:git/.gitignore][gitignore]]
+- [[file:git/.gitconfig][gitconfig]]
+- [[file:git/.gitignore][gitignore]]
 *** gpg
-**** [[file:gpg/.gnupg/gpg-agent.conf][gpg-agent.conf]]
+- [[file:gpg/.gnupg/gpg-agent.conf][gpg-agent.conf]]
 *** neovim
-**** [[file:neovim/.config/nvim/init.vim][init.vim]]
+- [[file:neovim/.config/nvim/init.vim][init.vim]]
 *** polybar
-**** [[file:polybar/.config/polybar/config][config]]
+- [[file:polybar/.config/polybar/config][config]]
 *** readline
-**** [[file:readline/.inputrc][inputrc]]
+- [[file:readline/.inputrc][inputrc]]
 *** rofi
-**** [[file:rofi/.config/rofi/config][config]]
-**** [[file:rofi/.config/rofi/darktooth.rasi][darktooth.rasi]]
-**** [[file:rofi/.config/rofi/dropdown.rasi][dropdown.rasi]]
+- [[file:rofi/.config/rofi/config][config]]
+- [[file:rofi/.config/rofi/darktooth.rasi][darktooth.rasi]]
+- [[file:rofi/.config/rofi/dropdown.rasi][dropdown.rasi]]
 **** networkmanager_dmenu
-***** [[file:rofi/.config/networkmanager-dmenu/config.ini][config.ini]]
+- [[file:rofi/.config/networkmanager-dmenu/config.ini][config.ini]]
 *** rsync
-**** [[file:rsync/.rsync-exclude][rsync-exclude]]
+- [[file:rsync/.rsync-exclude][rsync-exclude]]
 *** tmux
-**** [[file:tmux/.tmux.conf][tmux.conf]]
+- [[file:tmux/.tmux.conf][tmux.conf]]
 *** X
-**** [[file:X/.XCompose][xcompose]]
-**** [[file:X/.xinitrc][xinitrc]]
-**** [[file:X/.Xresources][xresources]]
+- [[file:X/.XCompose][xcompose]]
+- [[file:X/.xinitrc][xinitrc]]
+- [[file:X/.Xresources][xresources]]
 *** zathura
-**** [[file:zathura/.config/zathura/zathurarc][zathurarc]]
+- [[file:zathura/.config/zathura/zathurarc][zathurarc]]
 *** zsh
-**** [[file:zsh/.zshrc][zshrc]]
-**** [[file:zsh/.zshenv][zshenv]]
-**** [[file:zsh/.zlogin][zlogin]]
+- [[file:zsh/.zshrc][zshrc]]
+- [[file:zsh/.zshenv][zshenv]]
+- [[file:zsh/.zlogin][zlogin]]
 ** etc
 Everything that goes to ~/etc~ (stored under [[file:etc/][etc/]])
 *** networkmanager
+- [[file:etc/networkmanager/NetworkManager/conf.d/dns.conf][dns.conf]]
 **** dispatcher
-***** [[file:etc/networkmanager/NetworkManager/dispatcher.d/10-tzupdate.sh][10-tzupdate.sh]]
-**** [[file:etc/networkmanager/NetworkManager/conf.d/dns.conf][dns.conf]]
+- [[file:etc/networkmanager/NetworkManager/dispatcher.d/10-tzupdate.sh][10-tzupdate.sh]]
 *** pacman
-**** [[file:etc/pacman/makepkg.conf][makepkg.conf]]
-**** [[file:etc/pacman/pacman.conf][pacman.conf]]
+- [[file:etc/pacman/makepkg.conf][makepkg.conf]]
+- [[file:etc/pacman/pacman.conf][pacman.conf]]
 *** systemd
-**** [[file:etc/systemd/systemd/logind.conf][logind.conf]]
+- [[file:etc/systemd/systemd/logind.conf][logind.conf]]
 *** vconsole
-**** [[file:etc/vconsole/vconsole.conf][vconsole.conf]]
+- [[file:etc/vconsole/vconsole.conf][vconsole.conf]]
 *** xorg
-**** [[file:etc/xorg/X11/xorg.conf.d/00-keyboard.conf][00-keyboard.conf]]
-**** [[file:etc/xorg/X11/xorg.conf.d/40-libinput.conf][40-libinput.conf]]
+- [[file:etc/xorg/X11/xorg.conf.d/00-keyboard.conf][00-keyboard.conf]]
+- [[file:etc/xorg/X11/xorg.conf.d/40-libinput.conf][40-libinput.conf]]
 ** bin
 Everything that goes to ~~/bin~
-*** [[file:bin/bin/bluez-rofi][bluez-rofi]]
-*** [[file:bin/bin/cal-rofi][cal-rofi]]
-*** [[file:bin/bin/desktop-record][desktop-record]]
-*** [[file:bin/bin/mons-rofi][mons-rofi]]
-*** [[file:bin/bin/ocrpdf][ocrpdf]]
-*** [[file:bin/bin/ocrpdf2][ocrpdf2]]
-*** [[file:bin/bin/rofi-files][rofi-files]]
-*** [[file:bin/bin/snapbackup][snapbackup]]
-*** [[file:bin/bin/spectrum_ls][spectrum_ls]]
-*** [[file:bin/bin/spotify][spotify]]
-*** [[file:bin/bin/wm-exit][wm-exit]]
-*** [[file:bin/bin/wm-exit-dmenu][wm-exit-dmenu]]
+- [[file:bin/bin/bluez-rofi][bluez-rofi]]
+- [[file:bin/bin/cal-rofi][cal-rofi]]
+- [[file:bin/bin/desktop-record][desktop-record]]
+- [[file:bin/bin/mons-rofi][mons-rofi]]
+- [[file:bin/bin/ocrpdf][ocrpdf]]
+- [[file:bin/bin/ocrpdf2][ocrpdf2]]
+- [[file:bin/bin/rofi-files][rofi-files]]
+- [[file:bin/bin/snapbackup][snapbackup]]
+- [[file:bin/bin/spectrum_ls][spectrum_ls]]
+- [[file:bin/bin/spotify][spotify]]
+- [[file:bin/bin/wm-exit][wm-exit]]
+- [[file:bin/bin/wm-exit-dmenu][wm-exit-dmenu]]
 
 ** Notes
 Previously, all files were kept in an emacs org-mode file and tangled to the
