@@ -1,24 +1,28 @@
 .DEFAULT_GOAL:=install
 
-_CONFIG=$(filter-out etc/,$(sort $(wildcard */)))
-CONFIG=$(_CONFIG:%/=%)
+_CONF=$(filter-out etc/ bin/,$(sort $(wildcard */)))
+CONF=$(_CONF:%/=%)
 
 _ETC=$(wildcard etc/*/)
 ETC=$(_ETC:etc/%/=%)
 
 .PHONY: install
-install: install-conf install-etc
+install: conf etc bin
 
-.PHONY: install-conf
-install-conf:
-	stow -t ~ $(CONFIG)
+.PHONY: conf
+conf:
+	stow -t ~ $(CONF)
 
-.PHONY: install-etc
-install-etc:
+.PHONY: bin
+bin:
+	stow -t ~ bin
+
+.PHONY: etc
+etc:
 	cd etc/ && stow -t /etc $(ETC)
 
-.PHONY: $(CONFIG)
-$(CONFIG): $(_CONFIG)
+.PHONY: $(CONF)
+$(CONF): $(_CONF)
 	stow -t ~ $@
 
 .PHONY: $(ETC)
