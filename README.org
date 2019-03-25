@@ -3,57 +3,24 @@
 Just my dotfiles. Some of this is my own, a lot is inspired by or taken from
 others' configs and adapted to my needs. These are managed through GNU stow.
 
-** Contents                                                      :toc:TOC_3:
+** Contents                                                      :toc:TOC_2:
   - [[#installation][Installation]]
-  - [[#conf][Conf]]
-    - [[#bspwm][bspwm]]
-    - [[#chicken][chicken]]
-    - [[#cmus][cmus]]
-    - [[#dunst][dunst]]
-    - [[#fontconfig][fontconfig]]
-    - [[#freedesktop][freedesktop]]
-    - [[#git][git]]
-    - [[#gpg][gpg]]
-    - [[#neovim][neovim]]
-    - [[#polybar][polybar]]
-    - [[#readline][readline]]
-    - [[#rofi][rofi]]
-    - [[#rsync][rsync]]
-    - [[#tmux][tmux]]
-    - [[#x][X]]
-    - [[#zathura][zathura]]
-    - [[#zsh][zsh]]
-  - [[#etc][Etc]]
-    - [[#networkmanager][networkmanager]]
-    - [[#pacman][pacman]]
-    - [[#systemd][systemd]]
-    - [[#vconsole][vconsole]]
-    - [[#xorg][xorg]]
-  - [[#scripts][Scripts]]
-    - [[#bluez-rofi][bluez-rofi]]
-    - [[#cal-rofi][cal-rofi]]
-    - [[#desktop-record][desktop-record]]
-    - [[#mons-rofi][mons-rofi]]
-    - [[#ocrpdf][ocrpdf]]
-    - [[#ocrpdf2][ocrpdf2]]
-    - [[#rofi-files][rofi-files]]
-    - [[#snapbackup][snapbackup]]
-    - [[#spectrum_ls][spectrum_ls]]
-    - [[#spotify][spotify]]
-    - [[#wm-exit][wm-exit]]
-    - [[#wm-exit-dmenu][wm-exit-dmenu]]
+  - [[#conf][conf]]
+  - [[#etc][etc]]
+  - [[#bin][bin]]
   - [[#notes][Notes]]
 
 ** Installation
-To install a particluar configuration, you can call ~make [config-name]~. So if
-you wanted my bspwm config, you could run ~make bspwm~. The parts of the config
-in ~etc/~ can be installed in the same way, but require root privileges since
-they install to ~/etc~ - e.g. ~sudo make pacman~.
-
-You can install all of the user home based config with ~make install-conf~, all
-of the ~/etc~ config with ~sudo make install-etc~, and everything with ~sudo
-make install~ or simply ~sudo make~.
-** Conf
+| Destination/contents         | Command                            |
+|------------------------------+------------------------------------|
+| everything                   | ~sudo make~ or ~sudo make install~ |
+| ~$HOME~                     | ~make conf~                        |
+| ~/etc~                       | ~sudo make etc~                    |
+| ~$HOME/bin~                 | ~make bin~                         |
+| specific config              | e.g. ~make bspwm~                  |
+| specific config (under [[file:etc/][etc/]]) | e.g. ~sudo make pacman~            |
+** conf
+Everything that goes to ~$HOME~
 *** bspwm
 **** [[file:bspwm/.config/bspwm/bspwmrc][bspwmrc]]
 **** [[file:bspwm/.config/bspwm/rules.scm][rules]]
@@ -125,7 +92,8 @@ Exec=/usr/lib/firefox/firefox --private-window %u
 **** [[file:zsh/.zshrc][zshrc]]
 **** [[file:zsh/.zshenv][zshenv]]
 **** [[file:zsh/.zlogin][zlogin]]
-** Etc
+** etc
+Everything that goes to ~/etc~ (stored under [[file:etc/][etc/]])
 *** networkmanager
 **** dispatcher
 ***** [[file:etc/networkmanager/NetworkManager/dispatcher.d/10-tzupdate.sh][10-tzupdate.sh]]
@@ -140,7 +108,8 @@ Exec=/usr/lib/firefox/firefox --private-window %u
 *** xorg
 **** [[file:etc/xorg/X11/xorg.conf.d/00-keyboard.conf][00-keyboard.conf]]
 **** [[file:etc/xorg/X11/xorg.conf.d/40-libinput.conf][40-libinput.conf]]
-** Scripts
+** bin
+Everything that goes to ~~/bin~
 *** [[file:bin/bin/bluez-rofi][bluez-rofi]]
 *** [[file:bin/bin/cal-rofi][cal-rofi]]
 *** [[file:bin/bin/desktop-record][desktop-record]]
