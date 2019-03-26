@@ -1,5 +1,5 @@
 #+title: Emacs Init File!
-#+property: header-args :results silent :comments link :tangle ~/.emacs.d/init.el
+#+property: header-args :results silent :tangle ~/.emacs.d/init.el
 
 * Intro
 
@@ -37,8 +37,8 @@ annoying like that.
 ;;(package-initialize)
 #+end_src
 ** Startup time
-Next we define a variable for timing startup, and change ~gc-cons-threshhold~
-temporarily (only during startup). This saves me like .3 s of startup time.
+Change ~gc-cons-threshhold~ temporarily (only during startup). This saves me
+like .3 s of startup time.
 #+begin_src emacs-lisp
 (setq gc-cons-threshold 400000000
       gc-cons-percentage 0.6
