@@ -103,3 +103,9 @@ my-packages () {
 missing-from-group () {
     comm -23 <(pacman -Sqg "$1" | sort) <(pacman -Qqg "$1" | sort)
 }
+
+if hash thefuck >/dev/null 2>&1; then
+  fuck() {
+    eval "$(thefuck --alias)" && fuck
+  }
+fi
