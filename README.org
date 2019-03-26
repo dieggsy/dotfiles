@@ -40,6 +40,7 @@ Everything that goes to ~$HOME~
 - [[file:freedesktop/.local/share/applications/cmus.desktop][cmus.desktop]]
 - [[file:freedesktop/.local/share/applications/emacsclient.desktop][emacsclient.desktop]]
 - [[file:freedesktop/.local/share/applications/spotify.desktop][spotify.desktop]]
+- [[file:freedesktop/.local/share/applications/st.desktop][st.desktop]]
 *** git
 - [[file:git/.gitconfig][gitconfig]]
 - [[file:git/.gitignore][gitignore]]

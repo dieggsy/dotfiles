@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=st
+Comment=Use the command line
+Exec=st -e "tmux"
+Icon=utilities-terminal
+Type=Application
+Categories=GTK;System;TerminalEmulator;
+StartupNotify=true
