@@ -1,5 +1,5 @@
 # -*- mode: conf -*-
-set font "Iosevka Term 9"
+set font "Iosevka Term 10"
 set default-bg "#282828"
 set default-fg "#fdf4c1"
 set inputbar-bg "#282828"
