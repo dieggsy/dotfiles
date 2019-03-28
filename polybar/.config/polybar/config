@@ -51,7 +51,7 @@ enable-ipc = true
 
 [module/xwindow]
 type = internal/xwindow
-label = %{F#BDAE93}%title:0:30:...%%{F-}
+label = %{F#665C54}%title:0:30:...%%{F-}
 
 [module/display]
 type=custom/script
@@ -91,7 +91,7 @@ label-empty =
 [module/network]
 click-left = networkmanager_dmenu
 type = custom/script
-exec = ~/bin/blocks/networkmanager
+exec = ~/.config/polybar/blocks/networkmanager
 format-foreground = ${colors.blue}
 format-underline = ${colors.blue}
 format-padding = 1
@@ -100,7 +100,7 @@ interval = 2
 [module/bluez]
 click-left = bluez-rofi &
 type = custom/script
-exec = ~/bin/blocks/bluez
+exec = ~/.config/polybar/blocks/bluez
 format-padding=1
 interval = 1
 
@@ -127,9 +127,7 @@ format-padding=1
 
 [module/weather]
 type = custom/script
-exec = ~/bin/blocks/darksky
-; format-foreground = #BDAE93
-; format-background = ${colors.dark2}
+exec = ~/.config/polybar/blocks/darksky
 format-foreground = ${colors.sienna}
 format-underline = ${colors.sienna}
 format-padding = 1
@@ -139,11 +137,9 @@ label-font = 2
 
 [module/battery]
 type=custom/script
-; tail=true
-exec = ~/bin/blocks/battery-average
+exec = ~/.config/polybar/blocks/battery-average
 format-foreground = ${colors.blue}
 format-underline = ${colors.blue}
-; format-background = ${colors.dark2}
 format-padding = 1
 interval=30
 
