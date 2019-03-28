@@ -379,7 +379,8 @@ Integrate gpg passphrase query with Emacs minibuffer when using EPA.
 *** Modes
 #+begin_src emacs-lisp
 (d/list-prepend! 'auto-mode-alist
-  '("PKGBUILD" . sh-mode))
+  '("PKGBUILD" . sh-mode)
+  '("\\.hook\\'" . conf-mode))
 #+end_src
 ** Functions
 *** Dotfiles
