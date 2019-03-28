@@ -1,6 +1,6 @@
 .DEFAULT_GOAL:=install
 
-_CONF=$(filter-out etc/ bin/,$(sort $(wildcard */)))
+_CONF=$(filter-out polybar/ etc/ bin/,$(sort $(wildcard */)))
 CONF=$(_CONF:%/=%)
 
 _ETC=$(wildcard etc/*/)
@@ -10,7 +10,7 @@ ETC=$(_ETC:etc/%/=%)
 install: conf etc bin
 
 .PHONY: conf
-conf:
+conf: polybar
 	stow -t ~ $(CONF)
 
 .PHONY: bin
@@ -20,6 +20,11 @@ bin:
 .PHONY: etc
 etc:
 	cd etc/ && stow -t /etc $(ETC)
+
+.PHONY: polybar
+polybar:
+	cd polybar/.config/polybar/blocks/ && make
+	stow -t ~ polybar
 
 .PHONY: $(CONF)
 $(CONF): $(_CONF)
