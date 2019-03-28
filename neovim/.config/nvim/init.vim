@@ -64,4 +64,6 @@ nmap # <Plug>(anzu-sharp-with-echo)
 command DeleteTrailingWhitespace :%s/\s\+$//e
 cnoreabbrev dtw DeleteTrailingWhitespace
 
+set runtimepath^=/usr/share/vim/vimfiles
+
 au VimLeave * set guicursor=a:ver1-blinkon0
