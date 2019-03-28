@@ -1,7 +1,3 @@
-#if __has_include(".extend.Xresources")
-#include ".extend.Xresources"
-#endif
-
 Xft.dpi: 172
 Xft.antialias: 1
 Xft.hinting: 1
