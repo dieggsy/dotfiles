@@ -46,6 +46,9 @@ Everything that goes to ~$HOME~
 - [[file:git/.gitignore][gitignore]]
 *** gpg
 - [[file:gpg/.gnupg/gpg-agent.conf][gpg-agent.conf]]
+*** gtk
+- [[file:gtk/.gtkrc-2.0][gtkrc-2.0]]
+- [[file:gtk/.config/gtk-3.0/settings.ini][settings.ini]]
 *** neovim
 - [[file:neovim/.config/nvim/init.vim][init.vim]]
 *** polybar
