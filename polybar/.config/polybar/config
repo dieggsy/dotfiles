@@ -88,15 +88,6 @@ label-urgent-padding = 1
 
 label-empty =
 
-[module/xbacklight]
-type = internal/backlight
-card = intel_backlight
-format-background = ${colors.dark2}
-format-foreground = #BDAE93
-format-padding = 1
-format =  <label>
-label = %percentage%
-
 [module/network]
 click-left = networkmanager_dmenu
 type = custom/script
@@ -105,12 +96,6 @@ format-foreground = ${colors.blue}
 format-underline = ${colors.blue}
 format-padding = 1
 interval = 2
-
-[module/bluetooth]
-type = custom/script
-exec = rfkill list bluetooth | grep yes > /dev/null && echo '' || echo 
-format-foreground = ${colors.foreground}
-format-padding = 1
 
 [module/bluez]
 click-left = bluez-rofi &
@@ -125,42 +110,6 @@ exec = date +'%%{F#FDF4C1} %H:%M%%{F-} %%{F#665C54}%a %Y-%m-%d%%{F-}'
 interval = 1
 format-padding=1
 click-left = cal-rofi
-
-[module/bat0]
-type = internal/battery
-format-full-background = ${colors.dark2}
-format-full-foreground = #BDAE93
-format-full-padding = 1
-format-charging-background = ${colors.dark2}
-format-charging-foreground = #BDAE93
-format-charging-padding = 1
-format-discharging-background = ${colors.dark2}
-format-discharging-foreground = #BDAE93
-format-discharging-padding = 1
-battery = BAT0
-adapter = ADP1
-full-at = 100
-
-format-full = %{A1:notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)":} <label-full>%{A}
-format-charging = %{A1:notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)":}<animation-charging> <label-charging>%{A}
-format-discharging = %{A1:notify-send "$(upower -i /org/freedesktop/UPower/devices/battery_BAT0)":}<ramp-capacity> <label-discharging>%{A}
-
-label-full = %percentage%
-label-charging = %percentage%
-label-discharging = %percentage%
-
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
-ramp-capacity-3 = 
-ramp-capacity-4 = 
-
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
-animation-charging-3 = 
-animation-charging-4 = 
-animation-charging-framerate = 750
 
 [module/cpu]
 type = internal/cpu
@@ -191,53 +140,12 @@ label-font = 2
 [module/battery]
 type=custom/script
 ; tail=true
-exec = ~/bin/blocks/t480-battery
+exec = ~/bin/blocks/battery-average
 format-foreground = ${colors.blue}
 format-underline = ${colors.blue}
 ; format-background = ${colors.dark2}
 format-padding = 1
 interval=30
-
-
-[module/cmus]
-type = custom/script
-exec = ~/bin/blocks/mpris cmus
-tail = true
-click-left = playerctl --player=cmus play-pause
-scroll-up = playerctl --player=cmus previous
-scroll-down = playerctl --player=cmus next
-format-prefix = " "
-format-prefix-foreground = ${colors.green}
-
-[module/spotify]
-type = custom/script
-exec = ~/bin/blocks/mpris spotify
-tail = true
-format-prefix = " "
-format-prefix-foreground = ${colors.green}
-click-left = playerctl --player=spotify play-pause
-scroll-up = playerctl --player=spotify previous
-scroll-down = playerctl --player=spotify next
-
-[module/dropbox]
-type = custom/script
-exec = ~/bin/blocks/dropbox
-interval = 2
-format-prefix = " "
-format-prefix-foreground = ${colors.cyan}
-
-[module/github]
-type = custom/script
-exec = ~/bin/blocks/github-unread
-interval = 10
-format-prefix = " "
-click-left = xdg-open https://github.com/notifications
-
-[module/volume]
-type = custom/script
-exec = ~/bin/blocks/amixer
-tail = true
-format-padding=1
 
 [module/pulse]
 type=internal/pulseaudio
@@ -252,20 +160,6 @@ ramp-volume-2 = 
 ramp-volume-3 = 
 format-volume-padding=1
 format-muted-padding=1
-
-[module/inbox-reddit]
-type = custom/script
-exec = ~/bin/blocks/reddit-unread
-interval = 10
-click-left = xdg-open https://reddit.com/message/unread
-format-prefix = " "
-format-prefix-foreground = #FF3F18
-
-[module/xkb]
-type = custom/ipc
-hook-0 = ~/bin/blocks/xkb -display
-initial = 1
-format-prefix = " "
 
 [settings]
 screenchange-reload = true
