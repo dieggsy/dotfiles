@@ -1,0 +1,9 @@
+[Trigger]
+Type = Package
+Operation = Install
+Target = chicken
+
+[Action]
+Description = Symlinking chicken-csi to csi...
+When = PostTransaction
+Exec = /bin/sh -c 'ln -sfv /usr/bin/chicken-csi /usr/bin/csi && ln -sfv /usr/bin/chicken-csc /usr/bin/csc'

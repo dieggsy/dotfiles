@@ -1,0 +1,9 @@
+[Trigger]
+Type = Package
+Operation = Remove
+Target = rofi
+
+[Action]
+Description = Removing dmenu symlink...
+When = PostTransaction
+Exec = /usr/bin/rm -fv /usr/bin/dmenu

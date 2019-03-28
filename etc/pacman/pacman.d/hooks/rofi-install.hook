@@ -1,0 +1,9 @@
+[Trigger]
+Type = Package
+Operation = Install
+Target = rofi
+
+[Action]
+Description = Symlinking rofi to dmenu...
+When = PostTransaction
+Exec = /usr/bin/ln -sfv /usr/bin/rofi /usr/bin/dmenu
