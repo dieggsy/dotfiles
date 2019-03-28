@@ -376,6 +376,11 @@ Integrate gpg passphrase query with Emacs minibuffer when using EPA.
 #+begin_src emacs-lisp
 (column-number-mode)
 #+end_src
+*** Modes
+#+begin_src emacs-lisp
+(d/list-prepend! 'auto-mode-alist
+  '("PKGBUILD" . sh-mode))
+#+end_src
 ** Functions
 *** Dotfiles
 Here I define a function that uses [[https://github.com/jwiegley/emacs-async][async.el]] to open and tangle an org file
