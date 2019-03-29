@@ -115,7 +115,7 @@ int main() {
     print_branch_info(status);
     printf("|");
     print_other_info(status);
-    printf(")");
+    printf(") ");
     pclose(status);
     return 0;
 }

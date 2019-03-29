@@ -1,6 +1,6 @@
 .DEFAULT_GOAL:=install
 
-CFLAGS=-O3 -Wall -Wextra
+CFLAGS=-O3 -Wall -Wextra -pedantic
 
 _CONF=$(filter-out polybar/ etc/ bin/,$(sort $(wildcard */)))
 CONF=$(_CONF:%/=%)
