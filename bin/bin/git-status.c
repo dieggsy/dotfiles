@@ -104,8 +104,6 @@ void print_other_info(FILE *status) {
 
 int main() {
     FILE *status;
-    size_t n =0;
-    /* char path[1035]; */
     status = popen("git status --porcelain -b 2>/dev/null;", "r");
     int c;
     if ((c=getc(status)) != '#') {

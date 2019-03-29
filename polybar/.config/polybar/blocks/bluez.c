@@ -25,8 +25,6 @@ int main () {
         fprintf(stderr,"Failed to read managed objects: %s - %s\n", error.name, error.message);
         return r;
     }
-    char * icon = "";
-    char * name;
     // Start traversing the managed objects to look for connected device
     r = sd_bus_message_enter_container(msg, 'a', "{oa{sa{sv}}}");
 

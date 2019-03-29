@@ -1,27 +1,27 @@
 DEST=~/bin/blocks/
-CXXFLAGS=-O3
+CFLAGS=-O3 -Wall -Wextra -pedantic
 
 FILES=$(wildcard *.c)
 TARGETS=$(basename $(FILES))
 
 all: $(TARGETS) darksky
 
-small: CXXFLAGS += -s
+small: CFLAGS += -s
 small: all
 
 clean:
 	rm -rvf $(TARGETS) darksky
 
-networkmanager: CXXFLAGS += -lsystemd
+networkmanager: CFLAGS += -lsystemd
 
-bluez: CXXFLAGS += -lsystemd
+bluez: CFLAGS += -lsystemd
 
-battery-average: CXXFLAGS += -lm
+battery-average: CFLAGS += -lm
 
-intel-backlight: CXXFLAGS += -lm
+intel-backlight: CFLAGS += -lm
 
 darksky : darksky.py
 	cp darksky.py darksky
 
 % : %.c
-	$(CC) $(CPPFLAGS) $(CXXFLAGS) -o $@ $<
+	$(CC) $(CFLAGS) -o $@ $<
