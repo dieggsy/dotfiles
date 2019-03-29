@@ -11,5 +11,6 @@
 /emacs/.emacs.d/srecode-map.el
 /emacs/.emacs.d/tramp
 /emacs/.emacs.d/straight/
+/neovim/.config/nvim/plugged/
 /polybar/.config/polybar/blocks/
 /bin/bin/git-prompt
