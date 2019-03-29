@@ -14,8 +14,11 @@ conf: polybar
 	stow -t ~ $(CONF)
 
 .PHONY: bin
-bin:
+bin: bin/bin/git-status
 	stow -t ~ bin
+
+bin/bin/git-status: bin/bin/git-status.c
+	gcc -O3 bin/bin/git-status.c -o bin/bin/git-status
 
 .PHONY: etc
 etc:

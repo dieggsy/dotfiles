@@ -12,3 +12,4 @@
 /emacs/.emacs.d/tramp
 /emacs/.emacs.d/straight/
 /polybar/.config/polybar/blocks/
+/bin/bin/git-status
