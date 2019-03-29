@@ -16,11 +16,11 @@ conf: polybar
 	stow -t ~ $(CONF)
 
 .PHONY: bin
-bin: bin/bin/git-status
+bin: bin/bin/git-prompt
 	stow -t ~ bin
 
-bin/bin/git-status: bin/bin/git-status.c
-	$(CC) $(CFLAGS) bin/bin/git-status.c -o bin/bin/git-status
+bin/bin/git-prompt: bin/bin/git-prompt.c
+	$(CC) $(CFLAGS) bin/bin/git-prompt.c -o bin/bin/git-prompt
 
 .PHONY: etc
 etc:

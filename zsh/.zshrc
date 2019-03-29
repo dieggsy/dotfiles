@@ -52,7 +52,7 @@ maybe_host () {
 }
 
 maybe_git () {
-    hash git-status > /dev/null 2>&1 && echo "$(git-status)"
+    hash git-prompt > /dev/null 2>&1 && git-prompt
 }
 
 setopt prompt_subst
