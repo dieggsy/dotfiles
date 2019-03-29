@@ -36,7 +36,7 @@ void print_branch_info(FILE *status) {
     }
     else if (strncmp(first_line, "## No commits", 13) == 0) {
         sscanf(first_line, "## No commits yet on %100[^\n]", branch);
-        printf(branch);
+        fputs(branch,stdout);
     }
     else {
         char ahead_behind_str[6];
