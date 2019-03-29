@@ -22,32 +22,31 @@ void print_branch_info(FILE *status) {
     size_t n =0;
     char *first_line = NULL;
     getline(&first_line, &n, status);
+    char branch[101];
     if (strstr(first_line, "(no branch)") != NULL) {
         FILE *rev;
         rev = popen("git rev-parse --short HEAD", "r");
         char *rev_out;
+        char rev_parsed[41];
         n = 0;
         getline(&rev_out, &n, rev);
-        sscanf(rev_out,"%m[^\n]", &rev_out);
-        printf(":%s",rev_out);
+        sscanf(rev_out,"%40[^\n]", rev_parsed);
+        printf(":%s",rev_parsed);
         free(rev_out);
     }
     else if (strncmp(first_line, "## No commits", 13) == 0) {
-        char * branch;
-        sscanf(first_line, "## No commits yet on %m[^\n]", &branch);
+        sscanf(first_line, "## No commits yet on %100[^\n]", branch);
         printf(branch);
-        free(branch);
     }
     else {
-        char *branch;
-        char *ahead_behind_str;
+        char ahead_behind_str[6];
         int ahead_behind = 0;
         int behind = 0;
-        int ret = sscanf(first_line, "## %m[^.\n]...%*[^ ] %*c%m[a-z] %d, behind %d%*c", &branch, &ahead_behind_str, &ahead_behind, &behind);
+        int ret = sscanf(first_line, "## %100[^.\n]...%*[^ ] %*c%s[a-z] %d, behind %d%*c", branch, ahead_behind_str, &ahead_behind, &behind);
         switch (ret) {
             case 4 :
                 printf("%%F{10}%s%%f%%F{13}↑%d↓%d%%f", branch, ahead_behind, behind);
-                free(ahead_behind_str);
+                /* free(ahead_behind_str); */
                 break;
             case 3 :
                 if (strncmp(ahead_behind_str, "ahead", 5) == 0) {
@@ -56,13 +55,12 @@ void print_branch_info(FILE *status) {
                 else {
                     printf("%%F{10}%s%%f%%F{13}↓%d%%f", branch, ahead_behind);
                 }
-                free(ahead_behind_str);
+                /* free(ahead_behind_str); */
                 break;
             default :
                 printf("%%F{10}%s%%f", branch);
                 break;
         }
-        free(branch);
     }
     free(first_line);
 }
