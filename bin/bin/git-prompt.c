@@ -99,6 +99,9 @@ void print_other_info(FILE *status) {
     if (dirty) {
         printf("…");
     }
+    if (!staged && !conflicts && !modified && !dirty) {
+        printf("%%F{10}✓%%f");
+    };
     free(first_line);
 }
 
