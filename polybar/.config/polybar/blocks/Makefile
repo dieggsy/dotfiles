@@ -21,7 +21,7 @@ battery-average: CFLAGS += -lm
 intel-backlight: CFLAGS += -lm
 
 darksky : darksky.py
-	cp darksky.py darksky
+	ln -sf darksky.py darksky
 
 % : %.c
 	$(CC) $(CFLAGS) -o $@ $<
