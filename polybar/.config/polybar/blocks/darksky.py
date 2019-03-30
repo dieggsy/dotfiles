@@ -30,10 +30,13 @@ def get_icon(icon):
         "tornado": "",
 
     }
-    return switcher.get(icon, "")
+    return switcher.get(icon, "?")
 
-with urllib.request.urlopen('https://api.darksky.net/forecast/'
-                            f'{key}/{coord[0]},{coord[1]}?units={units}') as response:
-    json = json.loads(response.read())
-
-print(f"{get_icon(json['currently']['icon'])} {round(json['currently']['temperature'])}")
+try:
+    with urllib.request.urlopen('https://api.darksky.net/forecast/'
+                                f'{key}/{coord[0]},{coord[1]}?units={units}') as response:
+        json = json.loads(response.read())
+except:
+    print("? ??")
+else:
+    print(f"{get_icon(json['currently']['icon'])} {round(json['currently']['temperature'])}")
