@@ -1,12 +1,11 @@
 ;; -*- mode: scheme -*-
 
 (let ()
-  (import (only (chicken load) load-verbose)
-          (only chicken.process-context get-environment-variable))
+  (import (only chicken.process-context get-environment-variable)
+          (prefix breadline rl:)
+          (only breadline-scheme-completion scheme-completer)
+          (only chicken.format format))
   (unless (get-environment-variable "INSIDE_EMACS")
-    (import (prefix breadline rl:)
-            (only breadline-scheme-completion scheme-completer)
-            (only chicken.format format))
     (rl:history-file (format "~a/.csi_history"
                              (get-environment-variable "HOME")))
     (rl:stifle-history! 10000)
