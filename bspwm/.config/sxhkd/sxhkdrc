@@ -160,9 +160,15 @@ super + {Left,Down,Up,Right}
     bspc node -v {-20 0,0 20,0 -20,20 0}
 
 XF86MonBrightnessUp
-    xbacklight -inc 5
+    brightness=$(printf "%0.f" `xbacklight`) \
+    && [[ $brightness -lt 5 ]] \
+    && xbacklight -set $(($brightness + 1)) \
+    || xbacklight -set $(($brightness + 5))
 XF86MonBrightnessDown
-    xbacklight -dec 5
+    brightness=$(printf "%0.f" `xbacklight`) \
+    && [[ $brightness -le 5 ]] \
+    && xbacklight -set $(($brightness - 1)) \
+    || xbacklight -set $(($brightness - 5))
 # Print
 #     scrot ~/pic/scrot/%Y-%m-%d_%H:%M:%S.png && notify-send "Screenshot!"
 # XF86LaunchB
