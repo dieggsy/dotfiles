@@ -1854,6 +1854,12 @@ Ivy UI for Projectile
   :config
   (global-whitespace-cleanup-mode))
 #+end_src
+
+*** [[https://github.com/mhayashi1120/Emacs-wgrep][wgrep]]
+#+begin_src emacs-lisp
+(use-package wgrep
+  :custom (wgrep-auto-save-buffer t))
+#+end_src
 ** Functions
 *** File/Buffer Manipulation
 #+begin_src emacs-lisp
