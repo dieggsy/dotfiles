@@ -3,4 +3,5 @@
 [Default Applications]
 text/plain=emacsclient.desktop;
 text/markdown=emacsclient.desktop;
+text/x-python=emacsclient.desktop
 application/pdf=org.pwmt.zathura.desktop;zathura.desktop;
