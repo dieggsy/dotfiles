@@ -3313,7 +3313,8 @@ On the fly syntax checking for GNU Emacs
 #+end_src
 ***** lsp-mode
 #+begin_src emacs-lisp
-(use-package lsp-mode)
+(use-package lsp-mode
+  :hook (c++-mode c-mode))
 #+end_src
 ***** cquery
 #+begin_src emacs-lisp :tangle no
@@ -3323,7 +3324,7 @@ On the fly syntax checking for GNU Emacs
   (setq cquery-executable "/usr/bin/cquery"))
 #+end_src
 ***** ccls
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package ccls
   :hook (c++-mode . d/enable-ccls)
   :config
