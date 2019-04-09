@@ -60,6 +60,7 @@ setopt prompt_subst
 
 alias ls='ls --color=auto -F'
 alias csi='csi -q'
+alias lsblk='lsblk -o NAME,SIZE,MOUNTPOINT'
 
 cd_list () {
     emulate -L zsh
