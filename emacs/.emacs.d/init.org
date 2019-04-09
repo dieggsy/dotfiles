@@ -2049,6 +2049,20 @@ expand text trying various ways to find its expansion
   :general
   ("M-/" #'hippie-expand))
 #+end_src
+**** [[elisp:(find-library-other-window%20"electric")][electric]]
+#+begin_src emacs-lisp
+(use-package electric
+  :defer 5
+  (electric-indent-mode)
+  (electric-layout-mode))
+#+end_src
+**** [[elisp:(find-library-other-window%20"elec-pair")][electric-pair]]
+#+begin_src emacs-lisp
+(use-package elec-pair
+  :demand t
+  :config
+  (electric-pair-mode))
+#+end_src
 *** Packages
 **** [[https://github.com/abo-abo/auto-yasnippet][auto-yasnippet]]
 #+begin_quote
@@ -2326,7 +2340,7 @@ lispy + evil = lispyville
 Minor mode for Emacs that deals with parens pairs and tries to be smart about
 it.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package smartparens
   :hook (((prog-mode
            conf-mode
@@ -2384,7 +2398,7 @@ it.
     ("S"  sp-backward-slurp-sexp)))
 #+end_src
 **** [[https://github.com/expez/evil-smartparens][evil-smartparens]]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package evil-smartparens
   :init
   (make-variable-buffer-local 'evil-smartparens-mode-map)
@@ -3215,7 +3229,7 @@ ANSI & xterm-256 color text property translator for Emacs
 #+begin_quote
 Emacs minor mode that keeps your code always indented. More reliable than electric-indent-mode.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package aggressive-indent
   :hook ((lisp-mode
           emacs-lisp-mode
