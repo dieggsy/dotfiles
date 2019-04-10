@@ -1,8 +1,8 @@
 # -*- mode: sh -*-
 
 set keymap vi-insert
-"(": "\C-v(\C-v)\e[D"
-"\"": "\C-v\"\C-v\"\e[D"
+# "(": "\C-v(\C-v)\e[D"
+# "\"": "\C-v\"\C-v\"\e[D"
 set editing-mode vi
 set show-mode-in-prompt on
 set colored-completion-prefix on
