@@ -36,6 +36,8 @@ let g:deoplete#enable_at_startup = 1
 let g:lightline = {'colorscheme' : 'gruvbox'}
 
 " Defaults
+set ignorecase
+set smartcase
 set laststatus=2
 set relativenumber
 set cursorline
