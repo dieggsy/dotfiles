@@ -645,9 +645,7 @@ Increment and decrement numbers in Emacs
 #+begin_src emacs-lisp
 (use-package evil-numbers
   :straight (:host github
-             :repo "cofi/evil-numbers"
-             :fork (:host github
-                    :repo "dieggsy/evil-numbers"))
+             :repo "janpath/evil-numbers")
   :general
   (d/leader-keys
     "n-"  'd/numbers/evil-numbers/dec-at-pt
