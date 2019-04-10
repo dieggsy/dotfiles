@@ -2051,6 +2051,7 @@ expand text trying various ways to find its expansion
 #+begin_src emacs-lisp
 (use-package electric
   :defer 5
+  :config
   (electric-indent-mode)
   (electric-layout-mode))
 #+end_src
