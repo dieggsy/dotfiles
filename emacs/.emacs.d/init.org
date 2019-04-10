@@ -4212,7 +4212,7 @@ cd to frequent directory in eshell, an Emacs port of https://github.com/rupa/z
 #+begin_quote
 Fish completion for Emacs and Eshell
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package fish-completion
   :hook (eshell-mode . fish-completion-mode))
 #+end_src
