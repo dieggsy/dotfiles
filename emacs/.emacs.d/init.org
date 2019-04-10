@@ -4940,16 +4940,28 @@ Nickname Highlighting for ERC
 #+end_quote
 #+begin_src emacs-lisp
 (use-package erc-hl-nicks
-  :straight (:host github
-             :repo "leathekd/erc-hl-nicks"
-             :fork (:host github
-                    :repo "dieggsy/erc-hl-nicks"))
   :after erc
   :demand t
   :config
   (setq erc-hl-nicks-skip-nicks '("diegs" "dieggsy")
         erc-lurker-ignore-chars erc-hl-nicks-ignore-chars)
-  (push "erc-current-nick-face" erc-hl-nicks-skip-faces))
+  (push "erc-current-nick-face" erc-hl-nicks-skip-faces)
+
+  (defcustom erc-hl-nicks-color-list
+    '("#B8BB26" "#FABD2F" "#83A598" "#D3869B"
+      "#8EC07C" "#FE8019" "#3FD7E5" "#79740E"
+      "#B57614" "#076678" "#8F3F71" "#427B58"
+      "#AF3A03" "#00A7AF" "#DD6F48" "#bdae93")
+    "Colors for nicks."
+    :group 'erc-hl-nicks
+    :type '(repeat string))
+
+(define-advice erc-hl-nicks-color-for-nick (:override (nick) d/use-list)
+  "Get the color to use for the given nick by calculating the color
+  and applying the contrast strategies to it."
+  (nth (mod (string-to-number (substring (md5 nick) 0 6) 16)
+            (length erc-hl-nicks-color-list))
+       erc-hl-nicks-color-list)))
 #+end_src
 *** [[https://github.com/skeeto/elfeed][elfeed]]
 :PROPERTIES:
