@@ -37,10 +37,10 @@ rsync $OPT $SSHOPT $LINK $SRC ${SNAP}/$date # | pv -lep -s $(rsync -n $OPT $SSHO
 # Remove symlink to previous snapshot
 # Create new symlink to latest snapshot for the next backup to hardlink
 if [ -d $LOCALDIR ]; then
-    ln -sf $DEST/$date $LAST
+    ln -vnsf $DEST/$date $LAST
     find $DEST -maxdepth 1 -type d ! -path $DEST -mtime +30 -exec echo 'Removing' {} + -exec rm -vrf {} +
 else
-    ssh $REMOTEUSER@$REMOTEHOST "ln -sf ${DEST}/$date $LAST"
+    ssh $REMOTEUSER@$REMOTEHOST "ln -vnsf ${DEST}/$date $LAST"
     # ssh dieggsy@panda "find $DEST -maxdepth 1 -type d ! -path $DEST ! -path $DEST/$date -mtime -1 -exec echo 'Removing' {} + -exec rm -rf {} +"
     ssh $REMOTEUSER@$REMOTEHOST "find $DEST -maxdepth 1 -type d ! -path $DEST -mtime +30 -exec echo 'Removing' {} + -exec rm -vrf {} +"
 fi
