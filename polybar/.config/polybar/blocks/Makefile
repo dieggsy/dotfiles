@@ -16,7 +16,7 @@ networkmanager: CFLAGS += -lsystemd
 
 bluez: CFLAGS += -lsystemd
 
-battery-average: CFLAGS += -lm
+battery-average: CFLAGS += -lm -lsystemd -lespeak-ng
 
 intel-backlight: CFLAGS += -lm
 
