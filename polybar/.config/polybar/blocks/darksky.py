@@ -35,8 +35,11 @@ def get_icon(icon):
 try:
     with urllib.request.urlopen('https://api.darksky.net/forecast/'
                                 f'{key}/{coord[0]},{coord[1]}?units={units}') as response:
-        json = json.loads(response.read())
+        raw_text = response.read()
+        jdict = json.loads(raw_text)
+        with open("/tmp/darksky", "w") as f:
+            json.dump(jdict,f);
 except:
     print("? ??")
 else:
-    print(f"{get_icon(json['currently']['icon'])} {round(json['currently']['temperature'])}")
+    print(f"{get_icon(jdict['currently']['icon'])} {round(jdict['currently']['temperature'])}")
