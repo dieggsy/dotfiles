@@ -134,6 +134,7 @@ format-underline = ${colors.sienna}
 format-padding = 1
 click-middle = xdg-open https://darksky.net
 click-left = ~/.config/polybar/blocks/darksky-hourly.py
+click-right = ~/.config/polybar/blocks/darksky-daily.py
 interval = 120
 label-font = 2
 
