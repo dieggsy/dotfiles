@@ -39,6 +39,7 @@ separator=
 font-0 = Iosevka Term:size=10;3
 font-1 = Weather Icons:size=10;3
 font-2 = Material Icons:size=10;4
+font-3 = Iosevka Term:size=7;0
 
 modules-left = bspwm date network bluez
 modules-right = display mem cpu weather pulse battery

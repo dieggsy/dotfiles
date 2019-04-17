@@ -42,4 +42,7 @@ try:
 except:
     print("? ??")
 else:
-    print(f"{get_icon(jdict['currently']['icon'])} {round(jdict['currently']['temperature'])}")
+    print(f"{get_icon(jdict['currently']['icon'])} {round(jdict['currently']['temperature'])}"
+          f" %{{T4}}%{{F#665C54}}{round(jdict['daily']['data'][0]['temperatureMax'])}"
+          f"/{round(jdict['daily']['data'][0]['temperatureMin'])}%{{T-}}%{{F-}}")
+
