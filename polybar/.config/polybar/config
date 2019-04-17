@@ -128,7 +128,7 @@ format-padding=1
 
 [module/weather]
 type = custom/script
-exec = ~/.config/polybar/blocks/darksky
+exec = ~/.config/polybar/blocks/darksky.py
 format-foreground = ${colors.sienna}
 format-underline = ${colors.sienna}
 format-padding = 1
