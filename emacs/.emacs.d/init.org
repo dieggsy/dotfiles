@@ -158,7 +158,8 @@ find-library~ and edit/push/pull request away, since package sources are stored
 as git repos.
 #+begin_src emacs-lisp
 (setq straight-repository-branch "develop"
-      straight-process-buffer " *straight-process*")
+      straight-process-buffer " *straight-process*"
+      straight-check-for-modifications '(check-on-save))
 
 (let ((bootstrap-file (locate-user-emacs-file "straight/bootstrap.el"))
       (bootstrap-version 3))
