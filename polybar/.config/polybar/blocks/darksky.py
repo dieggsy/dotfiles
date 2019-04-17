@@ -9,9 +9,7 @@ from pathlib import Path
 # coord = (00.0000,00.0000)
 # units = "us"
 
-config = f"{str(Path.home())}/.config/polybar/darkskyrc"
-with open(config) as f:
-    exec(f.read())
+CONFIG_PATH = f"{str(Path.home())}/.config/polybar/darkskyrc"
 
 def get_icon(icon):
     switcher = {
@@ -33,6 +31,8 @@ def get_icon(icon):
     return switcher.get(icon, "?")
 
 try:
+    with open(CONFIG_PATH) as f:
+        exec(f.read())
     with urllib.request.urlopen('https://api.darksky.net/forecast/'
                                 f'{key}/{coord[0]},{coord[1]}?units={units}') as response:
         raw_text = response.read()
