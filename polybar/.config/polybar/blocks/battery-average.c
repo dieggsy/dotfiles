@@ -44,8 +44,8 @@ int get_joint_percent() {
     return (int)roundf(numerator/denominator * 100);
 }
 
-char * get_icon () {
-    if (read_int("/sys/class/power_supply/AC/online")) {
+char * get_icon (int adapter_online) {
+    if (adapter_online) {
         return "";
     }
     return "";
@@ -96,8 +96,10 @@ void say(char *text) {
 
 int main () {
     int percent = get_joint_percent();
-    printf("%s %d", get_icon(), percent);
-    if (percent <= 10) {
+    int adapter_online = read_int("/sys/class/power_supply/AC/online");
+
+    printf("%s %d", get_icon(adapter_online), percent);
+    if (!adapter_online && percent <= 10) {
         notify("Battery critically low", "Consider charging");
         say("Battery critically low, consider charging");
     }
