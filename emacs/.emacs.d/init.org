@@ -771,9 +771,6 @@ color is hidden by ivy's match color."
 
   (ivy-set-display-transformer 'ivy-switch-buffer 'd/ivy-dired-transformer)
 
-  (setq ivy-re-builders-alist '((swiper . ivy--regex-plus)
-                                (t . ivy--regex-ignore-order)))
-
   (d/list-prepend! 'ivy-sort-functions-alist
     `(ivy-completion-in-region
       . ,(lambda (str1 str2)
