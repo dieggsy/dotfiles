@@ -18,7 +18,7 @@
         ((substring-index "_erc__floating_" instance)
          (with-output-to-file "/tmp/erc-float"
            (lambda () (display wid) (newline)))
-         (display "state=floating hidden=on sticky=on rectangle=1085x560+15+855"))
+         (display "layer=above state=floating hidden=on sticky=on rectangle=1085x560+15+855"))
         ((string=? instance "gl")
          (with-output-to-file "/tmp/mpv-float"
            (lambda () (display wid) (newline))))
