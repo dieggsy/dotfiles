@@ -12,7 +12,7 @@ small: all
 clean:
 	rm -rvf $(TARGETS)
 
-networkmanager: CFLAGS += -lsystemd
+networkmanager: CFLAGS += `pkg-config --cflags --libs dbus-1`
 
 bluez: CFLAGS += -lsystemd
 
