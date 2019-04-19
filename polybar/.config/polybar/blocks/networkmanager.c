@@ -84,7 +84,7 @@ int main () {
     int empty = 1;
     while (sd_bus_message_read(msg, "o", &path) > 0) {
 
-        // Initialize a new message so as to not mes with msg, which we're
+        // Initialize a new message so as to not mess with msg, which we're
         // using to iterate over the active connections array.
         sd_bus_message *nmsg = NULL;
         r = sd_bus_get_property(bus,
@@ -104,10 +104,8 @@ int main () {
         else if (string_has_suffix("ethernet", type)) {
             icon = "";
         }
-        else if (string_has_suffix("vpn", type)) {
-            continue;
-        }
-        else if (string_has_suffix("tun", type)) {
+        else if (string_has_suffix("vpn", type)
+                 || string_has_suffix("tun", type)) {
             continue;
         }
         else  {
@@ -133,7 +131,7 @@ int main () {
         empty = 0;
     }
     if (empty) {
-        puts(" No Connection");
+        fputs(" No Connection",stdout);
     }
     sd_bus_message_exit_container(msg);
     return 0;
