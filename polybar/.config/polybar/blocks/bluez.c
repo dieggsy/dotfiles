@@ -1,93 +1,96 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
-#include <systemd/sd-bus.h>
+#include <dbus/dbus.h>
 
-int main () {
-    int r;
+static void check_and_abort(DBusError *error);
 
-    sd_bus *bus=NULL;
-    sd_bus_message *msg = NULL;
-    sd_bus_error error = SD_BUS_ERROR_NULL;
+int main() {
+    DBusError error;
+    dbus_error_init(&error);
 
-    r = sd_bus_open_system(&bus);
-    if (r < 0) {
-        fputs("Failed to connect to system bus\n", stderr);
-        return r;
+    DBusConnection *connection = dbus_bus_get(DBUS_BUS_SYSTEM, &error);
+    check_and_abort(&error);
+    DBusMessage *msg_query = dbus_message_new_method_call("org.bluez",
+                                                          "/",
+                                                          "org.freedesktop.DBus.ObjectManager",
+                                                          "GetManagedObjects");
+    DBusMessage *msg_reply = dbus_connection_send_with_reply_and_block(connection,
+                                                                       msg_query,
+                                                                       -1,
+                                                                       &error);
+    check_and_abort(&error);
+    // Enter dict
+    DBusMessageIter pathdict;
+    dbus_message_iter_init(msg_reply, &pathdict);
+    // Get length of dict
+    int len = dbus_message_iter_get_element_count(&pathdict);
+    // Go to first entry
+    DBusMessageIter pathdict_entry;
+    dbus_message_iter_recurse(&pathdict, &pathdict_entry);
+    DBusMessageIter pathdict_kv;
+    char *path, *iface, *prop;
+    if (len == 1) {
+        // Bluetooth is off, probably
+        return 0;
     }
+    while (len-- > 0) {
+        // pathdict_kv points to the key in the first entry, which is a path.
+        dbus_message_iter_recurse(&pathdict_entry, &pathdict_kv);
+        dbus_message_iter_get_basic(&pathdict_kv, &path);
+        /* printf("%s\n",path); */
+        // pathdict_kv now points to the value in the first entry, which is a
+        // dict where keys are interfaces.
+        dbus_message_iter_next(&pathdict_kv);
+        int len = dbus_message_iter_get_element_count(&pathdict_kv);
+        DBusMessageIter ifacedict_entry, ifacedict_kv;
+        dbus_message_iter_recurse(&pathdict_kv, &ifacedict_entry);
+        while (len-- > 0) {
+            dbus_message_iter_recurse(&ifacedict_entry, &ifacedict_kv);
 
-    // Get active connections
-    r = sd_bus_call_method(bus,
-                           "org.bluez",
-                           "/",
-                           "org.freedesktop.DBus.ObjectManager",
-                           "GetManagedObjects", &error, &msg, "" /* "a{oa{sa{sv}}}" */);
-    if (r < 0) {
-        fprintf(stderr,"Failed to read managed objects: %s - %s\n", error.name, error.message);
-        return r;
-    }
-    // Start traversing the managed objects to look for connected device
-    r = sd_bus_message_enter_container(msg, 'a', "{oa{sa{sv}}}");
-
-    // Traverse path/dict pair
-    while (sd_bus_message_enter_container(msg, 'e', "oa{sa{sv}}") > 0){
-
-        char * path;
-        sd_bus_message_read(msg, "o", &path);
-        /* puts(path); */
-        /* r = sd_bus_message_skip(msg, "a{sa{sv}}"); */
-
-        r = sd_bus_message_enter_container(msg, 'a', "{sa{sv}}");
-        char * iface;
-        // Traverse interface/dict pair
-        while (sd_bus_message_enter_container(msg, 'e', "sa{sv}") > 0) {
-            sd_bus_message_read(msg, "s", &iface);
-            /* fputs("    ",stdout); */
-            /* puts(iface); */
-            // We only care if the interface is a device
+            /* printf("%d", len); */
+            dbus_message_iter_get_basic(&ifacedict_kv, &iface);
+            /* printf("    %s\n",iface); */
             if (strncmp(iface, "org.bluez.Device1", 16) == 0) {
-                r = sd_bus_message_enter_container(msg, 'a', "{sv}");
-                char * prop;
-                // Traverse property/variant pair
-                char * devname;
-                int connected=0;
-                while (sd_bus_message_enter_container(msg, 'e', "sv") > 0) {
-                    sd_bus_message_read(msg, "s", &prop);
-                    /* fputs("        ", stdout); */
-                    /* puts(prop); */
+                dbus_message_iter_next(&ifacedict_kv);
+                int len = dbus_message_iter_get_element_count(&ifacedict_kv);
+                DBusMessageIter propdict_entry, propdict_kv;
+                dbus_message_iter_recurse(&ifacedict_kv, &propdict_entry);
+                char *devname;
+                int connected = 0;
+                while(len-- > 0) {
+                    dbus_message_iter_recurse(&propdict_entry, &propdict_kv);
+                    dbus_message_iter_get_basic(&propdict_kv, &prop);
+                    /* printf("        %s\n", prop); */
+                    DBusMessageIter variant;
                     if (strncmp(prop, "Connected", 9) == 0) {
-                        sd_bus_message_enter_container(msg, 'v', "b");
-                        sd_bus_message_read(msg, "b", &connected);
-                        sd_bus_message_exit_container(msg);
-                        /* fputs("        ", stdout); */
-                        /* puts("Found connected!"); */
-                        sd_bus_message_skip(msg, "v");
+                        dbus_message_iter_next(&propdict_kv);
+                        dbus_message_iter_recurse(&propdict_kv, &variant);
+                        dbus_message_iter_get_basic(&variant, &connected);
                     } else if (strncmp(prop, "Name", 4) == 0) {
-                        sd_bus_message_enter_container(msg, 'v', "s");
-                        sd_bus_message_read(msg, "s", &devname);
-                        /* fputs("            ", stdout); */
-                        /* puts(devname); */
-                        sd_bus_message_exit_container(msg);
-
-                    } else {
-                        sd_bus_message_skip(msg, "v");
+                        dbus_message_iter_next(&propdict_kv);
+                        dbus_message_iter_recurse(&propdict_kv, &variant);
+                        dbus_message_iter_get_basic(&variant, &devname);
                     }
-                    sd_bus_message_exit_container(msg);
+                    dbus_message_iter_next(&propdict_entry);
                 }
                 if (connected) {
                     printf(" %s", devname);
                     return 0;
                 }
-                sd_bus_message_exit_container(msg);
-            } else {
-                sd_bus_message_skip(msg, "a{sv}");
             }
-            /* sd_bus_message_skip(msg, "a{sv}"); */
-            sd_bus_message_exit_container(msg);
+            dbus_message_iter_next(&ifacedict_entry);
         }
-        sd_bus_message_exit_container(msg);
-        sd_bus_message_exit_container(msg);
+        // Go to next dict entry
+        dbus_message_iter_next(&pathdict_entry);
     }
-    sd_bus_message_exit_container(msg);
     printf("");
     return 0;
+}
+
+static void check_and_abort(DBusError *error) {
+    if (!dbus_error_is_set(error)) return;
+    puts(error->message);
+    dbus_error_free(error);
+    abort();
 }

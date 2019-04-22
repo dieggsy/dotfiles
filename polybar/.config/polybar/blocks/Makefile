@@ -14,7 +14,7 @@ clean:
 
 networkmanager: CFLAGS += `pkg-config --cflags --libs dbus-1`
 
-bluez: CFLAGS += -lsystemd
+bluez: CFLAGS += `pkg-config --cflags --libs dbus-1`
 
 battery-average: CFLAGS += -lm -lsystemd -lespeak-ng
 
