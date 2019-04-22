@@ -3,18 +3,37 @@
 #include <math.h>
 #include <dirent.h>
 #include <string.h>
-#include <systemd/sd-bus.h>
+#include <dbus/dbus.h>
 #include <espeak-ng/speak_lib.h>
 
+static int read_int(const char* filename);
+static int get_joint_percent();
+static char *get_icon (int adapter_online);
+static void notify(char *title, char* body);
+static void say(char *text);
+static int build_message(DBusMessage *msg_notify, char *title, char *body);
+static void check_and_abort(DBusError *error);
 
-int read_int(const char* filename) {
+int main () {
+    int percent = get_joint_percent();
+    int adapter_online = read_int("/sys/class/power_supply/AC/online");
+
+    printf("%s %d", get_icon(adapter_online), percent);
+    if (!adapter_online && percent <= 10) {
+        notify("Battery critically low", "Consider charging");
+        say("Battery critically low, consider charging");
+    }
+    return 0;
+}
+
+static int read_int(const char* filename) {
     int energy;
     FILE *f = fopen(filename,"r");
     fscanf(f,"%d",&energy);
     return energy;
 }
 
-int get_joint_percent() {
+static int get_joint_percent() {
     char * parent_dir = "/sys/class/power_supply/";
     char * fname_now = "energy_now";
     char * fname_full = "energy_full";
@@ -44,38 +63,35 @@ int get_joint_percent() {
     return (int)roundf(numerator/denominator * 100);
 }
 
-char * get_icon (int adapter_online) {
+static char * get_icon (int adapter_online) {
     if (adapter_online) {
         return "";
     }
     return "";
 }
 
-int notify(char *title, char* body) {
-    int r;
-    sd_bus *bus=NULL;
-    sd_bus_message *msg=NULL;
-    sd_bus_error error = SD_BUS_ERROR_NULL;
+static void notify(char *title, char* body) {
+	DBusMessage* msg_notify;
+	DBusConnection* connection;
+	DBusError error;
 
-    r = sd_bus_open_user(&bus);
-    if (r < 0 ) {
-        return r;
-    }
-    r = sd_bus_call_method(bus,
-                           "org.freedesktop.Notifications",
-                           "/org/freedesktop/Notifications",
-                           "org.freedesktop.Notifications",
-                           "Notify",
-                           &error, &msg, "susssasa{sv}i",
-                           NULL, 0, NULL, title, body, 0, 0, -1);
+	dbus_error_init(&error);
+	connection = dbus_bus_get(DBUS_BUS_SESSION, &error);
+    check_and_abort(&error);
 
-    if (r < 0) {
-        return r;
-    }
-    return 0;
+    msg_notify = dbus_message_new_method_call("org.freedesktop.Notifications",
+                                              "/org/freedesktop/Notifications",
+                                              "org.freedesktop.Notifications",
+                                              "Notify");
+    build_message(msg_notify, title, body);
+
+    dbus_connection_send(connection, msg_notify, NULL);
+    dbus_connection_flush(connection);
+
+    dbus_message_unref(msg_notify);
 }
 
-void say(char *text) {
+static void say(char *text) {
     static int initialized = 0;
 
     if (!initialized) {
@@ -94,14 +110,40 @@ void say(char *text) {
     espeak_Synchronize();
 }
 
-int main () {
-    int percent = get_joint_percent();
-    int adapter_online = read_int("/sys/class/power_supply/AC/online");
+static int build_message(DBusMessage *msg_notify, char *title, char *body) {
+    DBusMessageIter args, actions, hints;
+    int replaces_id = -1;
+    int timeout = 0;
+    char* app_name = "";
+    char* app_icon = "";
 
-    printf("%s %d", get_icon(adapter_online), percent);
-    if (!adapter_online && percent <= 10) {
-        notify("Battery critically low", "Consider charging");
-        say("Battery critically low, consider charging");
-    }
-    return 0;
+    dbus_message_iter_init_append(msg_notify, &args);
+    int returnCode = dbus_message_iter_append_basic(&args, DBUS_TYPE_STRING, &app_name);
+    returnCode |= dbus_message_iter_append_basic(&args, DBUS_TYPE_UINT32, &replaces_id);
+    returnCode |= dbus_message_iter_append_basic(&args, DBUS_TYPE_STRING, &app_icon);
+    returnCode |= dbus_message_iter_append_basic(&args, DBUS_TYPE_STRING, &title);
+    returnCode |= dbus_message_iter_append_basic(&args, DBUS_TYPE_STRING, &body);
+
+    returnCode |= dbus_message_iter_open_container(&args, DBUS_TYPE_ARRAY, DBUS_TYPE_STRING_AS_STRING, &actions);
+    returnCode |= dbus_message_iter_close_container(&args, &actions);
+
+    returnCode |= dbus_message_iter_open_container(&args,
+                                                   DBUS_TYPE_ARRAY,
+                                                   DBUS_DICT_ENTRY_BEGIN_CHAR_AS_STRING
+                                                   DBUS_TYPE_STRING_AS_STRING
+                                                   DBUS_TYPE_VARIANT_AS_STRING
+                                                   DBUS_DICT_ENTRY_END_CHAR_AS_STRING,
+                                                   &hints);
+	returnCode |= dbus_message_iter_close_container(&args, &hints);
+
+	returnCode |= dbus_message_iter_append_basic(&args, DBUS_TYPE_INT32, &timeout);
+
+	return returnCode;
+}
+
+static void check_and_abort(DBusError *error) {
+    if (!dbus_error_is_set(error)) return;
+    puts(error->message);
+    dbus_error_free(error);
+    abort();
 }

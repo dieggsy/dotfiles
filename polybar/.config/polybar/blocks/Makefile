@@ -16,7 +16,7 @@ networkmanager: CFLAGS += `pkg-config --cflags --libs dbus-1`
 
 bluez: CFLAGS += `pkg-config --cflags --libs dbus-1`
 
-battery-average: CFLAGS += -lm -lsystemd -lespeak-ng
+battery-average: CFLAGS += -lm -lespeak-ng `pkg-config --cflags --libs dbus-1`
 
 intel-backlight: CFLAGS += -lm
 
