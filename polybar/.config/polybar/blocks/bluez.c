@@ -19,6 +19,7 @@ int main() {
                                                                        msg_query,
                                                                        -1,
                                                                        &error);
+    dbus_message_unref(msg_query);
     check_and_abort(&error);
     // Enter dict
     DBusMessageIter pathdict;
@@ -84,6 +85,7 @@ int main() {
         // Go to next dict entry
         dbus_message_iter_next(&pathdict_entry);
     }
+    dbus_message_unref(msg_reply);
     printf("");
     return 0;
 }
