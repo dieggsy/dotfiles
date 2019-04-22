@@ -11,11 +11,9 @@
 .local/share/Aspyr
 .local/share/Steam
 .local/share/Trash
-.local/share/lutris
 .rustup
 .wine
 Dropbox
-Games
 dotfiles/emacs/.emacs.d/straight/build
 dotfiles/emacs/.emacs.d/straight/repos
 downloads
