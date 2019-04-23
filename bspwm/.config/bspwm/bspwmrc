@@ -64,10 +64,10 @@ bspc rule -a Civ5XP          state=fullscreen
 bspc rule -a guvcview        state=floating
 bspc rule -a mpv             state=floating sticky=on rectangle=960x540+1575+275
 
-if [ -z "$(pgrep -f st-float)" ]; then
+if [ -z "$(pgrep -f urxvt-float)" ]; then
     if [ -z "$(pgrep tmux)" ]; then
-        st -T st-float -e sh -c 'TERM=screen-256color tmux' &
+        urxvt -name urxvt-float -e sh -c 'TERM=screen-256color tmux' &
     else
-        st -T st-float -e sh -c 'TERM=screen-256color tmux attach' &
+        urxvt -name urxvt-float -e sh -c 'TERM=screen-256color tmux attach' &
     fi
 fi

@@ -22,3 +22,34 @@ Emacs.background: #282828
 Emacs.mode-line.attributeForeground: #EBDBB2
 Emacs.mode-line.attributeBackground: #1D2021
 Emacs.mode-line.attributeBox: nil
+
+URxvt.internalBorder: 5
+URxvt.font: xft:Iosevka Term:size=10
+URxvt.scrollBar: False
+URxvt.perl-ext-common: default,matcher
+URxvt.url-launcher: firefox
+URxvt.matcher.rend.0: Uline fg14
+URxvt.matcher.button: 1
+URxvt.iso14755: false
+URxvt.keysym.Shift-Control-V: eval:paste_clipboard
+URxvt.keysym.Shift-Control-C: eval:selection_to_clipboard
+
+URxvt.background: #282828
+URxvt.foreground: #fdf4c1
+URxvt.color0: #282828
+URxvt.color1: #9d1306
+URxvt.color2: #79740e
+URxvt.color3: #b57614
+URxvt.color4: #076678
+URxvt.color5: #8f3f71
+URxvt.color6: #00a7af
+URxvt.color7: #bdae93
+
+URxvt.color8: #686868
+URxvt.color9: #fb4933
+URxvt.color10: #b8bb26
+URxvt.color11: #fabd2f
+URxvt.color12: #83a598
+URxvt.color13: #d3869b
+URxvt.color14: #3fd7e5
+URxvt.color15: #fdf4c1

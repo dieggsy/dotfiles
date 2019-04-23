@@ -26,13 +26,13 @@
          (with-output-to-file "/tmp/esh-float"
            (lambda () (display wid) (newline)))
          (display "state=floating hidden=on sticky=on rectangle=1084x560+720+870"))
-        ((string=? instance "st-256color")
+        ((string=? instance "urxvt")
          (when (string=? title "htop")
-           (display "state=floating"))
-         (when (string=? title "st-float")
-           (with-output-to-file "/tmp/st-float"
-             (lambda () (display wid) (newline)))
-           (display "layer=above state=floating hidden=on sticky=on rectangle=1085x560+1450+855")))
+           (display "state=floating")))
+        ((string=? instance "urxvt-float")
+         (with-output-to-file "/tmp/urxvt-float"
+           (lambda () (display wid) (newline)))
+         (display "layer=above state=floating sticky=on rectangle=1085x560+1450+855"))
         ((and (string=? instance "guvcview")
               (substring-index "Video" title))
          (display "sticky=on rectangle=520x390+2015+206"))
