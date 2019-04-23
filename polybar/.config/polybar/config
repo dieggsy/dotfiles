@@ -56,7 +56,7 @@ label = %{F#665C54}%title:0:30:...%%{F-}
 
 [module/display]
 type=custom/script
-exec=[[ "$(xrandr 2>/dev/null | grep ' connected ' | wc -l)" -gt "1" ]] && echo "  " || echo ''
+exec=[ "$(xrandr 2>/dev/null | grep ' connected ' | wc -l)" -gt "1" ] && echo "  " || echo ''
 format-padding=1
 click-left=mons-rofi
 
