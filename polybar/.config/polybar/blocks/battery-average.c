@@ -4,7 +4,7 @@
 #include <dirent.h>
 #include <string.h>
 #include <dbus/dbus.h>
-#include <espeak-ng/speak_lib.h>
+#include <espeak/speak_lib.h>
 
 static int read_int(const char* filename);
 static int get_joint_percent();
