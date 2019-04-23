@@ -34,7 +34,7 @@ bindkey -M menuselect '^[[Z' reverse-menu-complete
 
 ZPLUGINDIR=$PREFIX/share/zsh/plugins
 [ -d $ZPLUGINDIR/zsh-autopair ] && source $ZPLUGINDIR/zsh-autopair/autopair.zsh
-[ -d /$ZPLUGINDIR/zsh-autosuggestions ] && source /$ZPLUGINDIR/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh
+[ -d /$ZPLUGINDIR/zsh-autosuggestions ] && source /$ZPLUGINDIR/zsh-autosuggestions/zsh-autosuggestions.zsh
 [ -d /$ZPLUGINDIR/fast-syntax-highlighting ] && source /$ZPLUGINDIR/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 if [ -d /$ZPLUGINDIR/zsh-history-substring-search ]; then
     source /$ZPLUGINDIR/zsh-history-substring-search/zsh-history-substring-search.zsh
