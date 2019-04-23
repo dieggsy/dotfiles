@@ -1,4 +1,4 @@
-#!/usr/bin/chicken-csi -ss
+#!/usr/bin/csi -ss
 (import (only (chicken io) read-string)
         (only (chicken process) call-with-input-pipe)
         (only (chicken string) substring-index string-split))
