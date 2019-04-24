@@ -49,7 +49,7 @@ set expandtab
 set splitbelow
 set splitright
 set inccommand=nosplit
-set termguicolors
+" set termguicolors
 
 " Bindings
 noremap <C-g> <C-c>
