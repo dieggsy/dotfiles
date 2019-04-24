@@ -43,7 +43,7 @@ if [ -d /$ZPLUGINDIR/zsh-history-substring-search ]; then
     bindkey -M vicmd 'k' history-substring-search-up
     bindkey -M vicmd 'j' history-substring-search-down
 fi
-[ -d /$ZPLUGINDIR/zsh-notify ] && source /$ZPLUGINDIR/zsh-notify/notify.plugin.zsh
+# [ -d /$ZPLUGINDIR/zsh-notify ] && source /$ZPLUGINDIR/zsh-notify/notify.plugin.zsh
 
 maybe_host () {
     if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
