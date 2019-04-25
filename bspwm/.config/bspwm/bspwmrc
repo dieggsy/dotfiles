@@ -28,15 +28,16 @@ bspc config focus_follows_pointer  true
 bspc config pointer_follows_monitor true
 bspc config external_rules_command "$HOME/.config/bspwm/rules.scm"
 
-bspc monitor -d 1 2 3 4
-# bspc monitor HDMI2 -d 1 2 3 4
-# bspc monitor eDP1 -d 1 2 3 4
-# monitors=$(bspc query -M --names | wc -l)
-# if [ $monitors -gt 1 ]; then
-#     mons -e left
-#     bspc monitor $(bspc query -M --names | grep -v eDP1 | head -n1) -d 5 6
-#     bspc wm -O eDP1 HDMI2
-# fi
+bspc monitor eDP1 -d 1 2 3 4
+monitors=$(bspc query -M --names)
+if [ $(echo $monitors | wc -l) -gt 1 ]; then
+    i=5;j=6
+    for monitor_name in $(echo $monitors | grep -v eDP1); do
+        bspc monitor $monitor_name -d $i $j
+        i=$((i+2))
+        j=$((j+2))
+    done
+fi
 
 killall -q polybar
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
