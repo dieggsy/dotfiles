@@ -37,7 +37,7 @@ elif [[ $instance = "urxvt-float" ]]; then
     echo $wid > /tmp/urxvt-float
     echo layer=above state=floating hidden=on \
          sticky=on rectangle=${floatsize}${bottomright}
-elif [[ $instance = "guvcview" ]]; then
+elif [[ $instance = "guvcview" && $title = "Guvcview Video" ]]; then
     echo sticky=on rectangle=520x390+2015+206
 elif [[ $instance = "vlc" && $title = "vlc" ]]; then
     echo layer=above border=off
