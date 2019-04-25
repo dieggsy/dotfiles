@@ -26,7 +26,7 @@ xset r rate 300 50 &
 # bspc config initial_polarity     second_child
 bspc config focus_follows_pointer  true
 bspc config pointer_follows_monitor true
-bspc config external_rules_command "$HOME/.config/bspwm/rules.scm"
+bspc config external_rules_command "$HOME/.config/bspwm/rules.sh"
 
 bspc monitor eDP1 -d 1 2 3 4
 monitors=$(bspc query -M --names)
