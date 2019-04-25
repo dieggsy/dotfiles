@@ -25,7 +25,7 @@ bottomright="+$rightpos+$bottompos"
 
 if [[ $instance = "emacs" ]]; then
     echo state=tiled desktop=^2
-elif [[ $instance = "_erc__floating_" ]]; then
+elif [[ $instance = "erc_float" ]]; then
     echo $wid > /tmp/erc-float
     echo layer=above state=floating hidden=on \
          sticky=on rectangle=${floatsize}${bottomleft}

@@ -4901,7 +4901,7 @@ Source: http://tinyurl.com/y8tj8vxx"
     (let ((frame-resize-pixelwise t))
       (unless (frame-live-p d/erc-floating-frame)
         (setq d/erc-floating-frame
-              (make-frame `((name . "*erc: floating*")
+              (make-frame `((name . "erc_float")
                             (left-fringe . 0)
                             (right-fringe . 0)
                             (unsplittable . t)
