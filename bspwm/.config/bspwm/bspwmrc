@@ -46,7 +46,7 @@ run sxhkd -m -1
 run xcape -e 'Control_L=Escape'
 
 # Pointer behavior
-# xsetroot -cursor_name left_ptr
+xsetroot -cursor_name left_ptr
 run unclutter
 
 # Type speed/delay
