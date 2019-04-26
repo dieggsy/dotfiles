@@ -78,8 +78,11 @@ zle-keymap-select () {
         echo -ne "\e[6 q"
     fi
 }
-zle -N zle-keymap-select
-echo -ne '\e[6 q'
+
+if [[ $DISPLAY ]]; then
+    zle -N zle-keymap-select
+    echo -ne '\e[6 q'
+fi
 
 man() {
     env \
