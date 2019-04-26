@@ -34,19 +34,23 @@ bindkey -M menuselect '^[[Z' reverse-menu-complete
 
 ZPLUGINDIR=$PREFIX/share/zsh/plugins
 [ -d $ZPLUGINDIR/zsh-autopair ] && source $ZPLUGINDIR/zsh-autopair/autopair.zsh
-[ -n "$DISPLAY" ] && [ -d /$ZPLUGINDIR/zsh-autosuggestions ] && source /$ZPLUGINDIR/zsh-autosuggestions/zsh-autosuggestions.zsh
-[ -d /$ZPLUGINDIR/fast-syntax-highlighting ] && source /$ZPLUGINDIR/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
-if [ -d /$ZPLUGINDIR/zsh-history-substring-search ]; then
-    source /$ZPLUGINDIR/zsh-history-substring-search/zsh-history-substring-search.zsh
+
+[ $DISPLAY ] && [ -d $ZPLUGINDIR/zsh-autosuggestions ] \
+    && source $ZPLUGINDIR/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+[ -d /$ZPLUGINDIR/fast-syntax-highlighting ] \
+    && source $ZPLUGINDIR/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+
+if [ -d $ZPLUGINDIR/zsh-history-substring-search ]; then
+    source $ZPLUGINDIR/zsh-history-substring-search/zsh-history-substring-search.zsh
     bindkey '^[[A' history-substring-search-up
     bindkey '^[[B' history-substring-search-down
     bindkey -M vicmd 'k' history-substring-search-up
     bindkey -M vicmd 'j' history-substring-search-down
 fi
-# [ -d /$ZPLUGINDIR/zsh-notify ] && source /$ZPLUGINDIR/zsh-notify/notify.plugin.zsh
 
 maybe_host () {
-    if [ -n "$SSH_CLIENT" ] || [ -n "$SSH_TTY" ]; then
+    if [ $SSH_CLIENT ] || [ $SSH_TTY ]; then
         echo "%F{13}%n@%M%f "
     fi
 }
