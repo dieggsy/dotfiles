@@ -3006,8 +3006,6 @@ have a look. Additionally, show whitespace.
 *** Font
 Set the font to Iosevka Term, if available.
 #+begin_src emacs-lisp
-(when (and (display-graphic-p) (x-list-fonts "Iosevka Term"))
-  (add-to-list 'default-frame-alist '(font . "Iosevka Term-10:weight=book")))
 (setq inhibit-compacting-font-caches t)
 #+end_src
 *** Minibuffer
