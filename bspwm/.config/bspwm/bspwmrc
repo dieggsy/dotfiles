@@ -59,7 +59,11 @@ run xss-lock -- slock
 run udiskie
 
 # Wallpaper
-[ -f ~/pic/wallpapers/arch-small.jpg ] && feh --bg-fill ~/pic/wallpapers/arch-small.jpg &
+[ -f ~/pic/wallpapers/leaves/leaves-branchy.jpg ] \
+    && feh --bg-fill ~/pic/wallpapers/leaves/leaves-branchy.jpg &
+# Random wallpaper
+# feh --bg-fill $(find ~/pic/wallpapers -type f ! -path '*originals*' \
+#                     | shuf -n1 --random-source=/dev/urandom)
 
 # Clipboard
 run -f autocutsel -selection CLIPBOARD -fork
