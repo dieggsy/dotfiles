@@ -77,12 +77,12 @@ for m in $(bspc query -M --names); do
 done
 ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-simple
 
-# Floating urxvt + tmux (see rules.sh)
-if [ -z "$(pgrep -f urxvt-float)" ]; then
+# Floating st + tmux (see rules.sh)
+if [ -z "$(pgrep -f st-float)" ]; then
     if [ -z "$(pgrep tmux)" ]; then
-        urxvt -name urxvt-float -e sh -c 'TERM=screen-256color tmux' &
+        st -T st-float -e sh -c 'TERM=screen-256color tmux' &
     else
-        urxvt -name urxvt-float -e sh -c 'TERM=screen-256color tmux attach' &
+        st -T st-float -e sh -c 'TERM=screen-256color tmux attach' &
     fi
 fi
 

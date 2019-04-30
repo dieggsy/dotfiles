@@ -22,7 +22,7 @@ super + d
     rofi -show drun -show-icons
 
 super + z
-    id=$(</tmp/urxvt-float) && \
+    id=$(</tmp/st-float) && \
     bspc node $id --flag hidden && \
     bspc node -f $id
 # program launcher

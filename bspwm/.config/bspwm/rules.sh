@@ -31,10 +31,10 @@ elif [[ $instance = "erc_float" ]]; then
          sticky=on rectangle=${floatsize}${bottomleft}
 elif [[ $instance = "gl" ]]; then
     echo $wid > /tmp/mpv-float
-elif [[ $instance = "urxvt" && $title = "htop" ]]; then
+elif [[ $instance = "st-256color" && $title = "htop" ]]; then
     echo state=floating
-elif [[ $instance = "urxvt-float" ]]; then
-    echo $wid > /tmp/urxvt-float
+elif [[ $instance = "st-float" ]]; then
+    echo $wid > /tmp/st-float
     echo layer=above state=floating hidden=on \
          sticky=on rectangle=${floatsize}${bottomright}
 elif [[ $instance = "guvcview" && $title = "Guvcview Video" ]]; then
