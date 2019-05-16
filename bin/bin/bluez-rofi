@@ -34,7 +34,7 @@ ROFI_CMD = [
     "-p", "bluetooth",
     "-xoffset", str(492 + get_offset_hack()),
     "-dmenu", "-i",
-    "-theme-str", "#window {width: 500;}",
+    "-width", "500",
     "-theme-str", "#inputbar {enabled:false;}",
 ]
 

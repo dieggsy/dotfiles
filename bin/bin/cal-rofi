@@ -30,7 +30,7 @@ ROFI_CMD = [
     "-xoffset", "48",
     "-columns", "7",
     "-theme-str", f"#listview{{lines:{len(chopped)};}}",
-    "-theme-str", "#window{width:318;}"
+    "-width", "318"
 ]
 
 transposed = list(map(list, zip(*chopped)))

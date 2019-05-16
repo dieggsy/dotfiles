@@ -16,10 +16,10 @@ super + space
     bspc node -f $id
 
 super + w
-    rofi -show window -theme-str "#window \{width: 800;\}"
+    rofi -show window -width 800
 
 super + d
-    rofi -show drun -show-icons
+    rofi -show drun -show-icons -width 700
 
 super + z
     id=$(</tmp/st-float) && \

@@ -5,4 +5,5 @@ rofi.xoffset: 15
 rofi.modi: window,run,ssh,drun,combi
 rofi.combi-modi: window,drun,run
 rofi.dpi: 172
+rofi.width: 300
 rofi.fixed-num-lines: 0

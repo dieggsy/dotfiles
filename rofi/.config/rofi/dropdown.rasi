@@ -35,7 +35,7 @@
     border-color: @highlightcolor;
     border: 5;
     border-radius: 0;
-    width: 300;
+    /* width: 300; */
 }
 
 #mainbox {
