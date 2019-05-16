@@ -31,6 +31,7 @@ elif [[ $instance = "erc_float" ]]; then
          sticky=on rectangle=${floatsize}${bottomleft}
 elif [[ $instance = "gl" ]]; then
     echo $wid > /tmp/mpv-float
+    echo layer=normal
 elif [[ $instance = "st-256color" && $title = "htop" ]]; then
     echo state=floating
 elif [[ $instance = "st-float" ]]; then
