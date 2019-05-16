@@ -101,7 +101,11 @@ man() {
 }
 
 qmpv() {
-    mpv --no-terminal "$1" &!
+    if [ -z "$1" ]; then
+        mpv --no-terminal "$(xclip -o)" &!
+    else
+        mpv --no-terminal "$1" &!
+    fi
 }
 
 my-packages () {
