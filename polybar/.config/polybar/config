@@ -26,8 +26,8 @@ height = 47
 fixed-center = true
 line-size = 2
 
-; tray-position=center
-; tray-maxsize=32
+tray-position=center
+tray-maxsize=32
 
 dpi = 172
 background = ${colors.background}
