@@ -1180,6 +1180,7 @@ Source: https://git.io/vQKEa"
   "x"  '(:ignore t :wk "text")
   "xe" 'org-emphasize
   "xx" 'org-cut-special
+  "xy" 'org-copy-special
   "xp" 'org-paste-special
 
   ;; tables
