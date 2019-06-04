@@ -86,19 +86,19 @@ void print_other_info(FILE *status) {
         }
     };
     if (staged > 0) {
-        printf("%%F{12}●%d%%f", staged);
+        printf("%%F{12}@%d%%f", staged);
     }
     if (conflicts > 0) {
-        printf("%%F{9}✖%d%%f", conflicts);
+        printf("%%F{9}!%d%%f", conflicts);
     }
     if (modified > 0) {
-        printf("%%F{9}✚%d%%f", modified);
+        printf("%%F{11}+%d%%f", modified);
     }
     if (dirty) {
-        printf("…");
+        printf("*");
     }
     if (!staged && !conflicts && !modified && !dirty) {
-        printf("%%F{10}✓%%f");
+        printf("%%F{10}~%%f");
     };
     free(first_line);
 }
