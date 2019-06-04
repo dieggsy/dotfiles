@@ -1279,6 +1279,10 @@ files without exporting (useful primarily for readme files on GitHub)
 (use-package toc-org
   :hook (org-mode . toc-org-enable))
 #+end_src
+***** htmlize
+#+begin_src emacs-lisp
+(use-package htmlize)
+#+end_src
 ** Bindings
 *** Leader
 #+begin_src emacs-lisp
