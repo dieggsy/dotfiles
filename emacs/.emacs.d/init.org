@@ -968,7 +968,8 @@ But really, it's life.
         org-insert-heading-respect-content t
         org-src-window-setup 'current-window
         org-list-demote-modify-bullet '(("-" . "+") ("+" . "*") ("*" . "-"))
-        org-export-in-background t
+        org-export-in-background nil
+        org-html-validation-link nil
         org-confirm-babel-evaluate nil
         org-src-tab-acts-natively t
         org-M-RET-may-split-line nil
