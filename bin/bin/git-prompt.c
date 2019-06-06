@@ -31,12 +31,12 @@ void print_branch_info(FILE *status) {
         n = 0;
         getline(&rev_out, &n, rev);
         sscanf(rev_out,"%40[^\n]", rev_parsed);
-        printf(":%s",rev_parsed);
+        printf("%%F{10}:%s%%f",rev_parsed);
         free(rev_out);
     }
     else if (strncmp(first_line, "## No commits", 13) == 0) {
         sscanf(first_line, "## No commits yet on %100[^\n]", branch);
-        fputs(branch,stdout);
+        printf("%%F{10}%s%%f", branch);
     }
     else {
         char ahead_behind_str[6];
