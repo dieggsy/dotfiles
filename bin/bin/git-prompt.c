@@ -42,7 +42,7 @@ void print_branch_info(FILE *status) {
         char ahead_behind_str[6];
         int ahead_behind = 0;
         int behind = 0;
-        int ret = sscanf(first_line, "## %100[^.\n]...%*[^ ] %*c%s[a-z] %d, behind %d%*c", branch, ahead_behind_str, &ahead_behind, &behind);
+        int ret = sscanf(first_line, "## %100[^.\n]...%*[^ ] %*c%s %d, behind %d%*c", branch, ahead_behind_str, &ahead_behind, &behind);
         switch (ret) {
             case 4 :
                 printf("%%F{10}%s%%f%%F{13}+%d-%d%%f", branch, ahead_behind, behind);
