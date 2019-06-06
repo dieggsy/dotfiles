@@ -45,15 +45,15 @@ void print_branch_info(FILE *status) {
         int ret = sscanf(first_line, "## %100[^.\n]...%*[^ ] %*c%s[a-z] %d, behind %d%*c", branch, ahead_behind_str, &ahead_behind, &behind);
         switch (ret) {
             case 4 :
-                printf("%%F{10}%s%%f%%F{13}↑%d↓%d%%f", branch, ahead_behind, behind);
+                printf("%%F{10}%s%%f%%F{13}+%d-%d%%f", branch, ahead_behind, behind);
                 /* free(ahead_behind_str); */
                 break;
             case 3 :
                 if (strncmp(ahead_behind_str, "ahead", 5) == 0) {
-                    printf("%%F{10}%s%%f%%F{13}↑%d%%f", branch, ahead_behind);
+                    printf("%%F{10}%s%%f%%F{13}+%d%%f", branch, ahead_behind);
                 }
                 else {
-                    printf("%%F{10}%s%%f%%F{13}↓%d%%f", branch, ahead_behind);
+                    printf("%%F{10}%s%%f%%F{13}-%d%%f", branch, ahead_behind);
                 }
                 /* free(ahead_behind_str); */
                 break;
@@ -92,7 +92,7 @@ void print_other_info(FILE *status) {
         printf("%%F{9}!%d%%f", conflicts);
     }
     if (modified > 0) {
-        printf("%%F{11}+%d%%f", modified);
+        printf("%%F{11}#%d%%f", modified);
     }
     if (dirty) {
         printf("*");
