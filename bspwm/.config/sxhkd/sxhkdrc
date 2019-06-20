@@ -85,6 +85,9 @@ super + {period,u,f}
 super + ctrl + {x,y,z}
     bspc node -g {locked,sticky,private}
 
+ctrl + alt + Delete
+    physlock
+
 
 # focus/swap
 #
@@ -169,16 +172,6 @@ XF86MonBrightnessDown
     && [[ $brightness -le 5 ]] \
     && xbacklight -set $(($brightness - 1)) \
     || xbacklight -set $(($brightness - 5))
-# Print
-#     scrot ~/pic/scrot/%Y-%m-%d_%H:%M:%S.png && notify-send "Screenshot!"
-# XF86LaunchB
-#     scrot -s ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png
-# shift + XF86LaunchB
-#     scrot -ub ~/Pictures/Screenshots/%Y-%m-%d_%H:%M:%S.png
-# XF86KbdBrightnessDown
-#     ~/bin/blocks/kbdbacklight -
-# XF86KbdBrightnessUp
-#     ~/bin/blocks/kbdbacklight +
 # XF86AudioPrev
 #     playerctl previous
 # XF86AudioNext
@@ -200,4 +193,6 @@ XF86AudioRaiseVolume
 XF86AudioMicMute
     amixer set Capture toggle
 XF86Display
-    slock
+    scrot ~/pic/scrot/%Y-%m-%d_%H:%M:%S.png && notify-send "scrot" "Screenshot saved to ~/pic/scrot"
+shift + XF86Display
+    scrot -s ~/pic/scrot/%Y-%m-%d_%H:%M:%S.png && notify-send "scrot" "Window screenshot saved to ~/pic/scrot"
