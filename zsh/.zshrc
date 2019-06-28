@@ -32,35 +32,37 @@ bindkey "^?" backward-delete-char
 bindkey -M menuselect '^[[Z' reverse-menu-complete
 # End of lines configured by zsh-newuser-install
 
-ZPLUGINDIR=$PREFIX/share/zsh/plugins
-[ -d $ZPLUGINDIR/zsh-autopair ] && source $ZPLUGINDIR/zsh-autopair/autopair.zsh
+if [ "$TERM" != "dumb" ]; then
+    ZPLUGINDIR=$PREFIX/share/zsh/plugins
+    [ -d $ZPLUGINDIR/zsh-autopair ] && source $ZPLUGINDIR/zsh-autopair/autopair.zsh
 
-[ $DISPLAY ] && [ -d $ZPLUGINDIR/zsh-autosuggestions ] \
-    && source $ZPLUGINDIR/zsh-autosuggestions/zsh-autosuggestions.zsh
+    [[ "$(tty)" != "/dev/tty"* ]] && [ -d $ZPLUGINDIR/zsh-autosuggestions ] \
+        && source $ZPLUGINDIR/zsh-autosuggestions/zsh-autosuggestions.zsh
 
-[ -d /$ZPLUGINDIR/fast-syntax-highlighting ] \
-    && source $ZPLUGINDIR/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
+    [ -d /$ZPLUGINDIR/fast-syntax-highlighting ] \
+        && source $ZPLUGINDIR/fast-syntax-highlighting/fast-syntax-highlighting.plugin.zsh
 
-if [ -d $ZPLUGINDIR/zsh-history-substring-search ]; then
-    source $ZPLUGINDIR/zsh-history-substring-search/zsh-history-substring-search.zsh
-    bindkey '^[[A' history-substring-search-up
-    bindkey '^[[B' history-substring-search-down
-    bindkey -M vicmd 'k' history-substring-search-up
-    bindkey -M vicmd 'j' history-substring-search-down
-fi
-
-maybe_host () {
-    if [ $SSH_CLIENT ] || [ $SSH_TTY ]; then
-        echo "%F{13}%n@%M%f "
+    if [ -d $ZPLUGINDIR/zsh-history-substring-search ]; then
+        source $ZPLUGINDIR/zsh-history-substring-search/zsh-history-substring-search.zsh
+        bindkey '^[[A' history-substring-search-up
+        bindkey '^[[B' history-substring-search-down
+        bindkey -M vicmd 'k' history-substring-search-up
+        bindkey -M vicmd 'j' history-substring-search-down
     fi
-}
 
-maybe_git () {
-    hash git-prompt &> /dev/null && git-prompt
-}
+    maybe_host () {
+        if [ $SSH_CLIENT ] || [ $SSH_TTY ]; then
+            echo "%F{13}%n@%M%f "
+        fi
+    }
 
-setopt prompt_subst
-[ "$TERM" != "dumb" ] && export PROMPT='$(maybe_host)$(maybe_git)%F{7}%1~%f %F{209}%(!.#.>)%f '
+    maybe_git () {
+        hash git-prompt &> /dev/null && git-prompt
+    }
+
+    setopt prompt_subst
+    export PROMPT='$(maybe_host)$(maybe_git)%F{7}%1~%f %F{209}%(!.#.>)%f '
+fi
 
 alias ls='ls --color=auto -F'
 alias csi='csi -q'
@@ -83,7 +85,7 @@ zle-keymap-select () {
     fi
 }
 
-if [[ $DISPLAY ]]; then
+if [[ "$(tty)" != "/dev/tty"* ]]; then
     zle -N zle-keymap-select
     echo -ne '\e[6 q'
 fi
