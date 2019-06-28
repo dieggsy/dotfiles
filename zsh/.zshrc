@@ -32,7 +32,9 @@ bindkey "^?" backward-delete-char
 bindkey -M menuselect '^[[Z' reverse-menu-complete
 # End of lines configured by zsh-newuser-install
 
-if [ "$TERM" != "dumb" ]; then
+if [ "$TERM" = "dumb" ]; then
+    unsetopt zle
+else;
     ZPLUGINDIR=$PREFIX/share/zsh/plugins
     [ -d $ZPLUGINDIR/zsh-autopair ] && source $ZPLUGINDIR/zsh-autopair/autopair.zsh
 
