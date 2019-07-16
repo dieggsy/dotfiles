@@ -3077,6 +3077,8 @@ I don't like seeing variable pitch in emacs. Just sorta throws me off.
 #+begin_src emacs-lisp
 (use-package minions
   :demand t
+  :custom
+  (minions-direct '(flycheck-mode))
   :config
   (minions-mode))
 #+end_src
