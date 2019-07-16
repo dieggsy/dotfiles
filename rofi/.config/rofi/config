@@ -1,9 +1,9 @@
 rofi.theme: dropdown
-rofi.location: 1
+rofi.location: 2
 rofi.yoffset: 62
 rofi.xoffset: 15
 rofi.modi: window,run,ssh,drun,combi
 rofi.combi-modi: window,drun,run
 rofi.dpi: 172
-rofi.width: 300
+rofi.width: 700
 rofi.fixed-num-lines: 0

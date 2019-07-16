@@ -37,6 +37,7 @@ BLUETOOTH_GUI = "blueman-manager"
 ROFI_CMD = [
     "rofi",
     "-p", "bluetooth",
+    "-location", "1",
     "-xoffset", str(492 + get_offset_hack()),
     "-dmenu", "-i",
     "-width", "500",
