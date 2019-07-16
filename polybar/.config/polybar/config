@@ -58,7 +58,7 @@ label = %{F#665C54}%title:0:30:...%%{F-}
 type=custom/script
 exec=[ "$(xrandr 2>/dev/null | grep ' connected ' | wc -l)" -gt "1" ] && echo "  " || echo ''
 format-padding=1
-click-left=mons-rofi
+click-left=~/.config/polybar/blocks/mons-rofi
 
 
 [module/bspwm]
@@ -99,7 +99,7 @@ format-padding = 1
 interval = 2
 
 [module/bluez]
-click-left = bluez-rofi &
+click-left = ~/.config/polybar/blocks/bluez-rofi &
 type = custom/script
 exec = ~/.config/polybar/blocks/bluez
 format-padding=1
@@ -110,7 +110,7 @@ type = custom/script
 exec = date +'%%{F#FDF4C1} %H:%M%%{F-} %%{F#665C54}%a %Y-%m-%d%%{F-}'
 interval = 1
 format-padding=1
-click-left = cal-rofi
+click-left = ~/.config/polybar/blocks/cal-rofi
 
 [module/cpu]
 type = internal/cpu
