@@ -9,12 +9,6 @@ super + Return
     bspc node $id --flag hidden && \
     bspc node -f $id
 
-super + space
-    emacsclient --eval '(d/erc-floating)' && \
-    id=$(</tmp/erc-float) && \
-    bspc node $id --flag hidden && \
-    bspc node -f $id
-
 super + w
     rofi -show window
 
