@@ -1,29 +1,34 @@
 #!/usr/bin/env python3
-import dbus
 import os
 import locale
 import time
 from subprocess import Popen, PIPE
 
+import dbus
+
 bus = dbus.SystemBus()
+
 
 def get_offset_hack():
     """Get the position offset based on network SSID"""
     base = 84
     nm = bus.get_object("org.freedesktop.NetworkManager",
-                         "/org/freedesktop/NetworkManager")
+                        "/org/freedesktop/NetworkManager")
     props_iface = dbus.Interface(nm, "org.freedesktop.DBus.Properties")
     # nm_iface = dbus.Interface(nm, "org.freedesktop.NetworkManager")
-    conns = props_iface.Get("org.freedesktop.NetworkManager" ,"ActiveConnections")
-    if len(conns) == 0:
+    conns = props_iface.Get("org.freedesktop.NetworkManager",
+                            "ActiveConnections")
+    if not conns:
         return 72
-    else:
-        active = bus.get_object("org.freedesktop.NetworkManager",
-                                conns[0])
-        props_iface = dbus.Interface(active, "org.freedesktop.DBus.Properties")
-        conn_len = len(props_iface.Get("org.freedesktop.NetworkManager.Connection.Active",
-                                       "Id"))
-        return conn_len * 12 - base
+    active = bus.get_object("org.freedesktop.NetworkManager",
+                            conns[0])
+    props_iface = dbus.Interface(active, "org.freedesktop.DBus.Properties")
+    conn_len = len(props_iface.Get(
+        "org.freedesktop.NetworkManager.Connection.Active",
+        "Id"
+    ))
+    return conn_len * 12 - base
+
 
 ENV = os.environ.copy()
 ENV['LC_ALL'] = 'C'
@@ -43,17 +48,16 @@ ROFI_CMD = [
 
 
 def make_device_list(devmap):
+    """Generate list for rofi stdin"""
     def rank_device(dev):
         if dev["Connected"]:
             return 1
-        elif dev["Paired"]:
+        if dev["Paired"]:
             if dev["Trusted"]:
                 return 2
-            else:
-                return 3
-        else:
-            return 4
-    lst = list(devmap.values());
+            return 3
+        return 4
+    lst = list(devmap.values())
     lst.sort(key=rank_device)
     return list(map(lambda dev: dev["Address"]
                     + "  "
@@ -63,21 +67,23 @@ def make_device_list(devmap):
                     + dev["Alias"],
                     lst))
 
+
 def run_rofi(args, inp):
+    """Open rofi process with inp as stdin"""
     return (Popen(args, stdin=PIPE, stdout=PIPE, env=ENV)
             .communicate(input=inp.encode(ENC))[0]
             .decode(ENC)).strip()
 
-def main():
 
+def main():
     bluez = bus.get_object("org.bluez", "/")
     bluez_iface = dbus.Interface(bluez, "org.freedesktop.DBus.ObjectManager")
     managed_objects = bluez_iface.GetManagedObjects()
 
-    adapter_path = None;
+    adapter_path = None
     # devlist = []
     devmap = {}
-    for key,val in managed_objects.items():
+    for key, val in managed_objects.items():
         if val.get("org.bluez.Device1"):
             dev = val["org.bluez.Device1"]
             dev["path"] = key
@@ -86,15 +92,16 @@ def main():
         elif val.get("org.bluez.Adapter1"):
             adapter_path = key
 
-    inp = "\n".join(make_device_list(devmap) + [ "", "Start Discovery", "Open GUI"])
+    inp = "\n".join(make_device_list(devmap)
+                    + ["", "Start Discovery", "Open GUI"])
 
     sel = run_rofi(ROFI_CMD, inp)
 
     adapter = bus.get_object("org.bluez", adapter_path)
 
     if sel == "Start Discovery":
-        adapter_iface = dbus.Interface(adapter, "org.bluez.Adapter1");
-        adapter_iface.StartDiscovery();
+        adapter_iface = dbus.Interface(adapter, "org.bluez.Adapter1")
+        adapter_iface.StartDiscovery()
         time.sleep(30)
     elif sel == "Open GUI":
         Popen([BLUETOOTH_GUI]).wait()
@@ -110,6 +117,7 @@ def main():
             dev_iface.Disconnect()
         else:
             dev_iface.Connect()
+
 
 if __name__ == '__main__':
     main()
