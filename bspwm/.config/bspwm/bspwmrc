@@ -89,3 +89,5 @@ fi
 
 # Run emacs in background, connect with emacsclient
 run emacs --daemon
+
+compton -b
