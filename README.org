@@ -13,12 +13,12 @@ others' configs and adapted to my needs. These are managed through GNU stow.
 ** Installation
 | Destination/contents         | Command                            |
 |------------------------------+------------------------------------|
-| everything                   | ~sudo make~ or ~sudo make install~ |
+| everything                   | ~make~ or ~make install~           |
 | ~$HOME~                      | ~make conf~                        |
-| ~/etc~                       | ~sudo make etc~                    |
+| ~/etc~                       | ~make etc~                         |
 | ~$HOME/bin~                  | ~make bin~                         |
 | specific config              | e.g. ~make bspwm~                  |
-| specific config (under [[file:etc/][etc/]]) | e.g. ~sudo make pacman~            |
+| specific config (under [[file:etc/][etc/]]) | e.g. ~make pacman~                 |
 ** conf
 Everything that goes to ~$HOME~
 *** bspwm
