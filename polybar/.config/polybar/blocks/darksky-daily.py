@@ -15,8 +15,10 @@ ROFI_CMD = [
     "-dmenu", "-i",
     "-theme-str", "#inputbar {enabled:false;}",
     "-xoffset", "-15",
+    "-width", "300",
     "-markup-rows"
 ]
+
 
 def get_icon(icon):
     switcher = {
@@ -33,22 +35,27 @@ def get_icon(icon):
         "hail": "",
         "thunderstorm": "",
         "tornado": "",
-
     }
     return switcher.get(icon, "?")
+
 
 def run_rofi(args, lines):
     return (Popen(args, stdin=PIPE, stdout=PIPE, env=ENV)
             .communicate(input="\n".join(lines).encode(ENC))[0]
             .decode(ENC)).strip()
 
-def main():
 
+def main():
     with open("/tmp/darksky") as f:
-        jdict = json.load(f);
-    run_rofi(ROFI_CMD,[f"<span color='#665C54'>{datetime.fromtimestamp(i['time']).strftime('%a')}</span>"
-                       f"  {round(i['temperatureMin'])}° - {round(i['temperatureMax'])}° {get_icon(i['icon'])}"
-                       for i in jdict['daily']['data']])
+        jdict = json.load(f)
+    run_rofi(ROFI_CMD,
+             ["<span color='#665C54'>"
+              f"{datetime.fromtimestamp(i['time']).strftime('%a')}"
+              "</span>"
+              f"  {round(i['temperatureMin'])}°"
+              f" - {round(i['temperatureMax'])}° {get_icon(i['icon'])}"
+              for i in jdict['daily']['data']])
+
 
 if __name__ == '__main__':
     main()

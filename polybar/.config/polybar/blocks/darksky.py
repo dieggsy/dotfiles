@@ -11,6 +11,7 @@ from pathlib import Path
 
 CONFIG_PATH = f"{str(Path.home())}/.config/polybar/darkskyrc"
 
+
 def get_icon(icon):
     switcher = {
         "clear-day": "",
@@ -26,23 +27,29 @@ def get_icon(icon):
         "hail": "",
         "thunderstorm": "",
         "tornado": "",
-
     }
     return switcher.get(icon, "?")
 
+
 try:
     with open(CONFIG_PATH) as f:
-        exec(f.read())
+        conf = json.load(f)
+        key = conf["key"]
+        coord = conf["coord"]
+        units = conf["units"]
+        url_path = f"{key}/{coord[0]},{coord[1]}?units={units}"
     with urllib.request.urlopen('https://api.darksky.net/forecast/'
-                                f'{key}/{coord[0]},{coord[1]}?units={units}') as response:
+                                + url_path) as response:
         raw_text = response.read()
         jdict = json.loads(raw_text)
         with open("/tmp/darksky", "w") as f:
-            json.dump(jdict,f);
-except:
+            json.dump(jdict, f)
+except urllib.error.URLError:
     print("? ??")
 else:
-    print(f"{get_icon(jdict['currently']['icon'])} {round(jdict['currently']['temperature'])}"
-          f" %{{T4}}%{{F#665C54}}{round(jdict['daily']['data'][0]['temperatureMax'])}"
-          f"/{round(jdict['daily']['data'][0]['temperatureMin'])}%{{T-}}%{{F-}}")
-
+    print(f"{get_icon(jdict['currently']['icon'])}"
+          f" {round(jdict['currently']['temperature'])}"
+          f" %{{T4}}%{{F#665C54}}"
+          f"{round(jdict['daily']['data'][0]['temperatureMax'])}"
+          f"/{round(jdict['daily']['data'][0]['temperatureMin'])}"
+          f"%{{T-}}%{{F-}}")
