@@ -1,5 +1,0 @@
-#!/bin/bash
-
-bspc wm -O eDP1 HDMI2
-~/.config/bspwm/bspwmrc
-notify-send "autorandr" "Switched to profile: $(autorandr | grep current | cut -d' ' -f1)"
