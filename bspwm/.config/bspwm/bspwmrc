@@ -61,8 +61,7 @@ run xss-lock -- physlock
 run udiskie
 
 # Wallpaper
-set-wallpaper ~/pic/wallpapers/leaves/leaves-branchy.jpg \
-              ~/pic/wallpapers/leaves/leaves-purpleish.jpg
+feh --bg-fill ~/pic/wallpapers/chicken-wall.png
 # Random wallpaper
 # feh --bg-fill $(find ~/pic/wallpapers -type f ! -path '*originals*' \
 #                     | shuf -n1 --random-source=/dev/urandom)
