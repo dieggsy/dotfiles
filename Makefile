@@ -24,7 +24,7 @@ bin/bin/git-prompt: bin/bin/git-prompt.c
 
 .PHONY: etc
 etc:
-	cd etc/ && stow -t /etc $(ETC)
+	cd etc/ && sudo stow -t /etc $(ETC)
 
 .PHONY: polybar
 polybar:
@@ -37,4 +37,4 @@ $(CONF): $(_CONF)
 
 .PHONY: $(ETC)
 $(ETC): $(_ETC)
-	cd etc && stow -t /etc $@
+	cd etc && sudo stow -t /etc $@
