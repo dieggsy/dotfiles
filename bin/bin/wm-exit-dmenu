@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-# message="Exit i3?"
-response=$(echo -e "exit\nlock\nsuspend\nhibernate\nreboot\nshutdown" |
-               rofi -dmenu)
-if [ -n "$response" ]; then
-    ~/bin/wm-exit $response
-fi
