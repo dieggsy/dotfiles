@@ -57,9 +57,6 @@
     short=true
     branch=true
 
-[commit]
-    gpgsign = true
-
 [push]
     followTags = true
 [pull]
