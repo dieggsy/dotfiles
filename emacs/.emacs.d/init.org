@@ -20,7 +20,7 @@ rearrangement are sweet.
 - [[#tools][Tools]]
 - [[#emacs-enhancements][Emacs Enhancements]]
 - [[#fun][Fun]]
-- [[#web-services][Web services]]
+- [[#web][Web]]
 - [[#local-vars][Local vars]]
 
 * Initial Setup
@@ -777,7 +777,7 @@ color is hidden by ivy's match color."
       . ,(lambda (str1 str2)
            (> 0 (compare-strings str1 nil nil str2 nil nil 'ignore-case)))))
 
-  (setq ivy-format-function 'ivy-format-function-line
+  (setq ivy-format-functions-alist '((t . ivy-format-function-line))
         ivy-use-virtual-buffers t
         ivy-count-format ""
         ivy-extra-directories nil
@@ -1799,7 +1799,7 @@ Extra Emacs font lock rules for a more colourful dired
 #+begin_quote
 Dired with recursive directory sizes
 #+end_quote
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package dired-du
   :straight (:host github :repo "emacsmirror/dired-du")
   :config
@@ -4030,7 +4030,7 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
     (git-commit-turn-on-flyspell)))
 #+end_src
 **** [[https://github.com/alphapapa/magit-todos][magit-todos]]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package magit-todos
   :after magit
   :demand t
@@ -4731,7 +4731,7 @@ Source: http://tinyurl.com/lo96nwc"
   "agg" 'gomoku
   "agt" 'tetris)
 #+end_src
-* Web services
+* Web
 ** Built-in
 *** [[elisp:(find-library-other-window "erc")][ERC]]
 #+begin_quote
