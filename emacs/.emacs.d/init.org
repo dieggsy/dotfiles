@@ -3967,36 +3967,6 @@ Source: https://git.io/vQKub"
   (if (bound-and-true-p magit-blame-mode)
       (magit-blame-quit)
     (call-interactively 'magit-blame)))
-
-(defun d/gitlab-snippet (&optional private)
-  (interactive "P")
-  (require 'request)
-  (let* ((buf-name (buffer-name))
-         (title (read-from-minibuffer "Snippet title: "))
-         (file-name (read-from-minibuffer (format "File name [%s]: " buf-name)
-                                          nil
-                                          nil
-                                          nil
-                                          nil
-                                          buf-name))
-         (content (if (region-active-p)
-                      (buffer-substring (region-beginning) (region-end))
-                    (buffer-string)))
-         (visibility (if private "private" "public"))
-         (token (password-store-get "tokens/gitlab/master")))
-    (request
-     "https://gitlab.com/api/v4/snippets"
-     :type "POST"
-     :data `(("title" . ,title)
-             ("file_name" . ,file-name)
-             ("content" . ,content)
-             ("visibility" . ,visibility))
-     :success (cl-function (lambda (&key data &allow-other-keys)
-                             (let ((url (gethash "web_url" data)))
-                               (kill-new url)
-                               (message "Added %S to kill ring" url))))
-     :headers `(("PRIVATE-TOKEN" . ,token))
-     :parser 'json-parse-buffer)))
 #+end_src
 *** Packages
 **** [[https://github.com/defunkt/gist.el][gist]]
@@ -5015,6 +4985,37 @@ An Emacs package for displaying the forecast from OpenWeatherMap.
   :config
   (setq sunshine-location "02139,USA"
         sunshine-appid (password-store-get "api/openweathermap")))
+#+end_src
+** Functions
+#+begin_src emacs-lisp
+(defun d/paste-region-or-buffer ()
+  (interactive)
+  ;; TODO: page title?
+  (let ((str (if (region-active-p)
+                 (buffer-substring-no-properties (region-beginning) (region-end))
+               (buffer-substring-no-properties (point-min) (point-max))))
+        (mode major-mode)
+        (basename (format-time-string "%Y-%d-%mT%H-%M-%S"))
+        (remote-path "/sshx:dieggsy@firefly:/srv/http/dieggsy-domains/paste/"))
+    (with-temp-buffer
+      (let ((buffer-file-name "/tmp/paste.dieggsy.com"))
+        ;; (insert "#+TITLE: diego's pastes\n")
+        (insert "#+OPTIONS: title:test timestamp:nil num:nil toc:nil\n")
+        (insert (format "#+EXPORT_FILE_NAME: %shtml/%s.html\n" remote-path basename))
+        ;; (insert "#+HTML_HEAD: <title>diego's pastes</title>\n")
+        (insert "#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=\"https://dieggsy.com/css/org.css\"/>\n")
+        (insert "#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=\"https://dieggsy.com/css/paste.css\"/>\n")
+        (insert (format "#+begin_src %s\n" (string-remove-suffix "-mode" (symbol-name mode))))
+        (insert str)
+        (insert (format "%s#+end_src\n"
+                        (if (string-suffix-p "\n" str)
+                            ""
+                          "\n")))
+        (insert (format "[[./%s/raw][raw]]" basename))
+        (org-mode)
+        (org-html-export-to-html)
+        (org-babel-tangle nil (format "%sraw/%s.txt" remote-path basename))))
+    (kill-new (format "https://paste.dieggsy.com/%s" basename))))
 #+end_src
 * Local vars
 #+begin_example
