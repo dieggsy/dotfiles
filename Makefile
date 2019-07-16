@@ -2,7 +2,7 @@
 
 CFLAGS=-O3 -Wall -Wextra
 
-_CONF=$(filter-out polybar/ usr/ etc/ bin/,$(sort $(wildcard */)))
+_CONF=$(filter-out usr/ etc/ bin/,$(sort $(wildcard */)))
 CONF=$(_CONF:%/=%)
 
 _ETC=$(wildcard etc/*/)
@@ -15,7 +15,7 @@ USR=$(_USR:usr/%/=%)
 install: conf etc bin usr
 
 .PHONY: conf
-conf: polybar
+conf:
 	stow -t ~ $(CONF)
 
 .PHONY: bin
@@ -32,11 +32,6 @@ etc:
 .PHONY: usr
 usr:
 	cd usr/ && sudo stow -t /usr $(USR)
-
-.PHONY: polybar
-polybar:
-	cd polybar/.config/polybar/blocks/ && make
-	stow -t ~ polybar
 
 .PHONY: $(CONF)
 $(CONF): $(_CONF)
