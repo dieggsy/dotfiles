@@ -37,9 +37,10 @@ bspc rule -a mpv             state=floating sticky=on rectangle=960x540+1575+275
 # Programs
 run() {
     if [ "$1" = "-f" ]; then
-        pgrep -f "${*:2}" || (${@:2} &)
+        cmd="${@:2}"
+        pgrep -f "$cmd" || (${@:2} &)
     else
-        pgrep $1 || ($@ &)
+        pgrep "$1" || ($@ &)
     fi
 }
 
