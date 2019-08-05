@@ -4997,8 +4997,8 @@ An Emacs package for displaying the forecast from OpenWeatherMap.
                  (buffer-substring-no-properties (region-beginning) (region-end))
                (buffer-substring-no-properties (point-min) (point-max))))
         (mode major-mode)
-        (basename (format-time-string "%Y-%d-%mT%H-%M-%S"))
-        (remote-path "/sshx:dieggsy@firefly:/srv/http/dieggsy-domains/paste/"))
+        (basename (format-time-string "%Y-%m-%dT%H-%M-%S"))
+        (remote-path "/sshx:dieggsy@firefly:/srv/http/dieggsy.com/paste/"))
     (with-temp-buffer
       (let ((buffer-file-name "/tmp/paste.dieggsy.com"))
         ;; (insert "#+TITLE: diego's pastes\n")
