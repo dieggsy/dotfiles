@@ -555,7 +555,7 @@ Evil integration for a bunch of misc modes.
 (use-package evil-collection
   :custom
   (evil-collection-company-use-tng nil)
-  (evil-collection-setup-minibuffer t)
+  ;; (evil-collection-setup-minibuffer t)
   (evil-collection-term-sync-state-and-mode-p t)
   :init
   (evil-collection-init))
