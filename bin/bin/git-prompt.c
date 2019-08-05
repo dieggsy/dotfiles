@@ -53,6 +53,7 @@ void print_branch_info(FILE *status) {
             case 4 :
                 printf("%%F{10}%s%%f%%F{13}+%d-%d%%f",
                        branch, ahead_behind, behind);
+                free(ahead_behind_str);
                 break;
             case 3 :
                 if (strncmp(ahead_behind_str, "ahead", 5) == 0) {
@@ -61,12 +62,12 @@ void print_branch_info(FILE *status) {
                 else {
                     printf("%%F{10}%s%%f%%F{13}-%d%%f", branch, ahead_behind);
                 }
+                free(ahead_behind_str);
                 break;
             default :
                 printf("%%F{10}%s%%f", branch);
                 break;
         }
-        free(ahead_behind_str);
     }
     free(branch);
     free(first_line);
