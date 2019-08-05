@@ -8,45 +8,51 @@ int regex_match(char *pattern, const char *string) {
     regex_t re;
 
     if (regcomp(&re, pattern, REG_EXTENDED|REG_NOSUB) != 0) {
-        return 0;      /* Report error. */
+        return 0;
     }
     status = regexec(&re, string, (size_t) 0, NULL, 0);
     regfree(&re);
     if (status != 0) {
-        return 0;      /* Report error. */
+        return 0;
     }
     return 1;
 }
 
 void print_branch_info(FILE *status) {
-    size_t n =0;
+    size_t n = 0;
     char *first_line = NULL;
     getline(&first_line, &n, status);
-    char branch[101];
+    char *branch;
     if (strstr(first_line, "(no branch)") != NULL) {
         FILE *rev;
         rev = popen("git rev-parse --short HEAD", "r");
         char *rev_out;
-        char rev_parsed[41];
+        char *rev_parsed;
         n = 0;
         getline(&rev_out, &n, rev);
-        sscanf(rev_out,"%40[^\n]", rev_parsed);
-        printf("%%F{10}:%s%%f",rev_parsed);
+        sscanf(rev_out,"%m[^\n]", &rev_parsed);
+        printf("%%F{10}:%s%%f", rev_parsed);
         free(rev_out);
+        free(rev_parsed);
     }
     else if (strncmp(first_line, "## No commits", 13) == 0) {
-        sscanf(first_line, "## No commits yet on %100[^\n]", branch);
+        sscanf(first_line, "## No commits yet on %m[^\n]", &branch);
         printf("%%F{10}%s%%f", branch);
     }
     else {
-        char ahead_behind_str[6];
+        char *ahead_behind_str;
         int ahead_behind = 0;
         int behind = 0;
-        int ret = sscanf(first_line, "## %100[^.\n]...%*[^ ] %*c%s %d, behind %d%*c", branch, ahead_behind_str, &ahead_behind, &behind);
+        int ret = sscanf(first_line,
+                         "## %m[^.\n]...%*[^ ] %*c%ms %d, behind %d%*c",
+                         &branch,
+                         &ahead_behind_str,
+                         &ahead_behind,
+                         &behind);
         switch (ret) {
             case 4 :
-                printf("%%F{10}%s%%f%%F{13}+%d-%d%%f", branch, ahead_behind, behind);
-                /* free(ahead_behind_str); */
+                printf("%%F{10}%s%%f%%F{13}+%d-%d%%f",
+                       branch, ahead_behind, behind);
                 break;
             case 3 :
                 if (strncmp(ahead_behind_str, "ahead", 5) == 0) {
@@ -55,13 +61,14 @@ void print_branch_info(FILE *status) {
                 else {
                     printf("%%F{10}%s%%f%%F{13}-%d%%f", branch, ahead_behind);
                 }
-                /* free(ahead_behind_str); */
                 break;
             default :
                 printf("%%F{10}%s%%f", branch);
                 break;
         }
+        free(ahead_behind_str);
     }
+    free(branch);
     free(first_line);
 }
 
@@ -74,12 +81,12 @@ void print_other_info(FILE *status) {
     size_t n =0;
     char *first_line = NULL;
     while (getline(&first_line, &n, status) != -1) {
-        /* first_line[2] = '\0'; */
         if (regex_match("^(A[ DM]|C[ DM]|D[ M]|M[ DM]|R[ DM])", first_line)) {
             staged += 1;
         } else if (regex_match("^(A[AU]|D[DU]|U[ADU])", first_line)) {
             conflicts +=1;
-        } else if (regex_match("^( [DM]|A[DM]|C[DM]|M[DM]|R[DM])", first_line)) {
+        } else if (regex_match("^( [DM]|A[DM]|C[DM]|M[DM]|R[DM])",
+                               first_line)) {
             modified += 1;
         } else if (strncmp("??",first_line,2) == 0) {
             dirty = 1;
