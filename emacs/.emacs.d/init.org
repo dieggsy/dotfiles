@@ -1146,6 +1146,11 @@ Source: https://git.io/vQKEa"
      (evil-insert-state)
      (call-interactively
       (key-binding (or key (read-key-sequence nil)))))))
+
+
+(defun d/publish-blog-posts ()
+  (interactive)
+ (org-map-entries (lambda () (org-html-export-to-html nil 'subtree)) "LEVEL=1"))
 #+end_src
 **** Bindings
 #+begin_src emacs-lisp
@@ -1235,6 +1240,22 @@ Source: https://git.io/vQKEa"
       `(lambda ()
          (interactive)
          (d/org-insert-list-item-or-self ,char)))))
+#+end_src
+***** Blog
+This is a hook to set the html preamble for my blog - I publish by visiting an
+org file remotely and exporting to html.
+#+begin_src emacs-lisp
+(d/hook! org-mode
+  (when (and (file-remote-p default-directory)
+             (string-match-p "dieggsy@firefly:/srv/http/dieggsy.com"
+                             default-directory))
+    (setq-local org-html-preamble-format
+                '(("en" "<div align=\"right\">
+<a target=\"_self\" href=\"https://dieggsy.com\">Home</a>&#32;−&#32;
+<a target=\"_self\" href=\"https://dieggsy.com/about.html\">About</a>&#32;−&#32;
+<a target=\"_self\" href=\"https://code.dieggsy.com\">Code</a>&#32;−&#32;
+<a target=\"_self\" href=\"https://paste.dieggsy.com\">Pastes</a>
+</div>")))))
 #+end_src
 **** Export backends
 ***** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
