@@ -6,8 +6,8 @@
 # fi
 # Basic snapshot-style rsync backup script
 LOCALDIR=/run/media/$USER/wd-passport
-REMOTEDIR="~/wd-passport/backup"
-REMOTEHOST=panda
+REMOTEDIR="/mnt/wd-passport/backup"
+REMOTEHOST=odroid
 REMOTEUSER=dieggsy
 
 # Config
