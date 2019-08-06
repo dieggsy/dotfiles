@@ -72,6 +72,7 @@ void print_branch_info(FILE *status) {
     else if (strncmp(first_line, "## No commits", 13) == 0) {
         sscanf(first_line, "## No commits yet on %m[^\n]", &branch);
         printf("%%F{10}%s%%f", branch);
+        free(branch);
     }
     else {
         char *ahead_behind_str;
@@ -102,8 +103,8 @@ void print_branch_info(FILE *status) {
                 printf("%%F{10}%s%%f", branch);
                 break;
         }
+        free(branch);
     }
-    free(branch);
     free(first_line);
 }
 
