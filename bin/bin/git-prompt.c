@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <string.h>
 #include <regex.h>
+#include <unistd.h>
+#include <sys/wait.h>
+#include <fcntl.h>
 
 int regex_match(char *pattern, const char *string) {
     int status;
@@ -16,6 +19,34 @@ int regex_match(char *pattern, const char *string) {
         return 0;
     }
     return 1;
+}
+
+FILE* popenish (pid_t *pid, char* cmd[]) {
+    enum { READ = 0, WRITE = 1};
+    FILE* output;
+    int pipefd[2];
+    pipe(pipefd); //create a pipe
+
+    *pid = fork(); //span a child process
+    if (*pid == 0) {
+        // Child. Let's redirect its standard output to our pipe and replace process with tail
+        close(pipefd[READ]);
+        dup2(pipefd[WRITE], STDOUT_FILENO);
+        int dev_null = open("/dev/null", O_WRONLY);
+        dup2(dev_null, STDERR_FILENO);
+        execvp(cmd[0], cmd);
+    }
+
+    //Only parent gets here. Listen to what the tail says
+    close(pipefd[WRITE]);
+    output = fdopen(pipefd[READ], "r");
+
+    return output;
+}
+
+void pcloseish(pid_t pid, FILE* file) {
+    waitpid(pid,NULL,0);
+    fclose(file);
 }
 
 void print_branch_info(FILE *status) {
@@ -113,7 +144,9 @@ void print_other_info(FILE *status) {
 
 int main() {
     FILE *status;
-    status = popen("git status --porcelain -b 2>/dev/null;", "r");
+    pid_t pid;
+    char *cmd[] = {"git", "status", "--porcelain", "-b", NULL};
+    status = popenish(&pid,cmd);
     int c;
     if ((c=getc(status)) != '#') {
         return 0;
@@ -124,6 +157,6 @@ int main() {
     printf("|");
     print_other_info(status);
     printf(") ");
-    pclose(status);
+    pcloseish(pid, status);
     return 0;
 }
