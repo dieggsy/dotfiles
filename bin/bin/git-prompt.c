@@ -56,7 +56,9 @@ void print_branch_info(FILE *status) {
     char *branch;
     if (strstr(first_line, "(no branch)") != NULL) {
         FILE *rev;
-        rev = popen("git rev-parse --short HEAD", "r");
+        pid_t pid;
+        char *cmd[] = {"git", "rev-parse", "--short", "HEAD", NULL};
+        rev = popenish(&pid, cmd);
         char *rev_out;
         char *rev_parsed;
         n = 0;
@@ -65,6 +67,7 @@ void print_branch_info(FILE *status) {
         printf("%%F{10}:%s%%f", rev_parsed);
         free(rev_out);
         free(rev_parsed);
+        pcloseish(pid, rev);
     }
     else if (strncmp(first_line, "## No commits", 13) == 0) {
         sscanf(first_line, "## No commits yet on %m[^\n]", &branch);
