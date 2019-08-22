@@ -3121,7 +3121,7 @@ Colorize color names in buffers
 #+end_quote
 #+begin_src emacs-lisp
 (use-package rainbow-mode
-  :hook help-mode
+  :hook (help-mode conf-mode)
   :init
   (d/safe-vars! (eval when (fboundp 'rainbow-mode) (rainbow-mode 1)))
   :config
