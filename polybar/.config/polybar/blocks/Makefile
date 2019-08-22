@@ -12,7 +12,7 @@ small: all
 clean:
 	rm -rvf $(TARGETS)
 
-networkmanager: CFLAGS += `pkg-config --cflags --libs dbus-1`
+networkmanager: CFLAGS += `pkg-config --cflags --libs libnm`
 
 bluez: CFLAGS += `pkg-config --cflags --libs dbus-1`
 
