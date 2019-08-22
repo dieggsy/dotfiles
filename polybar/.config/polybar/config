@@ -1,3 +1,4 @@
+; -*- mode: conf-windows -*-
 [colors]
 black = #282828
 white = #FDF4C1
