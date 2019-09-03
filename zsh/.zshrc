@@ -108,6 +108,12 @@ qmpv() {
     fi
 }
 
+ssh() {
+    [ $TMUX ] && tmux rename-window $(echo "$*" | grep -oP '(?<=@).*')
+    autossh -M 0 -o "ServerAliveInterval=15" -o "ServerAliveCountMax=3" $@
+    [ $TMUX ] && tmux set-window-option automatic-rename on
+}
+
 my-packages () {
     comm -23 <(pacman -Qqett | sort) <(pacman -Qgq base base-devel xorg | sort)
 }
