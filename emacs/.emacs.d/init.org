@@ -916,12 +916,12 @@ But really, it's life.
 #+begin_src emacs-lisp
 (d/after 'org
   (setq org-agenda-text-search-extra-files '(agenda-archives)
-        org-agenda-files '("~/org/todo.org" "~/org/gcal.org")
-        org-default-notes-file "~/org/todo.org"
-        d/notes-file "~/org/notes.org"
-        org-directory "~/org"
-        org-archive-location "~/org/archive.org::"
-        org-mobile-inbox-for-pull "~/org/mobile.org"
+        org-agenda-files '("~/Nextcloud/org/todo.org" "~/Nextcloud/org/gcal.org")
+        org-default-notes-file "~/Nextcloud/org/todo.org"
+        d/notes-file "~/Nextcloud/org/notes.org"
+        org-directory "~/Nextcloud/org"
+        org-archive-location "~/Nextcloud/org/archive.org::"
+        org-mobile-inbox-for-pull "~/Nextcloud/org/mobile.org"
         org-export-async-init-file
         (locate-user-emacs-file "lisp/org-async-init.el")))
 #+end_src
