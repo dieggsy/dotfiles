@@ -109,7 +109,7 @@ qmpv() {
 }
 
 ssh() {
-    [ $TMUX ] && tmux rename-window $(echo "$*" | grep -oP '(?<=@).*')
+    [ $TMUX ] && tmux rename-window $(echo "$*" | grep -oP '(?<=@)[^ ]+' | head -1)
     autossh -M 0 -o "ServerAliveInterval=15" -o "ServerAliveCountMax=3" $@
     [ $TMUX ] && tmux set-window-option automatic-rename on
 }
