@@ -2,14 +2,17 @@
 
 CFLAGS=-O3 -Wall -Wextra
 
-_CONF=$(filter-out polybar/ etc/ bin/,$(sort $(wildcard */)))
+_CONF=$(filter-out polybar/ usr/ etc/ bin/,$(sort $(wildcard */)))
 CONF=$(_CONF:%/=%)
 
 _ETC=$(wildcard etc/*/)
 ETC=$(_ETC:etc/%/=%)
 
+_USR=$(wildcard usr/*/)
+USR=$(_USR:usr/%/=%)
+
 .PHONY: install
-install: conf etc bin
+install: conf etc bin usr
 
 .PHONY: conf
 conf: polybar
@@ -26,6 +29,10 @@ bin/bin/git-prompt: bin/bin/git-prompt.c
 etc:
 	cd etc/ && sudo stow -t /etc $(ETC)
 
+.PHONY: usr
+usr:
+	cd usr/ && sudo stow -t /usr $(USR)
+
 .PHONY: polybar
 polybar:
 	cd polybar/.config/polybar/blocks/ && make
@@ -38,3 +45,7 @@ $(CONF): $(_CONF)
 .PHONY: $(ETC)
 $(ETC): $(_ETC)
 	cd etc && sudo stow -t /etc $@
+
+.PHONY: $(USR)
+$(USR): $(_USR)
+	cd usr && sudo stow -t /usr $@
