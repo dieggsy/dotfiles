@@ -28,7 +28,7 @@ compinit
 HISTFILE=~/.histfile
 HISTSIZE=10000
 SAVEHIST=10000
-setopt appendhistory autocd hist_ignore_all_dups
+setopt appendhistory autocd hist_ignore_all_dups hist_ignore_space
 unsetopt beep
 bindkey -v
 bindkey "^?" backward-delete-char
