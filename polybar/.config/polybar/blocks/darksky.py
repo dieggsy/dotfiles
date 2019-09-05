@@ -12,25 +12,6 @@ from pathlib import Path
 CONFIG_PATH = f"{str(Path.home())}/.config/polybar/darkskyrc"
 
 
-def get_icon(icon):
-    switcher = {
-        "clear-day": "",
-        "clear-night": "",
-        "rain": "",
-        "snow": "",
-        "sleet": "",
-        "wind": "",
-        "fog": "",
-        "cloudy": "",
-        "partly-cloudy-day": "",
-        "partly-cloudy-night": "",
-        "hail": "",
-        "thunderstorm": "",
-        "tornado": "",
-    }
-    return switcher.get(icon, "?")
-
-
 try:
     with open(CONFIG_PATH) as f:
         conf = json.load(f)
@@ -47,7 +28,7 @@ try:
 except urllib.error.URLError:
     print("? ??")
 else:
-    print(f"{get_icon(jdict['currently']['icon'])}"
+    print(f"{jdict['currently']['icon']}"
           f" {round(jdict['currently']['temperature'])}"
           f" %{{T4}}%{{F#665C54}}"
           f"{round(jdict['daily']['data'][0]['temperatureMax'])}"

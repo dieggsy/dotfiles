@@ -8,17 +8,18 @@
 
 static int read_int(const char* filename);
 static int get_joint_percent();
-static char *get_icon (int adapter_online);
+static char *get_icon (int adapter_online, int percent);
 static void notify(char *title, char* body);
 static void say(char *text);
 static int build_message(DBusMessage *msg_notify, char *title, char *body);
 static void check_and_abort(DBusError *error);
+static int round_multiple(int strength, int multiple);
 
 int main () {
     int percent = get_joint_percent();
     int adapter_online = read_int("/sys/class/power_supply/AC/online");
 
-    printf("%s %d", get_icon(adapter_online), percent);
+    printf("%s %d", get_icon(adapter_online, percent), percent);
     if (!adapter_online && percent <= 10) {
         notify("Battery critically low", "Consider charging");
         say("Battery critically low, consider charging");
@@ -63,11 +64,19 @@ static int get_joint_percent() {
     return (int)roundf(numerator/denominator * 100);
 }
 
-static char * get_icon (int adapter_online) {
-    if (adapter_online) {
-        return "";
+static char * get_icon (int adapter_online, int percent) {
+    char* icon;
+    percent = round_multiple(percent, 33);
+    if (percent == 99) {
+        icon = adapter_online ? "{###}" : "[###]";
+    } else if (percent == 66) {
+        icon = adapter_online ? "{## }" : "[## ]";
+    } else if (percent == 33) {
+        icon = adapter_online ? "{#  }" : "[#  ]";
+    } else {
+        icon = adapter_online ? "{   }" : "[   ]";
     }
-    return "";
+    return icon;
 }
 
 static void notify(char *title, char* body) {
@@ -146,4 +155,8 @@ static void check_and_abort(DBusError *error) {
     puts(error->message);
     dbus_error_free(error);
     abort();
+}
+
+int round_multiple(int strength, int multiple) {
+    return ((strength + multiple/2)/multiple) * multiple;
 }

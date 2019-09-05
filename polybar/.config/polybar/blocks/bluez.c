@@ -76,7 +76,7 @@ int main() {
                     dbus_message_iter_next(&propdict_entry);
                 }
                 if (connected) {
-                    printf(" %s", devname);
+                    printf("+ %s", devname);
                     return 0;
                 }
             }
@@ -86,7 +86,7 @@ int main() {
         dbus_message_iter_next(&pathdict_entry);
     }
     dbus_message_unref(msg_reply);
-    printf("");
+    printf(".");
     return 0;
 }
 

@@ -15,28 +15,9 @@ ROFI_CMD = [
     "-dmenu", "-i",
     "-theme-str", "#inputbar {enabled:false;}",
     "-xoffset", "-15",
-    "-width", "300",
+    "-width", "425",
     "-markup-rows"
 ]
-
-
-def get_icon(icon):
-    switcher = {
-        "clear-day": "",
-        "clear-night": "",
-        "rain": "",
-        "snow": "",
-        "sleet": "",
-        "wind": "",
-        "fog": "",
-        "cloudy": "",
-        "partly-cloudy-day": "",
-        "partly-cloudy-night": "",
-        "hail": "",
-        "thunderstorm": "",
-        "tornado": "",
-    }
-    return switcher.get(icon, "?")
 
 
 def run_rofi(args, lines):
@@ -53,7 +34,7 @@ def main():
               f"{datetime.fromtimestamp(i['time']).strftime('%a')}"
               "</span>"
               f"  {round(i['temperatureMin'])}°"
-              f" - {round(i['temperatureMax'])}° {get_icon(i['icon'])}"
+              f" - {round(i['temperatureMax'])}° {i['icon']}"
               for i in jdict['daily']['data']])
 
 
