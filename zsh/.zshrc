@@ -8,11 +8,11 @@ zmodload zsh/complist
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
 zstyle ':completion:*' format '%F{yellow}--%d--%f'
 zstyle ':completion:*' group-name ''
-zstyle ':completion:λ*' insert-unambiguous true
+zstyle ':completion:*' insert-unambiguous true
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*:options' list-colors '=(#b)*(-- *)=0=90'
 zstyle ':completion:*' matcher-list 'm:{[:lower:]}={[:upper:]} r:|[._-]=* r:|=*' 'm:{[:lower:]}={[:upper:]} r:|[._-]=* r:|=*' 'm:{[:lower:]}={[:upper:]} r:|[._-]=* r:|=*' 'm:{[:lower:]}={[:upper:]} r:|[._-]=* r:|=*'
-zstyle ':completion:*' menu yes select
+zstyle ':completion:*' menu select=1
 zstyle ':completion:*' select-prompt '%S%p%s'
 zstyle ':completion:*' original true
 zstyle ':completion:*' select-prompt '%SScrolling active: current selection at %p%s'
