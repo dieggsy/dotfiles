@@ -38,7 +38,7 @@ module-margin=0
 separator=
 
 font-0 = Iosevka Term:size=10;3
-font-3 = Iosevka Term:size=7;0
+font-1 = Iosevka Term:size=7;0
 
 modules-left = bspwm date network bluez
 modules-right = display mem cpu weather pulse battery
@@ -129,7 +129,7 @@ click-middle = xdg-open https://darksky.net
 click-left = ~/.config/polybar/blocks/darksky-hourly.py
 click-right = ~/.config/polybar/blocks/darksky-daily.py
 interval = 120
-label-font = 2
+label-font = 1
 
 [module/battery]
 type=custom/script
