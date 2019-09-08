@@ -65,6 +65,7 @@ export PROMPT='$(maybe_host)$(maybe_git)%F{7}%1~%f %F{209}%(!.#.>)%f '
 alias ls='ls --color=auto -F'
 alias csi='csi -q'
 alias lsblk='lsblk -o NAME,SIZE,MOUNTPOINT'
+alias chicken-doc='noglob chicken-doc'
 
 cd_list () {
     emulate -L zsh
