@@ -16,9 +16,6 @@
         (prefix http-client hc:)
         (prefix uri-common uc:))
 
-(define pinned-packages
-  '("csl" "yaml"))
-
 (define upstream-eggs
   (let* ((upstream
           (hc:call-with-input-request
@@ -53,7 +50,7 @@
 
 (define to-update
   (filter (lambda (x)
-            (not (irregex-match (string-join pinned-packages "|") (car x))))
+            (not (string=? "unknown" (cdr x))))
           (lset-difference equal? local-eggs upstream-eggs)))
 
 (if (null? to-update)
