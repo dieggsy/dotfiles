@@ -5,6 +5,7 @@
           (prefix breadline rl:)
           (only breadline-scheme-completion scheme-completer)
           (only chicken.format format))
+  (import chicken-doc)
   (unless (get-environment-variable "INSIDE_EMACS")
     (rl:history-file (format "~a/.csi_history"
                              (get-environment-variable "HOME")))
