@@ -1,19 +1,21 @@
 ;; -*- mode: scheme -*-
 
-(let ()
-  (import (only chicken.process-context get-environment-variable)
-          (prefix breadline rl:)
-          (only breadline-scheme-completion scheme-completer)
-          (only chicken.format format))
-  (import chicken-doc)
-  (unless (get-environment-variable "INSIDE_EMACS")
-    (rl:history-file (format "~a/.csi_history"
-                             (get-environment-variable "HOME")))
-    (rl:stifle-history! 10000)
-    (rl:completer-word-break-characters-set! "\"\'`;|(")
-    (rl:completer-set! scheme-completer)
-    (rl:basic-quote-characters-set! "\"|")
-    (rl:variable-bind! "blink-matching-paren" "on")
-    (rl:paren-blink-timeout-set! 200000)
-    (current-input-port (rl:make-readline-port))))
-
+(cond-expand
+  (chicken-5
+   (let ()
+     (import (only chicken.process-context get-environment-variable)
+             (prefix breadline rl:)
+             (only breadline-scheme-completion scheme-completer)
+             (only chicken.format format))
+     (import chicken-doc)
+     (unless (get-environment-variable "INSIDE_EMACS")
+       (rl:history-file (format "~a/.csi_history"
+                                (get-environment-variable "HOME")))
+       (rl:stifle-history! 10000)
+       (rl:completer-word-break-characters-set! "\"\'`;|(")
+       (rl:completer-set! scheme-completer)
+       (rl:basic-quote-characters-set! "\"|")
+       (rl:variable-bind! "blink-matching-paren" "on")
+       (rl:paren-blink-timeout-set! 200000)
+       (current-input-port (rl:make-readline-port)))))
+  (else))
