@@ -1,64 +1,62 @@
 #!/usr/bin/chicken-csi -s
 ; -*- mode: scheme -*-
-(import chicken.irregex
-        (only chicken.port call-with-input-string)
-        (only chicken.pretty-print pp)
-        (only chicken.io read-string)
+(import (only chicken.pretty-print pp)
+        (only chicken.io read-lines)
         (only chicken.process process-execute call-with-input-pipe)
         (only chicken.string string-split)
-        (only chicken.format printf)
-        (only srfi-1 filter filter-map last lset-difference)
-        (only srfi-13 string-join string-pad-right)
+        (only srfi-1 filter first last lset-difference)
         (only fmt fmt dsp fmt-join tabular)
         (only fmt-color fmt-bold)
-        (only chicken.repl repl)
-        fmt-unicode
+        (only ssax ssax:xml->sxml)
+        (only sxpath-lolevel sxml:text)
+        (only sxpath sxpath)
+        (only fmt-unicode fmt-unicode)
         (prefix http-client hc:)
         (prefix uri-common uc:))
 
+;; Delay is doing nothing here.
 (define upstream-eggs
-  (let* ((upstream
-          (hc:call-with-input-request
-           (uc:uri-reference "http://eggs.call-cc.org/5/")
-           #f
-           (cut read-string #f <>)))
-         (raw-eggs (irregex-extract  "<tr>(.|\n)+?</tr>"
-                                     upstream)))
-    (filter-map (lambda (x)
-                  (let ((match (irregex-search "<a.*?>(.*?)</a>" x)))
-                    (if match
-                        (cons
-                         (irregex-match-substring match 1)
-                         (cadr
-                          (irregex-split "(<|>)"
-                                         (last (irregex-extract "<td>(.*?)</td>" x)))))
-                        #f)))
-                raw-eggs)))
+  (let ((cached #f))
+    (lambda (#!optional refresh)
+      (if (or refresh (not cached))
+          (let* ((sxml
+                  (hc:call-with-input-request
+                   (uc:uri-reference "http://eggs.call-cc.org/rss-5.xml")
+                   #f
+                   (cut ssax:xml->sxml <> '())))
+                 (titles ((sxpath
+                           `(// channel
+                                item
+                                ((title
+                                  ,(lambda (nodeset var-binding)
+                                     (sxml:text nodeset))))))
+                          sxml))
+                 (versions (map
+                            (lambda (s)
+                              (let ((parts (string-split s)))
+                                (cons (car parts) (cadr parts))))
+                            titles)))
+            (set! cached versions)
+            versions)
+          cached))))
 
 (define local-eggs
-  (let ((raw-eggs (string-split
-                   (call-with-input-pipe "chicken-status"
-                                         (cut read-string #f <>))
-                   "\n")))
-    (map (lambda (x)
-           (let ((match-name (irregex-search "(.*?) " x))
-                 (match-ver (irregex-search "version: (.*?)$" x)))
-             (cons
-              (irregex-match-substring match-name 1)
-              (irregex-match-substring match-ver 1))))
+  (let ((raw-eggs (map string-split
+                       (call-with-input-pipe "chicken-status" read-lines))))
+    (map (lambda (s) (cons (first s) (last s)))
          raw-eggs)))
 
 (define to-update
   (filter (lambda (x)
             (not (string=? "unknown" (cdr x))))
-          (lset-difference equal? local-eggs upstream-eggs)))
+          (lset-difference equal? local-eggs (upstream-eggs))))
 
 (if (null? to-update)
     (print "Nothing to update.")
     (let* ((eggs (map car to-update))
            (old-versions (map cdr to-update))
            (new-versions (map (lambda (x)
-                                (cdr (assoc (car x) upstream-eggs)))
+                                (cdr (assoc (car x) (upstream-eggs))))
                               to-update)))
       (fmt #t
            (fmt-unicode
