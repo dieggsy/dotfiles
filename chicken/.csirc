@@ -6,7 +6,8 @@
      (import (only chicken.process-context get-environment-variable)
              (prefix breadline rl:)
              (only breadline-scheme-completion scheme-completer)
-             (only chicken.format format))
+             (only chicken.format format)
+             compile-file)
      (import chicken-doc)
      (unless (get-environment-variable "INSIDE_EMACS")
        (rl:history-file (format "~a/.csi_history"
@@ -17,5 +18,11 @@
        (rl:basic-quote-characters-set! "\"|")
        (rl:variable-bind! "blink-matching-paren" "on")
        (rl:paren-blink-timeout-set! 200000)
-       (current-input-port (rl:make-readline-port)))))
+       (current-input-port (rl:make-readline-port))))
+   (define (compile sexp)
+     (let ((tempf (chicken.file#create-temporary-file)))
+       (call-with-output-file tempf (cut write sexp <>))
+       (compile-file#compile-file tempf)
+       (void))))
   (else))
+
