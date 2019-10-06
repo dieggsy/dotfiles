@@ -3722,6 +3722,16 @@ Source: http://tinyurl.com/le6wxuo"
   "es" 'd/geiser-eval-surrounding-sexp)
 
 (evil-define-key 'normal scheme-mode-map [backtab] #'hs-toggle-hiding)
+
+(defun d/scheme-compile-region-or-definition-and-go ()
+  (interactive)
+  (if (region-active-p)
+      (scheme-compile-region-and-go (region-beginning)
+                                    (region-end))
+    (scheme-compile-definition-and-go)))
+
+(d/after 'scheme
+  (define-key scheme-mode-map (kbd "C-c C-c") 'd/scheme-compile-region-or-definition-and-go))
 #+end_src
 **** Setup
 #+begin_src emacs-lisp
