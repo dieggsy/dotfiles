@@ -3732,112 +3732,106 @@ Source: http://tinyurl.com/le6wxuo"
   (d/after 'evil-surround
     (push '(? . ("`" . "'")) evil-surround-pairs-alist)))
 
-(d/after 'scheme
-  (setq scheme-program-name "csi -q")
-  (dolist (fn '((assume . 1)
-                (compiler-typecase . 1)
-                (cond-expand . 0)
-                (condition-case . 1)
-                (cut . 1)
-                (cute . 1)
-                (declare . 0)
-                (dotimes . 1)
-                (ecase . 1)
-                (fluid-let . 1)
-                (foreign-lambda . 2)
-                (foreign-lambda* . 2)
-                (foreign-primitive . 2)
-                (foreign-safe-lambda . 2)
-                (foreign-safe-lambda* . 2)
-                (functor . 3)
-                (handle-exceptions . 2)
-                (import . 0)
-                (let-location . 1)
-                (let-optionals . 2)
-                (let-optionals* . 2)
-                (letrec-values . 1)
-                (module . 2)
-                (regex-case . 1)
-                (select . 1)
-                (set! . 1)
-                (use . 0)
-                (with-input-from-pipe . 1)
-                (with-output-to-pipe . 1)
-                (set-sharp-read-syntax! . 1)
-                (set-read-syntax! . 1)
-                (test-group . 1)
-                (begin-for-syntax . 0)))
-    (put (car fn) 'scheme-indent-function (cdr fn)))
-  (let ((keywords '("module"
-                    "foreign-lambda"
-                    "foreign-lambda*"
-                    "foreign-safe-lambda"
-                    "foreign-safe-lambda*"
-                    "foreign-primitive"
-                    "foreign-declare"
-                    "define-foreign-record-type"
-                    "and-let*"
-                    "cut"
-                    "cute"
-                    "define-condition-type"
-                    "define-immutable-record-type"
-                    "define-record-type"
-                    "define-values"
-                    "letrec*"
-                    "match"
-                    "match-lambda"
-                    "match-lambda*"
-                    "match-let"
-                    "match-let*"
-                    "match-letrec"
-                    "parameterize"
-                    "receive"
-                    "require-extension"
-                    "set!"
-                    "syntax-case"
-                    "test-approximate"
-                    "test-assert"
-                    "test-begin"
-                    "test-end"
-                    "test-eq"
-                    "test-equal"
-                    "test-eqv"
-                    "test-error"
-                    "test-group"
-                    "test-group-with-cleanup"
-                    "test-with-runner"
-                    "unless"
-                    "when"
-                    "with-exception-handler"
-                    "with-input-from-file"
-                    "with-output-to-file"
-                    "include-relative"
-                    "import-for-syntax"
-                    "begin-for-syntax")))
-    (font-lock-add-keywords 'scheme-mode
-                            `((,(format "[[(]%s\\>" (regexp-opt keywords 1)) . 1)
-                              ("\\[\\(else\\)\\>" . 1)
-                              (,(rx (any "([") (group (or "define-syntax-rule"
-                                                          "define-inline"
-                                                          "define-external"))
-                                    eow (* space)
-                                    (? "(") (? (group (1+ word))))
-                               (1 font-lock-keyword-face)
-                               (2 font-lock-function-name-face nil t)))))
+#+end_src
+The following is a shim for geiser's syntax highlighting and indentation.
+#+begin_src emacs-lisp
+(defmacro dieggsy/scheme-indent (&rest pairs)
+    `(progn ,@(mapcar (lambda (p)
+                        `(put ',(car p) 'scheme-indent-function ',(cadr p)))
+                      pairs)))
 
+(d/after 'scheme
+  ;; geiser shim
+  (setq scheme-program-name "csi -q")
+  ;; Defaults (geiser)
+  (dieggsy/scheme-indent
+   (and-let* 1) (case-lambda 0) (catch defun) (class defun) (dynamic-wind 0)
+   (guard 1) (let*-values 1) (let-values 1) (let/ec 1) (letrec* 1) (match 1)
+   (match-lambda 0) (match-lambda* 0) (match-let scheme-let-indent)
+   (match-let* 1) (match-letrec 1) (opt-lambda 1) (parameterize 1)
+   (parameterize* 1) (receive 2) (require-extension 0) (syntax-case 2)
+   (test-approximate 1) (test-assert 1) (test-eq 1) (test-equal 1) (test-eqv 1)
+   (test-group-with-cleanup 1) (test-runner-on-bad-count! 1)
+   (test-runner-on-bad-end-name! 1) (test-runner-on-final! 1)
+   (test-runner-on-group-begin! 1) (test-runner-on-group-end! 1)
+   (test-runner-on-test-begin! 1) (test-runner-on-test-end! 1)
+   (test-with-runner 1) (unless 1) (when 1) (while 1)
+   (with-exception-handler 1) (with-syntax 1))
+
+  ;; Chicken (geiser)
+  (dieggsy/scheme-indent
+   (assume 1) (compiler-typecase 1) (cond-expand 0) (condition-case 1) (cut 1)
+   (cute 1) (declare 0) (dotimes 1) (ecase 1) (fluid-let 1) (foreign-lambda 2)
+   (foreign-lambda* 2) (foreign-primitive 2) (foreign-safe-lambda 2)
+   (foreign-safe-lambda* 2) (functor 3) (handle-exceptions 2) (import 0)
+   (let-location 1) (let-optionals 2) (let-optionals* 2) (letrec-values 1)
+   (module 2) (regex-case 1) (select 1) (set! 1) (use 0)
+   (with-input-from-pipe 1) (with-output-to-pipe 1))
+  ;; Added by me
+  (dieggsy/scheme-indent
+   (test-group 1) (begin-for-syntax 0) (set-read-syntax! 1)
+   (set-sharp-read-syntax! 1)))
+
+(defun dieggsy/scheme-simple-keywords (keywords)
+  "Return `font-lock-keywords' to highlight scheme KEYWORDS.
+KEYWORDS should be a list of strings."
+  (when keywords
+    (font-lock-add-keywords
+     'scheme-mode
+     `((,(format "[[(]%s\\>" (regexp-opt keywords 1)) . 1)))))
+(defun dieggsy/scheme-keywords (builtin)
+  (dieggsy/scheme-simple-keywords builtin)
   (font-lock-add-keywords
    'scheme-mode
-   '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)
-     ("\\`\\(#!/\\(?:\\(?:.*?/\\)+\\)?\\([^/ ]+\\)?\\(?:.*$\\)?\\)"
-      (1 'font-lock-comment-face)
-      (2 'font-lock-keyword-face t))
-     ("\\<#!\\sw+\\>" . 'font-lock-type-face))
-   t)
-  (font-lock-add-keywords
-   'geiser-repl-mode
-   '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)
-     ("\\<#!\\sw+\\>" . 'font-lock-type-face))
-   t))
+   `(("\\[\\(else\\)\\>" . 1)
+     (,(rx (any "([{") (group (or "define-syntax-rule"
+                                  "define-inline"
+                                  "define-external"
+                                  "define-foreign-variable"))
+           eow (* space)
+           (? "(") (? (group (1+ word))))
+      (1 font-lock-keyword-face)
+      (2 font-lock-function-name-face nil t)))))
+
+;; Default (geiser)
+(dieggsy/scheme-keywords
+ '("and-let*" "cut" "cute" "define-condition-type"
+   "define-immutable-record-type" "define-record-type" "define-values"
+   "letrec*" "match" "match-lambda" "match-lambda*" "match-let" "match-let*"
+   "match-letrec" "parameterize" "receive" "require-extension" "set!"
+   "syntax-case" "test-approximate" "test-assert" "test-begin" "test-end"
+   "test-eq" "test-equal" "test-eqv" "test-error" "test-group"
+   "test-group-with-cleanup" "test-with-runner" "unless" "when"
+   "with-exception-handler" "with-input-from-file" "with-output-to-file"))
+;; Chicken (geiser)
+(dieggsy/scheme-simple-keywords
+ '("assume" "compiler-typecase" "cond-expand" "condition-case" "declare"
+   "define-constant" "define-inline" "define-interface" "define-record"
+   "define-specialization" "define-type" "dotimes" "ecase" "fluid-let"
+   "foreign-lambda" "foreign-lambda*" "foreign-primitive"
+   "foreign-safe-lambda" "foreign-safe-lambda*" "functor" "handle-exceptions"
+   "let-location" "let-optionals" "let-optionals*" "letrec-values" "module"
+   "regex-case" "select" "use" "with-input-from-pipe"))
+;; Added by me
+(dieggsy/scheme-simple-keywords
+ '("define-foreign-type" "define-foreign-record-type" "foreign-value"
+   "foreign-declare" "begin-for-syntax" "define-for-syntax" "include-relative"
+   "import-for-syntax"))
+
+;; Keywords, #! parameters, shebang
+(font-lock-add-keywords
+ 'scheme-mode
+ '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)
+   ("\\`\\(#!/\\(?:\\(?:.*?/\\)+\\)?\\([^/ ]+\\)?\\(?:.*$\\)?\\)"
+    (1 'font-lock-comment-face)
+    (2 'font-lock-keyword-face t))
+   ("\\<#!\\sw+\\>" . 'font-lock-type-face))
+ t)
+(font-lock-add-keywords
+ 'inferior-scheme-mode
+ '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)
+   ("\\<#!\\sw+\\>" . 'font-lock-type-face))
+ t)
 #+end_src
 *** [[https://github.com/NixOS/nix-mode][nix-mode]]
 #+begin_quote
