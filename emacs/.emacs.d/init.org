@@ -1246,17 +1246,18 @@ Source: https://git.io/vQKEa"
 This is a hook to set the html preamble for my blog - I publish by visiting an
 org file remotely and exporting to html.
 #+begin_src emacs-lisp
-(d/hook! org-mode
-  (when (and (file-remote-p default-directory)
-             (string-match-p "dieggsy@firefly:/srv/http/dieggsy.com"
-                             default-directory))
-    (setq-local org-html-preamble-format
-                '(("en" "<div align=\"right\">
+(defvar d/org-preamble-site-header
+  '(("en" "<div align=\"right\">
 <a target=\"_self\" href=\"https://dieggsy.com\">Home</a>&#32;−&#32;
 <a target=\"_self\" href=\"https://dieggsy.com/about.html\">About</a>&#32;−&#32;
 <a target=\"_self\" href=\"https://code.dieggsy.com\">Code</a>&#32;−&#32;
 <a target=\"_self\" href=\"https://paste.dieggsy.com\">Pastes</a>
-</div>")))))
+</div>")))
+(d/hook! org-mode
+  (when (and (file-remote-p default-directory)
+             (string-match-p "dieggsy@firefly:/srv/http/dieggsy.com"
+                             default-directory))
+    (setq-local org-html-preamble-format d/org-preamble-site-header)))
 #+end_src
 **** Export backends
 ***** [[https://github.com/kawabata/ox-pandoc][ox-pandoc]]
@@ -5027,10 +5028,8 @@ An Emacs package for displaying the forecast from OpenWeatherMap.
         (remote-path "/sshx:dieggsy@firefly:/srv/http/dieggsy.com/paste/"))
     (with-temp-buffer
       (let ((buffer-file-name "/tmp/paste.dieggsy.com"))
-        ;; (insert "#+TITLE: diego's pastes\n")
-        (insert "#+OPTIONS: title:test timestamp:nil num:nil toc:nil\n")
+        (insert "#+OPTIONS: timestamp:nil num:nil toc:nil\n")
         (insert (format "#+EXPORT_FILE_NAME: %shtml/%s.html\n" remote-path basename))
-        ;; (insert "#+HTML_HEAD: <title>diego's pastes</title>\n")
         (insert "#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=\"https://dieggsy.com/css/org.css\"/>\n")
         (insert "#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=\"https://dieggsy.com/css/paste.css\"/>\n")
         (insert (format "#+begin_src %s\n" (string-remove-suffix "-mode" (symbol-name mode))))
@@ -5041,6 +5040,7 @@ An Emacs package for displaying the forecast from OpenWeatherMap.
                           "\n")))
         (insert (format "[[./%s/raw][raw]]" basename))
         (org-mode)
+        (setq-local org-html-preamble-format d/org-preamble-site-header)
         (org-html-export-to-html)
         (org-babel-tangle nil (format "%sraw/%s.txt" remote-path basename))))
     (kill-new (format "https://paste.dieggsy.com/%s" basename))))
