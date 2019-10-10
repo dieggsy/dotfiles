@@ -972,6 +972,7 @@ But really, it's life.
         org-src-window-setup 'current-window
         org-list-demote-modify-bullet '(("-" . "+") ("+" . "*") ("*" . "-"))
         org-export-in-background nil
+        org-export-with-author nil
         org-html-validation-link nil
         org-confirm-babel-evaluate nil
         org-src-tab-acts-natively t
@@ -5031,7 +5032,7 @@ An Emacs package for displaying the forecast from OpenWeatherMap.
                (buffer-substring-no-properties (point-min) (point-max))))
         (mode major-mode)
         (basename (format-time-string "%Y-%m-%dT%H-%M-%S"))
-        (remote-path "/sshx:dieggsy@firefly:/srv/http/dieggsy.com/paste/"))
+        (remote-path "/sshx:dieggsy@dieggsy.com:/srv/http/dieggsy.com/paste/"))
     (with-temp-buffer
       (let ((buffer-file-name "/tmp/paste.dieggsy.com"))
         (insert "#+OPTIONS: timestamp:nil num:nil toc:nil\n")
