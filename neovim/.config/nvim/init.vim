@@ -12,28 +12,27 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 
 Plug 'itchyny/lightline.vim'
-Plug 'morhetz/gruvbox'
+" Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-surround'
-Plug 'tpope/vim-fugitive'
+" Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
 Plug 'w0rp/ale'
 Plug 'airblade/vim-gitgutter'
 Plug 'jiangmiao/auto-pairs'
-Plug 'osyo-manga/vim-anzu'
-Plug 'sheerun/vim-polyglot'
-Plug 'jceb/vim-orgmode'
+" Plug 'osyo-manga/vim-anzu'
+" Plug 'sheerun/vim-polyglot'
+" Plug 'jceb/vim-orgmode'
 Plug 'michaeljsmith/vim-indent-object'
 Plug 'tommcdo/vim-lion'
 Plug 'easymotion/vim-easymotion'
-Plug 'SirVer/ultisnips'
+" Plug 'SirVer/ultisnips'
 
 call plug#end()
 
 " Plugin settings
 filetype plugin indent on
-colorscheme gruvbox
 let g:deoplete#enable_at_startup = 1
-let g:lightline = {'colorscheme' : 'gruvbox'}
+" let g:lightline = {'colorscheme' : 'gruvbox'}
 
 " Defaults
 set ignorecase
@@ -49,7 +48,7 @@ set expandtab
 set splitbelow
 set splitright
 set inccommand=nosplit
-set termguicolors
+" set termguicolors
 
 " Bindings
 noremap <C-g> <C-c>
@@ -65,10 +64,10 @@ nmap <leader>j <Plug>(easymotion-prefix)
 nnoremap <leader><leader> :Commands <CR>
 nnoremap <leader>sr :Rg <space>
 
-nmap n <Plug>(anzu-n-with-echo)
-nmap N <Plug>(anzu-N-with-echo)
-nmap * <Plug>(anzu-star-with-echo)
-nmap # <Plug>(anzu-sharp-with-echo)
+" nmap n <Plug>(anzu-n-with-echo)
+" nmap N <Plug>(anzu-N-with-echo)
+" nmap * <Plug>(anzu-star-with-echo)
+" nmap # <Plug>(anzu-sharp-with-echo)
 command DeleteTrailingWhitespace :%s/\s\+$//e
 cnoreabbrev dtw DeleteTrailingWhitespace
 
