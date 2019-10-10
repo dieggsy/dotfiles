@@ -53,35 +53,35 @@ void print_branch_info(FILE *status) {
     size_t n = 0;
     char *first_line = NULL;
     getline(&first_line, &n, status);
-    char *branch;
     if (strstr(first_line, "(no branch)") != NULL) {
         FILE *rev;
         pid_t pid;
         char *cmd[] = {"git", "rev-parse", "--short", "HEAD", NULL};
         rev = popenish(&pid, cmd);
         char *rev_out;
-        char *rev_parsed;
         n = 0;
         getline(&rev_out, &n, rev);
-        sscanf(rev_out,"%m[^\n]", &rev_parsed);
+        char *rev_parsed = malloc(sizeof(char) * n);
+        sscanf(rev_out,"%[^\n]", rev_parsed);
         printf("%%F{10}:%s%%f", rev_parsed);
         free(rev_out);
         free(rev_parsed);
         pcloseish(pid, rev);
+        return;
     }
-    else if (strncmp(first_line, "## No commits", 13) == 0) {
-        sscanf(first_line, "## No commits yet on %m[^\n]", &branch);
+    char *branch = malloc(sizeof(char) * n);
+    if (strncmp(first_line, "## No commits", 13) == 0) {
+        sscanf(first_line, "## No commits yet on %[^\n]", branch);
         printf("%%F{10}%s%%f", branch);
-        free(branch);
     }
     else {
-        char *ahead_behind_str;
+        char *ahead_behind_str = malloc(sizeof(char) * n);
         int ahead_behind = 0;
         int behind = 0;
         int ret = sscanf(first_line,
-                         "## %m[^.\n]...%*[^ ] %*c%ms %d, behind %d%*c",
-                         &branch,
-                         &ahead_behind_str,
+                         "## %[^.\n]...%*[^ ] %*c%s %d, behind %d%*c",
+                         branch,
+                         ahead_behind_str,
                          &ahead_behind,
                          &behind);
         switch (ret) {
@@ -103,8 +103,8 @@ void print_branch_info(FILE *status) {
                 printf("%%F{10}%s%%f", branch);
                 break;
         }
-        free(branch);
     }
+    free(branch);
     free(first_line);
 }
 
