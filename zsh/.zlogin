@@ -1,5 +1,5 @@
 if hash gpg2 &>/dev/null; then
-    gpgconf --launch gpg-agent
+    ! pgrep gpg-agent &> /dev/null && gpgconf --launch gpg-agent
     export SSH_AUTH_SOCK=$(gpgconf --list-dirs agent-ssh-socket)
     gpg-connect-agent updatestartuptty /bye >&/dev/null
 fi
