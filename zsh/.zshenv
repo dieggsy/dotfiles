@@ -12,8 +12,8 @@ pathadd () {
 }
 
 pathadd $HOME/.local/bin
-pathadd $HOME/.pyenv/bin
-pathadd $HOME/.pyenv/shims
+# pathadd $HOME/.pyenv/bin
+# pathadd $HOME/.pyenv/shims
 pathadd $HOME/bin
 pathadd $PREFIX/lib/ccache/bin
 
