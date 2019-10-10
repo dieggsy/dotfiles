@@ -161,13 +161,15 @@ as git repos.
       straight-process-buffer " *straight-process*"
       straight-check-for-modifications '(check-on-save))
 
-(let ((bootstrap-file (locate-user-emacs-file "straight/bootstrap.el"))
-      (bootstrap-version 3))
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 5))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
-        (url-retrieve-synchronously
-         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-         'silent 'inhibit-cookies)
+	(url-retrieve-synchronously
+	 "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+	 'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
@@ -178,12 +180,12 @@ as git repos.
       straight-vc-git-force-protocol t)
 
 (add-hook 'after-init-hook
-          (defun d/straight-prune-if-success ()
-            (run-with-idle-timer
-             15 nil
-             (lambda ()
-               (when (not init-file-had-error)
-                 (straight-prune-build))))))
+	  (defun d/straight-prune-if-success ()
+	    (run-with-idle-timer
+	     15 nil
+	     (lambda ()
+	       (when (not init-file-had-error)
+		 (straight-prune-build))))))
 #+end_src
 *** [[https://github.com/jwiegley/use-package][use-package]]
 #+begin_quote
