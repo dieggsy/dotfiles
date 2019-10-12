@@ -13,3 +13,4 @@
 /neovim/.config/nvim/plugged/
 /polybar/.config/polybar/blocks/
 /bin/bin/git-prompt
+/polybar/.config/polybar/darkskyrc
