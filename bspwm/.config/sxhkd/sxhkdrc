@@ -163,9 +163,10 @@ XF86MonBrightnessUp
     || xbacklight -set $(($brightness + 5))
 XF86MonBrightnessDown
     brightness=$(printf "%0.f" `xbacklight`) \
-    && [[ $brightness -le 5 ]] \
+    && [[ $brightness -gt 1 ]] \
+    && ( [[ $brightness -le 5 ]] \
     && xbacklight -set $(($brightness - 1)) \
-    || xbacklight -set $(($brightness - 5))
+    || xbacklight -set $(($brightness - 5)) )
 # XF86AudioPrev
 #     playerctl previous
 # XF86AudioNext
