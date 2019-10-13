@@ -919,12 +919,12 @@ But really, it's life.
 #+begin_src emacs-lisp
 (d/after 'org
   (setq org-agenda-text-search-extra-files '(agenda-archives)
-        org-agenda-files '("~/Nextcloud/org/todo.org" "~/Nextcloud/org/gcal.org")
-        org-default-notes-file "~/Nextcloud/org/todo.org"
-        d/notes-file "~/Nextcloud/org/notes.org"
-        org-directory "~/Nextcloud/org"
-        org-archive-location "~/Nextcloud/org/archive.org::"
-        org-mobile-inbox-for-pull "~/Nextcloud/org/mobile.org"
+        org-agenda-files '("~/nextcloud/org/todo.org" "~/nextcloud/org/gcal.org")
+        org-default-notes-file "~/nextcloud/org/todo.org"
+        d/notes-file "~/nextcloud/org/notes.org"
+        org-directory "~/nextcloud/org"
+        org-archive-location "~/nextcloud/org/archive.org::"
+        org-mobile-inbox-for-pull "~/nextcloud/org/mobile.org"
         org-export-async-init-file
         (locate-user-emacs-file "lisp/org-async-init.el")))
 #+end_src
@@ -4396,7 +4396,10 @@ Major mode for reading EPUBs in Emacs
 #+end_src
 ** [[https://github.com/akermu/emacs-libvterm][libvterm]]
 #+begin_src emacs-lisp
-(use-package vterm)
+(use-package vterm
+  :straight (:host github
+             :repo "akermu/emacs-libvterm"
+             :files (:defaults "*")))
 #+end_src
 * Emacs Enhancements
 ** Packages
