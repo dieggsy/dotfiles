@@ -3,6 +3,7 @@
 import urllib.request
 import json
 from pathlib import Path
+import re
 
 # Example darkskyrc
 # key = "00000000000000000000000000000000"
@@ -28,7 +29,7 @@ try:
 except urllib.error.URLError:
     print("? ??")
 else:
-    print(f"{jdict['currently']['icon']}"
+    print(f"{re.sub('-day|-night', '', jdict['currently']['icon'])}"
           f" {round(jdict['currently']['temperature'])}"
           f" %{{T2}}%{{F#665C54}}"
           f"{round(jdict['daily']['data'][0]['temperatureMax'])}"
