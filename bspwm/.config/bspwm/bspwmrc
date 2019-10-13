@@ -37,11 +37,11 @@ bspc rule -a mpv             state=floating sticky=on rectangle=960x540+1575+275
 # Programs
 run() {
     if [ "$1" = "-f" ]; then
-        cmd="${@:2}"
-        pgrep -f "$cmd" || (${@:2} &)
-    else
-        pgrep "$1" || ($@ &)
+        flags="-f"
+        shift
     fi
+    # Make sure the command exists.
+    command -v "$1" && { pgrep $flags "$1" || ($@ &) } || not_found+="\n$1"
 }
 
 # Bindings
@@ -92,3 +92,5 @@ fi
 run emacs --daemon
 
 compton -b
+[ -n "$not_found" ] \
+    && notify-send "bspwmrc" "Commands not in \$PATH:\n$(echo $not_found | sort -u)"
