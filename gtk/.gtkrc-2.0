@@ -4,7 +4,6 @@ gtk-font-name="Iosevka Term 10"
 gtk-theme-name="Adwaita-dark"
 gtk-icon-theme-name="Papirus"
 gtk-fallback-icon-theme="Adwaita"
-gtk-cursor-theme-name="breeze_cursors"
 gtk-toolbar-style=GTK_TOOLBAR_ICONS
 gtk-menu-images=1
 gtk-button-images=1
