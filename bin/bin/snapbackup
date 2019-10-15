@@ -41,8 +41,7 @@ if [ -d $LOCALDIR ]; then
     find $DEST -maxdepth 1 -type d ! -path $DEST -mtime +30 -exec echo 'Removing' {} + -exec rm -vrf {} +
 else
     ssh $REMOTEUSER@$REMOTEHOST "ln -vnsf ${DEST}/$date $LAST"
-    # ssh dieggsy@panda "find $DEST -maxdepth 1 -type d ! -path $DEST ! -path $DEST/$date -mtime -1 -exec echo 'Removing' {} + -exec rm -rf {} +"
-    ssh $REMOTEUSER@$REMOTEHOST "find $DEST -maxdepth 1 -type d ! -path $DEST -mtime +30 -exec echo 'Removing' {} + -exec rm -vrf {} +"
+    # ssh $REMOTEUSER@$REMOTEHOST "find $DEST -maxdepth 1 -type d ! -path $DEST -mtime +30 -exec echo 'Removing' {} + -exec rm -vrf {} +"
 fi
 
 notify-send "Done backing up home directory"
