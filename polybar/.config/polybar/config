@@ -96,12 +96,12 @@ click-left = ~/.config/polybar/blocks/bluez-rofi &
 type = custom/script
 exec = ~/.config/polybar/blocks/bluez
 format-padding=1
-interval = 1
+interval = 2
 
 [module/date]
 type = custom/script
 exec = date +'---[ %H:%M %%{F#665C54}%a %Y-%m-%d%%{F-} ]---'
-interval = 1
+interval = 2
 format-padding=1
 click-left = ~/.config/polybar/blocks/cal-rofi
 
