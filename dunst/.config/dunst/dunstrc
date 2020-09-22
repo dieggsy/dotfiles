@@ -86,7 +86,7 @@ shrink = yes
 idle_threshold = 120
 
 # Which monitor should the notifications be displayed on.
-monitor = 0
+monitor = 1
 
 # Display notification on focused monitor.  Possible modes are:
 #   mouse: follow mouse pointer
@@ -99,7 +99,7 @@ monitor = 0
 #
 # If this option is set to mouse or keyboard, the monitor option
 # will be ignored.
-follow = mouse
+# follow = mouse
 
 # Should a notification popped up from history be sticky or timeout
 # as if it would normally do.
