@@ -34,19 +34,23 @@ int main () {
         if (NM_IS_DEVICE_WIFI(device)) {
             NMAccessPoint *ap = nm_device_wifi_get_active_access_point(NM_DEVICE_WIFI(device));
             if (ap != NULL){
-                have_conn = 1;
                 GBytes* ssid = nm_access_point_get_ssid(ap);
                 char * ssid_str = nm_utils_ssid_to_utf8(g_bytes_get_data (ssid, NULL),
                                                         g_bytes_get_size (ssid));
-                printf("%s %s\n",
+                printf("%s%s %s",
+                       (have_conn ? "  " : ""),
                        get_wifi_icon(nm_access_point_get_strength(ap),vpn_on),
                        ssid_str);
+                have_conn = 1;
             }
         } else if (NM_IS_DEVICE_ETHERNET(device)) {
             NMActiveConnection *conn = nm_device_get_active_connection(device);
             if (conn != NULL) {
+                printf("%s<-> %s",
+                       (have_conn ? "  " : ""),
+                       nm_active_connection_get_id(conn));
+
                 have_conn = 1;
-                printf("<-> %s\n", nm_active_connection_get_id(conn));
             }
         }
     }

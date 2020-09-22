@@ -6,7 +6,45 @@ import locale
 import re
 import sys
 from datetime import datetime
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, run
+from pathlib import Path
+
+FONT_WIDTH=12
+FONT2_WIDTH=9
+ROFI_WIDTH=378
+
+with open("/tmp/darksky") as f:
+    jdict = json.load(f)
+
+def get_offset_hack():
+    PAD_WIDTH=2 * FONT_WIDTH
+    current_file=Path(os.path.abspath(__file__))
+
+    # battery offset
+    batt_script=os.path.join(current_file.parent, "battery-average")
+    batt_out=run([batt_script], stdout=PIPE)
+    # add 2 for padding
+    batt_len=len(batt_out.stdout.decode('utf-8')) * FONT_WIDTH + PAD_WIDTH
+
+    # volume offset
+    p1=Popen(["amixer","get","Master"], stdout=PIPE)
+    p2=Popen(["grep","-oP","(?<=\[)(.*)(?=%\])"], stdin=p1.stdout, stdout=PIPE)
+    p1.stdout.close()
+    vol_out=p2.communicate()[0]
+    ICON_WIDTH=6 * FONT_WIDTH # icon + space
+    vol_len=(len(vol_out.decode('utf-8').split()[0]) * FONT_WIDTH
+             + ICON_WIDTH + PAD_WIDTH)
+
+    # weather offset
+    WEATHER_WIDTH=(len(f"{re.sub('-day|-night', '', jdict['currently']['icon'])}"
+                       f" {round(jdict['currently']['temperature'])} ")
+                   * FONT_WIDTH
+                   + PAD_WIDTH)
+    LO_HI_WIDTH=(len(f"{round(jdict['daily']['data'][0]['temperatureMax'])}"
+                     f"/{round(jdict['daily']['data'][0]['temperatureMin'])}")
+                 * FONT2_WIDTH)
+
+    return ROFI_WIDTH - ((batt_len + vol_len) + WEATHER_WIDTH + LO_HI_WIDTH)
 
 ENV = os.environ.copy()
 ENV['LC_ALL'] = 'C'
@@ -16,7 +54,9 @@ ROFI_CMD = [
     "-location", "3",
     "-dmenu", "-i",
     "-theme-str", "#inputbar {enabled:false;}",
-    "-xoffset", "-15",
+    "-theme-str", "#textbox {text-color:@foregroundcolor;}",
+    "-xoffset", str(get_offset_hack()),
+    "-width",f"{ROFI_WIDTH}",
     "-markup-rows"
 ]
 
@@ -28,12 +68,9 @@ def run_rofi(args, extra_args, lines):
 
 
 def main(args):
-    print(args)
-    with open("/tmp/darksky") as f:
-        jdict = json.load(f)
     if args[1] == "hourly":
         run_rofi(ROFI_CMD,
-                 ["-width", "340"],
+                 ["-mesg", "hourly forecast"],
                  ["<span color='#665C54'>"
                   f"{datetime.fromtimestamp(i['time']).strftime('%H:%M')}"
                   "</span>"
@@ -41,14 +78,13 @@ def main(args):
                   for i in jdict['hourly']['data']][:24])
     elif args[1] == "daily":
         run_rofi(ROFI_CMD,
-                 ["-width", "375"],
+                 ["-mesg", "daily forecast"],
                  ["<span color='#665C54'>"
                   f"{datetime.fromtimestamp(i['time']).strftime('%a')}"
                   "</span>"
                   f"  {round(i['temperatureMin'])}°"
-                  f" - {round(i['temperatureMax'])}° {re.sub('-day|-night', '', i['icon'])}"
+                  f" - {round(i['temperatureMax'])}°  {re.sub('-day|-night', '', i['icon'])}"
                   for i in jdict['daily']['data']])
-
 
 if __name__ == '__main__':
     main(sys.argv)

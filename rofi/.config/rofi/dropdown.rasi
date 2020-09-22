@@ -6,8 +6,10 @@
     backgroundcoloralternate: #282828;
     separatorcolor: #504945;
     scrollbarcolor: #504945;
-    foregroundcolor: #ebdbb2;
-    foregroundcolorinverse: #ebdbb2;
+    /* foregroundcolor: #ebdbb2; */
+    /* foregroundcolorinverse: #ebdbb2; */
+    foregroundcolor: #fdf4c1;
+    foregroundcolorinverse: #fdf4c1;
     highlightcolor: #DD6F48;
     selectioncolor: #504945;
 
@@ -29,6 +31,7 @@
     padding-top: 500;
     lines: 10;
 }
+
 
 #window {
     background-color: @backgroundcolor;
@@ -52,7 +55,6 @@
 }
 
 #message {
-    format: center;
     border: 0 0 1 0;
     border-color: @separatorcolor;
     background-color: @backgroundcoloralternate;
@@ -93,6 +95,8 @@
     border: 0 0 1 0;
     border-color: @separatorcolor;
 }
+
+element-icon { size: 2.3ch; }
 
 #inputbar {
     border: 0 solid 0 solid 1 solid 0 solid;

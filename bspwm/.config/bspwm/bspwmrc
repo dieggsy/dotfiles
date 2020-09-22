@@ -79,6 +79,19 @@ for m in $(bspc query -M --names); do
 done
 ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-simple
 
+(for m in $(bspc query -M --names); do
+     MONITOR=$m polybar levels &
+ done
+ ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-levels \
+     && sleep 1 && echo "cmd:hide" >> /tmp/ipc-polybar-levels) &
+
+(for m in $(bspc query -M --names); do
+     MONITOR=$m polybar extra &
+ done
+ ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-extra \
+     && sleep 1 && echo "cmd:hide" >> /tmp/ipc-polybar-extra) &
+
+
 # Floating st + tmux (see rules.sh)
 if [ -z "$(pgrep -f st-float)" ]; then
     if [ -z "$(pgrep tmux)" ]; then

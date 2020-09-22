@@ -30,12 +30,14 @@ chopped[-1] = chopped[-1] + [" "] * (7 - len(chopped[-1]))
 
 ROFI_CMD = [
     "rofi", "-dmenu",
-    "-p", f"{calendar.month_name[month]} {today.year}",
-    "-location", "1",
-    "-xoffset", "48",
+    "-mesg", f"{calendar.month_name[month]} {today.year}",
+    "-location", "2",
+    # "-xoffset", "36",
     "-columns", "7",
+    "-theme-str", "#textbox{text-color:@foregroundcolor;}",
+    "-theme-str", "#inputbar{enabled:false;}",
     "-theme-str", f"#listview{{lines:{len(chopped)};}}",
-    "-width", "318"
+    "-width", "384"
 ]
 
 transposed = list(map(list, zip(*chopped)))

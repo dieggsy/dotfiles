@@ -27,9 +27,6 @@ height = 47
 fixed-center = true
 line-size = 2
 
-tray-position=center
-tray-maxsize=32
-
 dpi = 172
 background = ${colors.background}
 foreground = ${colors.foreground}
@@ -40,8 +37,9 @@ separator=
 font-0 = Iosevka Term:size=10;3
 font-1 = Iosevka Term:size=7;0
 
-modules-left = bspwm date network bluez
-modules-right = display mem cpu weather pulse battery
+modules-left = bspwm xwindow
+modules-center = date
+modules-right = display network battery hamburger
 
 wm-restack = bspwm
 
@@ -51,7 +49,8 @@ enable-ipc = true
 
 [module/xwindow]
 type = internal/xwindow
-label = %{F#665C54}%title:0:30:...%%{F-}
+; label-maxlen = 70
+format-padding=1
 
 [module/display]
 type=custom/script
@@ -62,33 +61,47 @@ click-left=~/.config/polybar/blocks/mons-rofi
 
 [module/bspwm]
 type = internal/bspwm
-format =<label-state>
+format =<label-state> <label-mode>
+format-underline = ${colors.sienna}
+format-padding=1
 wrapping-scroll = false
 enable-click = false
 enable-scroll = false
 reverse-scroll = false
 
 pin-workspaces = true
-label-focused = %index%
-label-focused-underline = ${colors.sienna}
-label-focused-padding = 1
-label-focused-foreground = ${colors.sienna}
+label-focused = ●
+; label-focused-underline = ${colors.sienna}
+; label-focused-padding = 1
+; label-focused-foreground = ${colors.sienna}
+; label-monocle-foreground=${colors.sienna}
+label-monocle= M
 
-label-occupied =
+label-occupied = ⊙
+; label-occupied-foreground = ${colors.sienna}
 
 label-urgent-background = ${colors.alert}
 label-urgent-foreground = ${colors.black}
-label-urgent-padding = 1
+; label-urgent-padding = 1
 
-label-empty =
+label-empty = ○
+; label-empty-foreground = ${colors.sienna}
 
 [module/network]
-click-left = networkmanager_dmenu
-type = custom/script
-exec = ~/.config/polybar/blocks/networkmanager
-format-foreground = ${colors.blue}
-format-underline = ${colors.blue}
-format-padding = 1
+type = internal/network
+interface = wlp3s0
+format-connected = %{A1:networkmanager_dmenu&:}<ramp-signal>%{A}
+ramp-signal-0 = %{F#665C54}🭈🭆🭂
+ramp-signal-1 = 🭈%{F#665C54}🭆🭂
+ramp-signal-2 = 🭈🭆%{F#665C54}🭂
+ramp-signal-3 = 🭈🭆🭂
+
+label-disconnected = 🭈🭆🭂
+label-disconnected-foreground = ${colors.red}
+; format-foreground = ${colors.blue}
+; format-underline = ${colors.blue}
+format-disconnected-padding =1
+format-connected-padding = 1
 interval = 2
 
 [module/bluez]
@@ -99,11 +112,14 @@ format-padding=1
 interval = 2
 
 [module/date]
-type = custom/script
-exec = date +'---[ %H:%M %%{F#665C54}%a %Y-%m-%d%%{F-} ]---'
+type = internal/date
+; format-underline = ${colors.blue}
+label = %date%
+format = %{A3:~/.config/polybar/blocks/cal-rofi &:}<label>%{A}
+date = %a %H:%M
+date-alt = %a %H:%M %%{F#665C54}%Y-%m-%d%%{F-}
 interval = 2
 format-padding=1
-click-left = ~/.config/polybar/blocks/cal-rofi
 
 [module/cpu]
 type = internal/cpu
@@ -121,37 +137,123 @@ format-padding=1
 
 [module/weather]
 type = custom/script
-exec = ~/.config/polybar/blocks/darksky.py
+exec = ~/.config/polybar/blocks/openweathermap.scm
 format-foreground = ${colors.sienna}
-format-underline = ${colors.sienna}
+; format-underline = ${colors.sienna}
 format-padding = 1
 click-middle = xdg-open https://darksky.net
-click-left = ~/.config/polybar/blocks/darksky-rofi hourly
-click-right = ~/.config/polybar/blocks/darksky-rofi daily
+; click-left = ~/.config/polybar/blocks/darksky-rofi hourly
+; click-right = ~/.config/polybar/blocks/darksky-rofi daily
 interval = 120
 label-font = 1
 
 [module/battery]
 type=custom/script
 exec = ~/.config/polybar/blocks/battery-average
-format-foreground = ${colors.blue}
-format-underline = ${colors.blue}
+; format-foreground = ${colors.blue}
+; format-underline = ${colors.blue}
 format-padding = 1
 interval=30
 
 [module/pulse]
 type=internal/pulseaudio
-format-volume = %{A3:pavucontrol &:}<ramp-volume> <label-volume>%{A}
-format-muted = %{A3:pavucontrol &:}%{F#837486}[%{F-}---%{F#837486}]%{F-} <label-muted>%{A}
+format-volume = Volume: <bar-volume> <label-volume>
 label-volume = %percentage%
-use-ui-max = false
-label-muted =  %percentage%
-ramp-volume-0 = %{F#837486}[%{F-}   %{F#837486}]%{F-}
-ramp-volume-1 = %{F#837486}[%{F-}|  %{F#837486}]%{F-}
-ramp-volume-2 = %{F#837486}[%{F-}|| %{F#837486}]%{F-}
-ramp-volume-3 = %{F#837486}[%{F-}|||%{F#837486}]%{F-}
-format-volume-padding=1
-format-muted-padding=1
+label-muted = %percentage%
+format-muted = Volume: <bar-volume> <label-muted>
+format-muted-foreground = ${colors.comment}
+format-volume-padding = 1
+format-muted-padding = 1
+
+; Only applies if <bar-volume> is used
+bar-volume-width = 6
+bar-volume-indicator =
+bar-volume-fill = ━
+bar-volume-empty =%{F#665C54}┉
+bar-volume-gradient=true
+
+[module/backlight]
+type = internal/xbacklight
+format = Backlight: <bar> <label>
+label = %percentage%
+format-padding = 1
+
+bar-width = 6
+bar-indicator =
+bar-fill = ━
+bar-empty =%{F#665C54}┉
+bar-gradient=true
+
+[module/hamburger]
+type = custom/script
+exec = echo "☰"
+format-padding = 1
+click-left = echo "cmd:toggle" >> /tmp/ipc-polybar-extra
+format-underline = ${colors.sienna}
 
 [settings]
 screenchange-reload = true
+
+[bar/levels]
+monitor = ${env:MONITOR:eDP1}
+
+width = 20%
+height = 47
+offset-y = 62
+offset-x = 40%
+; fixed-center = true
+line-size = 2
+border-size = 5
+border-color= ${colors.sienna}
+
+; tray-position=right
+; tray-maxsize=32
+
+dpi = 172
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+module-margin=0
+separator=
+
+override-redirect = true
+font-0 = Iosevka Term:size=10;3
+font-1 = Iosevka Term:size=7;0
+
+modules-center = pulse backlight
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+enable-ipc = true
+
+[bar/extra]
+monitor = ${env:MONITOR:eDP1}
+
+width = 30%
+height = 47
+offset-y = 62
+offset-x = 70%:-15
+; fixed-center = true
+line-size = 2
+border-size = 5
+border-color= ${colors.sienna}
+
+tray-position=right
+tray-maxsize=32
+
+dpi = 172
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+module-margin=0
+separator=
+
+override-redirect = true
+font-0 = Iosevka Term:size=10;3
+font-1 = Iosevka Term:size=7;0
+
+modules-center = cpu mem bluez weather
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+enable-ipc = true

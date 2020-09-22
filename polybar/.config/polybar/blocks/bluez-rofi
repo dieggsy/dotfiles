@@ -2,33 +2,12 @@
 import os
 import locale
 import time
-from subprocess import Popen, PIPE
+from subprocess import Popen, PIPE, run
+from pathlib import Path
 
 import dbus
 
 bus = dbus.SystemBus()
-
-
-def get_offset_hack():
-    """Get the position offset based on network SSID"""
-    base = 84
-    nm = bus.get_object("org.freedesktop.NetworkManager",
-                        "/org/freedesktop/NetworkManager")
-    props_iface = dbus.Interface(nm, "org.freedesktop.DBus.Properties")
-    # nm_iface = dbus.Interface(nm, "org.freedesktop.NetworkManager")
-    conns = props_iface.Get("org.freedesktop.NetworkManager",
-                            "ActiveConnections")
-    if not conns:
-        return 72
-    active = bus.get_object("org.freedesktop.NetworkManager",
-                            conns[0])
-    props_iface = dbus.Interface(active, "org.freedesktop.DBus.Properties")
-    conn_len = len(props_iface.Get(
-        "org.freedesktop.NetworkManager.Connection.Active",
-        "Id"
-    ))
-    return conn_len * 12 - base
-
 
 ENV = os.environ.copy()
 ENV['LC_ALL'] = 'C'
@@ -37,11 +16,13 @@ BLUETOOTH_GUI = "blueman-manager"
 ROFI_CMD = [
     "rofi",
     "-p", "bluetooth",
-    "-location", "1",
-    "-xoffset", str(492 + get_offset_hack()),
+    "-location", "3",
+    "-xoffset", "-15",
+    "-yoffset", "134",
     "-dmenu", "-i",
     "-width", "500",
-    "-theme-str", "#inputbar {enabled:false;}",
+    "-theme-str", "* {highlightcolor: #83A598;}"
+    # "-theme-str", "#inputbar {enabled:false;}",
 ]
 
 

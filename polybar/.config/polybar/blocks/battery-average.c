@@ -4,7 +4,7 @@
 #include <dirent.h>
 #include <string.h>
 #include <dbus/dbus.h>
-#include <espeak/speak_lib.h>
+#include <espeak-ng/speak_lib.h>
 
 static int read_int(const char* filename);
 static int get_joint_percent();
@@ -68,13 +68,13 @@ static char * get_icon (int adapter_online, int percent) {
     char* icon;
     percent = round_multiple(percent, 33);
     if (percent == 99) {
-        icon = adapter_online ? "{###}" : "[###]";
+        icon = adapter_online ? "%{F#B8BB26}━━━%{F-}" : "━━━";
     } else if (percent == 66) {
-        icon = adapter_online ? "{## }" : "[## ]";
+        icon = adapter_online ? "%{F#B8BB26}━━%{F#665C54}┉%{F-}" : "━━%{F#665C54}┉%{F-}";
     } else if (percent == 33) {
-        icon = adapter_online ? "{#  }" : "[#  ]";
+        icon = adapter_online ? "%{F#B8BB26}━%{F#665C54}┉┉%{F-}" : "━%{F#665C54}┉┉%{F-}";
     } else {
-        icon = adapter_online ? "{   }" : "[   ]";
+        icon = adapter_online ? "%{F#665C54}┉┉┉%{F-}" : "%{F#665C54}┉┉┉%{F-}";
     }
     return icon;
 }

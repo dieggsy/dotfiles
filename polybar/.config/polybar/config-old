@@ -1,0 +1,161 @@
+; -*- mode: conf-windows -*-
+[colors]
+black = #282828
+white = #FDF4C1
+green = #B8BB26
+red = #FB4933
+yellow = #FABD2F
+blue = #83A598
+purple = #D3869B
+aqua = #8EC07C
+orange = #FE8019
+cyan = #3FD7E5
+sienna = #DD6F48
+light3 = #BDAE93
+light4 = #A89984
+dark2 = #504945
+
+background = ${colors.black}
+foreground = ${colors.white}
+alert = ${colors.red}
+comment = #665C54
+
+[bar/simple]
+monitor = ${env:MONITOR:eDP1}
+width = 100%
+height = 47
+fixed-center = true
+line-size = 2
+
+tray-position=center
+tray-maxsize=32
+
+dpi = 172
+background = ${colors.background}
+foreground = ${colors.foreground}
+
+module-margin=0
+separator=
+
+font-0 = Iosevka Term:size=10;3
+font-1 = Iosevka Term:size=7;0
+
+modules-left = bspwm date network bluez
+modules-right = display mem cpu weather pulse battery
+
+wm-restack = bspwm
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+enable-ipc = true
+
+[module/xwindow]
+type = internal/xwindow
+label = %{F#665C54}%title:0:30:...%%{F-}
+
+[module/display]
+type=custom/script
+exec=[ "$(xrandr 2>/dev/null | grep ' connected ' | wc -l)" -gt "1" ] && echo " [__] " || echo ''
+format-padding=1
+click-left=~/.config/polybar/blocks/mons-rofi
+
+
+[module/bspwm]
+type = internal/bspwm
+format =<label-state><label-mode>
+format-padding=1
+format-underline = ${colors.sienna}
+wrapping-scroll = false
+enable-click = false
+enable-scroll = false
+reverse-scroll = false
+
+pin-workspaces = true
+label-focused = %name%
+; label-focused-underline = ${colors.sienna}
+; label-focused-padding = 1
+label-focused-foreground = ${colors.sienna}
+label-monocle-foreground=${colors.sienna}
+label-monocle=M
+
+label-occupied =
+
+label-urgent-background = ${colors.alert}
+label-urgent-foreground = ${colors.black}
+; label-urgent-padding = 1
+
+label-empty =
+
+[module/network]
+click-left = networkmanager_dmenu
+type = custom/script
+exec = ~/.config/polybar/blocks/networkmanager
+format-foreground = ${colors.blue}
+format-underline = ${colors.blue}
+format-padding = 1
+interval = 2
+
+[module/bluez]
+click-left = ~/.config/polybar/blocks/bluez-rofi &
+type = custom/script
+exec = ~/.config/polybar/blocks/bluez
+format-padding=1
+interval = 2
+
+[module/date]
+type = custom/script
+exec = date +'---[ %H:%M %%{F#665C54}%a %Y-%m-%d%%{F-} ]---'
+interval = 2
+format-padding=1
+click-left = ~/.config/polybar/blocks/cal-rofi
+
+[module/cpu]
+type = internal/cpu
+format-foreground = ${colors.comment}
+format-padding = 1
+format = <label>
+label = cpu %percentage:2%%
+
+[module/mem]
+type = internal/memory
+format = <label>
+label = mem %percentage_used:2%%
+format-foreground = ${colors.comment}
+format-padding=1
+
+[module/weather]
+type = custom/script
+exec = ~/.config/polybar/blocks/openweathermap.scm
+format-foreground = ${colors.sienna}
+format-underline = ${colors.sienna}
+format-padding = 1
+click-middle = xdg-open https://darksky.net
+click-left = ~/.config/polybar/blocks/darksky-rofi hourly
+click-right = ~/.config/polybar/blocks/darksky-rofi daily
+interval = 120
+label-font = 1
+
+[module/battery]
+type=custom/script
+exec = ~/.config/polybar/blocks/battery-average
+format-foreground = ${colors.blue}
+format-underline = ${colors.blue}
+format-padding = 1
+interval=30
+
+[module/pulse]
+type=internal/pulseaudio
+format-volume = %{A3:pavucontrol &:}<ramp-volume> <label-volume>%{A}
+format-muted = %{A3:pavucontrol &:}%{F#837486}[%{F-}---%{F#837486}]%{F-} <label-muted>%{A}
+label-volume = %percentage%
+use-ui-max = false
+label-muted =  %percentage%
+ramp-volume-0 = %{F#837486}[%{F-}   %{F#837486}]%{F-}
+ramp-volume-1 = %{F#837486}[%{F-}|  %{F#837486}]%{F-}
+ramp-volume-2 = %{F#837486}[%{F-}|| %{F#837486}]%{F-}
+ramp-volume-3 = %{F#837486}[%{F-}|||%{F#837486}]%{F-}
+format-volume-padding=1
+format-muted-padding=1
+
+[settings]
+screenchange-reload = true
