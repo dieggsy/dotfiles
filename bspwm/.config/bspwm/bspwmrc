@@ -42,7 +42,8 @@ run() {
         shift
     fi
     # Make sure the command exists.
-    command -v "$1" && { pgrep $flags "$1" || ($@ &) } || not_found+="\n$1"
+    command -v "$1"  &> /dev/null \
+        && { pgrep $flags "$1" || ($@ &) } || not_found+="\n$1"
 }
 
 # Bindings
