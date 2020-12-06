@@ -67,6 +67,7 @@ alias csi='csi -q'
 alias lsblk='lsblk -o NAME,SIZE,MOUNTPOINT'
 alias chicken-doc='noglob chicken-doc'
 alias startx='startx &>/dev/null'
+alias yay=paru
 
 cd_list () {
     emulate -L zsh
