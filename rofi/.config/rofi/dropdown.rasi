@@ -96,7 +96,8 @@
     border-color: @separatorcolor;
 }
 
-element-icon { size: 2.3ch; }
+/* element-icon { size: 2.3ch; } */
+element-icon { size: 32px; }
 
 #inputbar {
     border: 0 solid 0 solid 1 solid 0 solid;
