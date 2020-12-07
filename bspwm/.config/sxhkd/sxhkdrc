@@ -9,6 +9,9 @@ super + Return
     bspc node $id --flag hidden && \
     bspc node -f $id
 
+super + space
+    echo cmd:toggle >> /tmp/ipc-polybar-simple && bspc config top_padding 0
+
 super + w
     rofi -show window
 
