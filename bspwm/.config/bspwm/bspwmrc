@@ -97,9 +97,9 @@ ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-simple
 # Floating st + tmux (see rules.sh)
 if [ -z "$(pgrep -f st-float)" ]; then
     if [ -z "$(pgrep tmux)" ]; then
-        st -n st-float -e sh -c 'TERM=screen-256color tmux' &
+        alacritty --class st-float -e tmux &
     else
-        st -n st-float -e sh -c 'TERM=screen-256color tmux attach' &
+        alacritty --class st-float -e tmux attach &
     fi
 fi
 
