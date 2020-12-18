@@ -31,6 +31,9 @@ alt + space
 super + p
     passmenu -p "pass"
 
+super + t
+    unicode.scm | rofi -i -dmenu | cut -d$'\t' -f2 | xclip -r -selection clipboard
+
 # make sxhkd reload its configuration files:
 super + Escape
     pkill -USR1 -x sxhkd
