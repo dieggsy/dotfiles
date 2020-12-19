@@ -102,3 +102,6 @@ run nextcloud
 # compton -b
 [ -n "$not_found" ] \
     && notify-send "bspwmrc" "Commands not in \$PATH:\n$(echo $not_found | sort -u)"
+
+run /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+
