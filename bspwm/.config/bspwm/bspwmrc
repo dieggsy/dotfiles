@@ -105,3 +105,8 @@ run nextcloud
 
 run /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
+# Useful commands
+# xrandr --output eDP1 --pos 2560x0 --auto --output HDMI2 --primary --scale-from 2560x1440 --mode 1920x1080
+
+# xrandr --output eDP1 --pos 1920x0 --auto --output HDMI2 --primary --scale 1x1 --mode 1920x1080
+
