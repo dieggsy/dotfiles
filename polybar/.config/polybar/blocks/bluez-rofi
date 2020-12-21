@@ -18,9 +18,9 @@ ROFI_CMD = [
     "-p", "bluetooth",
     "-location", "3",
     "-xoffset", "-15",
-    "-yoffset", "134",
+    "-yoffset", "62",
     "-dmenu", "-i",
-    "-width", "500",
+    "-width", "300",
     "-theme-str", "* {highlightcolor: #83A598;}"
     # "-theme-str", "#inputbar {enabled:false;}",
 ]
@@ -33,6 +33,7 @@ def make_device_list(devmap):
     """Generate list for rofi stdin"""
     def rank_device(dev):
         if dev["Connected"]:
+            ROFI_CMD.extend(["-a", "0"])
             return 1
         if dev["Paired"]:
             if dev["Trusted"]:
@@ -41,12 +42,13 @@ def make_device_list(devmap):
         return 4
     lst = list(devmap.values())
     lst.sort(key=rank_device)
-    return list(map(lambda dev: dev["Address"]
-                    + "  "
-                    + ("P" if dev["Paired"] else " ")
+    pad = max(map(lambda dev: len(dev["Address"]), lst)) + 2
+    return list(map(lambda dev: ("P" if dev["Paired"] else " ")
                     + ("T" if dev["Trusted"] else " ")
                     + "  "
-                    + dev["Alias"],
+                    + dev["Alias"].ljust(pad, " ")
+                    + "  "
+                    + dev["Address"],
                     lst))
 
 
@@ -88,7 +90,7 @@ def main():
     elif sel == "Open GUI":
         Popen([BLUETOOTH_GUI]).wait()
     elif sel:
-        sel = sel.split()[0]
+        sel = sel.split()[-1]
         path = devmap[sel]["path"]
 
         dev = bus.get_object("org.bluez", path)
