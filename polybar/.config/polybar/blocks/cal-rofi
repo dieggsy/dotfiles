@@ -37,6 +37,7 @@ ROFI_CMD = [
     "-theme-str", "#textbox{text-color:@foregroundcolor;}",
     "-theme-str", "#inputbar{enabled:false;}",
     "-theme-str", f"#listview{{lines:{len(chopped)};}}",
+    "-theme-str", "#element{border:1 1 0 0;}",
     "-width", "384"
 ]
 
