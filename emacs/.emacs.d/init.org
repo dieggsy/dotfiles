@@ -242,7 +242,7 @@ make Emacs bindings that stick around
   :config
   (setq hydra-default-hint nil))
 #+end_src
-*** [[elisp:(find-library-other-window%20"server")][server]]
+*** [[elisp:(find-library-other-window "server")][server]]
 Start server if not already running. You can do this with ~emacs --daemon~,
 automate it with systemd, or use ~brew services start emacs~ on macOS. I
 usually just run Emacs on login anyway, so this suffices.
@@ -256,7 +256,7 @@ every other time. See [[https://www.gnu.org/software/emacs/manual/html_node/emac
   (unless (server-running-p)
     (server-start)))
 #+end_src
-*** [[elisp:(find-library-other-window%20"savehist")][savehist]]
+*** [[elisp:(find-library-other-window "savehist")][savehist]]
 #+begin_src emacs-lisp
 (use-package savehist
   :defer 5
@@ -264,14 +264,14 @@ every other time. See [[https://www.gnu.org/software/emacs/manual/html_node/emac
   (savehist-mode 1)
   (add-to-list 'savehist-additional-variables 'kill-ring))
 #+end_src
-*** [[elisp:(find-library-other-window%20"saveplace")][saveplace]]
+*** [[elisp:(find-library-other-window "saveplace")][saveplace]]
 #+begin_src emacs-lisp
 (use-package saveplace
   :defer 5
   :config
   (save-place-mode 1))
 #+end_src
-*** [[elisp:(find-library-other-window%20"midnight")][midnight-mode]]
+*** [[elisp:(find-library-other-window "midnight")][midnight-mode]]
 #+begin_src emacs-lisp
 (use-package midnight
   :defer 10
@@ -1354,7 +1354,7 @@ also use these keys to quit out of the minibuffer.
 #+end_src
 * Help
 ** Built-in
-*** [[elisp:(find-library-other-window%20"man")][man]]
+*** [[elisp:(find-library-other-window "man")][man]]
 #+begin_quote
 browse UNIX manual pages
 #+end_quote
@@ -1563,7 +1563,7 @@ Select the help window when opening it (I like this so I can quickly ~q~ out).
 (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
 #+end_src
 ** Built-in
-*** [[elisp:(find-library-other-window%20"bookmark")][bookmark]]
+*** [[elisp:(find-library-other-window "bookmark")][bookmark]]
 #+begin_quote
 set bookmarks, maybe annotate them, jump to them later
 #+end_quote
@@ -1575,7 +1575,7 @@ set bookmarks, maybe annotate them, jump to them later
     "fB" 'bookmark-jump-other-window
     "fb" 'bookmark-jump))
 #+end_src
-*** [[elisp:(find-library-other-window%20"dired")][dired]]
+*** [[elisp:(find-library-other-window "dired")][dired]]
 #+begin_quote
 directory-browsing commands
 #+end_quote
@@ -1635,7 +1635,7 @@ directory-browsing commands
     (interactive)
     (dired "~/")))
 #+end_src
-*** [[elisp:(find-library-other-window%20"dired-x")][dired-x]]
+*** [[elisp:(find-library-other-window "dired-x")][dired-x]]
 #+begin_src emacs-lisp
 (use-package dired-x
   :straight nil
@@ -1659,7 +1659,7 @@ directory-browsing commands
   (ediff-split-window-function 'split-window-horizontally)
   (ediff-diff-options "-w"))
 #+end_src
-*** [[elisp:(find-library-other-window%20"ibuffer")][ibuffer]]
+*** [[elisp:(find-library-other-window "ibuffer")][ibuffer]]
 #+begin_quote
 operate on buffers like dired
 #+end_quote
@@ -1702,7 +1702,7 @@ operate on buffers like dired
 
   (setq ibuffer-never-show-predicates '("\\*magit-\\(diff\\|process\\):")))
 #+end_src
-*** [[elisp:(find-library-other-window%20"recentf")][recentf]]
+*** [[elisp:(find-library-other-window "recentf")][recentf]]
 #+begin_src emacs-lisp
 (use-package recentf
   :config
@@ -2077,7 +2077,7 @@ expand text trying various ways to find its expansion
   :general
   ("M-/" #'hippie-expand))
 #+end_src
-**** [[elisp:(find-library-other-window%20"electric")][electric]]
+**** [[elisp:(find-library-other-window "electric")][electric]]
 #+begin_src emacs-lisp
 (use-package electric
   :defer 5
@@ -2085,7 +2085,7 @@ expand text trying various ways to find its expansion
   (electric-indent-mode)
   (electric-layout-mode))
 #+end_src
-**** [[elisp:(find-library-other-window%20"elec-pair")][electric-pair]]
+**** [[elisp:(find-library-other-window "elec-pair")][electric-pair]]
 #+begin_src emacs-lisp
 (use-package elec-pair
   :demand t
@@ -2268,7 +2268,7 @@ Correcting words with flyspell via custom interface.
 #+begin_src emacs-lisp :tangle no
 (use-package fontawesome)
 #+end_src
-**** [[elisp:(find-library%20"counsel-weather-icons")][counsel-weather-icons]]
+**** [[elisp:(find-library "counsel-weather-icons")][counsel-weather-icons]]
 #+begin_src emacs-lisp
 (use-package counsel-weather-icons
   :commands counsel-weather-icons
@@ -2741,7 +2741,7 @@ Source: http://tinyurl.com/k7s96fa"
   (other-window 1))
 #+end_src
 ** Built-in
-*** [[elisp:(find-library-other-window%20"goto-addr")][goto-addr]]
+*** [[elisp:(find-library-other-window "goto-addr")][goto-addr]]
 #+begin_quote
 click to browse URL or to send to e-mail address
 #+end_quote
@@ -2751,7 +2751,7 @@ click to browse URL or to send to e-mail address
   :hook (((help-mode org-mode text-mode) . goto-address-mode)
          ((prog-mode conf-mode) . goto-address-prog-mode)))
 #+end_src
-*** [[elisp:(find-library-other-window%20"display-line-numbers")][display-line-numbers]]
+*** [[elisp:(find-library-other-window "display-line-numbers")][display-line-numbers]]
 #+begin_src emacs-lisp
 (use-package display-line-numbers
   :if (version<= "26" emacs-version)
@@ -2769,7 +2769,7 @@ click to browse URL or to send to e-mail address
         (setq display-line-numbers t)
       (setq display-line-numbers 'relative))))
 #+end_src
-*** [[elisp:(find-library%20"winner")][winner]]
+*** [[elisp:(find-library "winner")][winner]]
 #+begin_src emacs-lisp
 (use-package winner
   :defer 15
@@ -3061,7 +3061,7 @@ I don't like seeing variable pitch in emacs. Just sorta throws me off.
 (face-spec-set 'variable-pitch '((t nil)))
 #+end_src
 ** Built-in
-*** [[elisp:(find-library-other-window%20"hl-line")][hl-line]]
+*** [[elisp:(find-library-other-window "hl-line")][hl-line]]
 #+begin_src emacs-lisp
 (use-package hl-line
   :straight nil
@@ -4035,7 +4035,6 @@ It's Magit! A Git Porcelain inside Emacs.
 Like git, for emacs. But cooler. (Just /trust/ me on this one.)
 #+begin_src emacs-lisp
 (use-package magit
-  :straight
   :general
   (d/leader-keys
     "g"  '(:ignore t :wk "magit")
@@ -4081,7 +4080,7 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
   (magithub-feature-autoinject t))
 #+end_src
 * Tools
-** [[elisp:(find-library-other-window%20"proced")][proced]]
+** [[elisp:(find-library-other-window "proced")][proced]]
 #+begin_quote
 operate on system processes like dired
 #+end_quote
@@ -4195,7 +4194,7 @@ A shell written in emacs-lisp that has recently been replacing zsh for me.
      eshell-unix)))
 #+end_src
 *** Packages
-**** [[elisp:(find-library-other-window%20"egp")][egp]]
+**** [[elisp:(find-library-other-window "egp")][egp]]
 #+begin_quote
 Display git info in eshell
 #+end_quote
