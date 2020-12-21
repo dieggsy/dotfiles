@@ -3060,7 +3060,9 @@ have a look. Additionally, show whitespace.
 *** Font
 Set the font to Iosevka Term, if available.
 #+begin_src emacs-lisp
-(setq inhibit-compacting-font-caches t)
+(setq inhibit-compacting-font-caches t
+      use-default-font-for-symbols nil)
+(set-fontset-font t 'symbol "Noto Color Emoji" nil 'prepend)
 #+end_src
 *** Minibuffer
 Use a bar cursor in the minibuffer.
