@@ -35,7 +35,7 @@ int main() {
         // Bluetooth is off, probably
         return 0;
     }
-    while (len-- > 0) {
+    while (len--) {
         // pathdict_kv points to the key in the first entry, which is a path.
         dbus_message_iter_recurse(&pathdict_entry, &pathdict_kv);
         dbus_message_iter_get_basic(&pathdict_kv, &path);
@@ -57,7 +57,7 @@ int main() {
                 int len = dbus_message_iter_get_element_count(&ifacedict_kv);
                 DBusMessageIter propdict_entry, propdict_kv;
                 dbus_message_iter_recurse(&ifacedict_kv, &propdict_entry);
-                char *devname;
+                /* char *devname; */
                 int connected = 0;
                 while(len-- > 0) {
                     dbus_message_iter_recurse(&propdict_entry, &propdict_kv);
@@ -68,15 +68,16 @@ int main() {
                         dbus_message_iter_next(&propdict_kv);
                         dbus_message_iter_recurse(&propdict_kv, &variant);
                         dbus_message_iter_get_basic(&variant, &connected);
-                    } else if (strncmp(prop, "Name", 4) == 0) {
-                        dbus_message_iter_next(&propdict_kv);
-                        dbus_message_iter_recurse(&propdict_kv, &variant);
-                        dbus_message_iter_get_basic(&variant, &devname);
-                    }
+
+                    } /* else if (strncmp(prop, "Name", 4) == 0) { */
+                    /*     dbus_message_iter_next(&propdict_kv); */
+                    /*     dbus_message_iter_recurse(&propdict_kv, &variant); */
+                    /*     dbus_message_iter_get_basic(&variant, &devname); */
+                    /* } */
                     dbus_message_iter_next(&propdict_entry);
                 }
                 if (connected) {
-                    printf("+ %s", devname);
+                    printf("⣿");
                     return 0;
                 }
             }
@@ -86,7 +87,7 @@ int main() {
         dbus_message_iter_next(&pathdict_entry);
     }
     dbus_message_unref(msg_reply);
-    printf(".");
+    printf("⠶");
     return 0;
 }
 
