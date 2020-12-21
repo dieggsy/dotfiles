@@ -350,13 +350,6 @@ Use tab for completion in region and cycle candidates.
         display-time-default-load-average nil
         display-time-load-average nil))
 #+end_src
-*** Tramp
-Use ssh by default and remember passwords for [[https://www.gnu.org/software/emacs/manual/html_node/tramp/index.html][tramp]]. Also make tramp quieter
-except for warnings and errors.
-#+begin_src emacs-lisp
-(setq tramp-default-method "ssh"
-      tramp-verbose 2)
-#+end_src
 *** Passwords
 #+begin_src emacs-lisp
 (setq password-cache t
@@ -1563,6 +1556,26 @@ Select the help window when opening it (I like this so I can quickly ~q~ out).
 (add-hook 'after-save-hook 'executable-make-buffer-file-executable-if-script-p)
 #+end_src
 ** Built-in
+*** [[elisp:(find-library-other-window "tramp")][tramp]]
+#+begin_src emacs-lisp
+(use-package tramp
+  :straight nil
+  :custom
+  (tramp-default-method "scp")
+  (tramp-verbose 2)
+  (tramp-completion-reread-directory-timeout nil)
+  (tramp-auto-save-directory (no-littering-expand-var-file-name "tramp-auto-save/"))
+  :config
+  (setq vc-ignore-dir-regexp (format "\\(%s\\)\\|\\(%s\\)"
+                                     vc-ignore-dir-regexp
+                                     tramp-file-name-regexp))
+  (d/after 'ibuffer
+    (setcdr (last (cdar ibuffer-saved-filter-groups))
+            `(("Tramp"
+               (filename . ,tramp-file-name-regexp))))))
+;; Could make tramp faster
+;; (setq remote-file-name-inhibit-cache nil))
+#+end_src
 *** [[elisp:(find-library-other-window "bookmark")][bookmark]]
 #+begin_quote
 set bookmarks, maybe annotate them, jump to them later
