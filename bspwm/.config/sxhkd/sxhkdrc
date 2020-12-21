@@ -181,16 +181,18 @@ XF86MonBrightnessDown
     && [[ $brightness -gt 1 ]] \
     && ( [[ $brightness -le 5 ]] \
     && xbacklight -set $(($brightness - 1)) \
-# XF86AudioPrev
-#     playerctl previous
-# XF86AudioNext
-#     playerctl next
-# XF86AudioPlay
-#     playerctl play-pause
     || xbacklight -set $(($brightness - 5)) ); \
     sleep 2 \
     && [ "$key" = "$(</tmp/levels-timeout)" ] \
     && echo "cmd:hide" >> /tmp/ipc-polybar-levels
+XF86AudioPrev
+    playerctl previous
+XF86AudioNext
+    playerctl next
+XF86AudioPlay
+    playerctl play-pause
+XF86AudioPause
+    playerctl play-pause
 super + F1
     playerctl play-pause
 super + F2
