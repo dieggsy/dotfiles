@@ -3761,6 +3761,7 @@ Source: http://tinyurl.com/le6wxuo"
 **** Setup
 #+begin_src emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.egg\\'" . scheme-mode))
+(add-to-list 'auto-mode-alist '("\\.sld\\'" . scheme-mode))
 
 (d/hook! scheme-mode
   (hs-minor-mode)
@@ -3820,6 +3821,7 @@ KEYWORDS should be a list of strings."
    'scheme-mode
    `(("\\[\\(else\\)\\>" . 1)
      (,(rx (any "([{") (group (or "define-syntax-rule"
+                                  "define-for-syntax"
                                   "define-inline"
                                   "define-external"
                                   "define-foreign-variable"))
