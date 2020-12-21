@@ -1,0 +1,66 @@
+/* -*- mode: css -*- */
+
+* {
+    backgroundcolor: #282828;
+    separatorcolor: #504945;
+    foregroundcolor: #ebdbb2;
+    highlightcolor: #DD6F48;
+    selectioncolor: #504945;
+
+    font: "Iosevka Term 10";
+    border-color: @separatorcolor;
+    background-color: @backgroundcolor;
+    text-color: @foregroundcolor;
+    margin: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+    spacing: 0;
+}
+
+element-icon { size: 32px; }
+
+#window {
+    /* x-offset: 0; */
+    /* y-offset: 0; */
+    width: 100%;
+    location:   north west;
+    children:   [ horibox ];
+}
+
+#horibox {
+    orientation: horizontal;
+    children:   [ prompt, entry, listview ];
+}
+
+#listview {
+    layout:     horizontal;
+}
+
+#prompt {
+    padding:7px 10px;
+    border: 0 0 2px 0;
+    border-color: @highlightcolor;
+}
+
+#entry {
+    expand:     false;
+    width:      6em;
+    padding:7px 10px;
+}
+
+#element {
+    padding:7px 10px;
+}
+
+#element selected {
+    background-color: #3C3836;
+    padding:7px 10px;
+}
+
+#element.selected.active {
+    text-color: @highlightcolor;
+}
+
+#element.normal.active {
+    text-color: @highlightcolor;
+}

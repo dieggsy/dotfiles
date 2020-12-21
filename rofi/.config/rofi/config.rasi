@@ -1,3 +1,4 @@
+/* -*- mode: css -*- */
 configuration {
 	modi: "window,run,ssh,drun,combi";
 	width: 700;
