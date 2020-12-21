@@ -13,10 +13,10 @@ super + space
     echo cmd:toggle >> /tmp/ipc-polybar-simple && bspc config top_padding 0
 
 super + w
-    rofi -show window
+    rofi -show window -location 1 -xoffset 15
 
 super + d
-    rofi -show drun -show-icons
+    rofi -show drun -show-icons -columns 2
 
 super + z
     id=$(</tmp/st-float) && \
