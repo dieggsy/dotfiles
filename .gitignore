@@ -13,4 +13,9 @@
 /neovim/.config/nvim/plugged/
 /polybar/.config/polybar/blocks/
 /bin/bin/git-prompt
+/bin/bin/libgit-prompt
 /polybar/.config/polybar/darkskyrc
+/freedesktop/.local/share/applications/wine*
+/freedesktop/.local/share/applications/*.cache
+/neovim/.config/nvim/.netrwhist
+/cmus/.config/cmus/
