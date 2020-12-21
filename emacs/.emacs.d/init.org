@@ -1360,6 +1360,18 @@ browse UNIX manual pages
   :config
   (setq Man-notify-method 'aggressive))
 #+end_src
+*** [[elisp:(find-library-other-window "woman")][woman]]
+#+begin_quote
+browse UN*X manual pages `wo (without) man'
+#+end_quote
+#+begin_src emacs-lisp
+(use-package woman
+  :general
+  (d/leader-keys
+    "hw" 'woman)
+  :config
+  (setq woman-fill-column 80))
+#+end_src
 ** Packages
 *** [[https://github.com/abo-abo/define-word][define-word]]
 #+begin_quote
