@@ -97,7 +97,7 @@ fi
 # Run emacs in background, connect with emacsclient
 run emacs --daemon
 
-run nextcloud
+# pgrep nextcloud || ionice -c 3 nice -n12 nextcloud &
 
 # compton -b
 [ -n "$not_found" ] \
