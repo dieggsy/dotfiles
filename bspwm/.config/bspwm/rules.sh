@@ -23,13 +23,7 @@ leftpos=$((gap/2))
 bottomleft="+$leftpos+$bottompos"
 bottomright="+$rightpos+$bottompos"
 
-if [[ $instance = "emacs" ]]; then
-    echo state=tiled desktop=^2
-elif [[ $instance = "erc_float" ]]; then
-    echo $wid > /tmp/erc-float
-    echo layer=above state=floating hidden=on \
-         sticky=on rectangle=${floatsize}${bottomleft}
-elif [[ $instance = "gl" ]]; then
+if [[ $instance = "gl" ]]; then
     echo $wid > /tmp/mpv-float
     echo layer=normal
 elif [[ $instance = "st-256color" && $title = "htop" ]]; then
@@ -38,8 +32,6 @@ elif [[ $instance = "st-float" ]]; then
     echo $wid > /tmp/st-float
     echo layer=above state=floating hidden=on \
          sticky=on rectangle=${floatsize}${bottomright}
-elif [[ $instance = "guvcview" && $title = "Guvcview Video" ]]; then
-    echo sticky=on rectangle=520x390+2015+206
 elif [[ $instance = "vlc" && $title = "vlc" ]]; then
     echo layer=above border=off
 fi
