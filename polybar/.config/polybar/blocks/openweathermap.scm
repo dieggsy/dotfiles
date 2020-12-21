@@ -56,13 +56,12 @@
          (hi/lo (format " ~a/~a"
                         (roundint (alist-ref 'temp_max (alist-ref 'main info)))
                         (roundint (alist-ref 'temp_min (alist-ref 'main info))))))
+    (display "Weather: ")
     (display temp)
-    ;; (display " ")
-    ;; (display (format "(~a)" feels-like ))
-    ;; (display " ")
-    (display (polyform hi/lo "T2" "F#665C54"))
+    (display "°")
+    (display (polyform hi/lo "T2"))
     (display " ")
-    (display (polyform desc "F#DD6F48"))
+    ;; (display (polyform desc "F#DD6F48"))
     (newline)
     ;; (printf "~a ~a~%"
     ;;         temp
