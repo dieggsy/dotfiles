@@ -163,18 +163,18 @@ super + {Left,Down,Up,Right}
     bspc node -v {-20 0,0 20,0 -20,20 0}
 
 XF86MonBrightnessUp
-    key=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10) \
+    key=$(date +%s.%N) \
     && echo "$key" > /tmp/levels-timeout \
     && echo "cmd:show" >> /tmp/ipc-polybar-levels \
     && brightness=$(printf "%0.f" `xbacklight`) \
     && [[ $brightness -lt 5 ]] \
     && xbacklight -set $(($brightness + 1)) \
     || xbacklight -set $(($brightness + 5));  \
-    sleep 3 \
+    sleep 2 \
     && [ "$key" = "$(</tmp/levels-timeout)" ] \
     && echo "cmd:hide" >> /tmp/ipc-polybar-levels
 XF86MonBrightnessDown
-    key=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10) \
+    key=$(date +%s.%N) \
     && echo "$key" > /tmp/levels-timeout \
     && echo "cmd:show" >> /tmp/ipc-polybar-levels \
     && brightness=$(printf "%0.f" `xbacklight`) \
@@ -188,7 +188,7 @@ XF86MonBrightnessDown
 # XF86AudioPlay
 #     playerctl play-pause
     || xbacklight -set $(($brightness - 5)) ); \
-    sleep 3 \
+    sleep 2 \
     && [ "$key" = "$(</tmp/levels-timeout)" ] \
     && echo "cmd:hide" >> /tmp/ipc-polybar-levels
 super + F1
@@ -198,27 +198,27 @@ super + F2
 super + F3
     playerctl next
 XF86AudioMute
-    key=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10) \
+    key=$(date +%s.%N) \
     && echo "$key" > /tmp/levels-timeout \
     && echo "cmd:show" >> /tmp/ipc-polybar-levels \
     && amixer -D pulse sset Master toggle; \
-    sleep 3 \
+    sleep 2 \
     && [ "$key" = "$(</tmp/levels-timeout)" ] \
     && echo "cmd:hide" >> /tmp/ipc-polybar-levels
 XF86AudioLowerVolume
-    key=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10) \
+    key=$(date +%s.%N) \
     && echo "$key" > /tmp/levels-timeout \
     && echo "cmd:show" >> /tmp/ipc-polybar-levels \
     && amixer -D pulse sset Master 5%-; \
-    sleep 3 \
+    sleep 2 \
     && [ "$key" = "$(</tmp/levels-timeout)" ] \
     && echo "cmd:hide" >> /tmp/ipc-polybar-levels
 XF86AudioRaiseVolume
-    key=$(head /dev/urandom | tr -dc A-Za-z0-9 | head -c10) \
+    key=$(date +%s.%N) \
     && echo "$key" > /tmp/levels-timeout \
     && echo "cmd:show" >> /tmp/ipc-polybar-levels \
     && amixer -D pulse sset Master 5%+; \
-    sleep 3 \
+    sleep 2 \
     && [ "$key" = "$(</tmp/levels-timeout)" ] \
     && echo "cmd:hide" >> /tmp/ipc-polybar-levels
 XF86AudioMicMute
