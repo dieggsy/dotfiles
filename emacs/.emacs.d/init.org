@@ -1536,11 +1536,6 @@ If a frame is already open, use it to open files.
 #+begin_src emacs-lisp
 (setq ns-pop-up-frames nil)
 #+end_src
-*** Symlinks
-Follow symlinks to files under version control because why would I not.
-#+begin_src emacs-lisp
-(setq vc-follow-symlinks t)
-#+end_src
 *** Help buffer
 Select the help window when opening it (I like this so I can quickly ~q~ out).
 #+begin_src emacs-lisp
@@ -4061,9 +4056,11 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
     "gl" 'magit-log-all
     "gs" 'magit-status
     "gp" 'magit-file-popup)
+  :init
+  (setq vc-follow-symlinks t
+        auto-revert-check-vc-info t)
   :config
   (setq magit-diff-refine-hunk t
-        auto-revert-check-vc-info t
         git-commit-summary-max-length 50
         git-commit-major-mode 'org-mode)
   (d/hook! git-commit-mode
