@@ -842,7 +842,7 @@ color is hidden by ivy's match color."
         counsel-org-goto-face-style 'org
         counsel-org-headline-display-todo t
         counsel-grep-base-command "rg -Sz -M 120 --no-heading --line-number --color never %s %s"
-        counsel-rg-base-command "rg -Sz -M 120 --no-heading --line-number --color never %s ."
+        counsel-rg-base-command '("rg" "-M" "120" "--no-heading" "--line-number" "--color" "never" "%s")
         counsel-yank-pop-separator "\n─────────────────────────\n"
         counsel-find-file-ignore-regexp (rx (or (group string-start (char ".#"))
                                                 (group (char "~#") string-end)
