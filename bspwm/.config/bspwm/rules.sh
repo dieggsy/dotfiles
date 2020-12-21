@@ -13,7 +13,7 @@ floatsize="${floatw}x${floath}"
 
 # Store width and height of primary
 xrandr \
-    | grep primary \
+    | grep -P "e-?DP1" \
     | awk -F'[[:space:]x+]' '{print $4 " " $5}' \
     | read -r width height
 
@@ -32,6 +32,14 @@ elif [[ $instance = "st-float" ]]; then
     echo $wid > /tmp/st-float
     echo layer=above state=floating hidden=on \
          sticky=on rectangle=${floatsize}${bottomright}
+# fix vlc control window not showing up in fullscreen
 elif [[ $instance = "vlc" && $title = "vlc" ]]; then
     echo layer=above border=off
+elif [[ $class = "firefox" && $title = "Picture-in-Picture" ]]; then
+    echo $wid > /tmp/mpv-float
+    echo state=floating sticky=on rectangle=960x540+1575+275
+elif [[ $title = "Android Emulator - *" ]]; then
+    echo state=floating
+elif [[ $title = "polybar-levels*"  ]]; then
+    layer=above
 fi
