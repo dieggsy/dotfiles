@@ -22,8 +22,9 @@ conf: polybar
 bin: bin/bin/git-prompt
 	stow -t ~ bin
 
-bin/bin/git-prompt: bin/bin/git-prompt.c
-	$(CC) $(CFLAGS) bin/bin/git-prompt.c -o bin/bin/git-prompt
+git-prompt: bin/bin/git-prompt.c
+	$(CC) $(CFLAGS) bin/bin/git-prompt.c -o bin/bin/git-prompt \
+		`pkg-config --silence-errors -libs --cflags libgit2`
 
 .PHONY: etc
 etc:
