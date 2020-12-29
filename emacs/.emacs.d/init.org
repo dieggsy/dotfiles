@@ -5065,6 +5065,7 @@ An Emacs package for displaying the forecast from OpenWeatherMap.
         (remote-path "/sshx:dieggsy@dieggsy.com:/srv/http/dieggsy.com/paste/"))
     (with-temp-buffer
       (let ((buffer-file-name "/tmp/paste.dieggsy.com"))
+        (insert (format "#+TITLE: Paste on %s\n" basename))
         (insert "#+OPTIONS: timestamp:nil num:nil toc:nil\n")
         (insert (format "#+EXPORT_FILE_NAME: %shtml/%s.html\n" remote-path basename))
         (insert "#+HTML_HEAD: <link rel=\"stylesheet\" type=\"text/css\" href=\"https://dieggsy.com/css/org.css\"/>\n")
@@ -5075,11 +5076,11 @@ An Emacs package for displaying the forecast from OpenWeatherMap.
                         (if (string-suffix-p "\n" str)
                             ""
                           "\n")))
-        (insert (format "[[./%s/raw][raw]]" basename))
+        (insert (format "[[./%s/plain][plain]]" basename))
         (org-mode)
         (setq-local org-html-preamble-format d/org-preamble-site-header)
         (org-html-export-to-html)
-        (org-babel-tangle nil (format "%sraw/%s.txt" remote-path basename))))
+        (org-babel-tangle nil (format "%splain/%s.txt" remote-path basename))))
     (kill-new (format "https://paste.dieggsy.com/%s" basename))))
 #+end_src
 * Local vars
