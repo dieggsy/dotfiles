@@ -2638,9 +2638,13 @@ Source: http://tinyurl.com/l8z7vph"
 #+end_src
 *** conf-mode
 #+begin_src emacs-lisp
-(d/hook! conf-mode
-  (d/setup-prog-mode))
-(add-to-list 'auto-mode-alist '("\\.service\\'" . conf-mode))
+(use-package conf-mode
+  :hook (conf-mode . d/setup-prog-mode)
+  :init
+  (add-to-list 'auto-mode-alist '("\\.service\\'" . conf-mode))
+  (d/safe-vars! (eval . (conf-quote-normal nil))))
+
+
 #+end_src
 *** [[http://elpa.gnu.org/packages/csv-mode.html][csv-mode]]
 #+begin_quote
