@@ -608,15 +608,6 @@ Better indent textobjects for evil
     "gl" 'evil-lion-left
     "gL" 'evil-lion-right))
 #+end_src
-***** [[https://github.com/emacs-evil/evil-magit][evil-magit]]
-#+begin_quote
-Black magic or evil keys for magit
-#+end_quote
-#+begin_src emacs-lisp
-(use-package evil-magit
-  :after magit
-  :demand t)
-#+end_src
 ***** [[https://github.com/redguardtoo/evil-matchit][evil-matchit]]
 A more generic ~%~ in evil.
 #+begin_src emacs-lisp :tangle no
