@@ -1721,8 +1721,8 @@ operate on buffers like dired
             (or
              (mode . helpful-mode)
              (mode . Man-mode)
-             (predicate  member major-mode
-                         ibuffer-help-buffer-modes)))
+             (predicate . (member major-mode
+                                  ibuffer-help-buffer-modes))))
            ("Package"
             (filename . ".*/dotfiles/emacs.d/straight/.*"))
            ("Built in"
@@ -1732,7 +1732,7 @@ operate on buffers like dired
            ("Magit"
             (derived-mode . magit-mode))
            ("Shell"
-            (predicate member major-mode '(eshell-mode term-mode))))))
+            (predicate . (member major-mode '(eshell-mode term-mode vterm-mode)))))))
 
   (d/hook! ibuffer-mode
     (ibuffer-switch-to-saved-filter-groups "Default"))
@@ -3059,7 +3059,6 @@ Get right to the scratch buffer if not editing a file.
                                     (format "%.f" bat)))
       alist)))
 #+end_src
-
 *** Gui elements
 Turn off gui elements that I never use. Gui emacs is great, but I still prefer
 text-based interaction thank you very much.
