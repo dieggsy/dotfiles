@@ -4025,6 +4025,43 @@ web template editing mode for emacs
 #+begin_src emacs-lisp
 (use-package fish-mode)
 #+end_src
+*** [[https://polymode.github.io/][polymode]]
+#+begin_src emacs-lisp :tangle no
+(use-package polymode
+  :commands poly-scheme-mode
+  :init
+  (add-hook 'scheme-mode-hook #'poly-scheme-mode)
+  :config
+  (define-hostmode poly-scheme-hostmode
+    :mode 'scheme-mode)
+
+  (define-innermode poly-scheme-c-innermode
+    :mode 'c-mode
+    :head-matcher "#>\n"
+    :tail-matcher "<#"
+    :head-mode 'host
+    :tail-mode 'host)
+
+  (define-innermode poly-scheme-multiline-c-innermode
+    :mode 'c-mode
+    :head-matcher "#<<CMODE\n"
+    :tail-matcher "CMODE"
+    :head-mode 'host
+    :tail-mode 'host)
+
+  (define-innermode poly-scheme-multiline-cpp-innermode
+    :mode 'cpp-mode
+    :head-matcher "#<<CPPMODE\n"
+    :tail-matcher "CPPMODE"
+    :head-mode 'host
+    :tail-mode 'host)
+
+  (define-polymode poly-scheme-mode
+    :hostmode 'poly-scheme-hostmode
+    :innermodes '(poly-scheme-c-innermode
+                  poly-scheme-multiline-c-innermode
+                  poly-scheme-multiline-cpp-innermode)))
+#+end_src
 ** VCS
 *** Functions
 #+begin_src emacs-lisp
