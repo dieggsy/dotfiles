@@ -74,6 +74,8 @@ feh --bg-fill ~/pic/wallpapers/chicken-wall.png
 # feh --bg-fill $(find ~/pic/wallpapers -type f ! -path '*originals*' \
 #                     | shuf -n1 --random-source=/dev/urandom)
 
+hash picom && picom -b
+
 # Clipboard
 # run -f autocutsel -selection CLIPBOARD -fork
 # run -f autocutsel -selection PRIMARY -fork
@@ -86,9 +88,12 @@ for m in $(bspc query -M --names); do
 done
 ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-simple
 
-(polybar levels &
-ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-levels \
-    && sleep 1 && echo "cmd:hide" >> /tmp/ipc-polybar-levels) &
+# I'm not sure why I need a 'sleep' at the beginning here, but otherwise
+# polybar levels goes below windows
+(sleep 1
+ polybar levels &
+ ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-levels \
+     && sleep 1 && echo "cmd:hide" >> /tmp/ipc-polybar-levels) &
 
 # Floating st + tmux (see rules.sh)
 if [ -z "$(pgrep -f st-float)" ]; then

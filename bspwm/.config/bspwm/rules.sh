@@ -40,6 +40,4 @@ elif [[ $class = "firefox" && $title = "Picture-in-Picture" ]]; then
     echo state=floating sticky=on rectangle=960x540+1575+275
 elif [[ $title = "Android Emulator - *" ]]; then
     echo state=floating
-elif [[ $title = "polybar-levels*"  ]]; then
-    layer=above
 fi
