@@ -369,8 +369,24 @@ Integrate gpg passphrase query with Emacs minibuffer when using EPA.
 (setq frame-resize-pixelwise t)
 #+end_src
 *** Mode line
+A simpler mode line. Note that this configuration depends on the ~moody~ and
+~minions~ packages.
 #+begin_src emacs-lisp
-(column-number-mode)
+(setq-default mode-line-format
+              '("%e"
+                mode-line-front-space
+                mode-line-mule-info
+                mode-line-modified
+                mode-line-remote
+                " "
+                moody-mode-line-buffer-identification
+                ;; originally: mode-line-buffer-identification
+                " "
+                minions-mode-line-modes
+                ;; originally: mode-line-modes
+                (vc-mode vc-mode) ;; if !minions, place before previous
+                mode-line-misc-info
+                mode-line-end-spaces))
 #+end_src
 *** Modes
 #+begin_src emacs-lisp
@@ -3113,7 +3129,6 @@ I don't like seeing variable pitch in emacs. Just sorta throws me off.
   (setq x-underline-at-descent-line t)
   (setq moody-mode-line-height 47)
   (moody-replace-mode-line-buffer-identification)
-  (moody-replace-vc-mode)
 
   ;; (d/after 'evil
   ;;   (defvar moody-evil-mode-line-format
@@ -3128,7 +3143,9 @@ I don't like seeing variable pitch in emacs. Just sorta throws me off.
 (use-package minions
   :demand t
   :custom
-  (minions-direct '(flycheck-mode))
+  (minions-mode-line-delimiters nil)
+  (minions-mode-line-face '((:inherit font-lock-comment-face :slant normal)))
+  (minions-mode-line-lighter "::")
   :config
   (minions-mode))
 #+end_src
