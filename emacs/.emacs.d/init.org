@@ -610,7 +610,7 @@ Better indent textobjects for evil
 #+end_src
 ***** [[https://github.com/redguardtoo/evil-matchit][evil-matchit]]
 A more generic ~%~ in evil.
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package evil-matchit
   :general
   (itomap "%" 'evilmi-inner-text-object)
