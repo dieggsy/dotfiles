@@ -166,7 +166,7 @@ XF86MonBrightnessUp
     key=$(date +%s.%N) \
     && echo "$key" > /tmp/levels-timeout \
     && echo "cmd:show" >> /tmp/ipc-polybar-levels \
-    && brightness=$(printf "%0.f" `xbacklight`) \
+    && brightness=$(printf "%0.f" `xbacklight -get`) \
     && [[ $brightness -lt 5 ]] \
     && xbacklight -set $(($brightness + 1)) \
     || xbacklight -set $(($brightness + 5));  \
@@ -177,7 +177,7 @@ XF86MonBrightnessDown
     key=$(date +%s.%N) \
     && echo "$key" > /tmp/levels-timeout \
     && echo "cmd:show" >> /tmp/ipc-polybar-levels \
-    && brightness=$(printf "%0.f" `xbacklight`) \
+    && brightness=$(printf "%0.f" `xbacklight -get`) \
     && [[ $brightness -gt 1 ]] \
     && ( [[ $brightness -le 5 ]] \
     && xbacklight -set $(($brightness - 1)) \

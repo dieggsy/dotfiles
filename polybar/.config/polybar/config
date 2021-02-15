@@ -184,7 +184,8 @@ bar-volume-empty =%{F#665C54}┉%{F-}
 bar-volume-gradient=true
 
 [module/backlight]
-type = internal/xbacklight
+type = internal/backlight
+card = intel_backlight
 format = Backlight: <bar> <label>
 label = %percentage%
 format-padding = 1
