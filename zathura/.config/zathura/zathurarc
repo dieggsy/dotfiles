@@ -1,5 +1,5 @@
 # -*- mode: conf -*-
-set font "Iosevka Term 10"
+set font "Iosevka Term 8"
 set guioptions ""
 set default-bg "#1D2021"
 set default-fg "#fdf4c1"

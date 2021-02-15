@@ -13,7 +13,7 @@ floatsize="${floatw}x${floath}"
 
 # Store width and height of primary
 xrandr \
-    | grep -P "e-?DP1" \
+    | grep -P "e-?DP-?1" \
     | awk -F'[[:space:]x+]' '{print $4 " " $5}' \
     | read -r width height
 

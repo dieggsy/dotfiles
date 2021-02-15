@@ -5,6 +5,7 @@ fi
 export EDITOR='emacsclient -a nvim'
 export VISUAL=$EDITOR
 export _JAVA_AWT_WM_NONREPARENTING=1
+export GDK_DPI_SCALE=2.19
 
 pathadd () {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then

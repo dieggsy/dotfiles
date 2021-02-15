@@ -6,6 +6,6 @@ configuration {
 	yoffset: 62;
 	fixed-num-lines: false;
 	combi-modi: "window,drun,run";
-	dpi: 172;
+	dpi: 210;
 	theme: "dropdown";
 }

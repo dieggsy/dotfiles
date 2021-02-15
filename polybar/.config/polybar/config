@@ -27,15 +27,15 @@ height = 47
 fixed-center = true
 line-size = 2
 
-dpi = 172
+dpi = 210
 background = ${colors.background}
 foreground = ${colors.foreground}
 
 module-margin=0
 separator=
 
-font-0 = Iosevka Term:size=10;3
-font-1 = Iosevka Term:size=7;0
+font-0 = Iosevka Term:size=8;3
+font-1 = Iosevka Term:size=5;0
 
 modules-left = bspwm xwindow
 modules-center = date
@@ -206,7 +206,7 @@ format-underline = ${colors.sienna}
 screenchange-reload = true
 
 [bar/levels]
-monitor = ${env:MONITOR:eDP1}
+monitor = ${env:MONITOR:eDP-1}
 
 width = 20%
 height = 47
@@ -220,7 +220,7 @@ border-color= ${colors.sienna}
 ; tray-position=right
 ; tray-maxsize=32
 
-dpi = 172
+dpi = 210
 background = ${colors.background}
 foreground = ${colors.foreground}
 
@@ -228,8 +228,8 @@ module-margin=0
 separator=
 
 override-redirect = true
-font-0 = Iosevka Term:size=10;3
-font-1 = Iosevka Term:size=7;0
+font-0 = Iosevka Term:size=8;3
+font-1 = Iosevka Term:size=5;0
 
 modules-center = pulse backlight
 

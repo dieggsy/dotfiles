@@ -13,7 +13,7 @@
     highlightcolor: #DD6F48;
     selectioncolor: #504945;
 
-    font: "Iosevka Term 10";
+    font: "Iosevka Term 8";
     border-color: @separatorcolor;
     background-color: @backgroundcolor;
     text-color: @foregroundcolor;
