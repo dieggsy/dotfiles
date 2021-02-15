@@ -9,6 +9,7 @@
              (only chicken.format format)
              compile-file)
      (import chicken-doc)
+     (import expand-full)
      (unless (get-environment-variable "INSIDE_EMACS")
        (rl:history-file (format "~a/.csi_history"
                                 (get-environment-variable "HOME")))
