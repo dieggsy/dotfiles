@@ -5,6 +5,7 @@ fi
 export EDITOR='emacsclient -a nvim'
 export VISUAL=$EDITOR
 export _JAVA_AWT_WM_NONREPARENTING=1
+export DUST_HOME=~/.local/dust
 export GDK_DPI_SCALE=2.19
 
 pathadd () {
@@ -21,3 +22,4 @@ pathadd $PREFIX/lib/ccache/bin
 
 export PATH
 export KEYTIMEOUT=1
+eval $(dust env)
