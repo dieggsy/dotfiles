@@ -5,7 +5,7 @@
 
 [user]
     name = dieggsy
-    email = dieggsy@protonmail.com
+    email = dieggsy@pm.me
     signingkey = 1DF81CB1
 
 [filter "lfs"]
@@ -65,3 +65,8 @@
 
 [github]
 	user = dieggsy
+
+[url "git@github.com:"]
+    insteadOf = gh:
+[pull]
+	rebase = false
