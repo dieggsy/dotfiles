@@ -130,3 +130,5 @@ if hash thefuck &>/dev/null; then
     eval "$(thefuck --alias)" && fuck
   }
 fi
+
+[[ "$(tty)" != "/dev/tty1" ]] && [ -z $TMUX ] && { tmux attach || tmux }
