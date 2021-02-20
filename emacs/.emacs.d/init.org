@@ -3064,6 +3064,10 @@ Get right to the scratch buffer if not editing a file.
          display-time-format "│ %Y-%d-%m %H:%M │"
          display-time-load-average nil))
 #+end_src
+*** Menu bar
+#+begin_src emacs-lisp
+(menu-bar-mode -1)
+#+end_src
 *** Battery
 #+begin_src emacs-lisp :tangle no
 (d/after 'battery
