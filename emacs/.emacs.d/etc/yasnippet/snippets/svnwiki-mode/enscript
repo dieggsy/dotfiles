@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: enscript
+# key: #s
+# --
+
+<enscript highlight="${1:scheme}">
+$0
+</enscript>

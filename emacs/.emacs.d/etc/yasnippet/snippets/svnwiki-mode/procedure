@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: procedure
+# key: #p
+# --
+<procedure>$0</procedure>

@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: syntax
+# key: #m
+# --
+
+<syntax>$0</syntax>
