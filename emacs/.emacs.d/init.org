@@ -4507,6 +4507,10 @@ Major mode for reading EPUBs in Emacs
              :repo "akermu/emacs-libvterm"
              :files (:defaults "*")))
 #+end_src
+** [[https://github.com/jwiegley/emacs-async][async]]
+#+begin_src emacs-lisp
+(use-package async)
+#+end_src
 * Emacs Enhancements
 ** Packages
 *** [[https://www.emacswiki.org/emacs/centered-cursor-mode.el][centered-cursor-mode]]
