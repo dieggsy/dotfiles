@@ -117,12 +117,18 @@ ssh() {
     [ $TMUX ] && tmux set-window-option automatic-rename on
 }
 
-my-packages () {
-    comm -23 <(pacman -Qqett | sort) <(pacman -Qgq base base-devel xorg | sort)
-}
-
 missing-from-group () {
     comm -23 <(pacman -Sqg "$1" | sort) <(pacman -Qqg "$1" | sort)
+}
+
+circular-deps () {
+    for pkg in $(pacman -Qqd); do
+        [[ -z $(comm -12 <(pactree -r $pkg -u | sort) <(pacman -Qqe | sort)) ]] && echo $pkg;
+    done
+}
+
+e () {
+    pgrep -f 'emacs --daemon' > /dev/null && emacsclient "$@" || emacs "$@"
 }
 
 fuck() {
