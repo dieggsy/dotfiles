@@ -1888,7 +1888,6 @@ Dired with recursive directory sizes
 #+end_quote
 #+begin_src emacs-lisp
 (use-package dired-du
-  :straight (:host github :repo "emacsmirror/dired-du")
   :config
   (setq dired-du-size-format t))
 #+end_src
@@ -2714,8 +2713,7 @@ The emacs major mode for editing files in the YAML data serialization format.
 #+begin_src emacs-lisp
 (use-package svnwiki-mode
   :mode "\\.svnwiki\\'"
-  :straight (:host github
-             :repo "wasamasa/svnwiki-mode"))
+  :straight (:repo "https://depp.brause.cc/svnwiki-mode.git"))
 #+end_src
 ** Bindings
 Make indent-rigidly more vimmy.
@@ -3231,9 +3229,6 @@ Customizable 256 colors for emacs term and ansi-term
 #+end_quote
 #+begin_src emacs-lisp
 (use-package eterm-256color
-  :straight (:host github
-             :repo "dieggsy/eterm-256color"
-             :files ("eterm-256color.el" "eterm-256color.ti"))
   :hook (term-mode . eterm-256color-mode))
 #+end_src
 *** [[https://github.com/ankurdave/color-identifiers-mode][color-identifiers]]
@@ -3593,9 +3588,7 @@ discover elisp functions that do what you want
 Port of python's difflib to emacs-lisp
 #+end_quote
 #+begin_src emacs-lisp
-(use-package difflib
-  :straight (:host github
-             :repo "dieggsy/difflib.el"))
+(use-package difflib)
 #+end_src
 ***** [[https://github.com/joddie/macrostep][macrostep]]
 #+begin_quote
@@ -4338,8 +4331,6 @@ Fish-like autosuggestions in eshell.
 #+begin_src emacs-lisp
 (use-package esh-autosuggest
   :hook (eshell-mode . esh-autosuggest-mode)
-  :straight (:host github
-             :repo "dieggsy/esh-autosuggest")
   :general
   (esh-autosuggest-active-map
    "<S-return>" 'company-complete-selection))
@@ -4519,11 +4510,6 @@ A Collection of Ridiculously Useful eXtensions for Emacs
 #+end_quote
 #+begin_src emacs-lisp
 (use-package crux
-  :straight
-  (crux :type git
-        :host github
-        :repo "bbatsov/crux"
-        :no-autoloads t)
   :general
   (d/leader-keys
     "TAB" 'crux-switch-to-previous-buffer
