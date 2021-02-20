@@ -62,6 +62,8 @@
 
 [push]
     followTags = true
+[pull]
+	rebase = false
 
 [github]
 	user = dieggsy
