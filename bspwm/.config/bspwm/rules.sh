@@ -5,23 +5,61 @@ class=$2
 instance=$3
 title=$(xwininfo -id $wid | sed -n '2p' | cut -d\" -f2)
 
-gap=$(bspc config window_gap)
-border=$(bspc config border_width)
-floatw=1085
-floath=560
-floatsize="${floatw}x${floath}"
+bspwm_gap=$(bspc config window_gap)
+bspwm_border=$(bspc config border_width)
 
 # Store width and height of primary
 xrandr \
     | grep -P "e-?DP-?1" \
     | awk -F'[[:space:]x+]' '{print $4 " " $5}' \
-    | read -r width height
+    | read -r display_width display_height
 
-bottompos=$((height - floath - border*2 - gap/2))
-rightpos=$((width - floatw - border*2 - gap/2))
-leftpos=$((gap/2))
-bottomleft="+$leftpos+$bottompos"
-bottomright="+$rightpos+$bottompos"
+pos () {
+    # Takes position, W, H and creates a bspwm geometry, where position is any
+    # of 0-9, arranged in a 3x3 grid on the screen
+    polybar_height=47
+    W=$2
+    H=$3
+    case $1 in
+        0)
+            X=15
+            Y=$((polybar_height + 15))
+            ;;
+        1)
+            X=$((display_width/2 - (W/2 - bspwm_border)))
+            Y=$((polybar_height + bspwm_gap/2))
+            ;;
+        2)
+            X=$((display_width - W - bspwm_border*2 - bspwm_gap/2))
+            Y=$((polybar_height + bspwm_gap/2))
+            ;;
+        3)
+            X=15
+            Y=$((display_height/2 - (H/2 - bspwm_border)))
+            ;;
+        4)
+            X=$((display_width/2 - (W/2 - bspwm_border)))
+            Y=$((display_height/2 - (H/2 - bspwm_border)))
+            ;;
+        5)
+            X=$((display_width - W - bspwm_border*2 - bspwm_gap/2))
+            Y=$((display_height/2 - (H/2 - bspwm_border)))
+            ;;
+        6)
+            X=15
+            Y=$((display_height - H - bspwm_border*2 - bspwm_gap/2))
+            ;;
+        7)
+            X=$((display_width/2 - (W/2 - bspwm_border)))
+            Y=$((display_height - H - bspwm_border*2 - bspwm_gap/2))
+            ;;
+        8)
+            X=$((display_width - W - bspwm_border*2 - bspwm_gap/2))
+            Y=$((display_height - H - bspwm_border*2 - bspwm_gap/2))
+            ;;
+    esac
+    echo ${2}x$3+$X+$Y
+}
 
 if [[ $instance = "gl" ]]; then
     echo $wid > /tmp/mpv-float
@@ -30,8 +68,7 @@ elif [[ $instance = "st-256color" && $title = "htop" ]]; then
     echo state=floating
 elif [[ $instance = "st-float" ]]; then
     echo $wid > /tmp/st-float
-    echo layer=above state=floating hidden=on \
-         sticky=on rectangle=${floatsize}${bottomright}
+    echo layer=above state=floating hidden=on sticky=on rectangle=$(pos 8 1078 560)
 # fix vlc control window not showing up in fullscreen
 elif [[ $instance = "vlc" && $title = "vlc" ]]; then
     echo layer=above border=off
