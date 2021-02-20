@@ -3821,6 +3821,8 @@ The following is a shim for geiser's syntax highlighting and indentation.
 (d/after 'scheme
   ;; geiser shim
   (setq scheme-program-name "csi -q")
+  (add-to-list 'interpreter-mode-alist '("chicken-scheme" . scheme-mode))
+  (add-to-list 'interpreter-mode-alist '("csi" . scheme-mode))
   ;; Defaults (geiser)
   (dieggsy/scheme-indent
    (and-let* 1) (case-lambda 0) (catch defun) (class defun) (dynamic-wind 0)
