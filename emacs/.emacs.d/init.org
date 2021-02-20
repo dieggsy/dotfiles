@@ -1607,6 +1607,8 @@ Select the help window when opening it (I like this so I can quickly ~q~ out).
   (tramp-completion-reread-directory-timeout nil)
   (tramp-auto-save-directory (no-littering-expand-var-file-name "tramp-auto-save/"))
   :config
+  (add-to-list 'tramp-default-proxies-alist
+               '("dieggsy\\.com\\'" "\\`root\\'" "/ssh:%h:"))
   (setq vc-ignore-dir-regexp (format "\\(%s\\)\\|\\(%s\\)"
                                      vc-ignore-dir-regexp
                                      tramp-file-name-regexp))
