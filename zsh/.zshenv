@@ -4,6 +4,7 @@ fi
 
 export EDITOR='emacsclient -a nvim'
 export VISUAL=$EDITOR
+export RIPGREP_CONFIG_PATH=~/.config/rg/rg.conf
 export _JAVA_AWT_WM_NONREPARENTING=1
 export DUST_HOME=~/.local/dust
 export GDK_DPI_SCALE=.5
