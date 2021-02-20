@@ -3097,11 +3097,13 @@ have a look. Additionally, show whitespace.
 (setq-default truncate-lines t)
 #+end_src
 *** Font
-Set the font to Iosevka Term, if available.
 #+begin_src emacs-lisp
-(setq inhibit-compacting-font-caches t
-      use-default-font-for-symbols nil)
-(set-fontset-font t 'symbol "Noto Color Emoji" nil 'prepend)
+(defun d/setup-fonts (&rest ignore)
+  (setq inhibit-compacting-font-caches t
+        use-default-font-for-symbols nil)
+  (set-fontset-font t 'symbol "Noto Color Emoji" nil 'prepend))
+(d/setup-fonts)
+(add-to-list 'after-make-frame-functions 'd/setup-fonts)
 #+end_src
 *** Minibuffer
 Use a bar cursor in the minibuffer.
