@@ -56,11 +56,7 @@ run sxhkd -m -1
 run xcape -e 'Control_L=Escape'
 
 # Pointer behavior
-xsetroot -cursor_name left_ptr
 run unclutter
-
-# Type speed/delay
-xset r rate 300 50 &
 
 # Screen locker
 run xss-lock -- physlock

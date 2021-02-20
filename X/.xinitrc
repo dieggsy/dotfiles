@@ -66,4 +66,12 @@ fi
 #         exec startkde
 #     fi
 # done
+
+# Pointer
+xsetroot -cursor_name left_ptr
+
+# Type speed/delay
+xset r rate 300 50
+
+# Start bspwm
 exec bspwm
