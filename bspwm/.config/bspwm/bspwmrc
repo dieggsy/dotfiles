@@ -49,7 +49,7 @@ run() {
     fi
     # Make sure the command exists.
     command -v "$1"  &> /dev/null \
-        && { pgrep $flags "$1" || ($@ &) } || not_found+="\n$1"
+        && { pgrep $flags "$1" &>/dev/null || ($@ &) } || not_found+="\n$1"
 }
 
 # Bindings
@@ -66,12 +66,10 @@ run xss-lock -- physlock
 # run udiskie
 
 # Wallpaper
-feh --bg-fill ~/pic/wallpapers/chicken-wall.png
+run feh --bg-fill ~/pic/wallpapers/chicken-wall.png
 # Random wallpaper
 # feh --bg-fill $(find ~/pic/wallpapers -type f ! -path '*originals*' \
 #                     | shuf -n1 --random-source=/dev/urandom)
-
-hash picom && picom -b
 
 # Clipboard
 # run -f autocutsel -selection CLIPBOARD -fork
@@ -81,39 +79,33 @@ hash picom && picom -b
 killall -q polybar
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 for m in $(bspc query -M --names); do
-    MONITOR=$m polybar simple &
+    MONITOR=$m polybar -q simple &
 done
 ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-simple
 
 # I'm not sure why I need a 'sleep' at the beginning here, but otherwise
 # polybar levels goes below windows
 (sleep 1
- polybar levels &
+ polybar -q levels &
  ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-levels \
      && sleep 1 && echo "cmd:hide" >> /tmp/ipc-polybar-levels) &
 
 # Floating st + tmux (see rules.sh)
-if [ -z "$(pgrep -f st-float)" ]; then
-    if [ -z "$(pgrep tmux)" ]; then
-        alacritty --class st-float -e tmux &
-    else
-        alacritty --class st-float -e tmux attach &
-    fi
-fi
-
+run alacritty --class st-float
 # Run emacs in background, connect with emacsclient
 run emacs --daemon
 
 # pgrep nextcloud || ionice -c 3 nice -n12 nextcloud &
 
-# compton -b
-[ -n "$not_found" ] \
-    && notify-send "bspwmrc" "Commands not in \$PATH:\n$(echo $not_found | sort -u)"
+run -f /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 
-run /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+hash picom && pgrep picom &>/dev/null || picom --xrender-sync-fence -b
+
+
+[ -n "$not_found" ] \
+    && notify-send "bspwmrc" "Commands not in \$PATH:$(echo $not_found | sort -u)"
 
 # Useful commands
 # xrandr --output eDP1 --pos 2560x0 --auto --output HDMI2 --primary --scale-from 2560x1440 --mode 1920x1080
 
 # xrandr --output eDP1 --pos 1920x0 --auto --output HDMI2 --primary --scale 1x1 --mode 1920x1080
-
