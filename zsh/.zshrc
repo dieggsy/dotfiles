@@ -1,9 +1,9 @@
 [[ "$TERM" = "dumb" ]] && unsetopt zle && return
 
-# The following lines were added by compinstall
 eval "$(dircolors)"
 export LS_COLORS="$LS_COLORS:di=94:ex=92:"
 
+# The following lines were added by compinstall
 zmodload zsh/complist
 zstyle ':completion:*' completer _expand _complete _ignored _correct _approximate
 zstyle ':completion:*' format '%F{yellow}--%d--%f'
