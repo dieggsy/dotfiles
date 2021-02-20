@@ -1,6 +1,6 @@
 # -*- mode: conf -*-
 [global]
-font = Iosevka Term 9
+font = Iosevka Term 8
 
 frame_width = 5
 frame_color = "#DD6F48"
