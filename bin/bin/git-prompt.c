@@ -5,6 +5,7 @@
 #if defined __has_include
 #  if __has_include (<git2.h>)
 #include <git2.h>
+// This one seems not to work on freshly initialized repos
 void print_branch_info(git_repository *repo);
 int status_cb(const char *path, unsigned int status_flags, void *payload);
 void print_other_info(git_repository *repo);
@@ -17,6 +18,7 @@ typedef struct {
 } status_data;
 
 int main () {
+    fclose(stderr);
     git_libgit2_init();
     git_repository *repo = NULL;
     if (git_repository_open_ext(&repo, "./", 0, "/home:/tmp") == 0) {
