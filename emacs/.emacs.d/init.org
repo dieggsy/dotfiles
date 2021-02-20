@@ -2997,7 +2997,7 @@ Fixed and automatic balanced window layout for Emacs
   (">" evil-window-increase-width)
   ("<" evil-window-decrease-width)
   ("+" evil-window-increase-height)
-  ("-" evil-window-descrease-height)
+  ("-" evil-window-decrease-height)
   ("r" evil-window-rotate-downwards)
   ("R" evil-window-rotate-upwards)
   ("w" evil-window-next)
