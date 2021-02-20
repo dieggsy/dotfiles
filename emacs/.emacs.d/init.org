@@ -1285,7 +1285,7 @@ org file remotely and exporting to html.
 </div>")))
 (d/hook! org-mode
   (when (and (file-remote-p default-directory)
-             (string-match-p "\\(.*?\\)@\\(dieggsy.com\\|firefly\\):/srv/http/dieggsy.com"
+             (string-match-p "\\(dieggsy.com\\|firefly\\):/srv/http/dieggsy.com"
                              default-directory))
     (setq-local org-html-preamble-format d/org-preamble-site-header)))
 #+end_src
