@@ -3754,7 +3754,7 @@ emacs and scheme talk to each other
   (geiser-chicken-binary '("csi" "-q"))
   (geiser-chicken-required-modules nil)
   :config
-  (setq geiser-active-implementations '(chicken racket)
+  (setq geiser-active-implementations '(chicken)
         geiser-default-implementation 'chicken
         geiser-debug-jump-to-debug-p nil
         geiser-debug-show-debug-p nil
@@ -3796,6 +3796,7 @@ Source: http://tinyurl.com/le6wxuo"
 #+begin_src emacs-lisp
 (add-to-list 'auto-mode-alist '("\\.egg\\'" . scheme-mode))
 (add-to-list 'auto-mode-alist '("\\.sld\\'" . scheme-mode))
+(add-to-list 'auto-mode-alist '("\\.release-info\\'" . scheme-mode))
 
 (d/hook! scheme-mode
   (hs-minor-mode)
