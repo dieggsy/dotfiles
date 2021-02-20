@@ -3902,9 +3902,11 @@ KEYWORDS should be a list of strings."
 (font-lock-add-keywords
  'scheme-mode
  '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)
-   ("\\`\\(#!/\\(?:\\(?:.*?/\\)+\\)?\\([^/ ]+\\)?\\(?:.*$\\)?\\)"
-    (1 'font-lock-comment-face)
-    (2 'font-lock-keyword-face t))
+   ("\\`\\(#!.*/\\)\\([^ \t\n]+\\)\\( .*\\)?"
+    (1 font-lock-comment-face)
+    (2 font-lock-keyword-face t)
+    (3 font-lock-comment-face t t)
+    )
    ("\\<#!\\sw+\\>" . 'font-lock-type-face))
  t)
 (font-lock-add-keywords
