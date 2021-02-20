@@ -1653,6 +1653,8 @@ directory-browsing commands
   (dired-listing-switches "-lXhA --group-directories-first")
   (dired-dwim-target t)
   :config
+  (d/hook! dired-mode
+    (auto-revert-mode))
   (nmap dired-mode-map
     "~" 'd/dired-home
     "q" 'd/dired-quit
