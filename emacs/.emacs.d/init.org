@@ -3836,7 +3836,7 @@ The following is a shim for geiser's syntax highlighting and indentation.
    (test-runner-on-group-begin! 1) (test-runner-on-group-end! 1)
    (test-runner-on-test-begin! 1) (test-runner-on-test-end! 1)
    (test-with-runner 1) (unless 1) (when 1) (while 1)
-   (with-exception-handler 1) (with-syntax 1))
+   (with-exception-handler 1) (with-syntax 1) (with-headers 1))
 
   ;; Chicken (geiser)
   (dieggsy/scheme-indent
