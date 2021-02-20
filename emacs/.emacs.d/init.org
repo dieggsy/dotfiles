@@ -421,8 +421,7 @@ If optional DECRYPT argument is given, dercypt entries before
 tangling."
     (interactive)
     (let ((init-tangle-start-time (current-time))
-          (file (buffer-file-name))
-          (async-quiet-switch "-q"))
+          (file (buffer-file-name)))
       (async-start
        `(lambda ()
           (require 'org)
