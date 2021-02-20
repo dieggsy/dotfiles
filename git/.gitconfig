@@ -68,5 +68,5 @@
 
 [url "git@github.com:"]
     insteadOf = gh:
-[pull]
-	rebase = false
+[url "https://aur.archlinux.org/"]
+    insteadOf = aur:
