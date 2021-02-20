@@ -37,7 +37,7 @@
     background-color: @backgroundcolor;
     border-color: @highlightcolor;
     border: 5;
-    border-radius: 0;
+    border-radius: 5;
     /* width: 300; */
 }
 
