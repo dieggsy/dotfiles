@@ -338,8 +338,7 @@ delay in the config for persistent-scratch.
 *** Tab
 Use tab for completion in region and cycle candidates.
 #+begin_src emacs-lisp
-(setq tab-stop-list (number-sequence 4 200 4)
-      completion-cycle-threshold t
+(setq completion-cycle-threshold t
       tab-always-indent 'complete)
 #+end_src
 *** Time Display
