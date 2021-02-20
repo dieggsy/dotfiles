@@ -4477,7 +4477,8 @@ Emacs support library for PDF files.
   :custom
   (pdf-view-midnight-colors '("#FDF4C1" . "#282828"))
   :config
-  (pdf-tools-install))
+  (pdf-tools-install)
+  (add-hook 'pdf-view-mode 'auto-revert-mode))
 #+end_src
 ** [[https://github.com/wasamasa/nov.el][nov.el]]
 #+begin_quote
