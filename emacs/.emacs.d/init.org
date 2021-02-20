@@ -801,8 +801,6 @@ color is hidden by ivy's match color."
     `(ivy-completion-in-region
       . ,(lambda (str1 str2)
            (> 0 (compare-strings str1 nil nil str2 nil nil 'ignore-case)))))
-  (d/list-prepend! 'ivy-more-chars-alist
-    '(counsel-rg . 2))
   (setq ivy-format-functions-alist '((t . ivy-format-function-line))
         ivy-use-virtual-buffers t
         ivy-count-format ""
@@ -882,6 +880,12 @@ color is hidden by ivy's match color."
                                                 (group ".so" string-end))))
   (counsel-mode 1)
   (defalias 'locate #'counsel-locate)
+
+  (d/list-prepend! 'ivy-more-chars-alist
+    '(counsel-rg . 2))
+
+  (d/list-prepend! 'ivy-more-chars-alist
+    '(counsel-grep . 2))
 
   (ivy-add-actions
    'counsel-find-file
