@@ -22,6 +22,12 @@ super + z
     id=$(</tmp/st-float) && \
     bspc node $id --flag hidden && \
     bspc node -f $id
+
+super + minus
+    id=$(</tmp/emacs-float) && \
+    bspc node $id --flag hidden && \
+    bspc node -f $id
+
 # program launcher
 
 alt + space
