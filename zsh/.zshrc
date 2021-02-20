@@ -125,10 +125,13 @@ missing-from-group () {
     comm -23 <(pacman -Sqg "$1" | sort) <(pacman -Qqg "$1" | sort)
 }
 
-if hash thefuck &>/dev/null; then
-  fuck() {
-    eval "$(thefuck --alias)" && fuck
-  }
-fi
+fuck() {
+    if hash thefuck &>/dev/null; then
+        eval "$(thefuck --alias)" && fuck
+    else
+        echo "thefuck not in \$PATH"
+        return 1
+    fi
+}
 
 [[ "$(tty)" != "/dev/tty1" ]] && [ -z $TMUX ] && { tmux attach || tmux }
