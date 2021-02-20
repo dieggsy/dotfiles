@@ -38,6 +38,7 @@ bspc rule -a Zathura         state=tiled
 bspc rule -a Civ5XP          state=fullscreen
 bspc rule -a guvcview        state=floating
 bspc rule -a mpv             state=floating sticky=on rectangle=960x540+1575+275
+bspc rule -a Steam           border=off
 bspc rule -a 'jetbrains-studio:sun-awt-X11-XWindowPeer' manage=off
 
 # Programs
