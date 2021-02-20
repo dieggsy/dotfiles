@@ -3142,7 +3142,9 @@ I don't like seeing variable pitch in emacs. Just sorta throws me off.
   :defer 5
   :config
   (setq whitespace-style '(face trailing))
-  (setq whitespace-global-modes '(not erc-mode ses-mode vterm-mode magit-status-mode))
+  (setq whitespace-global-modes
+        '(not erc-mode ses-mode vterm-mode
+              magit-status-mode magit-revision-mode))
   (global-whitespace-mode))
 #+end_src
 ** Packages
