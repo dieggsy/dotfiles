@@ -743,12 +743,14 @@ A really nice search/completion system for emacs.
   (ivy-minibuffer-map
    [escape] 'keyboard-escape-quit
    "C-/" 'keyboard-escape-quit
-   [S-return] 'ivy-dispatching-done-hydra
+   [S-return] 'ivy-dispatching-done
    [C-return] 'ivy-immediate-done
    "C-j" 'ivy-next-line
    "C-k" 'ivy-previous-line
    [S-up] 'ivy-previous-history-element
    [S-down] 'ivy-next-history-element
+   ;; [tab] 'ivy-next-line
+   ;; [backtab] 'ivy-previous-line
    "DEL" 'ivy-backward-delete-char)
   (d/leader-keys
     "-" 'ivy-resume
@@ -809,7 +811,8 @@ color is hidden by ivy's match color."
         ivy-display-functions-alist nil
         ivy-switch-buffer-faces-alist '((dired-mode . ivy-subdir)
                                         (wdired-mode . ivy-subdir)
-                                        (ranger-mode . ivy-subdir))))
+                                        (ranger-mode . ivy-subdir))
+        ivy-read-action-function 'ivy-hydra-read-action))
 #+end_src
 ***** ivy-hydra
 #+begin_src emacs-lisp
