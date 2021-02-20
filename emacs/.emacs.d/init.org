@@ -4191,7 +4191,8 @@ operate on system processes like dired
 #+end_src
 ** comint
 #+begin_src emacs-lisp
-(setq comint-prompt-read-only t)
+(setq comint-prompt-read-only t
+      comint-highlight-input nil)
 #+end_src
 ** [[elisp:(find-library-other-window "calc")][calc]]
 #+begin_quote
