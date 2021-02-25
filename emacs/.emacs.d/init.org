@@ -421,8 +421,7 @@ If optional DECRYPT argument is given, dercypt entries before
 tangling."
     (interactive)
     (let ((init-tangle-start-time (current-time))
-          (file (buffer-file-name))
-          (async-quiet-switch "-q"))
+          (file (buffer-file-name)))
       (async-start
        `(lambda ()
           (require 'org)
@@ -3822,6 +3821,8 @@ The following is a shim for geiser's syntax highlighting and indentation.
 (d/after 'scheme
   ;; geiser shim
   (setq scheme-program-name "csi -q")
+  (add-to-list 'interpreter-mode-alist '("chicken-scheme" . scheme-mode))
+  (add-to-list 'interpreter-mode-alist '("csi" . scheme-mode))
   ;; Defaults (geiser)
   (dieggsy/scheme-indent
    (and-let* 1) (case-lambda 0) (catch defun) (class defun) (dynamic-wind 0)
@@ -3835,7 +3836,7 @@ The following is a shim for geiser's syntax highlighting and indentation.
    (test-runner-on-group-begin! 1) (test-runner-on-group-end! 1)
    (test-runner-on-test-begin! 1) (test-runner-on-test-end! 1)
    (test-with-runner 1) (unless 1) (when 1) (while 1)
-   (with-exception-handler 1) (with-syntax 1))
+   (with-exception-handler 1) (with-syntax 1) (with-headers 1))
 
   ;; Chicken (geiser)
   (dieggsy/scheme-indent
@@ -3902,9 +3903,11 @@ KEYWORDS should be a list of strings."
 (font-lock-add-keywords
  'scheme-mode
  '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)
-   ("\\`\\(#!/\\(?:\\(?:.*?/\\)+\\)?\\([^/ ]+\\)?\\(?:.*$\\)?\\)"
-    (1 'font-lock-comment-face)
-    (2 'font-lock-keyword-face t))
+   ("\\`\\(#!.*/\\)\\([^ \t\n]+\\)\\( .*\\)?"
+    (1 font-lock-comment-face)
+    (2 font-lock-keyword-face t)
+    (3 font-lock-comment-face t t)
+    )
    ("\\<#!\\sw+\\>" . 'font-lock-type-face))
  t)
 (font-lock-add-keywords
@@ -4475,7 +4478,8 @@ Emacs support library for PDF files.
   :custom
   (pdf-view-midnight-colors '("#FDF4C1" . "#282828"))
   :config
-  (pdf-tools-install))
+  (pdf-tools-install)
+  (add-hook 'pdf-view-mode 'auto-revert-mode))
 #+end_src
 ** [[https://github.com/wasamasa/nov.el][nov.el]]
 #+begin_quote
@@ -4504,6 +4508,10 @@ Major mode for reading EPUBs in Emacs
   :straight (:host github
              :repo "akermu/emacs-libvterm"
              :files (:defaults "*")))
+#+end_src
+** [[https://github.com/jwiegley/emacs-async][async]]
+#+begin_src emacs-lisp
+(use-package async)
 #+end_src
 * Emacs Enhancements
 ** Packages
