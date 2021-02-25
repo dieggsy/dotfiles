@@ -139,5 +139,3 @@ fuck() {
         return 1
     fi
 }
-
-hash tmux &>/dev/null && [[ "$(tty)" != "/dev/tty1" ]] && [ -z $TMUX ] && { tmux attach || tmux }
