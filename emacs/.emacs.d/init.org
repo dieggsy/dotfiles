@@ -4212,6 +4212,12 @@ operate on system processes like dired
 (setq comint-prompt-read-only t
       comint-highlight-input nil)
 #+end_src
+** grep
+#+begin_src emacs-lisp
+(use-package grep
+  :custom
+  (grep-command "rg --color=auto -nH --null -e"))
+#+end_src
 ** [[elisp:(find-library-other-window "calc")][calc]]
 #+begin_quote
 the GNU Emacs calculator
