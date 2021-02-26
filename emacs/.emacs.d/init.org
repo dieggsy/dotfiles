@@ -3380,6 +3380,11 @@ On the fly syntax checking for GNU Emacs
     ("L"  (progn (goto-char (point-max))
                  (flycheck-previous-error)))))
 #+end_src
+**** [[https://github.com/tarsius/hl-todo][hl-todo]]
+#+begin_src emacs-lisp
+(use-package hl-todo
+  :hook (prog-mode . hl-todo-mode))
+#+end_src
 *** Setup
 #+begin_src emacs-lisp
 (d/hook! prog-mode
