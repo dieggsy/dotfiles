@@ -1,6 +1,8 @@
 #!/bin/bash
 
-EXCLUDE=("/home/dieggsy/.local"
+EXCLUDE=("*.o"
+         "*.so"
+         "/home/dieggsy/.local"
          "/home/dieggsy/.cache"
          "/home/dieggsy/.ccache"
          "/home/dieggsy/.rustup"
