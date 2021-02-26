@@ -70,6 +70,8 @@ ignore_newline = no
 # screen width minus the width defined in within the geometry option.
 geometry = "700x5-15+62"
 
+corner_radius=5
+
 # Shrink window if it's smaller than the width.  Will be ignored if
 # width is 0.
 shrink = yes
