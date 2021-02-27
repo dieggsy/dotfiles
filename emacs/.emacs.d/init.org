@@ -4178,12 +4178,12 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
     (git-commit-turn-on-flyspell)))
 #+end_src
 **** [[https://github.com/alphapapa/magit-todos][magit-todos]]
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package magit-todos
   :after magit
   :demand t
   :config
-  (magit-todos-mode))
+  (d/safe-vars! (magit-todos-exclude-globs "*numpy*" "*venv*")))
 #+end_src
 **** [[https://github.com/vermiculus/magithub][magithub]]
 #+begin_src emacs-lisp :tangle no
