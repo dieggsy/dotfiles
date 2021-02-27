@@ -1,0 +1,32 @@
+#!/bin/bash
+
+EXCLUDE=("*.o"
+         "*.so"
+         "/home/dieggsy/.local"
+         "/home/dieggsy/.cache"
+         "/home/dieggsy/.ccache"
+         "/home/dieggsy/.rustup"
+         "/home/dieggsy/.cargo"
+         "/home/dieggsy/.minecraft"
+         "/home/dieggsy/.config/Signal/attachments.noindex"
+         "/home/dieggsy/.config/Artix*"
+         "/home/dieggsy/.AndroidStudio*"
+         "/home/dieggsy/dotfiles/emacs/.emacs.d/straight"
+         "/home/dieggsy/src/project-euler/rust/target"
+         "/home/dieggsy/pic/wallpapers/nasa-visions/originals"
+         "/home/dieggsy/music"
+         "/home/dieggsy/downloads")
+
+ionice -c 3 -p $$ &> /dev/null
+renice +12 -p $$ &> /dev/null
+
+# tar process runnning
+pgrep -f 'tar --zstd' &>/dev/null \
+    && echo "Backup may already be running, exiting..." \
+    && exit 0
+
+# last backup was successful, and less than a day has passed since
+# Error code 24 should be OK, it means the some source files vanished
+echo BACKING UP
+tar --zstd ${EXCLUDE[@]/#/--exclude=} -cvf - $HOME | ssh dieggsy@dieggsy.com "cat > ~/snapshot.tar.zst"
+echo FINISHED WITH STATUS $?

@@ -14,6 +14,4 @@
       (display char)
       (display #\tab)
       (display name)
-      (newline)
-      ;; (printf "U+~a\t~a\t~a\n" (number->string i 16) (string char) name)
-      )))
+      (newline))))

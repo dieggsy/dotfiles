@@ -1,7 +1,7 @@
 ;;; egp.el --- Display git info in eshell -*- lexical-binding: t; -*-
 
 ;; Copyright (C) 2017 Diego A. Mundo
-;; Author: Diego A. Mundo <diegoamundo@gmail.com>
+;; Author: Diego A. Mundo <dieggsy@pm.me>
 ;; Created: 2017-05-13
 ;; Version: 0.1.0
 ;; Keywords: eshell git prompt

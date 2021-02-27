@@ -371,6 +371,9 @@ Integrate gpg passphrase query with Emacs minibuffer when using EPA.
 A simpler mode line. Note that this configuration depends on the ~moody~ and
 ~minions~ packages.
 #+begin_src emacs-lisp
+;; (column-number-mode)
+;; (setq mode-line-percent-position nil)
+;; (setq mode-line-position-column-line-format '("(%l, %c)"))
 (setq-default mode-line-format
               '("%e"
                 mode-line-front-space
@@ -871,8 +874,8 @@ color is hidden by ivy's match color."
         counsel-org-headline-path-separator ": "
         counsel-org-goto-face-style 'org
         counsel-org-headline-display-todo t
-        counsel-grep-base-command "rg -Sz -M 120 --no-heading --line-number --color never %s %s"
-        counsel-rg-base-command '("rg" "-zM" "240" "--no-heading" "--line-number" "--color" "never" "%s")
+        counsel-grep-base-command "rg -M 240 --no-heading --line-number --color never %s %s"
+        counsel-rg-base-command '("rg" "-M" "240" "--no-heading" "--line-number" "--color" "never" "%s")
         counsel-yank-pop-separator "\n─────────────────────────\n"
         counsel-find-file-ignore-regexp (rx (or (group string-start (char ".#"))
                                                 (group (char "~#") string-end)
@@ -3380,6 +3383,11 @@ On the fly syntax checking for GNU Emacs
     ("L"  (progn (goto-char (point-max))
                  (flycheck-previous-error)))))
 #+end_src
+**** [[https://github.com/tarsius/hl-todo][hl-todo]]
+#+begin_src emacs-lisp
+(use-package hl-todo
+  :hook (prog-mode . hl-todo-mode))
+#+end_src
 *** Setup
 #+begin_src emacs-lisp
 (d/hook! prog-mode
@@ -3841,7 +3849,7 @@ The following is a shim for geiser's syntax highlighting and indentation.
   ;; Chicken (geiser)
   (dieggsy/scheme-indent
    (assume 1) (compiler-typecase 1) (cond-expand 0) (condition-case 1) (cut 1)
-   (cute 1) (declare 0) (dotimes 1) (ecase 1) (fluid-let 1) (foreign-lambda 2)
+   (cute 1) (declare 0) (dotimes 1) (repeat 1) (ecase 1) (fluid-let 1) (foreign-lambda 2)
    (foreign-lambda* 2) (foreign-primitive 2) (foreign-safe-lambda 2)
    (foreign-safe-lambda* 2) (functor 3) (handle-exceptions 2) (import 0)
    (let-location 1) (let-optionals 2) (let-optionals* 2) (letrec-values 1)
@@ -4170,12 +4178,12 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
     (git-commit-turn-on-flyspell)))
 #+end_src
 **** [[https://github.com/alphapapa/magit-todos][magit-todos]]
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package magit-todos
   :after magit
   :demand t
   :config
-  (magit-todos-mode))
+  (d/safe-vars! (magit-todos-exclude-globs "*numpy*" "*venv*")))
 #+end_src
 **** [[https://github.com/vermiculus/magithub][magithub]]
 #+begin_src emacs-lisp :tangle no
@@ -4206,6 +4214,12 @@ operate on system processes like dired
 #+begin_src emacs-lisp
 (setq comint-prompt-read-only t
       comint-highlight-input nil)
+#+end_src
+** grep
+#+begin_src emacs-lisp
+(use-package grep
+  :custom
+  (grep-command "rg --color=auto -nH --null -e"))
 #+end_src
 ** [[elisp:(find-library-other-window "calc")][calc]]
 #+begin_quote
