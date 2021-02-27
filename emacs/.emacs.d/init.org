@@ -3849,7 +3849,7 @@ The following is a shim for geiser's syntax highlighting and indentation.
   ;; Chicken (geiser)
   (dieggsy/scheme-indent
    (assume 1) (compiler-typecase 1) (cond-expand 0) (condition-case 1) (cut 1)
-   (cute 1) (declare 0) (dotimes 1) (ecase 1) (fluid-let 1) (foreign-lambda 2)
+   (cute 1) (declare 0) (dotimes 1) (repeat 1) (ecase 1) (fluid-let 1) (foreign-lambda 2)
    (foreign-lambda* 2) (foreign-primitive 2) (foreign-safe-lambda 2)
    (foreign-safe-lambda* 2) (functor 3) (handle-exceptions 2) (import 0)
    (let-location 1) (let-optionals 2) (let-optionals* 2) (letrec-values 1)
