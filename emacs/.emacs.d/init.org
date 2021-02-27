@@ -371,6 +371,9 @@ Integrate gpg passphrase query with Emacs minibuffer when using EPA.
 A simpler mode line. Note that this configuration depends on the ~moody~ and
 ~minions~ packages.
 #+begin_src emacs-lisp
+;; (column-number-mode)
+;; (setq mode-line-percent-position nil)
+;; (setq mode-line-position-column-line-format '("(%l, %c)"))
 (setq-default mode-line-format
               '("%e"
                 mode-line-front-space
