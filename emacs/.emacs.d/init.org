@@ -3146,7 +3146,8 @@ I don't like seeing variable pitch in emacs. Just sorta throws me off.
   (setq whitespace-style '(face trailing))
   (setq whitespace-global-modes
         '(not erc-mode ses-mode vterm-mode
-              magit-status-mode magit-revision-mode))
+              magit-status-mode magit-revision-mode
+              magit-log-mode))
   (global-whitespace-mode))
 #+end_src
 ** Packages
