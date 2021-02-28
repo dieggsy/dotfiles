@@ -3778,23 +3778,24 @@ emacs and scheme talk to each other
 #+end_src
 **** Functions
 #+begin_src emacs-lisp
-(defun d/geiser-eval-surrounding-sexp (levels)
-  "Eval sexp around point, specifying depth with LEVELS.
+(defun d/scheme-send-buffer ()
+  (interactive)
+  (scheme-send-region (point-min) (point-max)))
 
-Source: http://tinyurl.com/le6wxuo"
+(defun d/scheme-send-surrounding-sexp (levels)
   (interactive "p")
   (save-excursion
-    (sp-end-of-sexp (abs levels))
-    (geiser-eval-last-sexp nil)))
+    (up-list (abs levels))
+    (scheme-send-last-sexp)))
 #+end_src
 **** Bindings
 #+begin_src emacs-lisp
 (d/mode-leader-keys scheme-mode-map
-  "eb" 'geiser-eval-buffer
-  "ef" 'geiser-eval-definition
-  "er" 'geiser-eval-region
-  "el" 'geiser-eval-last-sexp
-  "es" 'd/geiser-eval-surrounding-sexp)
+  "eb" 'd/scheme-send-buffer
+  "ef" 'scheme-send-definition
+  "er" 'scheme-send-region
+  "el" 'scheme-send-last-sexp
+  "es" 'd/scheme-send-surrounding-sexp)
 
 (evil-define-key 'normal scheme-mode-map [backtab] #'hs-toggle-hiding)
 
