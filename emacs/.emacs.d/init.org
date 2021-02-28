@@ -1653,7 +1653,8 @@ directory-browsing commands
            (message "Use ':w' or variant to finish editing ")))
   (d/mode-leader-keys dired-mode-map
     "h" 'dired-omit-mode
-    "d" 'dired-du-mode)
+    "d" 'dired-du-mode
+    "c" 'dired-collapse-mode)
   :custom
   (dired-listing-switches "-lXhA --group-directories-first")
   (dired-dwim-target t)
