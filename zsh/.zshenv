@@ -25,4 +25,3 @@ pathadd $PREFIX/lib/ccache/bin
 
 export PATH
 export KEYTIMEOUT=1
-hash dust &>/dev/null && eval $(dust env)
