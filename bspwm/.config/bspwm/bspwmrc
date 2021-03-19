@@ -93,11 +93,9 @@ ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-simple
 # Floating st + tmux (see rules.sh)
 run alacritty --class st-float
 # Run emacs in background, connect with emacsclient
-run emacs --daemon
 
-if ! xwininfo -root -children | grep -q emacs-float; then
-    (sleep 1
-     run emacsclient -e "(make-frame '((name . \"emacs-float\") (display . \":0\")))")
+if ! pgrep -f 'emacs --daemon' &>/dev/null; then
+    run emacsclient -nc --alternate-editor='' -d $DISPLAY --frame-parameters='(quote (name . "emacs-float"))'
 fi
 
 # pgrep nextcloud || ionice -c 3 nice -n12 nextcloud &
