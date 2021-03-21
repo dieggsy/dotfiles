@@ -3863,7 +3863,7 @@ The following is a shim for geiser's syntax highlighting and indentation.
    (foreign-lambda* 2) (foreign-primitive 2) (foreign-safe-lambda 2)
    (foreign-safe-lambda* 2) (functor 3) (handle-exceptions 2) (import 0)
    (let-location 1) (let-optionals 2) (let-optionals* 2) (letrec-values 1)
-   (module 2) (regex-case 1) (select 1) (set! 1) (use 0)
+   (module 2) (regex-case 1) (select 1) (set! 1) (use 0) (define-library 1)
    (with-input-from-pipe 1) (with-output-to-pipe 1))
   ;; Added by me
   (d/scheme-indent
