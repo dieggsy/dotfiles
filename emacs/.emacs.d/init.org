@@ -305,7 +305,7 @@ Since we've disabled ~custom.el~, ensure variables are remembered as safe if pro
                 unsafe-vars)))
       (save-buffer))))
 
-(load (no-littering-expand-var-file-name "safe-vars.el"))
+(load (no-littering-expand-etc-file-name "safe-vars.el"))
 #+end_src
 *** Kill-ring
 Save stuff you've copied in other applications to the emacs kill-ring.
