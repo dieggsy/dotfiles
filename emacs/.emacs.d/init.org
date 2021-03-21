@@ -3784,6 +3784,16 @@ emacs and scheme talk to each other
         geiser-debug-show-debug-p nil
         geiser-chicken-load-init-file-p t))
 #+end_src
+***** [[https://depp.brause.cc/chicken-doc.el][chicken-doc.el]]
+#+begin_src emacs-lisp
+(use-package chicken-doc
+  :general
+  (d/mode-leader-keys scheme-mode-map
+    "d" 'chicken-doc-describe)
+  (d/mode-leader-keys inferior-scheme-mode-map
+    "d" 'chicken-doc-describe)
+  :straight (:repo "https://depp.brause.cc/chicken-doc.el.git"))
+#+end_src
 **** Functions
 #+begin_src emacs-lisp
 (defun d/scheme-send-buffer ()
