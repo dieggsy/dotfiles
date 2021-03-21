@@ -3529,6 +3529,15 @@ Yapf for Emacs
 #+begin_src emacs-lisp :tangle no
 (use-package yapfify)
 #+end_src
+**** Bindings
+#+begin_src emacs-lisp
+(d/mode-leader-keys python-mode-map
+  "eb" 'python-shell-send-buffer
+  "ef" 'python-shell-send-defun
+  "er" 'python-shell-send-region
+  "eF" 'python-shell-send-file
+  "es" 'python-shell-send-statement)
+#+end_src
 **** Setup
 #+begin_src emacs-lisp
 (d/hook! python-mode
