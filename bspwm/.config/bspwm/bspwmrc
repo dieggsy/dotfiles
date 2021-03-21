@@ -94,7 +94,7 @@ ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-simple
 run alacritty --class st-float
 # Run emacs in background, connect with emacsclient
 
-if ! pgrep -f 'emacs --daemon' &>/dev/null; then
+if ! xwininfo -root -children | grep -q emacs-float; then
     run emacsclient -nc --alternate-editor='' -d $DISPLAY --frame-parameters='(quote (name . "emacs-float"))'
 fi
 
