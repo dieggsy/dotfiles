@@ -1786,7 +1786,7 @@ operate on buffers like dired
 #+begin_src emacs-lisp
 (use-package recentf
   :config
-  (setq recentf-max-saved-items 50)
+  (setq recentf-max-saved-items 100)
 
   (defun d/recentf-exclude? (f)
     (string-prefix-p
