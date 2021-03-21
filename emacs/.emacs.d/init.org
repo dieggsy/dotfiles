@@ -167,9 +167,9 @@ as git repos.
       (bootstrap-version 5))
   (unless (file-exists-p bootstrap-file)
     (with-current-buffer
-	(url-retrieve-synchronously
-	 "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-	 'silent 'inhibit-cookies)
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
@@ -180,12 +180,12 @@ as git repos.
       straight-vc-git-force-protocol t)
 
 (add-hook 'after-init-hook
-	  (defun d/straight-prune-if-success ()
-	    (run-with-idle-timer
-	     15 nil
-	     (lambda ()
-	       (when (not init-file-had-error)
-		 (straight-prune-build))))))
+          (defun d/straight-prune-if-success ()
+            (run-with-idle-timer
+             15 nil
+             (lambda ()
+               (when (not init-file-had-error)
+                 (straight-prune-build))))))
 #+end_src
 *** [[https://github.com/jwiegley/use-package][use-package]]
 #+begin_quote
@@ -282,6 +282,10 @@ every other time. See [[https://www.gnu.org/software/emacs/manual/html_node/emac
 #+end_src
 * Core
 ** Defaults
+*** native-comp warnings
+#+begin_src emacs-lisp
+(setq comp-async-report-warnings-errors nil)
+#+end_src
 *** Disabled Commands
 By default, some emacs commands are disabled because I guess they're considered
 "confusing" to beginners or something. Nonsense! :)
@@ -289,12 +293,19 @@ By default, some emacs commands are disabled because I guess they're considered
 (setq disabled-command-function nil)
 #+end_src
 *** Local vars
-Only enable local variables that have been added to
-~safe-local-variable-values~. I mostly just don't like being prompted to enable
-local vars willy nilly, and usually add something to safe local vars if I
-really need it.
+Since we've disabled ~custom.el~, ensure variables are remembered as safe if prompted.
 #+begin_src emacs-lisp
-(setq enable-local-variables :safe)
+(define-advice customize-push-and-save (:after (vars unsafe-vars) d/safe-vars)
+  (when (eq vars 'safe-local-variable-values)
+    (with-current-buffer (find-file-noselect (no-littering-expand-var-file-name "safe-vars.el"))
+      (insert
+       (format
+        "(setq safe-local-variable-values '%S)\n"
+        (append safe-local-variable-values
+                unsafe-vars)))
+      (save-buffer))))
+
+(load (no-littering-expand-var-file-name "safe-vars.el"))
 #+end_src
 *** Kill-ring
 Save stuff you've copied in other applications to the emacs kill-ring.
@@ -371,9 +382,9 @@ Integrate gpg passphrase query with Emacs minibuffer when using EPA.
 A simpler mode line. Note that this configuration depends on the ~moody~ and
 ~minions~ packages.
 #+begin_src emacs-lisp
-;; (column-number-mode)
-;; (setq mode-line-percent-position nil)
-;; (setq mode-line-position-column-line-format '("(%l, %c)"))
+(column-number-mode)
+(setq mode-line-percent-position nil)
+(setq mode-line-position-column-line-format '("(%l, %c)"))
 (setq-default mode-line-format
               '("%e"
                 mode-line-front-space
@@ -381,14 +392,19 @@ A simpler mode line. Note that this configuration depends on the ~moody~ and
                 mode-line-modified
                 mode-line-remote
                 " "
-                moody-mode-line-buffer-identification
+                (:eval
+                 (if (display-graphic-p)
+                     moody-mode-line-buffer-identification
+                   mode-line-buffer-identification))
                 ;; originally: mode-line-buffer-identification
                 " "
                 minions-mode-line-modes
                 ;; originally: mode-line-modes
-                (vc-mode vc-mode) ;; if !minions, place before previous
-                mode-line-misc-info
-                mode-line-end-spaces))
+                (:eval (if (display-graphic-p) moody-vc-mode vc-mode))
+                (:eval (if vc-mode " " ""))
+                ;; orriginally: (vc-mode vc-mode) ;; if !minions, place before previous
+                (:propertize "(%l, %c)" face (:inherit font-lock-comment-face :slant normal))
+                mode-line-misc-info))
 #+end_src
 *** Modes
 #+begin_src emacs-lisp
@@ -1770,7 +1786,7 @@ operate on buffers like dired
 #+begin_src emacs-lisp
 (use-package recentf
   :config
-  (setq recentf-max-saved-items 50)
+  (setq recentf-max-saved-items 100)
 
   (defun d/recentf-exclude? (f)
     (string-prefix-p
@@ -2327,7 +2343,7 @@ Correcting words with flyspell via custom interface.
 (use-package fontawesome)
 #+end_src
 **** [[elisp:(find-library "counsel-weather-icons")][counsel-weather-icons]]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package counsel-weather-icons
   :commands counsel-weather-icons
   :straight nil)
@@ -3148,7 +3164,7 @@ I don't like seeing variable pitch in emacs. Just sorta throws me off.
   (setq whitespace-global-modes
         '(not erc-mode ses-mode vterm-mode
               magit-status-mode magit-revision-mode
-              magit-log-mode))
+              magit-log-mode magit-diff-mode))
   (global-whitespace-mode))
 #+end_src
 ** Packages
@@ -3158,16 +3174,7 @@ I don't like seeing variable pitch in emacs. Just sorta throws me off.
   :demand t
   :config
   (setq x-underline-at-descent-line t)
-  (setq moody-mode-line-height 47)
-  (moody-replace-mode-line-buffer-identification)
-
-  ;; (d/after 'evil
-  ;;   (defvar moody-evil-mode-line-format
-  ;;     '(:eval (moody-ribbon
-  ;;              evil-mode-line-tag
-  ;;              nil 'down)))
-  ;;   (moody-replace-element 'evil-mode-line-tag 'moody-evil-mode-line-tag))
-  )
+  (setq moody-mode-line-height 47))
 #+end_src
 *** [[https://github.com/tarsius/minions][minions]]
 #+begin_src emacs-lisp
@@ -3223,7 +3230,7 @@ An Emacs 24 theme remixed from gruvbox
 #+begin_quote
 Highlight text that extends beyond a certain column.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package column-enforce-mode
   :hook (prog-mode conf-mode)
   :init
@@ -3274,7 +3281,7 @@ Emacs: highlight surrounding parentheses
   :hook (erc-mode . no-emoji-minor-mode))
 #+end_src
 *** [[https://github.com/milkypostman/powerline][powerline]]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package powerline)
 #+end_src
 *** [[https://github.com/Fanael/rainbow-delimiters][rainbow-delimiters]]
@@ -3522,6 +3529,15 @@ Yapf for Emacs
 #+begin_src emacs-lisp :tangle no
 (use-package yapfify)
 #+end_src
+**** Bindings
+#+begin_src emacs-lisp
+(d/mode-leader-keys python-mode-map
+  "eb" 'python-shell-send-buffer
+  "ef" 'python-shell-send-defun
+  "er" 'python-shell-send-region
+  "eF" 'python-shell-send-file
+  "es" 'python-shell-send-statement)
+#+end_src
 **** Setup
 #+begin_src emacs-lisp
 (d/hook! python-mode
@@ -3580,7 +3596,7 @@ A modern list library for Emacs
 #+begin_quote
 Modern API for working with files and directories in Emacs
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package f)
 #+end_src
 ***** [[https://github.com/purcell/flycheck-package][flycheck-package]]
@@ -3626,7 +3642,7 @@ interactive macro-expander
 Source: http://tinyurl.com/le6wxuo"
   (interactive "p")
   (save-excursion
-    (sp-end-of-sexp (abs levels))
+    (up-list (abs levels))
     (eval-last-sexp nil)))
 
 (defmacro d/let (&rest clause)
@@ -3746,16 +3762,16 @@ Source: https://git.io/vQKz8"
 #+end_src
 *** Rust
 **** Packages
-***** rust-mode
+***** [[https://github.com/rust-lang/rust-mode][rust-mode]]
 #+begin_src emacs-lisp
 (use-package rust-mode)
 #+end_src
-***** racer-mode
+***** [[https://github.com/racer-rust/emacs-racer][racer]]
 #+begin_src emacs-lisp
 (use-package racer
   :hook (rust-mode . racer-mode))
 #+end_src
-***** ob-rust
+***** [[https://github.com/micanzhang/ob-rust][ob-rust]]
 #+begin_src emacs-lisp
 (use-package ob-rust)
 #+end_src
@@ -3776,6 +3792,16 @@ emacs and scheme talk to each other
         geiser-debug-jump-to-debug-p nil
         geiser-debug-show-debug-p nil
         geiser-chicken-load-init-file-p t))
+#+end_src
+***** [[https://depp.brause.cc/chicken-doc.el][chicken-doc.el]]
+#+begin_src emacs-lisp
+(use-package chicken-doc
+  :general
+  (d/mode-leader-keys scheme-mode-map
+    "d" 'chicken-doc-describe)
+  (d/mode-leader-keys inferior-scheme-mode-map
+    "d" 'chicken-doc-describe)
+  :straight (:repo "https://depp.brause.cc/chicken-doc.el.git"))
 #+end_src
 **** Functions
 #+begin_src emacs-lisp
@@ -3824,7 +3850,7 @@ emacs and scheme talk to each other
 #+end_src
 The following is a shim for geiser's syntax highlighting and indentation.
 #+begin_src emacs-lisp
-(defmacro dieggsy/scheme-indent (&rest pairs)
+(defmacro d/scheme-indent (&rest pairs)
     `(progn ,@(mapcar (lambda (p)
                         `(put ',(car p) 'scheme-indent-function ',(cadr p)))
                       pairs)))
@@ -3835,7 +3861,7 @@ The following is a shim for geiser's syntax highlighting and indentation.
   (add-to-list 'interpreter-mode-alist '("chicken-scheme" . scheme-mode))
   (add-to-list 'interpreter-mode-alist '("csi" . scheme-mode))
   ;; Defaults (geiser)
-  (dieggsy/scheme-indent
+  (d/scheme-indent
    (and-let* 1) (case-lambda 0) (catch defun) (class defun) (dynamic-wind 0)
    (guard 1) (let*-values 1) (let-values 1) (let/ec 1) (letrec* 1) (match 1)
    (match-lambda 0) (match-lambda* 0) (match-let scheme-let-indent)
@@ -3850,28 +3876,28 @@ The following is a shim for geiser's syntax highlighting and indentation.
    (with-exception-handler 1) (with-syntax 1) (with-headers 1))
 
   ;; Chicken (geiser)
-  (dieggsy/scheme-indent
+  (d/scheme-indent
    (assume 1) (compiler-typecase 1) (cond-expand 0) (condition-case 1) (cut 1)
    (cute 1) (declare 0) (dotimes 1) (repeat 1) (ecase 1) (fluid-let 1) (foreign-lambda 2)
    (foreign-lambda* 2) (foreign-primitive 2) (foreign-safe-lambda 2)
    (foreign-safe-lambda* 2) (functor 3) (handle-exceptions 2) (import 0)
    (let-location 1) (let-optionals 2) (let-optionals* 2) (letrec-values 1)
-   (module 2) (regex-case 1) (select 1) (set! 1) (use 0)
+   (module 2) (regex-case 1) (select 1) (set! 1) (use 0) (define-library 1)
    (with-input-from-pipe 1) (with-output-to-pipe 1))
   ;; Added by me
-  (dieggsy/scheme-indent
+  (d/scheme-indent
    (test-group 1) (begin-for-syntax 0) (set-read-syntax! 1)
    (set-sharp-read-syntax! 1)))
 
-(defun dieggsy/scheme-simple-keywords (keywords)
+(defun d/scheme-simple-keywords (keywords)
   "Return `font-lock-keywords' to highlight scheme KEYWORDS.
 KEYWORDS should be a list of strings."
   (when keywords
     (font-lock-add-keywords
      'scheme-mode
      `((,(format "[[(]%s\\>" (regexp-opt keywords 1)) . 1)))))
-(defun dieggsy/scheme-keywords (builtin)
-  (dieggsy/scheme-simple-keywords builtin)
+(defun d/scheme-keywords (builtin)
+  (d/scheme-simple-keywords builtin)
   (font-lock-add-keywords
    'scheme-mode
    `(("\\[\\(else\\)\\>" . 1)
@@ -3886,7 +3912,7 @@ KEYWORDS should be a list of strings."
       (2 font-lock-function-name-face nil t)))))
 
 ;; Default (geiser)
-(dieggsy/scheme-keywords
+(d/scheme-keywords
  '("and-let*" "cut" "cute" "define-condition-type"
    "define-immutable-record-type" "define-record-type" "define-values"
    "letrec*" "match" "match-lambda" "match-lambda*" "match-let" "match-let*"
@@ -3896,7 +3922,7 @@ KEYWORDS should be a list of strings."
    "test-group-with-cleanup" "test-with-runner" "unless" "when"
    "with-exception-handler" "with-input-from-file" "with-output-to-file"))
 ;; Chicken (geiser)
-(dieggsy/scheme-simple-keywords
+(d/scheme-simple-keywords
  '("assume" "compiler-typecase" "cond-expand" "condition-case" "declare"
    "define-constant" "define-inline" "define-interface" "define-record"
    "define-specialization" "define-type" "dotimes" "ecase" "fluid-let"
@@ -3905,7 +3931,7 @@ KEYWORDS should be a list of strings."
    "let-location" "let-optionals" "let-optionals*" "letrec-values" "module"
    "regex-case" "select" "use" "with-input-from-pipe"))
 ;; Added by me
-(dieggsy/scheme-simple-keywords
+(d/scheme-simple-keywords
  '("define-foreign-type" "define-foreign-record-type" "foreign-value"
    "foreign-declare" "begin-for-syntax" "define-for-syntax" "include-relative"
    "import-for-syntax"))
@@ -4066,7 +4092,7 @@ web template editing mode for emacs
   (setq web-mode-markup-indent-offset 2))
 #+end_src
 *** [[https://github.com/wwwjfy/emacs-fish][fish-mode]]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package fish-mode)
 #+end_src
 *** [[https://polymode.github.io/][polymode]]
@@ -4107,17 +4133,6 @@ web template editing mode for emacs
                   poly-scheme-multiline-cpp-innermode)))
 #+end_src
 ** VCS
-*** Functions
-#+begin_src emacs-lisp
-(defun d/magit-blame-toggle ()
-  "Toggle magit-blame-mode on and off interactively.
-
-Source: https://git.io/vQKub"
-  (interactive)
-  (if (bound-and-true-p magit-blame-mode)
-      (magit-blame-quit)
-    (call-interactively 'magit-blame)))
-#+end_src
 *** Packages
 **** [[https://github.com/defunkt/gist.el][gist]]
 #+begin_quote
@@ -4156,7 +4171,7 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
   :general
   (d/leader-keys
     "g"  '(:ignore t :wk "magit")
-    "gB" 'd/magit-blame-toggle
+    "gB" 'magit-blame
     "gC" 'magit-clone
     "gL" 'magit-log-buffer-file
     "ga" 'magit-submodule-add
@@ -4165,7 +4180,7 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
     "gf" 'magit-find-file
     "gl" 'magit-log-all
     "gs" 'magit-status
-    "gp" 'magit-file-popup)
+    "gp" 'magit-file-dispatch)
   :init
   (setq vc-follow-symlinks t
         auto-revert-check-vc-info t)
@@ -4184,9 +4199,7 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
 #+begin_src emacs-lisp
 (use-package magit-todos
   :after magit
-  :demand t
-  :config
-  (d/safe-vars! (magit-todos-exclude-globs "*numpy*" "*venv*")))
+  :demand t)
 #+end_src
 **** [[https://github.com/vermiculus/magithub][magithub]]
 #+begin_src emacs-lisp :tangle no
@@ -4222,7 +4235,7 @@ operate on system processes like dired
 #+begin_src emacs-lisp
 (use-package grep
   :custom
-  (grep-command "rg --color=auto -nH --null -e"))
+  (grep-command "rg --color=auto --no-heading -nH --null -e"))
 #+end_src
 ** [[elisp:(find-library-other-window "calc")][calc]]
 #+begin_quote
@@ -4378,7 +4391,6 @@ Correct the previous eshell command.
 *** Functions
 #+begin_src emacs-lisp
 (d/after 'eshell
-  (require 'f)
   (defun d/eshell-here ()
     "Opens up a new shell in the directory associated with the
 current buffer's file. The eshell is renamed to match that
@@ -4386,6 +4398,8 @@ directory to make multiple eshell windows easier."
     (interactive)
     (let* ((height (/ (window-total-height) 3))
            (name (format "*eshell: %s*"
+                         (file-name-nondirectory
+                          (directory-file-name default-directory))
                          (f-filename default-directory))))
       (split-window-vertically (- height))
       (other-window 1)
@@ -4401,8 +4415,7 @@ directory to make multiple eshell windows easier."
     "Custom `eshell' clear function to clear to top."
     (interactive)
     (append-to-file (point-min) (point-max)
-                    (expand-file-name "eshell/log.txt.gz"
-                                      no-littering-var-directory))
+                    (no-littering-expand-var-file-name "eshell/log.txt.gz"))
     (let ((inhibit-read-only t))
       (erase-buffer)
       (delete-all-overlays)))
@@ -4596,7 +4609,7 @@ Disable the mouse in Emacs
 #+begin_quote
 Emacs package that displays available keybindings in popup
 #+end_quote
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package which-key
   :defer 20
   :general
@@ -4691,7 +4704,7 @@ ESUP - Emacs Start Up Profiler
 #+begin_quote
 Fuzzy matching for Emacs ... a la Sublime Text.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package flx)
 #+end_src
 *** [[https://git.zx2c4.com/password-store/tree/contrib/emacs][password-store]]
@@ -4901,7 +4914,7 @@ Source: http://tinyurl.com/lo96nwc"
 An Emacs Internet Relay Chat client
 #+end_quote
 **** Defaults
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (d/after 'erc
   (setq erc-nick "dieggsy"
         erc-prompt-for-password nil
@@ -4942,7 +4955,7 @@ An Emacs Internet Relay Chat client
                                        "#chicken"))))
 #+end_src
 **** Built-in
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package erc
   :straight nil
   :commands d/erc-floating
@@ -4984,7 +4997,7 @@ An Emacs Internet Relay Chat client
      match)))
 #+end_src
 **** Functions
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (d/after 'erc
   (define-advice erc-track-find-face (:around (fn faces) promote-query)
     "Promote query buffers as if everything contains current nick.
@@ -5073,7 +5086,7 @@ Source: http://tinyurl.com/y8tj8vxx"
 #+begin_quote
 Nickname Highlighting for ERC
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package erc-hl-nicks
   :after erc
   :demand t

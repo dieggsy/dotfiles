@@ -2,6 +2,7 @@
 
 (cond-expand
   (chicken-5
+   ;; Set up completion
    (let ()
      (import (only chicken.process-context get-environment-variable)
              (prefix breadline rl:)
@@ -9,7 +10,8 @@
              (only chicken.format format)
              compile-file
              chicken-doc
-             expand-full)
+             expand-full
+             chicken.csi)
      (unless (get-environment-variable "INSIDE_EMACS")
        (rl:history-file (format "~a/.csi_history"
                                 (get-environment-variable "HOME")))
@@ -20,11 +22,51 @@
        (rl:variable-bind! "blink-matching-paren" "on")
        (rl:paren-blink-timeout-set! 200000)
        (current-input-port (rl:make-readline-port))))
+
+   ;; Other imports I want by default
    (import chicken.platform beaker.system)
+
+   ;; Convenience procedure, load the ".egg" file here or in parent dir(s)
+   (define (load-egg)
+     (import chicken.file
+             chicken.irregex
+             chicken.process-context
+             (only srfi-1 find)
+             (only srfi-13 string-suffix?))
+     (define (find-eggfile dir)
+       (find (cut string-suffix? ".egg" <>)
+             (directory dir)))
+     (let loop ((dir "./"))
+       (let ((eggfile (find-eggfile dir)))
+         (cond ((string=? (current-directory) "/")
+                #f)
+               (eggfile
+                (load-system eggfile))
+               (else
+                (string-append dir "../"))))))
+
+   (chicken.csi#toplevel-command
+    'egg
+    load-egg
+    ",egg egg          load egg with load-system")
+
+   ;; Compile a sexp
    (define (compile sexp)
      (let ((tempf (chicken.file#create-temporary-file)))
        (call-with-output-file tempf (cut write sexp <>))
        (compile-file#compile-file tempf)
-       (void))))
+       (void)))
+
+   ;; canonicalize a sexp
+   (define (canonicalize sexp)
+     (let ((tempf (chicken.file#create-temporary-file)))
+       (call-with-output-file tempf (cut write sexp <>))
+       (compile-file#compile-file tempf options: '("-debug" "2" "-A") load: #f)
+       (void)))
+   (chicken.csi#toplevel-command
+    'can
+    (lambda () (canonicalize (read)))
+    ",can EXP          canonicalize expression")
+   )
   (else))
 

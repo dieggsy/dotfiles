@@ -22,7 +22,12 @@ zstyle ':completion:*:*:kill:*:processes' list-colors '=(#b) #([0-9]#) ([0-9a-z-
 zstyle :compinstall filename '/home/dieggsy/.zshrc'
 
 autoload -Uz compinit
-compinit
+
+for dump in ~/.zcompdump(N.mh+24); do
+  compinit
+done
+
+compinit -C
 # End of lines added by compinstall
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
@@ -68,6 +73,7 @@ alias lsblk='lsblk -o NAME,SIZE,MOUNTPOINT'
 alias chicken-doc='noglob chicken-doc'
 alias startx='startx &>/dev/null'
 alias yay=paru
+alias nmr='sudo systemctl restart NetworkManager'
 
 cd_list () {
     emulate -L zsh

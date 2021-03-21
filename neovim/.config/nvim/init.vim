@@ -12,7 +12,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
 Plug 'itchyny/lightline.vim'
-" Plug 'morhetz/gruvbox'
+Plug 'morhetz/gruvbox'
 Plug 'tpope/vim-surround'
 " Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-commentary'
@@ -32,7 +32,8 @@ call plug#end()
 " Plugin settings
 filetype plugin indent on
 let g:deoplete#enable_at_startup = 1
-" let g:lightline = {'colorscheme' : 'gruvbox'}
+colorscheme gruvbox
+let g:lightline = {'colorscheme' : 'gruvbox'}
 
 " Defaults
 set ignorecase
