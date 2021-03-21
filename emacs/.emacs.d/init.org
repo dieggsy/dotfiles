@@ -293,12 +293,19 @@ By default, some emacs commands are disabled because I guess they're considered
 (setq disabled-command-function nil)
 #+end_src
 *** Local vars
-Only enable local variables that have been added to
-~safe-local-variable-values~. I mostly just don't like being prompted to enable
-local vars willy nilly, and usually add something to safe local vars if I
-really need it.
+Since we've disabled ~custom.el~, ensure variables are remembered as safe if prompted.
 #+begin_src emacs-lisp
-(setq enable-local-variables :safe)
+(define-advice customize-push-and-save (:after (vars unsafe-vars) d/safe-vars)
+  (when (eq vars 'safe-local-variable-values)
+    (with-current-buffer (find-file-noselect (no-littering-expand-var-file-name "safe-vars.el"))
+      (insert
+       (format
+        "(setq safe-local-variable-values '%S)\n"
+        (append safe-local-variable-values
+                unsafe-vars)))
+      (save-buffer))))
+
+(load (no-littering-expand-var-file-name "safe-vars.el"))
 #+end_src
 *** Kill-ring
 Save stuff you've copied in other applications to the emacs kill-ring.
