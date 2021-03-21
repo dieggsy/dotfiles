@@ -382,9 +382,9 @@ Integrate gpg passphrase query with Emacs minibuffer when using EPA.
 A simpler mode line. Note that this configuration depends on the ~moody~ and
 ~minions~ packages.
 #+begin_src emacs-lisp
-;; (column-number-mode)
-;; (setq mode-line-percent-position nil)
-;; (setq mode-line-position-column-line-format '("(%l, %c)"))
+(column-number-mode)
+(setq mode-line-percent-position nil)
+(setq mode-line-position-column-line-format '("(%l, %c)"))
 (setq-default mode-line-format
               '("%e"
                 mode-line-front-space
@@ -392,14 +392,19 @@ A simpler mode line. Note that this configuration depends on the ~moody~ and
                 mode-line-modified
                 mode-line-remote
                 " "
-                moody-mode-line-buffer-identification
+                (:eval
+                 (if (display-graphic-p)
+                     moody-mode-line-buffer-identification
+                   mode-line-buffer-identification))
                 ;; originally: mode-line-buffer-identification
                 " "
                 minions-mode-line-modes
                 ;; originally: mode-line-modes
-                (vc-mode vc-mode) ;; if !minions, place before previous
-                mode-line-misc-info
-                mode-line-end-spaces))
+                (:eval (if (display-graphic-p) moody-vc-mode vc-mode))
+                (:eval (if vc-mode " " ""))
+                ;; orriginally: (vc-mode vc-mode) ;; if !minions, place before previous
+                (:propertize "(%l, %c)" face (:inherit font-lock-comment-face :slant normal))
+                mode-line-misc-info))
 #+end_src
 *** Modes
 #+begin_src emacs-lisp
