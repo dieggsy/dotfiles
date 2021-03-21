@@ -95,7 +95,7 @@ run alacritty --class st-float
 # Run emacs in background, connect with emacsclient
 
 if ! xwininfo -root -children | grep -q emacs-float; then
-    run emacsclient -nc --alternate-editor='' -d $DISPLAY --frame-parameters='(quote (name . "emacs-float"))'
+    COLORTERM=truecolor emacsclient -nc --alternate-editor='' -d $DISPLAY --frame-parameters='(quote (name . "emacs-float"))' &
 fi
 
 # pgrep nextcloud || ionice -c 3 nice -n12 nextcloud &
