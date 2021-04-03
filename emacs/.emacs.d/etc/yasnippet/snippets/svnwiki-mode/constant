@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: constant
+# key: #c
+# --
+<constant>$0</constant>
