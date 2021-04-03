@@ -3953,6 +3953,28 @@ KEYWORDS should be a list of strings."
    ("\\<#!\\sw+\\>" . 'font-lock-type-face))
  t)
 #+end_src
+*** Ocaml
+**** Packages
+***** [[https://github.com/ocaml/tuareg][tuareg]]
+#+begin_src emacs-lisp
+(use-package tuareg
+  :general
+  (d/mode-leader-keys tuareg-mode-map
+    "es" 'tuareg-eval-phrase
+    "eb" 'tuareg-eval-buffer
+    "er" 'tuareg-eval-region))
+#+end_src
+***** [[https://github.com/ocaml/merlin][merlin]]
+#+begin_src emacs-lisp
+(use-package merlin
+  :hook (tuareg-mode . merlin-mode))
+#+end_src
+***** [[https://github.com/Khady/merlin-eldoc][merlin-eldoc]]
+#+begin_src emacs-lisp
+(use-package merlin-eldoc
+  :ensure t
+  :hook (tuareg-mode . merlin-eldoc-setup))
+#+end_src
 *** [[https://github.com/NixOS/nix-mode][nix-mode]]
 #+begin_quote
 An Emacs major mode for editing Nix expressions.
