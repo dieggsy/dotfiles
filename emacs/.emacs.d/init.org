@@ -4193,7 +4193,8 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
     (setq-local org-hide-emphasis-markers nil)
     (setq-local org-pretty-entities nil))
   (d/hook! git-commit-setup
-    (git-commit-turn-on-flyspell)))
+    (git-commit-turn-on-flyspell))
+  (setq magit-repository-directories '(("~/src" . 1))))
 #+end_src
 **** [[https://github.com/alphapapa/magit-todos][magit-todos]]
 #+begin_src emacs-lisp
