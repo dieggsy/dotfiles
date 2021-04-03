@@ -71,7 +71,7 @@ elif [[ $instance = "st-float" ]]; then
     echo layer=above state=floating hidden=on sticky=on rectangle=$(pos 8 1078 560)
 elif [[ $instance = "emacs-float" ]]; then
     echo $wid > /tmp/emacs-float
-    echo state=floating hidden=on sticky=on rectangle=$(pos 8 1078 1110)
+    echo layer=normal state=floating hidden=on sticky=on rectangle=$(pos 8 1078 1110)
 # fix vlc control window not showing up in fullscreen
 elif [[ $instance = "vlc" && $title = "vlc" ]]; then
     echo layer=above border=off
