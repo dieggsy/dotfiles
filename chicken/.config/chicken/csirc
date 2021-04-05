@@ -5,12 +5,12 @@
    ;; Set up completion
    (let ()
      (import (only chicken.process-context get-environment-variable)
+             (only (chicken process signal) signal-handler signal/int set-signal-handler!)
              (prefix breadline rl:)
              (only breadline-scheme-completion scheme-completer)
              (only chicken.format format)
              compile-file
              chicken-doc
-             expand-full
              chicken.csi)
      (unless (get-environment-variable "INSIDE_EMACS")
        (rl:history-file (format "~a/.csi_history"
@@ -21,6 +21,13 @@
        (rl:basic-quote-characters-set! "\"|")
        (rl:variable-bind! "blink-matching-paren" "on")
        (rl:paren-blink-timeout-set! 200000)
+       (let ((handler (signal-handler signal/int)))
+         (set-signal-handler! signal/int
+                              (lambda (s)
+                                (rl:cleanup-after-signal!)
+                                (rl:reset-after-signal!)
+                                (handler s))))
+       (on-exit rl:reset-terminal!)
        (current-input-port (rl:make-readline-port))))
 
    ;; Other imports I want by default
@@ -66,7 +73,6 @@
    (chicken.csi#toplevel-command
     'can
     (lambda () (canonicalize (read)))
-    ",can EXP          canonicalize expression")
-   )
+    ",can EXP          canonicalize expression"))
   (else))
 
