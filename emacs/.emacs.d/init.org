@@ -1021,6 +1021,7 @@ But really, it's life.
         org-list-demote-modify-bullet '(("-" . "+") ("+" . "*") ("*" . "-"))
         org-export-in-background nil
         org-export-with-author nil
+        org-export-babel-evaluate nil
         org-html-validation-link nil
         org-confirm-babel-evaluate nil
         org-src-tab-acts-natively t
