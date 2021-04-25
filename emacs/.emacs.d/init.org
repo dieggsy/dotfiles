@@ -1722,12 +1722,15 @@ directory-browsing commands
   :straight nil
   :after dired
   :demand t
-  :hook (dired-mode . dired-omit-mode)
+  :hook (dired-mode . d/dired-maybe-omit)
   :custom
   (dired-omit-verbose nil)
   (dired-omit-files (rx string-start "." (1+ nonl) string-end))
   (dired-clean-confirm-killing-deleted-buffers nil)
   :config
+  (defun d/dired-maybe-omit ()
+    (when (directory-files default-directory nil "^[^.]")
+      (dired-omit-mode)))
   (d/list-prepend! 'dired-omit-extensions
     "import.scm"
     ".link"))
