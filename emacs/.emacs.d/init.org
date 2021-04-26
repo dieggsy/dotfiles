@@ -526,6 +526,7 @@ I went for it. Now I'll never go back.
   (evil-search-module 'evil-search)
   (evil-lookup-func (lambda () (man (thing-at-point 'word))))
   (evil-undo-system 'undo-redo)
+  (evil-symbol-word-search t)
   :config
   (setq evil-insert-state-cursor '(bar . 1) ;thinner cursors
         evil-emacs-state-cursor '(hbar . 1)
