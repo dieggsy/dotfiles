@@ -1860,7 +1860,6 @@ Collection of useful dired additions
 ***** dired-collpase
 #+begin_src emacs-lisp
 (use-package dired-collapse
-  :hook (dired-mode . d/dired-collapse-mode)
   :config
   (defvar dired-collapse-ignore-dirs
     (list "~/Music"
