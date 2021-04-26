@@ -3808,12 +3808,15 @@ emacs and scheme talk to each other
 
 (evil-define-key 'normal scheme-mode-map [backtab] #'hs-toggle-hiding)
 
+(nmap scheme-mode-map
+  "C-c C-c" 'scheme-compile-definition)
+
 (defun d/scheme-compile-region-or-definition-and-go ()
   (interactive)
   (if (region-active-p)
-      (scheme-compile-region-and-go (region-beginning)
-                                    (region-end))
-    (scheme-compile-definition-and-go)))
+      (scheme-compile-region (region-beginning)
+                             (region-end))
+    (scheme-compile-definition)))
 
 (d/after 'scheme
   (define-key scheme-mode-map (kbd "C-c C-c") 'd/scheme-compile-region-or-definition-and-go))
