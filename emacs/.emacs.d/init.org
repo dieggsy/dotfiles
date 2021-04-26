@@ -3439,6 +3439,16 @@ On the fly syntax checking for GNU Emacs
   (c-set-offset 'case-label '+))
 #+end_src
 *** Python
+**** Built-in
+#+begin_src emacs-lisp
+(use-package python
+  :config
+  (let ((ipython (executable-find "ipython")))
+    (setq python-shell-interpreter (or ipython
+                                       python-shell-interpreter)
+          python-shell-interpreter-args (if ipython "--simple-prompt"
+                                          python-shell-interpreter-args))))
+#+end_src
 **** Packages
 ***** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]
 #+begin_quote
