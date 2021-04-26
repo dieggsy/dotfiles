@@ -80,8 +80,8 @@ bit so let's explicitly require them.
 (require 'subr-x)
 #+end_src
 ** pass
-#+begin_src emacs-lisp
-;; (auth-source-pass-enable)
+#+begin_src emacs-lisp :tangle no
+(auth-source-pass-enable)
 #+end_src
 ** Init utilities
 It can be annoying to have a bunch of ~add-hook~ statements, some with lambdas.
@@ -3537,27 +3537,6 @@ Yapf for Emacs
 #+end_src
 *** Lisps
 **** Packages
-***** [[https://github.com/slime/slime][slime]]
-#+begin_quote
-The Superior Lisp Interaction Mode for Emacs
-#+end_quote
-#+begin_src emacs-lisp :tangle no
-(use-package slime
-  :general
-  (imap slime-repl-mode-map
-    [up] 'slime-repl-previous-input
-    [down] 'slime-repl-next-input)
-  :config
-  (require 'slime-macrostep)
-  (setq inferior-lisp-program (executable-find "sbcl")
-        slime-contribs '(slime-fancy slime-company)))
-#+end_src
-***** [[https://github.com/anwyn/slime-company][slime-company]]
-#+begin_src emacs-lisp :tangle no
-(use-package slime-company
-  :after slime
-  :demand t)
-#+end_src
 ***** [[https://github.com/tkf/emacs-request][request]]
 #+begin_quote
 Easy HTTP request for Emacs Lisp
@@ -3840,9 +3819,9 @@ emacs and scheme talk to each other
 The following is a shim for geiser's syntax highlighting and indentation.
 #+begin_src emacs-lisp
 (defmacro d/scheme-indent (&rest pairs)
-    `(progn ,@(mapcar (lambda (p)
-                        `(put ',(car p) 'scheme-indent-function ',(cadr p)))
-                      pairs)))
+  `(progn ,@(mapcar (lambda (p)
+                      `(put ',(car p) 'scheme-indent-function ',(cadr p)))
+                    pairs)))
 
 (d/after 'scheme
   ;; geiser shim
@@ -3941,6 +3920,31 @@ KEYWORDS should be a list of strings."
  '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)
    ("\\<#!\\sw+\\>" . 'font-lock-type-face))
  t)
+#+end_src
+*** Lisp
+**** Packages
+***** [[https://github.com/slime/slime][slime]]
+#+begin_quote
+The Superior Lisp Interaction Mode for Emacs
+#+end_quote
+#+begin_src emacs-lisp
+(use-package slime
+  :general
+  (imap slime-repl-mode-map
+    [up] 'slime-repl-previous-input
+    [down] 'slime-repl-next-input)
+  :hook
+  (lisp-mode . slime-mode)
+  :config
+  (require 'slime-macrostep)
+  (setq inferior-lisp-program (executable-find "sbcl")
+        slime-contribs '(slime-fancy slime-company slime-cl-indent)))
+#+end_src
+***** [[https://github.com/anwyn/slime-company][slime-company]]
+#+begin_src emacs-lisp
+(use-package slime-company
+  :after slime
+  :demand t)
 #+end_src
 *** Ocaml
 **** Packages
