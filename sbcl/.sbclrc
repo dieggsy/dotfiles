@@ -1,0 +1,15 @@
+; -*- mode: lisp -*-
+;;; The following lines added by ql:add-to-init-file:
+#-quicklisp
+(let ((quicklisp-init (merge-pathnames ".local/lib/quicklisp/setup.lisp"
+                                       (user-homedir-pathname))))
+  (when (probe-file quicklisp-init)
+    (load quicklisp-init)))
+
+(require :sbcl-readline)
+
+(setf readline:*ps1*
+      (lambda ()
+        (format nil "~&~a> "
+                (or (first (package-nicknames *package*))
+                    (package-name *package*)))))
