@@ -2207,44 +2207,10 @@ Sort completion candidates by previous completion choices
 #+begin_quote
 Multiple cursors implementation for evil-mode
 #+end_quote
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package evil-mc
-  :general
-  (d/leader-keys
-    "xM"  '(:def d/mc/body :wk "multiple-cursors"))
   :config
-  (global-evil-mc-mode)
-  (push 'evil-smartparens-mode evil-mc-incompatible-minor-modes)
-  (push 'fci-mode evil-mc-incompatible-minor-modes)
-  (defhydra d/mc (:post (evil-mc-undo-all-cursors))
-    "
-╭─────────╮
-│ evil-mc │
-└─────────┴─────────────────────────────────────────────────────────────
- [_mm_] make+next-match [_sm_] skip+next-match [_h_] here   [_P_] print-pattern
- [_mM_] make+prev-match [_sM_] skip+prev-match [_a_] all
- [_mc_] make+next-cur   [_sc_] skip+next-cur   [_p_] pause
- [_mC_] make+prev-cur   [_sC_] skip+prev-cur   [_r_] resume
- [_mf_] make+first-cur                       [_u_] undo-all
- [_ml_] make+last-cur
-────────────────────────────────────────────────────────────────────────
-"
-    ("mm" evil-mc-make-and-goto-next-match)
-    ("mM" evil-mc-make-and-goto-prev-match)
-    ("mc" evil-mc-make-and-goto-next-cursor)
-    ("mC" evil-mc-make-and-goto-prev-cursor)
-    ("mf" evil-mc-make-and-goto-first-cursor)
-    ("ml" evil-mc-make-and-goto-last-cursor)
-    ("sm" evil-mc-skip-and-goto-next-match)
-    ("sM" evil-mc-skip-and-goto-prev-match)
-    ("sc" evil-mc-skip-and-goto-next-cursor)
-    ("sC" evil-mc-skip-and-goto-prev-cursor)
-    ("h" evil-mc-make-cursor-here)
-    ("a" evil-mc-make-all-cursors)
-    ("p" evil-mc-pause-cursors)
-    ("r" evil-mc-resume-cursors)
-    ("u" evil-mc-undo-all-cursors)
-    ("P" evil-mc-print-pattern)))
+  (global-evil-mc-mode))
 #+end_src
 **** [[https://github.com/hlissner/evil-multiedit][evil-multiedit]]
 #+begin_quote
