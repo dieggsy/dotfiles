@@ -2691,8 +2691,23 @@ The emacs major mode for editing files in the YAML data serialization format.
 *** [[https://github.com/wasamasa/svnwiki-mode][svnwiki-mode]]
 #+begin_src emacs-lisp
 (use-package svnwiki-mode
+  :general
+  (d/mode-leader-keys svnwiki-mode-map
+    "c" 'd/svnwrap-with-code)
   :mode "\\.svnwiki\\'"
-  :straight (:repo "https://depp.brause.cc/svnwiki-mode.git"))
+  :straight (:repo "https://depp.brause.cc/svnwiki-mode.git")
+  :config
+  (defun d/svnwrap-with-code ()
+    (interactive)
+    (let ((bounds (if (region-active-p)
+                      (cons (region-beginning)
+                            (region-end))
+                    (bounds-of-thing-at-point 'symbol))))
+      (goto-char (car bounds))
+      (insert "{{")
+      (goto-char (+ (cdr bounds) 2))
+      (insert "}}")
+      (goto-char (car bounds)))))
 #+end_src
 ** Bindings
 Make indent-rigidly more vimmy.
