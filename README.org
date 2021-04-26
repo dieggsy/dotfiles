@@ -1,123 +1,14 @@
 #+TITLE: dotfiles
+#+OPTIONS: toc:nil
 
-Just my dotfiles. Some of this is my own, a lot is inspired by or taken from
-others' configs and adapted to my needs. These are managed through GNU stow.
-
-** Contents                                                      :toc:TOC_2:
-  - [[#installation][Installation]]
-  - [[#conf][conf]]
-  - [[#etc][etc]]
-  - [[#bin][bin]]
-  - [[#notes][Notes]]
+A gnu ~stow~ based dotfiles repository. Some of this is my own, some is
+inspired by or taken from others and adapted to my needs.
 
 ** Installation
-| Destination/contents         | Command                            |
-|------------------------------+------------------------------------|
-| everything                   | ~make~ or ~make install~           |
-| ~$HOME~                      | ~make conf~                        |
-| ~/etc~                       | ~make etc~                         |
-| ~$HOME/bin~                  | ~make bin~                         |
-| specific config              | e.g. ~make bspwm~                  |
-| specific config (under [[file:etc/][etc/]]) | e.g. ~make pacman~                 |
-** conf
-Everything that goes to ~$HOME~
-*** bspwm
-- [[file:bspwm/.config/bspwm/bspwmrc][bspwmrc]]
-- [[file:bspwm/.config/bspwm/rules.scm][rules]]
-- [[file:bspwm/.config/sxhkd/sxhkdrc][sxhkdrc]]
-*** chicken
-- [[file:chicken/.csirc][csirc]]
-*** cmus
-- [[file:cmus/.config/cmus/darktooth.theme][darktooth.theme]]
-*** dunst
-- [[file:dunst/.config/dunst/dunstrc][dunstrc]]
-*** fontconfig
-- [[file:fontconfig/.config/fontconfig/fonts.conf][fonts.conf]]
-*** freedesktop
-- [[file:freedesktop/.config/mimeapps.list][mimeapps.list]]
-- [[file:freedesktop/.config/user-dirs.dirs][user-dirs.dirs]]
-**** Desktop entries
-- [[file:freedesktop/.local/share/applications/cmus.desktop][cmus.desktop]]
-- [[file:freedesktop/.local/share/applications/emacsclient.desktop][emacsclient.desktop]]
-- [[file:freedesktop/.local/share/applications/spotify.desktop][spotify.desktop]]
-- [[file:freedesktop/.local/share/applications/st.desktop][st.desktop]]
-*** git
-- [[file:git/.gitconfig][gitconfig]]
-- [[file:git/.gitignore][gitignore]]
-*** gpg
-- [[file:gpg/.gnupg/gpg-agent.conf][gpg-agent.conf]]
-*** gtk
-- [[file:gtk/.gtkrc-2.0][gtkrc-2.0]]
-- [[file:gtk/.config/gtk-3.0/settings.ini][settings.ini]]
-*** neovim
-- [[file:neovim/.config/nvim/init.vim][init.vim]]
-*** polybar
-- [[file:polybar/.config/polybar/config][config]]
-*** readline
-- [[file:readline/.inputrc][inputrc]]
-*** rofi
-- [[file:rofi/.config/rofi/config][config]]
-- [[file:rofi/.config/rofi/darktooth.rasi][darktooth.rasi]]
-- [[file:rofi/.config/rofi/dropdown.rasi][dropdown.rasi]]
-**** networkmanager_dmenu
-- [[file:rofi/.config/networkmanager-dmenu/config.ini][config.ini]]
-*** rsync
-- [[file:rsync/.rsync-exclude][rsync-exclude]]
-*** tmux
-- [[file:tmux/.tmux.conf][tmux.conf]]
-*** X
-- [[file:X/.XCompose][xcompose]]
-- [[file:X/.xinitrc][xinitrc]]
-- [[file:X/.Xresources][xresources]]
-*** zathura
-- [[file:zathura/.config/zathura/zathurarc][zathurarc]]
-*** zsh
-- [[file:zsh/.zshrc][zshrc]]
-- [[file:zsh/.zshenv][zshenv]]
-- [[file:zsh/.zlogin][zlogin]]
-** etc
-Everything that goes to ~/etc~ (stored under [[file:etc/][etc/]])
-*** networkmanager
-- [[file:etc/networkmanager/NetworkManager/conf.d/dns.conf][dns.conf]]
-**** dispatcher
-- [[file:etc/networkmanager/NetworkManager/dispatcher.d/10-tzupdate.sh][10-tzupdate.sh]]
-*** pacman
-- [[file:etc/pacman/makepkg.conf][makepkg.conf]]
-- [[file:etc/pacman/pacman.conf][pacman.conf]]
-*** systemd
-- [[file:etc/systemd/systemd/logind.conf][logind.conf]]
-*** vconsole
-- [[file:etc/vconsole/vconsole.conf][vconsole.conf]]
-*** xorg
-- [[file:etc/xorg/X11/xorg.conf.d/00-keyboard.conf][00-keyboard.conf]]
-- [[file:etc/xorg/X11/xorg.conf.d/40-libinput.conf][40-libinput.conf]]
-** bin
-Everything that goes to ~~/bin~
-- [[file:bin/bin/bluez-rofi][bluez-rofi]]
-- [[file:bin/bin/cal-rofi][cal-rofi]]
-- [[file:bin/bin/desktop-record][desktop-record]]
-- [[file:bin/bin/mons-rofi][mons-rofi]]
-- [[file:bin/bin/ocrpdf][ocrpdf]]
-- [[file:bin/bin/ocrpdf2][ocrpdf2]]
-- [[file:bin/bin/rofi-files][rofi-files]]
-- [[file:bin/bin/snapbackup][snapbackup]]
-- [[file:bin/bin/spectrum_ls][spectrum_ls]]
-- [[file:bin/bin/spotify][spotify]]
-- [[file:bin/bin/wm-exit][wm-exit]]
-- [[file:bin/bin/wm-exit-dmenu][wm-exit-dmenu]]
-
-** Notes
-Previously, all files were kept in an emacs org-mode file and tangled to the
-right location on save. You can see the (outdated) gist of it here:
-https://github.com/dieggsy/dotfiles/tree/fc3dc2ef05b802cadcc37cf03f0f50fe3a8b85de
-
-This worked well for me for a while, but it was a
-little annoying for portability because it meant needing emacs on every machine
-that I wanted my dotfiles, and a crazy elisp script if I didn't want to
-manually open emacs to tangle the files.
-
-Stow also makes it so that the source of the file /is/ the file itself, so
-there's no extra 'tangle' step when editing files after the initial stow, and I
-can visit the symlink or the file istelf, and I can visit the symlink or the
-file istelf. I can now also just download single files via curl from my
-dotfiles repo, if needed.
+| Destination/contents               | Command                          |
+|------------------------------------+----------------------------------|
+| everything                         | ~make~ or ~make install~         |
+| ~$HOME~ (all but ~etc~ and ~bin~)  | ~make conf~                      |
+| ~/etc~                             | ~make etc~                       |
+| ~$HOME/bin~                        | ~make bin~                       |
+| specific config (including ~etc/~) | e.g. ~make bspwm~, ~make pacman~ |
