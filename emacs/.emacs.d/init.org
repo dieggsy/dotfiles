@@ -863,10 +863,10 @@ color is hidden by ivy's match color."
     "fF"  'find-file-other-window
     "fj"  'counsel-file-jump
     "fl"  'counsel-locate
-    "hdF" 'counsel-describe-face
-    "hdb" 'counsel-descbinds
-    "hdf" 'counsel-describe-function
-    "hdv" 'counsel-describe-variable
+    "hF" 'counsel-describe-face
+    ;; "hdb" 'counsel-descbinds
+    "hf" 'counsel-describe-function
+    "hv" 'counsel-describe-variable
     "iu"  'counsel-unicode-char
     "sr"  'counsel-rg
     "ss"  'counsel-grep-or-swiper
@@ -1526,14 +1526,9 @@ A better Emacs *help* buffer
   (helpful-short-filenames t)
   :general
   (d/leader-keys
-    "hds" 'helpful-symbol
-    "hdk" 'helpful-key)
+    "hs" 'helpful-symbol
+    "hk" 'helpful-key)
   :init
-  ;; (setq find-function-C-source-directory
-  ;;       (replace-regexp-in-string
-  ;;        (regexp-quote "27.0")
-  ;;        "master"
-  ;;        find-function-C-source-directory))
   :config
   (evil-set-initial-state 'helpful-mode 'motion))
 #+end_src
@@ -1572,24 +1567,14 @@ tldr client for Emacs
 Leader bindings
 #+begin_src emacs-lisp
 (d/leader-keys
-  "hc"  '(:ignore t :wk "customize")
-  "hca" 'customize-apropos
-  "hcf" 'customize-face-other-window
-  "hcg" 'customize-group-other-window
-  "hcm" 'customize-mode
-  "hcv" 'customize-variable-other-window
-  "hdV" 'apropos-value
-  "hdc" 'describe-char
-  "hdm" 'describe-mode
-  "hdt" 'describe-text-properties
+  "hh" 'help-for-help
+  "hV" 'apropos-value
+  "hc" 'describe-char
+  "hM" 'describe-mode
+  "ht" 'describe-text-properties
   "hn"  'view-emacs-news
   "hi"  'info
-  "hs"  (lambda ()
-          (interactive)
-          (message "%s@%s"
-                   (user-login-name)
-                   (system-name)))
-  "hv"  'version)
+  "hev"  'version)
 #+end_src
 * Files/Buffers
 ** Defaults
@@ -4639,9 +4624,6 @@ Emacs package that displays available keybindings in popup
 #+begin_src emacs-lisp
 (use-package which-key
   :defer 20
-  :general
-  (d/leader-keys
-    "hk" 'which-key-show-top-level)
   :config
   (which-key-mode)
 
