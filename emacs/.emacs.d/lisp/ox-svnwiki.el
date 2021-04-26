@@ -33,9 +33,9 @@
   ;; :filters-alist '((:filter-parse-tree . org-svnwiki-separate-elements))
   :menu-entry
   '(?w "Export to svnwiki Formatting"
-       ((?w "To temporary buffer"
+       ((?W "To temporary buffer"
             (lambda (a s v b) (org-svnwiki-export-as-svnwiki a s v)))
-        (?t "To file" (lambda (a s v b) (org-svnwiki-export-to-svnwiki a s v)))
+        (?w "To file" (lambda (a s v b) (org-svnwiki-export-to-svnwiki a s v)))
         (?o "To file and open"
             (lambda (a s v b)
               (if a (org-svnwiki-export-to-svnwiki t s v)
