@@ -1765,7 +1765,12 @@ operate on buffers like dired
            ("Magit"
             (derived-mode . magit-mode))
            ("Shell"
-            (predicate . (member major-mode '(eshell-mode term-mode vterm-mode)))))))
+            (predicate . (member major-mode '(eshell-mode term-mode vterm-mode))))
+           ("Proc"
+            (process))
+           ("Other"
+            (name . "^*.**$"))
+           )))
 
   (d/hook! ibuffer-mode
     (ibuffer-switch-to-saved-filter-groups "Default"))
