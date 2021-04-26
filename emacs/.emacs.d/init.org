@@ -3602,6 +3602,11 @@ interactive macro-expander
   (d/mode-leader-keys (emacs-lisp-mode-map lisp-mode-map)
     "m" 'macrostep-expand))
 #+end_src
+***** [[https://github.com/Fanael/highlight-quoted][highlight-quoted]]
+#+begin_src emacs-lisp
+(use-package highlight-quoted
+  :hook (lisp-mode . highlight-quoted-mode))
+#+end_src
 **** Functions
 #+begin_src emacs-lisp
 (defun d/eval-surrounding-sexp (levels)
@@ -3728,6 +3733,11 @@ Source: https://git.io/vQKz8"
 #+begin_src emacs-lisp :tangle no
 (use-package haskell-snippets)
 #+end_src
+*** Racket
+**** Packages
+#+begin_src emacs-lisp
+(use-package racket-mode)
+#+end_src
 *** Rust
 **** Packages
 ***** [[https://github.com/rust-lang/rust-mode][rust-mode]]
@@ -3760,6 +3770,14 @@ emacs and scheme talk to each other
         geiser-debug-jump-to-debug-p nil
         geiser-debug-show-debug-p nil
         geiser-chicken-load-init-file-p t))
+#+end_src
+***** [[https://gitlab.com/emacs-geiser/chicken][geiser-chicken]]
+#+begin_src emacs-lisp :tangle no
+(use-package gesier-chicken)
+#+end_src
+***** [[https://github.com/nbfalcon/macrostep-geiser][macrostep-geiser]]
+#+begin_src emacs-lisp :tangle no
+(use-package macrostep-geiser)
 #+end_src
 ***** [[https://depp.brause.cc/chicken-doc.el][chicken-doc.el]]
 #+begin_src emacs-lisp
@@ -3956,6 +3974,10 @@ The Superior Lisp Interaction Mode for Emacs
     "es" 'tuareg-eval-phrase
     "eb" 'tuareg-eval-buffer
     "er" 'tuareg-eval-region))
+#+end_src
+***** [[https://github.com/ocaml/dune][dune]]
+#+begin_src emacs-lisp
+(use-package dune)
 #+end_src
 ***** [[https://github.com/ocaml/merlin][merlin]]
 #+begin_src emacs-lisp
