@@ -79,7 +79,7 @@ run feh --bg-fill ~/pic/wallpapers/chicken-wall.png
 killall -q polybar
 while pgrep -u $UID -x polybar >/dev/null; do sleep 1; done
 for m in $(bspc query -M --names); do
-    MONITOR=$m polybar -q simple &
+    MONITOR=$m polybar -r -q simple &
 done
 ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-simple
 
