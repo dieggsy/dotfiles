@@ -131,38 +131,25 @@ contextual information."
 CONTENTS is the item contents.  INFO is a plist used as
 a communication channel."
   (let* ((type (org-element-property :type (org-export-get-parent item)))
-         ;; (struct (org-element-property :structure item))
-         ;; (bullet (if (not (eq type 'ordered)) "*"
-         ;;           (concat (number-to-string
-         ;;                    (car (last (org-list-get-item-number
-         ;;                                (org-element-property :begin item)
-         ;;                                struct
-         ;;                                (org-list-prevs-alist struct)
-         ;;                                (org-list-parents-alist struct)))))
-         ;;                   ".")))
-         ;; (bullet-length (length bullet))
-         )
+         (struct (org-element-property :structure item))
+         (bullet-len (cl-loop as par = item
+                              then (org-export-get-parent par)
+                              while par
+                              if (eq 'item (car par))
+                              sum 1)))
     (cond ((eq type 'descriptive)
            (let* ((tag (car (org-element-property :tag item)))
                   (info (org-export-data tag info)))
              (message "%s %s" tag contents)
              (if (member tag '("macro" "procedure" "read" "parameter" "record"
-                                     "string" "class" "method" "constant" "setter"
-                                     "syntax" "type"))
+                               "string" "class" "method" "constant" "setter"
+                               "syntax" "type"))
                  (format "<%s>%s</%s>" tag (string-trim-right contents) tag)
                (format "; %s : %s" (or info "(no_tag)") contents))))
-          ;; (t
-          ;;  (concat bullet
-          ;;          " "
-          ;;          (cl-case (org-element-property :checkbox item)
-          ;;            (on "[X] ")
-          ;;            (trans "[-] ")
-          ;;            (off "[ ] "))
-          ;;          (let ((tag (org-element-property :tag item)))
-          ;;            (and tag (format "**%s:** "(org-export-data tag info))))
-          ;;          (and contents
-          ;;               (org-trim (replace-regexp-in-string "^" (make-string (1+ bullet-length) ? ) contents)))))
-          )))
+          (t
+           (format "%s %s"
+                   (make-string bullet-len (if (eq type 'ordered) ?#?*))
+                   contents)))))
 
 ;;;; Link
 (defun org-svnwiki-link (link contents info)
@@ -206,8 +193,8 @@ CONTENTS is nil.  INFO is a plist used as a communication channel."
   "Transcode VERBATIM object into Trac WikiFormat format.
 CONTENTS is nil.  INFO is a plist used as a communication
 channel."
-(let ((value (org-element-property :value verbatim)))
-  (format "{{%s}}" value)))
+  (let ((value (org-element-property :value verbatim)))
+    (format "{{%s}}" value)))
 
 ;; (defun org-svnwiki-separate-elements (tree backend info)
 ;;   "Fix blank lines between elements.
