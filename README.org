@@ -1,5 +1,5 @@
 #+TITLE: dotfiles
-#+OPTIONS: toc:nil
+#+OPTIONS: toc:nil num:nil
 
 A gnu ~stow~ based dotfiles repository. Some of this is my own, some is
 inspired by or taken from others and adapted to my needs.
