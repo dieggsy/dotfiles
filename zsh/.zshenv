@@ -25,3 +25,6 @@ pathadd $PREFIX/lib/ccache/bin
 
 export PATH
 export KEYTIMEOUT=1
+
+# opam configuration
+test -r /home/dieggsy/.opam/opam-init/init.zsh && . /home/dieggsy/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true

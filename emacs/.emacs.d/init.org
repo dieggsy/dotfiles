@@ -80,8 +80,8 @@ bit so let's explicitly require them.
 (require 'subr-x)
 #+end_src
 ** pass
-#+begin_src emacs-lisp
-;; (auth-source-pass-enable)
+#+begin_src emacs-lisp :tangle no
+(auth-source-pass-enable)
 #+end_src
 ** Init utilities
 It can be annoying to have a bunch of ~add-hook~ statements, some with lambdas.
@@ -526,6 +526,7 @@ I went for it. Now I'll never go back.
   (evil-search-module 'evil-search)
   (evil-lookup-func (lambda () (man (thing-at-point 'word))))
   (evil-undo-system 'undo-redo)
+  (evil-symbol-word-search t)
   :config
   (setq evil-insert-state-cursor '(bar . 1) ;thinner cursors
         evil-emacs-state-cursor '(hbar . 1)
@@ -797,7 +798,8 @@ This function is intended for use with `ivy-ignore-buffers'."
             "Quail" "Paradox Report" "Backtrace" "slime-events"
             "slime-compilation" "inferior-lisp" "Completions" "embrace-help"
             "geiser messages*" "Geiser dbg" "tramp/" "Process List"
-            "eshell:" "Error" "magit-todos" "clang" "lsp" "Flymake")))
+            "eshell:" "Error" "magit-todos" "clang" "lsp" "Flymake"
+            "sly-inferior" "sly-events" "sly-compilation")))
 
   (defun d/ivy-dired-transformer (str)
     "Display transformer for dired buffers in `ivy-switch-buffer'.
@@ -863,10 +865,10 @@ color is hidden by ivy's match color."
     "fF"  'find-file-other-window
     "fj"  'counsel-file-jump
     "fl"  'counsel-locate
-    "hdF" 'counsel-describe-face
-    "hdb" 'counsel-descbinds
-    "hdf" 'counsel-describe-function
-    "hdv" 'counsel-describe-variable
+    "hF" 'counsel-describe-face
+    ;; "hdb" 'counsel-descbinds
+    "hf" 'counsel-describe-function
+    "hv" 'counsel-describe-variable
     "iu"  'counsel-unicode-char
     "sr"  'counsel-rg
     "ss"  'counsel-grep-or-swiper
@@ -1021,6 +1023,7 @@ But really, it's life.
         org-list-demote-modify-bullet '(("-" . "+") ("+" . "*") ("*" . "-"))
         org-export-in-background nil
         org-export-with-author nil
+        org-export-babel-evaluate nil
         org-html-validation-link nil
         org-confirm-babel-evaluate nil
         org-src-tab-acts-natively t
@@ -1525,14 +1528,9 @@ A better Emacs *help* buffer
   (helpful-short-filenames t)
   :general
   (d/leader-keys
-    "hds" 'helpful-symbol
-    "hdk" 'helpful-key)
+    "hs" 'helpful-symbol
+    "hk" 'helpful-key)
   :init
-  ;; (setq find-function-C-source-directory
-  ;;       (replace-regexp-in-string
-  ;;        (regexp-quote "27.0")
-  ;;        "master"
-  ;;        find-function-C-source-directory))
   :config
   (evil-set-initial-state 'helpful-mode 'motion))
 #+end_src
@@ -1571,24 +1569,14 @@ tldr client for Emacs
 Leader bindings
 #+begin_src emacs-lisp
 (d/leader-keys
-  "hc"  '(:ignore t :wk "customize")
-  "hca" 'customize-apropos
-  "hcf" 'customize-face-other-window
-  "hcg" 'customize-group-other-window
-  "hcm" 'customize-mode
-  "hcv" 'customize-variable-other-window
-  "hdV" 'apropos-value
-  "hdc" 'describe-char
-  "hdm" 'describe-mode
-  "hdt" 'describe-text-properties
+  "hh" 'help-for-help
+  "hV" 'apropos-value
+  "hc" 'describe-char
+  "hM" 'describe-mode
+  "ht" 'describe-text-properties
   "hn"  'view-emacs-news
   "hi"  'info
-  "hs"  (lambda ()
-          (interactive)
-          (message "%s@%s"
-                   (user-login-name)
-                   (system-name)))
-  "hv"  'version)
+  "hev"  'version)
 #+end_src
 * Files/Buffers
 ** Defaults
@@ -1721,12 +1709,15 @@ directory-browsing commands
   :straight nil
   :after dired
   :demand t
-  :hook (dired-mode . dired-omit-mode)
+  :hook (dired-mode . d/dired-maybe-omit)
   :custom
   (dired-omit-verbose nil)
   (dired-omit-files (rx string-start "." (1+ nonl) string-end))
   (dired-clean-confirm-killing-deleted-buffers nil)
   :config
+  (defun d/dired-maybe-omit ()
+    (when (directory-files default-directory nil "^[^.]")
+      (dired-omit-mode)))
   (d/list-prepend! 'dired-omit-extensions
     "import.scm"
     ".link"))
@@ -1775,7 +1766,12 @@ operate on buffers like dired
            ("Magit"
             (derived-mode . magit-mode))
            ("Shell"
-            (predicate . (member major-mode '(eshell-mode term-mode vterm-mode)))))))
+            (predicate . (member major-mode '(eshell-mode term-mode vterm-mode))))
+           ("Proc"
+            (process))
+           ("Other"
+            (name . "^*.**$"))
+           )))
 
   (d/hook! ibuffer-mode
     (ibuffer-switch-to-saved-filter-groups "Default"))
@@ -1870,7 +1866,6 @@ Collection of useful dired additions
 ***** dired-collpase
 #+begin_src emacs-lisp
 (use-package dired-collapse
-  :hook (dired-mode . d/dired-collapse-mode)
   :config
   (defvar dired-collapse-ignore-dirs
     (list "~/Music"
@@ -2213,44 +2208,10 @@ Sort completion candidates by previous completion choices
 #+begin_quote
 Multiple cursors implementation for evil-mode
 #+end_quote
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package evil-mc
-  :general
-  (d/leader-keys
-    "xM"  '(:def d/mc/body :wk "multiple-cursors"))
   :config
-  (global-evil-mc-mode)
-  (push 'evil-smartparens-mode evil-mc-incompatible-minor-modes)
-  (push 'fci-mode evil-mc-incompatible-minor-modes)
-  (defhydra d/mc (:post (evil-mc-undo-all-cursors))
-    "
-╭─────────╮
-│ evil-mc │
-└─────────┴─────────────────────────────────────────────────────────────
- [_mm_] make+next-match [_sm_] skip+next-match [_h_] here   [_P_] print-pattern
- [_mM_] make+prev-match [_sM_] skip+prev-match [_a_] all
- [_mc_] make+next-cur   [_sc_] skip+next-cur   [_p_] pause
- [_mC_] make+prev-cur   [_sC_] skip+prev-cur   [_r_] resume
- [_mf_] make+first-cur                       [_u_] undo-all
- [_ml_] make+last-cur
-────────────────────────────────────────────────────────────────────────
-"
-    ("mm" evil-mc-make-and-goto-next-match)
-    ("mM" evil-mc-make-and-goto-prev-match)
-    ("mc" evil-mc-make-and-goto-next-cursor)
-    ("mC" evil-mc-make-and-goto-prev-cursor)
-    ("mf" evil-mc-make-and-goto-first-cursor)
-    ("ml" evil-mc-make-and-goto-last-cursor)
-    ("sm" evil-mc-skip-and-goto-next-match)
-    ("sM" evil-mc-skip-and-goto-prev-match)
-    ("sc" evil-mc-skip-and-goto-next-cursor)
-    ("sC" evil-mc-skip-and-goto-prev-cursor)
-    ("h" evil-mc-make-cursor-here)
-    ("a" evil-mc-make-all-cursors)
-    ("p" evil-mc-pause-cursors)
-    ("r" evil-mc-resume-cursors)
-    ("u" evil-mc-undo-all-cursors)
-    ("P" evil-mc-print-pattern)))
+  (global-evil-mc-mode))
 #+end_src
 **** [[https://github.com/hlissner/evil-multiedit][evil-multiedit]]
 #+begin_quote
@@ -2731,8 +2692,23 @@ The emacs major mode for editing files in the YAML data serialization format.
 *** [[https://github.com/wasamasa/svnwiki-mode][svnwiki-mode]]
 #+begin_src emacs-lisp
 (use-package svnwiki-mode
+  :general
+  (d/mode-leader-keys svnwiki-mode-map
+    "c" 'd/svnwrap-with-code)
   :mode "\\.svnwiki\\'"
-  :straight (:repo "https://depp.brause.cc/svnwiki-mode.git"))
+  :straight (:repo "https://depp.brause.cc/svnwiki-mode.git")
+  :config
+  (defun d/svnwrap-with-code ()
+    (interactive)
+    (let ((bounds (if (region-active-p)
+                      (cons (region-beginning)
+                            (region-end))
+                    (bounds-of-thing-at-point 'symbol))))
+      (goto-char (car bounds))
+      (insert "{{")
+      (goto-char (+ (cdr bounds) 2))
+      (insert "}}")
+      (goto-char (car bounds)))))
 #+end_src
 ** Bindings
 Make indent-rigidly more vimmy.
@@ -3464,6 +3440,16 @@ On the fly syntax checking for GNU Emacs
   (c-set-offset 'case-label '+))
 #+end_src
 *** Python
+**** Built-in
+#+begin_src emacs-lisp
+(use-package python
+  :config
+  (let ((ipython (executable-find "ipython")))
+    (setq python-shell-interpreter (or ipython
+                                       python-shell-interpreter)
+          python-shell-interpreter-args (if ipython "--simple-prompt"
+                                          python-shell-interpreter-args))))
+#+end_src
 **** Packages
 ***** [[https://github.com/proofit404/anaconda-mode][anaconda-mode]]
 #+begin_quote
@@ -3548,27 +3534,6 @@ Yapf for Emacs
 #+end_src
 *** Lisps
 **** Packages
-***** [[https://github.com/slime/slime][slime]]
-#+begin_quote
-The Superior Lisp Interaction Mode for Emacs
-#+end_quote
-#+begin_src emacs-lisp :tangle no
-(use-package slime
-  :general
-  (imap slime-repl-mode-map
-    [up] 'slime-repl-previous-input
-    [down] 'slime-repl-next-input)
-  :config
-  (require 'slime-macrostep)
-  (setq inferior-lisp-program (executable-find "sbcl")
-        slime-contribs '(slime-fancy slime-company)))
-#+end_src
-***** [[https://github.com/anwyn/slime-company][slime-company]]
-#+begin_src emacs-lisp :tangle no
-(use-package slime-company
-  :after slime
-  :demand t)
-#+end_src
 ***** [[https://github.com/tkf/emacs-request][request]]
 #+begin_quote
 Easy HTTP request for Emacs Lisp
@@ -3634,6 +3599,11 @@ interactive macro-expander
   (d/mode-leader-keys (emacs-lisp-mode-map lisp-mode-map)
     "m" 'macrostep-expand))
 #+end_src
+***** [[https://github.com/Fanael/highlight-quoted][highlight-quoted]]
+#+begin_src emacs-lisp
+(use-package highlight-quoted
+  :hook (lisp-mode . highlight-quoted-mode))
+#+end_src
 **** Functions
 #+begin_src emacs-lisp
 (defun d/eval-surrounding-sexp (levels)
@@ -3654,78 +3624,6 @@ Source: http://tinyurl.com/le6wxuo"
        `(cl-labels ((,name ,args ,@body))
           (,name ,@init-vals))))
     (_ `(let ,@clause))))
-
-(defun d/lisp-indent-function (indent-point state)
-  "This function is the normal value of the variable `lisp-indent-function'.
-The function `calculate-lisp-indent' calls this to determine
-if the arguments of a Lisp function call should be indented specially.
-INDENT-POINT is the position at which the line being indented begins.
-Point is located at the point to indent under (for default indentation);
-STATE is the `parse-partial-sexp' state for that position.
-If the current line is in a call to a Lisp function that has a non-nil
-property `lisp-indent-function' (or the deprecated `lisp-indent-hook'),
-it specifies how to indent.  The property value can be:
-,* `defun', meaning indent `defun'-style
-  (this is also the case if there is no property and the function
-  has a name that begins with \"def\", and three or more arguments);
-,* an integer N, meaning indent the first N arguments specially
-  (like ordinary function arguments), and then indent any further
-  arguments like a body;
-,* a function to call that returns the indentation (or nil).
-  `lisp-indent-function' calls this function with the same two arguments
-  that it itself received.
-This function returns either the indentation to use, or nil if the
-Lisp function does not specify a special indentation.
-
-Source: https://git.io/vQKz8"
-  (let ((normal-indent (current-column))
-        (orig-point (point)))
-    (goto-char (1+ (elt state 1)))
-    (parse-partial-sexp (point) calculate-lisp-indent-last-sexp 0 t)
-    (cond
-     ;; car of form doesn't seem to be a symbol, or is a keyword
-     ((and (elt state 2)
-           (or (not (looking-at "\\sw\\|\\s_"))
-               (looking-at ":")))
-      (if (not (> (save-excursion (forward-line 1) (point))
-                  calculate-lisp-indent-last-sexp))
-          (progn (goto-char calculate-lisp-indent-last-sexp)
-                 (beginning-of-line)
-                 (parse-partial-sexp (point)
-                                     calculate-lisp-indent-last-sexp 0 t)))
-      ;; Indent under the list or under the first sexp on the same
-      ;; line as calculate-lisp-indent-last-sexp.  Note that first
-      ;; thing on that line has to be complete sexp since we are
-      ;; inside the innermost containing sexp.
-      (backward-prefix-chars)
-      (current-column))
-     ((and (save-excursion
-             (goto-char indent-point)
-             (skip-syntax-forward " ")
-             (not (looking-at ":")))
-           (save-excursion
-             (goto-char orig-point)
-             (looking-at ":")))
-      (save-excursion
-        (goto-char (+ 2 (elt state 1)))
-        (current-column)))
-     (t
-      (let ((function (buffer-substring (point)
-                                        (progn (forward-sexp 1) (point))))
-            method)
-        (setq method (or (function-get (intern-soft function)
-                                       'lisp-indent-function)
-                         (get (intern-soft function) 'lisp-indent-hook)))
-        (cond ((or (eq method 'defun)
-                   (and (null method)
-                        (> (length function) 3)
-                        (string-match "\\`def" function)))
-               (lisp-indent-defform state indent-point))
-              ((integerp method)
-               (lisp-indent-specform method state
-                                     indent-point normal-indent))
-              (method
-               (funcall method indent-point state))))))))
 #+end_src
 **** Bindings
 #+begin_src emacs-lisp
@@ -3741,8 +3639,7 @@ Source: https://git.io/vQKz8"
 (d/hook! (lisp-mode emacs-lisp-mode)
   (hs-minor-mode)
   (d/after 'evil-surround
-    (push '(? . ("`" . "'")) evil-surround-pairs-alist))
-  (setq-local lisp-indent-function #'d/lisp-indent-function))
+    (push '(? . ("`" . "'")) evil-surround-pairs-alist)))
 #+end_src
 *** Haskell
 **** Packages
@@ -3760,6 +3657,11 @@ Source: https://git.io/vQKz8"
 #+begin_src emacs-lisp :tangle no
 (use-package haskell-snippets)
 #+end_src
+*** Racket
+**** Packages
+#+begin_src emacs-lisp
+(use-package racket-mode)
+#+end_src
 *** Rust
 **** Packages
 ***** [[https://github.com/rust-lang/rust-mode][rust-mode]]
@@ -3776,6 +3678,158 @@ Source: https://git.io/vQKz8"
 (use-package ob-rust)
 #+end_src
 *** Scheme
+**** Built-in
+#+begin_src emacs-lisp
+(use-package scheme
+  :mode ("\\.egg\\'" "\\.sld\\'" "\\.release-info\\'")
+  :interpreter ("chicken-scheme" "csi")
+  :general
+  (d/mode-leader-keys scheme-mode-map
+    "eb" 'd/scheme-send-buffer
+    "ef" 'scheme-send-definition
+    "er" 'scheme-send-region
+    "el" 'scheme-send-last-sexp
+    "es" 'd/scheme-send-surrounding-sexp)
+  (nmap scheme-mode-map
+    "C-c C-c" 'd/scheme-compile-definition-or-region)
+  :init
+  (defvar d/scheme-extra-keywords
+    ;; Function-like keywords
+    `((,(rx "(" (group (or "define-for-syntax"
+                           "define-inline"
+                           "define-external"
+                           "define-constant"
+                           "define-foreign-variable"))
+            symbol-end (* space)
+            (? "(") (? (group (1+ word))))
+       (1 font-lock-keyword-face)
+       (2 font-lock-function-name-face nil t))
+      ;; Make consistent with define-syntax
+      (,(rx "(" (group "define-syntax-rule")
+            symbol-end (* space)
+            (? "(") (? (group (1+ word))))
+       (1 font-lock-keyword-face)
+       (2 font-lock-variable-name-face nil t))
+      ;; Highlight types
+      (,(rx "(" (group "define-foreign-type")
+            symbol-end (* space)
+            (? (group (1+ word)))
+            (? (* space))
+            (? (group (1+ word))))
+       (1 font-lock-keyword-face)
+       (2 font-lock-type-face)
+       (3 font-lock-type-face))
+      ;; CHICKEN-style keywords
+      ("\\<\\sw+:\\>" . 'font-lock-builtin-face)
+      ;; Hashbang
+      ("\\`\\(#!.*/\\)\\([^ \t\n]+\\)\\( .*\\)?"
+       (1 font-lock-comment-face)
+       (2 font-lock-keyword-face t)
+       (3 font-lock-comment-face t t))
+      ;; #!key, #!optional, #!rest etc.
+      ("\\<#!\\sw+\\>" . 'font-lock-type-face)))
+
+  (font-lock-add-keywords 'scheme-mode d/scheme-extra-keywords t)
+  (font-lock-add-keywords 'inferior-scheme-mode d/scheme-extra-keywords t)
+
+  (defvar d/scheme-simple-keywords
+    `((,(format
+         "[[(]%s\\>"
+         (regexp-opt
+          '("and-let*" "cut" "cute" "define-record-type" "define-values"
+            "letrec*" "set!" "syntax-case" "unless" "when" "assume"
+            "compiler-typecase" "cond-expand" "condition-case" "declare"
+            "define-interface" "define-record" "define-specialization"
+            "define-type" "fluid-let" "foreign-lambda" "foreign-lambda*"
+            "foreign-primitive" "foreign-safe-lambda" "foreign-safe-lambda*"
+            "functor" "handle-exceptions" "let-location" "let-optionals"
+            "let-optionals*" "letrec-values" "module"
+            "define-foreign-record-type" "foreign-value" "foreign-declare"
+            "begin-for-syntax" "define-for-syntax" "include-relative"
+            "import-for-syntax"
+            ;; matchable
+            "match" "match-lambda" "match-lambda*" "match-let" "match-let*"
+            "match-letrec"
+            ;; miscmacros
+            "dotimes" "ecase" "select" "repeat" "while"
+            ;; test
+            "test-assert" "test-begin" "test-end" "test" "test-error"
+            "test-group")
+          1))
+       . 1)))
+
+  (font-lock-add-keywords 'scheme-mode d/scheme-simple-keywords t)
+  (font-lock-add-keywords 'inferior-scheme-mode d/scheme-simple-keywords t)
+  :config
+  (defun d/scheme-send-buffer ()
+    (interactive)
+    (scheme-send-region (point-min) (point-max)))
+
+  (defun d/scheme-send-surrounding-sexp (levels)
+    (interactive "p")
+    (save-excursion
+      (up-list (abs levels))
+      (scheme-send-last-sexp)))
+
+  (defun d/scheme-compile-region-or-definition ()
+    (interactive)
+    (if (region-active-p)
+        (scheme-compile-region (region-beginning)
+                               (region-end))
+      (scheme-compile-definition)))
+
+  (setq scheme-program-name "csi -q")
+  (add-to-list 'interpreter-mode-alist '("chicken-scheme" . scheme-mode))
+  (add-to-list 'interpreter-mode-alist '("csi" . scheme-mode))
+  ;; chicken core
+  (put 'module                 'scheme-indent-function 2)
+  (put 'functor                'scheme-indent-function 2)
+  (put 'begin-for-syntax       'scheme-indent-function 0)
+  (put 'and-let*               'scheme-indent-function 1)
+  (put 'let-optionals          'scheme-indent-function 1)
+  (put 'let-optionals*         'scheme-indent-function 1)
+  (put 'letrec-values          'scheme-indent-function 1)
+  (put 'case-lambda            'scheme-indent-function 0)
+  (put 'catch                  'scheme-indent-function 'defun)
+  (put 'assume                 'scheme-indent-function 1)
+  (put 'cond-expand            'scheme-indent-function 0)
+  (put 'cut                    'scheme-indent-function 1)
+  (put 'cute                   'scheme-indent-function 1)
+  (put 'set-read-syntax!       'scheme-indnet-function 1)
+  (put 'set-sharp-read-syntax! 'scheme-indnet-function 1)
+  (put 'condition-case         'scheme-indent-function 1)
+  (put 'handle-exceptions      'scheme-indent-function 2)
+  (put 'with-exception-handler 'scheme-indent-function 1)
+  (put 'with-input-from-pipe   'scheme-indent-function 1)
+  (put 'with-output-to-pipe    'scheme-indent-function 1)
+  (put 'compiler-typecase      'scheme-indent-function 1)
+  (put 'foreign-lambda         'scheme-indent-function 2)
+  (put 'foreign-lambda*        'scheme-indent-function 2)
+  (put 'foreign-safe-lambda    'scheme-indent-function 2)
+  (put 'foreign-safe-lambda*   'scheme-indent-function 2)
+  (put 'foreign-primitive      'scheme-indent-function 2)
+  (put 'let-location           'scheme-indent-function 1)
+  ;; matchable
+  (put 'match         'scheme-indent-function 1)
+  (put 'match-let     'scheme-indent-function 1)
+  (put 'match-let*    'scheme-indent-function 1)
+  (put 'match-letrec  'scheme-indent-function 1)
+  (put 'match-lambda  'scheme-indent-function 0)
+  (put 'match-lambda* 'scheme-indent-function 0)
+  ;; miscmacros
+  (put 'while   'scheme-indent-function 1)
+  (put 'select  'scheme-indent-function 1)
+  (put 'dotimes 'scheme-indent-function 1)
+  (put 'repeat  'scheme-indent-function 1)
+  (put 'ecase   'scheme-indent-function 1)
+  ;; test
+  (put 'test-assert 'scheme-indent-function 1)
+  (put 'test-error  'scheme-indent-function 1)
+  (put 'test        'scheme-indent-function 1)
+  (put 'test-group  'scheme-indent-function 1)
+  ;; spiffy
+  (put 'with-headers 'scheme-indent-function 1))
+#+end_src
 **** Packages
 ***** [[https://github.com/jaor/geiser][geiser]]
 #+begin_quote
@@ -3793,6 +3847,14 @@ emacs and scheme talk to each other
         geiser-debug-show-debug-p nil
         geiser-chicken-load-init-file-p t))
 #+end_src
+***** [[https://gitlab.com/emacs-geiser/chicken][geiser-chicken]]
+#+begin_src emacs-lisp :tangle no
+(use-package gesier-chicken)
+#+end_src
+***** [[https://github.com/nbfalcon/macrostep-geiser][macrostep-geiser]]
+#+begin_src emacs-lisp :tangle no
+(use-package macrostep-geiser)
+#+end_src
 ***** [[https://depp.brause.cc/chicken-doc.el][chicken-doc.el]]
 #+begin_src emacs-lisp
 (use-package chicken-doc
@@ -3803,155 +3865,46 @@ emacs and scheme talk to each other
     "d" 'chicken-doc-describe)
   :straight (:repo "https://depp.brause.cc/chicken-doc.el.git"))
 #+end_src
-**** Functions
+*** Lisp
+**** Packages
+***** [[https://github.com/joaotavora/sly][sly]]
+#+begin_quote :tangle no
+Sylvester the Cat's Common Lisp IDE
+#+end_quote
 #+begin_src emacs-lisp
-(defun d/scheme-send-buffer ()
-  (interactive)
-  (scheme-send-region (point-min) (point-max)))
-
-(defun d/scheme-send-surrounding-sexp (levels)
-  (interactive "p")
-  (save-excursion
-    (up-list (abs levels))
-    (scheme-send-last-sexp)))
+(use-package sly
+  :general
+  (imap sly-mrepl-mode-map
+    [up] 'sly-mrepl-previous-input-or-button
+    [down] 'sly-mrepl-next-input-or-button)
+  :config
+  (setq inferior-lisp-program "ros run"))
 #+end_src
-**** Bindings
+*** Ocaml
+**** Packages
+***** [[https://github.com/ocaml/tuareg][tuareg]]
 #+begin_src emacs-lisp
-(d/mode-leader-keys scheme-mode-map
-  "eb" 'd/scheme-send-buffer
-  "ef" 'scheme-send-definition
-  "er" 'scheme-send-region
-  "el" 'scheme-send-last-sexp
-  "es" 'd/scheme-send-surrounding-sexp)
-
-(evil-define-key 'normal scheme-mode-map [backtab] #'hs-toggle-hiding)
-
-(defun d/scheme-compile-region-or-definition-and-go ()
-  (interactive)
-  (if (region-active-p)
-      (scheme-compile-region-and-go (region-beginning)
-                                    (region-end))
-    (scheme-compile-definition-and-go)))
-
-(d/after 'scheme
-  (define-key scheme-mode-map (kbd "C-c C-c") 'd/scheme-compile-region-or-definition-and-go))
+(use-package tuareg
+  :general
+  (d/mode-leader-keys tuareg-mode-map
+    "es" 'tuareg-eval-phrase
+    "eb" 'tuareg-eval-buffer
+    "er" 'tuareg-eval-region))
 #+end_src
-**** Setup
+***** [[https://github.com/ocaml/dune][dune]]
 #+begin_src emacs-lisp
-(add-to-list 'auto-mode-alist '("\\.egg\\'" . scheme-mode))
-(add-to-list 'auto-mode-alist '("\\.sld\\'" . scheme-mode))
-(add-to-list 'auto-mode-alist '("\\.release-info\\'" . scheme-mode))
-
-(d/hook! scheme-mode
-  (hs-minor-mode)
-  (d/after 'evil-surround
-    (push '(? . ("`" . "'")) evil-surround-pairs-alist)))
-
+(use-package dune)
 #+end_src
-The following is a shim for geiser's syntax highlighting and indentation.
+***** [[https://github.com/ocaml/merlin][merlin]]
 #+begin_src emacs-lisp
-(defmacro d/scheme-indent (&rest pairs)
-    `(progn ,@(mapcar (lambda (p)
-                        `(put ',(car p) 'scheme-indent-function ',(cadr p)))
-                      pairs)))
-
-(d/after 'scheme
-  ;; geiser shim
-  (setq scheme-program-name "csi -q")
-  (add-to-list 'interpreter-mode-alist '("chicken-scheme" . scheme-mode))
-  (add-to-list 'interpreter-mode-alist '("csi" . scheme-mode))
-  ;; Defaults (geiser)
-  (d/scheme-indent
-   (and-let* 1) (case-lambda 0) (catch defun) (class defun) (dynamic-wind 0)
-   (guard 1) (let*-values 1) (let-values 1) (let/ec 1) (letrec* 1) (match 1)
-   (match-lambda 0) (match-lambda* 0) (match-let scheme-let-indent)
-   (match-let* 1) (match-letrec 1) (opt-lambda 1) (parameterize 1)
-   (parameterize* 1) (receive 2) (require-extension 0) (syntax-case 2)
-   (test-approximate 1) (test-assert 1) (test-eq 1) (test-equal 1) (test-eqv 1)
-   (test-group-with-cleanup 1) (test-runner-on-bad-count! 1)
-   (test-runner-on-bad-end-name! 1) (test-runner-on-final! 1)
-   (test-runner-on-group-begin! 1) (test-runner-on-group-end! 1)
-   (test-runner-on-test-begin! 1) (test-runner-on-test-end! 1)
-   (test-with-runner 1) (unless 1) (when 1) (while 1)
-   (with-exception-handler 1) (with-syntax 1) (with-headers 1))
-
-  ;; Chicken (geiser)
-  (d/scheme-indent
-   (assume 1) (compiler-typecase 1) (cond-expand 0) (condition-case 1) (cut 1)
-   (cute 1) (declare 0) (dotimes 1) (repeat 1) (ecase 1) (fluid-let 1) (foreign-lambda 2)
-   (foreign-lambda* 2) (foreign-primitive 2) (foreign-safe-lambda 2)
-   (foreign-safe-lambda* 2) (functor 3) (handle-exceptions 2) (import 0)
-   (let-location 1) (let-optionals 2) (let-optionals* 2) (letrec-values 1)
-   (module 2) (regex-case 1) (select 1) (set! 1) (use 0) (define-library 1)
-   (with-input-from-pipe 1) (with-output-to-pipe 1))
-  ;; Added by me
-  (d/scheme-indent
-   (test-group 1) (begin-for-syntax 0) (set-read-syntax! 1)
-   (set-sharp-read-syntax! 1)))
-
-(defun d/scheme-simple-keywords (keywords)
-  "Return `font-lock-keywords' to highlight scheme KEYWORDS.
-KEYWORDS should be a list of strings."
-  (when keywords
-    (font-lock-add-keywords
-     'scheme-mode
-     `((,(format "[[(]%s\\>" (regexp-opt keywords 1)) . 1)))))
-(defun d/scheme-keywords (builtin)
-  (d/scheme-simple-keywords builtin)
-  (font-lock-add-keywords
-   'scheme-mode
-   `(("\\[\\(else\\)\\>" . 1)
-     (,(rx (any "([{") (group (or "define-syntax-rule"
-                                  "define-for-syntax"
-                                  "define-inline"
-                                  "define-external"
-                                  "define-foreign-variable"))
-           eow (* space)
-           (? "(") (? (group (1+ word))))
-      (1 font-lock-keyword-face)
-      (2 font-lock-function-name-face nil t)))))
-
-;; Default (geiser)
-(d/scheme-keywords
- '("and-let*" "cut" "cute" "define-condition-type"
-   "define-immutable-record-type" "define-record-type" "define-values"
-   "letrec*" "match" "match-lambda" "match-lambda*" "match-let" "match-let*"
-   "match-letrec" "parameterize" "receive" "require-extension" "set!"
-   "syntax-case" "test-approximate" "test-assert" "test-begin" "test-end"
-   "test-eq" "test-equal" "test-eqv" "test-error" "test-group"
-   "test-group-with-cleanup" "test-with-runner" "unless" "when"
-   "with-exception-handler" "with-input-from-file" "with-output-to-file"))
-;; Chicken (geiser)
-(d/scheme-simple-keywords
- '("assume" "compiler-typecase" "cond-expand" "condition-case" "declare"
-   "define-constant" "define-inline" "define-interface" "define-record"
-   "define-specialization" "define-type" "dotimes" "ecase" "fluid-let"
-   "foreign-lambda" "foreign-lambda*" "foreign-primitive"
-   "foreign-safe-lambda" "foreign-safe-lambda*" "functor" "handle-exceptions"
-   "let-location" "let-optionals" "let-optionals*" "letrec-values" "module"
-   "regex-case" "select" "use" "with-input-from-pipe"))
-;; Added by me
-(d/scheme-simple-keywords
- '("define-foreign-type" "define-foreign-record-type" "foreign-value"
-   "foreign-declare" "begin-for-syntax" "define-for-syntax" "include-relative"
-   "import-for-syntax"))
-
-;; Keywords, #! parameters, shebang
-(font-lock-add-keywords
- 'scheme-mode
- '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)
-   ("\\`\\(#!.*/\\)\\([^ \t\n]+\\)\\( .*\\)?"
-    (1 font-lock-comment-face)
-    (2 font-lock-keyword-face t)
-    (3 font-lock-comment-face t t)
-    )
-   ("\\<#!\\sw+\\>" . 'font-lock-type-face))
- t)
-(font-lock-add-keywords
- 'inferior-scheme-mode
- '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)
-   ("\\<#!\\sw+\\>" . 'font-lock-type-face))
- t)
+(use-package merlin
+  :hook (tuareg-mode . merlin-mode))
+#+end_src
+***** [[https://github.com/Khady/merlin-eldoc][merlin-eldoc]]
+#+begin_src emacs-lisp
+(use-package merlin-eldoc
+  :ensure t
+  :hook (tuareg-mode . merlin-eldoc-setup))
 #+end_src
 *** [[https://github.com/NixOS/nix-mode][nix-mode]]
 #+begin_quote
@@ -4193,7 +4146,8 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
     (setq-local org-hide-emphasis-markers nil)
     (setq-local org-pretty-entities nil))
   (d/hook! git-commit-setup
-    (git-commit-turn-on-flyspell)))
+    (git-commit-turn-on-flyspell))
+  (setq magit-repository-directories '(("~/dotfiles" . 0) ("~/src" . 1))))
 #+end_src
 **** [[https://github.com/alphapapa/magit-todos][magit-todos]]
 #+begin_src emacs-lisp
@@ -4612,9 +4566,6 @@ Emacs package that displays available keybindings in popup
 #+begin_src emacs-lisp
 (use-package which-key
   :defer 20
-  :general
-  (d/leader-keys
-    "hk" 'which-key-show-top-level)
   :config
   (which-key-mode)
 

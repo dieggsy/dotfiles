@@ -1,0 +1,99 @@
+#!/usr/bin/chicken-scheme
+
+(import (only (chicken process-context) command-line-arguments)
+        (only (chicken process) system)
+        (only (chicken io) read-line)
+        (only (chicken format) format)
+        (only (chicken tcp) tcp-accept tcp-listen tcp-close)
+        (only (chicken condition) signal handle-exceptions)
+        (only srfi-13 string-trim string-join)
+        (only srfi-18
+              thread-start! thread-join! thread-terminate!
+              terminated-thread-exception? uncaught-exception?
+              uncaught-exception-reason)
+        (prefix http-client hc:)
+        (prefix intarweb iw:)
+        (prefix spiffy spiffy:)
+        (prefix uri-common uc:)
+        (prefix medea medea:))
+
+(uc:form-urlencoded-separator "&")
+
+(display "Port: ")
+(define port (string->number (string-trim (read-line))))
+                                        ;
+(display "Client ID: ")
+(define client-id (string-trim (read-line)))
+
+(display "Secret Key: ")
+(define  secret-key (string-trim (read-line)))
+
+(display "Scopes: ")
+(define  scopes (string-trim (read-line)))
+
+(define code)
+
+(define listener (tcp-listen port))
+
+(define (app)
+  (set! code (alist-ref 'code
+                        (uc:uri-query
+                         (iw:request-uri (spiffy:current-request)))))
+  (spiffy:send-response body: "esi-authorize: Done! You can close this tab now.")
+  (thread-terminate! thread))
+
+(define thread (thread-start!
+                (lambda ()
+                  (spiffy:vhost-map `((".*" . ,(lambda (c)
+                                                 (app)))))
+                  (spiffy:accept-loop listener tcp-accept))))
+
+((cond-expand
+   (linux (lambda (s)
+            (system (format "xdg-open '~a'" s))))
+   (macosx (lambda (s)
+             (system (format "open '~a'" s))))
+   (else (lambda (s)
+           (print (format "\nOpen this url:\n\n~a" s)))))
+ (format
+  "~a"
+  (uc:uri->string
+   (uc:make-uri
+    scheme: 'https
+    host: "login.eveonline.com"
+    path: '(/ "oauth" "authorize")
+    query: `((response_type . code)
+             (redirect_uri . ,(uc:uri->string
+                               (uc:make-uri scheme: 'http
+                                            host: "localhost"
+                                            port: port)))
+             (client_id . ,client-id)
+             (scope . ,scopes))))))
+
+(handle-exceptions exn
+      (if (and (uncaught-exception? exn)
+               (terminated-thread-exception?
+                (uncaught-exception-reason exn)))
+          #t
+          (signal exn))
+  (thread-join! thread)
+  (tcp-close listener))
+
+(let* ((token-response
+        (hc:with-input-from-request
+         (iw:make-request method: 'POST
+                          uri: (uc:make-uri scheme: 'https
+                                            host: "login.eveonline.com"
+                                            path: '(/ "oauth" "token"))
+                          headers:
+                          (iw:headers
+                           `((authorization
+                              #(basic ((username . ,client-id)
+                                       (password . ,secret-key)))))))
+         `((grant_type . "authorization_code")
+           (code . ,code))
+         medea:read-json))
+       (access-token (alist-ref 'access_token token-response))
+       (refresh-token (alist-ref 'refresh_token token-response)))
+  (print (format "\nAccess token:\n~a" access-token))
+  (print (format "Refresh token:\n~a" refresh-token)))
