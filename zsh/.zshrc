@@ -74,6 +74,7 @@ alias chicken-doc='noglob chicken-doc'
 alias startx='startx &>/dev/null'
 alias yay=paru
 alias nmr='sudo systemctl restart NetworkManager'
+alias locate=plocate
 
 cd_list () {
     emulate -L zsh
