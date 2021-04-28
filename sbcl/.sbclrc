@@ -1,4 +1,4 @@
-; -*- mode: lisp -*-
+;; -*- mode: lisp -*-
 ;;; The following lines added by ql:add-to-init-file:
 #-quicklisp
 (let ((quicklisp-init (merge-pathnames ".local/lib/quicklisp/setup.lisp"
