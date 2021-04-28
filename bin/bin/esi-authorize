@@ -31,6 +31,23 @@
 (display "Scopes: ")
 (define  scopes (string-trim (read-line)))
 
+(define code)
+
+(define listener (tcp-listen port))
+
+(define (app)
+  (set! code (alist-ref 'code
+                        (uc:uri-query
+                         (iw:request-uri (spiffy:current-request)))))
+  (spiffy:send-response body: "esi-authorize: Done! You can close this tab now.")
+  (thread-terminate! thread))
+
+(define thread (thread-start!
+                (lambda ()
+                  (spiffy:vhost-map `((".*" . ,(lambda (c)
+                                                 (app)))))
+                  (spiffy:accept-loop listener tcp-accept))))
+
 ((cond-expand
    (linux (lambda (s)
             (system (format "xdg-open '~a'" s))))
@@ -53,28 +70,13 @@
              (client_id . ,client-id)
              (scope . ,scopes))))))
 
-(define code)
-
-(letrec* ((listener (tcp-listen port))
-          (thread
-           (thread-start!
-            (lambda ()
-              (spiffy:vhost-map `((".*" . ,(lambda (c) (app)))))
-              (spiffy:accept-loop listener tcp-accept))))
-          (app
-           (lambda ()
-             (set! code (alist-ref 'code
-                                   (uc:uri-query
-                                    (iw:request-uri (spiffy:current-request)))))
-             (spiffy:send-response body: "esi-authorize: Done! You can close this tab now.")
-             (thread-terminate! thread))))
-  (handle-exceptions exn
+(handle-exceptions exn
       (if (and (uncaught-exception? exn)
                (terminated-thread-exception?
                 (uncaught-exception-reason exn)))
           #t
           (signal exn))
-    (thread-join! thread))
+  (thread-join! thread)
   (tcp-close listener))
 
 (let* ((token-response
