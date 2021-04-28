@@ -148,7 +148,7 @@ a communication channel."
                (format "; %s : %s" (or info "(no_tag)") contents))))
           (t
            (format "%s %s"
-                   (make-string bullet-len (if (eq type 'ordered) ?#?*))
+                   (make-string bullet-len (if (eq type 'ordered) ?# ?*))
                    contents)))))
 
 ;;;; Link
