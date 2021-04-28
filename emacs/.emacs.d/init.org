@@ -3866,28 +3866,18 @@ emacs and scheme talk to each other
 #+end_src
 *** Lisp
 **** Packages
-***** [[https://github.com/slime/slime][slime]]
-#+begin_quote
-The Superior Lisp Interaction Mode for Emacs
+***** [[https://github.com/joaotavora/sly][sly]]
+#+begin_quote :tangle no
+Sylvester the Cat's Common Lisp IDE
 #+end_quote
 #+begin_src emacs-lisp
-(use-package slime
+(use-package sly
   :general
-  (imap slime-repl-mode-map
-    [up] 'slime-repl-previous-input
-    [down] 'slime-repl-next-input)
-  :hook
-  (lisp-mode . slime-mode)
+  (imap sly-mrepl-mode-map
+    [up] 'sly-mrepl-previous-input-or-button
+    [down] 'sly-mrepl-next-input-or-button)
   :config
-  (require 'slime-macrostep)
-  (setq inferior-lisp-program (executable-find "sbcl")
-        slime-contribs '(slime-fancy slime-company slime-cl-indent)))
-#+end_src
-***** [[https://github.com/anwyn/slime-company][slime-company]]
-#+begin_src emacs-lisp
-(use-package slime-company
-  :after slime
-  :demand t)
+  (setq inferior-lisp-program "ros run"))
 #+end_src
 *** Ocaml
 **** Packages
