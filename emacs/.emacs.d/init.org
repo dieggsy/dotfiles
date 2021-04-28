@@ -3677,6 +3677,158 @@ Source: http://tinyurl.com/le6wxuo"
 (use-package ob-rust)
 #+end_src
 *** Scheme
+**** Built-in
+#+begin_src emacs-lisp
+(use-package scheme
+  :mode ("\\.egg\\'" "\\.sld\\'" "\\.release-info\\'")
+  :interpreter ("chicken-scheme" "csi")
+  :general
+  (d/mode-leader-keys scheme-mode-map
+    "eb" 'd/scheme-send-buffer
+    "ef" 'scheme-send-definition
+    "er" 'scheme-send-region
+    "el" 'scheme-send-last-sexp
+    "es" 'd/scheme-send-surrounding-sexp)
+  (nmap scheme-mode-map
+    "C-c C-c" 'd/scheme-compile-definition-or-region)
+  :init
+  (defvar d/scheme-extra-keywords
+    ;; Function-like keywords
+    `((,(rx "(" (group (or "define-for-syntax"
+                           "define-inline"
+                           "define-external"
+                           "define-constant"
+                           "define-foreign-variable"))
+            symbol-end (* space)
+            (? "(") (? (group (1+ word))))
+       (1 font-lock-keyword-face)
+       (2 font-lock-function-name-face nil t))
+      ;; Make consistent with define-syntax
+      (,(rx "(" (group "define-syntax-rule")
+            symbol-end (* space)
+            (? "(") (? (group (1+ word))))
+       (1 font-lock-keyword-face)
+       (2 font-lock-variable-name-face nil t))
+      ;; Highlight types
+      (,(rx "(" (group "define-foreign-type")
+            symbol-end (* space)
+            (? (group (1+ word)))
+            (? (* space))
+            (? (group (1+ word))))
+       (1 font-lock-keyword-face)
+       (2 font-lock-type-face)
+       (3 font-lock-type-face))
+      ;; CHICKEN-style keywords
+      ("\\<\\sw+:\\>" . 'font-lock-builtin-face)
+      ;; Hashbang
+      ("\\`\\(#!.*/\\)\\([^ \t\n]+\\)\\( .*\\)?"
+       (1 font-lock-comment-face)
+       (2 font-lock-keyword-face t)
+       (3 font-lock-comment-face t t))
+      ;; #!key, #!optional, #!rest etc.
+      ("\\<#!\\sw+\\>" . 'font-lock-type-face)))
+
+  (font-lock-add-keywords 'scheme-mode d/scheme-extra-keywords t)
+  (font-lock-add-keywords 'inferior-scheme-mode d/scheme-extra-keywords t)
+
+  (defvar d/scheme-simple-keywords
+    `((,(format
+         "[[(]%s\\>"
+         (regexp-opt
+          '("and-let*" "cut" "cute" "define-record-type" "define-values"
+            "letrec*" "set!" "syntax-case" "unless" "when" "assume"
+            "compiler-typecase" "cond-expand" "condition-case" "declare"
+            "define-interface" "define-record" "define-specialization"
+            "define-type" "fluid-let" "foreign-lambda" "foreign-lambda*"
+            "foreign-primitive" "foreign-safe-lambda" "foreign-safe-lambda*"
+            "functor" "handle-exceptions" "let-location" "let-optionals"
+            "let-optionals*" "letrec-values" "module"
+            "define-foreign-record-type" "foreign-value" "foreign-declare"
+            "begin-for-syntax" "define-for-syntax" "include-relative"
+            "import-for-syntax"
+            ;; matchable
+            "match" "match-lambda" "match-lambda*" "match-let" "match-let*"
+            "match-letrec"
+            ;; miscmacros
+            "dotimes" "ecase" "select" "repeat" "while"
+            ;; test
+            "test-assert" "test-begin" "test-end" "test" "test-error"
+            "test-group")
+          1))
+       . 1)))
+
+  (font-lock-add-keywords 'scheme-mode d/scheme-simple-keywords t)
+  (font-lock-add-keywords 'inferior-scheme-mode d/scheme-simple-keywords t)
+  :config
+  (defun d/scheme-send-buffer ()
+    (interactive)
+    (scheme-send-region (point-min) (point-max)))
+
+  (defun d/scheme-send-surrounding-sexp (levels)
+    (interactive "p")
+    (save-excursion
+      (up-list (abs levels))
+      (scheme-send-last-sexp)))
+
+  (defun d/scheme-compile-region-or-definition ()
+    (interactive)
+    (if (region-active-p)
+        (scheme-compile-region (region-beginning)
+                               (region-end))
+      (scheme-compile-definition)))
+
+  (setq scheme-program-name "csi -q")
+  (add-to-list 'interpreter-mode-alist '("chicken-scheme" . scheme-mode))
+  (add-to-list 'interpreter-mode-alist '("csi" . scheme-mode))
+  ;; chicken core
+  (put 'module                 'scheme-indent-function 2)
+  (put 'functor                'scheme-indent-function 2)
+  (put 'begin-for-syntax       'scheme-indent-function 0)
+  (put 'and-let*               'scheme-indent-function 1)
+  (put 'let-optionals          'scheme-indent-function 1)
+  (put 'let-optionals*         'scheme-indent-function 1)
+  (put 'letrec-values          'scheme-indent-function 1)
+  (put 'case-lambda            'scheme-indent-function 0)
+  (put 'catch                  'scheme-indent-function 'defun)
+  (put 'assume                 'scheme-indent-function 1)
+  (put 'cond-expand            'scheme-indent-function 0)
+  (put 'cut                    'scheme-indent-function 1)
+  (put 'cute                   'scheme-indent-function 1)
+  (put 'set-read-syntax!       'scheme-indnet-function 1)
+  (put 'set-sharp-read-syntax! 'scheme-indnet-function 1)
+  (put 'condition-case         'scheme-indent-function 1)
+  (put 'handle-exceptions      'scheme-indent-function 2)
+  (put 'with-exception-handler 'scheme-indent-function 1)
+  (put 'with-input-from-pipe   'scheme-indent-function 1)
+  (put 'with-output-to-pipe    'scheme-indent-function 1)
+  (put 'compiler-typecase      'scheme-indent-function 1)
+  (put 'foreign-lambda         'scheme-indent-function 2)
+  (put 'foreign-lambda*        'scheme-indent-function 2)
+  (put 'foreign-safe-lambda    'scheme-indent-function 2)
+  (put 'foreign-safe-lambda*   'scheme-indent-function 2)
+  (put 'foreign-primitive      'scheme-indent-function 2)
+  (put 'let-location           'scheme-indent-function 1)
+  ;; matchable
+  (put 'match         'scheme-indent-function 1)
+  (put 'match-let     'scheme-indent-function 1)
+  (put 'match-let*    'scheme-indent-function 1)
+  (put 'match-letrec  'scheme-indent-function 1)
+  (put 'match-lambda  'scheme-indent-function 0)
+  (put 'match-lambda* 'scheme-indent-function 0)
+  ;; miscmacros
+  (put 'while   'scheme-indent-function 1)
+  (put 'select  'scheme-indent-function 1)
+  (put 'dotimes 'scheme-indent-function 1)
+  (put 'repeat  'scheme-indent-function 1)
+  (put 'ecase   'scheme-indent-function 1)
+  ;; test
+  (put 'test-assert 'scheme-indent-function 1)
+  (put 'test-error  'scheme-indent-function 1)
+  (put 'test        'scheme-indent-function 1)
+  (put 'test-group  'scheme-indent-function 1)
+  ;; spiffy
+  (put 'with-headers 'scheme-indent-function 1))
+#+end_src
 **** Packages
 ***** [[https://github.com/jaor/geiser][geiser]]
 #+begin_quote
@@ -3711,159 +3863,6 @@ emacs and scheme talk to each other
   (d/mode-leader-keys inferior-scheme-mode-map
     "d" 'chicken-doc-describe)
   :straight (:repo "https://depp.brause.cc/chicken-doc.el.git"))
-#+end_src
-**** Functions
-#+begin_src emacs-lisp
-(defun d/scheme-send-buffer ()
-  (interactive)
-  (scheme-send-region (point-min) (point-max)))
-
-(defun d/scheme-send-surrounding-sexp (levels)
-  (interactive "p")
-  (save-excursion
-    (up-list (abs levels))
-    (scheme-send-last-sexp)))
-#+end_src
-**** Bindings
-#+begin_src emacs-lisp
-(d/mode-leader-keys scheme-mode-map
-  "eb" 'd/scheme-send-buffer
-  "ef" 'scheme-send-definition
-  "er" 'scheme-send-region
-  "el" 'scheme-send-last-sexp
-  "es" 'd/scheme-send-surrounding-sexp)
-
-(evil-define-key 'normal scheme-mode-map [backtab] #'hs-toggle-hiding)
-
-(nmap scheme-mode-map
-  "C-c C-c" 'scheme-compile-definition)
-
-(defun d/scheme-compile-region-or-definition-and-go ()
-  (interactive)
-  (if (region-active-p)
-      (scheme-compile-region (region-beginning)
-                             (region-end))
-    (scheme-compile-definition)))
-
-(d/after 'scheme
-  (define-key scheme-mode-map (kbd "C-c C-c") 'd/scheme-compile-region-or-definition-and-go))
-#+end_src
-**** Setup
-#+begin_src emacs-lisp
-(add-to-list 'auto-mode-alist '("\\.egg\\'" . scheme-mode))
-(add-to-list 'auto-mode-alist '("\\.sld\\'" . scheme-mode))
-(add-to-list 'auto-mode-alist '("\\.release-info\\'" . scheme-mode))
-
-(d/hook! scheme-mode
-  (hs-minor-mode)
-  (d/after 'evil-surround
-    (push '(? . ("`" . "'")) evil-surround-pairs-alist)))
-
-#+end_src
-The following is a shim for geiser's syntax highlighting and indentation.
-#+begin_src emacs-lisp
-(defmacro d/scheme-indent (&rest pairs)
-  `(progn ,@(mapcar (lambda (p)
-                      `(put ',(car p) 'scheme-indent-function ',(cadr p)))
-                    pairs)))
-
-(d/after 'scheme
-  ;; geiser shim
-  (setq scheme-program-name "csi -q")
-  (add-to-list 'interpreter-mode-alist '("chicken-scheme" . scheme-mode))
-  (add-to-list 'interpreter-mode-alist '("csi" . scheme-mode))
-  ;; Defaults (geiser)
-  (d/scheme-indent
-   (and-let* 1) (case-lambda 0) (catch defun) (class defun) (dynamic-wind 0)
-   (guard 1) (let*-values 1) (let-values 1) (let/ec 1) (letrec* 1) (match 1)
-   (match-lambda 0) (match-lambda* 0) (match-let scheme-let-indent)
-   (match-let* 1) (match-letrec 1) (opt-lambda 1) (parameterize 1)
-   (parameterize* 1) (receive 2) (require-extension 0) (syntax-case 2)
-   (test-approximate 1) (test-assert 1) (test-eq 1) (test-equal 1) (test-eqv 1)
-   (test-group-with-cleanup 1) (test-runner-on-bad-count! 1)
-   (test-runner-on-bad-end-name! 1) (test-runner-on-final! 1)
-   (test-runner-on-group-begin! 1) (test-runner-on-group-end! 1)
-   (test-runner-on-test-begin! 1) (test-runner-on-test-end! 1)
-   (test-with-runner 1) (unless 1) (when 1) (while 1)
-   (with-exception-handler 1) (with-syntax 1) (with-headers 1))
-
-  ;; Chicken (geiser)
-  (d/scheme-indent
-   (assume 1) (compiler-typecase 1) (cond-expand 0) (condition-case 1) (cut 1)
-   (cute 1) (declare 0) (dotimes 1) (repeat 1) (ecase 1) (fluid-let 1) (foreign-lambda 2)
-   (foreign-lambda* 2) (foreign-primitive 2) (foreign-safe-lambda 2)
-   (foreign-safe-lambda* 2) (functor 3) (handle-exceptions 2) (import 0)
-   (let-location 1) (let-optionals 2) (let-optionals* 2) (letrec-values 1)
-   (module 2) (regex-case 1) (select 1) (set! 1) (use 0) (define-library 1)
-   (with-input-from-pipe 1) (with-output-to-pipe 1))
-  ;; Added by me
-  (d/scheme-indent
-   (test-group 1) (begin-for-syntax 0) (set-read-syntax! 1)
-   (set-sharp-read-syntax! 1)))
-
-(defun d/scheme-simple-keywords (keywords)
-  "Return `font-lock-keywords' to highlight scheme KEYWORDS.
-KEYWORDS should be a list of strings."
-  (when keywords
-    (font-lock-add-keywords
-     'scheme-mode
-     `((,(format "[[(]%s\\>" (regexp-opt keywords 1)) . 1)))))
-(defun d/scheme-keywords (builtin)
-  (d/scheme-simple-keywords builtin)
-  (font-lock-add-keywords
-   'scheme-mode
-   `(("\\[\\(else\\)\\>" . 1)
-     (,(rx (any "([{") (group (or "define-syntax-rule"
-                                  "define-for-syntax"
-                                  "define-inline"
-                                  "define-external"
-                                  "define-foreign-variable"))
-           eow (* space)
-           (? "(") (? (group (1+ word))))
-      (1 font-lock-keyword-face)
-      (2 font-lock-function-name-face nil t)))))
-
-;; Default (geiser)
-(d/scheme-keywords
- '("and-let*" "cut" "cute" "define-condition-type"
-   "define-immutable-record-type" "define-record-type" "define-values"
-   "letrec*" "match" "match-lambda" "match-lambda*" "match-let" "match-let*"
-   "match-letrec" "parameterize" "receive" "require-extension" "set!"
-   "syntax-case" "test-approximate" "test-assert" "test-begin" "test-end"
-   "test-eq" "test-equal" "test-eqv" "test-error" "test-group"
-   "test-group-with-cleanup" "test-with-runner" "unless" "when"
-   "with-exception-handler" "with-input-from-file" "with-output-to-file"))
-;; Chicken (geiser)
-(d/scheme-simple-keywords
- '("assume" "compiler-typecase" "cond-expand" "condition-case" "declare"
-   "define-constant" "define-inline" "define-interface" "define-record"
-   "define-specialization" "define-type" "dotimes" "ecase" "fluid-let"
-   "foreign-lambda" "foreign-lambda*" "foreign-primitive"
-   "foreign-safe-lambda" "foreign-safe-lambda*" "functor" "handle-exceptions"
-   "let-location" "let-optionals" "let-optionals*" "letrec-values" "module"
-   "regex-case" "select" "use" "with-input-from-pipe"))
-;; Added by me
-(d/scheme-simple-keywords
- '("define-foreign-type" "define-foreign-record-type" "foreign-value"
-   "foreign-declare" "begin-for-syntax" "define-for-syntax" "include-relative"
-   "import-for-syntax"))
-
-;; Keywords, #! parameters, shebang
-(font-lock-add-keywords
- 'scheme-mode
- '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)
-   ("\\`\\(#!.*/\\)\\([^ \t\n]+\\)\\( .*\\)?"
-    (1 font-lock-comment-face)
-    (2 font-lock-keyword-face t)
-    (3 font-lock-comment-face t t)
-    )
-   ("\\<#!\\sw+\\>" . 'font-lock-type-face))
- t)
-(font-lock-add-keywords
- 'inferior-scheme-mode
- '(("\\<\\sw+:\\>" . 'font-lock-builtin-face)
-   ("\\<#!\\sw+\\>" . 'font-lock-type-face))
- t)
 #+end_src
 *** Lisp
 **** Packages
