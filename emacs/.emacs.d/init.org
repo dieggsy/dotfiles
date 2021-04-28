@@ -798,7 +798,8 @@ This function is intended for use with `ivy-ignore-buffers'."
             "Quail" "Paradox Report" "Backtrace" "slime-events"
             "slime-compilation" "inferior-lisp" "Completions" "embrace-help"
             "geiser messages*" "Geiser dbg" "tramp/" "Process List"
-            "eshell:" "Error" "magit-todos" "clang" "lsp" "Flymake")))
+            "eshell:" "Error" "magit-todos" "clang" "lsp" "Flymake"
+            "sly-inferior" "sly-events" "sly-compilation")))
 
   (defun d/ivy-dired-transformer (str)
     "Display transformer for dired buffers in `ivy-switch-buffer'.
