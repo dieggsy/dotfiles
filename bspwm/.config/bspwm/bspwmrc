@@ -83,13 +83,6 @@ for m in $(bspc query -M --names); do
 done
 ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-simple
 
-# I'm not sure why I need a 'sleep' at the beginning here, but otherwise
-# polybar levels goes below windows
-(sleep 1
- polybar -q levels &
- ln -sf /tmp/polybar_mqueue.$! /tmp/ipc-polybar-levels \
-     && sleep 1 && echo "cmd:hide" >> /tmp/ipc-polybar-levels) &
-
 # Floating st + tmux (see rules.sh)
 run alacritty --class st-float
 # Run emacs in background, connect with emacsclient

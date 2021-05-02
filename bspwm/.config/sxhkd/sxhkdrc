@@ -170,27 +170,27 @@ super + {Left,Down,Up,Right}
 
 XF86MonBrightnessUp
     key=$(date +%s.%N) \
-    && echo "$key" > /tmp/levels-timeout \
-    && echo "cmd:show" >> /tmp/ipc-polybar-levels \
+    && echo "$key" > /tmp/polybar-backlight \
+    && polybar-msg cmd show.backlight \
     && brightness=$(printf "%0.f" `xbacklight -get`) \
     && [[ $brightness -lt 5 ]] \
     && xbacklight -set $(($brightness + 1)) \
     || xbacklight -set $(($brightness + 5));  \
     sleep 2 \
-    && [ "$key" = "$(</tmp/levels-timeout)" ] \
-    && echo "cmd:hide" >> /tmp/ipc-polybar-levels
+    && [ "$key" = "$(</tmp/polybar-backlight)" ] \
+    && polybar-msg cmd hide.backlight
 XF86MonBrightnessDown
     key=$(date +%s.%N) \
-    && echo "$key" > /tmp/levels-timeout \
-    && echo "cmd:show" >> /tmp/ipc-polybar-levels \
+    && echo "$key" > /tmp/polybar-backlight \
+    && polybar-msg cmd show.backlight \
     && brightness=$(printf "%0.f" `xbacklight -get`) \
     && [[ $brightness -gt 1 ]] \
     && ( [[ $brightness -le 5 ]] \
     && xbacklight -set $(($brightness - 1)) \
     || xbacklight -set $(($brightness - 5)) ); \
     sleep 2 \
-    && [ "$key" = "$(</tmp/levels-timeout)" ] \
-    && echo "cmd:hide" >> /tmp/ipc-polybar-levels
+    && [ "$key" = "$(</tmp/polybar-backlight)" ] \
+    && polybar-msg cmd hide.backlight
 XF86AudioPrev
     playerctl previous
 XF86AudioNext
@@ -207,31 +207,31 @@ super + F3
     playerctl next
 XF86AudioMute
     key=$(date +%s.%N) \
-    && echo "$key" > /tmp/levels-timeout \
-    && echo "cmd:show" >> /tmp/ipc-polybar-levels \
+    && echo "$key" > /tmp/polybar-volume \
+    && polybar-msg cmd show.pulse \
     && amixer -D pulse sset Master toggle; \
     sleep 2 \
-    && [ "$key" = "$(</tmp/levels-timeout)" ] \
-    && echo "cmd:hide" >> /tmp/ipc-polybar-levels
+    && [ "$key" = "$(</tmp/polybar-volume)" ] \
+    && polybar-msg cmd hide.pulse
 XF86AudioLowerVolume
     key=$(date +%s.%N) \
-    && echo "$key" > /tmp/levels-timeout \
-    && echo "cmd:show" >> /tmp/ipc-polybar-levels \
+    && echo "$key" > /tmp/polybar-volume \
+    && polybar-msg cmd show.pulse \
     && amixer -D pulse sset Master 5%-; \
     sleep 2 \
-    && [ "$key" = "$(</tmp/levels-timeout)" ] \
-    && echo "cmd:hide" >> /tmp/ipc-polybar-levels
+    && [ "$key" = "$(</tmp/polybar-volume)" ] \
+    && polybar-msg cmd hide.pulse
 XF86AudioRaiseVolume
     key=$(date +%s.%N) \
-    && echo "$key" > /tmp/levels-timeout \
-    && echo "cmd:show" >> /tmp/ipc-polybar-levels \
+    && echo "$key" > /tmp/polybar-volume \
+    && polybar-msg cmd show.pulse \
     && amixer -D pulse sset Master 5%+; \
     sleep 2 \
-    && [ "$key" = "$(</tmp/levels-timeout)" ] \
-    && echo "cmd:hide" >> /tmp/ipc-polybar-levels
+    && [ "$key" = "$(</tmp/polybar-volume)" ] \
+    && polybar-msg cmd hide.pulse
 XF86AudioMicMute
     amixer set Capture toggle
 XF86Display
-    scrot ~/pic/scrot/%Y-%m-%d_%H:%M:%S.png && notify-send "scrot" "Screenshot saved to ~/pic/scrot"
+    maim ~/pic/scrot/%Y-%m-%d_%H:%M:%S.png && notify-send "maim" "Screenshot saved to ~/pic/scrot"
 shift + XF86Display
-    scrot -s ~/pic/scrot/%Y-%m-%d_%H:%M:%S.png && notify-send "scrot" "Window screenshot saved to ~/pic/scrot"
+    maim -s ~/pic/scrot/%Y-%m-%d_%H:%M:%S.png && notify-send "maim" "Window/selection screenshot saved to ~/pic/scrot"
