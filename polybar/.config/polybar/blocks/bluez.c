@@ -77,7 +77,7 @@ int main() {
                     dbus_message_iter_next(&propdict_entry);
                 }
                 if (connected) {
-                    printf("⣿");
+                    printf("⇋");
                     return 0;
                 }
             }
@@ -87,7 +87,8 @@ int main() {
         dbus_message_iter_next(&pathdict_entry);
     }
     dbus_message_unref(msg_reply);
-    printf("⠶");
+
+    printf("%%{F#665C54}⇋%%{F-}");
     return 0;
 }
 

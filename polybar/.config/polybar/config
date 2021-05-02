@@ -35,7 +35,6 @@ module-margin=0
 separator=
 
 font-0 = Iosevka Term:size=8;3
-font-1 = Iosevka Term:size=5;0
 
 modules-left = bspwm xwindow
 modules-center = date
@@ -77,30 +76,29 @@ label-focused = ●
 ; label-monocle-foreground=${colors.sienna}
 label-monocle= M
 
-label-occupied = ⊙
-; label-occupied-foreground = ${colors.sienna}
+label-occupied = ●
+label-occupied-foreground = ${colors.comment}
 
-label-urgent = ⊙
+label-urgent = ●
 ; label-urgent-background = ${colors.alert}
 label-urgent-foreground = ${colors.alert}
 ; label-urgent-padding = 1
 
 label-empty = ○
-; label-empty-foreground = ${colors.sienna}
+label-empty-foreground = ${colors.comment}
 
 [module/network]
 type = internal/network
 interface = wlp3s0
 format-connected = %{A1:networkmanager_dmenu&:}<ramp-signal>%{A}
-ramp-signal-font = 2
-ramp-signal-0 = %{F#665C54}🭈🭆🭂
-ramp-signal-1 = 🭈%{F#665C54}🭆🭂
-ramp-signal-2 = 🭈🭆%{F#665C54}🭂
-ramp-signal-3 = 🭈🭆🭂
+
+ramp-signal-0 = %{F#665C54}⣠⣴⣾
+ramp-signal-1 = ⣠%{F#665C54}⣴⣾
+ramp-signal-2 = ⣠⣴%{F#665C54}⣾
+ramp-signal-3 = ⣠⣴⣾
 
 format-disconnected = %{A1:networkmanager_dmenu&:}<label-disconnected>%{A}
-label-disconnected = ▁▁▁
-label-disconnected-font = 2
+label-disconnected =⣀⣀⣀
 label-disconnected-foreground = ${colors.red}
 ; format-foreground = ${colors.blue}
 ; format-underline = ${colors.blue}
