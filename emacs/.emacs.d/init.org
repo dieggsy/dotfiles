@@ -3866,6 +3866,16 @@ emacs and scheme talk to each other
   :straight (:repo "https://depp.brause.cc/chicken-doc.el.git"))
 #+end_src
 *** Lisp
+**** Built-in
+#+begin_src emacs-lisp
+(use-package lisp-mode
+  :straight nil
+  :init
+  (font-lock-add-keywords
+   'lisp-mode
+   '((":|.*?|" . 'font-lock-builtin-face))))
+#+end_src
+
 **** Packages
 ***** [[https://github.com/joaotavora/sly][sly]]
 #+begin_quote :tangle no
