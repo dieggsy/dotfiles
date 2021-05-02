@@ -156,7 +156,7 @@ browser = firefox
 # icon_folders = /usr/share/icons/Adwaita/48x48/status/:/usr/share/icons/Adwaita/48x48/devices/
 
 # Limit icons size.
-max_icon_size=128
+max_icon_size=64
 
 [shortcuts]
 
