@@ -89,7 +89,7 @@ label-empty-foreground = ${colors.comment}
 
 [module/network]
 type = internal/network
-interface = wlp3s0
+interface = wlan0
 format-connected = %{A1:networkmanager_dmenu&:}<ramp-signal>%{A}
 
 ramp-signal-0 = %{F#665C54}⣠⣴⣾
