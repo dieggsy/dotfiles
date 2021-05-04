@@ -1075,7 +1075,8 @@ an active enough action that I'm ok with this."
         org-hide-emphasis-markers nil
         org-startup-with-inline-images t
         org-ellipsis " …"
-        org-highlight-latex-and-related '(latex)
+        ;; This actually slows down org-mode a LOT
+        ;; org-highlight-latex-and-related '(latex)
         org-pretty-entities nil
         org-hide-leading-stars t
         org-fontify-done-headline t
