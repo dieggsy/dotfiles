@@ -469,6 +469,27 @@ so emacs doesn't ask every time.
 ** Packages
 These are packages that I consider /absolutely essential/ to my emacs workflow,
 or that enhance emacs at a deeper level than any regular mode.
+*** [[https://github.com/dieggsy/emacs-theme-darktooth][darktooth-theme]]
+#+begin_quote
+An Emacs 24 theme remixed from gruvbox
+#+end_quote
+(my fork)
+#+begin_src emacs-lisp
+(use-package darktooth-theme
+  :demand t
+  :straight (:host github
+             :repo "emacsfodder/emacs-theme-darktooth"
+             :fork (:host github
+                    :repo "dieggsy/emacs-theme-darktooth"))
+  :init
+  (define-advice autothemer-deftheme (:before (_ _ palette &rest _) d/defcolors)
+    (mapcar (lambda (e)
+              (setf (symbol-value (car e))
+                    (cadr e)))
+            (cdr palette)))
+  :config
+  (load-theme 'darktooth))
+  #+end_src
 *** [[https://github.com/noctuid/general.el][general]]
 #+begin_quote
 More convenient key definitions in emacs
@@ -3187,21 +3208,6 @@ Colorize color names in buffers
   (d/safe-vars! (eval when (fboundp 'rainbow-mode) (rainbow-mode 1)))
   :config
   (setq rainbow-x-colors-major-mode-list '(c-mode c++-mode java-mode)))
-#+end_src
-*** [[https://github.com/dieggsy/emacs-theme-darktooth][darktooth-theme]]
-#+begin_quote
-An Emacs 24 theme remixed from gruvbox
-#+end_quote
-(my fork)
-#+begin_src emacs-lisp
-(use-package darktooth-theme
-  :demand t
-  :straight (:host github
-             :repo "emacsfodder/emacs-theme-darktooth"
-             :fork (:host github
-                    :repo "dieggsy/emacs-theme-darktooth"))
-  :config
-  (load-theme 'darktooth))
 #+end_src
 *** [[https://github.com/jordonbiondo/column-enforce-mode][column-enforce-mode]]
 #+begin_quote
