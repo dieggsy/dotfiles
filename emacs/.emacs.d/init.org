@@ -817,7 +817,7 @@ color is hidden by ivy's match color."
                   str)
         str)))
 
-  (ivy-set-display-transformer 'ivy-switch-buffer 'd/ivy-dired-transformer)
+  (ivy-configure 'ivy-switch-buffer :display-transformer-fn 'd/ivy-dired-transformer)
 
   (d/list-prepend! 'ivy-sort-functions-alist
     `(ivy-completion-in-region
