@@ -27,7 +27,7 @@ git-prompt: bin/bin/git-prompt.c
 		`pkg-config --silence-errors -libs --cflags libgit2`
 
 .PHONY: etc
-etc:
+etc: 
 	cd etc/ && sudo stow -t /etc $(ETC)
 
 .PHONY: usr

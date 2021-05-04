@@ -1,0 +1,24 @@
+\e]P0282828
+\e]P19d1306
+\e]P279739e
+\e]P3b57614
+\e]P4076678
+\e]P58f3f71
+\e]P600a7af
+\e]P7bdae93
+\e]P8686868
+\e]P9fb4933
+\e]PAb8bb26
+\e]PBfabd2f
+\e]PC83a598
+\e]PDd3869b
+\e]PE3fd7e5
+\e]PFfdf4c1
+\e[H\e[2J\d \t
+\e{lightcyan}       /\\        \e{reset} \e{lightgreen}\l\e{reset} on \e{lightmagenta}\n\e{reset}
+\e{lightcyan}      /  \\       \e{reset} \e{lightblue}os\e{reset}     \S{NAME}
+\e{lightcyan}     /\\   \\     \e{reset} \e{lightblue} kernel\e{reset} \r
+\e{lightblue}    /      \\     \e{reset} \e{lightblue}arch\e{reset}   \m
+\e{lightblue}   /   ,,   \\    \e{reset} \e{lightblue}ipv4\e{reset}   \4
+\e{lightblue}  /   |  |  -\\   \e{reset} \e{lightblue}ipv6\e{reset}   \6
+\e{lightblue} /_-''    ''-_\\  \e{reset} \e{lightblue}users\e{reset}  \u
