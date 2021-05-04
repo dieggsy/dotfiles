@@ -56,7 +56,7 @@ fi
 
 maybe_host () {
     if [ $SSH_CLIENT ] || [ $SSH_TTY ]; then
-        echo "%F{13}%n@%M%f "
+        echo "%F{13}@%M%f "
     fi
 }
 
