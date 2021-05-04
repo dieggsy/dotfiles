@@ -378,34 +378,6 @@ Integrate gpg passphrase query with Emacs minibuffer when using EPA.
 #+begin_src emacs-lisp
 (setq frame-resize-pixelwise t)
 #+end_src
-*** Mode line
-A simpler mode line. Note that this configuration depends on the ~moody~ and
-~minions~ packages.
-#+begin_src emacs-lisp
-(column-number-mode)
-(setq mode-line-percent-position nil)
-(setq mode-line-position-column-line-format '("(%l, %c)"))
-(setq-default mode-line-format
-              '("%e"
-                mode-line-front-space
-                mode-line-mule-info
-                mode-line-modified
-                mode-line-remote
-                " "
-                (:eval
-                 (if (display-graphic-p)
-                     moody-mode-line-buffer-identification
-                   mode-line-buffer-identification))
-                ;; originally: mode-line-buffer-identification
-                " "
-                minions-mode-line-modes
-                ;; originally: mode-line-modes
-                (:eval (if (display-graphic-p) moody-vc-mode vc-mode))
-                (:eval (if vc-mode " " ""))
-                ;; orriginally: (vc-mode vc-mode) ;; if !minions, place before previous
-                (:propertize "(%l, %c)" face (:inherit font-lock-comment-face :slant normal))
-                mode-line-misc-info))
-#+end_src
 *** Modes
 #+begin_src emacs-lisp
 (d/list-prepend! 'auto-mode-alist
@@ -557,15 +529,7 @@ I went for it. Now I'll never go back.
         evil-visual-state-cursor 'box
         evil-ex-search-vim-style-regexp t
         evil-split-window-below t
-        evil-vsplit-window-right t
-        ;; This was more relevant when I displayed the tag in the mode-line.
-        evil-normal-state-tag (propertize " " 'face '(:background "#B8BB26"))
-        evil-insert-state-tag (propertize " " 'face '(:background "#66999D"))
-        evil-motion-state-tag (propertize " " 'face '(:background "#D3869B"))
-        evil-visual-state-tag (propertize " " 'face '(:background "#FE8019"))
-        evil-emacs-state-tag (propertize " " 'face '(:background "#FABD2F"))
-        evil-replace-state-tag (propertize " " 'face '(:background "#FE8019"))
-        evil-operator-state-tag (propertize " " 'face '(:background "#B8BB26")))
+        evil-vsplit-window-right t)
 
   (evil-define-command evil-view (file &optional bang)
     "Open FILE in view-mode.
@@ -1424,6 +1388,79 @@ also use these keys to quit out of the minibuffer.
 #+begin_src emacs-lisp
 (general-def universal-argument-map
   "SPC u" 'universal-argument-more)
+#+end_src
+** Mode line
+A simpler mode line. Note that this configuration depends on the ~moody~ and
+~minions~ packages.
+#+begin_src emacs-lisp
+(defvar d/selected-window nil)
+(add-hook 'pre-redisplay-functions
+          (defun d/set-selected-window (_)
+            (unless (eq (selected-window) (minibuffer-window))
+              (setq d/selected-window (selected-window)))))
+(defun d/window-active-p ()
+  (eq (selected-window) d/selected-window))
+
+(setq-default mode-line-format
+              '("%e"
+                (:eval
+                 (propertize
+                  (let ((read-only buffer-read-only)
+                        (modified  (and buffer-file-name (buffer-modified-p))))
+                    (cond (modified " ** ") (read-only " RO ") (t " RW ")))
+                  'face
+                  (if (d/window-active-p)
+                      (pcase evil-state
+                        ('normal   '(:foreground "#282828" :background "#B8BB26"))
+                        ('insert   '(:foreground "#282828" :background "#66999D"))
+                        ('motion   '(:foreground "#282828" :background "#D3869B"))
+                        ('visual   '(:foreground "#282828" :background "#FE8019"))
+                        ('emacs    '(:foreground "#282828" :background "#FABD2F"))
+                        ('replace  '(:foreground "#282828" :background "#FE8019"))
+                        ('operator '(:foreground "#282828" :background "#B8BB26")))
+                    '(:foreground "#282828" :background "#665C54"))))
+                " "
+                (:eval
+                 (concat (let ((bufname (format-mode-line "%b")))
+                           (format "%s"
+                                   (if (string-match-p "^\\*.*\\*$" bufname)
+                                       (propertize (substring bufname 1 (1- (length bufname)))
+                                                   'face '(:slant italic))
+                                     bufname)))))
+                " "
+                (:eval
+                 (let ((host (file-remote-p default-directory 'host)))
+                   (if host
+                       (propertize
+                        (concat "@" host)
+                        'face
+                        (if (d/window-active-p)
+                            '(:inherit ivy-remote :slant italic)
+                          '(:inherit mode-line-inactive :slant italic)))
+                     "")))
+                " "
+                (:eval
+                 (concat "("
+                         (if (listp mode-name) (car mode-name) mode-name)
+                         (if vc-mode
+                             (concat ", "
+                                     (propertize
+                                      (concat "#" (substring-no-properties vc-mode 5))
+                                      'face
+                                      (if (d/window-active-p)
+                                          '(:inherit font-lock-comment-face)
+                                        `(:inherit font-lock-comment-face
+                                                   :foreground ,(face-attribute 'mode-line-inactive :foreground))))))
+                         ")"))
+                " "
+                (:eval
+                 (propertize (format-mode-line "%l:%c")
+                             'face
+                             (if (d/window-active-p)
+                                 '(:inherit font-lock-comment-face :slant normal)
+                               'mode-line-inactive)))
+                " "
+                mode-line-misc-info))
 #+end_src
 * Help
 ** Built-in
@@ -3167,7 +3204,7 @@ I don't like seeing variable pitch in emacs. Just sorta throws me off.
 #+end_src
 ** Packages
 *** [[https://github.com/tarsius/moody][moody]]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package moody
   :demand t
   :config
@@ -3175,7 +3212,7 @@ I don't like seeing variable pitch in emacs. Just sorta throws me off.
   (setq moody-mode-line-height 47))
 #+end_src
 *** [[https://github.com/tarsius/minions][minions]]
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package minions
   :demand t
   :custom
