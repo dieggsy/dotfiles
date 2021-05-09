@@ -75,6 +75,7 @@ alias startx='startx &>/dev/null'
 alias yay=paru
 alias nmr='sudo systemctl restart NetworkManager'
 alias locate=plocate
+alias clear='clear -x'
 
 cd_list () {
     emulate -L zsh
