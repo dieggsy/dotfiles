@@ -4496,7 +4496,7 @@ directory to make multiple eshell windows easier."
 #+begin_quote
 Emacs support library for PDF files.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package pdf-tools
   :mode ("\\.pdf\\'" . pdf-tools-mode)
   :general
