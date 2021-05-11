@@ -453,6 +453,8 @@ An Emacs 24 theme remixed from gruvbox
              :repo "emacsfodder/emacs-theme-darktooth"
              :fork (:host github
                     :repo "dieggsy/emacs-theme-darktooth"))
+  :custom
+  (custom-safe-themes t)
   :init
   (define-advice autothemer-deftheme (:before (_ _ palette &rest _) d/defcolors)
     (mapcar (lambda (e)
@@ -3169,10 +3171,6 @@ Use a bar cursor in the minibuffer.
 #+begin_src emacs-lisp :tangle no
 (setq-default left-margin-width 1)
 (setq-default right-margin-width 1)
-#+end_src
-*** Themes
-#+begin_src emacs-lisp
-(setq custom-safe-themes t)
 #+end_src
 *** variable-pitch
 I don't like seeing variable pitch in emacs. Just sorta throws me off.
