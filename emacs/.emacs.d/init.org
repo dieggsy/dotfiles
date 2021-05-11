@@ -284,7 +284,7 @@ every other time. See [[https://www.gnu.org/software/emacs/manual/html_node/emac
 ** Defaults
 *** native-comp warnings
 #+begin_src emacs-lisp
-(setq comp-async-report-warnings-errors nil)
+(setq native-comp-async-report-warnings-errors nil)
 #+end_src
 *** Disabled Commands
 By default, some emacs commands are disabled because I guess they're considered
