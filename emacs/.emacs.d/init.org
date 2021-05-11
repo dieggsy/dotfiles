@@ -1424,23 +1424,21 @@ A simpler mode line. Note that this configuration depends on the ~moody~ and
                 " "
                 (:eval
                  (concat (let ((bufname (format-mode-line "%b")))
-                           (format "%s"
-                                   (if (string-match-p "^\\*.*\\*$" bufname)
-                                       (propertize (substring bufname 1 (1- (length bufname)))
-                                                   'face '(:slant italic))
-                                     bufname)))))
+                           (if (string-match "^\\*\\(.*\\)\\*\\(<[0-9]+>\\)?$" bufname)
+                               (propertize (concat (match-string 1 bufname)
+                                                   (match-string 2 bufname))
+                                           'face '(:slant italic))
+                             bufname))))
                 " "
                 (:eval
                  (let ((host (file-remote-p default-directory 'host)))
-                   (if host
-                       (propertize
-                        (concat "@" host)
-                        'face
-                        (if (d/window-active-p)
-                            '(:inherit ivy-remote :slant italic)
-                          '(:inherit mode-line-inactive :slant italic)))
-                     "")))
-                " "
+                   (when host
+                     (propertize
+                      (concat "@" host  " ")
+                      'face
+                      (if (d/window-active-p)
+                          '(:inherit ivy-remote :slant italic)
+                        '(:inherit mode-line-inactive :slant italic))))))
                 (:eval
                  (concat "("
                          (if (listp mode-name) (car mode-name) mode-name)
