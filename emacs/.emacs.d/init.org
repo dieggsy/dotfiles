@@ -916,7 +916,7 @@ authoring documents with a fast and effective plain-text system.
 But really, it's life.
 **** Package
 #+begin_src emacs-lisp
-(use-package org-plus-contrib
+(use-package org
   :general
   (nmap org-mode-map
     "gt" 'org-todo
