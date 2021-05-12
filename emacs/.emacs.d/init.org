@@ -297,7 +297,7 @@ Since we've disabled ~custom.el~, ensure variables are remembered as safe if pro
 #+begin_src emacs-lisp
 (define-advice customize-push-and-save (:after (vars unsafe-vars) d/safe-vars)
   (when (eq vars 'safe-local-variable-values)
-    (with-current-buffer (find-file-noselect (no-littering-expand-var-file-name "safe-vars.el"))
+    (with-current-buffer (find-file-noselect (no-littering-expand-etc-file-name "safe-vars.el"))
       (insert
        (format
         "(setq safe-local-variable-values '%S)\n"
