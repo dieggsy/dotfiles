@@ -292,6 +292,10 @@ By default, some emacs commands are disabled because I guess they're considered
 #+begin_src emacs-lisp
 (setq disabled-command-function nil)
 #+end_src
+*** Bell
+#+begin_src emacs-lisp
+(setq ring-bell-function 'ignore)
+#+end_src
 *** Local vars
 Since we've disabled ~custom.el~, ensure variables are remembered as safe if prompted.
 #+begin_src emacs-lisp
