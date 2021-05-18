@@ -3930,6 +3930,7 @@ Sylvester the Cat's Common Lisp IDE
     [down] 'sly-mrepl-next-input-or-button)
   :config
   (setq inferior-lisp-program "ros run"))
+(use-package sly-macrostep)
 #+end_src
 *** Ocaml
 **** Packages
