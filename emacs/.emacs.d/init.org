@@ -3914,6 +3914,13 @@ emacs and scheme talk to each other
 #+begin_src emacs-lisp
 (use-package lisp-mode
   :straight nil
+  :general
+  (d/mode-leader-keys lisp-mode-map
+    "eb" 'sly-eval-buffer
+    "ef" 'sly-eval-defun
+    "er" 'sly-eval-region
+    ;; "es" 'd/eval-surrounding-sexp
+    "el" 'sly-eval-last-expression)
   :init
   (font-lock-add-keywords
    'lisp-mode
