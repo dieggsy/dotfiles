@@ -946,14 +946,15 @@ But really, it's life.
   :init
   (d/safe-vars! (org-log-done))
   :config
-  (d/after 'ox
-    (require 'ox-extra)
-    (ox-extras-activate '(ignore-headlines)))
   (d/after 'org-crypt
     (org-crypt-use-before-save-magic))
   (require 'org-mobile))
 
-(use-package org-contrib)
+(use-package org-contrib
+  :config
+  (d/after 'ox
+    (require 'ox-extra)
+    (ox-extras-activate '(ignore-headlines))))
 #+end_src
 **** Defaults
 ***** Files
