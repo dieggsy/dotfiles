@@ -952,6 +952,8 @@ But really, it's life.
   (d/after 'org-crypt
     (org-crypt-use-before-save-magic))
   (require 'org-mobile))
+
+(use-package org-contrib)
 #+end_src
 **** Defaults
 ***** Files
