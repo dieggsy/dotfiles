@@ -157,7 +157,7 @@ void print_branch_info(FILE *status) {
         pid_t pid;
         char *cmd[] = {"git", "rev-parse", "--short", "HEAD", NULL};
         rev = popenish(&pid, cmd);
-        char *rev_out;
+        char *rev_out = NULL;
         n = 0;
         getline(&rev_out, &n, rev);
         char *rev_parsed = malloc(sizeof(char) * n);
