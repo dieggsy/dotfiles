@@ -92,10 +92,14 @@ type = internal/network
 interface = wlan0
 format-connected = %{A1:networkmanager_dmenu&:}<ramp-signal>%{A}
 
-ramp-signal-0 = %{F#665C54}⣠⣴⣾
-ramp-signal-1 = ⣠%{F#665C54}⣴⣾
-ramp-signal-2 = ⣠⣴%{F#665C54}⣾
-ramp-signal-3 = ⣠⣴⣾
+; ramp-signal-0 = %{F#665C54}⣠⣴⣾
+; ramp-signal-1 = ⣠%{F#665C54}⣴⣾
+; ramp-signal-2 = ⣠⣴%{F#665C54}⣾
+; ramp-signal-3 = ⣠⣴⣾
+ramp-signal-0 = ⡀
+ramp-signal-1 = ⣠
+ramp-signal-2 = ⣠⡆
+ramp-signal-3 = ⣠⣾
 
 format-disconnected = %{A1:networkmanager_dmenu&:}<label-disconnected>%{A}
 label-disconnected =⣀⣀⣀
