@@ -232,6 +232,6 @@ XF86AudioRaiseVolume
 XF86AudioMicMute
     amixer set Capture toggle
 XF86Display
-    maim ~/pic/scrot/%Y-%m-%d_%H:%M:%S.png && notify-send "maim" "Screenshot saved to ~/pic/scrot"
+    maim ~/pic/scrot/$(date +%Y-%m-%d_%H:%M:%S).png && notify-send "maim" "Screenshot saved to ~/pic/scrot"
 shift + XF86Display
-    maim -s ~/pic/scrot/%Y-%m-%d_%H:%M:%S.png && notify-send "maim" "Window/selection screenshot saved to ~/pic/scrot"
+    maim -s ~/pic/scrot/$(date +%Y-%m-%d_%H:%M:%S).png && notify-send "maim" "Window/selection screenshot saved to ~/pic/scrot"
