@@ -6,7 +6,7 @@ bspc config external_rules_command "$HOME/.config/bspwm/rules.sh"
 bspc config window_gap 30
 
 monitors=$(bspc query -M --names)
-main=$(echo $monitors | grep -P 'e-?DP1')
+main=$(echo $monitors | grep -P 'e-?DP-?1')
 first=$(echo $monitors | head -n1)
 # Make sure laptop is first. Since BSPWM assigns workspaces in visual order,
 # this way I can make sure 1-4 (by index, not name) are actually on the laptop
@@ -14,7 +14,7 @@ bspc monitor $main -s $first
 bspc monitor $main -d 1 2 3 4
 if [ $(echo $monitors | wc -l) -gt 1 ]; then
     i=5;j=6
-    for monitor_name in $(echo $monitors | grep -vE 'e-?DP1'); do
+    for monitor_name in $(echo $monitors | grep -vP 'e-?DP-?1'); do
         bspc monitor $monitor_name -d $i $j
         i=$((i+2))
         j=$((j+2))
