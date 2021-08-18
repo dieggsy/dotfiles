@@ -1,9 +1,12 @@
 #!/usr/bin/env zsh
-if [ "$#" = 1 ]; then
+if [[ "$#" -gt 1 ]] ||
+       [ "$#" = 1 ] && [[ ! "$1" =~ "^[0-9]+$" || "$1" -gt 256 ]]; then
+    echo "Usage: spectrum_ls [0-256]"
+elif [ "$#" = 1 ]; then
   code="$(printf "%03d\n" $1)"
-  print -P -- "$code: %F{$code}$code%f"
+  print -P -- "$code %F{$code}$code%f %F{000}%K{$code}$code%k%f"
 else;
-    for code in $(seq -f "%03g" ${1:-000} ${2:-255}); do
-        print -P -- "$code: %F{$code}$code%f"
-    done
+    (for code in $(seq -f "%03g" ${1:-000} ${2:-255}); do
+         print -P -- "$code %F{$code}$code%f %F{000}%K{$code}$code%k%f"
+     done) | less -R
 fi
