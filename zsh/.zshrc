@@ -76,10 +76,12 @@ alias csi='csi -q'
 alias lsblk='lsblk -o NAME,SIZE,MOUNTPOINT'
 alias chicken-doc='noglob chicken-doc'
 alias startx='startx &>/dev/null'
-alias yay=paru
 alias nmr='sudo systemctl restart NetworkManager'
 alias locate=plocate
 alias clear='clear -x'
+alias e="emacsclient -n --alternate-editor=''"
+alias ec="emacsclient -nc --alternate-editor=''"
+alias et="emacsclient -t --alternate-editor=''"
 
 cd_list () {
     emulate -L zsh
