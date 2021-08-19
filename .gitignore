@@ -4,6 +4,7 @@
 /emacs/.emacs.d/init.el
 /emacs/.emacs.d/var/
 /emacs/.emacs.d/straight/
+/emacs/.emacs.d/etc/safe-vars.el
 /neovim/.config/nvim/plugged/
 /bin/bin/git-prompt
 /polybar/.config/polybar/darkskyrc
