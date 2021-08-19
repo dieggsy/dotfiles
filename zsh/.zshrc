@@ -23,11 +23,7 @@ zstyle :compinstall filename '/home/dieggsy/.zshrc'
 
 autoload -Uz compinit
 
-for dump in ~/.zcompdump(N.mh+24); do
-  compinit
-done
-
-compinit -C
+compinit -u
 # End of lines added by compinstall
 # Lines configured by zsh-newuser-install
 HISTFILE=~/.histfile
