@@ -61,6 +61,11 @@ pos () {
     echo ${2}x$3+$X+$Y
 }
 
+if [[ $class = "Emacs" ]]; then
+    hash xseticon &>/dev/null &&
+        xseticon -id $wid /usr/share/icons/hicolor/128x128/apps/emacs.png
+fi
+
 if [[ $instance = "gl" ]]; then
     echo $wid > /tmp/mpv-float
     echo layer=normal
