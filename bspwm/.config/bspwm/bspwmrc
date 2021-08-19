@@ -52,6 +52,12 @@ run() {
         && { pgrep $flags "$1" &>/dev/null || ($@ &) } || not_found+="\n$1"
 }
 
+# Pointer
+xsetroot -cursor_name left_ptr
+
+# Type speed/delay
+xset r rate 300 50
+
 # Bindings
 run sxhkd -m -1
 run xcape -e 'Control_L=Escape'
