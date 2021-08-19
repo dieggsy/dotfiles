@@ -10,7 +10,7 @@ zstyle ':completion:*' format '%F{yellow}--%d--%f'
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' insert-unambiguous true
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-zstyle ':completion:*:options' list-colors '=(#b)*(-- *)=0=90'
+# zstyle ':completion:*:options' list-colors '=(#b)*(-- *)=0=90'
 zstyle ':completion:*' matcher-list '' 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' menu select=1
 zstyle ':completion:*' select-prompt '%S%p%s'
@@ -37,6 +37,8 @@ bindkey -M menuselect '^[[Z' reverse-menu-complete
 # End of lines configured by zsh-newuser-install
 
 ZPLUGINDIR=$PREFIX/share/zsh/plugins
+[ -d $ZPLUGINDIR/fzf-tab-git ] && source $ZPLUGINDIR/fzf-tab-git/fzf-tab.zsh
+
 [ -d $ZPLUGINDIR/zsh-autopair ] && source $ZPLUGINDIR/zsh-autopair/autopair.zsh
 
 [[ "$(tty)" != "/dev/tty"* ]] && [ -d $ZPLUGINDIR/zsh-autosuggestions ] \
@@ -48,6 +50,12 @@ if [ -d $ZPLUGINDIR/zsh-history-substring-search ]; then
     bindkey '^[[B' history-substring-search-down
     bindkey -M vicmd 'k' history-substring-search-up
     bindkey -M vicmd 'j' history-substring-search-down
+fi
+
+if [ -d /usr/share/fzf/ ]; then
+    source /usr/share/fzf/key-bindings.zsh
+    source /usr/share/fzf/completion.zsh
+    export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 fi
 
 maybe_host () {
@@ -131,8 +139,21 @@ circular-deps () {
     done
 }
 
-e () {
-    pgrep -f 'emacs --daemon' > /dev/null && emacsclient "$@" || emacs "$@"
+yay () {
+    local INITIAL_QUERY="${1:-.*}"
+    local RG_PREFIX="paru --topdown -Ssq"
+    FZF_DEFAULT_COMMAND="$RG_PREFIX '$INITIAL_QUERY'" \
+                       fzf --bind "change:reload:$RG_PREFIX {q} || true" \
+                       -m --preview-window wrap --preview 'paru -Si {1} | head -n4' \
+                       --ansi --disabled --query "$INITIAL_QUERY" \
+                       --height=50% --layout=reverse |
+        xargs -ro paru -S
+}
+
+nay () {
+    paru -Qqett |
+        fzf -q "$1" -m --preview-window wrap --preview 'paru -Qi {1} | head -n3' |
+        xargs -ro paru -Rns
 }
 
 fuck() {
