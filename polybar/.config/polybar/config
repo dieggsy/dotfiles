@@ -52,7 +52,7 @@ enable-ipc = true
 type = internal/xwindow
 label-maxlen =  85
 format-padding=1
-format = %{A1:window-switcher&:}<label>%{A}
+format = %{A1:window-switcher&:}⣿ <label>%{A}
 
 [module/display]
 type=custom/script
