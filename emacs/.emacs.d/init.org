@@ -1724,9 +1724,11 @@ directory-browsing commands
     "d" 'dired-du-mode
     "c" 'dired-collapse-mode)
   :custom
-  (dired-listing-switches "-lXhA --group-directories-first")
   (dired-dwim-target t)
   :config
+  (setq dired-listing-switches (if (member system-type '(darwin berkeley-unix))
+                                   "-lhA"
+                                 "-lXhA --group-directories-first"))
   (d/hook! dired-mode
     (auto-revert-mode))
   (nmap dired-mode-map
