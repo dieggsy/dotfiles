@@ -39,6 +39,8 @@ font-0 = Iosevka Term:size=8;3
 modules-left = bspwm xwindow
 modules-center = date
 modules-right = backlight pulse packages bluez network battery hamburger
+; tray-position=right
+; tray-maxsize=32
 
 wm-restack = bspwm
 
@@ -50,7 +52,7 @@ enable-ipc = true
 type = internal/xwindow
 label-maxlen =  85
 format-padding=1
-format = %{A1:rofi -show window -location 1 -xoffset 15&:}<label>%{A}
+format = %{A1:window-switcher&:}<label>%{A}
 
 [module/display]
 type=custom/script
@@ -60,7 +62,7 @@ click-left=~/.config/polybar/blocks/mons-rofi
 
 [module/bspwm]
 type = internal/bspwm
-format =<label-state> <label-mode>
+format =%{A1:bspc desktop -l next:}<label-state> <label-mode>%{A}
 format-underline = ${colors.sienna}
 format-padding=1
 wrapping-scroll = false
@@ -90,7 +92,7 @@ label-empty-foreground = ${colors.comment}
 [module/network]
 type = internal/network
 interface = wlan0
-format-connected = %{A1:networkmanager_dmenu&:}<ramp-signal>%{A}
+format-connected = %{A1:iwd-rofi&:}<ramp-signal>%{A}
 
 ; ramp-signal-0 = %{F#665C54}⣠⣴⣾
 ; ramp-signal-1 = ⣠%{F#665C54}⣴⣾
@@ -133,6 +135,7 @@ exec = checkupdates | wc -l
 label = ↑ %output%
 exec-if = checkupdates
 interval = 600
+format = %{A1:checkupdates | rofi -dmenu -theme menu &:}<label>%{A}
 format-padding = 1
 
 [module/cpu]
@@ -166,6 +169,7 @@ type=custom/script
 exec = ~/.config/polybar/blocks/battery-average
 ; format-foreground = ${colors.blue}
 ; format-underline = ${colors.blue}
+format = %{A1:batt.scm -rofi &:}<label>%{A}
 format-padding = 1
 interval=30
 
@@ -205,7 +209,7 @@ bar-gradient=true
 type = custom/script
 exec = echo "☰"
 format-padding = 1
-click-left = wm-exit-dmenu
+click-left = wm-exit -rofi
 format-underline = ${colors.sienna}
 
 [settings]

@@ -20,8 +20,8 @@
 element-icon { size: 32px; }
 
 #window {
-    /* x-offset: 0; */
-    /* y-offset: 0; */
+    x-offset: 0;
+    y-offset: 0;
     width: 100%;
     location:   north west;
     children:   [ horibox ];

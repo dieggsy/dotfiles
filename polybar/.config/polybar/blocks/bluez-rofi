@@ -15,12 +15,9 @@ ENC = locale.getpreferredencoding()
 BLUETOOTH_GUI = "blueman-manager"
 ROFI_CMD = [
     "rofi",
-    "-p", "bluetooth",
-    "-location", "3",
-    "-xoffset", "-15",
-    "-yoffset", "62",
+    "-p", "⇋",
     "-dmenu", "-i",
-    "-width", "300",
+    "-theme", "menu",
     "-theme-str", "* {highlightcolor: #83A598;}"
     # "-theme-str", "#inputbar {enabled:false;}",
 ]

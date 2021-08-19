@@ -1,0 +1,123 @@
+/* -*- mode: css -*- */
+
+configuration {
+	modi: "window,run,ssh,drun,combi";
+	width: 700;
+	location: 2;
+	yoffset: 62;
+	/* fixed-num-lines: true; */
+	combi-modi: "window,drun,run";
+	dpi: 210;
+	theme: "dropdown";
+    show-icons: true;
+    drun-display-format: "{name}";
+    columns: 5;
+}
+
+* {
+    backgroundcolor: #282828;
+    bg1: #504945;
+    backgroundcoloralternate: #282828;
+    separatorcolor: #504945;
+    scrollbarcolor: #504945;
+    /* foregroundcolor: #ebdbb2; */
+    /* foregroundcolorinverse: #ebdbb2; */
+    foregroundcolor: #fdf4c1;
+    foregroundcolorinverse: #fdf4c1;
+    highlightcolor: #DD6F48;
+    selectioncolor: #504945;
+
+    font: "Iosevka Term 8";
+    border-color: @separatorcolor;
+    background-color: @backgroundcolor;
+    text-color: @foregroundcolor;
+    margin: 0;
+    margin-bottom: 0;
+    margin-top: 0;
+    spacing: 0;
+}
+
+#listview {
+    spacing: 0;
+    scrollbar: true;
+    margin: 0;
+    dynamic: true;
+    fixed-columns: true;
+    /* padding-top: 500; */
+    lines: 5;
+}
+
+
+#window {
+    background-color: @backgroundcolor;
+    border-color: @highlightcolor;
+    border: 5;
+    border-radius: 5;
+    /* width: 300; */
+}
+
+#mainbox {
+    border: 0;
+    background-color: @backgroundcoloralternate;
+    padding: 20;
+}
+
+
+#message {
+    border: 0 0 1 0;
+    border-color: @separatorcolor;
+    background-color: @backgroundcoloralternate;
+}
+
+#textbox {
+    text-color: #7C6F64;
+    padding: 10;
+}
+
+element {
+    padding:10;
+    border-color: @separatorcolor;
+    background-color: @backgroundcoloralternate;
+    orientation: vertical;
+}
+
+element.selected {
+    background-color: #3C3836;
+    text-color: @foregroundcolorinverse;
+    border-radius: 5px;
+
+    border: 0 0 0.3% 0;
+    border-color: @separatorcolor;
+}
+
+/* element-icon { size: 2.3ch; } */
+element-icon { size: 64px; }
+element-text { horizontal-align: 0.5; vertical-align: 0.5; }
+
+#inputbar {
+    border: 0 solid 0 solid 1 solid 0 solid;
+    margin: 0 0 10 0;
+    spacing: 0;
+    border-color: @separatorcolor;
+}
+
+#prompt {
+    enabled: false;
+    /* padding:10; */
+    background-color: @backgroundcoloralternate;
+    border: 0 1 0 0;
+}
+
+#entry {
+    padding: 0 0 10 0;
+}
+
+/* #scrollbar { */
+/*     border: 0; */
+/*     width: 0; */
+/*     handle-color: @scrollbarcolor; */
+/*     handle-width: 0; */
+/*     background-color: @backgroundcoloralternate; */
+/* } */
+
+/* vim: set ft=css : */

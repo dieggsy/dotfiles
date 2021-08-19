@@ -13,10 +13,10 @@ super + space
     echo cmd:toggle >> /tmp/ipc-polybar-simple && bspc config top_padding 0
 
 super + w
-    rofi -show window -location 1 -xoffset 15
+    window-switcher
 
 super + d
-    rofi -show drun -show-icons -columns 2
+    rofi -show drun -theme launcher
 
 super + z
     id=$(</tmp/st-float) && \
@@ -38,7 +38,7 @@ super + p
     passmenu -p "pass"
 
 super + t
-    unicode.scm | rofi -i -dmenu | cut -d$'\t' -f2 | xclip -r -selection clipboard
+    unicode.scm -rofi
 
 # make sxhkd reload its configuration files:
 super + Escape

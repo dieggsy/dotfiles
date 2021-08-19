@@ -1,0 +1,44 @@
+#!/usr/bin/env zsh
+# message="Exit i3?"
+[[ $(cat /proc/1/comm) == "systemd" ]] && logind=systemctl || logind=loginctl
+
+declare -A cmds=([lock]="physlock"
+                 [logout]="loginctl terminate-session self"
+                 [suspend]="$logind suspend"
+                 [reboot]="$logind reboot"
+                 [shutdown]="$logind poweroff")
+
+keys=(lock logout suspend reboot shutdown)
+
+usage () {
+    echo "Usage: wm-exit [option]
+
+Options:
+
+$(printf '  %s  \n' "${keys[@]}")
+  -rofi"
+}
+
+console-select () {
+    for ((i = 1; i <= $#keys[@]; i++)); do
+        echo $i. $keys[i]
+    done
+    echo -n "\nSelect an option (1-$((i - 1))): "
+    read -r answer
+    $cmds[$keys[$answer]]
+}
+
+rofi-select () {
+    $cmds[$(printf '%s\n' "${keys[@]}" | rofi -dmenu -i -theme menu -theme-str "#inputbar {enabled:false;}" -theme-str "element-text {horizontal-align: 0.5;}")]
+}
+
+
+if [[ "$#" -eq 1 ]] && [[ "$1" = "-rofi" ]]; then
+        rofi-select
+elif [[ "$#" -eq 1 ]] && [[ -n "$cmds[$1]" ]]; then
+        $cmds[$1]
+elif [[ $# -eq 0 ]]; then
+    console-select
+else;
+    usage
+fi

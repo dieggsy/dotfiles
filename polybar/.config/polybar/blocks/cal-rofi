@@ -7,7 +7,7 @@ from subprocess import Popen, PIPE
 
 today = datetime.date.today()
 month = today.month
-extra = today.replace(day=1).weekday() + 1
+extra = (today.replace(day=1).weekday() + 1) % 7
 lastday = calendar.monthrange(today.year, month)[1]
 
 ENC = locale.getpreferredencoding()
