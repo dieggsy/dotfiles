@@ -3,6 +3,8 @@ import datetime
 import calendar
 import itertools
 import locale
+import webbrowser
+import re
 from subprocess import Popen, PIPE
 
 today = datetime.date.today()
@@ -45,5 +47,8 @@ transposed = list(map(list, zip(*chopped)))
 flattened = list(itertools.chain.from_iterable(transposed))
 active = flattened.index(str(today.day).rjust(2))
 inp = "\n".join(flattened)
-Popen(ROFI_CMD + ["-a", str(active)], stdin=PIPE,
-      stdout=PIPE).communicate(input=inp.encode(ENC))[0].decode(ENC).strip()
+p = Popen(ROFI_CMD + ["-a", str(active)], stdin=PIPE,
+          stdout=PIPE).communicate(input=inp.encode(ENC))[0].decode(ENC).strip()
+
+if p and re.match("\d+", p):
+    webbrowser.open(f"https://calendar.protonmail.com/u/0/day/{today.year}/{today.month}/{p}", new=2)
