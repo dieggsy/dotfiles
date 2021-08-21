@@ -4,11 +4,8 @@
 /emacs/.emacs.d/init.el
 /emacs/.emacs.d/var/
 /emacs/.emacs.d/straight/
+/emacs/.emacs.d/etc/safe-vars.el
 /neovim/.config/nvim/plugged/
-/polybar/.config/polybar/blocks/*
-!/polybar/.config/polybar/blocks/*.c
-!/polybar/.config/polybar/blocks/*.scm
-!/polybar/.config/polybar/blocks/Makefile
 /bin/bin/git-prompt
 /polybar/.config/polybar/darkskyrc
 /freedesktop/.local/share/applications/wine*
@@ -16,3 +13,7 @@
 /neovim/.config/nvim/.netrwhist
 /cmus/.config/cmus/*
 !/cmus/.config/cmus/darktooth.theme
+/polybar/.config/polybar/blocks/battery-average
+/polybar/.config/polybar/blocks/bluez
+/polybar/.config/polybar/blocks/intel-backlight
+/polybar/.config/polybar/blocks/networkmanager

@@ -284,7 +284,7 @@ every other time. See [[https://www.gnu.org/software/emacs/manual/html_node/emac
 ** Defaults
 *** native-comp warnings
 #+begin_src emacs-lisp
-(setq comp-async-report-warnings-errors nil)
+(setq native-comp-async-report-warnings-errors nil)
 #+end_src
 *** Disabled Commands
 By default, some emacs commands are disabled because I guess they're considered
@@ -292,17 +292,18 @@ By default, some emacs commands are disabled because I guess they're considered
 #+begin_src emacs-lisp
 (setq disabled-command-function nil)
 #+end_src
+*** Bell
+#+begin_src emacs-lisp
+(setq ring-bell-function 'ignore)
+#+end_src
 *** Local vars
 Since we've disabled ~custom.el~, ensure variables are remembered as safe if prompted.
 #+begin_src emacs-lisp
 (define-advice customize-push-and-save (:after (vars unsafe-vars) d/safe-vars)
   (when (eq vars 'safe-local-variable-values)
-    (with-current-buffer (find-file-noselect (no-littering-expand-var-file-name "safe-vars.el"))
-      (insert
-       (format
-        "(setq safe-local-variable-values '%S)\n"
-        (append safe-local-variable-values
-                unsafe-vars)))
+    (with-current-buffer (find-file-noselect (no-littering-expand-etc-file-name "safe-vars.el"))
+      (erase-buffer)
+      (insert (format "(setq safe-local-variable-values '%S)\n" safe-local-variable-values))
       (save-buffer))))
 
 (load (no-littering-expand-etc-file-name "safe-vars.el"))
@@ -453,6 +454,8 @@ An Emacs 24 theme remixed from gruvbox
              :repo "emacsfodder/emacs-theme-darktooth"
              :fork (:host github
                     :repo "dieggsy/emacs-theme-darktooth"))
+  :custom
+  (custom-safe-themes t)
   :init
   (define-advice autothemer-deftheme (:before (_ _ palette &rest _) d/defcolors)
     (mapcar (lambda (e)
@@ -782,9 +785,10 @@ This function is intended for use with `ivy-ignore-buffers'."
             "Compile" "anaconda-mode" "scratch" "Messages" "elfeed-log" "Man"
             "Quail" "Paradox Report" "Backtrace" "slime-events"
             "slime-compilation" "inferior-lisp" "Completions" "embrace-help"
-            "geiser messages*" "Geiser dbg" "tramp/" "Process List"
-            "eshell:" "Error" "magit-todos" "clang" "lsp" "Flymake"
-            "sly-inferior" "sly-events" "sly-compilation")))
+            "geiser messages*" "Geiser dbg" "tramp/" "Process List" "eshell:"
+            "Error" "magit-todos" "clang" "lsp" "Flymake" "sly-inferior"
+            "sly-events" "sly-compilation" "Async-native-compile-log"
+            "straight-byte-compilation")))
 
   (defun d/ivy-dired-transformer (str)
     "Display transformer for dired buffers in `ivy-switch-buffer'.
@@ -913,7 +917,7 @@ authoring documents with a fast and effective plain-text system.
 But really, it's life.
 **** Package
 #+begin_src emacs-lisp
-(use-package org-plus-contrib
+(use-package org
   :general
   (nmap org-mode-map
     "gt" 'org-todo
@@ -942,12 +946,15 @@ But really, it's life.
   :init
   (d/safe-vars! (org-log-done))
   :config
-  (d/after 'ox
-    (require 'ox-extra)
-    (ox-extras-activate '(ignore-headlines)))
   (d/after 'org-crypt
     (org-crypt-use-before-save-magic))
   (require 'org-mobile))
+
+(use-package org-contrib
+  :config
+  (d/after 'ox
+    (require 'ox-extra)
+    (ox-extras-activate '(ignore-headlines))))
 #+end_src
 **** Defaults
 ***** Files
@@ -1422,23 +1429,21 @@ A simpler mode line. Note that this configuration depends on the ~moody~ and
                 " "
                 (:eval
                  (concat (let ((bufname (format-mode-line "%b")))
-                           (format "%s"
-                                   (if (string-match-p "^\\*.*\\*$" bufname)
-                                       (propertize (substring bufname 1 (1- (length bufname)))
-                                                   'face '(:slant italic))
-                                     bufname)))))
+                           (if (string-match "^\\*\\(.*\\)\\*\\(<[0-9]+>\\)?$" bufname)
+                               (propertize (concat (match-string 1 bufname)
+                                                   (match-string 2 bufname))
+                                           'face '(:slant italic))
+                             bufname))))
                 " "
                 (:eval
                  (let ((host (file-remote-p default-directory 'host)))
-                   (if host
-                       (propertize
-                        (concat "@" host)
-                        'face
-                        (if (d/window-active-p)
-                            '(:inherit ivy-remote :slant italic)
-                          '(:inherit mode-line-inactive :slant italic)))
-                     "")))
-                " "
+                   (when host
+                     (propertize
+                      (concat "@" host  " ")
+                      'face
+                      (if (d/window-active-p)
+                          '(:inherit ivy-remote :slant italic)
+                        '(:inherit mode-line-inactive :slant italic))))))
                 (:eval
                  (concat "("
                          (if (listp mode-name) (car mode-name) mode-name)
@@ -1719,9 +1724,11 @@ directory-browsing commands
     "d" 'dired-du-mode
     "c" 'dired-collapse-mode)
   :custom
-  (dired-listing-switches "-lXhA --group-directories-first")
   (dired-dwim-target t)
   :config
+  (setq dired-listing-switches (if (member system-type '(darwin berkeley-unix))
+                                   "-lhA"
+                                 "-lXhA --group-directories-first"))
   (d/hook! dired-mode
     (auto-revert-mode))
   (nmap dired-mode-map
@@ -3118,8 +3125,10 @@ Get right to the scratch buffer if not editing a file.
          display-time-format "│ %Y-%d-%m %H:%M │"
          display-time-load-average nil))
 #+end_src
-*** Menu bar
+*** Bars
 #+begin_src emacs-lisp
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
 (menu-bar-mode -1)
 #+end_src
 *** Battery
@@ -3169,10 +3178,6 @@ Use a bar cursor in the minibuffer.
 #+begin_src emacs-lisp :tangle no
 (setq-default left-margin-width 1)
 (setq-default right-margin-width 1)
-#+end_src
-*** Themes
-#+begin_src emacs-lisp
-(setq custom-safe-themes t)
 #+end_src
 *** variable-pitch
 I don't like seeing variable pitch in emacs. Just sorta throws me off.
@@ -3914,6 +3919,13 @@ emacs and scheme talk to each other
 #+begin_src emacs-lisp
 (use-package lisp-mode
   :straight nil
+  :general
+  (d/mode-leader-keys lisp-mode-map
+    "eb" 'sly-eval-buffer
+    "ef" 'sly-eval-defun
+    "er" 'sly-eval-region
+    ;; "es" 'd/eval-surrounding-sexp
+    "el" 'sly-eval-last-expression)
   :init
   (font-lock-add-keywords
    'lisp-mode
@@ -3933,6 +3945,7 @@ Sylvester the Cat's Common Lisp IDE
     [down] 'sly-mrepl-next-input-or-button)
   :config
   (setq inferior-lisp-program "ros run"))
+(use-package sly-macrostep)
 #+end_src
 *** Ocaml
 **** Packages
@@ -4499,7 +4512,7 @@ directory to make multiple eshell windows easier."
 #+begin_quote
 Emacs support library for PDF files.
 #+end_quote
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package pdf-tools
   :mode ("\\.pdf\\'" . pdf-tools-mode)
   :general

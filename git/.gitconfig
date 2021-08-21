@@ -49,13 +49,13 @@
     new = green bold
     old = red bold
 
-[push]
-    followTags = true
-
 [status]
     showUntrackedFiles = all
     short=true
     branch=true
+
+[merge]
+    stat = true
 
 [push]
     followTags = true

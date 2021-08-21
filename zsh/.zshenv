@@ -22,6 +22,7 @@ pathadd $HOME/.local/bin
 # pathadd $HOME/.pyenv/shims
 pathadd $HOME/bin
 pathadd $PREFIX/lib/ccache/bin
+pathadd $HOME/.config/polybar/blocks
 
 export PATH
 export KEYTIMEOUT=1
