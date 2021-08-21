@@ -143,10 +143,10 @@ circular-deps () {
 
 yay () {
     local INITIAL_QUERY="${1:-.*}"
-    local RG_PREFIX="paru --topdown -Ssq"
-    FZF_DEFAULT_COMMAND="$RG_PREFIX '$INITIAL_QUERY'" \
-                       fzf --bind "change:reload:$RG_PREFIX {q} || true" \
-                       -m --preview-window wrap --preview 'paru -Si {1} | head -n4' \
+    local RG_PREFIX="paru --topdown -Ss"
+    FZF_DEFAULT_COMMAND="$RG_PREFIX '$INITIAL_QUERY' | rg -o '^[^\s]+'" \
+                       fzf --bind "change:reload:$RG_PREFIX {q} | rg -o '^[^\s]+' || true" \
+                       -m --preview-window wrap --preview 'paru -Si {1} | sed -n "2,4p"' \
                        --ansi --disabled --query "$INITIAL_QUERY" \
                        --height=50% --layout=reverse |
         xargs -ro paru -S
