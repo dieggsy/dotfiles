@@ -10,8 +10,7 @@
 
 (define-values (rofi-out rofi-in rofi-pid)
   (if (member "-rofi" args)
-      (process "rofi -dmenu -i -p unicode | cut -d$'\t' -f2 | xclip -r -selection clipboard")
-      ;; (process "rofi" '("-dmenu") )
+      (process "rofi -dmenu -i -p unicode | cut -d$'\t' -f1 | xclip -r -selection clipboard")
       (values #f #f #f)))
 
 (with-output-to-port (or rofi-in (current-output-port))
@@ -21,10 +20,10 @@
       (let* ((char (integer->char i))
              (name (char-string-name char)))
         (when name
+          (display char)
+          (display #\tab)
           (display "U+")
           (display (number->string i 16))
-          (display #\tab)
-          (display char)
           (display #\tab)
           (display name)
           (newline))))))
