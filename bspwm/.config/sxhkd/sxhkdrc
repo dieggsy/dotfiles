@@ -35,7 +35,7 @@ alt + space
 
 # passwords
 super + p
-    passmenu -p "pass"
+    op.scm
 
 super + t
     unicode.scm -rofi
