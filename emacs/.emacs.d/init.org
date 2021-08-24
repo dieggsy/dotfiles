@@ -4206,6 +4206,7 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
         auto-revert-check-vc-info t)
   :config
   (setq magit-diff-refine-hunk t
+        transient-default-level 5
         git-commit-summary-max-length 50
         git-commit-major-mode 'org-mode)
   (d/hook! git-commit-mode
