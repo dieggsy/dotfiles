@@ -4256,8 +4256,9 @@ operate on system processes like dired
 ** grep
 #+begin_src emacs-lisp
 (use-package grep
-  :custom
-  (grep-command "rg --color=auto --no-heading -nH --null -e"))
+  :config
+  (grep-apply-setting 'grep-use-null-device nil)
+  (grep-apply-setting 'grep-command  "rg --color=auto --no-heading -nH --null -e"))
 #+end_src
 ** [[elisp:(find-library-other-window "calc")][calc]]
 #+begin_quote
