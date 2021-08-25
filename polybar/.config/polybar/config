@@ -188,7 +188,8 @@ format-muted-padding = 1
 bar-volume-width = 6
 bar-volume-indicator =
 bar-volume-fill = ━
-bar-volume-empty =%{F#7C6F64}┉%{F-}
+bar-volume-empty = ┉
+bar-volume-empty-foreground = ${colors.comment}
 bar-volume-gradient=true
 
 [module/backlight]
@@ -202,7 +203,8 @@ format-padding = 1
 bar-width = 6
 bar-indicator =
 bar-fill = ━
-bar-empty =%{F#7C6F64}┉
+bar-empty = ┉
+bar-empty-foreground = ${colors.comment}
 bar-gradient=true
 
 [module/hamburger]
