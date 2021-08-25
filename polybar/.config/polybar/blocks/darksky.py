@@ -31,7 +31,7 @@ except urllib.error.URLError:
 else:
     print(f"{re.sub('-day|-night', '', jdict['currently']['icon'])}"
           f" {round(jdict['currently']['temperature'])}"
-          f" %{{T2}}%{{F#665C54}}"
+          f" %{{T2}}%{{F#7C6F64}}"
           f"{round(jdict['daily']['data'][0]['temperatureMax'])}"
           f"/{round(jdict['daily']['data'][0]['temperatureMin'])}"
           f"%{{T-}}%{{F-}}")

@@ -70,11 +70,11 @@ static char * get_icon (int adapter_online, int percent) {
     if (percent == 99) {
         icon = adapter_online ? "%{F#B8BB26}━━━%{F-}" : "━━━";
     } else if (percent == 66) {
-        icon = adapter_online ? "%{F#B8BB26}━━%{F#665C54}┉%{F-}" : "━━%{F#665C54}┉%{F-}";
+        icon = adapter_online ? "%{F#B8BB26}━━%{F#7C6F64}┉%{F-}" : "━━%{F#7C6F64}┉%{F-}";
     } else if (percent == 33) {
-        icon = adapter_online ? "%{F#B8BB26}━%{F#665C54}┉┉%{F-}" : "━%{F#665C54}┉┉%{F-}";
+        icon = adapter_online ? "%{F#B8BB26}━%{F#7C6F64}┉┉%{F-}" : "━%{F#7C6F64}┉┉%{F-}";
     } else {
-        icon = adapter_online ? "%{F#665C54}┉┉┉%{F-}" : "%{F#665C54}┉┉┉%{F-}";
+        icon = adapter_online ? "%{F#7C6F64}┉┉┉%{F-}" : "%{F#7C6F64}┉┉┉%{F-}";
     }
     return icon;
 }

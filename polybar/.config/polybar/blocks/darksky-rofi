@@ -71,7 +71,7 @@ def main(args):
     if args[1] == "hourly":
         run_rofi(ROFI_CMD,
                  ["-mesg", "hourly forecast"],
-                 ["<span color='#665C54'>"
+                 ["<span color='#7C6F64'>"
                   f"{datetime.fromtimestamp(i['time']).strftime('%H:%M')}"
                   "</span>"
                   f"  {round(i['temperature'])}°  {re.sub('-day|-night', '', i['icon'])}"
@@ -79,7 +79,7 @@ def main(args):
     elif args[1] == "daily":
         run_rofi(ROFI_CMD,
                  ["-mesg", "daily forecast"],
-                 ["<span color='#665C54'>"
+                 ["<span color='#7C6F64'>"
                   f"{datetime.fromtimestamp(i['time']).strftime('%a')}"
                   "</span>"
                   f"  {round(i['temperatureMin'])}°"

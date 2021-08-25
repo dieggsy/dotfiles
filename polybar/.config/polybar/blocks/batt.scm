@@ -42,7 +42,7 @@
                   "")))
     (display (string-append
               (if (member "-rofi" args)
-                  "<span color=\"#665C54\">"
+                  "<span color=\"#7C6F64\">"
                   "")
               (make-string boxes-gray #\┉)
               (if (member "-rofi" args)

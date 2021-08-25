@@ -88,7 +88,7 @@ int main() {
     }
     dbus_message_unref(msg_reply);
 
-    printf("%%{F#665C54}⇋%%{F-}");
+    printf("%%{F#7C6F64}⇋%%{F-}");
     return 0;
 }
 
