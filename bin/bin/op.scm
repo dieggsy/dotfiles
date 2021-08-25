@@ -8,6 +8,7 @@
         (only (chicken pretty-print) pp)
         (only (chicken string) string-split ->string)
         (only (chicken sort) sort)
+        (only utf8-srfi-13 string-pad-right)
         (prefix medea medea:))
 
 ;; I'm not sure how much this actually helps - are we encrypting because
@@ -49,7 +50,7 @@
     ((if encrypt-session-key
          (cut call-with-output-pipe (encrypt-cmd env-file) <>)
          (cut call-with-output-file ennv-file <>))
-      (lambda (port) (display (read-line auth-out) port)))))
+     (lambda (port) (display (read-line auth-out) port)))))
 
 ;; Get session key
 (define op-env ((if encrypt-session-key
@@ -95,20 +96,18 @@
     ((if encrypt-cache
          (cut call-with-output-pipe (encrypt-cmd cache-file) <>)
          (cut call-with-output-file cache-file <>))
-      (lambda (port)
-        (for-each
-         (lambda (line) (display line port))
-         (sort
-          (map
-           (lambda (item)
-             (string-append (alist-ref 'title (alist-ref 'overview item))
-                            "\u200b <span color=\"#7C6F64\">\u200b"
-                            (alist-ref (alist-ref 'vaultUuid item) vaults equal?)
-                            "\u200b </span><span color=\"#83A598\">\u200b"
-                            (alist-ref (alist-ref 'templateUuid item) templates equal?)
-                            "\u200b</span>\n"))
-           (medea:read-json items-out))
-          string<?))))))
+     (lambda (port)
+       (write
+        (sort
+         (map
+          (lambda (item)
+            (list (alist-ref 'title (alist-ref 'overview item))
+                  (alist-ref (alist-ref 'vaultUuid item) vaults equal?)
+                  (alist-ref (alist-ref 'templateUuid item) templates equal?)))
+          (medea:read-json items-out))
+         (lambda (a b)
+           (string<? (car a) (car b))))
+        port)))))
 
 (define-values (rofi-out rofi-in rofi-pid)
   (process "rofi -dmenu -i -p '1password' -markup-rows"))
@@ -117,13 +116,24 @@
 ((if encrypt-cache
      (cut call-with-input-pipe (decrypt-cmd cache-file) <>)
      (cut call-with-input-file cache-file <>))
-  (lambda (port)
-    (let loop ((line (read-line port)))
-      (unless (eof-object? line)
-        (display line rofi-in)
-        (newline rofi-in)
-        (loop (read-line port))))
-    (close-output-port rofi-in)))
+ (lambda (port)
+   (let* ((lines (read port))
+          ;; Add two to account for zero width space and column space
+          (item-pad (+ 2 (apply max (map (lambda (x) (string-length (car x))) lines))))
+          (vault-pad (+ 2 (apply max (map (lambda (x) (string-length (cadr x))) lines))))
+          (lines* (apply
+                   string-append
+                   (map (lambda (x)
+                          (string-append
+                           (string-pad-right (string-append (car x) "\u200b") item-pad)
+                           "<span color=\"#7C6F64\">\u200b"
+                           (string-pad-right (string-append (cadr x) "\u200b") vault-pad)
+                           "</span><span color=\"#83A598\">\u200b"
+                           (caddr x)
+                           "\u200b</span>\n"))
+                        lines))))
+     (display lines* rofi-in))
+   (close-output-port rofi-in)))
 
 (define selection (read-line rofi-out))
 
