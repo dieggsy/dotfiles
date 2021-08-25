@@ -1,4 +1,4 @@
-#!/usr/bin/csi -s
+#!/usr/bin/chicken-scheme
 ;; AUTOCOMPILE: -O5
 (import (chicken process)
         (chicken process-context)
