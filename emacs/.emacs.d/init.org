@@ -3740,7 +3740,7 @@ Source: http://tinyurl.com/le6wxuo"
     "el" 'scheme-send-last-sexp
     "es" 'd/scheme-send-surrounding-sexp)
   (nmap scheme-mode-map
-    "C-c C-c" 'd/scheme-compile-definition-or-region)
+    "C-c C-c" 'd/scheme-compile-region-or-definition)
   :init
   (defvar d/scheme-extra-keywords
     ;; Function-like keywords
