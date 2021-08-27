@@ -79,6 +79,7 @@ alias startx='startx &>/dev/null'
 alias nmr='sudo systemctl restart NetworkManager'
 alias locate=plocate
 alias clear='clear -x'
+alias yay=paru
 alias e="emacsclient -n --alternate-editor=''"
 alias ec="emacsclient -nc --alternate-editor=''"
 alias et="emacsclient -t --alternate-editor=''"
@@ -141,7 +142,7 @@ circular-deps () {
     done
 }
 
-yay () {
+way () {
     local INITIAL_QUERY="${1:-.*}"
     local RG_PREFIX="paru --topdown -Ss"
     FZF_DEFAULT_COMMAND="$RG_PREFIX '$INITIAL_QUERY' | rg -o '^[^\s]+'" \
