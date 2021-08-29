@@ -1,7 +1,4 @@
-# -*- mode: conf -*-
-#
-# wm independent hotkeys
-#
+# -*- mode: conf-unix -*-
 
 # terminal emulator
 super + Return
@@ -169,28 +166,9 @@ super + {Left,Down,Up,Right}
     bspc node -v {-20 0,0 20,0 -20,20 0}
 
 XF86MonBrightnessUp
-    key=$(date +%s.%N) \
-    && echo "$key" > /tmp/polybar-backlight \
-    && polybar-msg action "#backlight.module_show" \
-    && brightness=$(printf "%0.f" `xbacklight -get`) \
-    && [[ $brightness -lt 5 ]] \
-    && xbacklight -set $(($brightness + 1)) \
-    || xbacklight -set $(($brightness + 5));  \
-    sleep 2 \
-    && [ "$key" = "$(</tmp/polybar-backlight)" ] \
-    && polybar-msg action "#backlight.module_hide"
+    backlight +
 XF86MonBrightnessDown
-    key=$(date +%s.%N) \
-    && echo "$key" > /tmp/polybar-backlight \
-    && polybar-msg action "#backlight.module_show" \
-    && brightness=$(printf "%0.f" `xbacklight -get`) \
-    && [[ $brightness -gt 1 ]] \
-    && ( [[ $brightness -le 5 ]] \
-    && xbacklight -set $(($brightness - 1)) \
-    || xbacklight -set $(($brightness - 5)) ); \
-    sleep 2 \
-    && [ "$key" = "$(</tmp/polybar-backlight)" ] \
-    && polybar-msg action "#backlight.module_hide"
+    backlight -
 XF86AudioPrev
     playerctl previous
 XF86AudioNext
@@ -206,29 +184,11 @@ super + F2
 super + F3
     playerctl next
 XF86AudioMute
-    key=$(date +%s.%N) \
-    && echo "$key" > /tmp/polybar-volume \
-    && polybar-msg action "#pulse.module_show" \
-    && amixer -D pulse sset Master toggle; \
-    sleep 2 \
-    && [ "$key" = "$(</tmp/polybar-volume)" ] \
-    && polybar-msg action "#pulse.module_hide"
+    volume toggle
 XF86AudioLowerVolume
-    key=$(date +%s.%N) \
-    && echo "$key" > /tmp/polybar-volume \
-    && polybar-msg action "#pulse.module_show" \
-    && amixer -D pulse sset Master 5%-; \
-    sleep 2 \
-    && [ "$key" = "$(</tmp/polybar-volume)" ] \
-    && polybar-msg action "#pulse.module_hide"
+    volume 5%-
 XF86AudioRaiseVolume
-    key=$(date +%s.%N) \
-    && echo "$key" > /tmp/polybar-volume \
-    && polybar-msg action "#pulse.module_show" \
-    && amixer -D pulse sset Master 5%+; \
-    sleep 2 \
-    && [ "$key" = "$(</tmp/polybar-volume)" ] \
-    && polybar-msg action "#pulse.module_hide"
+    volume 5%+
 XF86AudioMicMute
     amixer set Capture toggle
 XF86Display
