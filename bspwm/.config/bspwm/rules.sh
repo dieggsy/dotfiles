@@ -64,6 +64,9 @@ pos () {
 if [[ $class = "Emacs" ]]; then
     hash xseticon &>/dev/null &&
         xseticon -id $wid /usr/share/icons/hicolor/128x128/apps/emacs.png
+elif [[ $class = "1Password" ]]; then
+    hash xseticon &>/dev/null &&
+        xseticon -id $wid /usr/share/icons/hicolor/64x64/apps/1password.png
 fi
 
 if [[ $instance = "gl" ]]; then
