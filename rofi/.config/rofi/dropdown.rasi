@@ -2,14 +2,9 @@
 
 * {
     backgroundcolor: #282828;
-    bg1: #504945;
-    backgroundcoloralternate: #282828;
     separatorcolor: #504945;
     scrollbarcolor: #504945;
-    /* foregroundcolor: #ebdbb2; */
-    /* foregroundcolorinverse: #ebdbb2; */
     foregroundcolor: #fdf4c1;
-    foregroundcolorinverse: #fdf4c1;
     highlightcolor: #DD6F48;
     selectioncolor: #504945;
 
@@ -17,113 +12,50 @@
     border-color: @separatorcolor;
     background-color: @backgroundcolor;
     text-color: @foregroundcolor;
-    margin: 0;
-    margin-bottom: 0;
-    margin-top: 0;
     spacing: 0;
 }
 
-#listview {
-    spacing: 0;
-    scrollbar: true;
-    margin: 0;
+listview {
     dynamic: true;
-    padding-top: 500;
     lines: 10;
 }
 
-
-#window {
-    background-color: @backgroundcolor;
-    border-color: @separatorcolor;
+window {
     border: 2;
     border-radius: 10;
-    /* width: 300; */
+    location: north;
+    y-offset: 62;
 }
 
-#mainbox {
-    border: 0;
-    padding: 0;
-    background-color: @backgroundcoloralternate;
+mainbox {
+    padding: 10;
 }
 
-#element {
-    padding:10;
+message {
     border: 1 0 0 0;
-    border-color: @separatorcolor;
-    background-color: @backgroundcoloralternate;
 }
 
-#message {
-    border: 1 0 0 0;
-    border-color: @separatorcolor;
-    background-color: @backgroundcoloralternate;
-}
-
-#textbox {
+textbox {
     text-color: #7C6F64;
     padding: 10;
 }
 
-#element.selected.normal {
-    background-color: #3C3836;
-    text-color: @foregroundcolorinverse;
-    border-radius: 0;
-
+element {
+    padding:10;
     border: 1 0 0 0;
-    border-color: @separatorcolor;
 }
 
-#element.alternate.normal {
-    background-color: @backgroundcoloralternate;
-}
-
-#element.normal.active {
-    text-color: @highlightcolor;
-}
-
-#element.alternate.active {
-    text-color: @highlightcolor;
-}
-
-#element.selected.active {
+element.selected {
     background-color: #3C3836;
-    text-color: @highlightcolor;
-    /* text-color: @foregroundcolorinverse; */
-    border-radius: 0;
-
     border: 1 0 0 0;
-    border-color: @separatorcolor;
 }
 
-/* element-icon { size: 2.3ch; } */
-element-icon { size: 32px; }
-
-#inputbar {
-    /* border: 0 solid 0 solid 1 solid 0 solid; */
-    margin: 0;
-    spacing: 0;
-    border-color: @separatorcolor;
-}
-
-#prompt {
-    background-color: @backgroundcoloralternate;
-    padding: 0 0 0 10;
+prompt {
     vertical-align: 0.5;
 }
 
-
-
-#entry {
+entry {
     padding:10;
-}
-
-#scrollbar {
-    border: 0;
-    width: 0;
-    handle-color: @scrollbarcolor;
-    handle-width: 0;
-    background-color: @backgroundcoloralternate;
 }
 
 /* vim: set ft=css : */

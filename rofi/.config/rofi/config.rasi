@@ -1,12 +1,10 @@
 /* -*- mode: css -*- */
 configuration {
 	modi: "window,run,ssh,drun,combi";
-	width: 700;
-	location: 2;
-	yoffset: 62;
 	fixed-num-lines: false;
 	combi-modi: "window,drun,run";
 	dpi: 210;
+    width: 700;
 	theme: "dropdown";
     display-run: "";
 }

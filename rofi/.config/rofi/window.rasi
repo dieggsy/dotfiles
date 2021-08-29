@@ -1,133 +1,43 @@
 /* -*- mode: css -*- */
 
 configuration {
-	modi: "window,run,ssh,drun,combi";
-	/* width: 1151; */
-	location: 1;
-	yoffset: 62;
-    xoffset: 15;
-	combi-modi: "window,drun,run";
-	dpi: 210;
     show-icons: true;
     window-thumbnail: true;
-    drun-display-format: "{name}";
     window-format: "{c}";
     window-command: "sh -c 'bspc node {window} --flag hidden=off && bspc node -f {window}'";
     kb-accept-entry: "";
     kb-accept-alt: "Return";
 }
 
-* {
-    backgroundcolor: #282828;
-    bg1: #504945;
-    backgroundcoloralternate: #282828;
-    separatorcolor: #504945;
-    scrollbarcolor: #504945;
-    /* foregroundcolor: #ebdbb2; */
-    /* foregroundcolorinverse: #ebdbb2; */
-    foregroundcolor: #fdf4c1;
-    foregroundcolorinverse: #fdf4c1;
-    highlightcolor: #DD6F48;
-    selectioncolor: #504945;
+@import "dropdown"
 
-    font: "Cantarell 8";
-    border-color: @separatorcolor;
-    background-color: @backgroundcolor;
-    text-color: @foregroundcolor;
-    margin: 0;
-    margin-bottom: 0;
-    margin-top: 0;
-    spacing: 0;
-}
-
-#listview {
-    spacing: 0;
-    scrollbar: true;
-    margin: 0;
-    dynamic: true;
+listview {
     fixed-columns: true;
-    /* padding-top: 500; */
-    lines: 5;
     columns: 4;
     layout: horizontal;
 }
 
 
-#window {
-    background-color: @backgroundcolor;
-    border-color: @separatorcolor;
-    border: 2;
-    border-radius: 10;
-    /* width: 300; */
-}
-
-#mainbox {
-    border: 0;
-    background-color: @backgroundcoloralternate;
-    padding: 20;
-}
-
-
-#message {
-    border: 0 0 1 0;
-    border-color: @separatorcolor;
-    background-color: @backgroundcoloralternate;
-}
-
-#textbox {
-    text-color: #7C6F64;
-    padding: 10;
+window {
+    location: north west;
+    x-offset: 15;
 }
 
 element {
-    padding:10;
-    border-color: @separatorcolor;
-    background-color: @backgroundcoloralternate;
     orientation: vertical;
+    border: 0;
 }
 
 element.selected {
-    background-color: #3C3836;
-    text-color: @foregroundcolorinverse;
+    border: 0;
     border-radius: 10;
-
-    /* border: 0 0 0.3% 0; */
-    border-color: @separatorcolor;
 }
 
-/* element-icon { size: 2.3ch; } */
-element-icon { size: 200px; }
-element-text {
-    horizontal-align: 0.5;
-    vertical-align: 0.5;
-    /* width: 8px; */
-}
+element-icon { size: 150px; }
+element-text { horizontal-align: 0.5; vertical-align: 0.5; }
 
-#inputbar {
+inputbar {
     enabled: false;
-    /* border: 0 solid 0 solid 1 solid 0 solid; */
-    /* margin: 0 0 10 0; */
-    /* spacing: 0; */
-    /* border-color: @separatorcolor; */
 }
-
-#prompt {
-    enabled: false;
-    /* padding:10; */
-    background-color: @backgroundcoloralternate;
-    border: 0 1 0 0;
-}
-
-#entry {
-    padding: 0 0 10 0;
-}
-
-/* #scrollbar { */
-/*     border: 0; */
-/*     width: 0; */
-/*     handle-color: @scrollbarcolor; */
-/*     handle-width: 0; */
-/*     background-color: @backgroundcoloralternate; */
-/* } */
 
 /* vim: set ft=css : */

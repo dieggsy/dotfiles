@@ -1,150 +1,49 @@
 /* -*- mode: css -*- */
 
-configuration {
-	width: 415;
-	location: 2;
-	yoffset: 62;
-	dpi: 210;
+@import "dropdown"
+
+listview {
+    padding: 10 0 0 0;
+    lines: 10;
     columns: 7;
 }
 
-* {
-    backgroundcolor: #282828;
-    bg1: #504945;
-    backgroundcoloralternate: #282828;
-    separatorcolor: #504945;
-    scrollbarcolor: #504945;
-    /* foregroundcolor: #ebdbb2; */
-    /* foregroundcolorinverse: #ebdbb2; */
-    foregroundcolor: #fdf4c1;
-    foregroundcolorinverse: #fdf4c1;
-    highlightcolor: #DD6F48;
-    selectioncolor: #504945;
-
-    font: "Cantarell 8";
-    border-color: @separatorcolor;
-    background-color: @backgroundcolor;
-    text-color: @foregroundcolor;
-    margin: 0;
-    margin-bottom: 0;
-    margin-top: 0;
-    spacing: 0;
+window {
+    width: 415;
 }
 
-#listview {
-    spacing: 0;
-    scrollbar: true;
-    padding: 10 0 0 0;
-    dynamic: true;
-    lines: 10;
-}
-
-
-#window {
-    background-color: @backgroundcolor;
-    border-color: @separatorcolor;
-    border: 2;
-    border-radius: 10;
-    /* width: 415; */
-}
-
-#mainbox {
-    border: 0;
-    padding: 0;
-    background-color: @backgroundcoloralternate;
-    padding: 10;
-}
-
-#element {
-    padding:10;
-    /* border: 0 0 1 0; */
-    border-color: @separatorcolor;
-    background-color: @backgroundcoloralternate;
-}
-
-#message {
+message {
     border: 0 0 1 0;
-    padding: 0 0 10 0;
-    border-color: @separatorcolor;
-    background-color: @backgroundcoloralternate;
-
 }
 
-#textbox {
+textbox {
     text-color: @foreground-color;
     horizontal-align: 0.5;
-    /* padding: 10; */
+    padding: 0 10 10 10;
 }
 
-/* #element.selected.normal { */
-/*     background-color: #3C3836; */
-/*     text-color: @foregroundcolorinverse; */
-/*     border-radius: 0; */
-
-/*     /\* border: 0 0 1 0; *\/ */
-/*     border-color: @separatorcolor; */
-/* } */
-
-#element.alternate.normal {
-    background-color: @backgroundcoloralternate;
+element {
+    border: 0;
 }
 
-#element.normal.active {
+element.normal.active {
     text-color: @highlightcolor;
 }
 
-#element.alternate.active {
-    text-color: @highlightcolor;
-}
-
-#element.selected {
-    background-color: #3C3836;
-    /* text-color: @highlightcolor; */
-    /* text-color: @foregroundcolorinverse; */
+element.selected {
     border-radius: 10;
-
-    /* border: 0 0 1 0; */
-    border-color: @separatorcolor;
+    border: 0;
 }
-#element.selected.active {
-    /* background-color: #3C3836; */
+
+element.selected.active {
     text-color: @highlightcolor;
-    /* text-color: @foregroundcolorinverse; */
-    /* border-radius: 50%; */
-
-    /* border: 0 0 1 0; */
-    border-color: @separatorcolor;
 }
-
-/* element-icon { size: 2.3ch; } */
-element-icon { size: 32px; }
 
 element-text { horizontal-align: 0.5; }
 
-#inputbar {
+inputbar {
     enabled: false;
-    border: 0 solid 0 solid 1 solid 0 solid;
-    margin: 0;
-    spacing: 0;
-    border-color: @separatorcolor;
 }
 
-#prompt {
-    padding:10;
-    background-color: @backgroundcoloralternate;
-    border: 0 1 0 0;
-}
-
-#entry {
-    padding:10;
-}
-
-#scrollbar {
-    border: 0;
-    width: 0;
-    handle-color: @scrollbarcolor;
-    handle-width: 0;
-    background-color: @backgroundcoloralternate;
-}
 
 /* vim: set ft=css : */

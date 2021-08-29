@@ -1,66 +1,49 @@
 /* -*- mode: css -*- */
 
-* {
-    backgroundcolor: #282828;
-    separatorcolor: #504945;
-    foregroundcolor: #ebdbb2;
-    highlightcolor: #DD6F48;
-    selectioncolor: #504945;
+@import "dropdown"
 
-    font: "Cantarell 8";
-    border-color: @separatorcolor;
-    background-color: @backgroundcolor;
-    text-color: @foregroundcolor;
-    margin: 0;
-    margin-bottom: 0;
-    margin-top: 0;
-    spacing: 0;
+* {
+    backgroundcolor: #1D2021;
 }
 
-element-icon { size: 32px; }
-
-#window {
+window {
     x-offset: 0;
     y-offset: 0;
     width: 100%;
-    location:   north west;
-    children:   [ horibox ];
+    border: 0;
+    border-radius: 0;
+    location: north west;
+    children: [ horibox ];
 }
 
-#horibox {
+horibox {
     orientation: horizontal;
-    children:   [ prompt, entry, listview ];
+    children: [ prompt, entry, listview ];
 }
 
-#listview {
-    layout:     horizontal;
+listview {
+    layout: horizontal;
 }
 
-#prompt {
-    padding:7px 10px;
-    border: 0 0 2px 0;
-    border-color: @highlightcolor;
+prompt {
+    padding: 8 9;
+    /* border: 0 0 2px 0; */
+    /* border-color: @highlightcolor; */
 }
 
-#entry {
+entry {
     expand:     false;
     width:      6em;
-    padding:7px 10px;
+    padding: 8 9;
 }
 
-#element {
-    padding:7px 10px;
+element {
+    padding: 8 9;
+    border: 0;
 }
 
-#element selected {
+element.selected {
     background-color: #3C3836;
-    padding:7px 10px;
-}
-
-#element.selected.active {
-    text-color: @highlightcolor;
-}
-
-#element.normal.active {
-    text-color: @highlightcolor;
+    padding: 8 9;
+    border: 0;
 }
