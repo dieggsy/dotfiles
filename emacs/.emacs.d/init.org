@@ -4270,6 +4270,7 @@ operate on system processes like dired
 (use-package grep
   :config
   (grep-apply-setting 'grep-use-null-device nil)
+  (grep-apply-setting 'grep-template "rg --color=auto --no-heading -nH --null -g '<F>' -e <R>")
   (grep-apply-setting 'grep-command  "rg --color=auto --no-heading -nH --null -e "))
 #+end_src
 ** [[elisp:(find-library-other-window "calc")][calc]]
