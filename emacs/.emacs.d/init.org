@@ -1881,7 +1881,10 @@ Collection of useful dired additions
 #+end_quote
 ***** dired-open
 #+begin_src emacs-lisp
-(use-package dired-open)
+(use-package dired-open
+  :general
+  (d/mode-leader-keys dired-mode-map
+    "l" 'dired-open-xdg))
 #+end_src
 ***** dired-rainbow
 #+begin_src emacs-lisp
@@ -1953,6 +1956,13 @@ Collection of useful dired additions
   :general
   (nmap dired-mode-map
     "TAB" 'dired-subtree-toggle))
+#+end_src
+***** dired-narrow
+#+begin_src emacs-lisp
+(use-package dired-narrow
+  :general
+  (d/mode-leader-keys dired-mode-map
+    "n" 'dired-narrow))
 #+end_src
 **** [[https://github.com/purcell/diredfl][diredfl]]
 #+begin_quote
