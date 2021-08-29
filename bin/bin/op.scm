@@ -41,7 +41,7 @@
                 (* 29 60)))
           (member "-reauth" args))
   (let-values (((auth-out auth-in auth-pid)
-                (process "rofi -dmenu -p password -password | op signin my")))
+                (process "rofi -dmenu -p '1(password)' -password | op signin my --raw")))
     (close-output-port auth-in)
     (let-values (((pid normal status) (process-wait auth-pid)))
       (unless (zero? status)
@@ -53,13 +53,16 @@
      (lambda (port) (display (read-line auth-out) port)))))
 
 ;; Get session key
-(define op-env ((if encrypt-session-key
-                    (cut call-with-input-pipe (decrypt-cmd env-file)  <>)
-                    (cut call-with-input-file env-file <>))
-                read-line))
+((if encrypt-session-key
+     (cut call-with-input-pipe (decrypt-cmd env-file)  <>)
+     (cut call-with-input-file env-file <>))
+ (lambda (p)
+   (set-environment-variable! "OP_SESSION_my" (read-line p))))
 
-(define (op args)
-  (apply string-append op-env " && op " (intersperse (map ->string args) " ")))
+(define-syntax op
+  (syntax-rules ()
+    ((op . args)
+     (process "op" (map ->string `args)))))
 
 ;; Cache metadata
 (when (or (not (file-exists? cache-file))
@@ -67,12 +70,9 @@
              (- (current-seconds)
                 (* 24 60 60)))
           (member  "-recache" args))
-  (let*-values (((vaults-out vaults-in vaults-pid)
-                 (process (op '(list vaults))))
-                ((templates-out templates-in templates-pid)
-                 (process (op '(list templates))))
-                ((items-out items-in items-pid)
-                 (process (op '(list items))))
+  (let*-values (((vaults-out vaults-in vaults-pid) (op list vaults))
+                ((templates-out templates-in templates-pid) (op list templates))
+                ((items-out items-in items-pid) (op list items))
                 ((vaults) (map
                            (lambda (vault)
                              (cons
@@ -150,7 +150,7 @@
 (define-values (xclip-out xclip-in xclip-pid) (process "xclip" '("-sel" "c")))
 
 (define-values (op-out op-in op-pid)
-  (process (op `(get item ,(string-append "'" item "'") --vault ,vault --fields password))))
+  (op get item ,(string-append "'" item "'") --vault ,vault --fields password))
 
 (define password (read-line op-out))
 
