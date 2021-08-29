@@ -2,8 +2,8 @@
 [global]
 font = Cantarell 8
 
-frame_width = 5
-frame_color = "#DD6F48"
+frame_width = 2
+frame_color = "#504945"
 # Allow a small subset of html markup:
 #   <b>bold</b>
 #   <i>italic</i>
@@ -70,7 +70,7 @@ ignore_newline = no
 # screen width minus the width defined in within the geometry option.
 geometry = "700x5-15+62"
 
-corner_radius=5
+corner_radius=10
 
 # Shrink window if it's smaller than the width.  Will be ignored if
 # width is 0.

@@ -2,13 +2,13 @@
 # message="Exit i3?"
 [[ $(cat /proc/1/comm) == "systemd" ]] && logind=systemctl || logind=loginctl
 
-declare -A cmds=([lock]="physlock"
-                 [logout]="loginctl terminate-session self"
-                 [suspend]="$logind suspend"
-                 [reboot]="$logind reboot"
-                 [shutdown]="$logind poweroff")
+declare -A cmds=([" lock"]="physlock"
+                 ["﫼 logout"]="loginctl terminate-session self"
+                 ["望 suspend"]="$logind suspend"
+                 ["磻 reboot"]="$logind reboot"
+                 ["襤 shutdown"]="$logind poweroff")
 
-keys=(lock logout suspend reboot shutdown)
+keys=(" lock" "﫼 logout" "望 suspend" "磻 reboot" "襤 shutdown")
 
 usage () {
     echo "Usage: wm-exit [option]
@@ -29,7 +29,7 @@ console-select () {
 }
 
 rofi-select () {
-    $cmds[$(printf '%s\n' "${keys[@]}" | rofi -dmenu -i -theme menu -theme-str "#inputbar {enabled:false;}" -theme-str "element-text {horizontal-align: 0.5;}")]
+    $cmds[$(printf '%s\n' "${keys[@]}" | rofi -dmenu -i -theme menu -theme-str "#inputbar {enabled:false;}")]
 }
 
 

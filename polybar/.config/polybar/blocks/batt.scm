@@ -28,7 +28,7 @@
          (battery-color (cond (charging "color=\"#B8BB26\"")
                               ((< percent 20) "color=\"#FB4933\"" )
                               (else "")))
-         (batt-length 13)
+         (batt-length 12)
          (boxes-color (inexact->exact (round (* batt-length ratio))))
          (boxes-gray (- batt-length boxes-color)))
     (display name)

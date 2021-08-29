@@ -135,7 +135,7 @@ format-padding=1
 [module/packages]
 type = custom/script
 exec = checkupdates | wc -l
-label = ↑ %output%
+label =  %output%
 exec-if = checkupdates
 interval = 600
 format = %{A1:checkupdates | cut -d' ' -f1 | rofi -dmenu -p updates -theme menu &:}<label>%{A}
@@ -217,9 +217,9 @@ ramp-2 = 
 ; bar-gradient=true
 
 [module/hamburger]
-type = custom/script
-exec = echo "襤"
-format-padding = 2
+type = custom/text
+content = 襤
+content-padding = 2
 click-left = wm-exit -rofi
 ; format-underline = ${colors.sienna}
 

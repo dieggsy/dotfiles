@@ -1,7 +1,7 @@
 #!/usr/bin/zsh
 
 wins=$(wmctrl -l | wc -l)
-max=$(((5 * 220) + 40 + 11))
-curr=$((($wins * 220) + 40 + 11))
+max=$(((5 * 170) + 20 + 5))
+curr=$((($wins * 170) + 20 + 5))
 
 rofi -show window -theme window -width $([[ $curr -gt $max ]] && echo $max || echo $curr)
