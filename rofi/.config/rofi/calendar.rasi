@@ -1,15 +1,11 @@
 /* -*- mode: css -*- */
-/* -*- mode: css -*- */
+
 configuration {
-	modi: "window,run,ssh,drun,combi";
-	width: 300;
-	location: 3;
+	width: 415;
+	location: 2;
 	yoffset: 62;
-    xoffset: -15;
-	fixed-num-lines: false;
-	combi-modi: "window,drun,run";
 	dpi: 210;
-	/* theme: "dropdown"; */
+    columns: 7;
 }
 
 * {
@@ -38,9 +34,8 @@ configuration {
 #listview {
     spacing: 0;
     scrollbar: true;
-    margin: 0;
+    padding: 10 0 0 0;
     dynamic: true;
-    padding-top: 500;
     lines: 10;
 }
 
@@ -50,46 +45,45 @@ configuration {
     border-color: @separatorcolor;
     border: 2;
     border-radius: 10;
-    /* width: 300; */
+    /* width: 415; */
 }
 
 #mainbox {
     border: 0;
     padding: 0;
     background-color: @backgroundcoloralternate;
+    padding: 10;
 }
 
 #element {
     padding:10;
-    border: 1 0 0 0;
+    /* border: 0 0 1 0; */
     border-color: @separatorcolor;
     background-color: @backgroundcoloralternate;
 }
 
 #message {
-    border: 1 0 0 0;
+    border: 0 0 1 0;
+    padding: 0 0 10 0;
     border-color: @separatorcolor;
     background-color: @backgroundcoloralternate;
+
 }
 
 #textbox {
-    text-color: #7C6F64;
-    padding: 10;
+    text-color: @foreground-color;
+    horizontal-align: 0.5;
+    /* padding: 10; */
 }
 
+/* #element.selected.normal { */
+/*     background-color: #3C3836; */
+/*     text-color: @foregroundcolorinverse; */
+/*     border-radius: 0; */
 
-#element.selected {
-    background-color: #3C3836;
-    /* text-color: @foregroundcolorinverse; */
-    border-radius: 0;
-
-    border: 1 0 0 0;
-    border-color: @separator-color;
-
-}
-
-#element.selected.normal {
-}
+/*     /\* border: 0 0 1 0; *\/ */
+/*     border-color: @separatorcolor; */
+/* } */
 
 #element.alternate.normal {
     background-color: @backgroundcoloralternate;
@@ -103,14 +97,33 @@ configuration {
     text-color: @highlightcolor;
 }
 
+#element.selected {
+    background-color: #3C3836;
+    /* text-color: @highlightcolor; */
+    /* text-color: @foregroundcolorinverse; */
+    border-radius: 10;
+
+    /* border: 0 0 1 0; */
+    border-color: @separatorcolor;
+}
 #element.selected.active {
+    /* background-color: #3C3836; */
     text-color: @highlightcolor;
+    /* text-color: @foregroundcolorinverse; */
+    /* border-radius: 50%; */
+
+    /* border: 0 0 1 0; */
+    border-color: @separatorcolor;
 }
 
 /* element-icon { size: 2.3ch; } */
 element-icon { size: 32px; }
 
+element-text { horizontal-align: 0.5; }
+
 #inputbar {
+    enabled: false;
+    border: 0 solid 0 solid 1 solid 0 solid;
     margin: 0;
     spacing: 0;
     border-color: @separatorcolor;

@@ -64,18 +64,31 @@ static int get_joint_percent() {
     return (int)roundf(numerator/denominator * 100);
 }
 
-static char * get_icon (int adapter_online, int percent) {
-    char* icon;
-    percent = round_multiple(percent, 33);
-    if (percent == 99) {
-        icon = adapter_online ? "%{F#B8BB26}━━━%{F-}" : "━━━";
-    } else if (percent == 66) {
-        icon = adapter_online ? "%{F#B8BB26}━━%{F#7C6F64}┉%{F-}" : "━━%{F#7C6F64}┉%{F-}";
-    } else if (percent == 33) {
-        icon = adapter_online ? "%{F#B8BB26}━%{F#7C6F64}┉┉%{F-}" : "━%{F#7C6F64}┉┉%{F-}";
-    } else {
-        icon = adapter_online ? "%{F#7C6F64}┉┉┉%{F-}" : "%{F#7C6F64}┉┉┉%{F-}";
+char * get_icon (int adapter_online, int percent) {
+    char* icon = (char*) malloc(81);
+    icon[0] = 0;
+    const char* const arr[] = {
+        "", // 0
+        "", // 10
+        "", // 20
+        "", // 30
+        "", // 40
+        "", // 50
+        "", // 60
+        "", // 70
+        "", // 80
+        "", // 90
+        "" // 100
+
+    };
+    percent = round_multiple(percent, 10) / 10;
+    if (adapter_online) {
+        strcat(icon, "%{F#B8BB26}");
+    } else if (percent <= 2) {
+        strcat(icon, "%{F#FB4933}");
     }
+    strcat(icon, arr[percent]);
+    strcat(icon,"%{F-}");
     return icon;
 }
 

@@ -15,7 +15,7 @@ ENC = locale.getpreferredencoding()
 BLUETOOTH_GUI = "blueman-manager"
 ROFI_CMD = [
     "rofi",
-    "-p", "⇋",
+    "-p", "bluez",
     "-dmenu", "-i",
     "-theme", "menu",
     "-theme-str", "* {highlightcolor: #83A598;}"
@@ -40,8 +40,10 @@ def make_device_list(devmap):
     lst = list(devmap.values())
     lst.sort(key=rank_device)
     pad = max(map(lambda dev: len(dev["Address"]), lst)) + 2
-    return list(map(lambda dev: ("P" if dev["Paired"] else " ")
-                    + ("T" if dev["Trusted"] else " ")
+    return list(map(lambda dev:
+                    ((dev["Paired"] and dev["Trusted"] and "﫟")
+                     or (dev["Paired"] and "﫠")
+                     or " ")
                     + "  "
                     + dev["Alias"].ljust(pad, " ")
                     + "  "

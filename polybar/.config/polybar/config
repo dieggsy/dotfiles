@@ -15,7 +15,7 @@ light3 = #BDAE93
 light4 = #A89984
 dark2 = #504945
 
-background = ${colors.black}
+background = #1D2021
 foreground = ${colors.white}
 alert = ${colors.red}
 comment = #7C6F64
@@ -34,7 +34,8 @@ foreground = ${colors.foreground}
 module-margin=0
 separator=
 
-font-0 = Iosevka Term:size=8;3
+font-0 = Cantarell:size=8;3
+font-1 = Symbols Nerd Font:style=Regular:size=8;3
 
 modules-left = bspwm xwindow
 modules-center = date
@@ -51,8 +52,8 @@ enable-ipc = true
 [module/xwindow]
 type = internal/xwindow
 label-maxlen =  85
-format-padding=1
-format = %{A1:window-switcher&:}⣿ <label>%{A}
+format-padding=2
+format = %{A1:window-switcher&:} <label>%{A}
 
 [module/display]
 type=custom/script
@@ -63,8 +64,8 @@ click-left=~/.config/polybar/blocks/mons-rofi
 [module/bspwm]
 type = internal/bspwm
 format =%{A1:bspc desktop -l next:}<label-state> <label-mode>%{A}
-format-underline = ${colors.sienna}
-format-padding=1
+; format-underline = ${colors.sienna}
+format-padding=2
 wrapping-scroll = false
 enable-click = false
 enable-scroll = false
@@ -92,31 +93,33 @@ label-empty-foreground = ${colors.comment}
 [module/network]
 type = internal/network
 interface = wlan0
-format-connected = %{A1:iwd-rofi&:}<ramp-signal>%{A}
+format-connected = %{A1:iwd-rofi&:}<label-connected>%{A}
+label-connected = 直
 
 ; ramp-signal-0 = %{F#7C6F64}⣠⣴⣾
 ; ramp-signal-1 = ⣠%{F#7C6F64}⣴⣾
 ; ramp-signal-2 = ⣠⣴%{F#7C6F64}⣾
 ; ramp-signal-3 = ⣠⣴⣾
-ramp-signal-0 = ⡀
-ramp-signal-1 = ⣠
-ramp-signal-2 = ⣠⡆
-ramp-signal-3 = ⣠⣾
+; ramp-signal-0 = ⡀
+; ramp-signal-1 = ⣠
+; ramp-signal-2 = ⣠⡆
+; ramp-signal-3 = ⣠⣾
 
-format-disconnected = %{A1:networkmanager_dmenu&:}<label-disconnected>%{A}
-label-disconnected =⣀⣀⣀
+format-disconnected = %{A1:iwd-rofi&:}<label-disconnected>%{A}
+; label-disconnected =⣀⣀
+label-disconnected = 睊
 label-disconnected-foreground = ${colors.red}
 ; format-foreground = ${colors.blue}
 ; format-underline = ${colors.blue}
-format-disconnected-padding =1
-format-connected-padding = 1
+format-disconnected-padding =2
+format-connected-padding = 2
 interval = 2
 
 [module/bluez]
 click-left = ~/.config/polybar/blocks/bluez-rofi &
 type = custom/script
 exec = ~/.config/polybar/blocks/bluez
-format-padding=1
+format-padding=2
 interval = 2
 
 [module/date]
@@ -135,8 +138,8 @@ exec = checkupdates | wc -l
 label = ↑ %output%
 exec-if = checkupdates
 interval = 600
-format = %{A1:checkupdates | rofi -dmenu -theme menu &:}<label>%{A}
-format-padding = 1
+format = %{A1:checkupdates | cut -d' ' -f1 | rofi -dmenu -p updates -theme menu &:}<label>%{A}
+format-padding = 2
 
 [module/cpu]
 type = internal/cpu
@@ -170,49 +173,55 @@ exec = ~/.config/polybar/blocks/battery-average
 ; format-foreground = ${colors.blue}
 ; format-underline = ${colors.blue}
 format = %{A1:batt.scm -rofi &:}<label>%{A}
-format-padding = 1
+format-padding = 2
 interval=30
 
 [module/pulse]
 hidden=true
 type=internal/pulseaudio
-format-volume = Volume: <bar-volume> <label-volume>
+format-volume = <ramp-volume> <label-volume>
 label-volume = %percentage%
 label-muted = %percentage%
-format-muted = Volume: <bar-volume> <label-muted>
+format-muted = 婢 <label-muted>
 format-muted-foreground = ${colors.comment}
-format-volume-padding = 1
-format-muted-padding = 1
+format-volume-padding = 2
+format-muted-padding = 2
 
 ; Only applies if <bar-volume> is used
-bar-volume-width = 6
-bar-volume-indicator =
-bar-volume-fill = ━
-bar-volume-empty = ┉
-bar-volume-empty-foreground = ${colors.comment}
-bar-volume-gradient=true
+ramp-volume-0 = 奄
+ramp-volume-1 = 奔
+ramp-volume-2 = 墳
+; bar-volume-width = 6
+; bar-volume-indicator =
+; bar-volume-fill = ━
+; bar-volume-empty = ┉
+; bar-volume-empty-foreground = ${colors.comment}
+; bar-volume-gradient=true
 
 [module/backlight]
 hidden=true
 type = internal/backlight
 card = intel_backlight
-format = Backlight: <bar> <label>
+format = <ramp> <label>
 label = %percentage%
-format-padding = 1
+format-padding = 2
 
-bar-width = 6
-bar-indicator =
-bar-fill = ━
-bar-empty = ┉
-bar-empty-foreground = ${colors.comment}
-bar-gradient=true
+ramp-0 = 
+ramp-1 = 
+ramp-2 = 
+; bar-width = 6
+; bar-indicator =
+; bar-fill = ━
+; bar-empty = ┉
+; bar-empty-foreground = ${colors.comment}
+; bar-gradient=true
 
 [module/hamburger]
 type = custom/script
-exec = echo "☰"
-format-padding = 1
+exec = echo "襤"
+format-padding = 2
 click-left = wm-exit -rofi
-format-underline = ${colors.sienna}
+; format-underline = ${colors.sienna}
 
 [settings]
 screenchange-reload = true

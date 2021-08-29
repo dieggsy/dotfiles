@@ -30,7 +30,7 @@ configuration {
     highlightcolor: #DD6F48;
     selectioncolor: #504945;
 
-    font: "Iosevka Term 8";
+    font: "Cantarell 8";
     border-color: @separatorcolor;
     background-color: @backgroundcolor;
     text-color: @foregroundcolor;
@@ -55,9 +55,9 @@ configuration {
 
 #window {
     background-color: @backgroundcolor;
-    border-color: @highlightcolor;
-    border: 5;
-    border-radius: 5;
+    border-color: @separatorcolor;
+    border: 2;
+    border-radius: 10;
     /* width: 300; */
 }
 
@@ -89,9 +89,9 @@ element {
 element.selected {
     background-color: #3C3836;
     text-color: @foregroundcolorinverse;
-    border-radius: 5px;
+    border-radius: 10;
 
-    border: 0 0 0.3% 0;
+    /* border: 0 0 0.3% 0; */
     border-color: @separatorcolor;
 }
 

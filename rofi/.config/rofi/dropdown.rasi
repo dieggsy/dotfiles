@@ -13,7 +13,7 @@
     highlightcolor: #DD6F48;
     selectioncolor: #504945;
 
-    font: "Iosevka Term 8";
+    font: "Cantarell 8";
     border-color: @separatorcolor;
     background-color: @backgroundcolor;
     text-color: @foregroundcolor;
@@ -35,9 +35,9 @@
 
 #window {
     background-color: @backgroundcolor;
-    border-color: @highlightcolor;
-    border: 5;
-    border-radius: 5;
+    border-color: @separatorcolor;
+    border: 2;
+    border-radius: 10;
     /* width: 300; */
 }
 
@@ -49,13 +49,13 @@
 
 #element {
     padding:10;
-    border: 0 0 1 0;
+    border: 1 0 0 0;
     border-color: @separatorcolor;
     background-color: @backgroundcoloralternate;
 }
 
 #message {
-    border: 0 0 1 0;
+    border: 1 0 0 0;
     border-color: @separatorcolor;
     background-color: @backgroundcoloralternate;
 }
@@ -70,7 +70,7 @@
     text-color: @foregroundcolorinverse;
     border-radius: 0;
 
-    border: 0 0 1 0;
+    border: 1 0 0 0;
     border-color: @separatorcolor;
 }
 
@@ -92,7 +92,7 @@
     /* text-color: @foregroundcolorinverse; */
     border-radius: 0;
 
-    border: 0 0 1 0;
+    border: 1 0 0 0;
     border-color: @separatorcolor;
 }
 
@@ -100,17 +100,19 @@
 element-icon { size: 32px; }
 
 #inputbar {
-    border: 0 solid 0 solid 1 solid 0 solid;
+    /* border: 0 solid 0 solid 1 solid 0 solid; */
     margin: 0;
     spacing: 0;
     border-color: @separatorcolor;
 }
 
 #prompt {
-    padding:10;
     background-color: @backgroundcoloralternate;
-    border: 0 1 0 0;
+    padding: 0 0 0 10;
+    vertical-align: 0.5;
 }
+
+
 
 #entry {
     padding:10;

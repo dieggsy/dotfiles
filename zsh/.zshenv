@@ -8,7 +8,7 @@ export RIPGREP_CONFIG_PATH=~/.config/rg/rg.conf
 export NLTK_DATA=~/.local/share/nltk_data
 export _JAVA_AWT_WM_NONREPARENTING=1
 export DUST_HOME=~/.local/dust
-export GDK_DPI_SCALE=.5
+export GDK_DPI_SCALE=.4
 export GDK_SCALE=2
 
 pathadd () {

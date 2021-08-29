@@ -33,6 +33,7 @@ int main() {
     char *path, *iface, *prop;
     if (len == 1) {
         // Bluetooth is off, probably
+        printf("%%{F#7C6F64}%%{F-}");
         return 0;
     }
     while (len--) {
@@ -77,7 +78,7 @@ int main() {
                     dbus_message_iter_next(&propdict_entry);
                 }
                 if (connected) {
-                    printf("⇋");
+                    printf("");
                     return 0;
                 }
             }
@@ -88,7 +89,7 @@ int main() {
     }
     dbus_message_unref(msg_reply);
 
-    printf("%%{F#7C6F64}⇋%%{F-}");
+    printf("");
     return 0;
 }
 

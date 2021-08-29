@@ -8,4 +8,5 @@ configuration {
 	combi-modi: "window,drun,run";
 	dpi: 210;
 	theme: "dropdown";
+    display-run: "";
 }

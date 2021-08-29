@@ -33,21 +33,15 @@ chopped[-1] = chopped[-1] + [" "] * (7 - len(chopped[-1]))
 ROFI_CMD = [
     "rofi", "-dmenu",
     "-mesg", f"{calendar.month_name[month]} {today.year}",
-    "-location", "2",
-    # "-xoffset", "36",
-    "-columns", "7",
-    "-theme-str", "#textbox{text-color:@foregroundcolor;}",
-    "-theme-str", "#inputbar{enabled:false;}",
+    "-theme", "calendar",
     "-theme-str", f"#listview{{lines:{len(chopped)};}}",
-    "-theme-str", "#element{border:1 1 0 0;}",
-    "-width", "384"
 ]
 
 transposed = list(map(list, zip(*chopped)))
 flattened = list(itertools.chain.from_iterable(transposed))
 active = flattened.index(str(today.day).rjust(2))
 inp = "\n".join(flattened)
-p = Popen(ROFI_CMD + ["-a", str(active)], stdin=PIPE,
+p = Popen(ROFI_CMD + ["-a", str(active), "-selected-row", str(active)], stdin=PIPE,
           stdout=PIPE).communicate(input=inp.encode(ENC))[0].decode(ENC).strip()
 
 if p and re.match("\d+", p):

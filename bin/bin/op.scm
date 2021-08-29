@@ -110,7 +110,9 @@
         port)))))
 
 (define-values (rofi-out rofi-in rofi-pid)
-  (process "rofi -dmenu -i -p '1password' -markup-rows"))
+  (process "rofi" '("-dmenu" "-i" "-p"
+                    "1password" "-markup-rows"
+                    "-theme-str" "* {font: \"Iosevka Term 8\";}")))
 
 ;; Read metadata
 ((if encrypt-cache

@@ -18,7 +18,8 @@
   (if (member "-rofi" args)
       (process "rofi" '("-dmenu" "-theme" "menu"
                         "-markup-rows" "-theme-str"
-                        "#inputbar {enabled:false;}") )
+                        "#inputbar {enabled:false;}"
+                        "-theme-str" "* {font: \"Iosevka Term 8\";}") )
       (values #f #f #f)))
 
 (define (print-battery-level name energy-now energy-full)

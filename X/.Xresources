@@ -23,5 +23,6 @@ Emacs.mode-line.attributeForeground: #EBDBB2
 Emacs.mode-line.attributeBackground: #1D2021
 Emacs.mode-line.attributeBox: nil
 
-Sxiv.font: Iosevka Term-8
+Sxiv.font: Cantarell-8
+Sxiv.foreground: #fdf4c1
 Sxiv.background: #282828
