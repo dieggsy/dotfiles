@@ -25,6 +25,7 @@ window {
     border-radius: 10;
     location: north;
     y-offset: 62;
+    width: 700;
 }
 
 mainbox {
@@ -50,6 +51,11 @@ element.selected {
     border: 1 0 0 0;
 }
 
+element-text, element-icon {
+    background-color: inherit;
+    text-color:       inherit;
+}
+
 element.selected.active {
     text-color: @highlightcolor;
 }
@@ -59,7 +65,7 @@ element.normal.active {
 }
 
 prompt {
-    vertical-align: 0.5;
+    padding: 10 0 10 10;
 }
 
 entry {

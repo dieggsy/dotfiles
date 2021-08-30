@@ -4,7 +4,6 @@ configuration {
 	fixed-num-lines: false;
 	combi-modi: "window,drun,run";
 	dpi: 210;
-    width: 700;
 	theme: "dropdown";
     display-run: "";
 }

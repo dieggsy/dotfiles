@@ -33,7 +33,7 @@ element.selected {
     border: 0;
 }
 
-element-icon { size: 64px; }
+element-icon { size: 64px; horizontal-align: 0.5; }
 element-text { horizontal-align: 0.5; vertical-align: 0.5; }
 
 inputbar {
