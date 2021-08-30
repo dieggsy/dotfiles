@@ -50,6 +50,14 @@ element.selected {
     border: 1 0 0 0;
 }
 
+element.selected.active {
+    text-color: @highlightcolor;
+}
+
+element.normal.active {
+    text-color: @highlightcolor;
+}
+
 prompt {
     vertical-align: 0.5;
 }
