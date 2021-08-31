@@ -144,7 +144,7 @@ separator_color = #454947
 startup_notification = false
 
 # dmenu path.
-# dmenu = /usr/bin/rofi -dmenu -p dunst:
+dmenu = /usr/bin/rofi -dmenu -p dunst:
 
 # Browser for opening urls in context menu.
 browser = firefox
