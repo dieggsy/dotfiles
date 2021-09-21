@@ -16,12 +16,12 @@ super + d
     rofi -show drun -theme launcher
 
 super + z
-    id=$(</tmp/st-float) && \
+    id=$(</tmp/st-float.$(bspc query -M -d focused --names)) && \
     bspc node $id --flag hidden && \
     bspc node -f $id
 
 super + minus
-    id=$(</tmp/emacs-float) && \
+    id=$(</tmp/emacs-float.$(bspc query -M -d focused --names)) && \
     bspc node $id --flag hidden && \
     bspc node -f $id
 
@@ -47,7 +47,7 @@ super + Escape
 
 # quit bspwm normally
 super + shift + period
-    wm-exit-dmenu
+    wm-exit -rofi
 
 super + shift + p
    ~/.config/bspwm/bspwmrc

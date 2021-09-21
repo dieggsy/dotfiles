@@ -8,13 +8,19 @@ title=$(xwininfo -id $wid | sed -n '2p' | cut -d\" -f2)
 bspwm_gap=$(bspc config window_gap)
 bspwm_border=$(bspc config border_width)
 
-# Store width and height of primary
-xrandr \
-    | grep -P "e-?DP-?1" \
-    | awk -F'[[:space:]x+]' '{print $4 " " $5}' \
-    | read -r display_width display_height
-
 pos () {
+    if [[ $# = 4 ]]; then
+        monitor=$1
+        shift
+    fi
+
+    # Store width and height of primary
+    xrandr \
+        | grep -P "^${monitor:-$(bspc query -M -d focused --names)}" \
+        | grep -oP "\d+x\d+\+\d+\+\d+" \
+        | sed 's/[x+]/ /g' \
+        | read -r display_width display_height display_xoffset display_yoffset
+
     # Takes position, W, H and creates a bspwm geometry, where position is any
     # of 0-9, arranged in a 3x3 grid on the screen
     polybar_height=47
@@ -58,7 +64,7 @@ pos () {
             Y=$((display_height - H - bspwm_border*2 - bspwm_gap/2))
             ;;
     esac
-    echo ${2}x$3+$X+$Y
+    echo "${2}x$3+$((X + display_xoffset))+$((Y + display_yoffset))"
 }
 
 if [[ $class = "Emacs" ]]; then
@@ -74,12 +80,16 @@ if [[ $instance = "gl" ]]; then
     echo layer=normal
 elif [[ $instance = "st-256color" && $title = "htop" ]]; then
     echo state=floating
-elif [[ $instance = "st-float" ]]; then
-    echo $wid > /tmp/st-float
-    echo layer=above state=floating hidden=on sticky=on rectangle=$(pos 8 1078 560)
-elif [[ $instance = "emacs-float" ]]; then
-    echo $wid > /tmp/emacs-float
-    echo layer=normal state=floating hidden=on sticky=on rectangle=$(pos 8 1078 1110)
+elif [[ $instance = "st-float."* ]]; then
+    mon=$(echo $instance | cut -d. -f2)
+    echo $wid > /tmp/$instance
+    echo layer=above state=floating hidden=on sticky=on rectangle=$(pos $mon 8 1078 560)
+    bspc node $wid -m $mon &
+elif [[ $title = "emacs-float."* ]]; then
+    mon=$(echo $title | cut -d. -f2)
+    echo $wid > /tmp/$title
+    echo layer=normal state=floating hidden=on sticky=on rectangle=$(pos $mon 8 1078 1110)
+    bspc node $wid -m $mon &
 # fix vlc control window not showing up in fullscreen
 elif [[ $instance = "vlc" && $title = "vlc" ]]; then
     echo layer=above border=off
