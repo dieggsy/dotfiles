@@ -2882,6 +2882,15 @@ click to browse URL or to send to e-mail address
   :hook (((help-mode org-mode text-mode) . goto-address-mode)
          ((prog-mode conf-mode) . goto-address-prog-mode)))
 #+end_src
+*** [[elisp:(find-library-other-window "browse-url")][browse-url]]
+#+begin_src emacs-lisp :tangle no
+(use-package browse-url
+  :custom
+  (browse-url-browser-function 'browse-url-firefox)
+  (browse-url-new-window-flag t)
+  (browse-url-firefox-new-window-is-tab t)
+  (browse-url-mozilla-new-window-is-tab t))
+#+end_src
 *** [[elisp:(find-library-other-window "display-line-numbers")][display-line-numbers]]
 #+begin_src emacs-lisp
 (use-package display-line-numbers
