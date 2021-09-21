@@ -3,7 +3,7 @@
 configuration {
     show-icons: true;
     window-thumbnail: true;
-    window-format: "{c}";
+    window-format: "{w}: {c}";
     window-command: "sh -c 'bspc node {window} --flag hidden=off && bspc node -f {window}'";
     kb-accept-entry: "";
     kb-accept-alt: "Return";

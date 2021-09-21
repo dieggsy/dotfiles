@@ -29,7 +29,13 @@ console-select () {
 }
 
 rofi-select () {
-    $cmds[$(printf '%s\n' "${keys[@]}" | rofi -dmenu -i -theme menu -theme-str "#inputbar {enabled:false;}")]
+    $cmds[$(printf '%s\n' "${keys[@]}" |
+                rofi -dmenu -i -theme menu \
+                     -mesg "$USER" \
+                     -theme-str "textbox {text-color:@foregroundcolor;}" \
+                     -theme-str "message { border: 0; }" \
+                     -theme-str "inputbar {enabled:false;}" \
+                    )]
 }
 
 

@@ -31,8 +31,8 @@ dpi = 210
 background = ${colors.background}
 foreground = ${colors.foreground}
 
-module-margin=0
-separator=
+module-margin=2
+padding = 4
 
 font-0 = Cantarell:size=8;3
 font-1 = Symbols Nerd Font:style=Regular:size=8;3
@@ -40,6 +40,7 @@ font-1 = Symbols Nerd Font:style=Regular:size=8;3
 modules-left = bspwm xwindow
 modules-center = date
 modules-right = backlight pulse packages bluez network battery hamburger
+
 ; tray-position=right
 ; tray-maxsize=32
 
@@ -52,20 +53,16 @@ enable-ipc = true
 [module/xwindow]
 type = internal/xwindow
 label-maxlen =  85
-format-padding=2
 format = %{A1:window-switcher&:} <label>%{A}
 
 [module/display]
 type=custom/script
 exec=[ "$(xrandr 2>/dev/null | grep ' connected ' | wc -l)" -gt "1" ] && echo " [__] " || echo ''
-format-padding=1
 click-left=~/.config/polybar/blocks/mons-rofi
 
 [module/bspwm]
 type = internal/bspwm
 format =%{A1:bspc desktop -l next:}<label-state> <label-mode>%{A}
-; format-underline = ${colors.sienna}
-format-padding=2
 wrapping-scroll = false
 enable-click = false
 enable-scroll = false
@@ -73,19 +70,13 @@ reverse-scroll = false
 
 pin-workspaces = true
 label-focused = ●
-; label-focused-underline = ${colors.sienna}
-; label-focused-padding = 1
-; label-focused-foreground = ${colors.sienna}
-; label-monocle-foreground=${colors.sienna}
 label-monocle= M
 
 label-occupied = ●
 label-occupied-foreground = ${colors.comment}
 
 label-urgent = ●
-; label-urgent-background = ${colors.alert}
 label-urgent-foreground = ${colors.alert}
-; label-urgent-padding = 1
 
 label-empty = ○
 label-empty-foreground = ${colors.comment}
@@ -96,41 +87,24 @@ interface = wlan0
 format-connected = %{A1:iwd-rofi&:}<label-connected>%{A}
 label-connected = 直
 
-; ramp-signal-0 = %{F#7C6F64}⣠⣴⣾
-; ramp-signal-1 = ⣠%{F#7C6F64}⣴⣾
-; ramp-signal-2 = ⣠⣴%{F#7C6F64}⣾
-; ramp-signal-3 = ⣠⣴⣾
-; ramp-signal-0 = ⡀
-; ramp-signal-1 = ⣠
-; ramp-signal-2 = ⣠⡆
-; ramp-signal-3 = ⣠⣾
-
 format-disconnected = %{A1:iwd-rofi&:}<label-disconnected>%{A}
-; label-disconnected =⣀⣀
 label-disconnected = 睊
 label-disconnected-foreground = ${colors.red}
-; format-foreground = ${colors.blue}
-; format-underline = ${colors.blue}
-format-disconnected-padding =2
-format-connected-padding = 2
 interval = 2
 
 [module/bluez]
 click-left = ~/.config/polybar/blocks/bluez-rofi &
 type = custom/script
 exec = ~/.config/polybar/blocks/bluez
-format-padding=2
 interval = 2
 
 [module/date]
 type = internal/date
-; format-underline = ${colors.blue}
 label = %date%
 format = %{A3:~/.config/polybar/blocks/cal-rofi &:}<label>%{A}
 date = %a %H:%M
 date-alt = %a %H:%M %b %d
 interval = 2
-format-padding=1
 
 [module/packages]
 type = custom/script
@@ -139,12 +113,10 @@ label =  %output%
 exec-if = checkupdates
 interval = 600
 format = %{A1:checkupdates | cut -d' ' -f1 | rofi -dmenu -p updates -theme menu &:}<label>%{A}
-format-padding = 2
 
 [module/cpu]
 type = internal/cpu
 format-foreground = ${colors.comment}
-format-padding = 1
 format = <label>
 label = cpu %percentage:2%%
 
@@ -153,27 +125,18 @@ type = internal/memory
 format = <label>
 label = mem %percentage_used:2%%
 format-foreground = ${colors.comment}
-format-padding=1
 
 [module/weather]
 type = custom/script
 exec = ~/.config/polybar/blocks/openweathermap.scm
-; format-foreground = ${colors.sienna}
-; format-underline = ${colors.sienna}
-format-padding = 1
 click-middle = xdg-open https://darksky.net
-; click-left = ~/.config/polybar/blocks/darksky-rofi hourly
-; click-right = ~/.config/polybar/blocks/darksky-rofi daily
 interval = 120
 label-font = 1
 
 [module/battery]
 type=custom/script
 exec = ~/.config/polybar/blocks/battery-average
-; format-foreground = ${colors.blue}
-; format-underline = ${colors.blue}
 format = %{A1:batt.scm -rofi &:}<label>%{A}
-format-padding = 2
 interval=30
 
 [module/pulse]
@@ -184,19 +147,11 @@ label-volume = %percentage%
 label-muted = %percentage%
 format-muted = 婢 <label-muted>
 format-muted-foreground = ${colors.comment}
-format-volume-padding = 2
-format-muted-padding = 2
 
 ; Only applies if <bar-volume> is used
 ramp-volume-0 = 奄
 ramp-volume-1 = 奔
 ramp-volume-2 = 墳
-; bar-volume-width = 6
-; bar-volume-indicator =
-; bar-volume-fill = ━
-; bar-volume-empty = ┉
-; bar-volume-empty-foreground = ${colors.comment}
-; bar-volume-gradient=true
 
 [module/backlight]
 hidden=true
@@ -204,24 +159,15 @@ type = internal/backlight
 card = intel_backlight
 format = <ramp> <label>
 label = %percentage%
-format-padding = 2
 
 ramp-0 = 
 ramp-1 = 
 ramp-2 = 
-; bar-width = 6
-; bar-indicator =
-; bar-fill = ━
-; bar-empty = ┉
-; bar-empty-foreground = ${colors.comment}
-; bar-gradient=true
 
 [module/hamburger]
 type = custom/text
 content = 襤
-content-padding = 2
 click-left = wm-exit -rofi
-; format-underline = ${colors.sienna}
 
 [settings]
 screenchange-reload = true
