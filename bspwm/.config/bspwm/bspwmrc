@@ -75,10 +75,10 @@ run xss-lock -- physlock
 # run udiskie
 
 # Wallpaper
-run feh --bg-fill ~/pic/wallpapers/chicken-wall.png
+# run feh --bg-fill ~/pic/wallpapers/chicken-wall.png
 # Random wallpaper
-# feh --bg-fill $(find ~/pic/wallpapers -type f ! -path '*originals*' \
-#                     | shuf -n1 --random-source=/dev/urandom)
+feh --bg-fill $(find ~/pic/wallpapers -type f ! -path '*originals*' \
+                    | shuf -n1 --random-source=/dev/urandom)
 
 # Clipboard
 # run -f autocutsel -selection CLIPBOARD -fork
