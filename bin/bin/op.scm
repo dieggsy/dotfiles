@@ -1,4 +1,4 @@
-#!/usr/bin/chicken-scheme
+#!/usr/bin/csi -s
 (import (chicken process)
         (chicken process-context)
         (only (chicken io) read-line)
@@ -9,20 +9,10 @@
         (only (chicken string) string-split ->string)
         (only (chicken sort) sort)
         (only utf8-srfi-13 string-pad-right)
+        scsh-process
         (prefix medea medea:))
 
-;; I'm not sure how much this actually helps - are we encrypting because
-;; someone else has access to our system? At which point we have bigger
-;; problems. I suppose if there was some malicious program just sending files
-;; in bulk to a server, this would prevent access there...
-(define encrypt-session-key #t)
-(define encrypt-cache #t)
-
-(define (encrypt-cmd file)
-  (string-append "gpg --batch --yes -eaq --default-recipient-self -o " file))
-
-(define (decrypt-cmd file)
-  (string-append "gpg --batch --yes -qd " file))
+(define-syntax $ (syntax-rules () (($ arg) (car (run/strings arg)))))
 
 (define args (command-line-arguments))
 
@@ -40,24 +30,18 @@
              (- (current-seconds)
                 (* 29 60)))
           (member "-reauth" args))
-  (let-values (((auth-out auth-in auth-pid)
-                (process "rofi -dmenu -p '1(password)' -password | op signin my --raw")))
-    (close-output-port auth-in)
-    (let-values (((pid normal status) (process-wait auth-pid)))
-      (unless (zero? status)
-        (display "Authentication error.")
-        (exit 1)))
-    ((if encrypt-session-key
-         (cut call-with-output-pipe (encrypt-cmd env-file) <>)
-         (cut call-with-output-file ennv-file <>))
-     (lambda (port) (display (read-line auth-out) port)))))
+  (receive (status success pid)
+      (run (pipe (rofi -dmenu -p "1(password)" -password)
+                 (op signin my --raw)
+                 (gpg --batch --yes -eaq --default-recipient-self -o ,env-file)))
+    (unless success
+      (format (current-error-port) "Authentication error")
+      (exit 1))))
 
 ;; Get session key
-((if encrypt-session-key
-     (cut call-with-input-pipe (decrypt-cmd env-file)  <>)
-     (cut call-with-input-file env-file <>))
- (lambda (p)
-   (set-environment-variable! "OP_SESSION_my" (read-line p))))
+(set-environment-variable!
+ "OP_SESSION_my"
+ ($ (gpg --batch --yes -qd ,env-file)))
 
 (define-syntax op
   (syntax-rules ()
@@ -70,92 +54,62 @@
              (- (current-seconds)
                 (* 24 60 60)))
           (member  "-recache" args))
-  (let*-values (((vaults-out vaults-in vaults-pid) (op list vaults))
-                ((templates-out templates-in templates-pid) (op list templates))
-                ((items-out items-in items-pid) (op list items))
-                ((vaults) (map
-                           (lambda (vault)
-                             (cons
-                              (alist-ref 'uuid vault)
-                              (alist-ref 'name vault)))
-                           (medea:read-json vaults-out)))
-                ((templates) (map
-                              (lambda (template)
-                                (cons
-                                 (alist-ref 'uuid template)
-                                 (alist-ref 'name template)))
-                              (medea:read-json templates-out))))
-    (let*-values (((pid normal vaults-status) (process-wait vaults-pid))
-                  ((pid normal templates-status) (process-wait templates-pid))
-                  ((pid normal items-status) (process-wait items-pid)))
-      (unless (and (zero? vaults-status)
-                   (zero? items-status)
-                   (zero? templates-status))
-        (display "Error getting vaults or items")
-        (exit 1)))
-    ((if encrypt-cache
-         (cut call-with-output-pipe (encrypt-cmd cache-file) <>)
-         (cut call-with-output-file cache-file <>))
-     (lambda (port)
-       (write
-        (sort
-         (map
-          (lambda (item)
-            (list (alist-ref 'title (alist-ref 'overview item))
-                  (alist-ref (alist-ref 'vaultUuid item) vaults equal?)
-                  (alist-ref (alist-ref 'templateUuid item) templates equal?)))
-          (medea:read-json items-out))
-         (lambda (a b)
-           (string<? (car a) (car b))))
-        port)))))
+  (let* ((vaults (map (lambda (vault)
+                        (cons
+                         (alist-ref 'uuid vault)
+                         (alist-ref 'name vault)))
+                      (medea:read-json (run/port (op list vaults)))))
+         (templates (map (lambda (template)
+                           (cons
+                            (alist-ref 'uuid template)
+                            (alist-ref 'name template)))
+                         (medea:read-json (run/port (op list templates)))))
+         (items (medea:read-json (run/port (op list items)))))
+    (receive (status success pid)
+        (run (pipe (begin
+                     (write (sort
+                             (map (lambda (item)
+                                    (list (alist-ref 'title (alist-ref 'overview item))
+                                          (alist-ref (alist-ref 'vaultUuid item) vaults equal?)
+                                          (alist-ref (alist-ref 'templateUuid item) templates equal?)))
+                                  items)
+                             (lambda (a b)
+                               (string<? (car a) (car b))))))
+                   (gpg --batch --yes -eaq --default-recipient-self -o ,cache-file)))
+      (unless success
+        (format (current-error-port) "Cache error")
+        (exit 1)))))
 
-(define-values (rofi-out rofi-in rofi-pid)
-  (process "rofi" '("-dmenu" "-i" "-p"
-                    "1password" "-markup-rows"
-                    "-theme-str" "* {font: \"Iosevka Term 8\";}")))
+(define selection
+  (run/strings (pipe
+                (gpg --batch --yes -qd ,cache-file)
+                (begin
+                  (let* ((lines (read))
+                         ;; Add two to account for zero width space and column space
+                         (item-pad (+ 2 (apply max (map (lambda (x) (string-length (car x))) lines))))
+                         (vault-pad (+ 2 (apply max (map (lambda (x) (string-length (cadr x))) lines)))))
+                    (for-each (lambda (x)
+                                (display
+                                 (string-append
+                                  (string-pad-right (string-append (car x) "\u200b") item-pad)
+                                  "<span color=\"#7C6F64\">\u200b"
+                                  (string-pad-right (string-append (cadr x) "\u200b") vault-pad)
+                                  "</span><span color=\"#83A598\">\u200b"
+                                  (caddr x)
+                                  "\u200b</span>\n")))
+                              lines)))
+                (rofi -dmenu "-i" -p 1password -markup-rows -theme-str "* {font: \"Iosevka 8\";}"))))
 
-;; Read metadata
-((if encrypt-cache
-     (cut call-with-input-pipe (decrypt-cmd cache-file) <>)
-     (cut call-with-input-file cache-file <>))
- (lambda (port)
-   (let* ((lines (read port))
-          ;; Add two to account for zero width space and column space
-          (item-pad (+ 2 (apply max (map (lambda (x) (string-length (car x))) lines))))
-          (vault-pad (+ 2 (apply max (map (lambda (x) (string-length (cadr x))) lines))))
-          (lines* (apply
-                   string-append
-                   (map (lambda (x)
-                          (string-append
-                           (string-pad-right (string-append (car x) "\u200b") item-pad)
-                           "<span color=\"#7C6F64\">\u200b"
-                           (string-pad-right (string-append (cadr x) "\u200b") vault-pad)
-                           "</span><span color=\"#83A598\">\u200b"
-                           (caddr x)
-                           "\u200b</span>\n"))
-                        lines))))
-     (display lines* rofi-in))
-   (close-output-port rofi-in)))
+(when (null? selection) (exit))
 
-(define selection (read-line rofi-out))
-
-(when (eof-object? selection)
-  (exit))
-
-(define vault/item (string-split selection "\u200b"))
+(define vault/item (string-split (car selection) "\u200b"))
 
 (define vault (caddr vault/item))
 (define item (car vault/item))
 
-(define-values (xclip-out xclip-in xclip-pid) (process "xclip" '("-sel" "c")))
+(define password ($ (op get item ,item --vault ,vault --fields password)))
 
-(define-values (op-out op-in op-pid)
-  (op get item ,(string-append "'" item "'") --vault ,vault --fields password))
-
-(define password (read-line op-out))
-
-(display password xclip-in)
-(close-output-port xclip-in)
+(run (pipe (echo ,password) (xclip -sel c -r)))
 
 ;; Clear if still on clipboard
 (process-fork
