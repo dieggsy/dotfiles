@@ -744,7 +744,7 @@ Ivy - a generic completion frontend for Emacs, Swiper - isearch with an
 A really nice search/completion system for emacs.
 **** ivy
 ***** ivy
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package ivy
   :general
   (ivy-minibuffer-map
@@ -824,13 +824,13 @@ color is hidden by ivy's match color."
         ivy-read-action-function 'ivy-hydra-read-action))
 #+end_src
 ***** ivy-hydra
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package ivy-hydra
   :after ivy
   :demand t)
 #+end_src
 **** swiper
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package swiper
   :general
   (d/leader-keys
@@ -839,7 +839,7 @@ color is hidden by ivy's match color."
   :config (setq swiper-goto-start-of-match t))
 #+end_src
 **** counsel
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package counsel
   :general
   ("M-x" 'counsel-M-x
@@ -874,8 +874,10 @@ color is hidden by ivy's match color."
      "/usr/local/share/applications/"
      "/usr/share/applications/"))
   :config
-  (when (eq system-type 'darwin)
-    (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind))
+  (cond ((eq system-type 'darwin)
+         (setq counsel-locate-cmd 'counsel-locate-cmd-mdfind))
+        ((executable-find "plocate")
+         (setq locate-command "plocate")))
 
   (setq conusel-org-goto-display-style 'path
         counsel-org-headline-path-separator ": "
@@ -908,6 +910,143 @@ color is hidden by ivy's match color."
                                    (file-name-directory f))))
           (d/eshell-here)))
       "eshell"))))
+#+end_src
+*** Completion framework
+**** selectrum
+#+begin_src emacs-lisp
+(use-package selectrum
+  :general
+  (d/leader-keys
+    "-"   'selectrum-repeat
+    "SPC" 'execute-extended-command
+    "ff"  'find-file
+    "fa"  'find-alternate-file
+    "fF"  'find-file-other-window
+    "hF"  'describe-face
+    "iu"  'd/unicode)
+  (selectrum-minibuffer-map
+   "<S-return>" 'embark-act)
+  :init
+  (selectrum-mode)
+  :config
+  (defun d/unicode-names ()
+    "Return formatted and sorted list of `ucs-names'.
+The result of `ucs-names' is mostly, but not completely, sorted,
+so this function ensures lexicographic order."
+    (let* (cands
+           (table (ucs-names))            ; Either hash map or alist
+           (fmt (lambda (name code)       ; Common format function
+                  (let ((cand (format "%06X %-58s %c" code name code)))
+                    (put-text-property 0 1 'code code cand)
+                    (push cand cands)))))
+      (if (not (hash-table-p table))
+          ;; Support `ucs-names' returning an alist in Emacs < 26.
+          ;; The result of `ucs-names' comes pre-reversed so no need to repeat.
+          (dolist (entry table)
+            (funcall fmt (car entry) (cdr entry)))
+        (maphash fmt table)
+        ;; Reverse to speed up sorting
+        (setq cands (nreverse cands)))
+      (sort cands #'string-lessp)))
+
+  (defun d/unicode (arg)
+    (interactive (list (completing-read "unicode: " (d/unicode-names))))
+    (insert (car (last (split-string arg))))))
+
+#+end_src
+**** prescient
+#+begin_src emacs-lisp
+(use-package selectrum-prescient
+  :demand t
+  :after selectrum
+  :config
+  (setq selectrum-count-style nil)
+  (selectrum-prescient-mode)
+  (prescient-persist-mode))
+#+end_src
+**** marginalia
+#+begin_src emacs-lisp
+(use-package marginalia
+  :demand t
+  :after selectrum
+  :general
+  (minibuffer-local-map
+   "M-A" 'marginalia-cycle)
+  :config
+  (marginalia-mode))
+#+end_src
+**** orderless
+#+begin_src emacs-lisp
+(use-package orderless
+  :custom (completion-styles '(orderless)))
+#+end_src
+**** consult
+#+begin_src emacs-lisp
+(use-package consult
+  :general
+  (imap minibuffer-local-map
+    "C-r" 'consult-history)
+  (d/leader-keys
+    "bb" 'consult-buffer
+    "bB" 'consult-buffer-other-window
+    "fl" 'consult-locate
+    "fj" 'consult-find
+    "ss" 'consult-line
+    "sS" 'consult-line-multi
+    "sr" 'consult-ripgrep
+    "y"  'consult-yank-pop)
+  :config
+  (setf consult-locate-args "plocate --ignore-case --existing --regexp")
+  (d/list-prepend! 'consult-buffer-filter
+    (rx "*"
+        (or "LV" "epc" "Calc" "Colors" "help" "Packages" "Customize" "info"
+            "Compile" "anaconda-mode" "scratch" "Messages" "elfeed-log" "Man"
+            "Quail" "Paradox Report" "Backtrace" "slime-events"
+            "slime-compilation" "inferior-lisp" "Completions" "embrace-help"
+            "geiser messages*" "Geiser dbg" "tramp/" "Process List" "eshell:"
+            "Error" "magit-todos" "clang" "lsp" "Flymake" "sly-inferior"
+            "sly-events" "sly-compilation" "Async-native-compile-log"
+            "straight-byte-compilation"))))
+#+end_src
+**** embark
+#+begin_src emacs-lisp :tangle no
+(use-package embark
+  :config
+  (setq embark-which-key-indicator-excluded-actions '(digit-argument negative-argument mark delete-region))
+  (defun embark-which-key-indicator ()
+    "An embark indicator that displays keymaps using which-key.
+The which-key help message will show the type and value of the
+current target followed by an ellipsis if there are further
+targets."
+    (lambda (&optional keymap targets prefix)
+      (if (null keymap)
+          (kill-buffer which-key--buffer)
+        (let ((which-key-replacement-alist
+               (append '(((nil . "digit-argument") . t)
+                         ((nil . "delete-region") . t)
+                         ((nil . "mark") . t)
+                         ((nil . "negative-argument") . t))
+                       which-key-replacement-alist)))
+         (which-key--show-keymap
+         (if (eq (caar targets) 'embark-become)
+             "Become"
+           (format "Act on %s '%s'%s"
+                   (plist-get (car targets) :type)
+                   (embark--truncate-target (plist-get (car targets) :target))
+                   (if (cdr targets) "…" "")))
+         (if prefix (lookup-key keymap prefix) keymap)
+         nil nil t)))))
+
+  (setq embark-indicators
+        '(embark-which-key-indicator
+          embark-highlight-indicator
+          embark-isearch-highlight-indicator)))
+
+(use-package embark-consult
+  :demand t
+  :after embark
+  :hook
+  (embark-collect-mode . consult-preview-at-point-mode))
 #+end_src
 *** [[http://orgmode.org/][org-mode]]
 #+begin_quote
@@ -1216,8 +1355,8 @@ Source: https://git.io/vQKEa"
   "a"  'org-agenda
   "c"  'org-capture
   "d"  'org-deadline
-  "g"  'counsel-org-goto
-  "G"  'counsel-org-goto-all
+  "g"  'consult-org-heading
+  ;; "G"  'counsel-org-goto-all
   "l"  'd/org-choose-bullet-type
   "s"  'org-schedule
 
@@ -1592,6 +1731,8 @@ A better Emacs *help* buffer
   (helpful-short-filenames t)
   :general
   (d/leader-keys
+    "hf" 'helpful-function
+    "hv" 'helpful-variable
     "hs" 'helpful-symbol
     "hk" 'helpful-key)
   :init
@@ -1848,6 +1989,8 @@ operate on buffers like dired
 #+begin_src emacs-lisp
 (use-package recentf
   :config
+  (recentf-mode)
+
   (setq recentf-max-saved-items 100)
 
   (defun d/recentf-exclude? (f)
@@ -1879,7 +2022,10 @@ Collection of useful dired additions
 #+end_quote
 ***** dired-open
 #+begin_src emacs-lisp
-(use-package dired-open)
+(use-package dired-open
+  :general
+  (d/mode-leader-keys dired-mode-map
+    "l" 'dired-open-xdg))
 #+end_src
 ***** dired-rainbow
 #+begin_src emacs-lisp
@@ -1951,6 +2097,13 @@ Collection of useful dired additions
   :general
   (nmap dired-mode-map
     "TAB" 'dired-subtree-toggle))
+#+end_src
+***** dired-narrow
+#+begin_src emacs-lisp
+(use-package dired-narrow
+  :general
+  (d/mode-leader-keys dired-mode-map
+    "n" 'dired-narrow))
 #+end_src
 **** [[https://github.com/purcell/diredfl][diredfl]]
 #+begin_quote
@@ -2870,6 +3023,15 @@ click to browse URL or to send to e-mail address
   :hook (((help-mode org-mode text-mode) . goto-address-mode)
          ((prog-mode conf-mode) . goto-address-prog-mode)))
 #+end_src
+*** [[elisp:(find-library-other-window "browse-url")][browse-url]]
+#+begin_src emacs-lisp :tangle no
+(use-package browse-url
+  :custom
+  (browse-url-browser-function 'browse-url-firefox)
+  (browse-url-new-window-flag t)
+  (browse-url-firefox-new-window-is-tab t)
+  (browse-url-mozilla-new-window-is-tab t))
+#+end_src
 *** [[elisp:(find-library-other-window "display-line-numbers")][display-line-numbers]]
 #+begin_src emacs-lisp
 (use-package display-line-numbers
@@ -3731,7 +3893,8 @@ Source: http://tinyurl.com/le6wxuo"
 #+begin_src emacs-lisp
 (use-package scheme
   :mode ("\\.egg\\'" "\\.sld\\'" "\\.release-info\\'")
-  :interpreter ("chicken-scheme" "csi")
+  :interpreter (("chicken-scheme" . scheme-mode)
+                ("csi" . scheme-mode))
   :general
   (d/mode-leader-keys scheme-mode-map
     "eb" 'd/scheme-send-buffer
@@ -3740,7 +3903,7 @@ Source: http://tinyurl.com/le6wxuo"
     "el" 'scheme-send-last-sexp
     "es" 'd/scheme-send-surrounding-sexp)
   (nmap scheme-mode-map
-    "C-c C-c" 'd/scheme-compile-definition-or-region)
+    "C-c C-c" 'd/scheme-compile-region-or-definition)
   :init
   (defvar d/scheme-extra-keywords
     ;; Function-like keywords
@@ -3828,36 +3991,35 @@ Source: http://tinyurl.com/le6wxuo"
       (scheme-compile-definition)))
 
   (setq scheme-program-name "csi -q")
-  (add-to-list 'interpreter-mode-alist '("chicken-scheme" . scheme-mode))
-  (add-to-list 'interpreter-mode-alist '("csi" . scheme-mode))
   ;; chicken core
-  (put 'module                 'scheme-indent-function 2)
-  (put 'functor                'scheme-indent-function 2)
-  (put 'begin-for-syntax       'scheme-indent-function 0)
-  (put 'and-let*               'scheme-indent-function 1)
-  (put 'let-optionals          'scheme-indent-function 1)
-  (put 'let-optionals*         'scheme-indent-function 1)
-  (put 'letrec-values          'scheme-indent-function 1)
-  (put 'case-lambda            'scheme-indent-function 0)
-  (put 'catch                  'scheme-indent-function 'defun)
-  (put 'assume                 'scheme-indent-function 1)
-  (put 'cond-expand            'scheme-indent-function 0)
-  (put 'cut                    'scheme-indent-function 1)
-  (put 'cute                   'scheme-indent-function 1)
-  (put 'set-read-syntax!       'scheme-indnet-function 1)
-  (put 'set-sharp-read-syntax! 'scheme-indnet-function 1)
-  (put 'condition-case         'scheme-indent-function 1)
-  (put 'handle-exceptions      'scheme-indent-function 2)
-  (put 'with-exception-handler 'scheme-indent-function 1)
-  (put 'with-input-from-pipe   'scheme-indent-function 1)
-  (put 'with-output-to-pipe    'scheme-indent-function 1)
-  (put 'compiler-typecase      'scheme-indent-function 1)
-  (put 'foreign-lambda         'scheme-indent-function 2)
-  (put 'foreign-lambda*        'scheme-indent-function 2)
-  (put 'foreign-safe-lambda    'scheme-indent-function 2)
-  (put 'foreign-safe-lambda*   'scheme-indent-function 2)
-  (put 'foreign-primitive      'scheme-indent-function 2)
-  (put 'let-location           'scheme-indent-function 1)
+  (put 'module                    'scheme-indent-function 2)
+  (put 'functor                   'scheme-indent-function 2)
+  (put 'begin-for-syntax          'scheme-indent-function 0)
+  (put 'and-let*                  'scheme-indent-function 1)
+  (put 'let-optionals             'scheme-indent-function 1)
+  (put 'let-optionals*            'scheme-indent-function 1)
+  (put 'letrec-values             'scheme-indent-function 1)
+  (put 'case-lambda               'scheme-indent-function 0)
+  (put 'catch                     'scheme-indent-function 'defun)
+  (put 'assume                    'scheme-indent-function 1)
+  (put 'cond-expand               'scheme-indent-function 0)
+  (put 'cut                       'scheme-indent-function 1)
+  (put 'cute                      'scheme-indent-function 1)
+  (put 'set-read-syntax!          'scheme-indnet-function 1)
+  (put 'set-sharp-read-syntax!    'scheme-indnet-function 1)
+  (put 'condition-case            'scheme-indent-function 1)
+  (put 'handle-exceptions         'scheme-indent-function 2)
+  (put 'with-exception-handler    'scheme-indent-function 1)
+  (put 'with-input-from-pipe      'scheme-indent-function 1)
+  (put 'with-output-to-pipe       'scheme-indent-function 1)
+  (put 'compiler-typecase         'scheme-indent-function 1)
+  (put 'foreign-lambda            'scheme-indent-function 2)
+  (put 'foreign-lambda*           'scheme-indent-function 2)
+  (put 'foreign-safe-lambda       'scheme-indent-function 2)
+  (put 'foreign-safe-lambda*      'scheme-indent-function 2)
+  (put 'foreign-primitive         'scheme-indent-function 2)
+  (put 'let-location              'scheme-indent-function 1)
+  (put 'with-error-output-to-port 'scheme-indent-function 1)
   ;; matchable
   (put 'match         'scheme-indent-function 1)
   (put 'match-let     'scheme-indent-function 1)
@@ -4206,6 +4368,7 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
         auto-revert-check-vc-info t)
   :config
   (setq magit-diff-refine-hunk t
+        transient-default-level 5
         git-commit-summary-max-length 50
         git-commit-major-mode 'org-mode)
   (d/hook! git-commit-mode
@@ -4255,8 +4418,10 @@ operate on system processes like dired
 ** grep
 #+begin_src emacs-lisp
 (use-package grep
-  :custom
-  (grep-command "rg --color=auto --no-heading -nH --null -e"))
+  :config
+  (grep-apply-setting 'grep-use-null-device nil)
+  (grep-apply-setting 'grep-template "rg --color=auto --no-heading -nH --null -g '<F>' -e <R>")
+  (grep-apply-setting 'grep-command  "rg --color=auto --no-heading -nH --null -e "))
 #+end_src
 ** [[elisp:(find-library-other-window "calc")][calc]]
 #+begin_quote
@@ -4634,7 +4799,7 @@ Emacs package that displays available keybindings in popup
 (use-package which-key
   :defer 20
   :config
-  (which-key-mode)
+  (setq which-key-inhibit-regexps '("[:digit:]" "-"))
 
   (defmacro d/declare-prefix (&rest body)
     (declare (indent defun))

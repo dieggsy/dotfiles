@@ -8,8 +8,9 @@ export RIPGREP_CONFIG_PATH=~/.config/rg/rg.conf
 export NLTK_DATA=~/.local/share/nltk_data
 export _JAVA_AWT_WM_NONREPARENTING=1
 export DUST_HOME=~/.local/dust
-export GDK_DPI_SCALE=.5
-export GDK_SCALE=2
+# export GDK_DPI_SCALE=.36
+# export GDK_SCALE=2
+# export XKB_LAYOUT=dvorak
 
 pathadd () {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
