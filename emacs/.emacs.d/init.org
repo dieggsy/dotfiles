@@ -998,7 +998,8 @@ so this function ensures lexicographic order."
     "sr" 'consult-ripgrep
     "y"  'consult-yank-pop)
   :config
-  (setf consult-locate-args "plocate --ignore-case --existing --regexp")
+  (when (executable-find "plocate")
+    (setf consult-locate-args "plocate --ignore-case --existing --regexp"))
   (d/list-prepend! 'consult-buffer-filter
     (rx "*"
         (or "LV" "epc" "Calc" "Colors" "help" "Packages" "Customize" "info"
