@@ -36,27 +36,34 @@ bindkey "^?" backward-delete-char
 bindkey -M menuselect '^[[Z' reverse-menu-complete
 # End of lines configured by zsh-newuser-install
 
-ZPLUGINDIR=$PREFIX/share/zsh/plugins
-[ -d $ZPLUGINDIR/fzf-tab-git ] && source $ZPLUGINDIR/fzf-tab-git/fzf-tab.zsh
+ZPLUGINDIR=~/.local/share
 
-[ -d $ZPLUGINDIR/zsh-autopair ] && source $ZPLUGINDIR/zsh-autopair/autopair.zsh
+plug() {
+    local subdir=$2
+    local plugname=$(basename $1)
+    if [[ -d /usr/share/$plugname ]]; then
+        source /usr/share/$plugname/$subdir/*.zsh
+        # for f (/usr/share/$plugname/**/*.plugin.zsh) source "$f"
+    else;
+        if [[ ! -d $ZPLUGINDIR/$plugname ]]; then
+            git clone "$1" $ZPLUGINDIR/$plugname
+        fi
+        # for f ($ZPLUGINDIR/$plugname/**/*.plugin.zsh) source "$f"
+        source $ZPLUGINDIR/$plugname/$subdir/*.zsh
+    fi
 
-[[ "$(tty)" != "/dev/tty"* ]] && [ -d $ZPLUGINDIR/zsh-autosuggestions ] \
-    && source $ZPLUGINDIR/zsh-autosuggestions/zsh-autosuggestions.zsh
+}
 
-if [ -d $ZPLUGINDIR/zsh-history-substring-search ]; then
-    source $ZPLUGINDIR/zsh-history-substring-search/zsh-history-substring-search.zsh
-    bindkey '^[[A' history-substring-search-up
-    bindkey '^[[B' history-substring-search-down
-    bindkey -M vicmd 'k' history-substring-search-up
-    bindkey -M vicmd 'j' history-substring-search-down
-fi
+plug gh:aloxaf/fzf-tab
+plug gh:hlissner/zsh-autopair
+[[ "$(tty)" != "/dev/tty"* ]] && plug gh:zsh-users/zsh-autosuggestions
+plug gh:zsh-users/zsh-history-substring-search
+plug gh:junegunn/fzf shell
 
-if [ -d /usr/share/fzf/ ]; then
-    source /usr/share/fzf/key-bindings.zsh
-    source /usr/share/fzf/completion.zsh
-    export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
-fi
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
+bindkey -M vicmd 'k' history-substring-search-up
+bindkey -M vicmd 'j' history-substring-search-down
 
 maybe_host () {
     if [ $SSH_CLIENT ] || [ $SSH_TTY ]; then
@@ -77,7 +84,7 @@ alias lsblk='lsblk -o NAME,SIZE,MOUNTPOINT'
 alias chicken-doc='noglob chicken-doc'
 alias startx='startx &>/dev/null'
 alias nmr='sudo systemctl restart NetworkManager'
-alias locate=plocate
+hash plocate &>/dev/null && alias locate=plocate
 alias clear='clear -x'
 alias yay=paru
 alias e="emacsclient -n --alternate-editor=''"
