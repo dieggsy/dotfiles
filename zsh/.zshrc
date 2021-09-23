@@ -118,54 +118,10 @@ man() {
         man "$@"
 }
 
-qmpv() {
-    if [ -z "$1" ]; then
-        mpv --no-terminal "$(xclip -o)" &!
-    else
-        mpv --no-terminal "$1" &!
-    fi
-}
-
 ssh() {
     [ $TMUX ] && tmux rename-window $(echo "$*" | grep -oP '(?<=@)[^ ]+' | head -1)
     autossh -M 0 -o "ServerAliveInterval=15" -o "ServerAliveCountMax=3" $@
     [ $TMUX ] && tmux set-window-option automatic-rename on
-}
-
-missing-from-group () {
-    comm -23 <(pacman -Sqg "$1" | sort) <(pacman -Qqg "$1" | sort)
-}
-
-circular-deps () {
-    for pkg in $(pacman -Qqd); do
-        [[ -z $(comm -12 <(pactree -r $pkg -u | sort) <(pacman -Qqe | sort)) ]] && echo $pkg;
-    done
-}
-
-way () {
-    local INITIAL_QUERY="${1:-.*}"
-    local RG_PREFIX="paru --topdown -Ss"
-    FZF_DEFAULT_COMMAND="$RG_PREFIX '$INITIAL_QUERY' | rg -o '^[^\s]+'" \
-                       fzf --bind "change:reload:$RG_PREFIX {q} | rg -o '^[^\s]+' || true" \
-                       -m --preview-window wrap --preview 'paru -Si {1} | sed -n "2,4p"' \
-                       --ansi --disabled --query "$INITIAL_QUERY" \
-                       --height=50% --layout=reverse |
-        xargs -ro paru -S
-}
-
-nay () {
-    paru -Qqett |
-        fzf -q "$1" -m --preview-window wrap --preview 'paru -Qi {1} | head -n3' |
-        xargs -ro paru -Rns
-}
-
-fuck() {
-    if hash thefuck &>/dev/null; then
-        eval "$(thefuck --alias)" && fuck
-    else
-        echo "thefuck not in \$PATH"
-        return 1
-    fi
 }
 
 hash tmux &>/dev/null && [[ "$(tty)" != "/dev/tty1" ]] && [ -z $TMUX ] && { tmux attach || tmux }
