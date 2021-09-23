@@ -4381,6 +4381,8 @@ Like git, for emacs. But cooler. (Just /trust/ me on this one.)
   (d/hook! git-commit-setup
     (git-commit-turn-on-flyspell))
   (setq magit-repository-directories '(("~/dotfiles" . 0) ("~/src" . 1))))
+
+(use-package magit-section)
 #+end_src
 **** [[https://github.com/alphapapa/magit-todos][magit-todos]]
 #+begin_src emacs-lisp
