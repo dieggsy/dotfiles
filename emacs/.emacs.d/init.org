@@ -306,7 +306,9 @@ Since we've disabled ~custom.el~, ensure variables are remembered as safe if pro
       (insert (format "(setq safe-local-variable-values '%S)\n" safe-local-variable-values))
       (save-buffer))))
 
-(load (no-littering-expand-etc-file-name "safe-vars.el"))
+(let ((safe-vars (no-littering-expand-etc-file-name "safe-vars.el")))
+  (when (file-exists-p safe-vars)
+    (load safe-vars)))
 #+end_src
 *** Kill-ring
 Save stuff you've copied in other applications to the emacs kill-ring.
