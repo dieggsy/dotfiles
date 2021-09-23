@@ -4109,7 +4109,7 @@ Sylvester the Cat's Common Lisp IDE
     [up] 'sly-mrepl-previous-input-or-button
     [down] 'sly-mrepl-next-input-or-button)
   :config
-  (setq inferior-lisp-program "ros run"))
+  (setq inferior-lisp-program "sbcl"))
 (use-package sly-macrostep)
 #+end_src
 *** Ocaml
