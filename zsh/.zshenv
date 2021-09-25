@@ -8,6 +8,7 @@ export RIPGREP_CONFIG_PATH=~/.config/rg/rg.conf
 export NLTK_DATA=~/.local/share/nltk_data
 export _JAVA_AWT_WM_NONREPARENTING=1
 export DUST_HOME=~/.local/dust
+export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 # export GDK_DPI_SCALE=.36
 # export GDK_SCALE=2
 # export XKB_LAYOUT=dvorak
