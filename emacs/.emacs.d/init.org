@@ -523,7 +523,7 @@ I went for it. Now I'll never go back.
   (evil-want-fine-undo t)
   (evil-search-module 'evil-search)
   (evil-lookup-func (lambda () (man (thing-at-point 'word))))
-  (evil-undo-system 'undo-redo)
+  (evil-undo-system 'undo-fu)
   (evil-symbol-word-search t)
   :config
   (setq evil-insert-state-cursor '(bar . 1) ;thinner cursors
@@ -2695,7 +2695,7 @@ it.
 Treat undo history as a tree
 #+end_quote
 Kind of makes undo like git.
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package undo-tree
   :hook (org-mode . undo-tree-mode)
   :general
@@ -2703,6 +2703,10 @@ Kind of makes undo like git.
   :config
   (setq undo-tree-visualizer-timestamps t
         undo-tree-auto-save-history t))
+#+end_src
+**** undo-foo
+#+begin_src emacs-lisp
+(use-package undo-foo)
 #+end_src
 **** [[https://github.com/purcell/unfill][unfill]]
 #+begin_quote
