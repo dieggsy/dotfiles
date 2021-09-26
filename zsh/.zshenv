@@ -1,6 +1,4 @@
-if [[ "$PREFIX" != "/data/data/com.termux"* ]]; then
-    PREFIX=/usr
-fi
+export PREFIX="${PREFIX:-/usr}"
 
 export EDITOR='emacsclient -a nvim'
 export VISUAL=$EDITOR
@@ -9,9 +7,6 @@ export NLTK_DATA=~/.local/share/nltk_data
 export _JAVA_AWT_WM_NONREPARENTING=1
 export DUST_HOME=~/.local/dust
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
-# export GDK_DPI_SCALE=.36
-# export GDK_SCALE=2
-# export XKB_LAYOUT=dvorak
 
 pathadd () {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
@@ -20,14 +15,7 @@ pathadd () {
 }
 
 pathadd $HOME/.local/bin
-# pathadd $HOME/.pyenv/bin
-# pathadd $HOME/.pyenv/shims
 pathadd $HOME/bin
-pathadd $PREFIX/lib/ccache/bin
-pathadd $HOME/.config/polybar/blocks
 
 export PATH
 export KEYTIMEOUT=1
-
-# opam configuration
-test -r /home/dieggsy/.opam/opam-init/init.zsh && . /home/dieggsy/.opam/opam-init/init.zsh > /dev/null 2> /dev/null || true
