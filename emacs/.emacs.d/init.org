@@ -2704,9 +2704,9 @@ Kind of makes undo like git.
   (setq undo-tree-visualizer-timestamps t
         undo-tree-auto-save-history t))
 #+end_src
-**** undo-foo
+**** undo-fu
 #+begin_src emacs-lisp
-(use-package undo-foo)
+(use-package undo-fu)
 #+end_src
 **** [[https://github.com/purcell/unfill][unfill]]
 #+begin_quote
