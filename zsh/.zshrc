@@ -93,6 +93,7 @@ alias yay=paru
 alias e="emacsclient -n --alternate-editor=''"
 alias ec="emacsclient -nc --alternate-editor=''"
 alias et="emacsclient -t --alternate-editor=''"
+alias ssh="autossh -M 0 -o 'ServerAliveInterval=15' -o 'ServerAliveCountMax=3'"
 
 cd_list () {
     emulate -L zsh
@@ -126,12 +127,6 @@ man() {
         LESS_TERMCAP_ue=$(printf "\e[0m") \
         LESS_TERMCAP_us=$(printf "\e[38;5;12m") \
         man "$@"
-}
-
-ssh() {
-    [ $TMUX ] && tmux rename-window $(echo "$*" | grep -oP '(?<=@)[^ ]+' | head -1)
-    autossh -M 0 -o "ServerAliveInterval=15" -o "ServerAliveCountMax=3" $@
-    [ $TMUX ] && tmux set-window-option automatic-rename on
 }
 
 hash tmux &>/dev/null && [[ "$(tty)" != "/dev/tty1" ]] && [ -z $TMUX ] && { tmux attach || tmux }
