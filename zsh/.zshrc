@@ -1,4 +1,8 @@
-[[ "$TERM" = "dumb" ]] && unsetopt zle && return
+if [[ "$TERM" = "dumb" ]]; then # fix tramp
+   unsetopt zle
+   export PROMPT="> "
+   return
+fi
 
 eval "$(dircolors)"
 export LS_COLORS="$LS_COLORS:di=94:ex=92:"
