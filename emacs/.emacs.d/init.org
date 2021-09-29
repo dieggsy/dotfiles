@@ -996,7 +996,8 @@ so this function ensures lexicographic order."
     "ss" 'consult-line
     "sS" 'consult-line-multi
     "sr" 'consult-ripgrep
-    "y"  'consult-yank-pop)
+    "y"  'consult-yank-pop
+    "hm" 'consult-man)
   :config
   (when (executable-find "plocate")
     (setf consult-locate-args "plocate --ignore-case --existing --regexp"))
@@ -1617,9 +1618,6 @@ browse UNIX manual pages
 #+end_quote
 #+begin_src emacs-lisp
 (use-package man
-  :general
-  (d/leader-keys
-    "hm" 'man)
   :config
   (setq Man-notify-method 'aggressive))
 #+end_src
@@ -1738,7 +1736,6 @@ A better Emacs *help* buffer
     "hv" 'helpful-variable
     "hs" 'helpful-symbol
     "hk" 'helpful-key)
-  :init
   :config
   (evil-set-initial-state 'helpful-mode 'motion))
 #+end_src
