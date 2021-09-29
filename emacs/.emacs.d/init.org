@@ -1001,6 +1001,10 @@ so this function ensures lexicographic order."
   :config
   (when (executable-find "plocate")
     (setf consult-locate-args "plocate --ignore-case --existing --regexp"))
+  (setq consult-project-root-function
+        (lambda ()
+          (when-let (project (project-current))
+            (car (project-roots project)))))
   (d/list-prepend! 'consult-buffer-filter
     (rx "*"
         (or "LV" "epc" "Calc" "Colors" "help" "Packages" "Customize" "info"
