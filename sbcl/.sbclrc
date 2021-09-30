@@ -6,10 +6,10 @@
   (when (probe-file quicklisp-init)
     (load quicklisp-init)))
 
-(require :sbcl-readline)
+;; (require :sbcl-readline)
 
-(setf readline:*ps1*
-      (lambda ()
-        (format nil "~&~a> "
-                (or (first (package-nicknames *package*))
-                    (package-name *package*)))))
+;; (setf readline:*ps1*
+;;       (lambda ()
+;;         (format nil "~&~a> "
+;;                 (or (first (package-nicknames *package*))
+;;                     (package-name *package*)))))
