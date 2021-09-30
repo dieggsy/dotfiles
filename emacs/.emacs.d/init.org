@@ -926,8 +926,6 @@ color is hidden by ivy's match color."
     "fF"  'find-file-other-window
     "hF"  'describe-face
     "iu"  'd/unicode)
-  (selectrum-minibuffer-map
-   "<S-return>" 'embark-act)
   :init
   (selectrum-mode)
   :config
@@ -1019,6 +1017,11 @@ so this function ensures lexicographic order."
 **** embark
 #+begin_src emacs-lisp :tangle no
 (use-package embark
+  :general
+  (selectrum-minibuffer-map
+   "<S-return>" 'embark-act)
+  :demand t
+  :after selectrum
   :config
   (setq embark-which-key-indicator-excluded-actions '(digit-argument negative-argument mark delete-region))
   (defun embark-which-key-indicator ()
