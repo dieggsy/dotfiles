@@ -2518,7 +2518,7 @@ Source: http://tinyurl.com/k8g9sex"
     ("d" d/flyspell-add-to-dictionary)))
 #+end_src
 **** [[https://github.com/d12frosted/flyspell-correct][flyspell-correct-ivy]]
-#+begin_quote
+#+begin_quote :tangle no
 Correcting words with flyspell via custom interface.
 #+end_quote
 #+begin_src emacs-lisp
