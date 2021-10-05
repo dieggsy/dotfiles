@@ -1,9 +1,0 @@
-/* -*- mode: css -*- */
-configuration {
-	modi: "window,run,ssh,drun,combi";
-	fixed-num-lines: false;
-	combi-modi: "window,drun,run";
-	dpi: 210;
-	theme: "dropdown";
-    display-run: "";
-}

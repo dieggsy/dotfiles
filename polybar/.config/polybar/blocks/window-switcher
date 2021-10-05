@@ -1,9 +1,0 @@
-#!/usr/bin/zsh
-
-wins=$(wmctrl -l | wc -l)
-max=$(((5 * 170) + 20 + 5))
-curr=$((($wins * 170) + 20 + 5))
-
-echo "$max $curr"
-echo $([[ $curr -gt $max ]] && echo $max || echo $curr)
-rofi -show window -theme window -theme-str "window { width: $([[ $curr -gt $max ]] && echo $max || echo $curr); }"

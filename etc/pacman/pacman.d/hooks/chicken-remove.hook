@@ -1,9 +1,0 @@
-[Trigger]
-Type = Package
-Operation = Remove
-Target = chicken
-
-[Action]
-Description = Symlinking chicken-csi to csi...
-When = PostTransaction
-Exec = /bin/sh -c 'rm -fv /usr/bin/csi && rm -fv /usr/bin/csc'
