@@ -1015,7 +1015,7 @@ so this function ensures lexicographic order."
             "straight-byte-compilation"))))
 #+end_src
 **** embark
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package embark
   :general
   (selectrum-minibuffer-map
