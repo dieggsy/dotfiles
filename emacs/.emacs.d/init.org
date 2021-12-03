@@ -997,8 +997,10 @@ so this function ensures lexicographic order."
     "y"  'consult-yank-pop
     "hm" 'consult-man)
   :config
-  (when (executable-find "plocate")
-    (setf consult-locate-args "plocate --ignore-case --existing --regexp"))
+  (if (eq system-type 'darwin)
+      (setf consult-locate-args "mdfind -name")
+    (when (executable-find "plocate")
+      (setf consult-locate-args "plocate --ignore-case --existing --regexp")))
   (setq consult-project-root-function
         (lambda ()
           (when-let (project (project-current))
