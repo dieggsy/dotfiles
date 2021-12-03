@@ -2969,8 +2969,7 @@ Scroll one line at a time, and only scroll the current line when moving past
 right boundary.
 #+begin_src emacs-lisp
 (setq scroll-step 1
-      scroll-conservatively 10000
-      auto-hscroll-mode 'current-line)
+      scroll-conservatively 10000)
 #+end_src
 *** Mouse Scroll
 Smoother mouse scrolling, which is now irrelevant to me since I've disabled the
