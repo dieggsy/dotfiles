@@ -4056,7 +4056,7 @@ Source: http://tinyurl.com/le6wxuo"
 emacs and scheme talk to each other
 #+end_quote
 #+begin_src emacs-lisp :tangle no
-(use-package geiser
+(use-package geiser-chicken
   :custom
   (geiser-chicken-binary '("csi" "-q"))
   (geiser-chicken-required-modules nil)
@@ -4066,10 +4066,6 @@ emacs and scheme talk to each other
         geiser-debug-jump-to-debug-p nil
         geiser-debug-show-debug-p nil
         geiser-chicken-load-init-file-p t))
-#+end_src
-***** [[https://gitlab.com/emacs-geiser/chicken][geiser-chicken]]
-#+begin_src emacs-lisp :tangle no
-(use-package gesier-chicken)
 #+end_src
 ***** [[https://github.com/nbfalcon/macrostep-geiser][macrostep-geiser]]
 #+begin_src emacs-lisp :tangle no
