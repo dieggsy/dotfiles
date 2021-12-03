@@ -7,6 +7,7 @@ export NLTK_DATA=~/.local/share/nltk_data
 export _JAVA_AWT_WM_NONREPARENTING=1
 export DUST_HOME=~/.local/dust
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
+export LV2_PATH=/usr/lib64/lv2
 
 pathadd () {
     if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
