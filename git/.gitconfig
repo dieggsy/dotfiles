@@ -59,6 +59,7 @@
 
 [merge]
     stat = true
+    conflictstyle = diff3
 
 [push]
     followTags = true
