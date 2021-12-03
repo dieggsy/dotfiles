@@ -1020,8 +1020,6 @@ so this function ensures lexicographic order."
   :general
   (selectrum-minibuffer-map
    "<S-return>" 'embark-act)
-  :demand t
-  :after selectrum
   :config
   (setq embark-which-key-indicator-excluded-actions '(digit-argument negative-argument mark delete-region))
   (defun embark-which-key-indicator ()
@@ -4810,7 +4808,8 @@ Emacs package that displays available keybindings in popup
 #+end_quote
 #+begin_src emacs-lisp
 (use-package which-key
-  :defer 20
+  :demand t
+  :after embark
   :config
   (setq which-key-inhibit-regexps '("[:digit:]" "-"))
 
