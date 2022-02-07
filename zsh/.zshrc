@@ -79,6 +79,10 @@ maybe_git () {
     hash git-prompt &> /dev/null && git-prompt
 }
 
+rl () {
+    hash rlwrap &> /dev/null && rlwrap $@ || $@
+}
+
 setopt prompt_subst
 export PROMPT='$(maybe_host)$(maybe_git)%F{7}%1~%f %F{209}%(!.#.>)%f '
 
@@ -94,6 +98,9 @@ alias e="emacsclient -n --alternate-editor=''"
 alias ec="emacsclient -nc --alternate-editor=''"
 alias et="emacsclient -t --alternate-editor=''"
 alias ssh="autossh -M 0 -o 'ServerAliveInterval=15' -o 'ServerAliveCountMax=3'"
+alias duplex="pactl load-module module-null-sink media.class=Audio/Duplex sink_name=my-tunnel audio.position=FL,FR,RL,RR"
+alias extbright="sudo ddcutil setvcp 10"
+alias sbcl="rl sbcl"
 
 cd_list () {
     emulate -L zsh
