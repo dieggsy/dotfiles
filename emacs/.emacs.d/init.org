@@ -4049,7 +4049,8 @@ Source: http://tinyurl.com/le6wxuo"
   (put 'test        'scheme-indent-function 1)
   (put 'test-group  'scheme-indent-function 1)
   ;; spiffy
-  (put 'with-headers 'scheme-indent-function 1))
+  (put 'with-headers 'scheme-indent-function 1)
+  (put 'with-egg 'scheme-indent-function 1))
 #+end_src
 **** Packages
 ***** [[https://github.com/jaor/geiser][geiser]]
