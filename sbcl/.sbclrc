@@ -6,10 +6,5 @@
   (when (probe-file quicklisp-init)
     (load quicklisp-init)))
 
-;; (require :sbcl-readline)
-
-;; (setf readline:*ps1*
-;;       (lambda ()
-;;         (format nil "~&~a> "
-;;                 (or (first (package-nicknames *package*))
-;;                     (package-name *package*)))))
+(when (probe-file "~/.local/src/sbcl/")
+  (sb-ext:set-sbcl-source-location "~/.local/src/sbcl/"))
