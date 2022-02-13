@@ -3336,7 +3336,10 @@ have a look. Additionally, show whitespace.
 (defun d/setup-fonts (&rest ignore)
   (setq inhibit-compacting-font-caches t
         use-default-font-for-symbols nil)
-  (set-fontset-font t 'symbol "Noto Color Emoji" nil 'prepend))
+  ;; Emoji
+  (set-fontset-font t '(#x1F600 . #x1F64F) "Noto Color Emoji" nil 'prepend)
+  ;; Music
+  (set-fontset-font t '(#x1D100 . #x1d1FF) (font-spec :name "FreeSerif") nil 'prepend))
 (d/setup-fonts)
 (add-to-list 'after-make-frame-functions 'd/setup-fonts)
 #+end_src
