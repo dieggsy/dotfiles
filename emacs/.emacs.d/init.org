@@ -746,7 +746,7 @@ Ivy - a generic completion frontend for Emacs, Swiper - isearch with an
 A really nice search/completion system for emacs.
 **** ivy
 ***** ivy
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package ivy
   :general
   (ivy-minibuffer-map
@@ -826,13 +826,13 @@ color is hidden by ivy's match color."
         ivy-read-action-function 'ivy-hydra-read-action))
 #+end_src
 ***** ivy-hydra
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package ivy-hydra
   :after ivy
   :demand t)
 #+end_src
 **** swiper
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package swiper
   :general
   (d/leader-keys
@@ -841,7 +841,7 @@ color is hidden by ivy's match color."
   :config (setq swiper-goto-start-of-match t))
 #+end_src
 **** counsel
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (use-package counsel
   :general
   ("M-x" 'counsel-M-x
@@ -914,8 +914,11 @@ color is hidden by ivy's match color."
       "eshell"))))
 #+end_src
 *** Completion framework
+:PROPERTIES:
+:header-args: :tangle no
+:END:
 **** selectrum
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 (use-package selectrum
   :general
   (d/leader-keys
@@ -953,6 +956,44 @@ so this function ensures lexicographic order."
     (interactive (list (completing-read "unicode: " (d/unicode-names))))
     (insert (car (last (split-string arg))))))
 
+#+end_src
+**** vertico
+#+begin_src emacs-lisp
+(use-package vertico
+  :general
+  (d/leader-keys
+    ;; "-"   'selectrum-repeat
+    "SPC" 'execute-extended-command
+    "ff"  'find-file
+    "fa"  'find-alternate-file
+    "fF"  'find-file-other-window
+    "hF"  'describe-face
+    "iu"  'd/unicode)
+  :config
+  (defun d/unicode-names ()
+    "Return formatted and sorted list of `ucs-names'.
+The result of `ucs-names' is mostly, but not completely, sorted,
+so this function ensures lexicographic order."
+    (let* (cands
+           (table (ucs-names))            ; Either hash map or alist
+           (fmt (lambda (name code)       ; Common format function
+                  (let ((cand (format "%06X %-58s %c" code name code)))
+                    (put-text-property 0 1 'code code cand)
+                    (push cand cands)))))
+      (if (not (hash-table-p table))
+          ;; Support `ucs-names' returning an alist in Emacs < 26.
+          ;; The result of `ucs-names' comes pre-reversed so no need to repeat.
+          (dolist (entry table)
+            (funcall fmt (car entry) (cdr entry)))
+        (maphash fmt table)
+        ;; Reverse to speed up sorting
+        (setq cands (nreverse cands)))
+      (sort cands #'string-lessp)))
+
+  (defun d/unicode (arg)
+    (interactive (list (completing-read "unicode: " (d/unicode-names))))
+    (insert (car (last (split-string arg)))))
+  )
 #+end_src
 **** prescient
 #+begin_src emacs-lisp
@@ -1366,7 +1407,7 @@ Source: https://git.io/vQKEa"
   "a"  'org-agenda
   "c"  'org-capture
   "d"  'org-deadline
-  "g"  'consult-org-heading
+  "g"  'counsel-org-goto
   ;; "G"  'counsel-org-goto-all
   "l"  'd/org-choose-bullet-type
   "s"  'org-schedule
