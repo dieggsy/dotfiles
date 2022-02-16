@@ -4119,13 +4119,14 @@ Sylvester the Cat's Common Lisp IDE
      [down] 'sly-mrepl-next-input-or-button)
    :config
    (setq inferior-lisp-program "sbcl"))
+
  (use-package sly-macrostep))
 #+end_src
 ***** [[https://github.com/slime/slime][slime]]
 #+begin_quote
 The Superior Lisp Interaction Mode for Emacs
 #+end_quote
-#+begin_src emacs-lisp :tangle no
+#+begin_src emacs-lisp
 (when (getenv "SLIME")
  (use-package slime
    :general
@@ -4137,13 +4138,11 @@ The Superior Lisp Interaction Mode for Emacs
    :config
    (require 'slime-macrostep)
    (setq inferior-lisp-program (executable-find "sbcl")
-         slime-contribs '(slime-fancy slime-company slime-cl-indent))))
-#+end_src
-***** [[https://github.com/anwyn/slime-company][slime-company]]
-#+begin_src emacs-lisp :tangle no
+         slime-contribs '(slime-fancy slime-company slime-cl-indent)))
+
 (use-package slime-company
   :after slime
-  :demand t)
+  :demand t))
 #+end_src
 *** Ocaml
 **** Packages
