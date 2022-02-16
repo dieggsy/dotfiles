@@ -3165,14 +3165,15 @@ an Emacs "jump to definition" package
 (use-package dumb-jump
   :general
   (d/leader-keys
-    "jE" 'dumb-jump-go-prefer-external-other-window
-    "jG" 'dumb-jump-go-other-window
-    "jb" 'dumb-jump-back
-    "je" 'dumb-jump-go-prefer-external
-    "jg" 'dumb-jump-go)
+    ;; "jE" 'dumb-jump-go-prefer-external-other-window
+    "jG" 'xref-find-definitions-other-window
+    ;; "jb" 'dumb-jump-back
+    ;; "je" 'dumb-jump-go-prefer-external
+    "jg" 'xref-find-definitions)
   :config
   (setq dumb-jump-selector 'ivy
-        dumb-jump-prefer-searcher 'rg))
+        dumb-jump-prefer-searcher 'rg)
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 #+end_src
 
 *** [[https://github.com/wasamasa/eyebrowse][eyebrowse]]
