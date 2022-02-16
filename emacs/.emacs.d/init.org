@@ -4118,7 +4118,9 @@ Sylvester the Cat's Common Lisp IDE
      [up] 'sly-mrepl-previous-input-or-button
      [down] 'sly-mrepl-next-input-or-button)
    :config
-   (setq inferior-lisp-program "sbcl"))
+   (setq inferior-lisp-program "sbcl"
+         sly-contribs (cons 'sly-tramp sly-contribs))
+   (sly-setup sly-contribs))
 
  (use-package sly-macrostep))
 #+end_src
