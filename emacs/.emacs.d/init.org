@@ -1827,6 +1827,7 @@ Select the help window when opening it (I like this so I can quickly ~q~ out).
   (tramp-verbose 2)
   (tramp-completion-reread-directory-timeout nil)
   (tramp-auto-save-directory (no-littering-expand-var-file-name "tramp-auto-save/"))
+  (tramp-use-ssh-controlmaster-options nil)
   :config
   (add-to-list 'tramp-default-proxies-alist
                '("dieggsy\\.com\\'" "\\`root\\'" "/ssh:%h:"))
