@@ -1666,6 +1666,9 @@ browse UNIX manual pages
 #+end_quote
 #+begin_src emacs-lisp
 (use-package man
+  :general
+  (d/leader-keys
+    "hm" 'man)
   :config
   (setq Man-notify-method 'aggressive))
 #+end_src
@@ -3171,8 +3174,7 @@ an Emacs "jump to definition" package
     ;; "je" 'dumb-jump-go-prefer-external
     "jg" 'xref-find-definitions)
   :config
-  (setq dumb-jump-selector 'ivy
-        dumb-jump-prefer-searcher 'rg)
+  (setq dumb-jump-prefer-searcher 'rg)
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
 #+end_src
 
