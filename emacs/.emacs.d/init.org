@@ -3132,6 +3132,25 @@ click to browse URL or to send to e-mail address
   :config
   (setq hs-allow-nesting t))
 #+end_src
+*** [[elisp:(find-library "xref")][xref]]
+#+begin_src emacs-lisp
+(use-package xref
+  :straight nil
+  :general
+  (d/leader-keys
+    "jD" 'xref-find-definitions-other-window
+    "jd" 'xref-find-definitions
+    "jr" 'xref-find-references)
+  :init
+  (add-hook 'after-save-hook
+            (defun d/run-project-ctags ()
+              (interactive)
+              (let ((root-dir (vc-root-dir)))
+                (when root-dir
+                  (let ((default-directory root-dir))
+                    (unless (get-process "d/ctags")
+                      (start-process "d/ctags" "*ctags*" "ctags" "-eR"))))))))
+#+end_src
 ** Packages
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
 #+begin_quote
@@ -3166,13 +3185,6 @@ an Emacs "jump to definition" package
 #+end_quote
 #+begin_src emacs-lisp
 (use-package dumb-jump
-  :general
-  (d/leader-keys
-    ;; "jE" 'dumb-jump-go-prefer-external-other-window
-    "jG" 'xref-find-definitions-other-window
-    ;; "jb" 'dumb-jump-back
-    ;; "je" 'dumb-jump-go-prefer-external
-    "jg" 'xref-find-definitions)
   :config
   (setq dumb-jump-prefer-searcher 'rg)
   (add-hook 'xref-backend-functions #'dumb-jump-xref-activate))
