@@ -4156,17 +4156,17 @@ Sylvester the Cat's Common Lisp IDE
 #+end_quote
 #+begin_src emacs-lisp
 (unless (getenv "SLIME")
- (use-package sly
-   :general
-   (imap sly-mrepl-mode-map
-     [up] 'sly-mrepl-previous-input-or-button
-     [down] 'sly-mrepl-next-input-or-button)
-   :config
-   (setq inferior-lisp-program "sbcl"
-         sly-contribs (cons 'sly-tramp sly-contribs))
-   (sly-setup sly-contribs))
+  (use-package sly
+    :general
+    (imap sly-mrepl-mode-map
+      [up] 'sly-mrepl-previous-input-or-button
+      [down] 'sly-mrepl-next-input-or-button)
+    :config
+    (setq inferior-lisp-program "sbcl"
+          sly-contribs (append '(sly-tramp sly-macrostep)
+                               sly-contribs)))
 
- (use-package sly-macrostep))
+  (use-package sly-macrostep))
 #+end_src
 ***** [[https://github.com/slime/slime][slime]]
 #+begin_quote
@@ -4174,21 +4174,25 @@ The Superior Lisp Interaction Mode for Emacs
 #+end_quote
 #+begin_src emacs-lisp
 (when (getenv "SLIME")
- (use-package slime
-   :general
-   (imap slime-repl-mode-map
-     [up] 'slime-repl-previous-input
-     [down] 'slime-repl-next-input)
-   :hook
-   (lisp-mode . slime-mode)
-   :config
-   (require 'slime-macrostep)
-   (setq inferior-lisp-program (executable-find "sbcl")
-         slime-contribs '(slime-fancy slime-company slime-cl-indent)))
+  (use-package slime
+    :general
+    (imap slime-repl-mode-map
+      [up] 'slime-repl-previous-input
+      [down] 'slime-repl-next-input)
+    :hook
+    (lisp-mode . slime-mode)
+    :config
+    (require 'slime-macrostep)
+    (setq inferior-lisp-program (executable-find "sbcl")
+          slime-contribs (append '(slime-macrostep
+                                   slime-tramp
+                                   slime-company
+                                   slime-cl-indent)
+                                 slime-contribs)))
 
-(use-package slime-company
-  :after slime
-  :demand t))
+  (use-package slime-company
+    :after slime
+    :demand t))
 #+end_src
 *** Ocaml
 **** Packages
