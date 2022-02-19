@@ -854,7 +854,7 @@ color is hidden by ivy's match color."
     "ff"  'counsel-find-file
     "fa"  'find-alternate-file
     "fF"  'find-file-other-window
-    "fj"  'counsel-file-jump
+    "fj"  'project-find-file
     "fl"  'counsel-locate
     "hF" 'counsel-describe-face
     ;; "hdb" 'counsel-descbinds
