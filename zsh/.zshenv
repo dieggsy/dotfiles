@@ -1,4 +1,6 @@
-export PREFIX="${PREFIX:-/usr}"
+export UNAME=$(uname)
++linux () {[[ $UNAME == "Linux" ]] && $@}
++macos () {[[ $UNAME == "Darwin" ]] && $@}
 
 export EDITOR='emacsclient -a nvim'
 export VISUAL=$EDITOR

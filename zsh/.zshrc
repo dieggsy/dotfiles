@@ -4,8 +4,9 @@ if [[ "$TERM" = "dumb" ]]; then # fix tramp
    return
 fi
 
-eval "$(dircolors)"
-export LS_COLORS="$LS_COLORS:di=94:ex=92:"
++linux eval "$(dircolors)"
++linux export LS_COLORS="$LS_COLORS:di=94:ex=92:"
++macos export LSCOLORS="ExGxcxdxCxeged"
 
 # The following lines were added by compinstall
 zmodload zsh/complist
@@ -86,26 +87,33 @@ rl () {
 setopt prompt_subst
 export PROMPT='$(maybe_host)$(maybe_git)%F{7}%1~%f %F{209}%(!.#.>)%f '
 
-alias ls='ls --color=auto -F'
++linux alias ls='ls --color=auto -F'
++macos alias ls='ls -GF'
 alias csi='csi -q'
 alias chicken-doc='noglob chicken-doc'
-alias startx='startx &>/dev/null'
-alias nmr='sudo systemctl restart NetworkManager'
 hash plocate &>/dev/null && alias locate=plocate
 alias clear='clear -x'
-alias yay=paru
 alias e="emacsclient -n --alternate-editor=''"
 alias ec="emacsclient -nc --alternate-editor=''"
 alias et="emacsclient -t --alternate-editor=''"
 alias ssh="autossh -M 0 -o 'ServerAliveInterval=15' -o 'ServerAliveCountMax=3'"
-alias duplex="pactl load-module module-null-sink media.class=Audio/Duplex sink_name=my-tunnel audio.position=FL,FR,RL,RR"
-alias extbright="sudo ddcutil setvcp 10"
-alias sbcl="rl sbcl"
++linux alias startx='startx &>/dev/null'
++linux alias duplex="pactl load-module module-null-sink media.class=Audio/Duplex sink_name=my-tunnel audio.position=FL,FR,RL,RR"
++linux alias extbright="sudo ddcutil setvcp 10"
++linux alias sbcl="rl sbcl"
 
-cd_list () {
-    emulate -L zsh
-    ls --color=auto -F
-}
+
+if +linux; then
+    cd_list () {
+        emulate -L zsh
+        ls --color=auto -F
+    }
+elif +macos; then
+    cd_list () {
+        emulate -L zsh
+        ls -GF
+    }
+fi
 
 chpwd_functions=(${chpwd_functions[@]} "cd_list")
 
