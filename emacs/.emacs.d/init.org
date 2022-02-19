@@ -79,6 +79,51 @@ bit so let's explicitly require them.
 (require 'cl-lib)
 (require 'subr-x)
 #+end_src
+** Environment
+This is only relevant for starting GUI Emacs on macOS
+#+begin_src emacs-lisp
+(defun set-environment-from-shell ()
+  "Import the environment from the system's default login shell
+specified in `shell-file-name'."
+  (interactive)
+  (let* ((shell (or shell-file-name (getenv "SHELL")))
+         (proc
+          (apply #'start-process
+                 "printenv"
+                 (get-buffer-create " *printenv*")
+                 shell-file-name
+                 (append
+                  (cond ((string-match-p "t?csh$" shell)
+                         (list "-d"))
+                        ((string-match-p "fish" shell)
+                         (list "-l"))
+                        (t (list "-l" "-i")))
+                  '("-c" "printenv")))))
+    (set-process-sentinel
+     proc
+     (lambda (proc msg)
+       (when (eq (process-status proc) 'exit)
+         (if (zerop (process-exit-status proc))
+             (progn
+               (with-current-buffer (get-buffer " *printenv*")
+                 (let ((str (buffer-string)))
+                   (dolist (var-pair
+                            (mapcar
+                             (lambda (str)
+                               (split-string str "="))
+                             (split-string str)))
+                     (let ((var (car var-pair))
+                           (value (cadr var-pair)))
+                       (if (member var '("PATH" "INFOPATH" "MANPATH"))
+                           (setenv var (concat value ":" (getenv var)))
+                         (setenv var value))))))
+               (dolist (dir (split-string (getenv "PATH") ":"))
+                 (unless (member dir exec-path)
+                   (add-to-list 'exec-path dir))))
+           (warn "Error setting environment from shell.")))))))
+
+(when (eq system-type 'darwin) (set-environment-from-shell))
+#+end_src
 ** pass
 #+begin_src emacs-lisp :tangle no
 (auth-source-pass-enable)
@@ -2563,7 +2608,7 @@ Source: http://tinyurl.com/k8g9sex"
     ("d" d/flyspell-add-to-dictionary)))
 #+end_src
 **** [[https://github.com/d12frosted/flyspell-correct][flyspell-correct-ivy]]
-#+begin_quote :tangle no
+#+begin_quote
 Correcting words with flyspell via custom interface.
 #+end_quote
 #+begin_src emacs-lisp
@@ -4163,7 +4208,7 @@ emacs and scheme talk to each other
 
 **** Packages
 ***** [[https://github.com/joaotavora/sly][sly]]
-#+begin_quote :tangle no
+#+begin_quote
 Sylvester the Cat's Common Lisp IDE
 #+end_quote
 #+begin_src emacs-lisp
