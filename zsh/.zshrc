@@ -144,4 +144,5 @@ man() {
         man "$@"
 }
 
-hash tmux &>/dev/null && [[ "$(tty)" != "/dev/tty1" ]] && [ -z $TMUX ] && { tmux attach || tmux }
+hash tmux &>/dev/null && [[ "$(tty)" != "/dev/tty1" ]] \
+    && [ -z $SSH_TTY ] && [ -z $TMUX ] && { tmux attach || tmux }
