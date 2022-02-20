@@ -71,6 +71,8 @@
 
 [url "git@github.com:"]
     insteadOf = gh:
+[url "https://github.com/"]
+    insteadOf = ghs:
 [url "https://aur.archlinux.org/"]
     insteadOf = aur:
 [url "dieggsy@dieggsy.com:/srv/git/"]

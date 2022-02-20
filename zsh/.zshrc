@@ -59,11 +59,11 @@ plug() {
 
 }
 
-plug gh:aloxaf/fzf-tab
-plug gh:hlissner/zsh-autopair
-[[ "$(tty)" != "/dev/tty"* ]] && plug gh:zsh-users/zsh-autosuggestions
-plug gh:zsh-users/zsh-history-substring-search
-plug gh:junegunn/fzf shell
+plug ghs:aloxaf/fzf-tab
+plug ghs:hlissner/zsh-autopair
+[[ "$(tty)" != "/dev/tty"* ]] && plug ghs:zsh-users/zsh-autosuggestions
+plug ghs:zsh-users/zsh-history-substring-search
+plug ghs:junegunn/fzf shell
 
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
