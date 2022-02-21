@@ -4,7 +4,7 @@ if [[ "$TERM" = "dumb" ]]; then # fix tramp
    return
 fi
 
-+linux eval "$(dircolors)"
++linux && eval "$(dircolors)"
 +linux export LS_COLORS="$LS_COLORS:di=94:ex=92:"
 +macos export LSCOLORS="ExGxcxdxCxeged"
 
