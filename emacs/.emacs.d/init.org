@@ -3186,15 +3186,16 @@ click to browse URL or to send to e-mail address
     "jD" 'xref-find-definitions-other-window
     "jd" 'xref-find-definitions
     "jr" 'xref-find-references)
-  :init
-  (add-hook 'after-save-hook
-            (defun d/run-project-ctags ()
-              (interactive)
-              (let ((root-dir (vc-root-dir)))
-                (when root-dir
-                  (let ((default-directory root-dir))
-                    (unless (get-process "d/ctags")
-                      (start-process "d/ctags" "*ctags*" "ctags" "-eR"))))))))
+  ;; :init
+  ;; (add-hook 'after-save-hook
+  ;;           (defun d/run-project-ctags ()
+  ;;             (interactive)
+  ;;             (let ((root-dir (vc-root-dir)))
+  ;;               (when root-dir
+  ;;                 (let ((default-directory root-dir))
+  ;;                   (unless (get-process "d/ctags")
+  ;;                     (start-process "d/ctags" "*ctags*" "ctags" "-eR")))))))
+  )
 #+end_src
 ** Packages
 *** [[https://github.com/abo-abo/ace-window][ace-window]]
