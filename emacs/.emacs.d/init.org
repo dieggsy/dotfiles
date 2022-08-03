@@ -561,12 +561,13 @@ I went for it. Now I'll never go back.
    "C-_" 'evil-normal-state
    "C-/" 'evil-normal-state)
   (vmap [escape] 'keyboard-quit)
+  :init
+  (setq evil-search-module 'evil-search)
   :custom
   (evil-mode-line-format '(before . mode-line-front-space))
   (evil-want-C-u-scroll t)
   (evil-want-keybinding nil)
   (evil-want-fine-undo t)
-  (evil-search-module 'evil-search)
   (evil-lookup-func (lambda () (man (thing-at-point 'word))))
   (evil-undo-system 'undo-fu)
   (evil-symbol-word-search t)
