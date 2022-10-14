@@ -3443,6 +3443,7 @@ have a look. Additionally, show whitespace.
 #+end_src
 *** Font
 #+begin_src emacs-lisp
+(add-to-list 'default-frame-alist '(font . "Iosevka Term-11:weight=book"))
 (defun d/setup-fonts (&rest ignore)
   (setq inhibit-compacting-font-caches t
         use-default-font-for-symbols nil)
