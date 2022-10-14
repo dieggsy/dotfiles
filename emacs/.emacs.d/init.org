@@ -1663,13 +1663,13 @@ A simpler mode line. Note that this configuration depends on the ~moody~ and
                         (modified  (and buffer-file-name (buffer-modified-p))))
                     (cond (modified "+") (read-only "-") (t " ")))
                   (pcase evil-state
-                    (normal   '(:foreground "#282828" :background "#B8BB26"))
-                    (insert   '(:foreground "#282828" :background "#66999D"))
-                    (motion   '(:foreground "#282828" :background "#D3869B"))
-                    (visual   '(:foreground "#282828" :background "#FE8019"))
-                    (emacs    '(:foreground "#282828" :background "#FABD2F"))
-                    (replace  '(:foreground "#282828" :background "#FE8019"))
-                    (operator '(:foreground "#282828" :background "#B8BB26")))
+                    ('normal   '(:foreground "#282828" :background "#B8BB26"))
+                    ('insert   '(:foreground "#282828" :background "#66999D"))
+                    ('motion   '(:foreground "#282828" :background "#D3869B"))
+                    ('visual   '(:foreground "#282828" :background "#FE8019"))
+                    ('emacs    '(:foreground "#282828" :background "#FABD2F"))
+                    ('replace  '(:foreground "#282828" :background "#FE8019"))
+                    ('operator '(:foreground "#282828" :background "#B8BB26")))
                   '(:foreground "#282828" :background "#665C54")))
                 " "
                 (:eval
