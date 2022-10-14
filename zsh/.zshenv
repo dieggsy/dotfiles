@@ -11,15 +11,6 @@ export DUST_HOME=~/.local/dust
 export FZF_DEFAULT_OPTS='--height 40% --layout=reverse --border'
 export LV2_PATH=/usr/lib64/lv2
 export GROFF_NO_SGR=1
-
-pathadd () {
-    if [ -d "$1" ] && [[ ":$PATH:" != *":$1:"* ]]; then
-        PATH="$1${PATH:+":$PATH"}"
-    fi
-}
-
-pathadd $HOME/.local/bin
-pathadd $HOME/bin
-
-export PATH
 export KEYTIMEOUT=1
+
++linux source ~/.zpath

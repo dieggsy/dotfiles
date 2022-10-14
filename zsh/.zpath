@@ -1,0 +1,12 @@
+# -*- mode: sh -*-
+pathadd () {
+    if [ -d "$1" ] && ! (($path[(Ie)$1])); then
+        path=($1 $path)
+    fi
+}
+
+pathadd $HOME/.local/bin
+pathadd $HOME/bin
+pathadd $HOME/.pyenv/bin
+
+export PATH
