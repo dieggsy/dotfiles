@@ -81,7 +81,11 @@ maybe_git () {
 }
 
 rl () {
-    hash rlwrap &> /dev/null && rlwrap $@ || $@
+    if hash rlwrap &> /dev/null; then
+        rlwrap $@
+    else
+        $@
+    fi
 }
 
 setopt prompt_subst
