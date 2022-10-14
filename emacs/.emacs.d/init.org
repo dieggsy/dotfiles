@@ -3298,10 +3298,11 @@ imenu on steroids.
 (use-package shackle
   :defer 15
   :demand t
+  :custom
+  (shackle-rules '((inferior-emacs-lisp-mode :popup t)
+                   (inferior-scheme-mode :popup t)
+                   ("\\*sly-mrepl" :regexp t :popup t)))
   :config
-  (setq shackle-rules '(;; (compilation-mode :ignore t)
-                        (inferior-emacs-lisp-mode :popup t)
-                        (inferior-scheme-mode :popup t)))
   (shackle-mode))
 #+end_src
 *** [[https://github.com/cyrus-and/zoom][zoom]]
