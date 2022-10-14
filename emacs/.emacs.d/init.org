@@ -422,9 +422,12 @@ Integrate gpg passphrase query with Emacs minibuffer when using EPA.
 #+begin_src emacs-lisp :tangle no
 (setq epa-pinentry-mode 'loopback)
 #+end_src
-*** Window size
+*** Layout
 #+begin_src emacs-lisp
-(setq frame-resize-pixelwise t)
+(setq frame-resize-pixelwise t
+      window-divider-default-right-width 8)
+(window-divider-mode 1)
+(add-to-list 'default-frame-alist '(internal-border-width . 8))
 #+end_src
 *** Modes
 #+begin_src emacs-lisp
@@ -1645,62 +1648,64 @@ A simpler mode line. Note that this configuration depends on the ~moody~ and
 (defun d/window-active-p ()
   (eq (selected-window) d/selected-window))
 
+(cl-defun propertize-active (thing &optional (active-face 'mode-line-active) (inactive-face 'mode-line-inactive))
+  (propertize thing
+              'face
+              (if (d/window-active-p)
+                  active-face
+                inactive-face)))
+
 (setq-default mode-line-format
               '("%e"
                 (:eval
-                 (propertize
+                 (propertize-active
                   (let ((read-only buffer-read-only)
                         (modified  (and buffer-file-name (buffer-modified-p))))
-                    (cond (modified " ** ") (read-only " RO ") (t " RW ")))
-                  'face
-                  (if (d/window-active-p)
-                      (pcase evil-state
-                        ('normal   '(:foreground "#282828" :background "#B8BB26"))
-                        ('insert   '(:foreground "#282828" :background "#66999D"))
-                        ('motion   '(:foreground "#282828" :background "#D3869B"))
-                        ('visual   '(:foreground "#282828" :background "#FE8019"))
-                        ('emacs    '(:foreground "#282828" :background "#FABD2F"))
-                        ('replace  '(:foreground "#282828" :background "#FE8019"))
-                        ('operator '(:foreground "#282828" :background "#B8BB26")))
-                    '(:foreground "#282828" :background "#665C54"))))
+                    (cond (modified "+") (read-only "-") (t " ")))
+                  (pcase evil-state
+                    (normal   '(:foreground "#282828" :background "#B8BB26"))
+                    (insert   '(:foreground "#282828" :background "#66999D"))
+                    (motion   '(:foreground "#282828" :background "#D3869B"))
+                    (visual   '(:foreground "#282828" :background "#FE8019"))
+                    (emacs    '(:foreground "#282828" :background "#FABD2F"))
+                    (replace  '(:foreground "#282828" :background "#FE8019"))
+                    (operator '(:foreground "#282828" :background "#B8BB26")))
+                  '(:foreground "#282828" :background "#665C54")))
                 " "
                 (:eval
-                 (concat (let ((bufname (format-mode-line "%b")))
+                 (concat (let ((bufname (format-mode-line "%b" t)))
                            (if (string-match "^\\*\\(.*\\)\\*\\(<[0-9]+>\\)?$" bufname)
                                (propertize (concat (match-string 1 bufname)
                                                    (match-string 2 bufname))
                                            'face '(:slant italic))
-                             bufname))))
+                             (propertize-active bufname t 'mode-line-inactive)))))
                 " "
                 (:eval
                  (let ((host (file-remote-p default-directory 'host)))
                    (when host
-                     (propertize
+                     (propertize-active
                       (concat "@" host  " ")
-                      'face
-                      (if (d/window-active-p)
-                          '(:inherit ivy-remote :slant italic)
-                        '(:inherit mode-line-inactive :slant italic))))))
+                      '(:inherit ivy-remote :slant italic)
+                      '(:inherit mode-line-inactive :slant italic)))))
                 (:eval
-                 (concat "("
-                         (if (listp mode-name) (car mode-name) mode-name)
+                 (concat (propertize-active "(" '(:foreground "#5C7E81"))
+                         (propertize-active
+                          (if (listp mode-name) (car mode-name) mode-name)
+                          '(:inherit mode-line-active :slant italic)
+                          '(:inherit mode-line-inactive :slant italic))
                          (if vc-mode
-                             (concat ", "
-                                     (propertize
+                             (concat (propertize-active ", ")
+                                     (propertize-active
                                       (concat "#" (substring-no-properties vc-mode 5))
-                                      'face
-                                      (if (d/window-active-p)
-                                          '(:inherit font-lock-comment-face)
-                                        `(:inherit font-lock-comment-face
-                                                   :foreground ,(face-attribute 'mode-line-inactive :foreground))))))
-                         ")"))
+                                      '(:inherit font-lock-comment-face)
+                                      `(:inherit font-lock-comment-face
+                                                 :foreground ,(face-attribute 'mode-line-inactive :foreground)))))
+                         (propertize-active ")" '(:foreground "#5C7E81"))))
                 " "
                 (:eval
-                 (propertize (format-mode-line "%l:%c")
-                             'face
-                             (if (d/window-active-p)
-                                 '(:inherit font-lock-comment-face :slant normal)
-                               'mode-line-inactive)))
+                 (propertize-active
+                  (format-mode-line "%l:%c")
+                  '(:inherit font-lock-comment-face :slant normal)))
                 " "
                 mode-line-misc-info))
 #+end_src
@@ -3455,8 +3460,8 @@ Use a bar cursor in the minibuffer.
 #+end_src
 *** Margin
 #+begin_src emacs-lisp :tangle no
-(setq-default left-margin-width 1)
-(setq-default right-margin-width 1)
+;; (setq-default left-margin-width 1)
+;; (setq-default right-margin-width 1)
 #+end_src
 *** variable-pitch
 I don't like seeing variable pitch in emacs. Just sorta throws me off.
