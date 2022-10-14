@@ -1648,7 +1648,7 @@ A simpler mode line. Note that this configuration depends on the ~moody~ and
 (defun d/window-active-p ()
   (eq (selected-window) d/selected-window))
 
-(cl-defun propertize-active (thing &optional (active-face 'mode-line-active) (inactive-face 'mode-line-inactive))
+(cl-defun propertize-active (thing &optional (active-face 'mode-line) (inactive-face 'mode-line-inactive))
   (propertize thing
               'face
               (if (d/window-active-p)
@@ -1691,7 +1691,7 @@ A simpler mode line. Note that this configuration depends on the ~moody~ and
                  (concat (propertize-active "(" '(:foreground "#5C7E81"))
                          (propertize-active
                           (if (listp mode-name) (car mode-name) mode-name)
-                          '(:inherit mode-line-active :slant italic)
+                          '(:inherit mode-line :slant italic)
                           '(:inherit mode-line-inactive :slant italic))
                          (if vc-mode
                              (concat (propertize-active ", ")
