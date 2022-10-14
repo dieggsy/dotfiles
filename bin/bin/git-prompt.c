@@ -1,4 +1,4 @@
-// This file contains two ways to produce a git shell prompt
+// This file contains two ways to produce a git shell prompt either:
 //    - Using libgit2, which makes for much, MUCH cleaner code
 //    - Parsing git status, which is ugly but somehow faster
 #include <stdio.h>
@@ -237,7 +237,7 @@ void print_other_info(FILE *status) {
         printf("%%F{11}#%d%%f", modified);
     }
     if (dirty) {
-        printf("*");
+        printf("%%F{7}*%%f");
     }
     if (!staged && !conflicts && !modified && !dirty) {
         printf("%%F{10}~%%f");
@@ -255,11 +255,10 @@ int main() {
         return 0;
     }
     ungetc(c,status);
-    printf("(");
+    printf("%%F{8}─(%%f");
     print_branch_info(status);
-    printf("|");
     print_other_info(status);
-    printf(") ");
+    printf("%%F{8})%%f");
     pcloseish(pid, status);
     return 0;
 }

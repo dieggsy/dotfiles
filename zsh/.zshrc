@@ -72,7 +72,7 @@ bindkey -M vicmd 'j' history-substring-search-down
 
 maybe_host () {
     if [ $SSH_CLIENT ] || [ $SSH_TTY ]; then
-        echo "%F{13}@%M%f "
+        echo "%F{8}[%F{13}@%M%F{8}]─%f"
     fi
 }
 
@@ -89,7 +89,11 @@ rl () {
 }
 
 setopt prompt_subst
-export PROMPT='$(maybe_host)$(maybe_git)%F{7}%1~%f %F{209}%(!.#.>)%f '
+# export PROMPT='%F{8}┌┤%f$(maybe_host)%F{7}%~%f $(maybe_git)
+# %F{8}└╼%f%F{209}%(!.#.)%f '
+export PROMPT='%F{8}┌─$(maybe_host)%F{8}[%f%F{7}%~%f%F{8}]%f$(maybe_git)
+%F{8}└─╼%f%F{209}%(!.#.)%f '
+# export PROMPT='$(maybe_host)$(maybe_git)%F{7}%1~%f %F{209}%(!.#.>)%f '
 
 +linux alias ls='ls --color=auto -F'
 +macos alias ls='ls -GF'
