@@ -1,6 +1,8 @@
 #+TITLE: dotfiles
 #+OPTIONS: toc:nil num:nil
 
+THIS REPOSITORY HAS MOVED TO https://git.sr.ht/~dieggsy/dotfiles
+
 A gnu ~stow~ based dotfiles repository. Some of this is my own, some is
 inspired by or taken from others and adapted to my needs.
 
